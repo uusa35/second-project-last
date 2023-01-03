@@ -50,20 +50,11 @@ const AppHeader: FC = () => {
       bg-gradient-to-tr from-gray-400 to-gray-800 lg:from-white lg:to-white
       `}
     >
-      <Image
-        src={`${imgUrl(vendor.Data.cover)}`}
-        alt={vendor.Data.name}
-        className={`object-cover w-full h-full absolute top-0 left-0 mix-blend-overlay lg:hidden`}
-        width={imageSizes.lg}
-        height={imageSizes.lg}
-      />
       <button
         onClick={() =>
-          sideMenuOpen
-            ? dispatch(hideSideMenu(undefined))
-            : dispatch(showSideMenu(undefined))
+          sideMenuOpen ? dispatch(hideSideMenu()) : dispatch(showSideMenu())
         }
-        className={`ltr:ml-3 rtl:mr-3`}
+        className={`ltr:ml-3 rtl:mr-3 z-50`}
       >
         <Bars3Icon className={`w-8 h-8 text-black`} />
       </button>
@@ -80,7 +71,7 @@ const AppHeader: FC = () => {
           },
         }}
         locale={locale.lang}
-        className="flex justify-center space-x-3  cursor-pointer p-4"
+        className="flex justify-center space-x-3  cursor-pointer p-4 z-50 text-white lg:text-black"
       >
         <div className="flex flex-1 justify-center ">
           <Image
@@ -93,6 +84,13 @@ const AppHeader: FC = () => {
         </div>
         <div className="flex flex-1 justify-center ">{vendor.Data.name}</div>
       </Link>
+      <Image
+        src={`${imgUrl(vendor.Data.cover)}`}
+        alt={vendor.Data.name}
+        className={`object-cover w-full h-full absolute top-0 left-0 mix-blend-overlay lg:hidden`}
+        width={imageSizes.lg}
+        height={imageSizes.lg}
+      />
       <div className="flex justify-end items-center gap-x-5">
         {isAuth && avatar && (
           <Link
