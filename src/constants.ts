@@ -7,6 +7,9 @@ export const apiUrl = `${baseUrl}api/`;
 export const appLinks = {
   root: { path: '/home' },
   home: { path: '/home' },
+  productIndex: (categoryId: string, query?: string) =>
+    `product/${categoryId}?${query}`,
+  productShow: (id: string) => `/product/show/${id}`,
   terms: { path: '/terms' },
   about: { path: '/about' },
   account: { path: '/account' },

@@ -15,6 +15,7 @@ export const branchApi = apiSlice.injectEndpoints({
         headers: {
           'Accept-Language': lang,
         },
+        validateStatus: (response, result) => response.status && result.Data,
       }),
     }),
     getBranch: builder.query<
@@ -30,6 +31,7 @@ export const branchApi = apiSlice.injectEndpoints({
         headers: {
           'Accept-Language': lang,
         },
+        validateStatus: (response, result) => response.status && result.Data,
       }),
     }),
   }),

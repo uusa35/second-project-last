@@ -86,15 +86,19 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
   return (
     <div
       dir={router.locale === 'ar' ? 'rtl' : 'ltr'}
-      className={`${tajwalFont} flex-col justify-start items-center grow  lg:flex lg:flex-row flex flex-row h-screen  [&>*]:capitalize`}
+      className={`${tajwalFont} flex-col justify-start items-start grow  lg:flex lg:flex-row flex flex-row h-screen  [&>*]:capitalize`}
     >
       {children}
       {/* Main Image & Logo */}
       <div
-        className={`hidden lg:block flex flex-row w-full lg:2/4 xl:w-2/3 h-60 lg:min-h-screen`}
+        className={`hidden lg:block flex flex-row  w-full h-screen lg:w-2/4 xl:w-2/3`}
+        // style={{ height: '120vh' }}
       >
         {isSuccess && vendor.Data && (
-          <div className="flex relative justify-center items-center top-0 flex-1 w-full min-h-full bg-gradient-to-tr from-gray-400 to-gray-800">
+          <div
+            className="flex relative justify-center items-center top-0  w-full h-screen bg-gradient-to-tr from-gray-400 to-gray-800"
+            // style={{ height: '120vh' }}
+          >
             <Image
               src={`${imgUrl(vendor.Data.cover)}`}
               alt={vendor.Data.name}
