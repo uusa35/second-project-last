@@ -5,7 +5,6 @@ import route from 'next/router';
 import { toast, TypeOptions } from 'react-toastify';
 import { Auth, Guest } from '@/types/queries';
 import { appSettingSlice } from '@/redux/slices/appSettingSlice';
-import { guestSlice } from '@/redux/slices/guestSlice';
 import { lowerCase, snakeCase } from 'lodash';
 import { orderSlice } from '@/redux/slices/orderSlice';
 import { apiLogin, apiLogout, apiVerified, appLinks } from '@/constants/*';
@@ -74,7 +73,7 @@ export function* startSetLoginScenario(action: PayloadAction<Auth>) {
           type: user.phone_verified ? 'success' : 'info',
         },
       }),
-      put({ type: `${guestSlice.actions.disableGuestMode}` }),
+      // put({ type: `${guestSlice.actions.disableGuestMode}` }),
     ]);
     if (user.phone_verified !== 1) {
       route.router?.push(appLinks.verificationOTP.path);

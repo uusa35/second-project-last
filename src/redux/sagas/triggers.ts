@@ -23,7 +23,6 @@ import { appSettingSlice } from '@/redux/slices/appSettingSlice';
 import { appLoadingSlice } from '@/redux/slices/appLoadingSlice';
 import { localeSlice } from '@/redux/slices/localeSlice';
 import { authSlice } from '@/redux/slices/authSlice';
-import { guestSlice } from '@/redux/slices/guestSlice';
 
 export function* triggerResetApp() {
   yield takeLatest(`resetApp`, startResetAppScenario);
@@ -48,12 +47,6 @@ export function* triggerSetLogout() {
   yield takeLatest(`${authSlice.actions.logout}`, startSetLogOutScenario);
 }
 
-export function* triggerenableGuestMode() {
-  yield takeLatest(
-    `${guestSlice.actions.enableGuestMode}`,
-    startEnableGuestModeScenario
-  );
-}
 
 export function* triggerOrderMade() {
   yield takeLatest(`${orderSlice.actions.orderMade}`, startOrderMadeScenario);
