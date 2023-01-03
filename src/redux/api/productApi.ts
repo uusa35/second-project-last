@@ -7,12 +7,14 @@ export const productApi = apiSlice.injectEndpoints({
     getProducts: builder.query<
       AppQueryResult<Product[]>,
       {
+        category_id: string;
         query?: string;
-        branchId: string;
+        branchId?: string;
       }
     >({
-      query: ({ query = `?page=1&limit=20`, branchId }) => ({
+      query: ({ category_id, query = `?page=1&limit=20`, branchId }) => ({
         url: `items${query}`,
+        params: { category_id },
         headers: {
           'x-branch-id': branchId,
         },
@@ -22,7 +24,7 @@ export const productApi = apiSlice.injectEndpoints({
       AppQueryResult<Product[]>,
       {
         search?: string;
-        branchId: string;
+        branchId?: string;
       }
     >({
       query: ({ search = ``, branchId }) => ({
@@ -37,7 +39,7 @@ export const productApi = apiSlice.injectEndpoints({
       {
         item_id: string | unknown;
         lang: Locale['lang'] | string;
-        branchId: string;
+        branchId?: string;
       }
     >({
       query: ({ item_id, branchId, lang }) => ({
@@ -49,7 +51,23 @@ export const productApi = apiSlice.injectEndpoints({
         },
       }),
     }),
+    getTopSearch: builder.query<
+      AppQueryResult<{ topSearch: string[]; trendingItems: Product[] }>,
+      {
+        branchId?: string;
+        areaId?: string;
+      }
+    >({
+      query: ({ branchId = ``, areaId = `` }) => ({
+        url: `topSearches`,
+        headers: {
+          'x-branch-id': branchId,
+          'x-area-id': areaId,
+        },
+      }),
+    }),
   }),
 });
 
-export const { useGetProductsQuery, useGetProductQuery } = productApi;
+export const { useGetProductsQuery, useGetProductQuery, useGetTopSearchQuery } =
+  productApi;

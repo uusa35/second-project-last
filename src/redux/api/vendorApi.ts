@@ -7,6 +7,7 @@ export const vendorApi = apiSlice.injectEndpoints({
     getVendor: builder.query<AppQueryResult<Vendor>, void>({
       query: () => ({
         url: `vendorDetails`,
+        validateStatus: (response, result) => response.status && result.Data,
       }),
     }),
   }),
