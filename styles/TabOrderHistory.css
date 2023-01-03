@@ -1,0 +1,23 @@
+
+.MuiTabs-flexContainer {
+  justify-content: space-between !important;
+}
+
+.css-1h9z7r5-MuiButtonBase-root-MuiTab-root {
+  font-size: 12px !important;
+  padding-block: 0.5rem !important;
+  padding-inline: 1rem !important;
+
+  min-height: auto !important;
+  min-width: auto !important;
+}
+
+.css-1h9z7r5-MuiButtonBase-root-MuiTab-root.Mui-selected {
+  border-radius: 10%;
+  background-color: #f8f8f8;
+  color: #189ec9 !important;
+}
+
+.css-1aquho2-MuiTabs-indicator {
+  display: none;
+}
