@@ -3,6 +3,7 @@ import { wrapper } from '@/redux/store';
 import { productApi, useGetTopSearchQuery } from '@/redux/api/productApi';
 import { Product } from '@/types/index';
 import { NextPage } from 'next';
+import { apiSlice } from '@/redux/api';
 
 type Props = {
   elements: Product[];
@@ -21,12 +22,12 @@ export default ProductIndex;
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ query }) => {
-      if (!query.categoryId) {
+      const { categoryId, branchId, params }: any = query;
+      if (!categoryId) {
         return {
           notFound: true,
         };
       }
-      const { categoryId, branchId, params }: any = query;
       const { data: elements, isError } = await store.dispatch(
         productApi.endpoints.getProducts.initiate({
           category_id: categoryId,
@@ -34,6 +35,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
           query: params[0] ?? ``,
         })
       );
+      await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
       if (isError || !elements.Data) {
         return {
           notFound: true,
