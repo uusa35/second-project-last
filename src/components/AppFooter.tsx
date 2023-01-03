@@ -23,7 +23,7 @@ const AppFooter: FC = (): JSX.Element => {
 
   return (
     <footer
-      className={`absolute left-0 bottom-0 bg-gray-50 py-4 w-full lg:w-2/4 xl:w-1/3`}
+      className={`relative left-0 bottom-0 bg-gray-50 py-4 w-full lg:w-2/4 xl:w-1/3`}
     >
       <div className="flex justify-center lg:justify-start px-8 items-center ">
         <p className={`text-stone-400`}>powered by .....</p>

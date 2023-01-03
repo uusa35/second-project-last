@@ -6,8 +6,7 @@ export const categoryApi = apiSlice.injectEndpoints({
     getCategories: builder.query<AppQueryResult<Category[]>, void>({
       query: () => ({
         url: `categories`,
-        validateStatus: (response, result) =>
-          response.status === 200 && result.success,
+        validateStatus: (response, result) => response.status && result.Data,
       }),
     }),
   }),

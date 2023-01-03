@@ -40,12 +40,11 @@ const MainContentLayout: FC<Props> = ({
 
   return (
     <div
-      className={`flex flex-col min-h-screen justify-start items-start w-full lg:w-2/4 xl:w-1/3 overflow-hidden`}
+      className={`flex flex-col justify-start items-start w-full lg:w-2/4 xl:w-1/3 overflow-hidden`}
     >
       <SideMenu />
       {appSetting.showHeader && <AppHeader />}
-      <main className={`w-full h-full h-full`}>{children}</main>
-
+      <main className={`w-full`}>{children}</main>
       <AppFooter />
     </div>
   );
