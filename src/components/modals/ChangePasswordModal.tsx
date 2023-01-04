@@ -19,7 +19,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import Image from 'next/image';
 import { EyeIcon } from '@heroicons/react/24/outline';
-import { useResetPasswordMutation } from '@/redux/api/authApi';
 
 const schema = yup
   .object({
@@ -59,28 +58,28 @@ const ChangePasswordModal: FC = () => {
       password_confirmation: ``,
     },
   });
-  const [resetPassword, { data, isLoading, error }] =
-    useResetPasswordMutation<any>();
+  // const [resetPassword, { data, isLoading, error }] =
+  //   useResetPasswordMutation<any>();
 
-  const onSubmit: SubmitHandler<ChangePassProps> = (body) => {
-    resetPassword({ country, token, body })
-      .then((r: any) => {
-        if (r.data.success) {
-          dispatch(
-            showToastMessage({ content: r.data.message, type: 'success' })
-          );
-        }
-      })
-      .then(() => dispatch(hideChangePasswordModal()));
-  };
+  // const onSubmit: SubmitHandler<ChangePassProps> = (body) => {
+  //   resetPassword({ country, token, body })
+  //     .then((r: any) => {
+  //       if (r.data.success) {
+  //         dispatch(
+  //           showToastMessage({ content: r.data.message, type: 'success' })
+  //         );
+  //       }
+  //     })
+  //     .then(() => dispatch(hideChangePasswordModal()));
+  // };
 
-  useEffect(() => {
-    if (error?.data.message) {
-      dispatch(
-        showToastMessage({ content: error.data?.message, type: 'error' })
-      );
-    }
-  }, [error]);
+  // useEffect(() => {
+  //   if (error?.data.message) {
+  //     dispatch(
+  //       showToastMessage({ content: error.data?.message, type: 'error' })
+  //     );
+  //   }
+  // }, [error]);
 
   return (
     <React.Fragment>
@@ -106,7 +105,7 @@ const ChangePasswordModal: FC = () => {
               </p>
             </div>
             <form
-              onSubmit={handleSubmit(onSubmit)}
+              // onSubmit={handleSubmit(onSubmit)}
               className={`flex flex-col space-y-2`}
             >
               {/* old_pass */}
