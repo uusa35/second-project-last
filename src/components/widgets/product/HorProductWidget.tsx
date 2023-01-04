@@ -1,20 +1,29 @@
 import { FC } from 'react';
 import { Category } from '@/types/queries';
 import Image from 'next/image';
-import { imageSizes, imgUrl } from '@/constants/*';
+import { appLinks, imageSizes, imgUrl } from '@/constants/*';
 import { Product } from '@/types/index';
 import NoFoundImage from '@/appImages/not_found.png';
+import { first, isEmpty } from 'lodash';
+import Link from 'next/link';
 
 type Props = {
   element: Product;
 };
 const HorProductWidget: FC<Props> = ({ element }) => {
+  const firstImage = !isEmpty(element.img)
+    ? imgUrl(first(element.img)[0])
+    : NoFoundImage.src;
+
   return (
-    <div key={element.id}>
+    <Link
+      key={element.id}
+      href={`${appLinks.productShow(element.id.toString())}`}
+    >
       <div className="relative">
         <div className="relative h-60 w-full overflow-hidden rounded-lg">
           <Image
-            src={`${NoFoundImage}`}
+            src={`${firstImage}`}
             alt={element.name}
             width={imageSizes.sm}
             height={imageSizes.sm}
@@ -36,7 +45,7 @@ const HorProductWidget: FC<Props> = ({ element }) => {
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

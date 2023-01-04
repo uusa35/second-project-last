@@ -1,14 +1,35 @@
 import { Area, Category, Country } from '@/types/queries';
 
 export interface Product {
-  id: string | number;
+  id: number;
   name: string;
+  desc: string;
   price: string;
-  price_on_selection: boolean;
-  new_price: string;
+  amount?: number;
+  branch_id?: string;
+  price_on_selection?: boolean;
+  new_price?: string;
   img: img[];
+  sections?: productSections[];
 }
 
+export interface productSections {
+  id: number;
+  title: string;
+  must_select: string;
+  selection_type: string;
+  hidden: boolean;
+  min_q: number;
+  max_q: number;
+  choices: sectionChoices[];
+}
+
+export interface sectionChoices {
+  id: number;
+  name: string;
+  price: string;
+  num: null | number;
+}
 export interface img {
   thumbnail: string;
   original: string;

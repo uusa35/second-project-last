@@ -4,7 +4,7 @@ import { productApi, useGetTopSearchQuery } from '@/redux/api/productApi';
 import { Product } from '@/types/index';
 import { NextPage } from 'next';
 import { apiSlice } from '@/redux/api';
-import { isEmpty, map } from 'lodash';
+import { map } from 'lodash';
 import { suppressText } from '@/constants/*';
 import HorProductWidget from '@/widgets/product/HorProductWidget';
 import MainHead from '@/components/MainHead';
@@ -13,16 +13,16 @@ type Props = {
   elements: Product[];
 };
 const ProductIndex: NextPage<Props> = ({ elements }): JSX.Element => {
-  console.log('elements', elements);
-
   return (
     <>
-      <MainHead title={`productIndex`} />
+      <MainHead title={`productIndex`} description={`productIndex`} />
       <MainContentLayout>
         <h1 suppressHydrationWarning={suppressText}>ProductIndex</h1>
-        {map(elements, (p, i) => (
-          <HorProductWidget element={p} key={i} />
-        ))}
+        <div className="mt-4 p-4 grid sm:grid-cols-3 lg:grid-cols-2 gap-6">
+          {map(elements, (p, i) => (
+            <HorProductWidget element={p} key={i} />
+          ))}
+        </div>
       </MainContentLayout>
     </>
   );
@@ -38,7 +38,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
       const { data: elements, isError } = await store.dispatch(
         productApi.endpoints.getSearchProducts.initiate({
           search: key ?? ``,
-          branchId: branch_id ?? ``,
+          branchId: branch_id ?? `1`,
           areaId: area_id ?? ``,
         })
       );

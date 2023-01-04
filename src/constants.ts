@@ -9,6 +9,8 @@ export const appLinks = {
   home: { path: '/home' },
   productIndex: (categoryId: string, query?: string) =>
     `product/${categoryId}?${query}`,
+  productSearchIndex: (query?: string, branchId?: string, areaId?: string) =>
+    `product/?key=${query}&branch_id=${branchId}&areaId=${areaId}`,
   productShow: (id: string) => `/product/show/${id}`,
   terms: { path: '/terms' },
   about: { path: '/about' },
