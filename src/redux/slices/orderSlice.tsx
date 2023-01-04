@@ -80,13 +80,6 @@ export const orderSlice = createSlice({
       };
     },
   },
-  extraReducers: {
-    [HYDRATE]: (state, action) => {
-      return {
-        ...state,
-      };
-    },
-  },
 });
 
 export const { setOrder, resetOrder, toggleIsEmpty, orderMade } =

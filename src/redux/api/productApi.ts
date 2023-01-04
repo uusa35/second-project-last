@@ -18,6 +18,7 @@ export const productApi = apiSlice.injectEndpoints({
         headers: {
           'x-branch-id': branchId,
         },
+        validateStatus: (response, result) => response.status && result.Data,
       }),
     }),
     getSearchProducts: builder.query<
@@ -34,25 +35,27 @@ export const productApi = apiSlice.injectEndpoints({
           'x-branch-id': branchId,
           'x-area-id': areaId,
         },
+        validateStatus: (response, result) => response.status && result.Data,
       }),
     }),
     getProduct: builder.query<
       AppQueryResult<Product>,
       {
-        product_id: string | unknown;
-        lang: Locale['lang'] | string;
-        branchId?: string;
-        areaId?: string;
+        id: string | unknown;
+        lang: Locale['lang'] | string | undefined;
+        branchId?: string | null;
+        areaId?: string | null;
       }
     >({
-      query: ({ product_id, branchId, lang, areaId }) => ({
+      query: ({ id, branchId, lang, areaId }) => ({
         url: `itemDetails`,
-        params: { product_id },
+        params: { product_id: id },
         headers: {
-          'Accept-Language': lang,
+          lang,
           'x-branch-id': branchId,
           'x-area-id': areaId,
         },
+        validateStatus: (response, result) => response.status && result.Data,
       }),
     }),
     getTopSearch: builder.query<
@@ -68,6 +71,7 @@ export const productApi = apiSlice.injectEndpoints({
           'x-branch-id': branchId,
           'x-area-id': areaId,
         },
+        validateStatus: (response, result) => response.status && result.Data,
       }),
     }),
   }),

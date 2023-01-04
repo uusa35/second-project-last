@@ -24,13 +24,6 @@ export const localeSlice = createSlice({
       };
     },
   },
-  extraReducers: {
-    [HYDRATE]: (state, action) => {
-      return {
-        ...state,
-      };
-    },
-  },
 });
 
 export const { setLocale } = localeSlice.actions;

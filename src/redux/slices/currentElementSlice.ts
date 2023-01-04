@@ -20,13 +20,6 @@ export const currentElementSlice = createSlice({
     },
     removeCurrentElement: (state, action: PayloadAction<void>) => initialState,
   },
-  extraReducers: {
-    [HYDRATE]: (state, action) => {
-      return {
-        ...state,
-      };
-    },
-  },
 });
 
 export const { setCurrentElement, removeCurrentElement } =

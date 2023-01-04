@@ -18,7 +18,6 @@ const HorProductWidget: FC<Props> = ({ element }) => {
   console.log('element', element);
   return (
     <Link
-      key={element.id}
       href={`${appLinks.productShow(
         element.id.toString(),
         element.id,

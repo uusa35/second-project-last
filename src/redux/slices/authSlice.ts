@@ -40,13 +40,6 @@ export const authSlice = createSlice({
       };
     },
   },
-  extraReducers: {
-    [HYDRATE]: (state, action) => {
-      return {
-        ...state,
-      };
-    },
-  },
 });
 export const isAuthenticated = (state: RootState) =>
   state.auth.user.status === 1;
