@@ -6,7 +6,13 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useRouter } from 'next/router';
 import SideMenuSkelton from '@/components/sideMenu/SideMenuSkelton';
 import Link from 'next/link';
-import { appLinks, imageSizes, imgUrl, submitBtnClass, suppressText } from '@/constants/*';
+import {
+  appLinks,
+  imageSizes,
+  imgUrl,
+  submitBtnClass,
+  suppressText,
+} from '@/constants/*';
 import { hideSideMenu } from '@/redux/slices/appSettingSlice';
 
 import {
@@ -61,7 +67,7 @@ const SideMenu: FC<Props> = () => {
         customBurgerIcon={false}
         customCrossIcon={false}
       >
-<div
+        <div
           style={{ display: 'flex' }}
           className="flex-col justify-between  bg-white h-full outline-none px-6"
         >
@@ -129,11 +135,10 @@ const SideMenu: FC<Props> = () => {
                 </div>
               </Link>
             </div>
-            
           </div>
           <footer className={`w-full`}>
             <Link href={`tel: ${vendorDetails.Data.phone}`} scroll={false}>
-              <div className={`${submitBtnClass} text-center`}>{t("call")}</div>
+              <div className={`${submitBtnClass} text-center`}>{t('call')}</div>
             </Link>
           </footer>
         </div>
