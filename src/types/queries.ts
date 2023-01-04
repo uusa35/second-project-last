@@ -1,5 +1,3 @@
-import { Product, Vendor } from '@/types/index';
-
 export type AppQueryResult<T> = {
   success: boolean;
   status: string | number;

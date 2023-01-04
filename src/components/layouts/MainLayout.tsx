@@ -22,6 +22,7 @@ import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { ShoppingBagOutlined } from '@mui/icons-material';
 import CustomImage from '../customImage';
+import { setVendor } from '@/redux/slices/vendorSlice';
 const ToastAppContainer = dynamic(
   () => import(`@/components/ToastAppContainer`),
   {
@@ -45,6 +46,12 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
     data: AppQueryResult<Vendor>;
     isSuccess: boolean;
   }>();
+
+  useEffect(() => {
+    if (isSuccess) {
+      dispatch(setVendor(vendor.Data));
+    }
+  }, [vendor]);
 
   useEffect(() => {
     const handleRouteChange: Handler = (url, { shallow }) => {
