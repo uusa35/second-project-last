@@ -5,26 +5,15 @@ export type AppQueryResult<T> = {
   status: string | number;
   message: string;
   Data: T;
-  pagination?: Pagination;
 };
 
-export type Pagination = {
-  meta: {
-    page: {
-      previous: string;
-      next: string;
-      isPrevious: boolean;
-      isNext: boolean;
-      [key: string]: string | boolean;
-    };
-  };
-  links: {
-    path: string;
-    first: string;
-    last: string;
-    previous: string;
-    next: string;
-  };
+export type ProductPagination<T> = {
+  current_page: string;
+  next_page: string;
+  per_page: string;
+  prev_page: string;
+  products: T[];
+  total: string;
 };
 
 export type Category = {

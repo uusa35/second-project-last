@@ -10,22 +10,22 @@ export const productApi = apiSlice.injectEndpoints({
         category_id: string;
         page: string;
         limit: string;
-        branchId: string | null;
-        areaId: string;
+        branch_id: string | null;
+        area_id: string;
       }
     >({
       query: ({
         category_id,
         page = '1',
         limit = '10',
-        branchId = null,
-        areaId = ``,
+        branch_id = `null`,
+        area_id = ``,
       }: any) => ({
-        url: `items?page=${page}&limit=${limit}`,
-        params: { category_id },
+        url: `items`,
+        params: { category_id, page, limit, branch_id },
         headers: {
-          'x-branch-id': branchId,
-          'x-area-id': areaId,
+          'x-branch-id': branch_id,
+          'x-area-id': area_id,
         },
         validateStatus: (response, result) => response.status && result.Data,
       }),
