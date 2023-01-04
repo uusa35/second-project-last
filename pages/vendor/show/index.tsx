@@ -5,6 +5,7 @@ import { wrapper } from '@/redux/store';
 import { productApi } from '@/redux/api/productApi';
 import { apiSlice } from '@/redux/api';
 import { vendorApi } from '@/redux/api/vendorApi';
+import MainHead from '@/components/MainHead';
 
 type Props = {
   element: Vendor;
@@ -12,9 +13,16 @@ type Props = {
 const VendorShow: NextPage<Props> = ({ element }) => {
   console.log('vendor', element);
   return (
-    <MainContentLayout>
-      <h1>Vendor Show</h1>
-    </MainContentLayout>
+    <>
+      <MainHead
+        title={element.name}
+        description={element.desc}
+        mainImage={element.logo}
+      />
+      <MainContentLayout>
+        <h1>Vendor Show</h1>
+      </MainContentLayout>
+    </>
   );
 };
 

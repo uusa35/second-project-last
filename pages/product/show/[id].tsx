@@ -1,11 +1,12 @@
 import MainContentLayout from '@/layouts/MainContentLayout';
 import { wrapper } from '@/redux/store';
-import { AppQueryResult, Category } from '@/types/queries';
-import { categoryApi } from '@/redux/api/categoryApi';
+import { AppQueryResult } from '@/types/queries';
 import { apiSlice } from '@/redux/api';
 import { Product } from '@/types/index';
 import { productApi } from '@/redux/api/productApi';
 import { NextPage } from 'next';
+import MainHead from '@/components/MainHead';
+import { imgUrl } from '@/constants/*';
 
 type Props = {
   element: Product;
@@ -13,9 +14,16 @@ type Props = {
 const ProductShow: NextPage<Props> = ({ element }) => {
   console.log('element', element);
   return (
-    <MainContentLayout>
-      <div>{element.name}</div>
-    </MainContentLayout>
+    <>
+      <MainHead
+        title={element.name}
+        description={element.desc}
+        mainImage={imgUrl(element?.img[0])}
+      />
+      <MainContentLayout>
+        <div>{element.name}</div>
+      </MainContentLayout>
+    </>
   );
 };
 

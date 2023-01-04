@@ -47,7 +47,7 @@ export const productApi = apiSlice.injectEndpoints({
         areaId?: string | null;
       }
     >({
-      query: ({ id, branchId, lang, areaId }) => ({
+      query: ({ id, branchId = null, lang, areaId = `` }) => ({
         url: `itemDetails`,
         params: { product_id: id },
         headers: {
