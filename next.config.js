@@ -11,6 +11,14 @@ const nextConfig = {
     defaultLocale: 'en',
     localeDetection: false,
   },
+  async rewrites() {
+    return [
+      {
+        source: '/home',
+        destination: '/',
+      },
+    ];
+  },
   env: {
     SECRET_APP_KEY: '@#8!U.S.A.M.A.!@)8231',
     NEXT_PUBLIC_URL: '/',
