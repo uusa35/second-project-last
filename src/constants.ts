@@ -18,7 +18,8 @@ export const appLinks = {
 };
 
 export const isClient = typeof window !== undefined;
-export const isLocal = process.env.NODE_ENV !== 'production';
+// export const isLocal = process.env.NODE_ENV !== 'production';
+export const isLocal = true;
 export const inputFieldClass = `rounded-md px-3 py-2.5 mb-2 text-sm bg-gray-100 outline-none w-full border-none capitalize`;
 export const submitBtnClass = `w-full bg-gradient-to-tl from-primary_BG via-primary_BG to-primaryLight rounded-md text-sm text-white py-4 my-2 cursor-pointer shadow-lg capitalize disabled:from-gray-200 disabled:to-gray-400 drop-shadow-md`;
 export const subCategoryBtnClass = `flex w-full flex-row items-center justify-between border border-gray-200 rounded-lg p-4 shadow-md capitalize

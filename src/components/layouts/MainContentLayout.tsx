@@ -1,12 +1,14 @@
-import { FC, ReactNode, useEffect } from 'react';
+import { FC, ReactNode, useEffect, Suspense } from 'react';
 import dynamic from 'next/dynamic';
 const BackBtn = dynamic(() => import(`@/components/BackBtn`), {
   ssr: false,
 });
 import { useAppSelector } from '@/redux/hooks';
 import { setApiCountry } from '@/constants/*';
-import AppFooter from '@/components/AppFooter';
 const AppHeader = dynamic(() => import(`@/components/AppHeader`), {
+  ssr: false,
+});
+const AppFooter = dynamic(() => import(`@/components/AppFooter`), {
   ssr: false,
 });
 const SideMenu = dynamic(() => import(`@/components/sideMenu`), {

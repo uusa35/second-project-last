@@ -3,7 +3,13 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import i18n from 'i18next';
 import { useRouter } from 'next/router';
 import { hideSideMenu } from '@/redux/slices/appSettingSlice';
-import { baseUrl, imageSizes, imgUrl, tajwalFont } from '@/constants/*';
+import {
+  baseUrl,
+  imageSizes,
+  imgUrl,
+  suppressText,
+  tajwalFont,
+} from '@/constants/*';
 import { setLocale } from '@/redux/slices/localeSlice';
 import moment from 'moment';
 import dynamic from 'next/dynamic';
@@ -17,10 +23,6 @@ const ToastAppContainer = dynamic(
     ssr: false,
   }
 );
-
-const AppFooter = dynamic(() => import(`@/components/AppFooter`), {
-  ssr: false,
-});
 
 type Props = {
   children: ReactNode | undefined;
@@ -95,10 +97,7 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
         // style={{ height: '120vh' }}
       >
         {isSuccess && vendor.Data && (
-          <div
-            className="flex relative justify-center items-center top-0  w-full h-screen bg-gradient-to-tr from-gray-400 to-gray-800"
-            // style={{ height: '120vh' }}
-          >
+          <div className="flex relative justify-center items-center top-0  w-full h-screen bg-gradient-to-tr from-gray-400 to-gray-800">
             <Image
               src={`${imgUrl(vendor.Data.cover)}`}
               alt={vendor.Data.name}
@@ -108,12 +107,10 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
             />
             <div
               className={`absolute top-0 left-0 flex w-full justify-between items-center grow  z-90 text-white p-4
-              
-              
-              `}
+           `}
             >
-              <div>nav right</div>
-              <div>nav left</div>
+              <h1 suppressHydrationWarning={suppressText}>nav right</h1>
+              <h1 suppressHydrationWarning={suppressText}>nav left</h1>
             </div>
             <div className={`text-center space-y-3 text-white`}>
               <Image
@@ -123,7 +120,7 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
                 width={imageSizes.lg}
                 height={imageSizes.lg}
               />
-              <p>testing</p>
+              <p suppressHydrationWarning={suppressText}>testing</p>
             </div>
           </div>
         )}

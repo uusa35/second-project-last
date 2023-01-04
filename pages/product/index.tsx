@@ -4,22 +4,27 @@ import { productApi, useGetTopSearchQuery } from '@/redux/api/productApi';
 import { Product } from '@/types/index';
 import { NextPage } from 'next';
 import { apiSlice } from '@/redux/api';
-import { isEmpty } from 'lodash';
+import { isEmpty, map } from 'lodash';
 import { suppressText } from '@/constants/*';
+import HorProductWidget from '@/widgets/product/HorProductWidget';
+import MainHead from '@/components/MainHead';
 
 type Props = {
   elements: Product[];
 };
 const ProductIndex: NextPage<Props> = ({ elements }): JSX.Element => {
   console.log('elements', elements);
+
   return (
-    <MainContentLayout>
-      {!isEmpty(elements) ? (
-        <div suppressHydrationWarning={suppressText}>ProductIndex</div>
-      ) : (
-        <div suppressHydrationWarning={suppressText}>no results</div>
-      )}
-    </MainContentLayout>
+    <>
+      <MainHead title={`productIndex`} />
+      <MainContentLayout>
+        <h1 suppressHydrationWarning={suppressText}>ProductIndex</h1>
+        {map(elements, (p, i) => (
+          <HorProductWidget element={p} key={i} />
+        ))}
+      </MainContentLayout>
+    </>
   );
 };
 
@@ -29,6 +34,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ query }) => {
       const { key, branch_id, area_id }: any = query;
+      console.log('the key _________>', key);
       const { data: elements, isError } = await store.dispatch(
         productApi.endpoints.getSearchProducts.initiate({
           search: key ?? ``,
