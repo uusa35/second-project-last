@@ -25,12 +25,14 @@ export const productApi = apiSlice.injectEndpoints({
       {
         search?: string;
         branchId?: string;
+        areaId?: string;
       }
     >({
-      query: ({ search = ``, branchId }) => ({
+      query: ({ search = ``, branchId, areaId }) => ({
         url: `search?key=${search}`,
         headers: {
           'x-branch-id': branchId,
+          'x-area-id': areaId,
         },
       }),
     }),

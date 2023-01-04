@@ -4,15 +4,21 @@ import { productApi, useGetTopSearchQuery } from '@/redux/api/productApi';
 import { Product } from '@/types/index';
 import { NextPage } from 'next';
 import { apiSlice } from '@/redux/api';
+import { isEmpty } from 'lodash';
+import { suppressText } from '@/constants/*';
 
 type Props = {
   elements: Product[];
 };
 const ProductIndex: NextPage<Props> = ({ elements }): JSX.Element => {
-  const { data: topSearch, isLoading } = useGetTopSearchQuery({});
+  console.log('elements', elements);
   return (
     <MainContentLayout>
-      <div>ProductIndex</div>
+      {!isEmpty(elements) ? (
+        <div suppressHydrationWarning={suppressText}>ProductIndex</div>
+      ) : (
+        <div suppressHydrationWarning={suppressText}>no results</div>
+      )}
     </MainContentLayout>
   );
 };
@@ -22,17 +28,12 @@ export default ProductIndex;
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ query }) => {
-      const { categoryId, branchId, params }: any = query;
-      if (!categoryId) {
-        return {
-          notFound: true,
-        };
-      }
+      const { key, branch_id, area_id }: any = query;
       const { data: elements, isError } = await store.dispatch(
-        productApi.endpoints.getProducts.initiate({
-          category_id: categoryId,
-          branchId,
-          query: params[0] ?? ``,
+        productApi.endpoints.getSearchProducts.initiate({
+          search: key ?? ``,
+          branchId: branch_id ?? ``,
+          areaId: area_id ?? ``,
         })
       );
       await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
