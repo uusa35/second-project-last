@@ -33,13 +33,14 @@ export const productApi = apiSlice.injectEndpoints({
     getSearchProducts: builder.query<
       AppQueryResult<Product[]>,
       {
-        search?: string;
+        key?: string;
         branchId?: string;
         areaId?: string;
       }
     >({
-      query: ({ search = ``, branchId, areaId }) => ({
-        url: `search?key=${search}`,
+      query: ({ key = ``, branchId = null, areaId = `` }: any) => ({
+        url: `search`,
+        params: { key },
         headers: {
           'x-branch-id': branchId,
           'x-area-id': areaId,

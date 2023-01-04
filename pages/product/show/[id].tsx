@@ -6,7 +6,6 @@ import { Product } from '@/types/index';
 import { productApi } from '@/redux/api/productApi';
 import { NextPage } from 'next';
 import MainHead from '@/components/MainHead';
-import { imgUrl } from '@/constants/*';
 
 type Props = {
   element: Product;
@@ -18,7 +17,7 @@ const ProductShow: NextPage<Props> = ({ element }) => {
       <MainHead
         title={element.name}
         description={element.desc}
-        mainImage={`${imgUrl(element?.img[0].toString())}`}
+        // mainImage={`${isEmpty(element.img) ? imgUrl(element?.img[0].toString())}`}
       />
       <MainContentLayout>
         <div>{element.name}</div>
