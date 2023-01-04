@@ -1,5 +1,5 @@
 import * as yup from 'yup';
-import { split } from 'lodash';
+import { kebabCase, lowerCase, split } from 'lodash';
 import { Country } from '@/types/queries';
 // export const baseUrl = `https://mybusiness.letsform.src/`;
 export const baseUrl = `https://pages-dash.testbedbynd.com/`;
@@ -11,7 +11,10 @@ export const appLinks = {
     `product/${categoryId}?${query}`,
   productSearchIndex: (query?: string, branchId?: string, areaId?: string) =>
     `product/?key=${query}&branch_id=${branchId}&areaId=${areaId}`,
-  productShow: (id: string) => `/product/show/${id}`,
+  productShow: (id: string, product_id?: number, slug?: string) =>
+    `/product/show/${id}?product_id=${product_id}&slug=${kebabCase(
+      lowerCase(slug)
+    )}`,
   terms: { path: '/terms' },
   about: { path: '/about' },
   account: { path: '/account' },

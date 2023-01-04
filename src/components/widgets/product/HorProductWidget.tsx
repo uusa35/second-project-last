@@ -12,13 +12,18 @@ type Props = {
 };
 const HorProductWidget: FC<Props> = ({ element }) => {
   const firstImage = !isEmpty(element.img)
-    ? imgUrl(first(element.img)[0])
+    ? imgUrl(first(element.img).thumbnail)
     : NoFoundImage.src;
 
+  console.log('element', element);
   return (
     <Link
       key={element.id}
-      href={`${appLinks.productShow(element.id.toString())}`}
+      href={`${appLinks.productShow(
+        element.id.toString(),
+        element.id,
+        element.name
+      )}`}
     >
       <div className="relative">
         <div className="relative h-60 w-full overflow-hidden rounded-lg">
