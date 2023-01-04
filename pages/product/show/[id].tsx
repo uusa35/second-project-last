@@ -1,20 +1,28 @@
 import MainContentLayout from '@/layouts/MainContentLayout';
 import { wrapper } from '@/redux/store';
-import { AppQueryResult, Category } from '@/types/queries';
-import { categoryApi } from '@/redux/api/categoryApi';
+import { AppQueryResult } from '@/types/queries';
 import { apiSlice } from '@/redux/api';
 import { Product } from '@/types/index';
 import { productApi } from '@/redux/api/productApi';
 import { NextPage } from 'next';
+import MainHead from '@/components/MainHead';
 
 type Props = {
   element: Product;
 };
 const ProductShow: NextPage<Props> = ({ element }) => {
+  console.log('element', element);
   return (
-    <MainContentLayout>
-      <div>ProductShow</div>
-    </MainContentLayout>
+    <>
+      <MainHead
+        title={element.name}
+        description={element.desc}
+        // mainImage={`${isEmpty(element.img) ? imgUrl(element?.img[0].toString())}`}
+      />
+      <MainContentLayout>
+        <div>{element.name}</div>
+      </MainContentLayout>
+    </>
   );
 };
 
@@ -22,9 +30,9 @@ export default ProductShow;
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
-    async ({ query }) => {
-      const { id }: any = query;
-      if (id) {
+    async ({ query, locale }) => {
+      const { id, branchId, areaId }: any = query;
+      if (!id) {
         return {
           notFound: true,
         };
@@ -35,7 +43,14 @@ export const getServerSideProps = wrapper.getServerSideProps(
       }: {
         data: AppQueryResult<Product>;
         isError: boolean;
-      } = await store.dispatch(productApi.endpoints.getProduct.initiate(id));
+      } = await store.dispatch(
+        productApi.endpoints.getProduct.initiate({
+          id,
+          lang: locale,
+          branchId: branchId ?? null,
+          areaId: areaId ?? ``,
+        })
+      );
       await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
       if (isError || !element.status || !element.Data) {
         return {

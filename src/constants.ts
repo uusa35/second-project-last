@@ -1,5 +1,5 @@
 import * as yup from 'yup';
-import { split } from 'lodash';
+import { kebabCase, lowerCase, split } from 'lodash';
 import { Country } from '@/types/queries';
 // export const baseUrl = `https://mybusiness.letsform.src/`;
 export const baseUrl = `https://pages-dash.testbedbynd.com/`;
@@ -7,11 +7,22 @@ export const apiUrl = `${baseUrl}api/`;
 export const appLinks = {
   root: { path: '/home' },
   home: { path: '/home' },
-  productIndex: (categoryId: string, query?: string) =>
-    `product/${categoryId}?${query}`,
+  productIndex: (
+    categoryId: string,
+    branch_id?: string,
+    areaId?: string,
+    page?: string,
+    limit?: string
+  ) =>
+    `/product/${categoryId}?branch_id=${branch_id ?? `null`}&area_id=${
+      areaId ?? ``
+    }&page=${page ?? `1`}&limit=${limit ?? `10`}`,
   productSearchIndex: (query?: string, branchId?: string, areaId?: string) =>
-    `product/?key=${query}&branch_id=${branchId}&areaId=${areaId}`,
-  productShow: (id: string) => `/product/show/${id}`,
+    `/product/?key=${query}&branch_id=${branchId}&areaId=${areaId}`,
+  productShow: (id: string, product_id?: number, slug?: string) =>
+    `/product/show/${id}?product_id=${product_id}&slug=${kebabCase(
+      lowerCase(slug)
+    )}`,
   terms: { path: '/terms' },
   about: { path: '/about' },
   account: { path: '/account' },

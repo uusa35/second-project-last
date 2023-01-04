@@ -1,15 +1,15 @@
 import { FC } from 'react';
 import { Category } from '@/types/queries';
-import Image from 'next/image';
-import { imageSizes, imgUrl } from '@/constants/*';
 import CustomImage from '@/components/customImage';
+import { appLinks, imageSizes, imgUrl } from '@/constants/*';
+import Link from 'next/link';
 
 type Props = {
   element: Category;
 };
 const CategoryWidget: FC<Props> = ({ element }) => {
   return (
-    <div key={element.id}>
+    <Link href={appLinks.productIndex(element.id.toString())}>
       <div className="relative">
         <div className="relative h-60 w-full overflow-hidden rounded-lg">
           {/* <Image
@@ -40,7 +40,7 @@ const CategoryWidget: FC<Props> = ({ element }) => {
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

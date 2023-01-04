@@ -33,13 +33,6 @@ export const countrySlice = createSlice({
       action: PayloadAction<Country | any>
     ) => action.payload,
   },
-  extraReducers: {
-    [HYDRATE]: (state, action) => {
-      return {
-        ...state,
-      };
-    },
-  },
 });
 
 export const { setCountry } = countrySlice.actions;

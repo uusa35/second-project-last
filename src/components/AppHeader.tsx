@@ -63,15 +63,7 @@ const AppHeader: FC = () => {
         {/* logo */}
         {/* <Link
           scroll={false}
-          href={{
-            pathname: `${appLinks.home.path}`,
-            query: {
-              country_id,
-              country_name,
-              country_name_ar,
-              country_currency,
-            },
-          }}
+          href={appLinks.home.path}
           locale={locale.lang}
           className="flex justify-center space-x-3  cursor-pointer p-4 z-50 text-white lg:text-black"
         >

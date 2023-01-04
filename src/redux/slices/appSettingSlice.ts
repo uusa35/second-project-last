@@ -161,7 +161,6 @@ export const appSettingSlice = createSlice({
       };
     },
   },
-
   extraReducers: (builder) => {
     builder.addCase(
       searchParamsSlice.actions.setSearchDateSelected,

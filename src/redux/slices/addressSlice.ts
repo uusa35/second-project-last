@@ -47,12 +47,5 @@ export const addressSlice = createSlice({
       };
     },
   },
-  extraReducers: {
-    [HYDRATE]: (state, action) => {
-      return {
-        ...state,
-      };
-    },
-  },
 });
 export const { setGuestAddress, setUserAddress } = addressSlice.actions;
