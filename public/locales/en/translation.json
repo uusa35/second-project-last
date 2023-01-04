@@ -337,6 +337,15 @@
   "venues_found" : "venues found",
   "cart" : "cart",
   "address_created":"address is created successfully",
-  "address_deleted_success":"address deleted successfully"
-  
+  "address_deleted_success":"address deleted successfully",
+  "work_hours": "work hours",
+  "preorder_availability": "preorder availability",
+  "payment_methods": "payment methods",
+  "cash_on_delivery": "cash on delivery",
+  "feedback": "feedback",
+  "leave_feedback": "leave feedback",
+  "facebook": "facebook",
+  "instagram": "instagram",
+  "twiiter": "twiiter",
+  "yes": "yes"
 }
