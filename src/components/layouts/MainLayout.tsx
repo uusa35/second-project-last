@@ -17,6 +17,7 @@ import { useGetVendorQuery } from '@/redux/api/vendorApi';
 import Image from 'next/image';
 import { AppQueryResult } from '@/types/queries';
 import { Vendor } from '@/types/index';
+import { setVendor } from '@/redux/slices/vendorSlice';
 const ToastAppContainer = dynamic(
   () => import(`@/components/ToastAppContainer`),
   {
@@ -41,6 +42,12 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
   }>();
 
   useEffect(() => {
+    if (isSuccess) {
+      dispatch(setVendor(vendor.Data));
+    }
+  }, [vendor]);
+
+  useEffect(() => {
     const handleRouteChange: Handler = (url, { shallow }) => {
       dispatch(hideSideMenu());
     };
@@ -53,15 +60,17 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
     const beforeUnLoad = () => {
       if (router.asPath.includes('payment') || router.asPath.includes('cart')) {
         // do nothing
+      } else if (router.asPath.includes('home') || router.asPath === '/') {
+        // dispatch({ type: `resetEntireApp` });
       } else {
-        dispatch({ type: `resetApp` });
+        // dispatch({ type: `resetApp` });
       }
+      router.reload();
     };
 
     const handleRouteChangeError = (err: any) => {
       console.log('the error', err);
-      if (err.cancelled) {
-      }
+      router.replace(router.asPath);
     };
     router.events.on('routeChangeError', handleRouteChangeError);
     router.events.on('routeChangeStart', handleRouteChange);

@@ -8,15 +8,24 @@ export const productApi = apiSlice.injectEndpoints({
       AppQueryResult<Product[]>,
       {
         category_id: string;
-        query?: string;
-        branchId?: string;
+        page: string;
+        limit: string;
+        branch_id: string | null;
+        area_id: string;
       }
     >({
-      query: ({ category_id, query = `?page=1&limit=20`, branchId }) => ({
-        url: `items${query}`,
-        params: { category_id },
+      query: ({
+        category_id,
+        page = '1',
+        limit = '10',
+        branch_id = `null`,
+        area_id = ``,
+      }: any) => ({
+        url: `items`,
+        params: { category_id, page, limit, branch_id },
         headers: {
-          'x-branch-id': branchId,
+          'x-branch-id': branch_id,
+          'x-area-id': area_id,
         },
         validateStatus: (response, result) => response.status && result.Data,
       }),
@@ -24,13 +33,14 @@ export const productApi = apiSlice.injectEndpoints({
     getSearchProducts: builder.query<
       AppQueryResult<Product[]>,
       {
-        search?: string;
+        key?: string;
         branchId?: string;
         areaId?: string;
       }
     >({
-      query: ({ search = ``, branchId, areaId }) => ({
-        url: `search?key=${search}`,
+      query: ({ key = ``, branchId = null, areaId = `` }: any) => ({
+        url: `search`,
+        params: { key },
         headers: {
           'x-branch-id': branchId,
           'x-area-id': areaId,
@@ -47,7 +57,7 @@ export const productApi = apiSlice.injectEndpoints({
         areaId?: string | null;
       }
     >({
-      query: ({ id, branchId = null, lang, areaId = `` }) => ({
+      query: ({ id, lang, branchId = null, areaId = `` }: any) => ({
         url: `itemDetails`,
         params: { product_id: id },
         headers: {

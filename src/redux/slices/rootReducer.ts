@@ -16,11 +16,13 @@ import { orderSlice } from '@/redux/slices/orderSlice';
 import { addressSlice } from './addressSlice';
 import { locationApi } from '@/redux/api/locationApi';
 import { branchApi } from '@/redux/api/branchApi';
+import { vendorSlice } from '@/redux/slices/vendorSlice';
 
 export const rootReducer = combineReducers({
   [appLoadingSlice.name]: appLoadingSlice.reducer,
   [localeSlice.name]: localeSlice.reducer,
   [countrySlice.name]: countrySlice.reducer,
+  [vendorSlice.name]: vendorSlice.reducer,
   [appSettingSlice.name]: appSettingSlice.reducer,
   [authSlice.name]: authSlice.reducer,
   [appLoadingSlice.name]: appLoadingSlice.reducer,

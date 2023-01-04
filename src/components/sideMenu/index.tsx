@@ -45,7 +45,7 @@ const SideMenu: FC<Props> = () => {
     }>();
 
   useEffect(() => {
-    if (vendorDetailsSuccess) console.log(vendorDetails);
+    // if (vendorDetailsSuccess) console.log(vendorDetails);
   }, [vendorDetailsSuccess]);
 
   const handleChangeLang = async (locale: string) => {
