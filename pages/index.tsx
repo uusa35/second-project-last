@@ -36,36 +36,14 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
     }
   }, []);
 
-  const products = [
-    {
-      id: 1,
-      name: 'Zip Tote Basket',
-      color: 'White and black',
-      href: '#',
-      imageSrc:
-        'https://tailwindui.com/img/ecommerce-images/product-page-03-related-product-01.jpg',
-      imageAlt:
-        'Front of zip tote bag with white canvas, black canvas straps and handle, and black zipper pulls.',
-      price: '$140',
-    },
-    {
-      id: 1,
-      name: 'Zip Tote Basket',
-      color: 'White and black',
-      href: '#',
-      imageSrc:
-        'https://tailwindui.com/img/ecommerce-images/product-page-03-related-product-01.jpg',
-      imageAlt:
-        'Front of zip tote bag with white canvas, black canvas straps and handle, and black zipper pulls.',
-      price: '$140',
-    },
-  ];
-
   return (
     <>
       {/* SEO Head DEV*/}
       <MainHead title={element.name} mainImage={element.logo} />
       <MainContentLayout>
+        <div>
+          
+        </div>
         <div className="mt-4 p-4 grid sm:grid-cols-3 lg:grid-cols-2 gap-6">
           {!isEmpty(categories) &&
             map(categories, (c, i) => <CategoryWidget element={c} key={i} />)}
