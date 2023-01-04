@@ -17,6 +17,7 @@ import { useGetVendorQuery } from '@/redux/api/vendorApi';
 import Image from 'next/image';
 import { AppQueryResult } from '@/types/queries';
 import { Vendor } from '@/types/index';
+import { setVendor } from '@/redux/slices/vendorSlice';
 const ToastAppContainer = dynamic(
   () => import(`@/components/ToastAppContainer`),
   {
@@ -39,6 +40,12 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
     data: AppQueryResult<Vendor>;
     isSuccess: boolean;
   }>();
+
+  useEffect(() => {
+    if (isSuccess) {
+      dispatch(setVendor(vendor.Data));
+    }
+  }, [vendor]);
 
   useEffect(() => {
     const handleRouteChange: Handler = (url, { shallow }) => {
