@@ -21,8 +21,6 @@ import { HYDRATE, createWrapper } from 'next-redux-wrapper';
 import { apiSlice } from './api';
 import { storeApi } from '@/redux/api/storeApi';
 import { categoryApi } from '@/redux/api/categoryApi';
-import { countryApi } from '@/redux/api/countryApi';
-import { authApi } from '@/redux/api/authApi';
 import { vendorApi } from '@/redux/api/vendorApi';
 // import hardSet from 'redux-persist/lib/stateReconciler/hardSet';
 // import {
@@ -67,9 +65,7 @@ let store: any = configureStore({
           },
         }).concat([
           apiSlice.middleware,
-          authApi.middleware,
           categoryApi.middleware,
-          countryApi.middleware,
           productApi.middleware,
           storeApi.middleware,
           vendorApi.middleware,
@@ -93,9 +89,7 @@ let store: any = configureStore({
           },
         }).concat([
           apiSlice.middleware,
-          authApi.middleware,
           categoryApi.middleware,
-          countryApi.middleware,
           productApi.middleware,
           storeApi.middleware,
           vendorApi.middleware,

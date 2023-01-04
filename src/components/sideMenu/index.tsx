@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ReactBurgerMenu, slide as Menu } from 'react-burger-menu';
 import { useTranslation } from 'react-i18next';
 import { FC } from 'react';
@@ -23,6 +23,9 @@ import { setLocale } from '@/redux/slices/localeSlice';
 import burgerIcon from '@/appIcons/phone.svg';
 import { Bars3Icon } from '@heroicons/react/24/outline';
 import { HomeIcon } from '@heroicons/react/20/solid';
+import {useGetVendorQuery} from '@/redux/api/vendorApi'
+import { Vendor } from '@/types/index';
+import { AppQueryResult } from '@/types/queries';
 
 type Props = {};
 
@@ -34,6 +37,18 @@ const SideMenu: FC<Props> = () => {
   const isAuth = useAppSelector(isAuthenticated);
   const verified = useAppSelector(isVerified);
   const router = useRouter();
+
+
+  const { data: vendorDetails, isSuccess: vendorDetailsSuccess } =
+  useGetVendorQuery<{
+    data: AppQueryResult<Vendor>;
+    isSuccess: boolean;
+  }>();
+
+  useEffect(()=>{
+    if(vendorDetailsSuccess)
+    console.log(vendorDetails)
+  },[vendorDetailsSuccess])
 
   const handleChangeLang = async (locale: string) => {
     await dispatch(setLocale(locale));
@@ -110,13 +125,7 @@ const SideMenu: FC<Props> = () => {
 
               <Link
                 scroll={false}
-                href={`${
-                  isAuth && verified
-                    ? appLinks.order.path
-                    : isAuth
-                    ? `#`
-                    : appLinks.login.path
-                }`}
+                href='#'
               >
                 <div className="flex pb-7 items-center cursor-pointer">
                   <div>
