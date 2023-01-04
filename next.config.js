@@ -2,6 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   scrollRestoration: true,
+  swcMinify: true,
   experimental: {
     webVitalsAttribution: ['CLS', 'LCP', 'FID', 'FCP', 'TTFB', 'LCP'],
   },

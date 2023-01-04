@@ -2,7 +2,7 @@ import Image from 'next/image';
 import LeftArrow from '@/appIcons/left_arrow.svg';
 import RightArrow from '@/appIcons/right_arrow.svg';
 import { useAppSelector } from '@/redux/hooks';
-import { FC } from 'react';
+import { FC, Suspense } from 'react';
 import { useRouter } from 'next/router';
 import { isNull } from 'lodash';
 import { imageSizes, suppressText } from '../constants';
@@ -27,7 +27,7 @@ const BackBtn: FC<Props> = ({ backHome, backRoute = null }): JSX.Element => {
   };
 
   return (
-    <>
+    <Suspense>
       {router.pathname !== '/' && (
         <div className="flex w-full my-3 justify-center items-center rounded-md">
           <button
@@ -64,7 +64,7 @@ const BackBtn: FC<Props> = ({ backHome, backRoute = null }): JSX.Element => {
           </div>
         </div>
       )}
-    </>
+    </Suspense>
   );
 };
 

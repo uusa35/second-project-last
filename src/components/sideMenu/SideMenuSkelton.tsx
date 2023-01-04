@@ -2,7 +2,7 @@ import React from 'react';
 import Skeleton from '@mui/material/Skeleton';
 import { range } from 'lodash';
 
-function SideMenueSkelton() {
+function SideMenuSkelton() {
   return (
     <div className="pb-5 pt-3 px-3">
       <Skeleton
@@ -31,4 +31,4 @@ function SideMenueSkelton() {
   );
 }
 
-export default SideMenueSkelton;
+export default SideMenuSkelton;

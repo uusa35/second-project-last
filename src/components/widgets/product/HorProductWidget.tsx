@@ -1,80 +1,51 @@
-import { Product } from '@/types/index';
-import Image from 'next/image';
 import { FC } from 'react';
+import { Category } from '@/types/queries';
+import Image from 'next/image';
+import { appLinks, imageSizes, imgUrl } from '@/constants/*';
+import { Product } from '@/types/index';
+import NoFoundImage from '@/appImages/not_found.png';
+import { first, isEmpty } from 'lodash';
 import Link from 'next/link';
-import { useAppSelector } from '@/redux/hooks';
-import { appLinks, imageSizes, splitPrice, suppressText } from '@/constants/*';
-import { capitalize, kebabCase } from 'lodash';
-import { useTranslation } from 'react-i18next';
 
 type Props = {
   element: Product;
-  width?: string;
 };
-const HorProductWidget: FC<Props> = ({
-  element,
-  width = `max-w-[190px] sm:max-w-[215px] `,
-}): JSX.Element => {
-  const { t } = useTranslation();
-  const { price, currency } = splitPrice(element.price.toString());
-  const {
-    locale,
-    country: { id },
-  } = useAppSelector((state) => state);
+const HorProductWidget: FC<Props> = ({ element }) => {
+  const firstImage = !isEmpty(element.img)
+    ? imgUrl(first(element.img)[0])
+    : NoFoundImage.src;
 
   return (
-    <div
-      dir={locale.dir}
-      className={`${width} bg-white rounded-lg shadow-sm border-[1px] border-gray-100 border-r mx-1`}
+    <Link
+      key={element.id}
+      href={`${appLinks.productShow(element.id.toString())}`}
     >
-      <Link
-        scroll={false}
-        href={`/country/${id}${appLinks.productShow.path}${element.id}?id=${
-          element.id
-        }&slug=${kebabCase(element.name)}`}
-        locale={locale.lang}
-      >
-        <Image
-          className="rounded-t-lg w-full h-40 object-cover"
-          src={element.image}
-          fill={false}
-          width={imageSizes.xs}
-          height={imageSizes.xs}
-          alt="product image"
-          // loader={imageLoader}
-        />
-      </Link>
-      <div className="rounded-b-lg h-22">
-        <Link
-          scroll={false}
-          href={`/country/${id}${appLinks.productShow.path}${element.id}?id=${
-            element.id
-          }&slug=${kebabCase(element.name)}`}
-          className={`flex flex-col ltr:text-left rtl:text-right p-2 space-y-2`}
-        >
-          <span className="text-xs tracking-tight dark:text-white truncate">
-            {element.name}
-          </span>
-          {element.categories && (
-            <span className="text-xs text-gray-400 dark:text-gray-400  tracking-tight dark:text-white truncate">
-              {element.categories}
-            </span>
-          )}
-        </Link>
-
-        <div className="flex items-center justify-between bg-primary_BG hover:bg-primary_BG/90 rounded-b-lg">
+      <div className="relative">
+        <div className="relative h-60 w-full overflow-hidden rounded-lg">
+          <Image
+            src={`${firstImage}`}
+            alt={element.name}
+            width={imageSizes.sm}
+            height={imageSizes.sm}
+            className="h-full w-full object-cover object-center"
+          />
+        </div>
+        <div className="absolute inset-x-0 top-0 flex h-60 items-end justify-end overflow-hidden rounded-lg">
           <div
-            className="text-sm font-bold text-white dark:text-white px-2"
-            suppressHydrationWarning={suppressText}
-          >
-            {price} {t(`${currency}`)}
+            aria-hidden="true"
+            className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-black opacity-50"
+          />
+          <div className="flex flex-row w-full px-2 justify-between items-center">
+            <p className="relative text-md font-semibold text-white">
+              {element.name}
+            </p>
+            <p className="relative text-md font-semibold text-white">
+              {element.price}
+            </p>
           </div>
-          <button className="text-white rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-            +
-          </button>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

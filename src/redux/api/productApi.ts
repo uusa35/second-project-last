@@ -25,29 +25,33 @@ export const productApi = apiSlice.injectEndpoints({
       {
         search?: string;
         branchId?: string;
+        areaId?: string;
       }
     >({
-      query: ({ search = ``, branchId }) => ({
+      query: ({ search = ``, branchId, areaId }) => ({
         url: `search?key=${search}`,
         headers: {
           'x-branch-id': branchId,
+          'x-area-id': areaId,
         },
       }),
     }),
     getProduct: builder.query<
       AppQueryResult<Product>,
       {
-        item_id: string | unknown;
+        product_id: string | unknown;
         lang: Locale['lang'] | string;
         branchId?: string;
+        areaId?: string;
       }
     >({
-      query: ({ item_id, branchId, lang }) => ({
+      query: ({ product_id, branchId, lang, areaId }) => ({
         url: `itemDetails`,
-        params: { item_id },
+        params: { product_id },
         headers: {
           'Accept-Language': lang,
           'x-branch-id': branchId,
+          'x-area-id': areaId,
         },
       }),
     }),

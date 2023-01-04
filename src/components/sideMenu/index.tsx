@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, Suspense } from 'react';
 import { ReactBurgerMenu, slide as Menu } from 'react-burger-menu';
 import { useTranslation } from 'react-i18next';
 import { FC } from 'react';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useRouter } from 'next/router';
-import SideMenueSkelton from './SideMenueSkelton';
+import SideMenuSkelton from '@/components/sideMenu/SideMenuSkelton';
 import Link from 'next/link';
 import { appLinks, imageSizes, imgUrl, submitBtnClass, suppressText } from '@/constants/*';
 import { hideSideMenu } from '@/redux/slices/appSettingSlice';
@@ -19,6 +19,7 @@ import {
 } from '@mui/icons-material';
 import { setLocale } from '@/redux/slices/localeSlice';
 import { useGetVendorQuery } from '@/redux/api/vendorApi';
+import burgerIcon from '@/appIcons/phone.svg';
 import { Vendor } from '@/types/index';
 import { AppQueryResult } from '@/types/queries';
 import CustomImage from '@/components/customImage';
@@ -51,16 +52,16 @@ const SideMenu: FC<Props> = () => {
   };
 
   return (
-    <Menu
-      right={router.locale === 'ar'}
-      isOpen={appSetting.sideMenuOpen}
-      className="w-full bg-white"
-      itemListClassName="overflow-auto"
-      customBurgerIcon={false}
-      customCrossIcon={false}
-    >
-      {vendorDetailsSuccess ? (
-        <div
+    <Suspense fallback={<SideMenuSkelton />}>
+      <Menu
+        right={router.locale === 'ar'}
+        isOpen={appSetting.sideMenuOpen}
+        className="w-full bg-white"
+        itemListClassName="overflow-auto"
+        customBurgerIcon={false}
+        customCrossIcon={false}
+      >
+<div
           style={{ display: 'flex' }}
           className="flex-col justify-between  bg-white h-full outline-none px-6"
         >
@@ -136,10 +137,8 @@ const SideMenu: FC<Props> = () => {
             </Link>
           </footer>
         </div>
-      ) : (
-        <SideMenueSkelton />
-      )}
-    </Menu>
+      </Menu>
+    </Suspense>
   );
 };
 

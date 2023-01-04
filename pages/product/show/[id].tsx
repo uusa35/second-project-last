@@ -26,7 +26,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
       const { id }: any = query;
       if (id) {
         return {
-          notFound: false,
+          notFound: true,
         };
       }
       const {
@@ -36,7 +36,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
         data: AppQueryResult<Product>;
         isError: boolean;
       } = await store.dispatch(productApi.endpoints.getProduct.initiate(id));
-
       await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
       if (isError || !element.status || !element.Data) {
         return {
