@@ -1,6 +1,6 @@
 import MainContentLayout from '@/layouts/MainContentLayout';
 import { wrapper } from '@/redux/store';
-import { productApi, useGetTopSearchQuery } from '@/redux/api/productApi';
+import { productApi } from '@/redux/api/productApi';
 import { Product } from '@/types/index';
 import { NextPage } from 'next';
 import { apiSlice } from '@/redux/api';
@@ -47,7 +47,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ query }) => {
       const { categoryId, branch_id, page, limit, areaId }: any = query;
-      if (!categoryId) {
+      if (!categoryId || !branch_id) {
         return {
           notFound: true,
         };
