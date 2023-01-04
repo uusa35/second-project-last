@@ -9,7 +9,6 @@ type Props = {
   elements: Product[];
 };
 const ProductIndex: NextPage<Props> = ({ elements }): JSX.Element => {
-  const { data: topSearch, isLoading } = useGetTopSearchQuery({});
   return (
     <MainContentLayout>
       <div>ProductIndex</div>
@@ -22,7 +21,7 @@ export default ProductIndex;
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ query }) => {
-      const { categoryId, branchId, params }: any = query;
+      const { categoryId, branchId, page, limit, areaId }: any = query;
       if (!categoryId) {
         return {
           notFound: true,
@@ -31,8 +30,10 @@ export const getServerSideProps = wrapper.getServerSideProps(
       const { data: elements, isError } = await store.dispatch(
         productApi.endpoints.getProducts.initiate({
           category_id: categoryId,
-          branchId,
-          query: params[0] ?? ``,
+          page,
+          limit,
+          branchId: branchId ?? null,
+          areaId: areaId ?? ``,
         })
       );
       await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));

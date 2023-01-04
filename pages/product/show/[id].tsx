@@ -18,7 +18,7 @@ const ProductShow: NextPage<Props> = ({ element }) => {
       <MainHead
         title={element.name}
         description={element.desc}
-        mainImage={imgUrl(element?.img[0])}
+        mainImage={`${imgUrl(element?.img[0].toString())}`}
       />
       <MainContentLayout>
         <div>{element.name}</div>

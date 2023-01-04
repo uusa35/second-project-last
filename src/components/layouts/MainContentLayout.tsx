@@ -30,15 +30,7 @@ const MainContentLayout: FC<Props> = ({
   backRoute = null,
   showMotion = true,
 }): JSX.Element => {
-  const {
-    locale: { isRTL },
-    country,
-    appSetting,
-  } = useAppSelector((state) => state);
-
-  useEffect(() => {
-    setApiCountry(JSON.stringify(country));
-  }, [country]);
+  const { appSetting } = useAppSelector((state) => state);
 
   return (
     <div

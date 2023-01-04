@@ -12,12 +12,12 @@ import MainHead from '@/components/MainHead';
 type Props = {
   elements: Product[];
 };
-const ProductIndex: NextPage<Props> = ({ elements }): JSX.Element => {
+const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
   return (
     <>
       <MainHead title={`productIndex`} description={`productIndex`} />
       <MainContentLayout>
-        <h1 suppressHydrationWarning={suppressText}>ProductIndex</h1>
+        <h1 suppressHydrationWarning={suppressText}>ProductSearchIndex</h1>
         <div className="mt-4 p-4 grid sm:grid-cols-3 lg:grid-cols-2 gap-6">
           {map(elements, (p, i) => (
             <HorProductWidget element={p} key={i} />
@@ -28,7 +28,7 @@ const ProductIndex: NextPage<Props> = ({ elements }): JSX.Element => {
   );
 };
 
-export default ProductIndex;
+export default ProductSearchIndex;
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
@@ -38,7 +38,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
       const { data: elements, isError } = await store.dispatch(
         productApi.endpoints.getSearchProducts.initiate({
           search: key ?? ``,
-          branchId: branch_id ?? `1`,
+          branchId: branch_id ?? null,
           areaId: area_id ?? ``,
         })
       );

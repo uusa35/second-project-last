@@ -8,9 +8,9 @@ export const appLinks = {
   root: { path: '/home' },
   home: { path: '/home' },
   productIndex: (categoryId: string, query?: string) =>
-    `product/${categoryId}?${query}`,
+    `/product/${categoryId}?${query}`,
   productSearchIndex: (query?: string, branchId?: string, areaId?: string) =>
-    `product/?key=${query}&branch_id=${branchId}&areaId=${areaId}`,
+    `/product/?key=${query}&branch_id=${branchId}&areaId=${areaId}`,
   productShow: (id: string, product_id?: number, slug?: string) =>
     `/product/show/${id}?product_id=${product_id}&slug=${kebabCase(
       lowerCase(slug)
