@@ -4,6 +4,7 @@ import i18n from 'i18next';
 import { useRouter } from 'next/router';
 import { hideSideMenu } from '@/redux/slices/appSettingSlice';
 import {
+  appLinks,
   baseUrl,
   imageSizes,
   imgUrl,
@@ -18,6 +19,10 @@ import Image from 'next/image';
 import { AppQueryResult } from '@/types/queries';
 import { Vendor } from '@/types/index';
 import { setVendor } from '@/redux/slices/vendorSlice';
+import Link from 'next/link';
+import { useTranslation } from 'react-i18next';
+import { ShoppingBagOutlined } from '@mui/icons-material';
+import CustomImage from '../customImage';
 const ToastAppContainer = dynamic(
   () => import(`@/components/ToastAppContainer`),
   {
@@ -33,6 +38,7 @@ type Props = {
 type Handler = (...evts: any[]) => void;
 
 const MainLayout: FC<Props> = ({ children }): JSX.Element => {
+  const { t } = useTranslation();
   const { appSetting, locale } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -72,6 +78,7 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
       console.log('the error', err);
       router.replace(router.asPath);
     };
+
     router.events.on('routeChangeError', handleRouteChangeError);
     router.events.on('routeChangeStart', handleRouteChange);
     router.events.on('routeChangeComplete', handleChangeComplete);
@@ -102,7 +109,9 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
       {children}
       {/* Main Image & Logo */}
       <div
-        className={`hidden lg:block flex flex-row  w-full h-screen lg:w-2/4 xl:w-2/3`}
+        className={`hidden lg:block flex flex-row  w-full h-screen lg:w-2/4 xl:w-2/3 fixed ${
+          router.locale === 'ar' ? 'left-0' : 'right-0'
+        }`}
         // style={{ height: '120vh' }}
       >
         {isSuccess && vendor.Data && (
@@ -118,18 +127,36 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
               className={`absolute top-0 left-0 flex w-full justify-between items-center grow  z-90 text-white p-4
            `}
             >
-              <h1 suppressHydrationWarning={suppressText}>nav right</h1>
-              <h1 suppressHydrationWarning={suppressText}>nav left</h1>
+              <div className="flex items-center gap-x-5">
+                <Link scroll={false} href={appLinks.root.path}>
+                  <h1 suppressHydrationWarning={suppressText}>{t('home')}</h1>
+                </Link>
+
+                <Link scroll={false} href={appLinks.root.path}>
+                  <h1 suppressHydrationWarning={suppressText}>{t('search')}</h1>
+                </Link>
+
+                <Link scroll={false} href={appLinks.root.path}>
+                  <h1 suppressHydrationWarning={suppressText}>
+                    {t('track_order')}
+                  </h1>
+                </Link>
+              </div>
+              <div>
+                <Link scroll={false} href={appLinks.root.path}>
+                  <ShoppingBagOutlined />
+                </Link>
+              </div>
             </div>
             <div className={`text-center space-y-3 text-white`}>
-              <Image
+              <CustomImage
                 src={`${imgUrl(vendor.Data.logo)}`}
                 alt={vendor.Data.name}
                 className={`relative z-90 object-contain w-32 h-auto shadow-xl`}
                 width={imageSizes.lg}
                 height={imageSizes.lg}
               />
-              <p suppressHydrationWarning={suppressText}>testing</p>
+              <p suppressHydrationWarning={suppressText}>{vendor.Data.name}</p>
             </div>
           </div>
         )}

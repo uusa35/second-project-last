@@ -20,6 +20,7 @@ const ProductShow: NextPage<Props> = ({ element }) => {
         // mainImage={`${isEmpty(element.img) ? imgUrl(element?.img[0].toString())}`}
       />
       <MainContentLayout>
+        <h1>ProductShow {element.id}</h1>
         <div>{element.name}</div>
       </MainContentLayout>
     </>
@@ -32,6 +33,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ query, locale }) => {
       const { id, branchId, areaId }: any = query;
+      console.log('the id ------->', id);
       if (!id) {
         return {
           notFound: true,

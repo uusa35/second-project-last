@@ -6,6 +6,7 @@ import { Product } from '@/types/index';
 import NoFoundImage from '@/appImages/not_found.png';
 import { first, isEmpty } from 'lodash';
 import Link from 'next/link';
+import CustomImage from '@/components/customImage';
 
 type Props = {
   element: Product;
@@ -26,7 +27,7 @@ const HorProductWidget: FC<Props> = ({ element }) => {
     >
       <div className="relative">
         <div className="relative h-60 w-full overflow-hidden rounded-lg">
-          <Image
+          <CustomImage
             src={`${firstImage}`}
             alt={element.name}
             width={imageSizes.sm}

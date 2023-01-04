@@ -38,7 +38,7 @@ const MainContentLayout: FC<Props> = ({
     >
       <SideMenu />
       {appSetting.showHeader && <AppHeader />}
-      <main className={`w-full`}>{children}</main>
+      <main className={`w-full px-4`}>{children}</main>
       <AppFooter />
     </div>
   );

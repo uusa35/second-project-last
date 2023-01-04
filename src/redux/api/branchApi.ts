@@ -13,7 +13,7 @@ export const branchApi = apiSlice.injectEndpoints({
       query: ({ lang }) => ({
         url: `branches`,
         headers: {
-          'Accept-Language': lang,
+          lang,
         },
         validateStatus: (response, result) => response.status && result.Data,
       }),
@@ -29,7 +29,7 @@ export const branchApi = apiSlice.injectEndpoints({
         url: `branches/${id}`,
         params: { branch_id: id },
         headers: {
-          'Accept-Language': lang,
+          lang,
         },
         validateStatus: (response, result) => response.status && result.Data,
       }),

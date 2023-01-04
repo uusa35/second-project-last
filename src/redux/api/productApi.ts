@@ -7,7 +7,7 @@ export const productApi = apiSlice.injectEndpoints({
     getProducts: builder.query<
       AppQueryResult<Product[]>,
       {
-        category_id: string;
+        category_id: string | number;
         page: string;
         limit: string;
         branch_id: string | null;
@@ -51,7 +51,7 @@ export const productApi = apiSlice.injectEndpoints({
     getProduct: builder.query<
       AppQueryResult<Product>,
       {
-        id: string | unknown;
+        id: string | number;
         lang: Locale['lang'] | string | undefined;
         branchId?: string | null;
         areaId?: string | null;
