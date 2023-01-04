@@ -61,7 +61,7 @@ const AppHeader: FC = () => {
           <Bars3Icon className={`w-8 h-8 text-black`} />
         </button>
         {/* logo */}
-        <Link
+        {/* <Link
           scroll={false}
           href={{
             pathname: `${appLinks.home.path}`,
@@ -92,24 +92,7 @@ const AppHeader: FC = () => {
           className={`object-cover w-full h-full absolute top-0 left-0 mix-blend-overlay lg:hidden`}
           width={imageSizes.lg}
           height={imageSizes.lg}
-        />
-        <div className="flex justify-end items-center gap-x-5">
-          {isAuth && avatar && (
-            <Link
-              scroll={false}
-              href={`${appLinks.account.path}`}
-              className={`rounded-full w-10 h-10 w-full shadow-lg border border-gray-400`}
-            >
-              <Image
-                src={avatar}
-                width={imageSizes.xs}
-                height={imageSizes.xs}
-                className={`w-10 w-10 rounded-full object-cover `}
-                alt={name}
-              />
-            </Link>
-          )}
-        </div>
+        /> */}
       </header>
     </Suspense>
   );

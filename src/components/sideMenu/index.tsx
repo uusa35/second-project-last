@@ -67,81 +67,87 @@ const SideMenu: FC<Props> = () => {
         customBurgerIcon={false}
         customCrossIcon={false}
       >
-        <div
-          style={{ display: 'flex' }}
-          className="flex-col justify-between  bg-white h-full outline-none px-6"
-        >
-          <div>
-            <header className="">
-              <div className="flex gap-x-2 py-5">
-                <div className="flex justify-center w-full">
-                  <Link scroll={false} href={appLinks.root.path}>
-                    <CustomImage
-                      alt={`logo`}
-                      src={`${imgUrl(vendorDetails.Data.logo)}`}
-                      width={imageSizes.xs}
-                      height={imageSizes.xs}
-                      className="h-10 w-auto"
+        {vendorDetailsSuccess && (
+          <div
+            style={{ display: 'flex' }}
+            className="flex-col justify-between  bg-white h-full outline-none px-6"
+          >
+            <div>
+              <header className="">
+                <div className="flex gap-x-2 py-5">
+                  <div className="flex justify-center w-full">
+                    <Link scroll={false} href={appLinks.root.path}>
+                      <CustomImage
+                        alt={`logo`}
+                        src={`${imgUrl(vendorDetails.Data.logo)}`}
+                        width={imageSizes.xs}
+                        height={imageSizes.xs}
+                        className="h-10 w-auto"
+                      />
+                    </Link>
+                  </div>
+
+                  <p
+                    className="cursor-pointer"
+                    id="CloseMenuBtn"
+                    onClick={() => dispatch(hideSideMenu(undefined))}
+                    suppressHydrationWarning={suppressText}
+                  >
+                    <Close fontSize="small" className={`h-4 w-4`} />
+                  </p>
+                </div>
+              </header>
+
+              <div className="flex-col  gap-y-2 my-3 ">
+                <Link scroll={false} href={appLinks.root.path}>
+                  <div className="flex gap-x-3 pb-7 items-center">
+                    <HomeOutlined className={`h-6 w-6 text-primary_BG`} />
+                    <p>{t('home')}</p>
+                  </div>
+                </Link>
+
+                <Link scroll={false} href={appLinks.root.path}>
+                  <div className="flex gap-x-3 pb-7 items-center">
+                    <ShoppingBagOutlined
+                      className={`h-6 w-6 text-primary_BG`}
                     />
-                  </Link>
-                </div>
+                    <p>{t('my_Cart')}</p>
+                  </div>
+                </Link>
 
-                <p
-                  className="cursor-pointer"
-                  id="CloseMenuBtn"
-                  onClick={() => dispatch(hideSideMenu(undefined))}
-                  suppressHydrationWarning={suppressText}
-                >
-                  <Close fontSize="small" className={`h-4 w-4`} />
-                </p>
+                <Link scroll={false} href={appLinks.root.path}>
+                  <div className="flex gap-x-3 pb-7 items-center">
+                    <PlagiarismOutlined className={`h-6 w-6 text-primary_BG`} />
+                    <p>{t('search')}</p>
+                  </div>
+                </Link>
+
+                <Link scroll={false} href={appLinks.root.path}>
+                  <div className="flex gap-x-3 pb-7 items-center">
+                    <PendingActionsOutlined
+                      className={`h-6 w-6 text-primary_BG`}
+                    />
+                    <p>{t('track_order')}</p>
+                  </div>
+                </Link>
+
+                <Link scroll={false} href={appLinks.root.path}>
+                  <div className="flex gap-x-3 pb-7 items-center">
+                    <ApartmentOutlined className={`h-6 w-6 text-primary_BG`} />
+                    <p>{t('our_branches')}</p>
+                  </div>
+                </Link>
               </div>
-            </header>
-
-            <div className="flex-col  gap-y-2 my-3 ">
-              <Link scroll={false} href={appLinks.root.path}>
-                <div className="flex gap-x-3 pb-7 items-center">
-                  <HomeOutlined className={`h-6 w-6 text-primary_BG`} />
-                  <p>{t('home')}</p>
-                </div>
-              </Link>
-
-              <Link scroll={false} href={appLinks.root.path}>
-                <div className="flex gap-x-3 pb-7 items-center">
-                  <ShoppingBagOutlined className={`h-6 w-6 text-primary_BG`} />
-                  <p>{t('my_Cart')}</p>
-                </div>
-              </Link>
-
-              <Link scroll={false} href={appLinks.root.path}>
-                <div className="flex gap-x-3 pb-7 items-center">
-                  <PlagiarismOutlined className={`h-6 w-6 text-primary_BG`} />
-                  <p>{t('search')}</p>
-                </div>
-              </Link>
-
-              <Link scroll={false} href={appLinks.root.path}>
-                <div className="flex gap-x-3 pb-7 items-center">
-                  <PendingActionsOutlined
-                    className={`h-6 w-6 text-primary_BG`}
-                  />
-                  <p>{t('track_order')}</p>
-                </div>
-              </Link>
-
-              <Link scroll={false} href={appLinks.root.path}>
-                <div className="flex gap-x-3 pb-7 items-center">
-                  <ApartmentOutlined className={`h-6 w-6 text-primary_BG`} />
-                  <p>{t('our_branches')}</p>
-                </div>
-              </Link>
             </div>
+            <footer className={`w-full`}>
+              <Link href={`tel: ${vendorDetails.Data.phone}`} scroll={false}>
+                <div className={`${submitBtnClass} text-center`}>
+                  {t('call')}
+                </div>
+              </Link>
+            </footer>
           </div>
-          <footer className={`w-full`}>
-            <Link href={`tel: ${vendorDetails.Data.phone}`} scroll={false}>
-              <div className={`${submitBtnClass} text-center`}>{t('call')}</div>
-            </Link>
-          </footer>
-        </div>
+        )}
       </Menu>
     </Suspense>
   );

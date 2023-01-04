@@ -2,6 +2,7 @@ import { FC } from 'react';
 import { Category } from '@/types/queries';
 import Image from 'next/image';
 import { imageSizes, imgUrl } from '@/constants/*';
+import CustomImage from '@/components/customImage';
 
 type Props = {
   element: Category;
@@ -11,7 +12,15 @@ const CategoryWidget: FC<Props> = ({ element }) => {
     <div key={element.id}>
       <div className="relative">
         <div className="relative h-60 w-full overflow-hidden rounded-lg">
-          <Image
+          {/* <Image
+            src={`${imgUrl(element.img)}`}
+            alt={element.name}
+            width={imageSizes.sm}
+            height={imageSizes.sm}
+            className="h-full w-full object-cover object-center"
+          /> */}
+
+          <CustomImage
             src={`${imgUrl(element.img)}`}
             alt={element.name}
             width={imageSizes.sm}

@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import React, { FC, useEffect, useState } from 'react';
-import img_not_found_thumbNail from '@/appImages/img_not_found_thumbNail.png';
+import NoFoundImage from '@/appImages/not_found.png';
 
 type Props = {
   src: string;
@@ -27,7 +27,7 @@ const CustomImage: FC<Props> = ({
     <Image
       {...rest}
       alt={alt}
-      src={error ? img_not_found_thumbNail : src}
+      src={error ? NoFoundImage.src : src}
       onError={() => {
         setError(true);
       }}
