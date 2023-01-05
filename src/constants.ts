@@ -17,8 +17,8 @@ export const appLinks = {
     `/product/${categoryId}?branch_id=${branch_id}&area_id=${
       areaId ?? ``
     }&page=${page ?? `1`}&limit=${limit ?? `10`}`,
-  productSearchIndex: (query?: string, branchId?: string, areaId?: string) =>
-    `/product/?key=${query}&branch_id=${branchId}&areaId=${areaId}`,
+  productSearchIndex: (branchId: string, query?: string, areaId?: string) =>
+    `/product/?key=${query ?? ``}&branch_id=${branchId}&areaId=${areaId ?? ``}`,
   productShow: (
     id: string,
     product_id?: number,

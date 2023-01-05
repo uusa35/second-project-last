@@ -20,6 +20,7 @@ const MainAsideLayout: FC<Props> = ({ element }): JSX.Element => {
   const dispatch = useAppDispatch();
   const {
     locale: { otherLang },
+    branch: { id: branchId },
   } = useAppSelector((state) => state);
 
   const handleChangeLang = async (locale: string) => {
@@ -64,7 +65,7 @@ const MainAsideLayout: FC<Props> = ({ element }): JSX.Element => {
               <h1 suppressHydrationWarning={suppressText}>{t('home')}</h1>
             </Link>
 
-            <Link scroll={false} href={appLinks.root.path}>
+            <Link scroll={false} href={appLinks.productSearchIndex(branchId)}>
               <h1 suppressHydrationWarning={suppressText}>{t('search')}</h1>
             </Link>
 

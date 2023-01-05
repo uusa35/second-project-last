@@ -1,4 +1,5 @@
 import { FC, ReactNode } from 'react';
+import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
 const BackBtn = dynamic(() => import(`@/components/BackBtn`), {
   ssr: false,
@@ -29,7 +30,10 @@ const MainContentLayout: FC<Props> = ({
   backRoute = null,
   showMotion = true,
 }): JSX.Element => {
-  const { appSetting } = useAppSelector((state) => state);
+  const {
+    appSetting,
+    locale: { isRTL },
+  } = useAppSelector((state) => state);
 
   return (
     <div
@@ -37,7 +41,19 @@ const MainContentLayout: FC<Props> = ({
     >
       <SideMenu />
       {appSetting.showHeader && <AppHeader />}
-      <main className={`w-full px-4`}>{children}</main>
+      <main className={`w-full px-4`}>
+        <motion.div
+          animate={{ x: [isRTL ? -1000 : 1000, 0, 0] }}
+          transition={{
+            type: 'spring',
+            bounce: 5,
+            duration: showMotion ? 0.2 : 0,
+          }}
+          viewport={{ once: true }}
+        >
+          {children}
+        </motion.div>
+      </main>
       <AppFooter />
     </div>
   );

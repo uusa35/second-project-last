@@ -12,9 +12,12 @@ import { AppQueryResult, Branch } from '@/types/queries';
 import { Vendor } from '@/types/index';
 import { setVendor } from '@/redux/slices/vendorSlice';
 import { useTranslation } from 'react-i18next';
-import { isEmpty } from 'lodash';
+import { first, isEmpty, isNull } from 'lodash';
 import MainAsideLayout from '@/components/home/MainAsideLayout';
 import { useGetBranchesQuery } from '@/redux/api/branchApi';
+import { setBranch } from '@/redux/slices/branchSlice';
+import { array } from 'yup';
+import { setBranches } from '@/redux/slices/branchesSlice';
 const ToastAppContainer = dynamic(
   () => import(`@/components/ToastAppContainer`),
   {
@@ -34,6 +37,7 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
     appSetting,
     locale,
     cart: { tempId },
+    branch: { id: branchId },
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -50,10 +54,16 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
     if (isSuccess) {
       dispatch(setVendor(vendor.Data));
     }
+    if (branchesSuccess && !isEmpty(branches)) {
+      if (isNull(branchId)) {
+        dispatch(setBranch(branches.Data[0]));
+      }
+      dispatch(setBranches(branches.Data));
+    }
     if (isEmpty(tempId)) {
       // create tempId here if does not exist
     }
-  }, [vendor, locale.lang]);
+  }, [vendor, locale.lang, branches]);
 
   useEffect(() => {
     const handleRouteChange: Handler = (url, { shallow }) => {

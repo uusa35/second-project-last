@@ -33,7 +33,11 @@ const SideMenu: FC<Props> = (): JSX.Element => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const { appSetting, vendor } = useAppSelector((state) => state);
+  const {
+    appSetting,
+    vendor,
+    branch: { id: branchId },
+  } = useAppSelector((state) => state);
 
   const handleChangeLang = async (locale: string) => {
     await dispatch(setLocale(locale));
@@ -101,7 +105,10 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                   </div>
                 </Link>
 
-                <Link scroll={false} href={appLinks.root.path}>
+                <Link
+                  scroll={false}
+                  href={appLinks.productSearchIndex(branchId)}
+                >
                   <div className="flex gap-x-3 pb-7 items-center">
                     <PlagiarismOutlined className={`h-6 w-6 text-primary_BG`} />
                     <p>{t('search')}</p>
