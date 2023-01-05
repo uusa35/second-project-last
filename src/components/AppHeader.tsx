@@ -43,14 +43,18 @@ const AppHeader: FC = () => {
   return (
     <Suspense fallback={<SideMenuSkelton />}>
       <header
-        className={`flex flex-row justify-start items-center w-full relative bg-cover bg-top
-      bg-gradient-to-tr from-gray-400 to-gray-800 lg:from-white lg:to-white
+        className={`flex flex-row justify-start items-center w-full relative 
       `}
       >
-        {router.asPath !== '/' ? (
+        {router.asPath === '/home' || router.asPath !== '/' ? (
           <BackBtn backHome={false} />
         ) : (
-          <>
+          <div
+            className={` sticky lg:relative flex  flex-row  justify-start items-center w-full p-8 h-24 mb-8 lg:mb-0 top-0 z-10 
+            bg-cover bg-top
+      bg-gradient-to-tr from-gray-400 to-gray-800 lg:from-white lg:to-white
+            `}
+          >
             <button
               onClick={() =>
                 sideMenuOpen
@@ -87,7 +91,7 @@ const AppHeader: FC = () => {
               width={imageSizes.lg}
               height={imageSizes.lg}
             />
-          </>
+          </div>
         )}
       </header>
     </Suspense>
