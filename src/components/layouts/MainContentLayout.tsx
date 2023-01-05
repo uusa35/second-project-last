@@ -5,6 +5,7 @@ const BackBtn = dynamic(() => import(`@/components/BackBtn`), {
   ssr: false,
 });
 import { useAppSelector } from '@/redux/hooks';
+import { useTranslation } from 'react-i18next';
 const AppHeader = dynamic(() => import(`@/components/AppHeader`), {
   ssr: false,
 });
@@ -30,6 +31,7 @@ const MainContentLayout: FC<Props> = ({
   backRoute = null,
   showMotion = true,
 }): JSX.Element => {
+  const { t } = useTranslation();
   const {
     appSetting,
     locale: { isRTL },
@@ -37,11 +39,11 @@ const MainContentLayout: FC<Props> = ({
 
   return (
     <div
-      className={`flex flex-col justify-start items-start w-full lg:w-2/4 xl:w-1/3 lg:relative overflow-hidden`}
+      className={`flex flex-col justify-start items-start w-full lg:w-2/4 xl:w-1/3 relative`}
     >
       <SideMenu />
       {appSetting.showHeader && <AppHeader />}
-      <main className={`w-full  px-4 mb-20`}>
+      <main className={`w-full  px-4 mb-36 relative`}>
         <motion.div
           animate={{ x: [isRTL ? -1000 : 1000, 0, 0] }}
           transition={{
@@ -53,6 +55,9 @@ const MainContentLayout: FC<Props> = ({
         >
           {children}
         </motion.div>
+        <div className={`bottom-0 w-full w-full text-center`}>
+          <h1>{t('powered_by_queue')} &reg;</h1>
+        </div>
       </main>
       <AppFooter />
     </div>
