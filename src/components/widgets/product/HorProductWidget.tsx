@@ -42,10 +42,10 @@ const HorProductWidget: FC<Props> = ({ element }): JSX.Element => {
             className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black opacity-60"
           />
           <div className="flex flex-row w-full px-2 justify-between items-center py-4">
-            <p className="relative text-md font-semibold text-white truncate">
+            <p className="relative flex-shrink-0 justify-start items-center text-md font-semibold text-white truncate">
               {element.name}
             </p>
-            <p className="relative text-lg font-semibold text-white capitalize">
+            <p className="relative flex-none  text-lg font-semibold text-white capitalize">
               {element.price} {t(`kd`)}
             </p>
           </div>

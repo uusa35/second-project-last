@@ -72,7 +72,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                         src={`${imgUrl(vendor.logo)}`}
                         width={imageSizes.xs}
                         height={imageSizes.xs}
-                        className="h-10 w-auto"
+                        className="h-20 w-auto shadow-md rounded-md"
                       />
                     </Link>
                   </div>
@@ -92,7 +92,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                 <Link scroll={false} href={appLinks.root.path}>
                   <div className="flex gap-x-3 pb-7 items-center">
                     <HomeOutlined className={`h-6 w-6 text-primary_BG`} />
-                    <p>{t('home')}</p>
+                    <p suppressHydrationWarning={suppressText}>{t('home')}</p>
                   </div>
                 </Link>
 
@@ -101,7 +101,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                     <ShoppingBagOutlined
                       className={`h-6 w-6 text-primary_BG`}
                     />
-                    <p>{t('my_Cart')}</p>
+                    <p suppressHydrationWarning={suppressText}>{t('cart')}</p>
                   </div>
                 </Link>
 
@@ -111,7 +111,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                 >
                   <div className="flex gap-x-3 pb-7 items-center">
                     <PlagiarismOutlined className={`h-6 w-6 text-primary_BG`} />
-                    <p>{t('search')}</p>
+                    <p suppressHydrationWarning={suppressText}>{t('search')}</p>
                   </div>
                 </Link>
 
@@ -120,23 +120,30 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                     <PendingActionsOutlined
                       className={`h-6 w-6 text-primary_BG`}
                     />
-                    <p>{t('track_order')}</p>
+                    <p suppressHydrationWarning={suppressText}>
+                      {t('track_order')}
+                    </p>
                   </div>
                 </Link>
 
                 <Link scroll={false} href={appLinks.branchIndex.path}>
                   <div className="flex gap-x-3 pb-7 items-center">
                     <ApartmentOutlined className={`h-6 w-6 text-primary_BG`} />
-                    <p>{t('our_branches')}</p>
+                    <p suppressHydrationWarning={suppressText}>
+                      {t('our_branches')}
+                    </p>
                   </div>
                 </Link>
               </div>
             </div>
             <footer className={`w-full`}>
               <Link href={`tel: ${vendor.phone}`} scroll={false}>
-                <div className={`${submitBtnClass} text-center`}>
+                <p
+                  className={`${submitBtnClass} text-center`}
+                  suppressHydrationWarning={suppressText}
+                >
                   {t('call')}
-                </div>
+                </p>
               </Link>
             </footer>
           </div>

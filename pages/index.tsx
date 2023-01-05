@@ -25,6 +25,7 @@ import Link from 'next/link';
 import { setLocale } from '@/redux/slices/localeSlice';
 import { selectMethod } from '@/redux/slices/cartSlice';
 import { useRouter } from 'next/router';
+import { setCurrentModule } from '@/redux/slices/appSettingSlice';
 
 type Props = {
   categories: Category[];
@@ -45,6 +46,7 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
     if (isEmpty(tempId)) {
       // create tempId here if does not exist
     }
+    setCurrentModule(t('home'));
   }, []);
 
   const handleSelectMethod = (m: Cart['method']) => {
@@ -89,7 +91,6 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
           {element.desc && (
             <div className="flex gap-x-1 items-end justify-start mt-4">
               <DiscountOutlined className="text-primary_BG" />
-
               <p
                 suppressHydrationWarning={suppressText}
                 className="text-sm text-gray-500"
@@ -103,12 +104,14 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
           <button
             className={`${submitBtnClass} bg-opacity-60 md:ltr:mr-6 md:rtl:ml-6`}
             onClick={() => handleSelectMethod(`delivery`)}
+            suppressHydrationWarning={suppressText}
           >
             {t('delivery')}
           </button>
           <button
             className={`${submitBtnClass} bg-opacity-60`}
             onClick={() => handleSelectMethod(`pickup`)}
+            suppressHydrationWarning={suppressText}
           >
             {t('pickup')}
           </button>
