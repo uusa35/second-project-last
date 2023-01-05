@@ -7,16 +7,24 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import MainContentLayout from '@/layouts/MainContentLayout';
 import MainHead from '@/components/MainHead';
 import { vendorApi } from '@/redux/api/vendorApi';
-import { Vendor } from '@/types/index';
+import { Cart, Vendor } from '@/types/index';
 import { categoryApi } from '@/redux/api/categoryApi';
 import { isEmpty, map } from 'lodash';
 import CategoryWidget from '@/widgets/category/CategoryWidget';
 import CustomImage from '@/components/customImage';
-import { imageSizes, imgUrl, suppressText } from '@/constants/*';
+import {
+  appLinks,
+  imageSizes,
+  imgUrl,
+  submitBtnClass,
+  suppressText,
+} from '@/constants/*';
 import { useTranslation } from 'react-i18next';
 import { InfoOutlined, DiscountOutlined } from '@mui/icons-material';
 import Link from 'next/link';
 import { setLocale } from '@/redux/slices/localeSlice';
+import { selectMethod } from '@/redux/slices/cartSlice';
+import { useRouter } from 'next/router';
 
 type Props = {
   categories: Category[];
@@ -31,6 +39,7 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
   } = useAppSelector((state) => state);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const dispatch = useAppDispatch();
+  const router = useRouter();
 
   console.log('element', element);
   console.log('category', categories);
@@ -40,6 +49,11 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
       // create tempId here if does not exist
     }
   }, []);
+
+  const handleSelectMethod = (m: Cart['method']) => {
+    dispatch(selectMethod(m));
+    router.push(appLinks.cartSelectMethod.path);
+  };
 
   return (
     <>
@@ -86,6 +100,20 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
               </p>
             </div>
           )}
+        </div>
+        <div className="flex flex-1 w-full flex-col md:flex-row justify-between items-center md:space-x-8">
+          <button
+            className={`${submitBtnClass} bg-opacity-60`}
+            onClick={() => handleSelectMethod(`delivery`)}
+          >
+            {t('delivery')}
+          </button>
+          <button
+            className={`${submitBtnClass} bg-opacity-60`}
+            onClick={() => handleSelectMethod(`pickup`)}
+          >
+            {t('pickup')}
+          </button>
         </div>
         <div className="mt-4 py-4 grid sm:grid-cols-3 lg:grid-cols-2 gap-6">
           {!isEmpty(categories) &&

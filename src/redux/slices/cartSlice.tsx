@@ -6,6 +6,7 @@ const initialState: Cart = {
   tempId: '',
   products: [],
   isEmpty: true,
+  method: `delivery`,
   paymentMethods: [
     {
       id: ``,
@@ -24,6 +25,15 @@ export const cartSlice = createSlice({
         ...initialState,
         tempId: action.payload,
         isEmpty: false,
+      };
+    },
+    selectMethod: (
+      state: typeof initialState,
+      action: PayloadAction<Cart['method']>
+    ) => {
+      return {
+        ...state,
+        method: action.payload,
       };
     },
     toggleIsEmpty: (
@@ -45,4 +55,5 @@ export const cartSlice = createSlice({
   },
 });
 
-export const { setTempId, toggleIsEmpty, resetCart } = cartSlice.actions;
+export const { setTempId, toggleIsEmpty, resetCart, selectMethod } =
+  cartSlice.actions;

@@ -33,6 +33,7 @@ export const appLinks = {
   terms: { path: '/terms' },
   about: { path: '/about' },
   account: { path: '/account' },
+  cartSelectMethod: { path: 'cart/select' },
   order: { path: '/order' },
   trackOrder: { path: '/order/track' },
   login: { path: '/login' },
