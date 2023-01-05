@@ -21,6 +21,8 @@ const SelectMethod: NextPage = (): JSX.Element => {
   return (
     <MainContentLayout>
       <h1>{t('select_method')}</h1>
+      <div>delivery</div>
+      <div>pickup</div>
     </MainContentLayout>
   );
 };

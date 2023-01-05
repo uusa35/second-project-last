@@ -14,6 +14,8 @@ import { AppQueryResult } from '@/types/queries';
 import { Vendor } from '@/types/index';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import SideMenuSkelton from '@/components/sideMenu/SideMenuSkelton';
+import BackBtn from '@/components/BackBtn';
+import { useRouter } from 'next/router';
 const SideMenu = dynamic(() => import(`@/components/sideMenu`), {
   ssr: false,
 });
@@ -36,6 +38,7 @@ const AppHeader: FC = () => {
   const isAuth = useAppSelector(isAuthenticated);
   const { locale } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
+  const router = useRouter();
 
   return (
     <Suspense fallback={<SideMenuSkelton />}>
@@ -44,39 +47,48 @@ const AppHeader: FC = () => {
       bg-gradient-to-tr from-gray-400 to-gray-800 lg:from-white lg:to-white
       `}
       >
-        <button
-          onClick={() =>
-            sideMenuOpen ? dispatch(hideSideMenu()) : dispatch(showSideMenu())
-          }
-          className={`ltr:ml-3 rtl:mr-3 z-50`}
-        >
-          <Bars3Icon className={`w-8 h-8 text-black`} />
-        </button>
-        {/* logo */}
-        <Link
-          scroll={false}
-          href={appLinks.home.path}
-          locale={locale.lang}
-          className="flex justify-center space-x-3  cursor-pointer p-4 z-50 text-white lg:text-black"
-        >
-          <div className="flex flex-1 justify-center ">
+        {router.asPath !== '/' ? (
+          <BackBtn backHome={false} />
+        ) : (
+          <>
+            <button
+              onClick={() =>
+                sideMenuOpen
+                  ? dispatch(hideSideMenu())
+                  : dispatch(showSideMenu())
+              }
+              className={`ltr:ml-3 rtl:mr-3 z-50`}
+            >
+              <Bars3Icon className={`w-8 h-8 text-black`} />
+            </button>
+
+            {/* logo */}
+            <Link
+              scroll={false}
+              href={appLinks.home.path}
+              locale={locale.lang}
+              className="flex justify-center space-x-3  cursor-pointer p-4 z-50 text-white lg:text-black"
+            >
+              <div className="flex flex-1 justify-center ">
+                <Image
+                  className="h-16 w-auto"
+                  src={imgUrl(vendor.logo)}
+                  alt={`logo`}
+                  width={imageSizes.xs}
+                  height={imageSizes.xs}
+                />
+              </div>
+              <div className="flex flex-1 justify-center ">{vendor.name}</div>
+            </Link>
             <Image
-              className="h-16 w-auto"
-              src={imgUrl(vendor.logo)}
-              alt={`logo`}
-              width={imageSizes.xs}
-              height={imageSizes.xs}
+              src={`${imgUrl(vendor.cover)}`}
+              alt={vendor.name}
+              className={`object-cover w-full h-full absolute top-0 left-0 mix-blend-overlay lg:hidden`}
+              width={imageSizes.lg}
+              height={imageSizes.lg}
             />
-          </div>
-          <div className="flex flex-1 justify-center ">{vendor.name}</div>
-        </Link>
-        <Image
-          src={`${imgUrl(vendor.cover)}`}
-          alt={vendor.name}
-          className={`object-cover w-full h-full absolute top-0 left-0 mix-blend-overlay lg:hidden`}
-          width={imageSizes.lg}
-          height={imageSizes.lg}
-        />
+          </>
+        )}
       </header>
     </Suspense>
   );

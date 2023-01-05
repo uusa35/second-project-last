@@ -55,9 +55,6 @@ const MainContentLayout: FC<Props> = ({
         >
           {children}
         </motion.div>
-        <div className={`bottom-0 w-full w-full text-center`}>
-          <h1>{t('powered_by_queue')} &reg;</h1>
-        </div>
       </main>
       <AppFooter />
     </div>
