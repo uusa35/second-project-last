@@ -1,4 +1,4 @@
-import React, { useEffect, Suspense } from 'react';
+import React, { Suspense } from 'react';
 import { ReactBurgerMenu, slide as Menu } from 'react-burger-menu';
 import { useTranslation } from 'react-i18next';
 import { FC } from 'react';
@@ -24,30 +24,16 @@ import {
   HomeOutlined,
 } from '@mui/icons-material';
 import { setLocale } from '@/redux/slices/localeSlice';
-import { useGetVendorQuery } from '@/redux/api/vendorApi';
-import burgerIcon from '@/appIcons/phone.svg';
-import { Vendor } from '@/types/index';
-import { AppQueryResult } from '@/types/queries';
 import CustomImage from '@/components/customImage';
+import { isEmpty } from 'lodash';
 
 type Props = {};
 
-const SideMenu: FC<Props> = () => {
-  const { locale, appSetting, country } = useAppSelector((state) => state);
-
+const SideMenu: FC<Props> = (): JSX.Element => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const router = useRouter();
-
-  const { data: vendorDetails, isSuccess: vendorDetailsSuccess } =
-    useGetVendorQuery<{
-      data: AppQueryResult<Vendor>;
-      isSuccess: boolean;
-    }>();
-
-  useEffect(() => {
-    // if (vendorDetailsSuccess) console.log(vendorDetails);
-  }, [vendorDetailsSuccess]);
+  const { appSetting, vendor } = useAppSelector((state) => state);
 
   const handleChangeLang = async (locale: string) => {
     await dispatch(setLocale(locale));
@@ -67,7 +53,7 @@ const SideMenu: FC<Props> = () => {
         customBurgerIcon={false}
         customCrossIcon={false}
       >
-        {vendorDetailsSuccess && (
+        {!isEmpty(vendor) && (
           <div
             style={{ display: 'flex' }}
             className="flex-col justify-between  bg-white h-full outline-none px-6"
@@ -79,7 +65,7 @@ const SideMenu: FC<Props> = () => {
                     <Link scroll={false} href={appLinks.root.path}>
                       <CustomImage
                         alt={`logo`}
-                        src={`${imgUrl(vendorDetails.Data.logo)}`}
+                        src={`${imgUrl(vendor.logo)}`}
                         width={imageSizes.xs}
                         height={imageSizes.xs}
                         className="h-10 w-auto"
@@ -140,7 +126,7 @@ const SideMenu: FC<Props> = () => {
               </div>
             </div>
             <footer className={`w-full`}>
-              <Link href={`tel: ${vendorDetails.Data.phone}`} scroll={false}>
+              <Link href={`tel: ${vendor.phone}`} scroll={false}>
                 <div className={`${submitBtnClass} text-center`}>
                   {t('call')}
                 </div>

@@ -5,7 +5,7 @@ import { HYDRATE } from 'next-redux-wrapper';
 import { Vendor } from '@/types/index';
 
 const initialState: Branch = {
-  id: 0,
+  id: null,
   name: ``,
   location: ``,
   mobile: ``,

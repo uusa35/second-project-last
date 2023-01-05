@@ -14,7 +14,6 @@ type Props = {
   elements: Branch[];
 };
 const BranchIndex: NextPage<Props> = ({ elements }) => {
-  console.log('elements', elements);
   const dispatch = useAppDispatch();
   return (
     <>

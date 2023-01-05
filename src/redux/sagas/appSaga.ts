@@ -9,10 +9,15 @@ import { lowerCase, snakeCase } from 'lodash';
 import { orderSlice } from '@/redux/slices/orderSlice';
 import { apiLogin, apiLogout, apiVerified, appLinks } from '@/constants/*';
 import { searchParamsSlice } from '@/redux/slices/searchParamsSlice';
+import { persistor } from '@/redux/store';
 
 export function* startResetAppScenario() {
   yield all([put({ type: `${searchParamsSlice.actions.resetSearchParams}` })]);
   // persistor.purge();
+}
+
+export function* startResetEnireAppSceanrio() {
+  persistor.purge();
 }
 
 export function* startEnableLoadingScenario(action: PayloadAction) {
@@ -76,7 +81,7 @@ export function* startSetLoginScenario(action: PayloadAction<Auth>) {
       // put({ type: `${guestSlice.actions.disableGuestMode}` }),
     ]);
     if (user.phone_verified !== 1) {
-      route.router?.push(appLinks.verificationOTP.path);
+      // route.router?.push(appLinks.verificationOTP.path);
     }
   } catch (e: any) {
     yield put({
@@ -139,7 +144,7 @@ export function* startOrderMadeScenario(action: PayloadAction<any>) {
         payload: data.data.invoice_id,
       });
       route.router?.replace({
-        pathname: `${appLinks.orderRedirect.path}`,
+        // pathname: `${appLinks.orderRedirect.path}`,
         query: { url: data.data.url },
       });
       // COD case
@@ -162,7 +167,7 @@ export function* startOrderMadeScenario(action: PayloadAction<any>) {
         }),
       ]);
       route.router?.replace({
-        pathname: appLinks.orderSuccess.path,
+        // pathname: appLinks.orderSuccess.path,
       });
     }
   } else {

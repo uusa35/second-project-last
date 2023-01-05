@@ -31,19 +31,11 @@ const AppHeader: FC = () => {
     auth: {
       user: { avatar, name, id: user_id },
     },
-    cart: { tempId, currentMode },
+    vendor,
   } = useAppSelector((state) => state);
   const isAuth = useAppSelector(isAuthenticated);
   const { locale } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
-  const { data: vendor, isSuccess } = useGetVendorQuery<{
-    data: AppQueryResult<Vendor>;
-    isSuccess: boolean;
-  }>();
-
-  if (!isSuccess) {
-    return <LoadingSpinner />;
-  }
 
   return (
     <Suspense fallback={<SideMenuSkelton />}>
@@ -61,7 +53,7 @@ const AppHeader: FC = () => {
           <Bars3Icon className={`w-8 h-8 text-black`} />
         </button>
         {/* logo */}
-        {/* <Link
+        <Link
           scroll={false}
           href={appLinks.home.path}
           locale={locale.lang}
@@ -70,21 +62,21 @@ const AppHeader: FC = () => {
           <div className="flex flex-1 justify-center ">
             <Image
               className="h-16 w-auto"
-              src={imgUrl(vendor.Data.logo)}
+              src={imgUrl(vendor.logo)}
               alt={`logo`}
               width={imageSizes.xs}
               height={imageSizes.xs}
             />
           </div>
-          <div className="flex flex-1 justify-center ">{vendor.Data.name}</div>
+          <div className="flex flex-1 justify-center ">{vendor.name}</div>
         </Link>
         <Image
-          src={`${imgUrl(vendor.Data.cover)}`}
-          alt={vendor.Data.name}
+          src={`${imgUrl(vendor.cover)}`}
+          alt={vendor.name}
           className={`object-cover w-full h-full absolute top-0 left-0 mix-blend-overlay lg:hidden`}
           width={imageSizes.lg}
           height={imageSizes.lg}
-        /> */}
+        />
       </header>
     </Suspense>
   );

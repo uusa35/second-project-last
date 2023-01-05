@@ -1,10 +1,9 @@
-import { FC, ReactNode, useEffect, Suspense } from 'react';
+import { FC, ReactNode } from 'react';
 import dynamic from 'next/dynamic';
 const BackBtn = dynamic(() => import(`@/components/BackBtn`), {
   ssr: false,
 });
 import { useAppSelector } from '@/redux/hooks';
-import { setApiCountry } from '@/constants/*';
 const AppHeader = dynamic(() => import(`@/components/AppHeader`), {
   ssr: false,
 });

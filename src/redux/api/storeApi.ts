@@ -1,16 +1,11 @@
 import { apiSlice } from './index';
-import {
-  AppQueryResult,
-  Category,
-  PaymentProcess,
-  StoreProps,
-} from '@/types/queries';
-import { Locale, PaymentMethod, Product, Vendor } from '@/types/index';
+import { AppQueryResult, Category, PaymentProcess } from '@/types/queries';
+import { Locale, PaymentMethod } from '@/types/index';
 
 export const storeApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getStoreIndex: builder.query<
-      AppQueryResult<StoreProps>,
+      AppQueryResult<any>,
       {
         lang: Locale['lang'] | string | undefined;
         country: string;

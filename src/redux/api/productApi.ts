@@ -12,19 +12,14 @@ export const productApi = apiSlice.injectEndpoints({
         limit: string;
         branch_id: string | null;
         area_id: string;
+        lang: Locale['lang'] | string | undefined;
       }
     >({
-      query: ({
-        category_id,
-        page = '1',
-        limit = '10',
-        branch_id = `null`,
-        area_id = ``,
-      }: any) => ({
+      query: ({ category_id, page, limit, branch_id, area_id, lang }: any) => ({
         url: `items`,
-        params: { category_id, page, limit, branch_id },
+        params: { category_id, page, limit, branch_id, area_id },
         headers: {
-          'x-branch-id': branch_id,
+          lang,
           'x-area-id': area_id,
         },
         validateStatus: (response, result) => response.status && result.Data,
@@ -33,17 +28,19 @@ export const productApi = apiSlice.injectEndpoints({
     getSearchProducts: builder.query<
       AppQueryResult<Product[]>,
       {
+        lang: Locale['lang'] | string | undefined;
         key?: string;
         branchId?: string;
         areaId?: string;
       }
     >({
-      query: ({ key = ``, branchId = null, areaId = `` }: any) => ({
+      query: ({ lang, key = ``, branchId = null, areaId = `` }: any) => ({
         url: `search`,
         params: { key },
         headers: {
           'x-branch-id': branchId,
           'x-area-id': areaId,
+          lang,
         },
         validateStatus: (response, result) => response.status && result.Data,
       }),
@@ -71,15 +68,17 @@ export const productApi = apiSlice.injectEndpoints({
     getTopSearch: builder.query<
       AppQueryResult<{ topSearch: string[]; trendingItems: Product[] }>,
       {
+        lang: Locale['lang'] | string | undefined;
         branchId?: string;
         areaId?: string;
       }
     >({
-      query: ({ branchId = ``, areaId = `` }) => ({
+      query: ({ lang, branchId = ``, areaId = `` }) => ({
         url: `topSearches`,
         headers: {
           'x-branch-id': branchId,
           'x-area-id': areaId,
+          lang,
         },
         validateStatus: (response, result) => response.status && result.Data,
       }),

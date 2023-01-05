@@ -10,10 +10,10 @@ import { isEmpty, map } from 'lodash';
 import Image from 'next/image';
 import NotFoundImage from '@/appImages/not_found.png';
 import HorProductWidget from '@/widgets/product/HorProductWidget';
-import { ProductPagination } from '@/types/queries';
+import { AppQueryResult, ProductPagination } from '@/types/queries';
 
 type Props = {
-  elements: ProductPagination<Product>;
+  elements: ProductPagination<Product[]>;
 };
 const ProductIndex: NextPage<Props> = ({ elements }): JSX.Element => {
   console.log('elements', elements);
@@ -45,20 +45,27 @@ export default ProductIndex;
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
-    async ({ query }) => {
+    async ({ query, locale }) => {
       const { categoryId, branch_id, page, limit, areaId }: any = query;
       if (!categoryId || !branch_id) {
         return {
           notFound: true,
         };
       }
-      const { data: elements, isError } = await store.dispatch(
+      const {
+        data: elements,
+        isError,
+      }: {
+        data: AppQueryResult<Product[]>;
+        isError: boolean;
+      } = await store.dispatch(
         productApi.endpoints.getProducts.initiate({
           category_id: categoryId,
-          page: page ?? 1,
-          limit: limit ?? 10,
+          page: page ?? `1`,
+          limit: limit ?? `10`,
           branch_id: branch_id ?? `null`,
           area_id: areaId ?? ``,
+          lang: locale,
         })
       );
       await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));

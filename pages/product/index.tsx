@@ -44,7 +44,7 @@ export default ProductSearchIndex;
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
-    async ({ query }) => {
+    async ({ query, locale }) => {
       const { key, branch_id, area_id }: any = query;
       if (!branch_id) {
         return {
@@ -56,6 +56,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
           key: key ?? ``,
           branchId: branch_id ?? null,
           areaId: area_id ?? ``,
+          lang: locale,
         })
       );
       await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
