@@ -29,20 +29,21 @@ const VendorShow: NextPage<Props> = ({ element }) => {
 export default VendorShow;
 
 export const getServerSideProps = wrapper.getServerSideProps(
-  (store) => async () => {
-    const { data: element, isError } = await store.dispatch(
-      vendorApi.endpoints.getVendor.initiate()
-    );
-    await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
-    if (isError || !element.Data) {
+  (store) =>
+    async ({ locale }) => {
+      const { data: element, isError } = await store.dispatch(
+        vendorApi.endpoints.getVendor.initiate({ lang: locale })
+      );
+      await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
+      if (isError || !element.Data) {
+        return {
+          notFound: true,
+        };
+      }
       return {
-        notFound: true,
+        props: {
+          element: element.Data,
+        },
       };
     }
-    return {
-      props: {
-        element: element.Data,
-      },
-    };
-  }
 );
