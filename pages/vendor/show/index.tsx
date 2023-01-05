@@ -20,7 +20,7 @@ import Facebook from '@/appIcons/facebook.svg';
 import Twitter from '@/appIcons/twitter.svg';
 import Instagram from '@/appIcons/instagram.svg';
 import { useTranslation } from 'react-i18next';
-import {suppressText} from '@/constants/*';
+import {suppressText, submitBtnClass} from '@/constants/*';
 
 type Props = {
   element: Vendor;
@@ -92,7 +92,7 @@ const VendorShow: NextPage<Props> = ({ element }) => {
             </div>
           </div>
           <div className='py-5'>
-            <button className='w-full h-8 rounded-md bg-btn_BG '>
+            <button className={`${submitBtnClass}`}>
               <div className='flex justify-center items-center'>
                 <Image className='w-5 h-5' src={FeedbackIcon} alt={t('feedback')} suppressHydrationWarning={suppressText} />
                 <p className='text-white px-2' suppressHydrationWarning={suppressText}>{t('leave_feedback')}</p>

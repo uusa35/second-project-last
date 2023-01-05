@@ -23,8 +23,7 @@ module.exports = {
         TransparentWhite: '#fafafa40',
         customGreen: '#05BA3D',
         CustomRed: '#FF4852',
-        HistoryBG: '#EFEFEF',
-        btn_BG:'#116CA5'
+        HistoryBG: '#EFEFEF'
       },
       boxShadow: {
         custome: '2px 2px 16px #00000029',
