@@ -358,5 +358,15 @@
   "facebook": "فيسبوك",
   "instagram": "انستجرام",
   "twiiter": "تويتر",
-  "yes": "نعم"
+  "yes": "نعم",
+  "send_feedback": "إرسال التقييم",
+  "our_branches": "فروعنا",
+  "track_order": "تتبع الطلب",
+  "check_your_order_status": "تابع حالة طلبك",
+  "enter_order_id": "أدخِل رقم الطلب",
+  "estimated_time": "الوقت المتوقع",
+  "order_pending": "في انتظار الطلب",
+  "delivering_to_your_address": "سيصل إلى عنوانك",
+  "call_delivery": "مكالمة التوصيل",
+  "tel:+": "تليفون: +"
 }

@@ -347,5 +347,15 @@
   "facebook": "facebook",
   "instagram": "instagram",
   "twiiter": "twiiter",
-  "yes": "yes"
+  "yes": "yes",
+  "send_feedback": "send feedback",
+  "our_branches": "our branches",
+  "track_order": "track order",
+  "check_your_order_status": "check your order status",
+  "enter_order_id": "enter order id",
+  "estimated_time": "estimated time",
+  "order_pending": "order pending",
+  "delivering_to_your_address": "delivering to your address",
+  "call_delivery": "call delivery",
+  "tel:+": "tel:+"
 }
