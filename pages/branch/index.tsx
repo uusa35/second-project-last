@@ -14,6 +14,10 @@ type Props = {
   elements: Branch[];
 };
 const BranchIndex: NextPage<Props> = ({ elements }) => {
+<<<<<<< HEAD
+=======
+  console.log('elements', elements);
+>>>>>>> Esraa
   const dispatch = useAppDispatch();
   return (
     <>

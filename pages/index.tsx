@@ -16,7 +16,6 @@ import { imageSizes, imgUrl, suppressText } from '@/constants/*';
 import { useTranslation } from 'react-i18next';
 import { InfoOutlined, DiscountOutlined } from '@mui/icons-material';
 import Link from 'next/link';
-import Error from '@/pages/_error';
 import { setLocale } from '@/redux/slices/localeSlice';
 
 type Props = {
@@ -27,8 +26,20 @@ let renderCounter: number = 0;
 const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
   console.log(`::: Log Home Render :::: ${renderCounter++}`);
   const { t } = useTranslation();
+  const {
+    cart: { tempId },
+  } = useAppSelector((state) => state);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const dispatch = useAppDispatch();
+
   console.log('element', element);
   console.log('category', categories);
+
+  useEffect(() => {
+    if (isEmpty(tempId)) {
+      // create tempId here if does not exist
+    }
+  }, []);
 
   return (
     <>
@@ -66,6 +77,7 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
           {element.desc && (
             <div className="flex gap-x-1 items-end justify-start mt-4">
               <DiscountOutlined className="text-primary_BG" />
+
               <p
                 suppressHydrationWarning={suppressText}
                 className="text-sm text-gray-500"

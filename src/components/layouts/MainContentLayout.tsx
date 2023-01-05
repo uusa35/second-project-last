@@ -37,7 +37,7 @@ const MainContentLayout: FC<Props> = ({
 
   return (
     <div
-      className={`flex flex-col justify-start items-start w-full lg:w-2/4 xl:w-1/3 relative overflow-hidden`}
+      className={`flex flex-col justify-start items-start w-full lg:w-2/4 xl:w-1/3 lg:relative overflow-hidden`}
     >
       <SideMenu />
       {appSetting.showHeader && <AppHeader />}
