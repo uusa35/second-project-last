@@ -34,6 +34,7 @@ export const appLinks = {
   about: { path: '/about' },
   account: { path: '/account' },
   order: { path: '/order' },
+  trackOrder: { path: '/order/track' },
   login: { path: '/login' },
 };
 

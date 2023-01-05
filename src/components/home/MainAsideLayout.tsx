@@ -69,7 +69,7 @@ const MainAsideLayout: FC<Props> = ({ element }): JSX.Element => {
               <h1 suppressHydrationWarning={suppressText}>{t('search')}</h1>
             </Link>
 
-            <Link scroll={false} href={appLinks.root.path}>
+            <Link scroll={false} href={appLinks.trackOrder.path}>
               <h1 suppressHydrationWarning={suppressText}>
                 {t('track_order')}
               </h1>

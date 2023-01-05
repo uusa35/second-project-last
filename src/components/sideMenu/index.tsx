@@ -115,7 +115,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                   </div>
                 </Link>
 
-                <Link scroll={false} href={appLinks.root.path}>
+                <Link scroll={false} href={appLinks.trackOrder.path}>
                   <div className="flex gap-x-3 pb-7 items-center">
                     <PendingActionsOutlined
                       className={`h-6 w-6 text-primary_BG`}

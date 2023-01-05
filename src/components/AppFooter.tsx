@@ -5,11 +5,9 @@ const AppFooter: FC = (): JSX.Element => {
   return (
     <Suspense>
       <footer
-        className={`relative left-0 bottom-0 py-4 w-full`}
+        className={`fixed w-full lg:w-2/4 xl:w-1/3 h-16 left-0 bottom-0 flex flex-row justify-center items-center text-center py-4 border-amber-500 border-2 bg-blue-100`}
       >
-        <div className="flex justify-center text-gray-500 w-full">
-          <h1> {t('powered_by_queue')} &reg;</h1>
-        </div>
+        <h1> {t('powered_by_queue')} &reg;</h1>
       </footer>
     </Suspense>
   );
