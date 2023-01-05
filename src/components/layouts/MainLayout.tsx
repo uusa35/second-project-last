@@ -1,4 +1,4 @@
-import { FC, ReactNode, useEffect } from 'react';
+import { FC, ReactNode, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import i18n from 'i18next';
 import { useRouter } from 'next/router';
@@ -11,12 +11,10 @@ import { useGetVendorQuery } from '@/redux/api/vendorApi';
 import { AppQueryResult, Branch } from '@/types/queries';
 import { Vendor } from '@/types/index';
 import { setVendor } from '@/redux/slices/vendorSlice';
-import { useTranslation } from 'react-i18next';
-import { first, isEmpty, isNull } from 'lodash';
+import { isEmpty, isNull } from 'lodash';
 import MainAsideLayout from '@/components/home/MainAsideLayout';
 import { useGetBranchesQuery } from '@/redux/api/branchApi';
 import { setBranch } from '@/redux/slices/branchSlice';
-import { array } from 'yup';
 import { setBranches } from '@/redux/slices/branchesSlice';
 const ToastAppContainer = dynamic(
   () => import(`@/components/ToastAppContainer`),

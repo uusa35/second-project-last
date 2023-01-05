@@ -352,11 +352,13 @@
   "work_hours": "ساعات العمل",
   "preorder_availability": "إمكانية الطلب مسبقًا",
   "payment_methods": "وسائل الدفع",
-  "cash_on_delivery": "الدفع عند التسليم",
+  "cash_on_delivery": "الدفع عند الاستلام",
   "feedback": "التقييم",
   "leave_feedback": "اترك تقييم الخدمة",
   "facebook": "فيسبوك",
   "instagram": "انستجرام",
   "twiiter": "تويتر",
-  "yes": "نعم"
+  "yes": "نعم",
+  "track_order" : "تتبع الطلب",
+  "ar" : "ar"
 }

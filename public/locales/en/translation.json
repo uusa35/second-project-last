@@ -347,5 +347,7 @@
   "facebook": "facebook",
   "instagram": "instagram",
   "twiiter": "twiiter",
-  "yes": "yes"
+  "yes": "yes",
+  "track_order" : "track order",
+  "ar" : "ع"
 }

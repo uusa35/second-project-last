@@ -76,14 +76,14 @@ const MainAsideLayout: FC<Props> = ({ element }): JSX.Element => {
             </Link>
           </div>
           <div className={`flex flex-row justify-between items-center w-14`}>
-            <Link scroll={false} href={appLinks.root.path}>
+            <Link scroll={false} href={appLinks.cartIndex.path}>
               <ShoppingBagOutlined />
             </Link>
             <button
               onClick={() => handleChangeLang(otherLang)}
               className={`text-lg font-bold capitalize`}
             >
-              {otherLang}
+              {t(`${otherLang}`)}
             </button>
           </div>
         </div>
@@ -91,7 +91,7 @@ const MainAsideLayout: FC<Props> = ({ element }): JSX.Element => {
           <CustomImage
             src={`${imgUrl(element.logo)}`}
             alt={element.name}
-            className={`relative z-90 object-contain w-32 h-auto shadow-xl`}
+            className={`relative object-contain w-32 h-auto shadow-xl`}
             width={imageSizes.lg}
             height={imageSizes.lg}
           />

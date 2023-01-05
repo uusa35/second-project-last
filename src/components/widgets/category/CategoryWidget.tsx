@@ -13,7 +13,7 @@ const CategoryWidget: FC<Props> = ({ element }) => {
   return (
     <Link
       href={appLinks.productIndex(element.id.toString(), branch.id)}
-      className={`h-60 lg:h-72 shadow-lg rounded-lg`}
+      className={`h-60 lg:h-72 shadow-lg rounded-lg `}
     >
       <div className="relative">
         <div className="relative w-full h-auto overflow-hidden rounded-lg">

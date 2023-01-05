@@ -10,12 +10,23 @@ import HorProductWidget from '@/widgets/product/HorProductWidget';
 import MainHead from '@/components/MainHead';
 import Image from 'next/image';
 import NotFoundImage from '@/appImages/not_found.png';
+import { useTranslation } from 'react-i18next';
+import { useAppDispatch } from '@/redux/hooks';
+import { useEffect } from 'react';
+import { setCurrentModule } from '@/redux/slices/appSettingSlice';
 
 type Props = {
   elements: Product[];
 };
 const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
+  const { t } = useTranslation();
+  const dispatch = useAppDispatch();
   console.log('elements', elements);
+
+  useEffect(() => {
+    dispatch(setCurrentModule(t('product_search_index')));
+  }, []);
+
   return (
     <>
       <MainHead title={`productIndex`} description={`productIndex`} />
