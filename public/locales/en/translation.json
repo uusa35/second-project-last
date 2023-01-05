@@ -357,5 +357,6 @@
   "order_pending": "order pending",
   "delivering_to_your_address": "delivering to your address",
   "call_delivery": "call delivery",
-  "tel:+": "tel:+"
+  "tel:+": "tel:+",
+  "ar" : "ع"
 }

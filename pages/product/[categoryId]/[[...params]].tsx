@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import MainContentLayout from '@/layouts/MainContentLayout';
 import { wrapper } from '@/redux/store';
 import { productApi } from '@/redux/api/productApi';
@@ -11,12 +12,22 @@ import Image from 'next/image';
 import NotFoundImage from '@/appImages/not_found.png';
 import HorProductWidget from '@/widgets/product/HorProductWidget';
 import { AppQueryResult, ProductPagination } from '@/types/queries';
+import { useAppDispatch } from '@/redux/hooks';
+import { setCurrentModule } from '@/redux/slices/appSettingSlice';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   elements: ProductPagination<Product[]>;
 };
 const ProductIndex: NextPage<Props> = ({ elements }): JSX.Element => {
+  const { t } = useTranslation();
+  const dispatch = useAppDispatch();
   console.log('elements', elements);
+
+  useEffect(() => {
+    dispatch(setCurrentModule(t('product_index')));
+  }, []);
+
   return (
     <>
       <MainHead title={`productIndex`} description={`productIndex`} />

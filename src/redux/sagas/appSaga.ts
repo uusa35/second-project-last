@@ -7,7 +7,7 @@ import { Auth, Guest } from '@/types/queries';
 import { appSettingSlice } from '@/redux/slices/appSettingSlice';
 import { lowerCase, snakeCase } from 'lodash';
 import { orderSlice } from '@/redux/slices/orderSlice';
-import { apiLogin, apiLogout, apiVerified, appLinks } from '@/constants/*';
+import { apiLogin, apiLogout, apiVerified } from '@/constants/*';
 import { searchParamsSlice } from '@/redux/slices/searchParamsSlice';
 import { persistor } from '@/redux/store';
 

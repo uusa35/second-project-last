@@ -51,7 +51,6 @@ const MainContentLayout: FC<Props> = ({
             bounce: 5,
             duration: showMotion ? 0.2 : 0,
           }}
-          viewport={{ once: true }}
         >
           {children}
         </motion.div>

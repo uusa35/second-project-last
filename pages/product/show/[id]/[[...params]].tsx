@@ -6,12 +6,23 @@ import { Product } from '@/types/index';
 import { productApi } from '@/redux/api/productApi';
 import { NextPage } from 'next';
 import MainHead from '@/components/MainHead';
+import { useTranslation } from 'react-i18next';
+import { useAppDispatch } from '@/redux/hooks';
+import { useEffect } from 'react';
+import { setCurrentModule } from '@/redux/slices/appSettingSlice';
 
 type Props = {
   element: Product;
 };
 const ProductShow: NextPage<Props> = ({ element }) => {
   console.log('element', element);
+  const { t } = useTranslation();
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(setCurrentModule(element.name));
+  }, [element]);
+
   return (
     <>
       <MainHead
@@ -33,7 +44,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ query, locale }) => {
       const { id, branchId, areaId }: any = query;
-      console.log('the id ------->', id);
       if (!id) {
         return {
           notFound: true,

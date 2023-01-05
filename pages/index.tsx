@@ -25,6 +25,7 @@ import Link from 'next/link';
 import { setLocale } from '@/redux/slices/localeSlice';
 import { selectMethod } from '@/redux/slices/cartSlice';
 import { useRouter } from 'next/router';
+import { setCurrentModule } from '@/redux/slices/appSettingSlice';
 
 type Props = {
   categories: Category[];
@@ -41,13 +42,11 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
   const dispatch = useAppDispatch();
   const router = useRouter();
 
-  console.log('element', element);
-  console.log('category', categories);
-
   useEffect(() => {
     if (isEmpty(tempId)) {
       // create tempId here if does not exist
     }
+    setCurrentModule(t('home'));
   }, []);
 
   const handleSelectMethod = (m: Cart['method']) => {
@@ -60,7 +59,8 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
       {/* SEO Head DEV*/}
       <MainHead title={element.name} mainImage={element.logo} />
       <MainContentLayout>
-        <div>
+        {/*  HomePage Header */}
+        <div className={`py-8`}>
           <div className="flex gap-x-2 justify-between">
             <div className="flex gap-x-2">
               <CustomImage
@@ -91,7 +91,6 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
           {element.desc && (
             <div className="flex gap-x-1 items-end justify-start mt-4">
               <DiscountOutlined className="text-primary_BG" />
-
               <p
                 suppressHydrationWarning={suppressText}
                 className="text-sm text-gray-500"
@@ -101,16 +100,18 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
             </div>
           )}
         </div>
-        <div className="flex flex-1 w-full flex-col md:flex-row justify-between items-center md:space-x-8">
+        <div className="flex flex-1 w-full flex-col md:flex-row justify-between items-center">
           <button
-            className={`${submitBtnClass} bg-opacity-60`}
+            className={`${submitBtnClass} bg-opacity-60 md:ltr:mr-6 md:rtl:ml-6`}
             onClick={() => handleSelectMethod(`delivery`)}
+            suppressHydrationWarning={suppressText}
           >
             {t('delivery')}
           </button>
           <button
             className={`${submitBtnClass} bg-opacity-60`}
             onClick={() => handleSelectMethod(`pickup`)}
+            suppressHydrationWarning={suppressText}
           >
             {t('pickup')}
           </button>
