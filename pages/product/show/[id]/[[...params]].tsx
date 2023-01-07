@@ -114,20 +114,29 @@ const ProductShow: NextPage<Props> = ({ element }) => {
                 <p>{s.title}</p>
               </div>
               {map(s.choices, (c, i) => (
-                <div key={c.id} className="flex items-center">
+                <div key={c.id} className="flex items-center w-full">
                   <input
                     id={c.id.toString()}
                     name={s.title}
-                    type="radio"
+                    type="checkbox"
                     // defaultChecked={c.id === 'email'}
-                    className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                    className="h-4 w-4 border-gray-300 ring-primary_BG-600 focus:ring-primary_BG-500"
                   />
-                  <label
-                    htmlFor={c.name}
-                    className="ml-3 block text-sm font-medium text-gray-700"
+                  <div
+                    className={`flex w-full flex-1 justify-between items-center`}
                   >
-                    {c.name}
-                  </label>
+                    <div>
+                      <label
+                        htmlFor={c.name}
+                        className="ml-3 block text-sm font-medium text-gray-700"
+                      >
+                        {c.name}
+                      </label>
+                    </div>
+                    <div>
+                      {c.price} {t(`kd`)}
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>

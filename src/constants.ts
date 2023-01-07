@@ -9,6 +9,7 @@ export const appLinks = {
   home: { path: '/home' },
   productIndex: (
     categoryId: string,
+    slug: string,
     branch_id?: string | null,
     areaId?: string,
     page?: string,
@@ -16,7 +17,7 @@ export const appLinks = {
   ) =>
     `/product/${categoryId}?branch_id=${branch_id}&area_id=${
       areaId ?? ``
-    }&page=${page ?? `1`}&limit=${limit ?? `10`}`,
+    }&page=${page ?? `1`}&limit=${limit ?? `10`}&slug=${slug}`,
   productSearchIndex: (branchId: string, query?: string, areaId?: string) =>
     `/product/?key=${query ?? ``}&branch_id=${branchId}&areaId=${areaId ?? ``}`,
   productShow: (

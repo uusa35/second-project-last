@@ -4,6 +4,7 @@ import CustomImage from '@/components/customImage';
 import { appLinks, imageSizes, imgUrl } from '@/constants/*';
 import Link from 'next/link';
 import { useAppSelector } from '@/redux/hooks';
+import { kebabCase, lowerCase } from 'lodash';
 
 type Props = {
   element: Category;
@@ -12,7 +13,11 @@ const CategoryWidget: FC<Props> = ({ element }) => {
   const { branch } = useAppSelector((state) => state);
   return (
     <Link
-      href={appLinks.productIndex(element.id.toString(), branch.id)}
+      href={appLinks.productIndex(
+        element.id.toString(),
+        kebabCase(lowerCase(element.name)),
+        branch.id
+      )}
       className={`h-60 lg:h-72 shadow-lg rounded-lg `}
     >
       <div className="relative">
