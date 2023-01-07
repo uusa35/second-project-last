@@ -369,5 +369,11 @@
   "delivering_to_your_address": "سيصل إلى عنوانك",
   "call_delivery": "مكالمة التوصيل",
   "tel:+": "تليفون: +",
-  "ar" : "ar"
+  "ar" : "ar",
+  "payment_by_cards": "الدفع الإلكتروني متاح",
+  "search_products" : "بحث المنتجات",
+  "powered_by_queue" : "بدعم من كيو",
+  "pickup" : "استلام",
+  "delivery" : "توصيل",
+  "earliest_delivery" : "التوصيل خلال"
 }

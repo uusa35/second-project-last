@@ -358,5 +358,11 @@
   "delivering_to_your_address": "delivering to your address",
   "call_delivery": "call delivery",
   "tel:+": "tel:+",
-  "ar" : "ع"
+  "ar" : "ع",
+  "payment_by_cards" : "payment by cards",
+  "search_products" : "search products",
+  "powered_by_queue" : "powered by queue",
+  "pickup" : "pickup",
+  "delivery" : "delivery",
+  "earliest_delivery" : "earliest delivery"
 }

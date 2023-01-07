@@ -6,6 +6,7 @@ import { FC, Suspense } from 'react';
 import { useRouter } from 'next/router';
 import { isNull } from 'lodash';
 import { imageSizes, suppressText } from '../constants';
+import CustomImage from '@/components/customImage';
 
 type Props = {
   backHome: boolean;
@@ -51,7 +52,7 @@ const BackBtn: FC<Props> = ({
           }
           className={`flex justify-start items-center pt-1 w-20`}
         >
-          <Image
+          <CustomImage
             src={router.locale === 'ar' ? RightArrow.src : LeftArrow.src}
             fill={false}
             width={imageSizes.xs}

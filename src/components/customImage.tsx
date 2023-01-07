@@ -1,35 +1,35 @@
 import Image from 'next/image';
 import React, { FC, useEffect, useState } from 'react';
 import NoFoundImage from '@/appImages/not_found.png';
+import { imageSizes } from '@/constants/*';
 
 type Props = {
   src: string;
   alt: string;
   [x: string]: any;
+  fill?: boolean;
 };
 
 const CustomImage: FC<Props> = ({
   src = '',
   alt = 'img',
+  fill = false,
   ...rest
 }): JSX.Element => {
-  const [error, setError] = useState<boolean>(false);
+  const [imgSrc, setImageSrc] = useState<string>(src);
 
   useEffect(() => {
-    setError(false);
+    setImageSrc(src);
   }, [src]);
-
-  // useEffect(()=>{
-  //   console.log(error,src)
-  // },[error])
 
   return (
     <Image
       {...rest}
       alt={alt}
-      src={error ? NoFoundImage.src : src}
+      src={imgSrc}
+      fill={fill}
       onError={() => {
-        setError(true);
+        setImageSrc(NoFoundImage.src);
       }}
     />
   );

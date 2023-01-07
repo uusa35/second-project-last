@@ -9,13 +9,15 @@ import MainHead from '@/components/MainHead';
 import { vendorApi } from '@/redux/api/vendorApi';
 import { Cart, Vendor } from '@/types/index';
 import { categoryApi } from '@/redux/api/categoryApi';
-import { isEmpty, map } from 'lodash';
+import { isEmpty, isNull, map } from 'lodash';
 import CategoryWidget from '@/widgets/category/CategoryWidget';
 import CustomImage from '@/components/customImage';
 import {
   appLinks,
   imageSizes,
   imgUrl,
+  inputFieldClass,
+  normalBtnClass,
   submitBtnClass,
   suppressText,
 } from '@/constants/*';
@@ -26,6 +28,9 @@ import { setLocale } from '@/redux/slices/localeSlice';
 import { selectMethod } from '@/redux/slices/cartSlice';
 import { useRouter } from 'next/router';
 import { setCurrentModule } from '@/redux/slices/appSettingSlice';
+import MotorIcon from '@/appIcons/motor.svg';
+import TruckIcon from '@/appIcons/trunk.svg';
+import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 
 type Props = {
   categories: Category[];
@@ -37,6 +42,7 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
   const { t } = useTranslation();
   const {
     cart: { tempId },
+    area,
   } = useAppSelector((state) => state);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const dispatch = useAppDispatch();
@@ -54,6 +60,8 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
     router.push(appLinks.cartSelectMethod.path);
   };
 
+  console.log(element);
+
   return (
     <>
       {/* SEO Head DEV*/}
@@ -61,18 +69,18 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
       <MainContentLayout>
         {/*  HomePage Header */}
         <div className={`py-8`}>
-          <div className="flex gap-x-2 justify-between">
-            <div className="flex gap-x-2">
+          <div className="flex gap-x-2 justify-between ">
+            <div className="flex flex-grow gap-x-2">
               <CustomImage
                 width={imageSizes.xs}
                 height={imageSizes.xs}
-                className="rounded-md w-full h-full max-w-sm max-h-28"
+                className="rounded-md w-1/3 h-full max-w-sm max-h-28"
                 alt={element.name}
                 src={imgUrl(element.logo)}
               />
-              <div>
+              <div className={`flex flex-col w-full `}>
                 <h1 className="font-bold text-lg mb-2 ">{element.name}</h1>
-                <div className="text-sm text-gray-500">
+                <div className="text-sm text-gray-500 space-y-1">
                   <p suppressHydrationWarning={suppressText}>
                     {t('payment_by_cards')}
                   </p>
@@ -89,34 +97,92 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
           </div>
 
           {element.desc && (
-            <div className="flex gap-x-1 items-end justify-start mt-4">
+            <div className="flex gap-x-1 justify-start items-start mt-4">
               <DiscountOutlined className="text-primary_BG" />
               <p
                 suppressHydrationWarning={suppressText}
-                className="text-sm text-gray-500"
+                className="text-sm text-gray-500 px-2"
               >
                 {element.desc}
               </p>
             </div>
           )}
         </div>
-        <div className="flex flex-1 w-full flex-col md:flex-row justify-between items-center">
+        {/* Delivery / Pickup Btns */}
+        <div className="flex flex-1 w-full flex-col md:flex-row justify-between items-center my-2">
           <button
-            className={`${submitBtnClass} bg-opacity-60 md:ltr:mr-6 md:rtl:ml-6`}
+            className={`${normalBtnClass}  md:ltr:mr-3 md:rtl:ml-3`}
             onClick={() => handleSelectMethod(`delivery`)}
             suppressHydrationWarning={suppressText}
           >
             {t('delivery')}
           </button>
           <button
-            className={`${submitBtnClass} bg-opacity-60`}
+            className={`${normalBtnClass}   md:ltr:mr-3 md:rtl:ml-3`}
             onClick={() => handleSelectMethod(`pickup`)}
             suppressHydrationWarning={suppressText}
           >
             {t('pickup')}
           </button>
         </div>
-        <div className="mt-4 py-4 grid sm:grid-cols-3 lg:grid-cols-2 gap-6">
+        {!isNull(area.id) && (
+          <div className="flex flex-1 w-full flex-col md:flex-row justify-between items-center mt-4 mb-2">
+            <div
+              className={`flex flex-grow justify-start items-center md:ltr:mr-3 md:rtl:ml-3`}
+            >
+              <CustomImage
+                src={MotorIcon.src}
+                alt={t(`deliver_to`)}
+                width={imageSizes.xs}
+                height={imageSizes.xs}
+                className="h-8 w-8 ltr:mr-3 rtl:ml-3"
+              />
+              <h1 className={`pt-2`}>{t('delivery_to')}</h1>
+            </div>
+            <div className={`md:ltr:mr-3 md:rtl:ml-3 pt-2 text-primary_BG`}>
+              {area.name}
+            </div>
+          </div>
+        )}
+        <div className="flex flex-1 w-full flex-col md:flex-row justify-between items-center mt-2 mb-4">
+          <div
+            className={`flex flex-grow justify-start items-center md:ltr:mr-3 md:rtl:ml-3`}
+          >
+            <CustomImage
+              src={TruckIcon.src}
+              alt={t(`deliver_to`)}
+              width={imageSizes.xs}
+              height={imageSizes.xs}
+              className="h-8 w-8 ltr:mr-3 rtl:ml-3"
+            />
+            <h1 className={`pt-2`}>{t('earliest_delivery')}</h1>
+          </div>
+          <div className={`md:ltr:mr-3 md:rtl:ml-3 pt-2 text-primary_BG`}>
+            {element.DeliveryTime}
+          </div>
+        </div>
+        {/* Search Input */}
+        <div className={`flex flex-1 w-full flex-grow my-2`}>
+          <div className={`w-full`}>
+            <div className="relative mt-1 rounded-md shadow-sm">
+              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                <MagnifyingGlassIcon
+                  className="h-5 w-5 text-gray-400"
+                  aria-hidden="true"
+                />
+              </div>
+              <input
+                type="search"
+                name="search"
+                id="search"
+                className="block w-full rounded-md  pl-10 border-none bg-gray-100"
+                placeholder={`${t(`search_products`)}`}
+              />
+            </div>
+          </div>
+        </div>
+        {/* Categories List */}
+        <div className="mt-4 py-4 grid sm:grid-cols-3 lg:grid-cols-2 gap-6 border-t border-stone-100">
           {!isEmpty(categories) &&
             map(categories, (c, i) => <CategoryWidget element={c} key={i} />)}
         </div>

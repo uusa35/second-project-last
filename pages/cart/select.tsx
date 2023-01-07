@@ -5,6 +5,7 @@ import { NextPage } from 'next';
 import { useGetBranchesQuery } from '@/redux/api/branchApi';
 import { useAppSelector } from '@/redux/hooks';
 import { useTranslation } from 'react-i18next';
+import { AppQueryResult } from '@/types/queries';
 
 const SelectMethod: NextPage = (): JSX.Element => {
   const { t } = useTranslation();
@@ -12,7 +13,10 @@ const SelectMethod: NextPage = (): JSX.Element => {
     locale: { lang },
     branches,
   } = useAppSelector((state) => state);
-  const { data: locations, isLoading } = useGetLocationsQuery();
+  const { data: locations, isLoading } = useGetLocationsQuery<{
+    data: AppQueryResult<Location[]>;
+    isLoading: boolean;
+  }>({ lang });
 
   if (isLoading) {
     return <LoadingSpinner />;
