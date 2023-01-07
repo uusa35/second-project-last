@@ -6,14 +6,15 @@ import { imageSizes } from '@/constants/*';
 type Props = {
   src: string;
   alt: string;
-  [x: string]: any;
+  className: string;
   fill?: boolean;
 };
 
 const CustomImage: FC<Props> = ({
-  src = '',
+  src,
   alt = 'img',
   fill = false,
+  className,
   ...rest
 }): JSX.Element => {
   const [imgSrc, setImageSrc] = useState<string>(src);
@@ -24,7 +25,6 @@ const CustomImage: FC<Props> = ({
 
   return (
     <Image
-      {...rest}
       alt={alt}
       src={imgSrc}
       fill={fill}
@@ -32,6 +32,8 @@ const CustomImage: FC<Props> = ({
         console.log('e image', e);
         setImageSrc(NoFoundImage.src);
       }}
+      className={className}
+      {...rest}
     />
   );
 };
