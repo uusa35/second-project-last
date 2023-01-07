@@ -34,7 +34,7 @@ const BranchIndex: NextPage<Props> = ({ elements }) => {
             <Link href={`#`} onClick={() => dispatch(setBranch(b))} key={i}>
               <p className='font-semibold pb-3' suppressHydrationWarning={suppressText}>{t(b.name)}</p>
               <div className='w-full h-36 rounded-md'>
-                {/* <GoogleMapReact
+                <GoogleMapReact
                 bootstrapURLKeys={{
                   // remove the key if you want to fork
                   key: 'AIzaSyChibV0_W_OlSRJg2GjL8TWVU8CzpRHRAE',
@@ -47,7 +47,7 @@ const BranchIndex: NextPage<Props> = ({ elements }) => {
                 }}
                 defaultZoom={11}
               >  
-              </GoogleMapReact> */}
+              </GoogleMapReact>
               </div>
               <div className="flex justify-between my-5 items-center">
                 <p className="text-primary_BG text-lg font-semibold" suppressHydrationWarning={suppressText}>{t(b.location)}</p>

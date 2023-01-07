@@ -15,14 +15,15 @@ import { AppQueryResult, ProductPagination } from '@/types/queries';
 import { useAppDispatch } from '@/redux/hooks';
 import { setCurrentModule } from '@/redux/slices/appSettingSlice';
 import { useTranslation } from 'react-i18next';
-
+import {useRouter} from 'next/router';
 type Props = {
   elements: ProductPagination<Product[]>;
 };
 const ProductIndex: NextPage<Props> = ({ elements }): JSX.Element => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-  console.log('elements', elements);
+  const router = useRouter();
+  console.log('elements', elements, {router});
 
   useEffect(() => {
     dispatch(setCurrentModule(t('product_index')));
@@ -32,7 +33,7 @@ const ProductIndex: NextPage<Props> = ({ elements }): JSX.Element => {
     <>
       <MainHead title={`productIndex`} description={`productIndex`} />
       <MainContentLayout>
-        <h1 suppressHydrationWarning={suppressText}>ProductIndex</h1>
+        <h1 suppressHydrationWarning={suppressText}></h1>
         <div className="mt-4 p-4 grid sm:grid-cols-3 lg:grid-cols-2 gap-6">
           {isEmpty(elements.products) && (
             <Image

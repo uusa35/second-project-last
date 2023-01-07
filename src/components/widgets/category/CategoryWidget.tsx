@@ -12,7 +12,10 @@ const CategoryWidget: FC<Props> = ({ element }) => {
   const { branch } = useAppSelector((state) => state);
   return (
     <Link
-      href={appLinks.productIndex(element.id.toString(), branch.id)}
+      href={{
+        pathname: `${appLinks.productIndex(element.id.toString(), branch.id)}`,
+        query: {elementName: element.name}
+      }}
       className={`h-60 lg:h-72 shadow-lg rounded-lg `}
     >
       <div className="relative">
