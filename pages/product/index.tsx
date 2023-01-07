@@ -34,23 +34,15 @@ const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
       <MainHead title={`productIndex`} description={`productIndex`} />
       <MainContentLayout>
         <div className={`px-4`}>
-          <h1 suppressHydrationWarning={suppressText}>ProductSearchIndex</h1>
-          <div className="mt-4 p-4 grid sm:grid-cols-3 lg:grid-cols-2 gap-6">
-            {isEmpty(elements) && (
-              <Image
-                src={NotFoundImage.src}
-                alt={`not_found`}
-                width={imageSizes.sm}
-                height={imageSizes.sm}
-                className={`w-60 h-auto`}
-              />
-            )}
-            {map(elements, (p, i) => (
-              <HorProductWidget element={p} key={i} />
-            ))}
-          </div>
-        </div>
-        <div className="my-4 p-4">
+          <div className={`mb-5 py-1 ${inputFieldClass} flex items-center`}>
+              <Image src={SearchIcon} alt='search' />
+              <input
+                  type="text"
+                  placeholder={`search`}
+                  className={`m-0 py-0 pt-1 ${inputFieldClass} border-0`}
+              ></input>
+            </div>
+          <div className="my-4 p-4">
           {isEmpty(elements) && (
             <Image
               src={NotFoundImage.src}
@@ -60,18 +52,12 @@ const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
               className={`w-60 h-auto`}
             />
           )}
-          <div className={`mb-5 py-1 ${inputFieldClass} flex items-center`}>
-            <Image src={SearchIcon} alt='search' />
-            <input
-                type="text"
-                placeholder={`Search`}
-                className={`m-0 py-0 pt-1 ${inputFieldClass} border-0`}
-            ></input>
-          </div>
           {map(elements, (p, i) => (
             <VerProductWidget element={p} key={i} />
           ))}
         </div>
+        </div>
+       
       </MainContentLayout>
     </>
   );
