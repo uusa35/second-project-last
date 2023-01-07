@@ -16,7 +16,7 @@ const HorProductWidget: FC<Props> = ({ element }): JSX.Element => {
     ? imgUrl(first(element.img).thumbnail)
     : NoFoundImage.src;
 
-  console.log('element', element);
+  // console.log('element', element);
   return (
     <Link
       href={`${appLinks.productShow(

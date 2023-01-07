@@ -7,7 +7,7 @@ import { NextPage } from 'next';
 import { apiSlice } from '@/redux/api';
 import MainHead from '@/components/MainHead';
 import { imageSizes, suppressText } from '@/constants/*';
-import { isEmpty, map } from 'lodash';
+import { isEmpty, map, replace } from 'lodash';
 import Image from 'next/image';
 import NotFoundImage from '@/appImages/not_found.png';
 import HorProductWidget from '@/widgets/product/HorProductWidget';
@@ -15,12 +15,12 @@ import { AppQueryResult, ProductPagination } from '@/types/queries';
 import { useAppDispatch } from '@/redux/hooks';
 import { setCurrentModule } from '@/redux/slices/appSettingSlice';
 import { useTranslation } from 'react-i18next';
-import {useRouter} from 'next/router';
 import VerProductWidget from '@/components/widgets/product/VerProductWidget';
 import {inputFieldClass} from '@/constants/*';
 import SearchIcon from '@/appIcons/search.svg';
 import Menu from '@/appIcons/menu.svg';
 import List from '@/appIcons/list.svg';
+import { useRouter } from 'next/router';
 type Props = {
   elements: ProductPagination<Product[]>;
 };
@@ -36,11 +36,16 @@ const changeStyle=()=>{
     SetIcon(!Icon)
   }
   console.log('elements', elements, {router});
+  const { query } = useRouter();
+  console.log('the query', query.slug);
 
   useEffect(() => {
-    dispatch(setCurrentModule(t('product_index')));
+    if (query.slug) {
+      dispatch(setCurrentModule(replace(query.slug, '-', ' ')));
+    } else {
+      dispatch(setCurrentModule(`product_index`));
+    }
   }, []);
-
   return (
     <>
       <MainHead title={`productIndex`} description={`productIndex`} />
