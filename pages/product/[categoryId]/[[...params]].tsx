@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import MainContentLayout from '@/layouts/MainContentLayout';
 import { wrapper } from '@/redux/store';
 import { productApi } from '@/redux/api/productApi';
@@ -16,6 +16,11 @@ import { useAppDispatch } from '@/redux/hooks';
 import { setCurrentModule } from '@/redux/slices/appSettingSlice';
 import { useTranslation } from 'react-i18next';
 import {useRouter} from 'next/router';
+import VerProductWidget from '@/components/widgets/product/VerProductWidget';
+import {inputFieldClass} from '@/constants/*';
+import SearchIcon from '@/appIcons/search.svg';
+import Menu from '@/appIcons/menu.svg';
+import List from '@/appIcons/list.svg';
 type Props = {
   elements: ProductPagination<Product[]>;
 };
@@ -23,6 +28,13 @@ const ProductIndex: NextPage<Props> = ({ elements }): JSX.Element => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const [IsMenue,setIsMenue]=useState(true)
+  const [Icon,SetIcon]=useState(true)
+// change menue view to list view
+const changeStyle=()=>{
+    setIsMenue(!IsMenue)
+    SetIcon(!Icon)
+  }
   console.log('elements', elements, {router});
 
   useEffect(() => {
@@ -34,19 +46,34 @@ const ProductIndex: NextPage<Props> = ({ elements }): JSX.Element => {
       <MainHead title={`productIndex`} description={`productIndex`} />
       <MainContentLayout>
         <h1 suppressHydrationWarning={suppressText}></h1>
-        <div className="mt-4 p-4 grid sm:grid-cols-3 lg:grid-cols-2 gap-6">
-          {isEmpty(elements.products) && (
-            <Image
-              src={NotFoundImage.src}
-              alt={`not_found`}
-              width={imageSizes.sm}
-              height={imageSizes.sm}
-              className={`w-60 h-auto`}
-            />
-          )}
-          {map(elements.products, (p, i) => (
-            <HorProductWidget element={p} key={i} />
-          ))}
+        <div className={`px-4`}>
+          <div className={`mb-5 py-1 ${inputFieldClass} flex items-center`}>
+              <Image src={SearchIcon} alt='search' />
+              <input
+                  type="text"
+                  placeholder={`search`}
+                  className={`m-0 py-0 pt-1 ${inputFieldClass} border-0`}
+              ></input>
+                <button onClick={changeStyle}>{Icon ? 
+                <Image src={Menu} alt='menu' className={'w-8 h-8'} />
+              : <Image src={List} alt='menu' className={'w-8 h-8'} />}
+                </button>
+            </div>
+          <div className={IsMenue? 'mt-4 p-4 grid sm:grid-cols-3 lg:grid-cols-2 gap-6': 'my-4 p-4'}>
+            {isEmpty(elements.products) && (
+              <Image
+                src={NotFoundImage.src}
+                alt={`not_found`}
+                width={imageSizes.sm}
+                height={imageSizes.sm}
+                className={`w-60 h-auto`}
+              />
+            )}
+            
+            {map(elements.products, (p: Product, i) => (
+             IsMenue ? <HorProductWidget element={p} key={i} /> : <VerProductWidget element={p} key={i}/>
+            ))}
+          </div>
         </div>
       </MainContentLayout>
     </>

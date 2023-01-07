@@ -45,6 +45,7 @@ export const isClient = typeof window !== undefined;
 export const isLocal = true;
 export const inputFieldClass = `rounded-md px-3 py-2.5 mb-2 text-sm bg-gray-100 outline-none w-full border-none capitalize`;
 export const submitBtnClass = `w-full bg-gradient-to-tl from-primary_BG via-primary_BG to-primaryLight rounded-md text-sm text-white py-4 my-2 cursor-pointer shadow-lg capitalize disabled:from-gray-200 disabled:to-gray-400 drop-shadow-md`;
+export const normalBtnClass = `w-full rounded-md text-sm text-white py-4 my-2 cursor-pointer shadow-lg capitalize disabled:from-gray-200 disabled:to-gray-400 drop-shadow-md text-black border border-stone-400 hover:bg-stone-100`;
 export const subCategoryBtnClass = `flex w-full flex-row items-center justify-between border border-gray-200 rounded-lg p-4 shadow-md capitalize
                   rtl:bg-gradient-to-r ltr:bg-gradient-to-l from-gray-100 via-gray-200 to-gray-300 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-gray-300 drop-shadow-md
                   `;

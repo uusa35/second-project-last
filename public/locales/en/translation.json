@@ -359,5 +359,11 @@
   "call_delivery": "call delivery",
   "tel:+": "tel:+",
   "ar" : "ع",
-  "product_search_index": "search"
+  "payment_by_cards" : "payment by cards",
+  "search_products" : "search products",
+  "powered_by_queue" : "powered by queue",
+  "pickup" : "pickup",
+  "delivery" : "delivery",
+  "earliest_delivery" : "earliest delivery"
+
 }

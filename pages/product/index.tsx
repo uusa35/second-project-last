@@ -33,6 +33,23 @@ const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
     <>
       <MainHead title={`productIndex`} description={`productIndex`} />
       <MainContentLayout>
+        <div className={`px-4`}>
+          <h1 suppressHydrationWarning={suppressText}>ProductSearchIndex</h1>
+          <div className="mt-4 p-4 grid sm:grid-cols-3 lg:grid-cols-2 gap-6">
+            {isEmpty(elements) && (
+              <Image
+                src={NotFoundImage.src}
+                alt={`not_found`}
+                width={imageSizes.sm}
+                height={imageSizes.sm}
+                className={`w-60 h-auto`}
+              />
+            )}
+            {map(elements, (p, i) => (
+              <HorProductWidget element={p} key={i} />
+            ))}
+          </div>
+        </div>
         <div className="my-4 p-4">
           {isEmpty(elements) && (
             <Image

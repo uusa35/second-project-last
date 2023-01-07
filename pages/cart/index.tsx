@@ -1,21 +1,30 @@
 import MainContentLayout from '@/layouts/MainContentLayout';
 import { NextPage } from 'next';
-import { useAppSelector } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useTranslation } from 'react-i18next';
+import { useEffect } from 'react';
+import { setCurrentModule } from '@/redux/slices/appSettingSlice';
 
-const SelectMethod: NextPage = (): JSX.Element => {
+const CartIndex: NextPage = (): JSX.Element => {
   const { t } = useTranslation();
   const {
     locale: { lang },
     branches,
   } = useAppSelector((state) => state);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(setCurrentModule(t('cart_index')));
+  }, []);
 
   return (
     <MainContentLayout>
-      <h1>{t('cart_index')}</h1>
-      <div>cartIndex</div>
+      <div className={`px-4`}>
+        <h1>{t('cart_index')}</h1>
+        <div>cartIndex</div>
+      </div>
     </MainContentLayout>
   );
 };
 
-export default SelectMethod;
+export default CartIndex;

@@ -370,5 +370,10 @@
   "call_delivery": "مكالمة التوصيل",
   "tel:+": "تليفون: +",
   "ar" : "ar",
-  "product_search_index": "بحث"
+  "payment_by_cards": "الدفع الإلكتروني متاح",
+  "search_products" : "بحث المنتجات",
+  "powered_by_queue" : "بدعم من كيو",
+  "pickup" : "استلام",
+  "delivery" : "توصيل",
+  "earliest_delivery" : "التوصيل خلال"
 }

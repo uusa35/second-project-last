@@ -63,7 +63,7 @@ export interface Auth {
 }
 
 export interface Area {
-  id: string | number;
+  id: string | number | null;
   name: string;
 }
 
