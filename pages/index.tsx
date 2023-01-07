@@ -52,7 +52,7 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
     if (isEmpty(tempId)) {
       // create tempId here if does not exist
     }
-    setCurrentModule(t('home'));
+    dispatch(setCurrentModule(t('home')));
   }, []);
 
   const handleSelectMethod = (m: Cart['method']) => {
@@ -68,7 +68,7 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
       <MainHead title={element.name} mainImage={element.logo} />
       <MainContentLayout>
         {/*  HomePage Header */}
-        <div className={`py-8`}>
+        <div className={`py-8 px-4`}>
           <div className="flex gap-x-2 justify-between ">
             <div className="flex flex-grow gap-x-2">
               <CustomImage
@@ -126,7 +126,7 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
           </button>
         </div>
         {!isNull(area.id) && (
-          <div className="flex flex-1 w-full flex-col md:flex-row justify-between items-center mt-4 mb-2">
+          <div className="flex flex-1 w-full flex-row justify-between items-center mt-4 mb-2">
             <div
               className={`flex flex-grow justify-start items-center md:ltr:mr-3 md:rtl:ml-3`}
             >
@@ -144,7 +144,7 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
             </div>
           </div>
         )}
-        <div className="flex flex-1 w-full flex-col md:flex-row justify-between items-center mt-2 mb-4">
+        <div className="flex flex-1 w-full flex-row justify-between items-center mt-2 mb-4">
           <div
             className={`flex flex-grow justify-start items-center md:ltr:mr-3 md:rtl:ml-3`}
           >

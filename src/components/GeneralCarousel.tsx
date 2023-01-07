@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import Carousel from 'react-material-ui-carousel';
 import Image from 'next/image';
 import { map } from 'lodash';
-import ImageNotFound from '@/appImages/image_not_found.png';
+import ImageNotFound from '@/appImages/not_found.png';
 import { imageSizes, suppressText } from '../constants';
 import { useTranslation } from 'react-i18next';
 import LogoImage from '@/appImages/logo.png';
@@ -54,8 +54,6 @@ const GeneralCarousel: FC<Props> = ({
               width={imageSizes.xs}
               height={imageSizes.xs}
               suppressHydrationWarning={suppressText}
-              placeholder={`blur`}
-              blurDataURL={`./src/assets/images/logo.png`}
             />
           </div>
         ) : (

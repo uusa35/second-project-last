@@ -13,9 +13,9 @@ import GoogleMapReact from 'google-map-react';
 import Phone from '@/appIcons/phone.svg';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
-import {suppressText, submitBtnClass} from '@/constants/*';
-
-
+import { suppressText, submitBtnClass } from '@/constants/*';
+import { useEffect } from 'react';
+import { setCurrentModule } from '@/redux/slices/appSettingSlice';
 
 type Props = {
   elements: Branch[];
@@ -23,17 +23,29 @@ type Props = {
 const BranchIndex: NextPage<Props> = ({ elements }) => {
   console.log('elements', elements);
   const dispatch = useAppDispatch();
-  const {t} = useTranslation();
+  const { t } = useTranslation();
+
+  useEffect(() => {
+    dispatch(setCurrentModule(t('delivery_or_pickup')));
+  }, []);
+
   return (
     <>
       <MainHead title={`branchIndex`} description={`branchIndex`} />
       <MainContentLayout>
-        <>
-        <h4 className='text-center text-primary_BG font-semibold pt-2'>{t('our_branches')}</h4>
-        {map(elements, (b, i) => (
+        <div className={`px-4`}>
+          <h4 className="text-center text-primary_BG font-semibold pt-2">
+            {t('our_branches')}
+          </h4>
+          {map(elements, (b, i) => (
             <Link href={`#`} onClick={() => dispatch(setBranch(b))} key={i}>
-              <p className='font-semibold pb-3' suppressHydrationWarning={suppressText}>{t(b.name)}</p>
-              <div className='w-full h-36 rounded-md'>
+              <p
+                className="font-semibold pb-3"
+                suppressHydrationWarning={suppressText}
+              >
+                {t(b.name)}
+              </p>
+              <div className="w-full h-36 rounded-md">
                 {/* <GoogleMapReact
                 bootstrapURLKeys={{
                   // remove the key if you want to fork
@@ -50,23 +62,36 @@ const BranchIndex: NextPage<Props> = ({ elements }) => {
               </GoogleMapReact> */}
               </div>
               <div className="flex justify-between my-5 items-center">
-                <p className="text-primary_BG text-lg font-semibold" suppressHydrationWarning={suppressText}>{t(b.location)}</p>
+                <p
+                  className="text-primary_BG text-lg font-semibold"
+                  suppressHydrationWarning={suppressText}
+                >
+                  {t(b.location)}
+                </p>
                 <div className="flex rounded-2xl bg-LightGray py-1 px-5 ltr:ml-2 rtl:mr-2">
-                    <Image src={Phone} alt='phone' className="ltr:mr-2 rtl:ml-2 h-5 items-center"/>
-                    <p className="whitespace-nowrap">{b.mobile}</p>
+                  <Image
+                    src={Phone}
+                    alt="phone"
+                    className="ltr:mr-2 rtl:ml-2 h-5 items-center"
+                  />
+                  <p className="whitespace-nowrap">{b.mobile}</p>
                 </div>
               </div>
             </Link>
           ))}
-           <div className='py-2'>
+          <div className="py-2">
             <button className={`${submitBtnClass}`}>
-              <div className='flex justify-center items-center'>
-                <p className='text-white px-2' suppressHydrationWarning={suppressText}>{t('send_feedback')}</p>
+              <div className="flex justify-center items-center">
+                <p
+                  className="text-white px-2"
+                  suppressHydrationWarning={suppressText}
+                >
+                  {t('send_feedback')}
+                </p>
               </div>
             </button>
           </div>
-        </>
-        
+        </div>
       </MainContentLayout>
     </>
   );

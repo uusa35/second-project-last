@@ -5,7 +5,7 @@ import { wrapper } from '@/redux//store';
 import 'react-loading-skeleton/dist/skeleton.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import MainLayout from '../src/components/layouts/MainLayout';
+import MainLayout from '@/components/layouts/MainLayout';
 import 'src/i18n/config';
 import 'react-toastify/dist/ReactToastify.css';
 import '@/styles//galenderStyle.css';

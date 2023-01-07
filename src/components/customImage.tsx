@@ -28,7 +28,8 @@ const CustomImage: FC<Props> = ({
       alt={alt}
       src={imgSrc}
       fill={fill}
-      onError={() => {
+      onError={(e) => {
+        console.log('e image', e);
         setImageSrc(NoFoundImage.src);
       }}
     />
