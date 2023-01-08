@@ -375,5 +375,6 @@
   "powered_by_queue" : "بدعم من كيو",
   "pickup" : "استلام",
   "delivery" : "توصيل",
-  "earliest_delivery" : "التوصيل خلال"
+  "earliest_delivery" : "التوصيل خلال",
+  "must_select_min_and_max" : "يجب اختيار اقل كمية {{min}} واقصى كمية {{max}}"
 }

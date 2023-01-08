@@ -46,7 +46,7 @@ const HorProductWidget: FC<Props> = ({ element }): JSX.Element => {
               {element.name}
             </p>
             <p className="relative flex-none  text-lg font-semibold text-white capitalize">
-              {element.price} {t(`kd`)}
+              {element.price} {t(`kwd`)}
             </p>
           </div>
         </div>

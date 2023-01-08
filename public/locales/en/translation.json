@@ -364,5 +364,6 @@
   "powered_by_queue" : "powered by queue",
   "pickup" : "pickup",
   "delivery" : "delivery",
-  "earliest_delivery" : "earliest delivery"
+  "earliest_delivery" : "earliest delivery",
+  "must_select_min_and_max" : "must choose min {{min}} qty or {{max}} qty."
 }

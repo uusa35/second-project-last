@@ -107,84 +107,85 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
               </p>
             </div>
           )}
-        </div>
-        {/* Delivery / Pickup Btns */}
-        <div className="flex flex-1 w-full flex-col md:flex-row justify-between items-center my-2">
-          <button
-            className={`${normalBtnClass}  md:ltr:mr-3 md:rtl:ml-3`}
-            onClick={() => handleSelectMethod(`delivery`)}
-            suppressHydrationWarning={suppressText}
-          >
-            {t('delivery')}
-          </button>
-          <button
-            className={`${normalBtnClass}   md:ltr:mr-3 md:rtl:ml-3`}
-            onClick={() => handleSelectMethod(`pickup`)}
-            suppressHydrationWarning={suppressText}
-          >
-            {t('pickup')}
-          </button>
-        </div>
-        {!isNull(area.id) && (
-          <div className="flex flex-1 w-full flex-row justify-between items-center mt-4 mb-2">
+
+          {/* Delivery / Pickup Btns */}
+          <div className="flex flex-1 w-full flex-col md:flex-row justify-between items-center my-2">
+            <button
+              className={`${normalBtnClass}  md:ltr:mr-3 md:rtl:ml-3`}
+              onClick={() => handleSelectMethod(`delivery`)}
+              suppressHydrationWarning={suppressText}
+            >
+              {t('delivery')}
+            </button>
+            <button
+              className={`${normalBtnClass}   md:ltr:mr-3 md:rtl:ml-3`}
+              onClick={() => handleSelectMethod(`pickup`)}
+              suppressHydrationWarning={suppressText}
+            >
+              {t('pickup')}
+            </button>
+          </div>
+          {!isNull(area.id) && (
+            <div className="flex flex-1 w-full flex-row justify-between items-center mt-4 mb-2">
+              <div
+                className={`flex flex-grow justify-start items-center md:ltr:mr-3 md:rtl:ml-3`}
+              >
+                <CustomImage
+                  src={MotorIcon.src}
+                  alt={t(`deliver_to`)}
+                  width={imageSizes.xs}
+                  height={imageSizes.xs}
+                  className="h-8 w-8 ltr:mr-3 rtl:ml-3"
+                />
+                <h1 className={`pt-2`}>{t('delivery_to')}</h1>
+              </div>
+              <div className={`md:ltr:mr-3 md:rtl:ml-3 pt-2 text-primary_BG`}>
+                {area.name}
+              </div>
+            </div>
+          )}
+          <div className="flex flex-1 w-full flex-row justify-between items-center mt-2 mb-4">
             <div
               className={`flex flex-grow justify-start items-center md:ltr:mr-3 md:rtl:ml-3`}
             >
               <CustomImage
-                src={MotorIcon.src}
+                src={TruckIcon.src}
                 alt={t(`deliver_to`)}
                 width={imageSizes.xs}
                 height={imageSizes.xs}
                 className="h-8 w-8 ltr:mr-3 rtl:ml-3"
               />
-              <h1 className={`pt-2`}>{t('delivery_to')}</h1>
+              <h1 className={`pt-2`}>{t('earliest_delivery')}</h1>
             </div>
             <div className={`md:ltr:mr-3 md:rtl:ml-3 pt-2 text-primary_BG`}>
-              {area.name}
+              {element.DeliveryTime}
             </div>
           </div>
-        )}
-        <div className="flex flex-1 w-full flex-row justify-between items-center mt-2 mb-4">
-          <div
-            className={`flex flex-grow justify-start items-center md:ltr:mr-3 md:rtl:ml-3`}
-          >
-            <CustomImage
-              src={TruckIcon.src}
-              alt={t(`deliver_to`)}
-              width={imageSizes.xs}
-              height={imageSizes.xs}
-              className="h-8 w-8 ltr:mr-3 rtl:ml-3"
-            />
-            <h1 className={`pt-2`}>{t('earliest_delivery')}</h1>
-          </div>
-          <div className={`md:ltr:mr-3 md:rtl:ml-3 pt-2 text-primary_BG`}>
-            {element.DeliveryTime}
-          </div>
-        </div>
-        {/* Search Input */}
-        <div className={`flex flex-1 w-full flex-grow my-2`}>
-          <div className={`w-full`}>
-            <div className="relative mt-1 rounded-md shadow-sm">
-              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                <MagnifyingGlassIcon
-                  className="h-5 w-5 text-gray-400"
-                  aria-hidden="true"
+          {/* Search Input */}
+          <div className={`flex flex-1 w-full flex-grow my-2`}>
+            <div className={`w-full`}>
+              <div className="relative mt-1 rounded-md shadow-sm">
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                  <MagnifyingGlassIcon
+                    className="h-5 w-5 text-gray-400"
+                    aria-hidden="true"
+                  />
+                </div>
+                <input
+                  type="search"
+                  name="search"
+                  id="search"
+                  className="block w-full rounded-md  pl-10 border-none bg-gray-100"
+                  placeholder={`${t(`search_products`)}`}
                 />
               </div>
-              <input
-                type="search"
-                name="search"
-                id="search"
-                className="block w-full rounded-md  pl-10 border-none bg-gray-100"
-                placeholder={`${t(`search_products`)}`}
-              />
             </div>
           </div>
-        </div>
-        {/* Categories List */}
-        <div className="mt-4 py-4 grid sm:grid-cols-3 lg:grid-cols-2 gap-6 border-t border-stone-100">
-          {!isEmpty(categories) &&
-            map(categories, (c, i) => <CategoryWidget element={c} key={i} />)}
+          {/* Categories List */}
+          <div className="mt-4 py-4 grid sm:grid-cols-3 lg:grid-cols-2 gap-6 border-t border-stone-100">
+            {!isEmpty(categories) &&
+              map(categories, (c, i) => <CategoryWidget element={c} key={i} />)}
+          </div>
         </div>
       </MainContentLayout>
     </>
