@@ -14,11 +14,11 @@ import {
 } from '@material-tailwind/react';
 import { CircleOutlined, CheckCircle } from '@mui/icons-material';
 import {
-    submitBtnClass,
-     normalBtnClass,
-    suppressText,
-    inputFieldClass,
-  } from '@/constants/*';
+  submitBtnClass,
+  normalBtnClass,
+  suppressText,
+  inputFieldClass,
+} from '@/constants/*';
 import { Location } from '@/types/queries';
 import Image from 'next/image';
 import SearchIcon from '@/appIcons/search.svg';
@@ -31,7 +31,7 @@ const SelectMethod: NextPage = (): JSX.Element => {
     locale: { lang },
     branches,
     area: selectedArea,
-    cart
+    cart,
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const { data: locations, isLoading } = useGetLocationsQuery<{
@@ -42,7 +42,7 @@ const SelectMethod: NextPage = (): JSX.Element => {
   const handleOpen = (value: any) => {
     setOpen(open === value ? 0 : value);
   };
-  console.log("the branches", branches)
+  console.log('the branches', branches);
 
   useEffect(() => {
     dispatch(setCurrentModule(t('select_method')));
@@ -67,93 +67,126 @@ const SelectMethod: NextPage = (): JSX.Element => {
       </svg>
     );
   };
-  
+
   const handleSelectArea = (a: Area) => dispatch(setArea(a));
 
   return (
     <MainContentLayout>
-      <div className="flex flex-1 w-full flex-col md:flex-row justify-between items-center my-2">
+      <div className={`px-4`}>
+        <div className="flex flex-1 w-full flex-col md:flex-row justify-between items-center mb-3">
           <button
-            className={`${cart.method === 'delivery' ? `${submitBtnClass}`: `${normalBtnClass}`} md:ltr:mr-3 md:rtl:ml-3`}
+            className={`${
+              cart.method === 'delivery'
+                ? `${submitBtnClass}`
+                : `${normalBtnClass}`
+            } md:ltr:mr-3 md:rtl:ml-3`}
             suppressHydrationWarning={suppressText}
           >
             {t('delivery')}
           </button>
           <button
-            className={`${cart.method === 'pickup' ? `${submitBtnClass}`: `${normalBtnClass}`} md:ltr:mr-3 md:rtl:ml-3`}
+            className={`${
+              cart.method === 'pickup'
+                ? `${submitBtnClass}`
+                : `${normalBtnClass}`
+            } md:ltr:mr-3 md:rtl:ml-3`}
             suppressHydrationWarning={suppressText}
           >
             {t('pickup')}
           </button>
-      </div>
-      <div className={`mb-5 py-1 ${inputFieldClass} flex items-center`}>
-        <Image 
-        src={SearchIcon} 
-        alt={`${t('search')}`}
-        suppressHydrationWarning={suppressText} 
-        />
-        <input
+        </div>
+        <div className={`mb-5 py-1 ${inputFieldClass} flex items-center`}>
+          <Image
+            src={SearchIcon}
+            alt={`${t('search')}`}
+            suppressHydrationWarning={suppressText}
+          />
+          <input
             type="text"
             placeholder={`${t('search')}`}
             className={`m-0 py-0 pt-1 ${inputFieldClass} border-0`}
             suppressHydrationWarning={suppressText}
-        ></input>
-      </div>
-     {cart.method === 'delivery' &&  <div className={`px-4`}>
-     {locations.Data.map((item) => {
-          return (
-            <Accordion
-              key={item.id}
-              open={open === item.id}
-              icon={<Icon id={item.id} open={open} />}
-            >
-              <AccordionHeader
-                className="px-2 pb-0 border-b-0"
-                onClick={() => handleOpen(item.id)}
-                suppressHydrationWarning={suppressText}
-              >
-                {t(item.City)}
-              </AccordionHeader>
-              <AccordionBody>
-                <div className="bg-LightGray">
-                  {map(item.Areas, (area: Area, i) => (
-                    <button
-                      className={'flex justify-between w-full p-4'}
-                      key={i}
-                      onClick={() => handleSelectArea(area)}
-                    >
-                      <p
-                        className="text-base text-black"
-                        suppressHydrationWarning={suppressText}
-                      >
-                        {t(area.name)}
-                      </p>
-                      {!isEmpty(selectedArea) &&
-                      area.id === selectedArea?.id ? (
-                        <CheckCircle className="text-lime-400" />
-                      ) : (
-                        <CircleOutlined className="text-gray-400" />
-                      )}
-                    </button>
-                  ))}
-                </div>
-              </AccordionBody>
-            </Accordion>
-          );
-        })}
+          ></input>
         </div>
-      }
-      {cart.method === 'pickup' && <div className='px-4'>
-      <p className='text-primary_BG' suppressHydrationWarning={suppressText}>{t('select_branch')}</p>
-      {branches.map((branch: any)=><div >
-        <label htmlFor={branch.id} className='flex justify-between items-center py-1 form-check-label'>
-          <p>{branch.name}</p>
-        <input className='form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer' type='radio' name='branch' id={branch.id} value={branch.id} /></label>
-      </div>)}
-      </div>}
-        <button className={`${submitBtnClass} mt-16`} suppressHydrationWarning={suppressText}>
+        {cart.method === 'delivery' && (
+          <div className={`px-4`}>
+            {locations.Data.map((item) => {
+              return (
+                <Accordion
+                  key={item.id}
+                  open={open === item.id}
+                  icon={<Icon id={item.id} open={open} />}
+                >
+                  <AccordionHeader
+                    className="px-2 pb-0 border-b-0"
+                    onClick={() => handleOpen(item.id)}
+                    suppressHydrationWarning={suppressText}
+                  >
+                    {t(item.City)}
+                  </AccordionHeader>
+                  <AccordionBody>
+                    <div className="bg-LightGray">
+                      {map(item.Areas, (area: Area, i) => (
+                        <button
+                          className={'flex justify-between w-full p-4'}
+                          key={i}
+                          onClick={() => handleSelectArea(area)}
+                        >
+                          <p
+                            className="text-base text-black"
+                            suppressHydrationWarning={suppressText}
+                          >
+                            {t(area.name)}
+                          </p>
+                          {!isEmpty(selectedArea) &&
+                          area.id === selectedArea?.id ? (
+                            <CheckCircle className="text-lime-400" />
+                          ) : (
+                            <CircleOutlined className="text-gray-400" />
+                          )}
+                        </button>
+                      ))}
+                    </div>
+                  </AccordionBody>
+                </Accordion>
+              );
+            })}
+          </div>
+        )}
+        {cart.method === 'pickup' && (
+          <div className="px-4">
+            <p
+              className="text-primary_BG"
+              suppressHydrationWarning={suppressText}
+            >
+              {t('select_branch')}
+            </p>
+            {branches.map((branch: any) => (
+              <div>
+                <label
+                  htmlFor={branch.id}
+                  className="flex justify-between items-center py-1 form-check-label"
+                >
+                  <p>{branch.name}</p>
+                  <input
+                    className="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+                    type="radio"
+                    name="branch"
+                    id={branch.id}
+                    value={branch.id}
+                  />
+                </label>
+              </div>
+            ))}
+          </div>
+        )}
+        <button
+          className={`${submitBtnClass} mt-12`}
+          suppressHydrationWarning={suppressText}
+        >
           {t('done')}
         </button>
+      </div>
     </MainContentLayout>
   );
 };
