@@ -60,7 +60,8 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
     router.push(appLinks.cartSelectMethod.path);
   };
 
-  console.log(element);
+  console.log('vendor', element);
+  console.log('area', area);
 
   return (
     <>
@@ -74,12 +75,12 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
               <CustomImage
                 width={imageSizes.xs}
                 height={imageSizes.xs}
-                className="rounded-md w-1/3 h-full max-w-sm max-h-28"
+                className="rounded-md w-1/4 h-fit aspect-square"
                 alt={element.name}
                 src={imgUrl(element.logo)}
               />
-              <div className={`flex flex-col w-full `}>
-                <h1 className="font-bold text-lg mb-2 ">{element.name}</h1>
+              <div className={`flex flex-col w-full p-2 space-y-2`}>
+                <h1 className="font-bold text-lg ">{element.name}</h1>
                 <div className="text-sm text-gray-500 space-y-1">
                   <p suppressHydrationWarning={suppressText}>
                     {t('payment_by_cards')}
@@ -135,7 +136,7 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
                   alt={t(`deliver_to`)}
                   width={imageSizes.xs}
                   height={imageSizes.xs}
-                  className="h-8 w-8 ltr:mr-3 rtl:ml-3"
+                  className="h-8 w-8  ltr:mr-3 rtl:ml-3"
                 />
                 <h1 className={`pt-2`}>{t('delivery_to')}</h1>
               </div>
@@ -155,7 +156,9 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
                 height={imageSizes.xs}
                 className="h-8 w-8 ltr:mr-3 rtl:ml-3"
               />
-              <h1 className={`pt-2`}>{t('earliest_delivery')}</h1>
+              <h1 className={`pt-2`} suppressHydrationWarning={suppressText}>
+                {t('earliest_delivery')}
+              </h1>
             </div>
             <div className={`md:ltr:mr-3 md:rtl:ml-3 pt-2 text-primary_BG`}>
               {element.DeliveryTime}

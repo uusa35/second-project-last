@@ -2,7 +2,6 @@ import MainContentLayout from '@/layouts/MainContentLayout';
 import { useGetLocationsQuery } from '@/redux/api/locationApi';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { NextPage } from 'next';
-import { useGetBranchesQuery } from '@/redux/api/branchApi';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useTranslation } from 'react-i18next';
 import { AppQueryResult, Area } from '@/types/queries';
@@ -40,7 +39,6 @@ const SelectMethod: NextPage = (): JSX.Element => {
     isLoading: boolean;
   }>({ lang });
   const [open, setOpen] = useState(0);
-  const [isClicked, setIsClicked] = useState(false);
   const handleOpen = (value: any) => {
     setOpen(open === value ? 0 : value);
   };
@@ -53,7 +51,7 @@ const SelectMethod: NextPage = (): JSX.Element => {
   if (isLoading) {
     return <LoadingSpinner />;
   }
-  const Icon = ({ id, open }: any)=> {
+  const Icon = ({ id, open }: any) => {
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -76,13 +74,13 @@ const SelectMethod: NextPage = (): JSX.Element => {
     <MainContentLayout>
       <div className="flex flex-1 w-full flex-col md:flex-row justify-between items-center my-2">
           <button
-            className={`${normalBtnClass}  md:ltr:mr-3 md:rtl:ml-3 ${cart.method === 'delivery' && 'bg-primary_BG'}`}
+            className={`${cart.method === 'delivery' ? `${submitBtnClass}`: `${normalBtnClass}`} md:ltr:mr-3 md:rtl:ml-3`}
             suppressHydrationWarning={suppressText}
           >
             {t('delivery')}
           </button>
           <button
-            className={`${normalBtnClass} md:ltr:mr-3 md:rtl:ml-3 ${cart.method === 'pickup' && 'bg-primary_BG'}`}
+            className={`${cart.method === 'pickup' ? `${submitBtnClass}`: `${normalBtnClass}`} md:ltr:mr-3 md:rtl:ml-3`}
             suppressHydrationWarning={suppressText}
           >
             {t('pickup')}
@@ -146,16 +144,16 @@ const SelectMethod: NextPage = (): JSX.Element => {
         </div>
       }
       {cart.method === 'pickup' && <div className='px-4'>
-      <p  className='text-primary_BG'>{t('choose_store')}</p>
+      <p className='text-primary_BG' suppressHydrationWarning={suppressText}>{t('select_branch')}</p>
       {branches.map((branch: any)=><div >
         <label htmlFor={branch.id} className='flex justify-between items-center py-1 form-check-label'>
           <p>{branch.name}</p>
         <input className='form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer' type='radio' name='branch' id={branch.id} value={branch.id} /></label>
       </div>)}
       </div>}
-      <button className={`${submitBtnClass} mt-15`} suppressHydrationWarning={suppressText}>
-        {t('done')}
-      </button>
+        <button className={`${submitBtnClass} mt-16`} suppressHydrationWarning={suppressText}>
+          {t('done')}
+        </button>
     </MainContentLayout>
   );
 };

@@ -365,5 +365,8 @@
   "delivery" : "delivery",
   "earliest_delivery" : "earliest delivery",
   "done": "done",
-  "must_select_min_and_max" : "must choose min {{min}} qty or {{max}} qty."
+  "must_select_min_and_max" : "must choose min {{min}} qty or {{max}} qty.",
+  "select_method" : "select method",
+  "product_search_index" : "searching products",
+  "delivery_to" : "deliver to"
 }

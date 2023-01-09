@@ -7,6 +7,7 @@ import BackBtn from '@/components/BackBtn';
 import { useRouter } from 'next/router';
 import SlideTopNav from '@/components/home/SlideTopNav';
 import { isEqual } from 'lodash';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 const AppHeader: FC = () => {
   const {
@@ -21,7 +22,6 @@ const AppHeader: FC = () => {
     auth: {
       user: { avatar, name, id: user_id },
     },
-    vendor,
   } = useAppSelector((state) => state);
   const [offset, setOffset] = useState(0);
   const isAuth = useAppSelector(isAuthenticated);
@@ -38,7 +38,7 @@ const AppHeader: FC = () => {
   }, [router.pathname]);
 
   return (
-    <Suspense fallback={<SideMenuSkelton />}>
+    <Suspense fallback={<LoadingSpinner />}>
       <header
         className={`${
           offset <= 80 ? `bg-white` : `bg-transparent`
