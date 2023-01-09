@@ -57,7 +57,7 @@ const changeStyle=()=>{
               <Image src={SearchIcon} alt='search' />
               <input
                   type="text"
-                  placeholder={`search`}
+                  placeholder={`${t('search')}`}
                   className={`m-0 py-0 pt-1 ${inputFieldClass} border-0`}
               ></input>
             </div>
