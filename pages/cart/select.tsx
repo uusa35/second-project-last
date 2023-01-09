@@ -4,7 +4,7 @@ import LoadingSpinner from '@/components/LoadingSpinner';
 import { NextPage } from 'next';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useTranslation } from 'react-i18next';
-import { AppQueryResult, Area } from '@/types/queries';
+import { AppQueryResult, Area, Branch } from '@/types/queries';
 import { useEffect, useState } from 'react';
 import { setCurrentModule } from '@/redux/slices/appSettingSlice';
 import {
@@ -25,9 +25,12 @@ import Image from 'next/image';
 import SearchIcon from '@/appIcons/search.svg';
 import { isEmpty, isNull, map } from 'lodash';
 import { setArea } from '@/redux/slices/areaSlice';
+import { setBranch } from '@/redux/slices/branchSlice'
 import { Cart } from '@/types/index';
 import { selectMethod } from '@/redux/slices/cartSlice';
 import { useRouter } from 'next/router';
+import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
+
 
 const SelectMethod: NextPage = (): JSX.Element => {
   const { t } = useTranslation();
@@ -75,6 +78,7 @@ const SelectMethod: NextPage = (): JSX.Element => {
   };
 
   const handleSelectArea = (a: Area) => dispatch(setArea(a));
+  const handleSelectBranch = (b: Branch) => dispatch(setBranch(b));
   const handleSelectMethod = (m: Cart['method']) => {
     dispatch(selectMethod(m));
     router.push(appLinks.cartSelectMethod.path);
@@ -123,19 +127,25 @@ const SelectMethod: NextPage = (): JSX.Element => {
             {t('pickup')}
           </button>
         </div>
-        <div className={`mb-5 py-1 ${inputFieldClass} flex items-center`}>
-          <Image
-            src={SearchIcon}
-            alt={`${t('search')}`}
-            suppressHydrationWarning={suppressText}
-          />
-          <input
-            type="text"
-            placeholder={`${t('search')}`}
-            className={`m-0 py-0 pt-1 ${inputFieldClass} border-0`}
-            suppressHydrationWarning={suppressText}
-          ></input>
-        </div>
+        <div className={`flex flex-1 w-full flex-grow my-2`}>
+            <div className={`w-full`}>
+              <div className="relative mt-1 rounded-md shadow-sm">
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                  <MagnifyingGlassIcon
+                    className="h-5 w-5 text-gray-400"
+                    aria-hidden="true"
+                  />
+                </div>
+                <input
+                  type="search"
+                  name="search"
+                  id="search"
+                  className="block w-full rounded-md  pl-10 border-none bg-gray-100"
+                  placeholder={`${t(`search_branch`)}`}
+                />
+              </div>
+            </div>
+          </div>
         {cart.method === 'delivery' && (
           <div className={`px-4`}>
             {locations.Data.map((item) => {
@@ -202,6 +212,7 @@ const SelectMethod: NextPage = (): JSX.Element => {
                     name="branch"
                     id={branch.id}
                     value={branch.id}
+                    onChange={() => handleSelectBranch(branch)}
                   />
                 </label>
               </div>
