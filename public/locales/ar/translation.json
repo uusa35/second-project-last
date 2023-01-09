@@ -380,6 +380,7 @@
   "must_select_min_and_max" : "يجب اختيار اقل كمية {{min}} واقصى كمية {{max}}",
   "select_method" : "طريقة استلام الطلب",
   "product_search_index" : "البحث في المنتجات ..",
-  "delivery_to" : "التوصيل لـ",
+  "deliver_to" : "التوصيل لـ",
+  "pickup_from" : "الاستلام من",
   "select_branch": "اختر فرع"
 }

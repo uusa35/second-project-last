@@ -369,5 +369,6 @@
   "select_method" : "select method",
   "product_search_index" : "searching products",
   "select_branch": "select branch",
-  "delivery_to" : "deliver to"
+  "deliver_to" : "deliver to",
+  "pickup_from" : "pickup from"
 }
