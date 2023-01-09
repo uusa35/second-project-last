@@ -129,7 +129,7 @@ const ProductShow: NextPage<Props> = ({ element }) => {
                   )}
               </div>
               {map(s.choices, (c, i) => (
-                <div key={c.id} className="flex items-center w-full" key={i}>
+                <div key={c.id} className="flex items-center w-full" >
                   {s.must_select === 'q_meter' ? (
                     <div
                       className={`flex flex-row w-full justify-between items-center`}
