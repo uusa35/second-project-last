@@ -134,10 +134,10 @@ const SelectMethod: NextPage = (): JSX.Element => {
         </div>
         {method === 'delivery' && (
           <div className={`px-4`}>
-            {locations.Data.map((item) => {
+            {map(locations.Data, (item: Location, i) => {
               return (
                 <Accordion
-                  key={item.id}
+                  key={i}
                   open={open === item.id}
                   icon={<Icon id={item.id} open={open} />}
                 >
