@@ -18,7 +18,6 @@ import {
   normalBtnClass,
   suppressText,
   inputFieldClass,
-  appLinks,
 } from '@/constants/*';
 import { Location } from '@/types/queries';
 import Image from 'next/image';
@@ -58,7 +57,7 @@ const SelectMethod: NextPage = (): JSX.Element => {
   if (isLoading) {
     return <LoadingSpinner />;
   }
-  const Icon = ({ id, open }: any) => {
+  const Icon = ({ id, open }: { id: number; open: number }) => {
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
