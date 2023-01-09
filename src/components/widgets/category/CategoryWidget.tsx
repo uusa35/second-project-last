@@ -5,12 +5,15 @@ import { appLinks, imageSizes, imgUrl } from '@/constants/*';
 import Link from 'next/link';
 import { useAppSelector } from '@/redux/hooks';
 import { kebabCase, lowerCase } from 'lodash';
+import {suppressText} from '@/constants/*';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   element: Category;
 };
 const CategoryWidget: FC<Props> = ({ element }) => {
   const { branch } = useAppSelector((state) => state);
+  const {t} = useTranslation();
   return (
     <Link
       href={appLinks.productIndex(
@@ -36,8 +39,8 @@ const CategoryWidget: FC<Props> = ({ element }) => {
             className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black opacity-60"
           />
           <div className="flex flex-row w-full px-2 justify-between items-center py-4">
-            <p className="relative text-md font-semibold text-white">
-              {element.name}
+            <p className="relative text-md font-semibold text-white" suppressHydrationWarning={suppressText}>
+              {t(element.name)}
             </p>
           </div>
         </div>

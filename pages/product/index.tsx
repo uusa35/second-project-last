@@ -6,7 +6,6 @@ import { NextPage } from 'next';
 import { apiSlice } from '@/redux/api';
 import { isEmpty, map } from 'lodash';
 import { imageSizes, suppressText } from '@/constants/*';
-import HorProductWidget from '@/widgets/product/HorProductWidget';
 import MainHead from '@/components/MainHead';
 import Image from 'next/image';
 import NotFoundImage from '@/appImages/not_found.png';
@@ -14,6 +13,9 @@ import { useTranslation } from 'react-i18next';
 import { useAppDispatch } from '@/redux/hooks';
 import { useEffect } from 'react';
 import { setCurrentModule } from '@/redux/slices/appSettingSlice';
+import VerProductWidget from '@/widgets/product/VerProductWidget';
+import SearchIcon from '@/appIcons/search.svg';
+import {inputFieldClass} from '@/constants/*';
 
 type Props = {
   elements: Product[];
@@ -32,22 +34,30 @@ const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
       <MainHead title={`productIndex`} description={`productIndex`} />
       <MainContentLayout>
         <div className={`px-4`}>
-          <h1 suppressHydrationWarning={suppressText}>ProductSearchIndex</h1>
-          <div className="mt-4 p-4 grid sm:grid-cols-3 lg:grid-cols-2 gap-6">
-            {isEmpty(elements) && (
-              <Image
-                src={NotFoundImage.src}
-                alt={`not_found`}
-                width={imageSizes.sm}
-                height={imageSizes.sm}
-                className={`w-60 h-auto`}
-              />
-            )}
-            {map(elements, (p, i) => (
-              <HorProductWidget element={p} key={i} />
-            ))}
-          </div>
+          <div className={`mb-5 py-1 ${inputFieldClass} flex items-center`}>
+              <Image src={SearchIcon} alt='search' />
+              <input
+                  type="text"
+                  placeholder={`search`}
+                  className={`m-0 py-0 pt-1 ${inputFieldClass} border-0`}
+              ></input>
+            </div>
+          <div className="my-4 p-4">
+          {isEmpty(elements) && (
+            <Image
+              src={NotFoundImage.src}
+              alt={`not_found`}
+              width={imageSizes.sm}
+              height={imageSizes.sm}
+              className={`w-60 h-auto`}
+            />
+          )}
+          {map(elements, (p, i) => (
+            <VerProductWidget element={p} key={i} />
+          ))}
         </div>
+        </div>
+       
       </MainContentLayout>
     </>
   );

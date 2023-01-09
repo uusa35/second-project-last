@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import MainContentLayout from '@/layouts/MainContentLayout';
 import { wrapper } from '@/redux/store';
 import { productApi } from '@/redux/api/productApi';
@@ -15,17 +15,29 @@ import { AppQueryResult, ProductPagination } from '@/types/queries';
 import { useAppDispatch } from '@/redux/hooks';
 import { setCurrentModule } from '@/redux/slices/appSettingSlice';
 import { useTranslation } from 'react-i18next';
+import VerProductWidget from '@/components/widgets/product/VerProductWidget';
+import {inputFieldClass} from '@/constants/*';
+import SearchIcon from '@/appIcons/search.svg';
+import Menu from '@/appIcons/menu.svg';
+import List from '@/appIcons/list.svg';
 import { useRouter } from 'next/router';
-
 type Props = {
   elements: ProductPagination<Product[]>;
 };
 const ProductIndex: NextPage<Props> = ({ elements }): JSX.Element => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
+  const router = useRouter();
+  const [IsMenue,setIsMenue]=useState(true)
+  const [Icon,SetIcon]=useState(true)
+// change menue view to list view
+const changeStyle=()=>{
+    setIsMenue(!IsMenue)
+    SetIcon(!Icon)
+  }
+  console.log('elements', elements, {router});
   const { query } = useRouter();
   console.log('the query', query.slug);
-  // console.log('elements', elements);
 
   useEffect(() => {
     if (query.slug) {
@@ -34,13 +46,27 @@ const ProductIndex: NextPage<Props> = ({ elements }): JSX.Element => {
       dispatch(setCurrentModule(`product_index`));
     }
   }, []);
-
   return (
     <>
       <MainHead title={`productIndex`} description={`productIndex`} />
       <MainContentLayout>
+        <h1 suppressHydrationWarning={suppressText}></h1>
         <div className={`px-4`}>
-          <div className="mt-4 p-4 grid sm:grid-cols-3 lg:grid-cols-2 gap-6">
+          <div className='flex items-start'>
+            <div className={`mb-5 py-1 ${inputFieldClass} flex items-center`}>
+              <Image src={SearchIcon} alt='search' />
+              <input
+                  type="text"
+                  placeholder={`search`}
+                  className={`m-0 py-0 pt-1 ${inputFieldClass} border-0`}
+              ></input>
+            </div>
+            <button onClick={changeStyle} className='pt-1 ps-2'>{Icon ? 
+              <Image src={Menu} alt='menu' className={'w-8 h-8'} />
+              :<Image src={List} alt='menu' className={'w-8 h-8'} />}
+            </button>
+          </div>
+          <div className={IsMenue? 'mt-4 p-4 grid sm:grid-cols-3 lg:grid-cols-2 gap-6': 'my-4 p-4'}>
             {isEmpty(elements.products) && (
               <Image
                 src={NotFoundImage.src}
@@ -50,8 +76,9 @@ const ProductIndex: NextPage<Props> = ({ elements }): JSX.Element => {
                 className={`w-60 h-auto`}
               />
             )}
+            
             {map(elements.products, (p: Product, i) => (
-              <HorProductWidget element={p} key={i} />
+             IsMenue ? <HorProductWidget element={p} key={i} /> : <VerProductWidget element={p} key={i}/>
             ))}
           </div>
         </div>

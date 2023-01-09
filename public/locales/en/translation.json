@@ -23,8 +23,7 @@
   "set_your_date": "set your date",
   "select_a_venue": "select a venue",
   "bookings": "bookings",
-  "kwd": "KD",
-  "KWD": "KD",
+  "kwd": "kwd",
   "amenities": "amenities",
   "location": "location",
   "forgot_password?": "forgot password?",
@@ -365,5 +364,7 @@
   "pickup" : "pickup",
   "delivery" : "delivery",
   "earliest_delivery" : "earliest delivery",
-  "must_select_min_and_max" : "must choose min {{min}} qty or {{max}} qty."
+  "done": "done",
+  "must_select_min_and_max" : "must choose min {{min}} qty or {{max}} qty.",
+  "select_method" : "select method"
 }

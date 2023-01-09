@@ -10,7 +10,7 @@ export interface Product {
   price_on_selection?: boolean;
   new_price?: string;
   img: img[];
-  sections?: productSections[];
+  sections?: productSections[]
 }
 
 export interface productSections {
