@@ -1,7 +1,6 @@
 import Image from 'next/image';
 import React, { FC, useEffect, useState } from 'react';
 import NoFoundImage from '@/appImages/not_found.png';
-import { imageSizes } from '@/constants/*';
 
 type Props = {
   src: string;
