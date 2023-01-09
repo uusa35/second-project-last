@@ -23,8 +23,7 @@
   "set_your_date": "set your date",
   "select_a_venue": "select a venue",
   "bookings": "bookings",
-  "kwd": "KD",
-  "KWD": "KD",
+  "kwd": "kwd",
   "amenities": "amenities",
   "location": "location",
   "forgot_password?": "forgot password?",
@@ -364,6 +363,7 @@
   "powered_by_queue" : "powered by queue",
   "pickup" : "pickup",
   "delivery" : "delivery",
-  "earliest_delivery" : "earliest delivery"
+  "earliest_delivery" : "earliest delivery",
+  "done": "done"
 
 }

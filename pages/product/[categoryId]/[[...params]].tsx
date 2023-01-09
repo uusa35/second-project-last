@@ -52,18 +52,20 @@ const changeStyle=()=>{
       <MainContentLayout>
         <h1 suppressHydrationWarning={suppressText}></h1>
         <div className={`px-4`}>
-          <div className={`mb-5 py-1 ${inputFieldClass} flex items-center`}>
+          <div className='flex items-start'>
+            <div className={`mb-5 py-1 ${inputFieldClass} flex items-center`}>
               <Image src={SearchIcon} alt='search' />
               <input
                   type="text"
                   placeholder={`search`}
                   className={`m-0 py-0 pt-1 ${inputFieldClass} border-0`}
               ></input>
-                <button onClick={changeStyle}>{Icon ? 
-                <Image src={Menu} alt='menu' className={'w-8 h-8'} />
-              : <Image src={List} alt='menu' className={'w-8 h-8'} />}
-                </button>
             </div>
+            <button onClick={changeStyle} className='pt-1 ps-2'>{Icon ? 
+              <Image src={Menu} alt='menu' className={'w-8 h-8'} />
+              :<Image src={List} alt='menu' className={'w-8 h-8'} />}
+            </button>
+          </div>
           <div className={IsMenue? 'mt-4 p-4 grid sm:grid-cols-3 lg:grid-cols-2 gap-6': 'my-4 p-4'}>
             {isEmpty(elements.products) && (
               <Image

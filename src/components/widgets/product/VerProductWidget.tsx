@@ -36,14 +36,24 @@ const VerProductWidget: FC<Props> = ({ element }): JSX.Element => {
               className="h-36 w-full object-cover object-center"
             />
           </div>
-          <div className="ps-5">
-            <p className="text-md font-semibold truncate pb-5">
+          <div className="ps-5 w-[100%] pe-5">
+            <p className="text-lg truncate pb-5">
               {element.name}
             </p>
-            <p className="text-lg text-primary_BG font-semibold capitalize">
-              {element.price} {t(`kd`)}
-            </p>
+            <div>
+              <div>
+                <p className="text-md text-primary_BG text-end uppercase pb-2">
+                  {element.price} {t(`kwd`)}
+                </p>
+                <div className='text-end'>
+                  <button className='border-[1px] rounded-md border-primary_BG px-7 uppercase text-center text-sm'>
+                    + {t('add')}
+                  </button>
+                </div>
+              </div>
           </div>
+          </div>
+         
         </div>
         {/* <div className="absolute inset-x-0 top-0 flex h-full items-end overflow-hidden rounded-lg">
           <div

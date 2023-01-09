@@ -6,6 +6,7 @@ import { first, isEmpty } from 'lodash';
 import Link from 'next/link';
 import CustomImage from '@/components/customImage';
 import { useTranslation } from 'react-i18next';
+import {suppressText} from '@/constants/*';
 
 type Props = {
   element: Product;
@@ -36,13 +37,18 @@ const HorProductWidget: FC<Props> = ({ element }): JSX.Element => {
             className="h-60 w-full object-cover object-center"
           />
         </div>
-        <div className="ps-5 pt-3">
-            <p className="text-md font-semibold truncate">
-              {element.name}
+        <div className="pt-3 px-2">
+            <p className="text-md font-semibold truncate" suppressHydrationWarning={suppressText}>
+              {t(element.name)}
             </p>
-            <p className="text-lg text-primary_BG font-semibold capitalize">
-              {element.price} {t(`kd`)}
-            </p>
+            <div className='flex justify-between items-center'>
+              <p className="text-md text-primary_BG text-end uppercase pb-2" suppressHydrationWarning={suppressText}>
+                {element.price} {t(`kwd`)}
+              </p>
+              <button className='border-[1px] rounded-md border-primary_BG px-4 uppercase text-center text-sm' suppressHydrationWarning={suppressText}>
+                + {t('add')}
+              </button>
+            </div>
         </div>
         {/* <div className="absolute inset-x-0 top-0 flex h-full items-end justify-end overflow-hidden rounded-lg">
           <div

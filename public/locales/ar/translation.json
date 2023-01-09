@@ -375,5 +375,6 @@
   "powered_by_queue" : "بدعم من كيو",
   "pickup" : "استلام",
   "delivery" : "توصيل",
-  "earliest_delivery" : "التوصيل خلال"
+  "earliest_delivery" : "التوصيل خلال",
+  "done": "تم"
 }

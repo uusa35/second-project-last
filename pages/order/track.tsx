@@ -23,8 +23,8 @@ const TrackOrder: NextPage = (): JSX.Element => {
         >
           {t('track_order')}
         </h4>
-        <div className="px-5 mb-7">
-          <p className="my-3">{t('check_your_order_status')}</p>
+        <div className="px-5 pb-7 border-b-2 border-b-GreyBG">
+          <p className="my-3 text-sm font-semibold">{t('check_your_order_status')}</p>
           <input
             className={`${inputFieldClass}`}
             type="text"
@@ -34,10 +34,10 @@ const TrackOrder: NextPage = (): JSX.Element => {
         </div>
         {
           <div>
-            <div className="pb-2 px-7">
+            <div className="px-7 pb-5 border-b-2 border-b-GreyBG">
               <div className="flex justify-between mt-4">
                 <p
-                  className=" text-btnBG text-primary_BG font-semibold"
+                  className="text-primary_BG font-semibold"
                   suppressHydrationWarning={suppressText}
                 >
                   {t('order_id')}
@@ -55,25 +55,34 @@ const TrackOrder: NextPage = (): JSX.Element => {
                 <p>{}</p>
               </div>
             </div>
-            <div className="flex justify-between items-end px-7">
+            <div className="flex justify-between items-end px-7 mb-5 pt-5">
               <p
-                className="text-primary_BG font-semibold"
+                className="font-semibold"
                 suppressHydrationWarning={suppressText}
               >
-                {t('order_pending')}
+                {t('order_status')}
               </p>
-              <p className="text-primary_BG font-semibold"></p>
+              <p></p>
             </div>
-            <div className="flex flex-col items-center pt-14">
+            <div className="flex justify-between items-end px-7 mb-5">
+              <p
+                className="font-semibold"
+                suppressHydrationWarning={suppressText}
+              >
+                {t('pending')}
+              </p>
+              <p className="font-semibold"></p>
+            </div>
+            <div className="flex flex-col items-center pt-5">
               <p
                 className="mb-4 text-lg"
                 suppressHydrationWarning={suppressText}
               >
                 {t('delivering_to_your_address')}
               </p>
-              <p className="text-lg text-center">{}</p>
+              <p className="text-lg text-center text-primary_BG">{}</p>
             </div>
-            <div className="pt-10">
+            <div className="pt-5">
               <button className={`${submitBtnClass} px-4`}>
                 <div className="flex justify-between items-center">
                   <a
