@@ -38,6 +38,10 @@ const nextConfig = {
       'pages-dash.testbedbynd.com',
       'form.testbedbynd.com',
     ],
+    minimumCacheTTL: 60 * 60 * 24,
+    dangerouslyAllowSVG: true,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+    disableStaticImages: false,
   },
 };
 

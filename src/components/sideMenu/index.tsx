@@ -1,4 +1,4 @@
-import React, { useEffect, Suspense } from 'react';
+import React, { Suspense } from 'react';
 import { ReactBurgerMenu, slide as Menu } from 'react-burger-menu';
 import { useTranslation } from 'react-i18next';
 import { FC } from 'react';
@@ -24,30 +24,20 @@ import {
   HomeOutlined,
 } from '@mui/icons-material';
 import { setLocale } from '@/redux/slices/localeSlice';
-import { useGetVendorQuery } from '@/redux/api/vendorApi';
-import burgerIcon from '@/appIcons/phone.svg';
-import { Vendor } from '@/types/index';
-import { AppQueryResult } from '@/types/queries';
 import CustomImage from '@/components/customImage';
+import { isEmpty } from 'lodash';
 
 type Props = {};
 
-const SideMenu: FC<Props> = () => {
-  const { locale, appSetting, country } = useAppSelector((state) => state);
-
+const SideMenu: FC<Props> = (): JSX.Element => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const router = useRouter();
-
-  const { data: vendorDetails, isSuccess: vendorDetailsSuccess } =
-    useGetVendorQuery<{
-      data: AppQueryResult<Vendor>;
-      isSuccess: boolean;
-    }>();
-
-  useEffect(() => {
-    // if (vendorDetailsSuccess) console.log(vendorDetails);
-  }, [vendorDetailsSuccess]);
+  const {
+    appSetting,
+    vendor,
+    branch: { id: branchId },
+  } = useAppSelector((state) => state);
 
   const handleChangeLang = async (locale: string) => {
     await dispatch(setLocale(locale));
@@ -67,7 +57,7 @@ const SideMenu: FC<Props> = () => {
         customBurgerIcon={false}
         customCrossIcon={false}
       >
-        {vendorDetailsSuccess && (
+        {!isEmpty(vendor) && (
           <div
             style={{ display: 'flex' }}
             className="flex-col justify-between  bg-white h-full outline-none px-6"
@@ -79,10 +69,10 @@ const SideMenu: FC<Props> = () => {
                     <Link scroll={false} href={appLinks.root.path}>
                       <CustomImage
                         alt={`logo`}
-                        src={`${imgUrl(vendorDetails.Data.logo)}`}
+                        src={`${imgUrl(vendor.logo)}`}
                         width={imageSizes.xs}
                         height={imageSizes.xs}
-                        className="h-10 w-auto"
+                        className="h-20 w-auto shadow-md rounded-md"
                       />
                     </Link>
                   </div>
@@ -102,7 +92,7 @@ const SideMenu: FC<Props> = () => {
                 <Link scroll={false} href={appLinks.root.path}>
                   <div className="flex gap-x-3 pb-7 items-center">
                     <HomeOutlined className={`h-6 w-6 text-primary_BG`} />
-                    <p>{t('home')}</p>
+                    <p suppressHydrationWarning={suppressText}>{t('home')}</p>
                   </div>
                 </Link>
 
@@ -111,39 +101,49 @@ const SideMenu: FC<Props> = () => {
                     <ShoppingBagOutlined
                       className={`h-6 w-6 text-primary_BG`}
                     />
-                    <p>{t('my_Cart')}</p>
+                    <p suppressHydrationWarning={suppressText}>{t('cart')}</p>
                   </div>
                 </Link>
 
-                <Link scroll={false} href={appLinks.root.path}>
+                <Link
+                  scroll={false}
+                  href={appLinks.productSearchIndex(branchId)}
+                >
                   <div className="flex gap-x-3 pb-7 items-center">
                     <PlagiarismOutlined className={`h-6 w-6 text-primary_BG`} />
-                    <p>{t('search')}</p>
+                    <p suppressHydrationWarning={suppressText}>{t('search')}</p>
                   </div>
                 </Link>
 
-                <Link scroll={false} href={appLinks.root.path}>
+                <Link scroll={false} href={appLinks.trackOrder.path}>
                   <div className="flex gap-x-3 pb-7 items-center">
                     <PendingActionsOutlined
                       className={`h-6 w-6 text-primary_BG`}
                     />
-                    <p>{t('track_order')}</p>
+                    <p suppressHydrationWarning={suppressText}>
+                      {t('track_order')}
+                    </p>
                   </div>
                 </Link>
 
-                <Link scroll={false} href={appLinks.root.path}>
+                <Link scroll={false} href={appLinks.branchIndex.path}>
                   <div className="flex gap-x-3 pb-7 items-center">
                     <ApartmentOutlined className={`h-6 w-6 text-primary_BG`} />
-                    <p>{t('our_branches')}</p>
+                    <p suppressHydrationWarning={suppressText}>
+                      {t('our_branches')}
+                    </p>
                   </div>
                 </Link>
               </div>
             </div>
             <footer className={`w-full`}>
-              <Link href={`tel: ${vendorDetails.Data.phone}`} scroll={false}>
-                <div className={`${submitBtnClass} text-center`}>
+              <Link href={`tel: ${vendor.phone}`} scroll={false}>
+                <p
+                  className={`${submitBtnClass} text-center`}
+                  suppressHydrationWarning={suppressText}
+                >
                   {t('call')}
-                </div>
+                </p>
               </Link>
             </footer>
           </div>

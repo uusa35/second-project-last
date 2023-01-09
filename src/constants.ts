@@ -9,24 +9,35 @@ export const appLinks = {
   home: { path: '/home' },
   productIndex: (
     categoryId: string,
-    branch_id?: string,
+    slug: string,
+    branch_id?: string | null,
     areaId?: string,
     page?: string,
     limit?: string
   ) =>
-    `/product/${categoryId}?branch_id=${branch_id ?? `null`}&area_id=${
+    `/product/${categoryId}?branch_id=${branch_id}&area_id=${
       areaId ?? ``
-    }&page=${page ?? `1`}&limit=${limit ?? `10`}`,
-  productSearchIndex: (query?: string, branchId?: string, areaId?: string) =>
-    `/product/?key=${query}&branch_id=${branchId}&areaId=${areaId}`,
-  productShow: (id: string, product_id?: number, slug?: string) =>
+    }&page=${page ?? `1`}&limit=${limit ?? `10`}&slug=${slug}`,
+  productSearchIndex: (branchId: string, query?: string, areaId?: string) =>
+    `/product/?key=${query ?? ``}&branch_id=${branchId}&areaId=${areaId ?? ``}`,
+  productShow: (
+    id: string,
+    product_id?: number,
+    slug?: string,
+    branchId?: string,
+    areaId?: string
+  ) =>
     `/product/show/${id}?product_id=${product_id}&slug=${kebabCase(
       lowerCase(slug)
-    )}`,
+    )}&branchId=${branchId ?? `null`}&areaId=${areaId ?? ``}`,
+  branchIndex: { path: '/branch' },
   terms: { path: '/terms' },
   about: { path: '/about' },
   account: { path: '/account' },
+  cartIndex: { path: '/cart' },
+  cartSelectMethod: { path: '/cart/select' },
   order: { path: '/order' },
+  trackOrder: { path: '/order/track' },
   login: { path: '/login' },
 };
 
@@ -35,6 +46,7 @@ export const isClient = typeof window !== undefined;
 export const isLocal = true;
 export const inputFieldClass = `rounded-md px-3 py-2.5 mb-2 text-sm bg-gray-100 outline-none w-full border-none capitalize`;
 export const submitBtnClass = `w-full bg-gradient-to-tl from-primary_BG via-primary_BG to-primaryLight rounded-md text-sm text-white py-4 my-2 cursor-pointer shadow-lg capitalize disabled:from-gray-200 disabled:to-gray-400 drop-shadow-md`;
+export const normalBtnClass = `w-full rounded-md text-sm text-white py-4 my-2 cursor-pointer shadow-lg capitalize disabled:from-gray-200 disabled:to-gray-400 drop-shadow-md text-black border border-stone-400 hover:bg-stone-100`;
 export const subCategoryBtnClass = `flex w-full flex-row items-center justify-between border border-gray-200 rounded-lg p-4 shadow-md capitalize
                   rtl:bg-gradient-to-r ltr:bg-gradient-to-l from-gray-100 via-gray-200 to-gray-300 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-gray-300 drop-shadow-md
                   `;

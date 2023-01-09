@@ -14,7 +14,7 @@ import {
   startShowToastMessageScenario,
   startSetLoginScenario,
   startSetLogOutScenario,
-  startEnableGuestModeScenario,
+  startResetEnireAppSceanrio,
   startOrderMadeScenario,
   startResetAppScenario,
 } from './appSaga';
@@ -26,6 +26,10 @@ import { authSlice } from '@/redux/slices/authSlice';
 
 export function* triggerResetApp() {
   yield takeLatest(`resetApp`, startResetAppScenario);
+}
+
+export function* triggerResetEntireApp() {
+  yield takeLatest(`resetEntireApp`, startResetEnireAppSceanrio);
 }
 
 export function* triggerEnableLoading() {
@@ -46,7 +50,6 @@ export function* triggerSetLogin() {
 export function* triggerSetLogout() {
   yield takeLatest(`${authSlice.actions.logout}`, startSetLogOutScenario);
 }
-
 
 export function* triggerOrderMade() {
   yield takeLatest(`${orderSlice.actions.orderMade}`, startOrderMadeScenario);

@@ -145,6 +145,7 @@ export interface Cart {
   tempId: string;
   products: Product[] | [];
   isEmpty: boolean;
+  method: `delivery` | `pickup`;
   paymentMethods: PaymentMethod[];
 }
 

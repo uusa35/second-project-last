@@ -1,10 +1,11 @@
-import { FC, ReactNode, useEffect, Suspense } from 'react';
+import { FC, ReactNode } from 'react';
+import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
 const BackBtn = dynamic(() => import(`@/components/BackBtn`), {
   ssr: false,
 });
 import { useAppSelector } from '@/redux/hooks';
-import { setApiCountry } from '@/constants/*';
+import { useTranslation } from 'react-i18next';
 const AppHeader = dynamic(() => import(`@/components/AppHeader`), {
   ssr: false,
 });
@@ -30,15 +31,30 @@ const MainContentLayout: FC<Props> = ({
   backRoute = null,
   showMotion = true,
 }): JSX.Element => {
-  const { appSetting } = useAppSelector((state) => state);
+  const { t } = useTranslation();
+  const {
+    appSetting,
+    locale: { isRTL },
+  } = useAppSelector((state) => state);
 
   return (
     <div
-      className={`flex flex-col justify-start items-start w-full lg:w-2/4 xl:w-1/3 overflow-hidden`}
+      className={`flex flex-col justify-start items-start w-full lg:w-2/4 xl:w-1/3 relative`}
     >
       <SideMenu />
       {appSetting.showHeader && <AppHeader />}
-      <main className={`w-full px-4`}>{children}</main>
+      <main className={`w-full mb-36 relative`}>
+        <motion.div
+          animate={{ x: [isRTL ? -1000 : 1000, 0, 0] }}
+          transition={{
+            type: 'spring',
+            bounce: 5,
+            duration: showMotion ? 0.2 : 0,
+          }}
+        >
+          {children}
+        </motion.div>
+      </main>
       <AppFooter />
     </div>
   );

@@ -6,9 +6,9 @@ import {
   triggerShowToastMessage,
   triggerSetLogin,
   triggerSetLogout,
-  triggerenableGuestMode,
   triggerOrderMade,
   triggerResetApp,
+  triggerResetEntireApp,
 } from './triggers';
 
 export default function* rootSaga() {
@@ -18,9 +18,9 @@ export default function* rootSaga() {
     fork(triggerSetLogin),
     fork(triggerSetLogout),
     fork(triggerShowToastMessage),
-    fork(triggerenableGuestMode),
     fork(triggerOrderMade),
     fork(triggerResetApp),
+    fork(triggerResetEntireApp),
   ]);
   yield take(REHYDRATE); // Wait for rehydrate to prevent sagas from running with empty store
   yield take(PURGE);
