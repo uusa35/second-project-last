@@ -12,18 +12,31 @@ import '@/styles//galenderStyle.css';
 import '@/styles/TabOrderHistory.css';
 import { AnimatePresence } from 'framer-motion';
 import { AppProps } from 'next/app';
-import { FC } from 'react';
+import { FC, Suspense } from 'react';
+import NextNProgress from 'nextjs-progressbar';
 
 const App: FC<AppProps> = ({ Component, ...rest }) => {
   const { store, props } = wrapper.useWrappedStore(rest);
   const { pageProps } = props;
   return (
-    <Provider store={store}>
-      {/*<DevTools />*/}
-      <MainLayout>
-        <Component {...pageProps} />
-      </MainLayout>
-    </Provider>
+    <Suspense>
+      <NextNProgress
+        color="#189EC9"
+        startPosition={0.3}
+        stopDelayMs={200}
+        height={2}
+        showOnShallow={true}
+        options={{ showSpinner: false }}
+      />
+      <Provider store={store}>
+        {/*<DevTools />*/}
+        <AnimatePresence mode={`wait`}>
+          <MainLayout>
+            <Component {...pageProps} />
+          </MainLayout>
+        </AnimatePresence>
+      </Provider>
+    </Suspense>
   );
 };
 

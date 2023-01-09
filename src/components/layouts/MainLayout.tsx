@@ -88,7 +88,7 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
       } else {
         // dispatch({ type: `resetApp` });
       }
-      dispatch({ type: `resetEntireApp` });
+      // dispatch({ type: `resetEntireApp` });
       router.reload();
     };
 
