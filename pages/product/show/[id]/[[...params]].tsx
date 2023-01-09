@@ -8,7 +8,7 @@ import { NextPage } from 'next';
 import MainHead from '@/components/MainHead';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch } from '@/redux/hooks';
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, Fragment } from 'react';
 import { setCurrentModule } from '@/redux/slices/appSettingSlice';
 import { imageSizes, imgUrl } from '@/constants/*';
 import CustomImage from '@/components/customImage';
@@ -29,17 +29,20 @@ const ProductShow: NextPage<Props> = ({ element }) => {
     dispatch(setCurrentModule(element.name));
   }, [element]);
 
-  const handleIncrease = useCallback(() => {
+  const handleIncrease = () => {
     if (element?.amount >= currentQty + 1) {
       setCurrentyQty(currentQty + 1);
     }
-  }, [element.id]);
+  };
 
-  const handleDecrease = useCallback(() => {
+  const handleDecrease = () => {
     if (currentQty - 1 > 0) {
       setCurrentyQty(currentQty - 1);
     }
-  }, [element.id]);
+  };
+
+  console.log('current', currentQty);
+  console.log('element amount', element.amount);
 
   return (
     <>
@@ -74,7 +77,7 @@ const ProductShow: NextPage<Props> = ({ element }) => {
             <button
               onClick={() => handleIncrease()}
               type="button"
-              className="relative inline-flex items-center rounded-l-xl bg-primary_BG px-4 py-2 text-sm font-medium text-white  focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="relative inline-flex items-center ltr:rounded-l-xl rtl:rounded-r-xl bg-primary_BG px-4 py-2 text-sm font-medium text-white  focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
             >
               +
             </button>
@@ -87,13 +90,13 @@ const ProductShow: NextPage<Props> = ({ element }) => {
             <button
               onClick={() => handleDecrease()}
               type="button"
-              className="relative -ml-px inline-flex items-center rounded-r-xl  bg-primary_BG px-4 py-2 text-sm font-medium text-white  focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="relative -ml-px inline-flex items-center ltr:rounded-r-xl rtl:rounded-l-xl  bg-primary_BG px-4 py-2 text-sm font-medium text-white  focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
             >
               -
             </button>
           </span>
         </div>
-        <div className={`px-4`}>
+        <div className={`px-4 md:px-8`}>
           {/*   name and desc */}
           <div className="flex flex-row w-full justify-between items-center pb-4 border-b-2 border-stone-200">
             <div className={` flex-1 space-y-3`}>
@@ -102,41 +105,95 @@ const ProductShow: NextPage<Props> = ({ element }) => {
             </div>
             <div className={`shrink-0`}>
               <p className={`text-primary_BG text-lg `}>
-                {element.price} {t(`kd`)}
+                {element.price} {t(`kwd`)}
               </p>
             </div>
           </div>
 
           {/*     sections  */}
           {map(element.sections, (s: productSections, i) => (
-            <div className="flex flex-col w-full justify-start items-start space-y-3 py-4 border-b-2 border-stone-200">
+            <div
+              className="flex flex-col w-full justify-start items-start space-y-3 py-4 border-b-2 border-stone-200"
+              key={i}
+            >
               <div>
                 <p>{s.title}</p>
+                {s.must_select === 'q_meter' &&
+                  s.selection_type === 'mandatory' && (
+                    <p className={`flex -w-full text-red-800`}>
+                      {t(`must_select_min_and_max`, {
+                        min: s.min_q,
+                        max: s.max_q,
+                      })}
+                    </p>
+                  )}
               </div>
               {map(s.choices, (c, i) => (
-                <div key={c.id} className="flex items-center w-full">
-                  <input
-                    id={c.id.toString()}
-                    name={s.title}
-                    type="checkbox"
-                    // defaultChecked={c.id === 'email'}
-                    className="h-4 w-4 border-gray-300 ring-primary_BG-600 focus:ring-primary_BG-500"
-                  />
-                  <div
-                    className={`flex w-full flex-1 justify-between items-center`}
-                  >
-                    <div>
-                      <label
-                        htmlFor={c.name}
-                        className="ml-3 block text-sm font-medium text-gray-700"
+                <div key={c.id} className="flex items-center w-full" key={i}>
+                  {s.must_select === 'q_meter' ? (
+                    <div
+                      className={`flex flex-row w-full justify-between items-center`}
+                    >
+                      <div className={`space-y-1`}>
+                        <div>
+                          <p className={`text-primary_BG`}>{c.name}</p>
+                        </div>
+                        <div>
+                          +{c.price} {t(`kwd`)}
+                        </div>
+                      </div>
+                      <div>
+                        <span className="isolate inline-flex rounded-xl shadow-sm">
+                          <button
+                            onClick={() => handleIncrease()}
+                            type="button"
+                            className="relative inline-flex items-center ltr:rounded-l-xl rtl:rounded-r-xl bg-gray-100 px-4 py-2 text-sm font-medium text-black  focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
+                          >
+                            +
+                          </button>
+                          <button
+                            type="button"
+                            className="relative -ml-px inline-flex items-center  bg-gray-100 px-4 py-2 text-sm font-medium text-primary_BG  focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
+                          >
+                            {0}
+                          </button>
+                          <button
+                            onClick={() => handleDecrease()}
+                            type="button"
+                            className="relative -ml-px inline-flex items-center ltr:rounded-r-xl rtl:rounded-l-xl  bg-gray-100 px-4 py-2 text-sm font-medium text-black  focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
+                          >
+                            -
+                          </button>
+                        </span>
+                      </div>
+                    </div>
+                  ) : (
+                    <Fragment key={i}>
+                      <input
+                        id={c.id.toString()}
+                        name={s.title}
+                        required={s.selection_type !== 'optional'}
+                        type={s.must_select === 'multi' ? `checkbox` : 'radio'}
+                        // defaultChecked={c.id === 'email'}
+                        className="h-4 w-4 border-gray-300 ring-primary_BG-600 focus:ring-primary_BG-500"
+                      />
+                      <div
+                        className={`flex w-full flex-1 justify-between items-center`}
                       >
-                        {c.name}
-                      </label>
-                    </div>
-                    <div>
-                      {c.price} {t(`kd`)}
-                    </div>
-                  </div>
+                        <div>
+                          <label
+                            htmlFor={c.name}
+                            className="ltr:ml-3 rtl:mr-3 block text-sm font-medium text-gray-700"
+                          >
+                            {c.name}
+                          </label>
+                        </div>
+                        <div>
+                          {c.price} {t(`kwd`)}
+                        </div>
+                      </div>
+                    </Fragment>
+                  )}
                 </div>
               ))}
             </div>

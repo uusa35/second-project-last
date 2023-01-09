@@ -376,5 +376,6 @@
   "pickup" : "استلام",
   "delivery" : "توصيل",
   "earliest_delivery" : "التوصيل خلال",
-  "done": "تم"
+  "done": "تم",
+  "must_select_min_and_max" : "يجب اختيار اقل كمية {{min}} واقصى كمية {{max}}"
 }

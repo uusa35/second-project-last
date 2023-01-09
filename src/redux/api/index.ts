@@ -22,7 +22,7 @@ export const apiSlice = createApi({
         'X-Requested-With,Accept,Authentication,Content-Type'
       );
       headers.set('url', 'pages.testbedbynd.com');
-      headers.set('lang', getState().locale.lang);
+      // headers.set('lang', getState().locale.lang);
       headers.set(
         'Access-Control-Allow-Methods',
         'GET,PUT,POST,DELETE,PATCH,OPTIONS'

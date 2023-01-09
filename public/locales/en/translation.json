@@ -364,6 +364,6 @@
   "pickup" : "pickup",
   "delivery" : "delivery",
   "earliest_delivery" : "earliest delivery",
-  "done": "done"
-
+  "done": "done",
+  "must_select_min_and_max" : "must choose min {{min}} qty or {{max}} qty."
 }
