@@ -381,5 +381,6 @@
   "select_method" : "طريقة استلام الطلب",
   "product_search_index" : "البحث في المنتجات ..",
   "delivery_to" : "التوصيل لـ",
-  "select_branch": "اختر فرع"
+  "select_branch": "اختر فرع",
+  "search_branch": "ابحث عن فرع"
 }
