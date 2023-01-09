@@ -14,23 +14,21 @@ import {
 } from '@material-tailwind/react';
 import { CircleOutlined, CheckCircle } from '@mui/icons-material';
 import {
-    submitBtnClass,
-     normalBtnClass,
-    suppressText,
-    inputFieldClass,
-    appLinks
-  } from '@/constants/*';
+  submitBtnClass,
+  normalBtnClass,
+  suppressText,
+  inputFieldClass,
+  appLinks,
+} from '@/constants/*';
 import { Location } from '@/types/queries';
 import Image from 'next/image';
 import SearchIcon from '@/appIcons/search.svg';
 import { isEmpty, isNull, map } from 'lodash';
 import { setArea } from '@/redux/slices/areaSlice';
-import { setBranch } from '@/redux/slices/branchSlice'
 import { Cart } from '@/types/index';
 import { selectMethod } from '@/redux/slices/cartSlice';
 import { useRouter } from 'next/router';
-import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-
+import { setBranch } from '@/redux/slices/branchSlice';
 
 const SelectMethod: NextPage = (): JSX.Element => {
   const { t } = useTranslation();
@@ -38,7 +36,8 @@ const SelectMethod: NextPage = (): JSX.Element => {
     locale: { lang },
     branches,
     area: selectedArea,
-    cart,
+    cart: { method },
+    branch: { id: branch_id },
   } = useAppSelector((state) => state);
   const { data: locations, isLoading } = useGetLocationsQuery<{
     data: AppQueryResult<Location[]>;
@@ -50,8 +49,7 @@ const SelectMethod: NextPage = (): JSX.Element => {
   };
   const router = useRouter();
   const dispatch = useAppDispatch();
-  console.log("the branches", branches)
-
+  console.log('the branches', branches);
 
   useEffect(() => {
     dispatch(setCurrentModule(t('select_method')));
@@ -78,27 +76,25 @@ const SelectMethod: NextPage = (): JSX.Element => {
   };
 
   const handleSelectArea = (a: Area) => dispatch(setArea(a));
+
+  const handleSelectMethod = (m: Cart['method']) => dispatch(selectMethod(m));
+
   const handleSelectBranch = (b: Branch) => dispatch(setBranch(b));
-  const handleSelectMethod = (m: Cart['method']) => {
-    dispatch(selectMethod(m));
-    router.push(appLinks.cartSelectMethod.path);
-  };
-  const changetoPickupMethod = () => {
-    if(cart.method === 'delivery') {
-      handleSelectMethod('pickup')
-    }
-    else {
-      return
-    }
-  }
-  const changetoDeliveryMethod = () => {
-    if(cart.method === 'pickup') {
-      handleSelectMethod('delivery')
-    }
-    else {
-      return
-    }
-  }
+
+  // const changetoPickupMethod = () => {
+  //   if (method === 'delivery') {
+  //     handleSelectMethod('pickup');
+  //   } else {
+  //     return;
+  //   }
+  // };
+  // const changetoDeliveryMethod = () => {
+  //   if (method === 'pickup') {
+  //     handleSelectMethod('delivery');
+  //   } else {
+  //     return;
+  //   }
+  // };
 
   return (
     <MainContentLayout>
@@ -106,47 +102,37 @@ const SelectMethod: NextPage = (): JSX.Element => {
         <div className="flex flex-1 w-full flex-col md:flex-row justify-between items-center mb-3">
           <button
             className={`${
-              cart.method === 'delivery'
-                ? `${submitBtnClass}`
-                : `${normalBtnClass}`
+              method === 'delivery' ? `${submitBtnClass}` : `${normalBtnClass}`
             } md:ltr:mr-3 md:rtl:ml-3`}
             suppressHydrationWarning={suppressText}
-            onClick={changetoDeliveryMethod}
+            onClick={() => handleSelectMethod(`delivery`)}
           >
             {t('delivery')}
           </button>
           <button
             className={`${
-              cart.method === 'pickup'
-                ? `${submitBtnClass}`
-                : `${normalBtnClass}`
+              method === 'pickup' ? `${submitBtnClass}` : `${normalBtnClass}`
             } md:ltr:mr-3 md:rtl:ml-3`}
             suppressHydrationWarning={suppressText}
-            onClick={changetoPickupMethod}
+            onClick={() => handleSelectMethod(`pickup`)}
           >
             {t('pickup')}
           </button>
         </div>
-        <div className={`flex flex-1 w-full flex-grow my-2`}>
-            <div className={`w-full`}>
-              <div className="relative mt-1 rounded-md shadow-sm">
-                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                  <MagnifyingGlassIcon
-                    className="h-5 w-5 text-gray-400"
-                    aria-hidden="true"
-                  />
-                </div>
-                <input
-                  type="search"
-                  name="search"
-                  id="search"
-                  className="block w-full rounded-md  pl-10 border-none bg-gray-100"
-                  placeholder={`${t(`search_branch`)}`}
-                />
-              </div>
-            </div>
-          </div>
-        {cart.method === 'delivery' && (
+        <div className={`mb-5 py-1 ${inputFieldClass} flex items-center`}>
+          <Image
+            src={SearchIcon}
+            alt={`${t('search')}`}
+            suppressHydrationWarning={suppressText}
+          />
+          <input
+            type="text"
+            placeholder={`${t('search')}`}
+            className={`m-0 py-0 pt-1 ${inputFieldClass} border-0`}
+            suppressHydrationWarning={suppressText}
+          ></input>
+        </div>
+        {method === 'delivery' && (
           <div className={`px-4`}>
             {locations.Data.map((item) => {
               return (
@@ -166,7 +152,7 @@ const SelectMethod: NextPage = (): JSX.Element => {
                     <div className="bg-LightGray">
                       {map(item.Areas, (area: Area, i) => (
                         <button
-                          className={'flex justify-between w-full p-4'}
+                          className={'flex justify-between w-full p-4 '}
                           key={i}
                           onClick={() => handleSelectArea(area)}
                         >
@@ -191,35 +177,39 @@ const SelectMethod: NextPage = (): JSX.Element => {
             })}
           </div>
         )}
-        {cart.method === 'pickup' && (
+        {method === 'pickup' && (
           <div className="px-4">
             <p
-              className="text-primary_BG"
+              className="text-primary_BG p-3"
               suppressHydrationWarning={suppressText}
             >
               {t('select_branch')}
             </p>
-            {branches.map((branch: any) => (
-              <div>
-                <label
-                  htmlFor={branch.id}
-                  className="flex justify-between items-center py-1 form-check-label"
+            <div className={`bg-LightGray p-3`}>
+              {map(branches, (b: Branch, i) => (
+                <button
+                  key={i}
+                  onClick={() => handleSelectBranch(b)}
+                  className={`flex flex-row  w-full justify-between items-center p-1`}
                 >
-                  <p>{branch.name}</p>
+                  <label htmlFor={b.name} className="py-1 form-check-label">
+                    <p>{b.name}</p>
+                  </label>
                   <input
-                    className="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+                    className="form-check-input appearance-none rounded-full h-5 w-5 border border-gray-200 checked:border-lime-400 bg-white checked:bg-lime-400 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
                     type="radio"
                     name="branch"
-                    id={branch.id}
-                    value={branch.id}
-                    onChange={() => handleSelectBranch(branch)}
+                    readOnly
+                    checked={branch_id === b.id}
                   />
-                </label>
-              </div>
-            ))}
+                </button>
+              ))}
+            </div>
           </div>
         )}
         <button
+          onClick={() => router.replace(`/`)}
+          disabled={isNull(branch_id) || isNull(selectedArea.id)}
           className={`${submitBtnClass} mt-12`}
           suppressHydrationWarning={suppressText}
         >
