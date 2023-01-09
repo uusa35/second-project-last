@@ -14,16 +14,20 @@ import {
 } from '@material-tailwind/react';
 import { CircleOutlined, CheckCircle } from '@mui/icons-material';
 import {
-  submitBtnClass,
-  normalBtnClass,
-  suppressText,
-  inputFieldClass,
-} from '@/constants/*';
+    submitBtnClass,
+     normalBtnClass,
+    suppressText,
+    inputFieldClass,
+    appLinks
+  } from '@/constants/*';
 import { Location } from '@/types/queries';
 import Image from 'next/image';
 import SearchIcon from '@/appIcons/search.svg';
 import { isEmpty, isNull, map } from 'lodash';
 import { setArea } from '@/redux/slices/areaSlice';
+import { Cart } from '@/types/index';
+import { selectMethod } from '@/redux/slices/cartSlice';
+import { useRouter } from 'next/router';
 
 const SelectMethod: NextPage = (): JSX.Element => {
   const { t } = useTranslation();
@@ -33,7 +37,6 @@ const SelectMethod: NextPage = (): JSX.Element => {
     area: selectedArea,
     cart,
   } = useAppSelector((state) => state);
-  const dispatch = useAppDispatch();
   const { data: locations, isLoading } = useGetLocationsQuery<{
     data: AppQueryResult<Location[]>;
     isLoading: boolean;
@@ -42,7 +45,10 @@ const SelectMethod: NextPage = (): JSX.Element => {
   const handleOpen = (value: any) => {
     setOpen(open === value ? 0 : value);
   };
-  console.log('the branches', branches);
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+  console.log("the branches", branches)
+
 
   useEffect(() => {
     dispatch(setCurrentModule(t('select_method')));
@@ -69,6 +75,26 @@ const SelectMethod: NextPage = (): JSX.Element => {
   };
 
   const handleSelectArea = (a: Area) => dispatch(setArea(a));
+  const handleSelectMethod = (m: Cart['method']) => {
+    dispatch(selectMethod(m));
+    router.push(appLinks.cartSelectMethod.path);
+  };
+  const changetoPickupMethod = () => {
+    if(cart.method === 'delivery') {
+      handleSelectMethod('pickup')
+    }
+    else {
+      return
+    }
+  }
+  const changetoDeliveryMethod = () => {
+    if(cart.method === 'pickup') {
+      handleSelectMethod('delivery')
+    }
+    else {
+      return
+    }
+  }
 
   return (
     <MainContentLayout>
@@ -81,6 +107,7 @@ const SelectMethod: NextPage = (): JSX.Element => {
                 : `${normalBtnClass}`
             } md:ltr:mr-3 md:rtl:ml-3`}
             suppressHydrationWarning={suppressText}
+            onClick={changetoDeliveryMethod}
           >
             {t('delivery')}
           </button>
@@ -91,6 +118,7 @@ const SelectMethod: NextPage = (): JSX.Element => {
                 : `${normalBtnClass}`
             } md:ltr:mr-3 md:rtl:ml-3`}
             suppressHydrationWarning={suppressText}
+            onClick={changetoPickupMethod}
           >
             {t('pickup')}
           </button>
