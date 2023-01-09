@@ -378,5 +378,7 @@
   "earliest_delivery" : "التوصيل خلال",
   "done": "تم",
   "must_select_min_and_max" : "يجب اختيار اقل كمية {{min}} واقصى كمية {{max}}",
-  "select_method" : "طريقة استلام الطلب"
+  "select_method" : "طريقة استلام الطلب",
+  "product_search_index" : "البحث في المنتجات ..",
+  "delivery_to" : "التوصيل لـ"
 }

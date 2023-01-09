@@ -9,7 +9,7 @@ i18n
   .init({
     defaultNS: 'translation',
     fallbackLng: 'en',
-    debug: isLocal,
+    debug: false,
     whitelist: ['en', 'ar'],
     lng: 'en',
     backend: {

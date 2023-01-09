@@ -100,8 +100,3 @@ export interface Location {
   City: string;
   Areas: Area[];
 }
-
-export interface Area {
-  id: string | number;
-  name: string;
-}

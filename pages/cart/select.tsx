@@ -2,7 +2,6 @@ import MainContentLayout from '@/layouts/MainContentLayout';
 import { useGetLocationsQuery } from '@/redux/api/locationApi';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { NextPage } from 'next';
-import { useGetBranchesQuery } from '@/redux/api/branchApi';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useTranslation } from 'react-i18next';
 import { AppQueryResult, Area } from '@/types/queries';
@@ -23,8 +22,9 @@ import {
 import { Location } from '@/types/queries';
 import Image from 'next/image';
 import SearchIcon from '@/appIcons/search.svg';
-import { isEmpty, isNull, map } from 'lodash';
+import { isEmpty, map } from 'lodash';
 import { setArea } from '@/redux/slices/areaSlice';
+import { useRouter } from 'next/router';
 
 const SelectMethod: NextPage = (): JSX.Element => {
   const { t } = useTranslation();
@@ -34,6 +34,7 @@ const SelectMethod: NextPage = (): JSX.Element => {
     area: selectedArea,
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
+  const route = useRouter();
   const { data: locations, isLoading } = useGetLocationsQuery<{
     data: AppQueryResult<Location[]>;
     isLoading: boolean;
@@ -44,6 +45,7 @@ const SelectMethod: NextPage = (): JSX.Element => {
   };
   console.log('the locations', locations);
   console.log('branches', branches);
+  console.log('area from state', selectedArea);
 
   useEffect(() => {
     dispatch(setCurrentModule(t('select_method')));
@@ -143,6 +145,7 @@ const SelectMethod: NextPage = (): JSX.Element => {
           );
         })}
         <button
+          onClick={() => route.back()}
           className={`${submitBtnClass} mt-15`}
           suppressHydrationWarning={suppressText}
         >

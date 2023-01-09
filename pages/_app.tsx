@@ -13,17 +13,21 @@ import '@/styles/TabOrderHistory.css';
 import { AnimatePresence } from 'framer-motion';
 import { AppProps } from 'next/app';
 import { FC } from 'react';
+import { PersistGate } from 'redux-persist/integration/react';
+import { persistor } from '@/redux//store';
 
 const App: FC<AppProps> = ({ Component, ...rest }) => {
   const { store, props } = wrapper.useWrappedStore(rest);
   const { pageProps } = props;
   return (
+    // <PersistGate persistor={persistor}>
     <Provider store={store}>
       {/*<DevTools />*/}
       <MainLayout>
         <Component {...pageProps} />
       </MainLayout>
     </Provider>
+    // </PersistGate>
   );
 };
 
