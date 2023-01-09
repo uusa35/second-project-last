@@ -74,6 +74,11 @@ const MainAsideLayout: FC<Props> = ({ element }): JSX.Element => {
                 {t('track_order')}
               </h1>
             </Link>
+            <Link scroll={false} href={appLinks.branchIndex.path}>
+              <h1 suppressHydrationWarning={suppressText}>
+                {t('our_branches')}
+              </h1>
+            </Link>
           </div>
           <div className={`flex flex-row justify-between items-center w-14`}>
             <Link scroll={false} href={appLinks.cartIndex.path}>
