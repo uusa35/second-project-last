@@ -195,7 +195,7 @@ const SelectMethod: NextPage = (): JSX.Element => {
                     <p>{b.name}</p>
                   </label>
                   <input
-                    className="form-check-input appearance-none rounded-full h-5 w-5 border border-gray-200 checked:border-lime-400 bg-white checked:bg-lime-400 checked:border-lime-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+                    className="form-check-input appearance-none rounded-full h-5 w-5 border border-gray-200 checked:border-lime-400 bg-white checked:bg-lime-400 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
                     type="radio"
                     name="branch"
                     readOnly
