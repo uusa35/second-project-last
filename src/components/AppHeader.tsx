@@ -48,7 +48,7 @@ const AppHeader: FC = () => {
           (!router.asPath.includes('/home') && (
             <BackBtn backHome={false} offset={offset} />
           ))}
-        <SlideTopNav offset={offset} />
+        <SlideTopNav offset={100} />
       </header>
     </Suspense>
   );

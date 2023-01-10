@@ -66,7 +66,7 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
     if (isEmpty(tempId)) {
       // create tempId here if does not exist
     }
-  }, [vendor, locale.lang, branches]);
+  }, []);
 
   useEffect(() => {
     const handleRouteChange: Handler = (url, { shallow }) => {

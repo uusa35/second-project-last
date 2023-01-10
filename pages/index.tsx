@@ -66,35 +66,34 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
       <MainHead title={element.name} mainImage={element.logo} />
       <MainContentLayout>
         {/*  HomePage Header */}
-        <div className={`py-8 px-4`}>
+        <div className={`px-14`}>
           <HomeVendorMainInfo element={element} />
-          <HomeSelectMethod element={element} />
-          {/* Search Input */}
-          <div className={`flex flex-1 w-full flex-grow my-2`}>
-            <div className={`w-full`}>
-              <div className="relative mt-1 rounded-md shadow-sm">
-                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                  <MagnifyingGlassIcon
-                    className="h-5 w-5 text-gray-400"
-                    aria-hidden="true"
-                  />
-                </div>
-                <input
-                  type="search"
-                  name="search"
-                  id="search"
-                  className="block w-full rounded-md  pl-10 border-none bg-gray-100 py-3"
-                  suppressHydrationWarning={suppressText}
-                  placeholder={`${t(`search_products`)}`}
-                />
+        </div>
+        <HomeSelectMethod element={element} />
+        {/* Search Input */}
+        <div
+          className={`flex flex-1 w-auto flex-grow mx-8 pb-8 border-b border-stone-100`}
+        >
+          <div className={`w-full`}>
+            <div className="relative mt-1 rounded-md shadow-sm text-gray-400">
+              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center px-6">
+                <MagnifyingGlassIcon className="h-8 w-8" aria-hidden="true" />
               </div>
+              <input
+                type="search"
+                name="search"
+                id="search"
+                className="block w-full rounded-md  pl-20 border-none  bg-gray-100 py-3 h-16  text-lg capitalize"
+                suppressHydrationWarning={suppressText}
+                placeholder={`${t(`search_products`)}`}
+              />
             </div>
           </div>
-          {/* Categories List */}
-          <div className="mt-4 py-4 grid sm:grid-cols-3 lg:grid-cols-2 gap-6 border-t border-stone-100">
-            {!isEmpty(categories) &&
-              map(categories, (c, i) => <CategoryWidget element={c} key={i} />)}
-          </div>
+        </div>
+        {/* Categories List */}
+        <div className="mt-8 py-4 px-8 grid sm:grid-cols-3 lg:grid-cols-2 gap-6 ">
+          {!isEmpty(categories) &&
+            map(categories, (c, i) => <CategoryWidget element={c} key={i} />)}
         </div>
       </MainContentLayout>
     </>

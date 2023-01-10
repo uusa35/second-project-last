@@ -14,7 +14,6 @@ const HomeVendorMainInfo: FC<Props> = ({ element }) => {
   const { t } = useTranslation();
 
   return (
-    <>
     <Suspense fallback={<LoadingSpinner fullWidth={false} />}>
       <div className="flex gap-x-2 justify-between">
         <div className="flex flex-grow gap-x-2">
@@ -29,10 +28,12 @@ const HomeVendorMainInfo: FC<Props> = ({ element }) => {
             <h1 className="font-bold text-lg">{element.name}</h1>
             <div className="text-sm text-neutral-400 space-y-1">
               <p suppressHydrationWarning={suppressText}>
-                <Check className="text-lime-400 text-base" /> {t('payment_by_cards')}
+                <Check className="text-lime-400 text-base" />{' '}
+                {t('payment_by_cards')}
               </p>
               <p suppressHydrationWarning={suppressText}>
-              <Check className="text-lime-400 text-base" /> {t('cash_on_delivery')}
+                <Check className="text-lime-400 text-base" />{' '}
+                {t('cash_on_delivery')}
               </p>
             </div>
           </div>
@@ -54,9 +55,6 @@ const HomeVendorMainInfo: FC<Props> = ({ element }) => {
         </div>
       )}
     </Suspense>
-    <div className='w-full h-2 bg-gray-100 my-2'>
-    </div>
-    </>
   );
 };
 
