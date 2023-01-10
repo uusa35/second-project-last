@@ -15,7 +15,8 @@ import { useEffect } from 'react';
 import { setCurrentModule } from '@/redux/slices/appSettingSlice';
 import VerProductWidget from '@/widgets/product/VerProductWidget';
 import SearchIcon from '@/appIcons/search.svg';
-import {inputFieldClass} from '@/constants/*';
+import { inputFieldClass } from '@/constants/*';
+import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 
 type Props = {
   elements: Product[];
@@ -33,31 +34,41 @@ const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
     <>
       <MainHead title={`productIndex`} description={`productIndex`} />
       <MainContentLayout>
-        <div className={`px-4`}>
-          <div className={`mb-5 py-1 ${inputFieldClass} flex items-center`}>
-              <Image src={SearchIcon} alt='search' />
+        <div
+          className={`flex flex-1 w-auto flex-grow mx-8 pb-8 border-b border-stone-100`}
+        >
+          <div className={`w-full`}>
+            <div className="relative mt-1 rounded-md shadow-sm text-gray-400">
+              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center px-6">
+                <MagnifyingGlassIcon className="h-8 w-8" aria-hidden="true" />
+              </div>
               <input
-                  type="text"
-                  placeholder={`search`}
-                  className={`m-0 py-0 pt-1 ${inputFieldClass} border-0`}
-              ></input>
+                type="search"
+                name="search"
+                id="search"
+                className="block w-full focus:ring-1 focus:ring-primary_BG rounded-md  pl-20 border-none  bg-gray-100 py-3 h-16  text-lg capitalize"
+                suppressHydrationWarning={suppressText}
+                placeholder={`${t(`search_products`)}`}
+              />
             </div>
-          <div className="my-4 p-4">
-          {isEmpty(elements) && (
-            <Image
-              src={NotFoundImage.src}
-              alt={`not_found`}
-              width={imageSizes.sm}
-              height={imageSizes.sm}
-              className={`w-60 h-auto`}
-            />
-          )}
-          {map(elements, (p, i) => (
-            <VerProductWidget element={p} key={i} />
-          ))}
+          </div>
         </div>
+        <div className={`px-4`}>
+          <div className="my-4">
+            {isEmpty(elements) && (
+              <Image
+                src={NotFoundImage.src}
+                alt={`not_found`}
+                width={imageSizes.sm}
+                height={imageSizes.sm}
+                className={`w-60 h-auto`}
+              />
+            )}
+            {map(elements, (p, i) => (
+              <VerProductWidget element={p} key={i} />
+            ))}
+          </div>
         </div>
-       
       </MainContentLayout>
     </>
   );

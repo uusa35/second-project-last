@@ -12,6 +12,7 @@ import '@/styles//galenderStyle.css';
 import '@/styles/TabOrderHistory.css';
 import { AppProps } from 'next/app';
 import { FC, Suspense } from 'react';
+import { AnimatePresence } from 'framer-motion';
 import NextNProgress from 'nextjs-progressbar';
 
 const App: FC<AppProps> = ({ Component, ...rest }) => {
@@ -29,9 +30,11 @@ const App: FC<AppProps> = ({ Component, ...rest }) => {
       />
       <Provider store={store}>
         {/*<DevTools />*/}
-        <MainLayout>
-          <Component {...pageProps} />
-        </MainLayout>
+        <AnimatePresence mode={`wait`}>
+          <MainLayout>
+            <Component {...pageProps} />
+          </MainLayout>
+        </AnimatePresence>
       </Provider>
     </>
   );

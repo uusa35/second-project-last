@@ -52,7 +52,7 @@ const SlideTopNav: FC<Props> = ({ offset }): JSX.Element => {
       className={`${
         offset < 80 ? `hidden` : `flex text-white`
       } flex flex-row  justify-start items-center w-full pb-4 pt-8 px-4 h-22 top-0  relative
-      bg-cover bg-top bg-gradient-to-tr from-gray-400 to-gray-800 lg:from-white lg:to-white lg:mb-4 
+      bg-cover bg-top bg-gradient-to-tr from-gray-400 to-gray-800 lg:from-white lg:to-white 
       `}
     >
       <button

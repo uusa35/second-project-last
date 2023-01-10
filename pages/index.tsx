@@ -66,7 +66,7 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
       <MainHead title={element.name} mainImage={element.logo} />
       <MainContentLayout>
         {/*  HomePage Header */}
-        <div className={`px-14`}>
+        <div className={`px-14 mt-4`}>
           <HomeVendorMainInfo element={element} />
         </div>
         <HomeSelectMethod element={element} />
@@ -83,7 +83,7 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
                 type="search"
                 name="search"
                 id="search"
-                className="block w-full rounded-md  pl-20 border-none  bg-gray-100 py-3 h-16  text-lg capitalize"
+                className="block w-full rounded-md  pl-20 focus:ring-1 focus:ring-primary_BG border-none  bg-gray-100 py-3 h-16  text-lg capitalize"
                 suppressHydrationWarning={suppressText}
                 placeholder={`${t(`search_products`)}`}
               />
@@ -91,7 +91,7 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
           </div>
         </div>
         {/* Categories List */}
-        <div className="mt-8 py-4 px-8 grid sm:grid-cols-3 lg:grid-cols-2 gap-6 ">
+        <div className="py-4 px-8 grid sm:grid-cols-3 lg:grid-cols-2 gap-6 ">
           {!isEmpty(categories) &&
             map(categories, (c, i) => <CategoryWidget element={c} key={i} />)}
         </div>

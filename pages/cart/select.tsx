@@ -103,10 +103,9 @@ const SelectMethod: NextPage = (): JSX.Element => {
           <div className="flex flex-1 w-full flex-col md:flex-row justify-between items-center mb-3">
             <button
               className={`${
-                method === 'delivery'
-                  ? `border-b-2 border-b-primary_BG` : ``
-                } md:ltr:mr-3 md:rtl:ml-3 capitalize`}
-                suppressHydrationWarning={suppressText}
+                method === 'delivery' ? `border-b-2 border-b-primary_BG` : ``
+              } md:ltr:mr-3 md:rtl:ml-3 capitalize`}
+              suppressHydrationWarning={suppressText}
               onClick={() => handleSelectMethod(`delivery`)}
             >
               {t('delivery')}
@@ -211,7 +210,7 @@ const SelectMethod: NextPage = (): JSX.Element => {
           )}
           <button
             onClick={() => router.replace(`/`)}
-            disabled={isNull(branch_id) || isNull(selectedArea.id)}
+            disabled={isNull(branch_id) && isNull(selectedArea.id)}
             className={`${submitBtnClass} mt-12`}
             suppressHydrationWarning={suppressText}
           >
