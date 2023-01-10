@@ -26,6 +26,7 @@ import {
 import { setLocale } from '@/redux/slices/localeSlice';
 import CustomImage from '@/components/CustomImage';
 import { isEmpty } from 'lodash';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 type Props = {};
 
@@ -48,7 +49,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
   };
 
   return (
-    <Suspense fallback={<SideMenuSkelton />}>
+    <Suspense fallback={<LoadingSpinner fullWidth={false} />}>
       <Menu
         right={router.locale === 'ar'}
         isOpen={appSetting.sideMenuOpen}

@@ -12,12 +12,17 @@ import { AppQueryResult, Branch } from '@/types/queries';
 import { Vendor } from '@/types/index';
 import { setVendor } from '@/redux/slices/vendorSlice';
 import { isEmpty, isNull } from 'lodash';
-import MainAsideLayout from '@/components/home/MainAsideLayout';
 import { useGetBranchesQuery } from '@/redux/api/branchApi';
 import { setBranch } from '@/redux/slices/branchSlice';
 import { setBranches } from '@/redux/slices/branchesSlice';
+const MainAsideLayout = dynamic(
+  async () => await import(`@/components/home/MainAsideLayout`),
+  {
+    ssr: false,
+  }
+);
 const ToastAppContainer = dynamic(
-  () => import(`@/components/ToastAppContainer`),
+  async () => await import(`@/components/ToastAppContainer`),
   {
     ssr: false,
   }
