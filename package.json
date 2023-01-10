@@ -36,10 +36,8 @@
     "@types/react-slick": "^0.23.10",
     "@types/redux-logger": "^3.0.9",
     "@types/redux-saga": "^0.10.5",
-    "axios": "^1.2.2",
     "clsx": "^1.2.1",
     "date-fns": "^2.29.3",
-    "dayjs": "^1.11.7",
     "flowbite": "^1.5.5",
     "flowbite-react": "^0.3.7",
     "google-map-react": "^2.2.0",
@@ -80,6 +78,8 @@
     "yup": "^0.32.11"
   },
   "devDependencies": {
+    "@redux-devtools/core": "^3.13.1",
+    "@redux-devtools/extension": "^3.2.4",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/forms": "^0.5.3",
     "@tailwindcss/line-clamp": "^0.4.2",

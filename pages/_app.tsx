@@ -11,7 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import '@/styles//galenderStyle.css';
 import '@/styles/TabOrderHistory.css';
 import { AppProps } from 'next/app';
-import { FC, Suspense } from 'react';
+import { FC } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import NextNProgress from 'nextjs-progressbar';
 
@@ -19,7 +19,7 @@ const App: FC<AppProps> = ({ Component, ...rest }) => {
   const { store, props } = wrapper.useWrappedStore(rest);
   const { pageProps } = props;
   return (
-    <>
+    <Provider store={store}>
       <NextNProgress
         color="#189EC9"
         startPosition={0.3}
@@ -28,15 +28,13 @@ const App: FC<AppProps> = ({ Component, ...rest }) => {
         showOnShallow={true}
         options={{ showSpinner: false }}
       />
-      <Provider store={store}>
-        {/*<DevTools />*/}
-        <AnimatePresence mode={`wait`}>
-          <MainLayout>
-            <Component {...pageProps} />
-          </MainLayout>
-        </AnimatePresence>
-      </Provider>
-    </>
+      {/*<DevTools />*/}
+      <AnimatePresence mode={`wait`}>
+        <MainLayout>
+          <Component {...pageProps} />
+        </MainLayout>
+      </AnimatePresence>
+    </Provider>
   );
 };
 

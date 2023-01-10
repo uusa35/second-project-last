@@ -14,13 +14,13 @@ const CartIndex: NextPage = (): JSX.Element => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(setCurrentModule(t('cart_index')));
+    dispatch(setCurrentModule(t('cart')));
   }, []);
 
   return (
     <MainContentLayout>
       <div className={`px-4`}>
-        <h1>{t('cart_index')}</h1>
+        <h1>{t('cart')}</h1>
         <div>cartIndex</div>
       </div>
     </MainContentLayout>

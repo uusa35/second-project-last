@@ -3,6 +3,7 @@ import BackBtn from '@/components/BackBtn';
 import { useRouter } from 'next/router';
 import SlideTopNav from '@/components/home/SlideTopNav';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import { debounce } from 'lodash';
 
 const AppHeader: FC = () => {
   const [offset, setOffset] = useState(0);
@@ -15,11 +16,9 @@ const AppHeader: FC = () => {
     const onScroll = () => setOffset(window.pageYOffset);
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => {
-      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('scroll', debounce(onScroll, 400));
     };
   }, [router.pathname]);
-
-  console.log('router', router.pathname);
 
   return (
     <Suspense fallback={<LoadingSpinner fullWidth={false} />}>

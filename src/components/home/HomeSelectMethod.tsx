@@ -37,7 +37,7 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
   };
 
   return (
-    <Suspense fallback={<LoadingSpinner fullWidth={false} />}>
+    <>
       {/* Delivery / Pickup Btns */}
       <div className="flex flex-1 w-full flex-row justify-between items-center my-2 border-t-[14px] border-stone-100 px-14 text-lg pt-8 ">
         <button
@@ -114,7 +114,7 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
           </div>
         </div>
       </div>
-    </Suspense>
+    </>
   );
 };
 

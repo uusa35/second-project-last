@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { wrapper } from '@/redux/store';
 import { apiSlice } from '@/redux/api';
 import { NextPage } from 'next';
@@ -7,32 +7,18 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import MainContentLayout from '@/layouts/MainContentLayout';
 import MainHead from '@/components/MainHead';
 import { vendorApi } from '@/redux/api/vendorApi';
-import { Cart, Vendor } from '@/types/index';
+import { Vendor } from '@/types/index';
 import { categoryApi } from '@/redux/api/categoryApi';
-import { isEmpty, isNull, map } from 'lodash';
+import { isEmpty, map } from 'lodash';
 import CategoryWidget from '@/widgets/category/CategoryWidget';
-import CustomImage from '@/components/CustomImage';
-import {
-  appLinks,
-  imageSizes,
-  imgUrl,
-  inputFieldClass,
-  normalBtnClass,
-  submitBtnClass,
-  suppressText,
-} from '@/constants/*';
+import { suppressText } from '@/constants/*';
 import { useTranslation } from 'react-i18next';
-import { InfoOutlined, DiscountOutlined } from '@mui/icons-material';
-import Link from 'next/link';
 import { setLocale } from '@/redux/slices/localeSlice';
-import { selectMethod } from '@/redux/slices/cartSlice';
-import { useRouter } from 'next/router';
 import { setCurrentModule } from '@/redux/slices/appSettingSlice';
-import MotorIcon from '@/appIcons/motor.svg';
-import TruckIcon from '@/appIcons/trunk.svg';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import HomeSelectMethod from '@/components/home/HomeSelectMethod';
 import HomeVendorMainInfo from '@/components/home/HomeVendorMainInfo';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 type Props = {
   categories: Category[];
@@ -43,11 +29,8 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
   console.log(`::: Log Home Render :::: ${renderCounter++}`);
   const { t } = useTranslation();
   const {
-    cart: { tempId, method },
-    area,
-    branch,
+    cart: { tempId },
   } = useAppSelector((state) => state);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -56,9 +39,6 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
     }
     dispatch(setCurrentModule(t('home')));
   }, []);
-
-  console.log('vendor', element);
-  console.log('area', area);
 
   return (
     <>

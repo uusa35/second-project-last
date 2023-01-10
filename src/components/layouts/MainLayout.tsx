@@ -57,7 +57,7 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
     if (isSuccess) {
       dispatch(setVendor(vendor.Data));
     }
-    if (branchesSuccess && !isEmpty(branches)) {
+    if (branchesSuccess) {
       if (isNull(branchId)) {
         dispatch(setBranch(branches.Data[0]));
       }

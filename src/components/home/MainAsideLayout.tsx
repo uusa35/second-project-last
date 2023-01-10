@@ -2,7 +2,6 @@ import React, { FC, Suspense } from 'react';
 import Image from 'next/image';
 import { appLinks, imageSizes, imgUrl, suppressText } from '@/constants/*';
 import Link from 'next/link';
-import { ShoppingBagOutlined } from '@mui/icons-material';
 import CustomImage from '@/components/CustomImage';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useRouter } from 'next/router';
@@ -11,6 +10,8 @@ import { useTranslation } from 'react-i18next';
 import { setLocale } from '@/redux/slices/localeSlice';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import { HomeIcon } from '@heroicons/react/24/outline';
+import TrackOrderIcon from '@/appIcons/my_orders.svg';
 
 type Props = {
   element: Vendor;
@@ -62,37 +63,36 @@ const MainAsideLayout: FC<Props> = ({ element }): JSX.Element => {
             className={`absolute top-0 left-0 flex w-full justify-between items-center grow  z-90 text-white p-4
            `}
           >
-            <div className="flex items-center gap-x-5">
-              <Link scroll={false} href={appLinks.root.path}>
-                <h1 suppressHydrationWarning={suppressText}>{t('home')}</h1>
-              </Link>
-
-              <Link scroll={false} href={appLinks.productSearchIndex(branchId)}>
-                <h1 suppressHydrationWarning={suppressText}>{t('search')}</h1>
-              </Link>
-
-              <Link scroll={false} href={appLinks.trackOrder.path}>
-                <h1 suppressHydrationWarning={suppressText}>
-                  {t('track_order')}
-                </h1>
-              </Link>
-              <Link scroll={false} href={appLinks.branchIndex.path}>
-                <h1 suppressHydrationWarning={suppressText}>
-                  {t('our_branches')}
-                </h1>
-              </Link>
-            </div>
-            <div className={`flex flex-row justify-between items-center w-14`}>
-              <Link scroll={false} href={appLinks.cartIndex.path}>
-                <ShoppingBagOutlined />
-              </Link>
-              <button
-                onClick={() => handleChangeLang(otherLang)}
-                className={`text-lg font-bold capitalize`}
-                suppressHydrationWarning={suppressText}
+            <div className="flex items-center gap-x-5"></div>
+            <div
+              className={`flex flex-col justify-start items-start w-1/3 gap-3`}
+            >
+              <Link
+                scroll={false}
+                href={appLinks.home.path}
+                className={`flex flex-row p-1 px-4 justify-between items-center rounded-lg bg-white bg-opacity-90 text-black`}
               >
-                {t(`${otherLang}`)}
-              </button>
+                <HomeIcon className={`w-6 h-6 rtl:ml-2 ltr:mr-2`} />
+                <p suppressHydrationWarning={suppressText} className={`mt-2`}>
+                  {t('home')}
+                </p>
+              </Link>
+              <Link
+                scroll={false}
+                href={appLinks.trackOrder.path}
+                className={`flex flex-row p-1 px-4 justify-between items-center rounded-lg bg-white bg-opacity-90 text-black`}
+              >
+                <CustomImage
+                  src={TrackOrderIcon}
+                  width={25}
+                  height={25}
+                  alt={t('track_order')}
+                  className={`w-6 h-6 rtl:ml-2 ltr:mr-2 text-black`}
+                />
+                <p suppressHydrationWarning={suppressText} className={`mt-2`}>
+                  {t('track_order')}
+                </p>
+              </Link>
             </div>
           </div>
           <div className={`text-center space-y-3 text-white`}>

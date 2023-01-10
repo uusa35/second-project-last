@@ -85,7 +85,7 @@ const SlideTopNav: FC<Props> = ({ offset }): JSX.Element => {
             <div className="flex sm:hidden flex-1  pt-2 ">{vendor.name}</div>
           </Link>
         </div>
-        <div className={`flex flex-row justify-between items-center w-16 z-50`}>
+        <div className={`flex flex-row justify-between items-center w-20 z-50`}>
           <Link scroll={false} href={appLinks.cartIndex.path}>
             <ShoppingBagOutlined className={`w-8 h-8 text-black`} />
           </Link>

@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import React, { FC, useEffect, useState } from 'react';
 import NoFoundImage from '@/appImages/not_found.png';
-import { imageSizes } from '@/constants/*';
+import { imageSizes, suppressText } from '@/constants/*';
 
 type Props = {
   src: string;
@@ -40,6 +40,7 @@ const CustomImage: FC<Props> = ({
         setImageSrc(NoFoundImage.src);
       }}
       className={className}
+      suppressHydrationWarning={suppressText}
     />
   );
 };

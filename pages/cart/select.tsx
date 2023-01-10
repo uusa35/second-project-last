@@ -82,24 +82,9 @@ const SelectMethod: NextPage = (): JSX.Element => {
 
   const handleSelectBranch = (b: Branch) => dispatch(setBranch(b));
 
-  // const changetoPickupMethod = () => {
-  //   if (method === 'delivery') {
-  //     handleSelectMethod('pickup');
-  //   } else {
-  //     return;
-  //   }
-  // };
-  // const changetoDeliveryMethod = () => {
-  //   if (method === 'pickup') {
-  //     handleSelectMethod('delivery');
-  //   } else {
-  //     return;
-  //   }
-  // };
-
   return (
     <MainContentLayout>
-      <Suspense fallback={<LoadingSpinner fullWidth={true} />}>
+      <Suspense>
         <div className={`px-4`}>
           <div className="flex flex-1 w-full flex-row justify-between items-center px-14 text-lg py-8 ">
             <button
