@@ -372,5 +372,6 @@
   "delivery_to" : "deliver to",
   "search_branch": "search branch",
   "deliver_to" : "deliver to",
-  "pickup_from" : "pickup from"
+  "pickup_from" : "pickup from",
+  "order_not_found" : "order not found. please review your order invoice. or contact us for more information. thank you.."
 }

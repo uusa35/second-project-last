@@ -59,4 +59,4 @@ export const apiSlice = createApi({
   }),
 });
 
-export const { useGetStaticPagesQuery, useLazyAddFeedBackQuery } = apiSlice;
+export const { useGetStaticPagesQuery } = apiSlice;
