@@ -24,7 +24,7 @@ import {
   HomeOutlined,
 } from '@mui/icons-material';
 import { setLocale } from '@/redux/slices/localeSlice';
-import CustomImage from '@/components/customImage';
+import CustomImage from '@/components/CustomImage';
 import { isEmpty } from 'lodash';
 
 type Props = {};

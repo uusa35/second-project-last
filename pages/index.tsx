@@ -11,7 +11,7 @@ import { Cart, Vendor } from '@/types/index';
 import { categoryApi } from '@/redux/api/categoryApi';
 import { isEmpty, isNull, map } from 'lodash';
 import CategoryWidget from '@/widgets/category/CategoryWidget';
-import CustomImage from '@/components/customImage';
+import CustomImage from '@/components/CustomImage';
 import {
   appLinks,
   imageSizes,
@@ -31,6 +31,8 @@ import { setCurrentModule } from '@/redux/slices/appSettingSlice';
 import MotorIcon from '@/appIcons/motor.svg';
 import TruckIcon from '@/appIcons/trunk.svg';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
+import HomeSelectMethod from '@/components/home/HomeSelectMethod';
+import HomeVendorMainInfo from '@/components/home/HomeVendorMainInfo';
 
 type Props = {
   categories: Category[];
@@ -47,7 +49,6 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
   } = useAppSelector((state) => state);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const dispatch = useAppDispatch();
-  const router = useRouter();
 
   useEffect(() => {
     if (isEmpty(tempId)) {
@@ -55,11 +56,6 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
     }
     dispatch(setCurrentModule(t('home')));
   }, []);
-
-  const handleSelectMethod = (m: Cart['method']) => {
-    dispatch(selectMethod(m));
-    router.push(appLinks.cartSelectMethod.path);
-  };
 
   console.log('vendor', element);
   console.log('area', area);
@@ -71,125 +67,8 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
       <MainContentLayout>
         {/*  HomePage Header */}
         <div className={`py-8 px-4`}>
-          <div className="flex gap-x-2 justify-between ">
-            <div className="flex flex-grow gap-x-2">
-              <CustomImage
-                width={imageSizes.xs}
-                height={imageSizes.xs}
-                className="rounded-md w-1/4 h-fit aspect-square"
-                alt={element.name}
-                src={imgUrl(element.logo)}
-              />
-              <div className={`flex flex-col w-full p-2 space-y-2`}>
-                <h1 className="font-bold text-lg ">{element.name}</h1>
-                <div className="text-sm text-gray-500 space-y-1">
-                  <p suppressHydrationWarning={suppressText}>
-                    {t('payment_by_cards')}
-                  </p>
-                  <p suppressHydrationWarning={suppressText}>
-                    {t('cash_on_delivery')}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <Link href={appLinks.vendorShow.path} scroll={false}>
-              <InfoOutlined className="text-primary_BG" />
-            </Link>
-          </div>
-
-          {element.desc && (
-            <div className="flex gap-x-1 justify-start items-start mt-4">
-              <DiscountOutlined className="text-primary_BG" />
-              <p
-                suppressHydrationWarning={suppressText}
-                className="text-sm text-gray-500 px-2"
-              >
-                {element.desc}
-              </p>
-            </div>
-          )}
-
-          {/* Delivery / Pickup Btns */}
-          <div className="flex flex-1 w-full flex-col md:flex-row justify-between items-center my-2">
-            <button
-              className={`${
-                method === 'delivery'
-                  ? `${submitBtnClass}`
-                  : `${normalBtnClass}`
-              } md:ltr:mr-3 md:rtl:ml-3`}
-              onClick={() => handleSelectMethod(`delivery`)}
-              suppressHydrationWarning={suppressText}
-            >
-              {t('delivery')}
-            </button>
-            <button
-              className={`${
-                method === 'pickup' ? `${submitBtnClass}` : `${normalBtnClass}`
-              } md:ltr:mr-3 md:rtl:ml-3`}
-              onClick={() => handleSelectMethod(`pickup`)}
-              suppressHydrationWarning={suppressText}
-            >
-              {t('pickup')}
-            </button>
-          </div>
-          {!isNull(area.id) && method === 'delivery' && (
-            <div className="flex flex-1 w-full flex-row justify-between items-center mt-4 mb-2">
-              <div
-                className={`flex flex-grow justify-start items-center md:ltr:mr-3 md:rtl:ml-3`}
-              >
-                <CustomImage
-                  src={MotorIcon.src}
-                  alt={t(`deliver_to`)}
-                  width={imageSizes.xs}
-                  height={imageSizes.xs}
-                  className="h-8 w-8  ltr:mr-3 rtl:ml-3"
-                />
-                <h1 className={`pt-2`}>{t('deliver_to')}</h1>
-              </div>
-              <div className={`md:ltr:mr-3 md:rtl:ml-3 pt-2 text-primary_BG`}>
-                {area.name}
-              </div>
-            </div>
-          )}
-          {!isNull(branch.id) && method === 'pickup' && (
-            <div className="flex flex-1 w-full flex-row justify-between items-center mt-4 mb-2">
-              <div
-                className={`flex flex-grow justify-start items-center md:ltr:mr-3 md:rtl:ml-3`}
-              >
-                <CustomImage
-                  src={MotorIcon.src}
-                  alt={t(`deliver_to`)}
-                  width={imageSizes.xs}
-                  height={imageSizes.xs}
-                  className="h-8 w-8  ltr:mr-3 rtl:ml-3"
-                />
-                <h1 className={`pt-2`}>{t('pickup_from')}</h1>
-              </div>
-              <div className={`md:ltr:mr-3 md:rtl:ml-3 pt-2 text-primary_BG`}>
-                {branch.name}
-              </div>
-            </div>
-          )}
-          <div className="flex flex-1 w-full flex-row justify-between items-center mt-2 mb-4">
-            <div
-              className={`flex flex-grow justify-start items-center md:ltr:mr-3 md:rtl:ml-3`}
-            >
-              <CustomImage
-                src={TruckIcon.src}
-                alt={t(`deliver_to`)}
-                width={imageSizes.xs}
-                height={imageSizes.xs}
-                className="h-8 w-8 ltr:mr-3 rtl:ml-3"
-              />
-              <h1 className={`pt-2`} suppressHydrationWarning={suppressText}>
-                {t('earliest_delivery')}
-              </h1>
-            </div>
-            <div className={`md:ltr:mr-3 md:rtl:ml-3 pt-2 text-primary_BG`}>
-              {element.DeliveryTime}
-            </div>
-          </div>
+          <HomeVendorMainInfo element={element} />
+          <HomeSelectMethod element={element} />
           {/* Search Input */}
           <div className={`flex flex-1 w-full flex-grow my-2`}>
             <div className={`w-full`}>
@@ -205,6 +84,7 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
                   name="search"
                   id="search"
                   className="block w-full rounded-md  pl-10 border-none bg-gray-100"
+                  suppressHydrationWarning={suppressText}
                   placeholder={`${t(`search_products`)}`}
                 />
               </div>

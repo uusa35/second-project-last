@@ -11,7 +11,7 @@ import { useAppDispatch } from '@/redux/hooks';
 import { useEffect, useState, useCallback, Fragment } from 'react';
 import { setCurrentModule } from '@/redux/slices/appSettingSlice';
 import { imageSizes, imgUrl } from '@/constants/*';
-import CustomImage from '@/components/customImage';
+import CustomImage from '@/components/CustomImage';
 import { map } from 'lodash';
 import Image from 'next/image';
 

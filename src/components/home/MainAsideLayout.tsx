@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { appLinks, imageSizes, imgUrl, suppressText } from '@/constants/*';
 import Link from 'next/link';
 import { ShoppingBagOutlined } from '@mui/icons-material';
-import CustomImage from '@/components/customImage';
+import CustomImage from '@/components/CustomImage';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useRouter } from 'next/router';
 import { Vendor } from '@/types/index';
@@ -87,6 +87,7 @@ const MainAsideLayout: FC<Props> = ({ element }): JSX.Element => {
             <button
               onClick={() => handleChangeLang(otherLang)}
               className={`text-lg font-bold capitalize`}
+              suppressHydrationWarning={suppressText}
             >
               {t(`${otherLang}`)}
             </button>
