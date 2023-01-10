@@ -83,7 +83,7 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
                   type="search"
                   name="search"
                   id="search"
-                  className="block w-full rounded-md  pl-10 border-none bg-gray-100"
+                  className="block w-full rounded-md  pl-10 border-none bg-gray-100 capitalize h-14"
                   suppressHydrationWarning={suppressText}
                   placeholder={`${t(`search_products`)}`}
                 />
