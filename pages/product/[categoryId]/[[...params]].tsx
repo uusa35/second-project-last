@@ -16,11 +16,12 @@ import { useAppDispatch } from '@/redux/hooks';
 import { setCurrentModule } from '@/redux/slices/appSettingSlice';
 import { useTranslation } from 'react-i18next';
 import VerProductWidget from '@/components/widgets/product/VerProductWidget';
-import {inputFieldClass} from '@/constants/*';
+import { inputFieldClass } from '@/constants/*';
 import SearchIcon from '@/appIcons/search.svg';
 import Menu from '@/appIcons/menu.svg';
 import List from '@/appIcons/list.svg';
 import { useRouter } from 'next/router';
+import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 type Props = {
   elements: ProductPagination<Product[]>;
 };
@@ -28,14 +29,14 @@ const ProductIndex: NextPage<Props> = ({ elements }): JSX.Element => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const [IsMenue,setIsMenue]=useState(true)
-  const [Icon,SetIcon]=useState(true)
-// change menue view to list view
-const changeStyle=()=>{
-    setIsMenue(!IsMenue)
-    SetIcon(!Icon)
-  }
-  console.log('elements', elements, {router});
+  const [IsMenue, setIsMenue] = useState(true);
+  const [Icon, SetIcon] = useState(true);
+  // change menue view to list view
+  const changeStyle = () => {
+    setIsMenue(!IsMenue);
+    SetIcon(!Icon);
+  };
+  console.log('elements', elements, { router });
   const { query } = useRouter();
   console.log('the query', query.slug);
 
@@ -52,21 +53,37 @@ const changeStyle=()=>{
       <MainContentLayout>
         <h1 suppressHydrationWarning={suppressText}></h1>
         <div className={`px-4`}>
-          <div className='flex items-start'>
-            <div className={`mb-5 py-1 ${inputFieldClass} flex items-center`}>
-              <Image src={SearchIcon} alt='search' />
-              <input
-                  type="text"
-                  placeholder={`${t('search')}`}
-                  className={`m-0 py-0 pt-1 ${inputFieldClass} border-0`}
-              ></input>
+          <div className="flex justify-center items-center">
+            <div className={`w-full`}>
+              <div className="relative mt-1 rounded-md shadow-sm text-gray-400">
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center px-6">
+                  <MagnifyingGlassIcon className="h-8 w-8" aria-hidden="true" />
+                </div>
+                <input
+                  type="search"
+                  name="search"
+                  id="search"
+                  className="block w-full focus:ring-1 focus:ring-primary_BG rounded-md  pl-20 border-none  bg-gray-100 py-3 h-16  text-lg capitalize"
+                  suppressHydrationWarning={suppressText}
+                  placeholder={`${t(`search_products`)}`}
+                />
+              </div>
             </div>
-            <button onClick={changeStyle} className='pt-1 ps-2'>{Icon ? 
-              <Image src={Menu} alt='menu' className={'w-8 h-8'} />
-              :<Image src={List} alt='menu' className={'w-8 h-8'} />}
+            <button onClick={changeStyle} className="pt-1 ps-2">
+              {Icon ? (
+                <Image src={Menu} alt="menu" className={'w-8 h-8'} />
+              ) : (
+                <Image src={List} alt="menu" className={'w-8 h-8'} />
+              )}
             </button>
           </div>
-          <div className={IsMenue? 'mt-4 p-4 grid sm:grid-cols-3 lg:grid-cols-2 gap-6': 'my-4 p-4'}>
+          <div
+            className={
+              IsMenue
+                ? 'mt-4 p-4 grid sm:grid-cols-3 lg:grid-cols-2 gap-6'
+                : 'my-4 p-4'
+            }
+          >
             {isEmpty(elements.products) && (
               <Image
                 src={NotFoundImage.src}
@@ -76,10 +93,14 @@ const changeStyle=()=>{
                 className={`w-60 h-auto`}
               />
             )}
-            
-            {map(elements.products, (p: Product, i) => (
-             IsMenue ? <HorProductWidget element={p} key={i} /> : <VerProductWidget element={p} key={i}/>
-            ))}
+
+            {map(elements.products, (p: Product, i) =>
+              IsMenue ? (
+                <HorProductWidget element={p} key={i} />
+              ) : (
+                <VerProductWidget element={p} key={i} />
+              )
+            )}
           </div>
         </div>
       </MainContentLayout>

@@ -26,7 +26,7 @@ const BranchIndex: NextPage<Props> = ({ elements }) => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    dispatch(setCurrentModule(t('delivery_or_pickup')));
+    dispatch(setCurrentModule(t('our_branches')));
   }, []);
 
   return (

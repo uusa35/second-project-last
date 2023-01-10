@@ -34,9 +34,7 @@ const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
     <>
       <MainHead title={`productIndex`} description={`productIndex`} />
       <MainContentLayout>
-        <div
-          className={`flex flex-1 w-auto flex-grow mx-8 pb-8 border-b border-stone-100`}
-        >
+        <div className={`px-4`}>
           <div className={`w-full`}>
             <div className="relative mt-1 rounded-md shadow-sm text-gray-400">
               <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center px-6">
@@ -52,8 +50,6 @@ const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
               />
             </div>
           </div>
-        </div>
-        <div className={`px-4`}>
           <div className="my-4">
             {isEmpty(elements) && (
               <Image

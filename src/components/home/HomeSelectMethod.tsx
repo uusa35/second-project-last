@@ -39,11 +39,11 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
   return (
     <Suspense fallback={<LoadingSpinner fullWidth={false} />}>
       {/* Delivery / Pickup Btns */}
-      <div className="flex flex-1 w-full flex-row justify-between items-center my-2 border-t-[14px] border-stone-100 px-14 text-lg">
+      <div className="flex flex-1 w-full flex-row justify-between items-center my-2 border-t-[14px] border-stone-100 px-14 text-lg pt-8 ">
         <button
           className={`${
-            method === 'delivery' ? `border-b-2 pb-4 border-b-primary_BG` : ``
-          } md:ltr:mr-3 md:rtl:ml-3 capitalize pt-8 `}
+            method === 'delivery' && `border-b-2 pb-4 border-b-primary_BG`
+          } md:ltr:mr-3 md:rtl:ml-3 capitalize `}
           onClick={() => handleSelectMethod(`delivery`)}
           suppressHydrationWarning={suppressText}
         >
@@ -51,8 +51,8 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
         </button>
         <button
           className={`${
-            method === 'pickup' ? `border-b-2 pb-4 border-b-primary_BG` : ``
-          } md:ltr:mr-3 md:rtl:ml-3 capitalize`}
+            method === 'pickup' && `border-b-2 pb-4 border-b-primary_BG`
+          } md:ltr:mr-3 md:rtl:ml-3 capitalize `}
           onClick={() => handleSelectMethod(`pickup`)}
           suppressHydrationWarning={suppressText}
         >

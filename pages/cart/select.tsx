@@ -29,6 +29,7 @@ import { Cart } from '@/types/index';
 import { selectMethod } from '@/redux/slices/cartSlice';
 import { useRouter } from 'next/router';
 import { setBranch } from '@/redux/slices/branchSlice';
+import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 
 const SelectMethod: NextPage = (): JSX.Element => {
   const { t } = useTranslation();
@@ -100,38 +101,40 @@ const SelectMethod: NextPage = (): JSX.Element => {
     <MainContentLayout>
       <Suspense fallback={<LoadingSpinner fullWidth={true} />}>
         <div className={`px-4`}>
-          <div className="flex flex-1 w-full flex-col md:flex-row justify-between items-center mb-3">
+          <div className="flex flex-1 w-full flex-row justify-between items-center px-14 text-lg py-8 ">
             <button
               className={`${
-                method === 'delivery' ? `border-b-2 border-b-primary_BG` : ``
-              } md:ltr:mr-3 md:rtl:ml-3 capitalize`}
-              suppressHydrationWarning={suppressText}
+                method === 'delivery' && `border-b-2 pb-4 border-b-primary_BG`
+              } md:ltr:mr-3 md:rtl:ml-3 capitalize `}
               onClick={() => handleSelectMethod(`delivery`)}
+              suppressHydrationWarning={suppressText}
             >
               {t('delivery')}
             </button>
             <button
               className={`${
-                method === 'pickup' ? `border-b-2 border-b-primary_BG` : ``
-              } md:ltr:mr-3 md:rtl:ml-3 capitalize`}
-              suppressHydrationWarning={suppressText}
+                method === 'pickup' && `border-b-2 pb-4 border-b-primary_BG`
+              } md:ltr:mr-3 md:rtl:ml-3 capitalize `}
               onClick={() => handleSelectMethod(`pickup`)}
+              suppressHydrationWarning={suppressText}
             >
               {t('pickup')}
             </button>
           </div>
-          <div className={`mb-5 py-1 ${inputFieldClass} flex items-center`}>
-            <Image
-              src={SearchIcon}
-              alt={`${t('search')}`}
-              suppressHydrationWarning={suppressText}
-            />
-            <input
-              type="text"
-              placeholder={`${t('search')}`}
-              className={`m-0 py-0 pt-1 ${inputFieldClass} border-0`}
-              suppressHydrationWarning={suppressText}
-            ></input>
+          <div className={`w-full mb-4`}>
+            <div className="relative mt-1 rounded-md shadow-sm text-gray-400">
+              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center px-6">
+                <MagnifyingGlassIcon className="h-8 w-8" aria-hidden="true" />
+              </div>
+              <input
+                type="search"
+                name="search"
+                id="search"
+                className="block w-full focus:ring-1 focus:ring-primary_BG rounded-md  pl-20 border-none  bg-gray-100 py-3 h-16  text-lg capitalize"
+                suppressHydrationWarning={suppressText}
+                placeholder={`${t(`search`)}`}
+              />
+            </div>
           </div>
           {method === 'delivery' && (
             <div className={`px-4`}>
