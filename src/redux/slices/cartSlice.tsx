@@ -1,8 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Cart } from '@/types/index';
-import { HYDRATE } from 'next-redux-wrapper';
-import { searchParamsSlice } from '@/redux/slices/searchParamsSlice';
-import { branchSlice } from '@/redux/slices/branchSlice';
 
 const initialState: Cart = {
   tempId: '',
