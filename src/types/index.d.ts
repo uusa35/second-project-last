@@ -10,7 +10,7 @@ export interface Product {
   price_on_selection?: boolean;
   new_price?: string;
   img: img[];
-  sections?: productSections[]
+  sections?: productSections[];
 }
 
 export interface productSections {
@@ -74,19 +74,6 @@ export interface Vendor {
     knet: 'yes' | 'no';
     visa: 'yes' | 'no';
   };
-}
-
-export interface User {
-  [key: string]: string;
-  id: string | number;
-  name: string;
-  name_ar: string;
-  name_en: string;
-  image?: string;
-  email: string;
-  mobile?: string;
-  description_ar?: string;
-  description_en?: string;
 }
 
 export interface Locale {
@@ -166,21 +153,98 @@ export interface SearchParams {
 }
 
 export interface Order {
-  isEmpty: boolean;
-  orderMode: string;
-  order_id: string | number;
+  orderId: number;
+  vendor_name: string;
+  endor_logo: string;
+  vendor_description: string[];
+  branch_phone: string;
+  branch_address: string;
 }
 
-export interface UserAddress {
-  id: number | string;
-  area_id: number | string;
-  customer_id?: number | string;
-  area_id: number | string;
-  address: UserAddressFields[];
-  area: string;
-  latitude?: string;
-  longitude?: string;
+export interface OrderInvoice {
+  order_code: string;
+  vendor_name: string;
+  vendor_logo: string;
+  order_type: string;
+  customer: {
+    id: number;
+    name: string;
+    phone: string;
+    email: string;
+  };
+  payment_type: string;
+  delivery_address: {
+    address: {
+      type: string;
+      block: string;
+      street: string;
+    };
+    latitude: string;
+    longitude: string;
+  };
+  pickup_details: {
+    branch: string;
+    longitude: string;
+    latitude: string;
+  };
+  delivery_instruction: string;
+  order_details: {
+    branch: string;
+    branch_address: string;
+    order_date: string;
+    order_time: string;
+  };
+  order_summary: {
+    sub_total: string;
+    total: string;
+    delivery_fee: string;
+    items: [
+      {
+        quantity: number;
+        item: string;
+        addon: string[];
+        price: string;
+        total: number;
+      }
+    ];
+  };
+}
+
+export interface OrderTrack {
+  order_status: string;
+  order_code: string;
+  branch_phone: string;
+  estimated_time: string | null;
+  address: {
+    latitude: string;
+    longitude: string;
+    address: {
+      block: string;
+      street: string;
+      type: string;
+    };
+  };
+}
+
+export interface OrderUser {
+  user_id: string;
+  order_type: string;
+  UserAgent: string;
+  Date: string;
+  Time: string;
+  Messg: string;
+  address_id: number;
+  PaymentMethod: string;
+}
+
+export interface OrderAddress {
+  id: number;
   type: string;
+  address: {
+    block: string;
+    street: string;
+  };
+  customer_id: number;
 }
 
 export interface UserAddressFields {

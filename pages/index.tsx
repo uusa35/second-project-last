@@ -93,7 +93,7 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
               </div>
             </div>
 
-            <Link href="#" scroll={false}>
+            <Link href={appLinks.vendorShow.path} scroll={false}>
               <InfoOutlined className="text-primary_BG" />
             </Link>
           </div>

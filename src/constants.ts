@@ -39,6 +39,7 @@ export const appLinks = {
   order: { path: '/order' },
   trackOrder: { path: '/order/track' },
   login: { path: '/login' },
+  vendorShow: { path: '/vendor/show' },
 };
 
 export const isClient = typeof window !== undefined;
