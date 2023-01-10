@@ -38,7 +38,7 @@ const AppHeader: FC = () => {
   }, [router.pathname]);
 
   return (
-    <Suspense fallback={<LoadingSpinner />}>
+    <Suspense fallback={<LoadingSpinner fullWidth={false} />}>
       <header
         className={`${
           offset <= 80 ? `bg-white` : `bg-transparent`

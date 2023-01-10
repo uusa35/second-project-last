@@ -13,13 +13,12 @@ import '@/styles/TabOrderHistory.css';
 import { AppProps } from 'next/app';
 import { FC, Suspense } from 'react';
 import NextNProgress from 'nextjs-progressbar';
-import LoadingSpinner from '@/components/LoadingSpinner';
 
 const App: FC<AppProps> = ({ Component, ...rest }) => {
   const { store, props } = wrapper.useWrappedStore(rest);
   const { pageProps } = props;
   return (
-    <Suspense fallback={<LoadingSpinner fullWidth={false} />}>
+    <>
       <NextNProgress
         color="#189EC9"
         startPosition={0.3}
@@ -34,7 +33,7 @@ const App: FC<AppProps> = ({ Component, ...rest }) => {
           <Component {...pageProps} />
         </MainLayout>
       </Provider>
-    </Suspense>
+    </>
   );
 };
 
