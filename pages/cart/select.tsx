@@ -80,29 +80,14 @@ const SelectMethod: NextPage = (): JSX.Element => {
 
   const handleSelectBranch = (b: Branch) => dispatch(setBranch(b));
 
-  // const changetoPickupMethod = () => {
-  //   if (method === 'delivery') {
-  //     handleSelectMethod('pickup');
-  //   } else {
-  //     return;
-  //   }
-  // };
-  // const changetoDeliveryMethod = () => {
-  //   if (method === 'pickup') {
-  //     handleSelectMethod('delivery');
-  //   } else {
-  //     return;
-  //   }
-  // };
-
   return (
     <MainContentLayout>
       <div className={`px-4`}>
         <div className="flex flex-1 w-full flex-col md:flex-row justify-between items-center mb-3">
           <button
             className={`${
-              method === 'delivery' ? `${submitBtnClass}` : `${normalBtnClass}`
-            } md:ltr:mr-3 md:rtl:ml-3`}
+              method === 'delivery' ? `border-b-2 border-b-primary_BG` : ``
+            } md:ltr:mr-3 md:rtl:ml-3 capitalize`}
             suppressHydrationWarning={suppressText}
             onClick={() => handleSelectMethod(`delivery`)}
           >
@@ -110,8 +95,8 @@ const SelectMethod: NextPage = (): JSX.Element => {
           </button>
           <button
             className={`${
-              method === 'pickup' ? `${submitBtnClass}` : `${normalBtnClass}`
-            } md:ltr:mr-3 md:rtl:ml-3`}
+              method === 'pickup' ? `border-b-2 border-b-primary_BG` : ``
+            } md:ltr:mr-3 md:rtl:ml-3 capitalize`}
             suppressHydrationWarning={suppressText}
             onClick={() => handleSelectMethod(`pickup`)}
           >
@@ -127,7 +112,7 @@ const SelectMethod: NextPage = (): JSX.Element => {
           <input
             type="text"
             placeholder={`${t('search')}`}
-            className={`m-0 py-0 pt-1 ${inputFieldClass} border-0`}
+            className={`m-0 py-0 pt-1 ${inputFieldClass} border-0 py-3`}
             suppressHydrationWarning={suppressText}
           ></input>
         </div>
