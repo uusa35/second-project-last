@@ -91,7 +91,7 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
             {t('deliver_to')}
           </h1>
         </div>
-        <Link href={appLinks.branchIndex.path} className={`md:ltr:mr-3 md:rtl:ml-3 pt-2 text-primary_BG`}>
+        <Link href={appLinks.branchIndex.path} className={`md:ltr:mr-3 md:rtl:ml-3 pt-2 text-primary_BG`} suppressHydrationWarning={suppressText}>
           {t('choose_location')}
         </Link>
       </div>
