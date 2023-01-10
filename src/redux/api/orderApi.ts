@@ -90,4 +90,12 @@ export const orderApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useLazyAddFeedBackQuery } = orderApi;
+export const {
+  useLazyAddFeedBackQuery,
+  useLazyAddAddressQuery,
+  useLazyCheckOrderStatusQuery,
+  useLazyCreateOrderQuery,
+  useLazyTrackOrderQuery,
+  useLazyGetCustomerInfoQuery,
+  useLazyGetInvoiceQuery,
+} = orderApi;
