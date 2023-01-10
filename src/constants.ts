@@ -31,14 +31,11 @@ export const appLinks = {
       lowerCase(slug)
     )}&branchId=${branchId ?? `null`}&areaId=${areaId ?? ``}`,
   branchIndex: { path: '/branch' },
-  terms: { path: '/terms' },
   about: { path: '/about' },
-  account: { path: '/account' },
   cartIndex: { path: '/cart' },
   cartSelectMethod: { path: '/cart/select' },
   order: { path: '/order' },
   trackOrder: { path: '/order/track' },
-  login: { path: '/login' },
   vendorShow: { path: '/vendor/show' },
 };
 
