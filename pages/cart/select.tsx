@@ -104,18 +104,17 @@ const SelectMethod: NextPage = (): JSX.Element => {
             <button
               className={`${
                 method === 'delivery'
-                  ? `${submitBtnClass}`
-                  : `${normalBtnClass}`
-              } md:ltr:mr-3 md:rtl:ml-3`}
-              suppressHydrationWarning={suppressText}
+                  ? `border-b-2 border-b-primary_BG` : ``
+                } md:ltr:mr-3 md:rtl:ml-3 capitalize`}
+                suppressHydrationWarning={suppressText}
               onClick={() => handleSelectMethod(`delivery`)}
             >
               {t('delivery')}
             </button>
             <button
               className={`${
-                method === 'pickup' ? `${submitBtnClass}` : `${normalBtnClass}`
-              } md:ltr:mr-3 md:rtl:ml-3`}
+                method === 'pickup' ? `border-b-2 border-b-primary_BG` : ``
+              } md:ltr:mr-3 md:rtl:ml-3 capitalize`}
               suppressHydrationWarning={suppressText}
               onClick={() => handleSelectMethod(`pickup`)}
             >

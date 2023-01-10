@@ -16,6 +16,7 @@ import { selectMethod } from '@/redux/slices/cartSlice';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import Link from 'next/link';
 
 type Props = {
   element: Vendor;
@@ -41,8 +42,8 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
       <div className="flex flex-1 w-full flex-col md:flex-row justify-between items-center my-2">
         <button
           className={`${
-            method === 'delivery' ? `${submitBtnClass}` : `${normalBtnClass}`
-          } md:ltr:mr-3 md:rtl:ml-3`}
+            method === 'delivery' ? `border-b-2 border-b-primary_BG` : ``
+          } md:ltr:mr-3 md:rtl:ml-3 capitalize`}
           onClick={() => handleSelectMethod(`delivery`)}
           suppressHydrationWarning={suppressText}
         >
@@ -50,8 +51,8 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
         </button>
         <button
           className={`${
-            method === 'pickup' ? `${submitBtnClass}` : `${normalBtnClass}`
-          } md:ltr:mr-3 md:rtl:ml-3`}
+            method === 'pickup' ? `border-b-2 border-b-primary_BG` : ``
+          } md:ltr:mr-3 md:rtl:ml-3 capitalize`}
           onClick={() => handleSelectMethod(`pickup`)}
           suppressHydrationWarning={suppressText}
         >
@@ -63,13 +64,6 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
           <div
             className={`flex flex-grow justify-start items-center md:ltr:mr-3 md:rtl:ml-3`}
           >
-            <CustomImage
-              src={MotorIcon.src}
-              alt={t(`deliver_to`)}
-              width={imageSizes.xs}
-              height={imageSizes.xs}
-              className="h-8 w-8  ltr:mr-3 rtl:ml-3"
-            />
             <h1 className={`pt-2`}>{t('deliver_to')}</h1>
           </div>
           <div className={`md:ltr:mr-3 md:rtl:ml-3 pt-2 text-primary_BG`}>
@@ -82,13 +76,6 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
           <div
             className={`flex flex-grow justify-start items-center md:ltr:mr-3 md:rtl:ml-3`}
           >
-            <CustomImage
-              src={MotorIcon.src}
-              alt={t(`deliver_to`)}
-              width={imageSizes.xs}
-              height={imageSizes.xs}
-              className="h-8 w-8  ltr:mr-3 rtl:ml-3"
-            />
             <h1 className={`pt-2`}>{t('pickup_from')}</h1>
           </div>
           <div className={`md:ltr:mr-3 md:rtl:ml-3 pt-2 text-primary_BG`}>
@@ -100,13 +87,18 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
         <div
           className={`flex flex-grow justify-start items-center md:ltr:mr-3 md:rtl:ml-3`}
         >
-          <CustomImage
-            src={TruckIcon.src}
-            alt={t(`deliver_to`)}
-            width={imageSizes.xs}
-            height={imageSizes.xs}
-            className="h-8 w-8 ltr:mr-3 rtl:ml-3"
-          />
+          <h1 className={`pt-2`} suppressHydrationWarning={suppressText}>
+            {t('deliver_to')}
+          </h1>
+        </div>
+        <Link href={appLinks.branchIndex.path} className={`md:ltr:mr-3 md:rtl:ml-3 pt-2 text-primary_BG`} suppressHydrationWarning={suppressText}>
+          {t('choose_location')}
+        </Link>
+      </div>
+      <div className="flex flex-1 w-full flex-row justify-between items-center mt-2 mb-4">
+        <div
+          className={`flex flex-grow justify-start items-center md:ltr:mr-3 md:rtl:ml-3`}
+        >
           <h1 className={`pt-2`} suppressHydrationWarning={suppressText}>
             {t('earliest_delivery')}
           </h1>
