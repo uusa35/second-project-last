@@ -41,20 +41,11 @@ let renderCounter: number = 0;
 const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
   console.log(`::: Log Home Render :::: ${renderCounter++}`);
   const { t } = useTranslation();
-  const {
-    appSetting: { userAgent },
-  } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
-  const [triggerCreateTempId] = useLazyCreateTempIdQuery();
 
   const addressType = undefined;
 
   useEffect(() => {
-    if (isNull(userAgent)) {
-      triggerCreateTempId().then((r: any) =>
-        dispatch(setUserAgent(r.data.Data?.Id))
-      );
-    }
     dispatch(setCurrentModule(t('home')));
   }, []);
 

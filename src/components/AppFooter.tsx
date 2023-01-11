@@ -10,18 +10,18 @@ const AppFooter: FC<props> = ({ ShowReviewBtn = false }): JSX.Element => {
   const { t } = useTranslation();
   const {
     locale: { isRTL },
-    cart: { isEmpty },
   } = useAppSelector((state) => state);
   return (
     <Suspense>
       <footer
-        className={`${isEmpty ? `h-12` : `h-24`} ${
+        className={`${true ? `h-12` : `h-24`} ${
           !isRTL ? `left-0` : `right-0`
         } fixed w-full lg:w-2/4 xl:w-1/3  -bottom-1 flex flex-col justify-center items-center text-center p-6 bg-white bg-opacity-60`}
       >
         <div className={`w-full text-center`}>
           <h1 className={`pt-2 opacity-80`}>{t('powered_by_queue')} &reg;</h1>
-          {ShowReviewBtn && !isEmpty && (
+
+          {ShowReviewBtn && !true && (
             <Link
               className={`flex flex-1 justify-center items-center ${submitBtnClass} opacity-100`}
               href={`${appLinks.cartIndex.path}`}

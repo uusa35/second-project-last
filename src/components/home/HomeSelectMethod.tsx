@@ -6,24 +6,20 @@ import {
   suppressText,
 } from '@/constants/*';
 import { isNull } from 'lodash';
-import CustomImage from '@/components/CustomImage';
-import MotorIcon from '@/appIcons/motor.svg';
-import TruckIcon from '@/appIcons/trunk.svg';
-import { FC, Suspense } from 'react';
+import { FC } from 'react';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { Cart, Vendor } from '@/types/index';
-import { selectMethod } from '@/redux/slices/cartSlice';
+import { appSetting, Cart, Vendor } from '@/types/index';
+import { selectMethod } from '@/redux/slices/cartProductSlice';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
-import LoadingSpinner from '@/components/LoadingSpinner';
-import Link from 'next/link';
+import { setCartMethod } from '@/redux/slices/appSettingSlice';
 
 type Props = {
   element: Vendor;
 };
 const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
   const {
-    cart: { method },
+    appSetting: { method },
     area,
     branch,
   } = useAppSelector((state) => state);
@@ -31,10 +27,10 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  const handleSelectMethod = (m: Cart['method']) => {
+  const handleSelectMethod = (m: appSetting['method']) => {
     router
       .push(appLinks.cartSelectMethod.path)
-      .then(() => dispatch(selectMethod(m)));
+      .then(() => dispatch(setCartMethod(m)));
   };
 
   return (
