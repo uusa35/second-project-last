@@ -51,15 +51,15 @@ const SlideTopNav: FC<Props> = ({ offset }): JSX.Element => {
     <div
       className={`${
         offset < 80 ? `hidden` : `block`
-      } flex flex-row  justify-start items-center w-full py-8 px-4 h-24 mb-8 lg:mb-0 top-0 
-      bg-cover bg-top bg-gradient-to-tr from-gray-400 to-gray-800 lg:from-white lg:to-white lg
+      } flex flex-row  justify-start items-center space-x-2 w-full py-2 px-4 h-20 mb-8 lg:mb-0 top-0 
+      bg-cover bg-top bg-gradient-to-tr from-gray-400 to-gray-800 lg:from-white lg:to-white shadow-md
       `}
     >
       <button
         onClick={() =>
           sideMenuOpen ? dispatch(hideSideMenu()) : dispatch(showSideMenu())
         }
-        className={`ltr:ml-3 rtl:mr-3 z-50`}
+        className={`z-50`}
       >
         <Bars3Icon className={`w-8 h-8 text-black`} />
       </button>
@@ -71,11 +71,11 @@ const SlideTopNav: FC<Props> = ({ offset }): JSX.Element => {
             scroll={false}
             href={appLinks.home.path}
             locale={lang}
-            className="flex justify-center space-x-3  cursor-pointer p-4 text-white lg:text-black z-50"
+            className="flex justify-center space-x-3  cursor-pointer px-4 py-2 text-white lg:text-black z-50"
           >
             <div className="flex grow justify-center ">
               <Image
-                className="h-16 w-auto ltr:mr-6 rtl:ml-6"
+                className="h-10 w-auto"
                 src={imgUrl(vendor.logo)}
                 alt={`logo`}
                 width={imageSizes.xs}

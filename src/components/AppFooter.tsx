@@ -3,7 +3,10 @@ import { FC, Suspense } from 'react';
 import { appLinks, submitBtnClass } from '@/constants/*';
 import Link from 'next/link';
 import { useAppSelector } from '@/redux/hooks';
-const AppFooter: FC = (): JSX.Element => {
+type props = {
+  ShowReviewBtn?: boolean;
+};
+const AppFooter: FC<props> = ({ ShowReviewBtn = false }): JSX.Element => {
   const { t } = useTranslation();
   const {
     locale: { isRTL },
@@ -18,7 +21,7 @@ const AppFooter: FC = (): JSX.Element => {
       >
         <div className={`w-full text-center`}>
           <h1 className={`pt-2 opacity-80`}>{t('powered_by_queue')} &reg;</h1>
-          {!isEmpty && (
+          {ShowReviewBtn && !isEmpty && (
             <Link
               className={`flex flex-1 justify-center items-center ${submitBtnClass} opacity-100`}
               href={`${appLinks.cartIndex.path}`}

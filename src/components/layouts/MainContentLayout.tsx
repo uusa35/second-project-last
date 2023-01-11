@@ -51,6 +51,7 @@ const MainContentLayout: FC<Props> = ({
             bounce: 5,
             duration: showMotion ? 0.2 : 0,
           }}
+          style={{height:'100%'}}
         >
           {children}
         </motion.div>
