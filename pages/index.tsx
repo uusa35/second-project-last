@@ -38,7 +38,7 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
   useEffect(() => {
     if (isNull(userAgent)) {
       triggerCreateTempId().then((r: any) =>
-        dispatch(setUserAgent(r.Data?.Id))
+        dispatch(setUserAgent(r.data.Data?.Id))
       );
     }
     dispatch(setCurrentModule(t('home')));
