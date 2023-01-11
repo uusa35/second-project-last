@@ -65,7 +65,7 @@ const MainAsideLayout: FC<Props> = ({ element }): JSX.Element => {
           >
             <div className="flex items-center gap-x-5"></div>
             <div
-              className={`flex flex-col justify-start items-start w-1/3 gap-3`}
+              className={`flex flex-col justify-start items-start w-1/3 xl:w-1/4 gap-3 mt-8`}
             >
               <Link
                 scroll={false}

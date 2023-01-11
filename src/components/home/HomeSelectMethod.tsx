@@ -32,8 +32,9 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
   const dispatch = useAppDispatch();
 
   const handleSelectMethod = (m: Cart['method']) => {
-    dispatch(selectMethod(m));
-    router.push(appLinks.cartSelectMethod.path);
+    router
+      .push(appLinks.cartSelectMethod.path)
+      .then(() => dispatch(selectMethod(m)));
   };
 
   return (
@@ -60,18 +61,6 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
         </button>
       </div>
       <div className={`px-8 py-2 text-lg`}>
-        {!isNull(area.id) && method === 'delivery' && (
-          <div className="flex flex-1 w-full flex-row justify-between items-center mt-4 mb-2">
-            <div
-              className={`flex flex-grow justify-start items-center md:ltr:mr-3 md:rtl:ml-3`}
-            >
-              <h1 className={`pt-2`}>{t('deliver_to')}</h1>
-            </div>
-            <div className={`md:ltr:mr-3 md:rtl:ml-3 pt-2 text-primary_BG`}>
-              {area.name}
-            </div>
-          </div>
-        )}
         {!isNull(branch.id) && method === 'pickup' && (
           <div className="flex flex-1 w-full flex-row justify-between items-center mt-4 mb-2">
             <div
@@ -85,22 +74,19 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
           </div>
         )}
 
-        <div className="flex flex-1 w-full flex-row justify-between items-center mt-2 mb-4">
-          <div
-            className={`flex flex-grow justify-start items-center md:ltr:mr-3 md:rtl:ml-3`}
-          >
-            <h1 className={`pt-2`} suppressHydrationWarning={suppressText}>
-              {t('deliver_to')}
-            </h1>
+        {!isNull(area.id) && method === 'delivery' && (
+          <div className="flex flex-1 w-full flex-row justify-between items-center mt-4 mb-2">
+            <div
+              className={`flex flex-grow justify-start items-center md:ltr:mr-3 md:rtl:ml-3`}
+            >
+              <h1 className={`pt-2`}>{t('deliver_to')}</h1>
+            </div>
+            <div className={`md:ltr:mr-3 md:rtl:ml-3 pt-2 text-primary_BG`}>
+              {area.name}
+            </div>
           </div>
-          <Link
-            href={appLinks.branchIndex.path}
-            className={`md:ltr:mr-3 md:rtl:ml-3 pt-2 text-primary_BG`}
-            suppressHydrationWarning={suppressText}
-          >
-            {t('choose_location')}
-          </Link>
-        </div>
+        )}
+
         <div className="flex flex-1 w-full flex-row justify-between items-center mt-2 mb-4">
           <div
             className={`flex flex-grow justify-start items-center md:ltr:mr-3 md:rtl:ml-3`}

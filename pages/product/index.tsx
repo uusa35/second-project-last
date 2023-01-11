@@ -5,18 +5,20 @@ import { Product } from '@/types/index';
 import { NextPage } from 'next';
 import { apiSlice } from '@/redux/api';
 import { isEmpty, map } from 'lodash';
-import { imageSizes, suppressText } from '@/constants/*';
+import { appLinks, imageSizes, suppressText } from '@/constants/*';
 import MainHead from '@/components/MainHead';
 import Image from 'next/image';
 import NotFoundImage from '@/appImages/not_found.png';
 import { useTranslation } from 'react-i18next';
-import { useAppDispatch } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useEffect } from 'react';
 import { setCurrentModule } from '@/redux/slices/appSettingSlice';
 import VerProductWidget from '@/widgets/product/VerProductWidget';
 import SearchIcon from '@/appIcons/search.svg';
 import { inputFieldClass } from '@/constants/*';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 type Props = {
   elements: Product[];
@@ -24,7 +26,20 @@ type Props = {
 const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
+  const router = useRouter();
+  const { query } = router;
+  const {
+    locale: { lang },
+    branch: { id: branchId },
+    area: { id: areaId },
+  } = useAppSelector((state) => state);
+  const { data: topSearch, isSuccess } = useGetTopSearchQuery({
+    lang,
+    branchId,
+    areaId,
+  });
   console.log('elements', elements);
+  console.log('top', topSearch);
 
   useEffect(() => {
     dispatch(setCurrentModule(t('product_search_index')));
@@ -35,6 +50,7 @@ const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
       <MainHead title={`productIndex`} description={`productIndex`} />
       <MainContentLayout>
         <div className={`px-4`}>
+          {/*   search Input */}
           <div className={`w-full`}>
             <div className="relative mt-1 rounded-md shadow-sm text-gray-400">
               <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center px-6">
@@ -49,6 +65,28 @@ const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
                 placeholder={`${t(`search_products`)}`}
               />
             </div>
+          </div>
+          <div className="flex flex-row justify-evenly items-center flex-wrap gap-3 my-3">
+            {isSuccess &&
+              map(topSearch.Data.topSearch, (searchKey, i) => (
+                <Link
+                  className={`p-2 rounded-md bg-stone-100`}
+                  key={i}
+                  href={appLinks.productSearchIndex(
+                    branchId,
+                    searchKey,
+                    areaId
+                  )}
+                >
+                  {searchKey}
+                </Link>
+              ))}
+            <Link
+              className={`p-2 rounded-md bg-red-700 text-white`}
+              href={appLinks.productSearchIndex(branchId)}
+            >
+              {t(`clear`)}
+            </Link>
           </div>
           <div className="my-4">
             {isEmpty(elements) && (
