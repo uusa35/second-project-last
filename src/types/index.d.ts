@@ -188,3 +188,9 @@ export interface UserAddressFields {
   key: string;
   value: string;
 }
+
+export interface CustomerInfo{
+  name:string,
+  email:string,
+  phone?:string
+}

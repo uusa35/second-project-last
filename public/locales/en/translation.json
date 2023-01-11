@@ -368,5 +368,6 @@
   "must_select_min_and_max" : "must choose min {{min}} qty or {{max}} qty.",
   "select_method" : "select method",
   "product_search_index" : "searching products",
-  "delivery_to" : "deliver to"
+  "delivery_to" : "deliver to",
+  "name_and_phone_are_required":"name and phone are required"
 }
