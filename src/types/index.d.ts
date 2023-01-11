@@ -5,7 +5,7 @@ export interface Product {
   name: string;
   desc: string;
   price: string;
-  amount?: number;
+  amount: number | undefined;
   branch_id?: string;
   price_on_selection?: boolean;
   new_price?: string;
@@ -127,6 +127,7 @@ export interface ProductCart {
   RadioBtnsAddons?: string[];
   CheckBoxes?: string[];
   QuantityMeters: QuantityMeters[];
+  id?: string;
 }
 
 export interface QuantityMeters {

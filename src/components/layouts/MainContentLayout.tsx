@@ -3,6 +3,8 @@ import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import { useAppSelector } from '@/redux/hooks';
 import { useTranslation } from 'react-i18next';
+import Link from 'next/link';
+import { appLinks, submitBtnClass } from '@/constants/*';
 const AppHeader = dynamic(() => import(`@/components/AppHeader`), {
   ssr: false,
 });
@@ -30,7 +32,7 @@ const MainContentLayout: FC<Props> = ({
 }): JSX.Element => {
   const { t } = useTranslation();
   const {
-    appSetting,
+    appSetting: { showHeader, showFooter },
     locale: { isRTL },
   } = useAppSelector((state) => state);
 
@@ -39,7 +41,7 @@ const MainContentLayout: FC<Props> = ({
       className={`flex flex-col justify-start items-start w-full lg:w-2/4 xl:w-1/3 relative`}
     >
       <SideMenu />
-      {appSetting.showHeader && <AppHeader />}
+      {showHeader && <AppHeader />}
       <main className={`w-full mb-36 relative`}>
         <motion.div
           animate={{ x: [isRTL ? -1000 : 1000, 0, 0] }}
