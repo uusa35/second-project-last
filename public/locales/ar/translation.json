@@ -388,6 +388,13 @@
   "select_branch": "اختر فرع",
   "order_not_found" : "لا يوجد أمر عمل بهذا المرجع .. يرجى مراجعة الفاتورة أو يمكنك الاتصال بنا",
   "choose_location": "اختر موقع",
-  "my_cart" : "عربة التسوق",
-  "change_delivery_area" : " موقع الاستلام"
+  "change_delivery_area" : " موقع الاستلام",
+  "your_cart_is_empty": "عربة التسوق الخاصة بك فارغة",
+  "items": "عناصر",
+  "promotion": "ترقية",
+  "promotion_code": "كود الترقية",
+  "enter_code_here": "أدخِل الكود هنا",
+  "note": "ملاحظات",
+  "enter_notes_here": "أدخِل الملاحظات هنا",
+  "delivery_services": "خدمات التوصيل"
 }

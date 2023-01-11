@@ -368,7 +368,6 @@
   "must_select_min_and_max" : "must choose min {{min}} qty or {{max}} qty.",
   "select_method" : "select method",
   "product_search_index" : "searching products",
-  "delivery_to" : "deliver to",
   "name_and_phone_are_required":"name and phone are required",
   "select_branch": "select branch",
   "delivery_to" : "deliver to",
@@ -377,6 +376,14 @@
   "pickup_from" : "pickup from",
   "order_not_found" : "order not found. please review your order invoice. or contact us for more information. thank you..",
   "choose_location": "choose_location",
-  "my_cart" : "my cart",
-  "change_delivery_area" : "delivery area"
+  "change_delivery_area" : "delivery area",
+  "your_cart_is_empty": "your cart is empty",
+  "items": "items",
+  "promotion": "promotion",
+  "promotion_code": "promotion code",
+  "enter_code_here": "enter code here",
+  "note": "note",
+  "enter_notes_here": "enter notes here",
+  "delivery_services": "delivery services"
+  
 }
