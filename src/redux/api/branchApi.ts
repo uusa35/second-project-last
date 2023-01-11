@@ -15,7 +15,8 @@ export const branchApi = apiSlice.injectEndpoints({
         headers: {
           lang,
         },
-        validateStatus: (response, result) => response.status && result.Data,
+        validateStatus: (response, result) =>
+          response.status == 200 && result.status,
       }),
     }),
     getBranch: builder.query<
@@ -31,7 +32,8 @@ export const branchApi = apiSlice.injectEndpoints({
         headers: {
           lang,
         },
-        validateStatus: (response, result) => response.status && result.Data,
+        validateStatus: (response, result) =>
+          response.status == 200 && result.status,
       }),
     }),
   }),

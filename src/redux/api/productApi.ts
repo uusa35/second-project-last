@@ -22,7 +22,8 @@ export const productApi = apiSlice.injectEndpoints({
           lang,
           'x-area-id': area_id,
         },
-        validateStatus: (response, result) => response.status && result.Data,
+        validateStatus: (response, result) =>
+          response.status == 200 && result.status,
       }),
     }),
     getSearchProducts: builder.query<
@@ -42,7 +43,8 @@ export const productApi = apiSlice.injectEndpoints({
           'x-area-id': areaId,
           lang,
         },
-        validateStatus: (response, result) => response.status && result.Data,
+        validateStatus: (response, result) =>
+          response.status == 200 && result.status,
       }),
     }),
     getProduct: builder.query<
@@ -62,7 +64,8 @@ export const productApi = apiSlice.injectEndpoints({
           'x-branch-id': branchId,
           'x-area-id': areaId,
         },
-        validateStatus: (response, result) => response.status && result.Data,
+        validateStatus: (response, result) =>
+          response.status == 200 && result.status,
       }),
     }),
     getTopSearch: builder.query<
@@ -80,7 +83,8 @@ export const productApi = apiSlice.injectEndpoints({
           'x-area-id': areaId,
           lang,
         },
-        validateStatus: (response, result) => response.status && result.Data,
+        validateStatus: (response, result) =>
+          response.status == 200 && result.status,
       }),
     }),
   }),
