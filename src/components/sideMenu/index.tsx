@@ -24,8 +24,13 @@ import {
   HomeOutlined,
 } from '@mui/icons-material';
 import { setLocale } from '@/redux/slices/localeSlice';
-import CustomImage from '@/components/customImage';
+import CustomImage from '@/components/CustomImage';
 import { isEmpty } from 'lodash';
+import LoadingSpinner from '@/components/LoadingSpinner';
+import {
+  BuildingStorefrontIcon,
+  MapPinIcon,
+} from '@heroicons/react/24/outline';
 
 type Props = {};
 
@@ -48,7 +53,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
   };
 
   return (
-    <Suspense fallback={<SideMenuSkelton />}>
+    <Suspense fallback={<LoadingSpinner fullWidth={false} />}>
       <Menu
         right={router.locale === 'ar'}
         isOpen={appSetting.sideMenuOpen}
@@ -65,7 +70,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
             <div>
               <header className="">
                 <div className="flex gap-x-2 py-5">
-                  <div className="flex justify-center w-full">
+                  <div className="flex justify-center w-full my-8">
                     <Link scroll={false} href={appLinks.root.path}>
                       <CustomImage
                         alt={`logo`}
@@ -91,17 +96,28 @@ const SideMenu: FC<Props> = (): JSX.Element => {
               <div className="flex-col  gap-y-2 my-3 ">
                 <Link scroll={false} href={appLinks.root.path}>
                   <div className="flex gap-x-3 pb-7 items-center">
-                    <HomeOutlined className={`h-6 w-6 text-primary_BG`} />
+                    <HomeOutlined className={`h-8 w-8 text-primary_BG`} />
                     <p suppressHydrationWarning={suppressText}>{t('home')}</p>
                   </div>
                 </Link>
 
-                <Link scroll={false} href={appLinks.root.path}>
+                <Link scroll={false} href={appLinks.cartIndex.path}>
                   <div className="flex gap-x-3 pb-7 items-center">
                     <ShoppingBagOutlined
-                      className={`h-6 w-6 text-primary_BG`}
+                      className={`h-8 w-8 text-primary_BG`}
                     />
-                    <p suppressHydrationWarning={suppressText}>{t('cart')}</p>
+                    <p suppressHydrationWarning={suppressText}>
+                      {t('my_cart')}
+                    </p>
+                  </div>
+                </Link>
+
+                <Link scroll={false} href={appLinks.cartSelectMethod.path}>
+                  <div className="flex gap-x-3 pb-7 items-center">
+                    <MapPinIcon className={`h-8 w-8 text-primary_BG`} />
+                    <p suppressHydrationWarning={suppressText}>
+                      {t('change_delivery_area')}
+                    </p>
                   </div>
                 </Link>
 
@@ -110,7 +126,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                   href={appLinks.productSearchIndex(branchId)}
                 >
                   <div className="flex gap-x-3 pb-7 items-center">
-                    <PlagiarismOutlined className={`h-6 w-6 text-primary_BG`} />
+                    <PlagiarismOutlined className={`h-8 w-8 text-primary_BG`} />
                     <p suppressHydrationWarning={suppressText}>{t('search')}</p>
                   </div>
                 </Link>
@@ -118,7 +134,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                 <Link scroll={false} href={appLinks.trackOrder.path}>
                   <div className="flex gap-x-3 pb-7 items-center">
                     <PendingActionsOutlined
-                      className={`h-6 w-6 text-primary_BG`}
+                      className={`h-8 w-8 text-primary_BG`}
                     />
                     <p suppressHydrationWarning={suppressText}>
                       {t('track_order')}
@@ -128,7 +144,9 @@ const SideMenu: FC<Props> = (): JSX.Element => {
 
                 <Link scroll={false} href={appLinks.branchIndex.path}>
                   <div className="flex gap-x-3 pb-7 items-center">
-                    <ApartmentOutlined className={`h-6 w-6 text-primary_BG`} />
+                    <BuildingStorefrontIcon
+                      className={`h-8 w-8 text-primary_BG`}
+                    />
                     <p suppressHydrationWarning={suppressText}>
                       {t('our_branches')}
                     </p>

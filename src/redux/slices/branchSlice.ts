@@ -1,8 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Branch, Country } from '@/types/queries';
-import { isLocal } from '@/constants/*';
-import { HYDRATE } from 'next-redux-wrapper';
-import { Vendor } from '@/types/index';
+import { Branch } from '@/types/queries';
 
 const initialState: Branch = {
   id: null,
@@ -21,7 +18,9 @@ export const branchSlice = createSlice({
   reducers: {
     setBranch: (state: typeof initialState, action: PayloadAction<Branch>) =>
       action.payload,
+    removeBranch: (state: typeof initialState, action: PayloadAction<void>) =>
+      initialState,
   },
 });
 
-export const { setBranch } = branchSlice.actions;
+export const { setBranch, removeBranch } = branchSlice.actions;

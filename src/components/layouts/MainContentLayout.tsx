@@ -1,9 +1,6 @@
 import { FC, ReactNode } from 'react';
 import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
-const BackBtn = dynamic(() => import(`@/components/BackBtn`), {
-  ssr: false,
-});
 import { useAppSelector } from '@/redux/hooks';
 import { useTranslation } from 'react-i18next';
 const AppHeader = dynamic(() => import(`@/components/AppHeader`), {

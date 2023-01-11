@@ -381,5 +381,13 @@
   "select_method" : "طريقة استلام الطلب",
   "product_search_index" : "البحث في المنتجات ..",
   "delivery_to" : "التوصيل لـ",
-  "name_and_phone_are_required":"يجب ادخال رقم الهاتف و الاسم"
+  "name_and_phone_are_required":"يجب ادخال رقم الهاتف و الاسم",
+  "search_branch": "ابحث عن فرع",
+  "deliver_to" : "التوصيل لـ",
+  "pickup_from" : "الاستلام من",
+  "select_branch": "اختر فرع",
+  "order_not_found" : "لا يوجد أمر عمل بهذا المرجع .. يرجى مراجعة الفاتورة أو يمكنك الاتصال بنا",
+  "choose_location": "اختر موقع",
+  "my_cart" : "عربة التسوق",
+  "change_delivery_area" : " موقع الاستلام"
 }

@@ -4,9 +4,9 @@ import { Product } from '@/types/index';
 import NoFoundImage from '@/appImages/not_found.png';
 import { first, isEmpty } from 'lodash';
 import Link from 'next/link';
-import CustomImage from '@/components/customImage';
+import CustomImage from '@/components/CustomImage';
 import { useTranslation } from 'react-i18next';
-import {suppressText} from '@/constants/*';
+import { suppressText } from '@/constants/*';
 
 type Props = {
   element: Product;
@@ -38,18 +38,27 @@ const HorProductWidget: FC<Props> = ({ element }): JSX.Element => {
           />
         </div>
         <div className="pt-3 px-2">
-            <p className="text-md font-semibold truncate" suppressHydrationWarning={suppressText}>
-              {element.name}
+          <p
+            className="text-md font-semibold truncate"
+            suppressHydrationWarning={suppressText}
+          >
+            {element.name}
               {element.desc}
+          </p>
+          <div className="flex justify-between items-center">
+            <p
+              className="text-md text-primary_BG text-end uppercase pb-2"
+              suppressHydrationWarning={suppressText}
+            >
+              {element.price} {t(`kwd`)}
             </p>
-            <div className='flex justify-between items-center'>
-              <p className="text-md text-primary_BG text-end uppercase pb-2" suppressHydrationWarning={suppressText}>
-                {element.price} {t(`kwd`)}
-              </p>
-              <button className='border-[1px] rounded-md border-primary_BG px-4 uppercase text-center text-sm' suppressHydrationWarning={suppressText}>
-                + {t('add')}
-              </button>
-            </div>
+            <button
+              className="border-[1px] rounded-md border-primary_BG px-4 uppercase text-center text-sm"
+              suppressHydrationWarning={suppressText}
+            >
+              + {t('add')}
+            </button>
+          </div>
         </div>
         {/* <div className="absolute inset-x-0 top-0 flex h-full items-end justify-end overflow-hidden rounded-lg">
           <div

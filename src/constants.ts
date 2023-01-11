@@ -3,6 +3,7 @@ import { kebabCase, lowerCase, split } from 'lodash';
 import { Country } from '@/types/queries';
 // export const baseUrl = `https://mybusiness.letsform.src/`;
 export const baseUrl = `https://pages-dash.testbedbynd.com/`;
+//https://pages.testbedbynd.com/
 export const apiUrl = `${baseUrl}api/`;
 export const appLinks = {
   root: { path: '/home' },
@@ -35,7 +36,8 @@ export const appLinks = {
   cartSelectMethod: { path: '/cart/select' },
   order: { path: '/order' },
   trackOrder: { path: '/order/track' },
-  customerInfo:{path: '/customer/info'}
+  customerInfo:{path: '/customer/info'},
+  vendorShow: { path: '/vendor/show' },
 };
 
 export const isClient = typeof window !== undefined;

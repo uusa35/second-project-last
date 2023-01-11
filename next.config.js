@@ -1,11 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
-  scrollRestoration: true,
   swcMinify: true,
-  experimental: {
-    webVitalsAttribution: ['CLS', 'LCP', 'FID', 'FCP', 'TTFB', 'LCP'],
-  },
+  // experimental: {
+  // webVitalsAttribution: ['CLS', 'LCP', 'FID', 'FCP', 'TTFB', 'LCP'],
+  // },
   i18n: {
     locales: ['en', 'ar'],
     defaultLocale: 'en',
@@ -16,6 +15,10 @@ const nextConfig = {
       {
         source: '/home',
         destination: '/',
+      },
+      {
+        source: '/about',
+        destination: '/vendor/show',
       },
     ];
   },
@@ -40,9 +43,10 @@ const nextConfig = {
     ],
     minimumCacheTTL: 60 * 60 * 24,
     dangerouslyAllowSVG: true,
-    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-    disableStaticImages: false,
+    // contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+    // disableStaticImages: false,
   },
+  staticPageGenerationTimeout: 60,
 };
 
 module.exports = nextConfig;

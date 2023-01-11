@@ -50,10 +50,10 @@ const SlideTopNav: FC<Props> = ({ offset }): JSX.Element => {
   return (
     <div
       className={`${
-        offset < 80 ? `hidden` : `block`
-      } flex flex-row  justify-start items-center space-x-2 w-full py-2 px-4 h-20 mb-8 lg:mb-0 top-0 
-      bg-cover bg-top bg-gradient-to-tr from-gray-400 to-gray-800 lg:from-white lg:to-white shadow-md
+        offset < 80 ? `hidden` : `flex`
+      } flex flex-row  justify-start items-center w-full pb-4 pt-8 px-4 h-22 top-0  relative bg-white 
       `}
+      // bg-gradient-to-tr from-gray-50 to-gray-100 lg:from-white lg:to-white
     >
       <button
         onClick={() =>
@@ -65,7 +65,7 @@ const SlideTopNav: FC<Props> = ({ offset }): JSX.Element => {
       </button>
 
       {/* logo */}
-      <div className="flex w-full flex-row justify-between items-center ">
+      <div className="flex w-full flex-row justify-between items-center">
         <div className={`flex flex-1`}>
           <Link
             scroll={false}
@@ -73,7 +73,7 @@ const SlideTopNav: FC<Props> = ({ offset }): JSX.Element => {
             locale={lang}
             className="flex justify-center space-x-3  cursor-pointer px-4 py-2 text-white lg:text-black z-50"
           >
-            <div className="flex grow justify-center ">
+            <div className="flex sm:hidden  grow justify-center ">
               <Image
                 className="h-10 w-auto"
                 src={imgUrl(vendor.logo)}
@@ -82,29 +82,28 @@ const SlideTopNav: FC<Props> = ({ offset }): JSX.Element => {
                 height={imageSizes.xs}
               />
             </div>
-            <div className="flex flex-1  pt-2 ">{vendor.name}</div>
+            <div className="flex sm:hidden flex-1  pt-2 ">{vendor.name}</div>
           </Link>
-          <Image
-            src={`${imgUrl(vendor.cover)}`}
-            alt={vendor.name}
-            className={`object-cover w-full h-24 absolute top-0 left-0 mix-blend-overlay shadow-xl lg:hidden z-0`}
-            width={imageSizes.lg}
-            height={imageSizes.lg}
-          />
         </div>
-
-        <div className={`flex flex-row justify-between items-center w-16 z-50`}>
+        <div className={`flex flex-row justify-between items-center w-20 z-50`}>
           <Link scroll={false} href={appLinks.cartIndex.path}>
-            <ShoppingBagOutlined />
+            <ShoppingBagOutlined className={`w-8 h-8 text-black`} />
           </Link>
           <button
             onClick={() => handleChangeLang(otherLang)}
-            className={`text-lg font-bold capitalize`}
+            className={`w-8 h-8 text-black text-2xl font-bold capitalize`}
           >
             {t(`${otherLang}`)}
           </button>
         </div>
       </div>
+      {/*<Image*/}
+      {/*  src={`${imgUrl(vendor.cover)}`}*/}
+      {/*  alt={vendor.name}*/}
+      {/*  className={`block lg:hidden  object-stretch w-full h-22  fixed left-0 right-0 top-0 mix-blend-overlay shadow-xl z-0 overflow-hidden`}*/}
+      {/*  width={imageSizes.lg}*/}
+      {/*  height={imageSizes.lg}*/}
+      {/*/>*/}
     </div>
   );
 };

@@ -18,13 +18,17 @@ import CustomImage from '../customImage';
 import { setVendor } from '@/redux/slices/vendorSlice';
 
 import { isEmpty, isNull } from 'lodash';
-import MainAsideLayout from '@/components/home/MainAsideLayout';
 import { useGetBranchesQuery } from '@/redux/api/branchApi';
 import { setBranch } from '@/redux/slices/branchSlice';
 import { setBranches } from '@/redux/slices/branchesSlice';
-
+const MainAsideLayout = dynamic(
+  async () => await import(`@/components/home/MainAsideLayout`),
+  {
+    ssr: false,
+  }
+);
 const ToastAppContainer = dynamic(
-  () => import(`@/components/ToastAppContainer`),
+  async () => await import(`@/components/ToastAppContainer`),
   {
     ssr: false,
   }
@@ -59,7 +63,7 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
     if (isSuccess) {
       dispatch(setVendor(vendor.Data));
     }
-    if (branchesSuccess && !isEmpty(branches)) {
+    if (branchesSuccess) {
       if (isNull(branchId)) {
         dispatch(setBranch(branches.Data[0]));
       }
@@ -68,7 +72,7 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
     if (isEmpty(tempId)) {
       // create tempId here if does not exist
     }
-  }, [vendor, locale.lang, branches]);
+  }, []);
 
   useEffect(() => {
     const handleRouteChange: Handler = (url, { shallow }) => {
@@ -94,7 +98,7 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
 
     const handleRouteChangeError = (err: any) => {
       console.log('the error', err);
-      return router.replace(router.asPath);
+      // return router.replace(router.asPath);
     };
 
     router.events.on('routeChangeError', handleRouteChangeError);

@@ -16,6 +16,7 @@ import { useTranslation } from 'react-i18next';
 import { suppressText, submitBtnClass } from '@/constants/*';
 import { useEffect } from 'react';
 import { setCurrentModule } from '@/redux/slices/appSettingSlice';
+import CustomImage from '@/components/CustomImage';
 
 type Props = {
   elements: Branch[];
@@ -26,7 +27,7 @@ const BranchIndex: NextPage<Props> = ({ elements }) => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    dispatch(setCurrentModule(t('delivery_or_pickup')));
+    dispatch(setCurrentModule(t('our_branches')));
   }, []);
 
   return (
@@ -69,7 +70,7 @@ const BranchIndex: NextPage<Props> = ({ elements }) => {
                   {t(b.location)}
                 </p>
                 <div className="flex rounded-2xl bg-LightGray py-1 px-5 ltr:ml-2 rtl:mr-2">
-                  <Image
+                  <CustomImage
                     src={Phone}
                     alt="phone"
                     className="ltr:mr-2 rtl:ml-2 h-5 items-center"
