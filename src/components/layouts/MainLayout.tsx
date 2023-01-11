@@ -2,7 +2,7 @@ import { FC, ReactNode, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import i18n from 'i18next';
 import { useRouter } from 'next/router';
-import { hideSideMenu } from '@/redux/slices/appSettingSlice';
+import { hideSideMenu, setUserAgent } from '@/redux/slices/appSettingSlice';
 import { tajwalFont } from '@/constants/*';
 import { setLocale } from '@/redux/slices/localeSlice';
 import moment from 'moment';
@@ -15,6 +15,7 @@ import { isEmpty, isNull } from 'lodash';
 import { useGetBranchesQuery } from '@/redux/api/branchApi';
 import { setBranch } from '@/redux/slices/branchSlice';
 import { setBranches } from '@/redux/slices/branchesSlice';
+import { useLazyCreateTempIdQuery } from '@/redux/api/cartApi';
 const MainAsideLayout = dynamic(
   async () => await import(`@/components/home/MainAsideLayout`),
   {
@@ -37,9 +38,8 @@ type Handler = (...evts: any[]) => void;
 
 const MainLayout: FC<Props> = ({ children }): JSX.Element => {
   const {
-    appSetting,
+    appSetting: { sideMenuOpen, userAgent },
     locale,
-    cart: { tempId },
     branch: { id: branchId },
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
@@ -52,6 +52,7 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
     data: AppQueryResult<Branch[]>;
     isSuccess: boolean;
   }>({ lang: locale.lang });
+  const [triggerCreateTempId] = useLazyCreateTempIdQuery();
 
   useEffect(() => {
     if (isSuccess) {
@@ -63,8 +64,10 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
       }
       dispatch(setBranches(branches.Data));
     }
-    if (isEmpty(tempId)) {
-      // create tempId here if does not exist
+    if (isNull(userAgent)) {
+      triggerCreateTempId().then((r: any) =>
+        dispatch(setUserAgent(r.data.Data?.Id))
+      );
     }
   }, []);
 
@@ -73,7 +76,7 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
       dispatch(hideSideMenu());
     };
     const handleChangeComplete: Handler = (url, { shallow }) => {
-      if (appSetting.sideMenuOpen) {
+      if (sideMenuOpen) {
         dispatch(hideSideMenu());
       }
     };

@@ -92,6 +92,7 @@ export type position = {
 
 export type appSetting = {
   userAgent: string | null;
+  method: `delivery` | `pickup`;
   showHeader: boolean;
   showFooter: boolean;
   showCart: boolean;
@@ -118,7 +119,6 @@ export interface Cart {
 }
 
 export interface ProductCart {
-  method: `delivery` | `pickup`;
   ProductID: number;
   ProductName: string;
   ProductDesc: string;

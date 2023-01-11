@@ -4,6 +4,7 @@ import { searchParamsSlice } from '@/redux/slices/searchParamsSlice';
 
 const initialState: appSetting = {
   userAgent: null, /// ==== tempId for the cart
+  method: `delivery`,
   showHeader: true,
   showFooter: true,
   showCart: false,
@@ -161,6 +162,15 @@ export const appSettingSlice = createSlice({
         userAgent: action.payload,
       };
     },
+    setCartMethod: (
+      state: typeof initialState,
+      action: PayloadAction<appSetting['method']>
+    ) => {
+      return {
+        ...state,
+        method: action.payload,
+      };
+    },
     resetAppSetting: (state: typeof initialState, action: PayloadAction) => {
       return {
         ...initialState,
@@ -203,4 +213,5 @@ export const {
   hideChangePasswordModal,
   resetAppSetting,
   setUserAgent,
+  setCartMethod,
 } = appSettingSlice.actions;

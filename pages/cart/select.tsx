@@ -7,7 +7,10 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useTranslation } from 'react-i18next';
 import { AppQueryResult, Area, Branch } from '@/types/queries';
 import { useEffect, useState } from 'react';
-import { setCurrentModule } from '@/redux/slices/appSettingSlice';
+import {
+  setCartMethod,
+  setCurrentModule,
+} from '@/redux/slices/appSettingSlice';
 import {
   Accordion,
   AccordionHeader,
@@ -25,8 +28,8 @@ import Image from 'next/image';
 import SearchIcon from '@/appIcons/search.svg';
 import { isEmpty, isNull, map } from 'lodash';
 import { setArea } from '@/redux/slices/areaSlice';
-import { Cart } from '@/types/index';
-import { selectMethod } from '@/redux/slices/cartSlice';
+import { appSetting, Cart } from '@/types/index';
+import { selectMethod } from '@/redux/slices/cartProductSlice';
 import { useRouter } from 'next/router';
 import { setBranch } from '@/redux/slices/branchSlice';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
@@ -37,7 +40,7 @@ const SelectMethod: NextPage = (): JSX.Element => {
     locale: { lang },
     branches,
     area: selectedArea,
-    cart: { method },
+    appSetting: { method },
     branch: { id: branch_id },
   } = useAppSelector((state) => state);
   const { data: locations, isLoading } = useGetLocationsQuery<{
@@ -78,7 +81,8 @@ const SelectMethod: NextPage = (): JSX.Element => {
 
   const handleSelectArea = (a: Area) => dispatch(setArea(a));
 
-  const handleSelectMethod = (m: Cart['method']) => dispatch(selectMethod(m));
+  const handleSelectMethod = (m: appSetting['method']) =>
+    dispatch(setCartMethod(m));
 
   const handleSelectBranch = (b: Branch) => dispatch(setBranch(b));
 
