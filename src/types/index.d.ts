@@ -84,27 +84,6 @@ export interface Locale {
   otherLang: 'ar' | 'en';
 }
 
-export type ItemList<T> = {
-  data: T[];
-  links?: {
-    first: string | null;
-    last?: string | null;
-    prev?: string | null;
-    next: string | null;
-  };
-  meta?: {};
-  isLoading?: boolean;
-  categories?: Categories[] | [];
-};
-export type ProductList<T extends Product> = ItemList<T> & {
-  selectedElement?: Product;
-};
-
-export interface User {
-  id: number | string;
-  name: string;
-}
-
 export type hor = `left` | `right`;
 export type ver = `top` | `bottom`;
 export type position = {
@@ -112,6 +91,7 @@ export type position = {
 };
 
 export type appSetting = {
+  userAgent: string | null;
   showHeader: boolean;
   showFooter: boolean;
   showCart: boolean;
@@ -129,11 +109,32 @@ export type appSetting = {
 };
 
 export interface Cart {
-  tempId: string;
-  products: Product[] | [];
+  UserAgent: string | null;
   isEmpty: boolean;
-  method: `delivery` | `pickup`;
-  paymentMethods: PaymentMethod[];
+  Cart: ProductCart[];
+  id: string;
+}
+
+export interface ProductCart {
+  ProductID: number;
+  ProductName: string;
+  ProductDesc: string;
+  Quantity: number;
+  Price: number;
+  RadioBtnsAddons?: string[];
+  CheckBoxes?: string[];
+  QuantityMeters: QuantityMeters[];
+}
+
+export interface QuantityMeters {
+  addonID: number;
+  addons: CartAddons[];
+}
+
+export interface CartAddons {
+  attributeID: number;
+  name: string;
+  Value: number;
 }
 
 export interface PaymentMethod {

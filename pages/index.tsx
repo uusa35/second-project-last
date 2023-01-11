@@ -9,7 +9,7 @@ import MainHead from '@/components/MainHead';
 import { vendorApi } from '@/redux/api/vendorApi';
 import { Vendor } from '@/types/index';
 import { categoryApi } from '@/redux/api/categoryApi';
-import { isEmpty, map } from 'lodash';
+import { isEmpty, isNull, map } from 'lodash';
 import CategoryWidget from '@/widgets/category/CategoryWidget';
 import { suppressText } from '@/constants/*';
 import { useTranslation } from 'react-i18next';
@@ -19,6 +19,7 @@ import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import HomeSelectMethod from '@/components/home/HomeSelectMethod';
 import HomeVendorMainInfo from '@/components/home/HomeVendorMainInfo';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import { useLazyCreateTempIdQuery } from '@/redux/api/cartApi';
 
 type Props = {
   categories: Category[];
@@ -29,13 +30,14 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
   console.log(`::: Log Home Render :::: ${renderCounter++}`);
   const { t } = useTranslation();
   const {
-    cart: { tempId },
+    appSetting: { userAgent },
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
+  const [triggerCreateTempId] = useLazyCreateTempIdQuery();
 
   useEffect(() => {
-    if (isEmpty(tempId)) {
-      // create tempId here if does not exist
+    if (isNull(userAgent)) {
+      triggerCreateTempId().then((r: any) => console.log('r', r));
     }
     dispatch(setCurrentModule(t('home')));
   }, []);

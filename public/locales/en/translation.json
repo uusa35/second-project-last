@@ -375,5 +375,6 @@
   "pickup_from" : "pickup from",
   "order_not_found" : "order not found. please review your order invoice. or contact us for more information. thank you..",
   "choose_location": "choose_location",
-  "my_cart" : "my cart"
+  "my_cart" : "my cart",
+  "change_delivery_area" : "delivery area"
 }

@@ -1,12 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { appSetting } from '@/types/index';
 import { searchParamsSlice } from '@/redux/slices/searchParamsSlice';
-import { lowerCase, snakeCase } from 'lodash';
-import i18n from 'i18next';
-import { countrySlice } from '@/redux/slices/countrySlice';
-import { HYDRATE } from 'next-redux-wrapper';
 
 const initialState: appSetting = {
+  userAgent: null, /// ==== tempId for the cart
   showHeader: true,
   showFooter: true,
   showCart: false,
@@ -155,6 +152,15 @@ export const appSettingSlice = createSlice({
         },
       };
     },
+    setUserAgent: (
+      state: typeof initialState,
+      action: PayloadAction<string>
+    ) => {
+      return {
+        ...state,
+        userAgent: action.payload,
+      };
+    },
     resetAppSetting: (state: typeof initialState, action: PayloadAction) => {
       return {
         ...initialState,
@@ -196,4 +202,5 @@ export const {
   showChangePasswordModal,
   hideChangePasswordModal,
   resetAppSetting,
+  setUserAgent,
 } = appSettingSlice.actions;

@@ -2,7 +2,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Cart } from '@/types/index';
 
 const initialState: Cart = {
-  tempId: '',
   products: [],
   isEmpty: true,
   method: `delivery`,

@@ -1,11 +1,18 @@
 import { apiSlice } from './index';
-import { AppQueryResult, Area } from '@/types/queries';
+import { AppQueryResult } from '@/types/queries';
 import { Cart, Locale } from '@/types/index';
 
 export const cartApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    AddProductToCart: builder.mutation<
-      AppQueryResult<any>,
+    createTempId: builder.query<AppQueryResult<{ Id: string }>, void>({
+      query: () => ({
+        url: `tempId`,
+        validateStatus: (response, result) =>
+          response.status == 200 && result.Data.status,
+      }),
+    }),
+    addToCart: builder.mutation<
+      AppQueryResult<Cart>,
       {
         lang: Locale['lang'];
         country: string;
@@ -90,7 +97,8 @@ export const cartApi = apiSlice.injectEndpoints({
 });
 
 export const {
-  useAddProductToCartMutation,
+  useCreateTempIdQuery,
+  useLazyCreateTempIdQuery,
   useGetCartProductsQuery,
   useRemoveFromCartMutation,
   useUpdateItemInCartMutation,
