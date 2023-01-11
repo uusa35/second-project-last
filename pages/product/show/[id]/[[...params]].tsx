@@ -8,12 +8,11 @@ import { NextPage } from 'next';
 import MainHead from '@/components/MainHead';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch } from '@/redux/hooks';
-import { useEffect, useState, useCallback, Fragment } from 'react';
+import { useEffect, useState, Fragment } from 'react';
 import { setCurrentModule } from '@/redux/slices/appSettingSlice';
 import { imageSizes, imgUrl } from '@/constants/*';
 import CustomImage from '@/components/CustomImage';
 import { map } from 'lodash';
-import Image from 'next/image';
 
 type Props = {
   element: Product;

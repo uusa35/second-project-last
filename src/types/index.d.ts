@@ -110,12 +110,15 @@ export type appSetting = {
 
 export interface Cart {
   UserAgent: string | null;
-  isEmpty: boolean;
   Cart: ProductCart[];
   id: string;
+  subTotal?: number;
+  total?: number;
+  isEmpty?: boolean;
 }
 
 export interface ProductCart {
+  method: `delivery` | `pickup`;
   ProductID: number;
   ProductName: string;
   ProductDesc: string;

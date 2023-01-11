@@ -1,15 +1,19 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Cart } from '@/types/index';
+import { Cart, ProductCart } from '@/types/index';
 
-const initialState: Cart = {
-  products: [],
-  isEmpty: true,
+const initialState: ProductCart = {
   method: `delivery`,
-  paymentMethods: [
+  ProductID: 0,
+  ProductName: ``,
+  ProductDesc: ``,
+  Quantity: 0,
+  Price: 0,
+  RadioBtnsAddons: [],
+  CheckBoxes: [],
+  QuantityMeters: [
     {
-      id: ``,
-      name: ``,
-      image: ``,
+      addonID: 0,
+      addons: [],
     },
   ],
 };
@@ -34,20 +38,9 @@ export const cartSlice = createSlice({
         method: action.payload,
       };
     },
-    toggleIsEmpty: (
-      state: typeof initialState,
-      action: PayloadAction<void>
-    ) => {
-      return {
-        ...state,
-        tempId: state.tempId,
-        isEmpty: !state.isEmpty,
-      };
-    },
     resetCart: (state: typeof initialState, action: PayloadAction<void>) => {
       return {
         ...initialState,
-        tempId: state.tempId,
       };
     },
   },
