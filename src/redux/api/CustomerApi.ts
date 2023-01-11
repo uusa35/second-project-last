@@ -10,15 +10,14 @@ export const customerApi = apiSlice.injectEndpoints({
         body: CustomerInfo;
       }
     >({
-      query: ({body}) => ({
+      query: ({ body }) => ({
         url: `customer-info`,
         method: `POST`,
         body,
         validateStatus: (response, result) =>
-          response.status === 200 && result.success,
+          response.status === 200 && result.status,
       }),
     }),
-    
   }),
 });
 
