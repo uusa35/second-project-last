@@ -13,7 +13,8 @@ export const vendorApi = apiSlice.injectEndpoints({
         headers: {
           lang,
         },
-        validateStatus: (response, result) => response.status && result.Data,
+        validateStatus: (response, result) =>
+          response.status == 200 && result.status,
       }),
     }),
   }),

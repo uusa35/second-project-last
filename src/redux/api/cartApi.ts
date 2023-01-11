@@ -8,7 +8,7 @@ export const cartApi = apiSlice.injectEndpoints({
       query: () => ({
         url: `tempId`,
         validateStatus: (response, result) =>
-          response.status == 200 && result.Data.status,
+          response.status == 200 && result.status,
       }),
     }),
     addToCart: builder.mutation<
@@ -28,7 +28,7 @@ export const cartApi = apiSlice.injectEndpoints({
           country,
         },
         validateStatus: (response, result) =>
-          response.status === 200 && result.success,
+          response.status == 200 && result.status,
       }),
     }),
 
@@ -48,7 +48,7 @@ export const cartApi = apiSlice.injectEndpoints({
           country,
         },
         validateStatus: (response, result) =>
-          response.status === 200 && result.success,
+          response.status == 200 && result.status,
       }),
     }),
 
@@ -69,7 +69,7 @@ export const cartApi = apiSlice.injectEndpoints({
           country,
         },
         validateStatus: (response, result) =>
-          response.status === 200 && result.success,
+          response.status == 200 && result.status,
       }),
     }),
 
@@ -90,7 +90,7 @@ export const cartApi = apiSlice.injectEndpoints({
           country,
         },
         validateStatus: (response, result) =>
-          response.status === 200 && result.success,
+          response.status == 200 && result.status,
       }),
     }),
   }),

@@ -14,7 +14,7 @@ import CategoryWidget from '@/widgets/category/CategoryWidget';
 import { suppressText } from '@/constants/*';
 import { useTranslation } from 'react-i18next';
 import { setLocale } from '@/redux/slices/localeSlice';
-import { setCurrentModule } from '@/redux/slices/appSettingSlice';
+import { setCurrentModule, setUserAgent } from '@/redux/slices/appSettingSlice';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import HomeSelectMethod from '@/components/home/HomeSelectMethod';
 import HomeVendorMainInfo from '@/components/home/HomeVendorMainInfo';
@@ -37,7 +37,9 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
 
   useEffect(() => {
     if (isNull(userAgent)) {
-      triggerCreateTempId().then((r: any) => console.log('r', r));
+      triggerCreateTempId().then((r: any) =>
+        dispatch(setUserAgent(r.Data?.Id))
+      );
     }
     dispatch(setCurrentModule(t('home')));
   }, []);
