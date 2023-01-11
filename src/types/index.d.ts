@@ -93,6 +93,7 @@ export type position = {
 export type appSetting = {
   userAgent: string | null;
   method: `delivery` | `pickup`;
+  showFooterElement: string;
   showHeader: boolean;
   showFooter: boolean;
   showCart: boolean;

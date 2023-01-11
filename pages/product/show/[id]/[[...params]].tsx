@@ -11,7 +11,9 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useEffect, useState, Fragment } from 'react';
 import {
   hideFooter,
+  resetShowFooterElement,
   setCurrentModule,
+  setShowFooterElement,
   showFooter,
 } from '@/redux/slices/appSettingSlice';
 import { appLinks, imageSizes, imgUrl, submitBtnClass } from '@/constants/*';
@@ -24,6 +26,7 @@ import {
 import Link from 'next/link';
 import PoweredByQ from '@/components/PoweredByQ';
 import AppFooter from '@/components/AppFooter';
+import AppFooterElements from '@/components/AppFooterElements';
 
 type Props = {
   element: Product;
@@ -48,8 +51,10 @@ const ProductShow: NextPage<Props> = ({ element }) => {
         Price: parseFloat(element.price),
       })
     );
+    dispatch(setShowFooterElement(`productShow`));
     return () => {
       dispatch(resetProductCart());
+      dispatch(resetShowFooterElement());
     };
   }, [element]);
 
@@ -223,14 +228,6 @@ const ProductShow: NextPage<Props> = ({ element }) => {
             </div>
           ))}
         </div>
-        <AppFooter>
-          <Link
-            className={`flex flex-1 justify-center items-center ${submitBtnClass} opacity-100`}
-            href={`${appLinks.cartIndex.path}`}
-          >
-            {t('review_order')}
-          </Link>
-        </AppFooter>
       </MainContentLayout>
     </>
   );
