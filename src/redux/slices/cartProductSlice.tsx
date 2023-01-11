@@ -21,7 +21,34 @@ export const cartProductSlice = createSlice({
   name: 'cartProduct',
   initialState,
   reducers: {
-    resetCart: (state: typeof initialState, action: PayloadAction<void>) => {
+    setInitialProductCart: (
+      state: typeof initialState,
+      action: PayloadAction<Omit<ProductCart, 'Quantity' | 'QuantityMeters'>>
+    ) => {
+      return {
+        ...initialState,
+        ...action.payload,
+      };
+    },
+    setQty: (state: typeof initialState, action: PayloadAction<number>) => {
+      return {
+        ...state,
+        Quantity: action.payload,
+      };
+    },
+    updatePrice: (
+      state: typeof initialState,
+      action: PayloadAction<number>
+    ) => {
+      return {
+        ...state,
+        Price: action.payload,
+      };
+    },
+    resetProductCart: (
+      state: typeof initialState,
+      action: PayloadAction<void>
+    ) => {
       return {
         ...initialState,
       };
@@ -29,4 +56,5 @@ export const cartProductSlice = createSlice({
   },
 });
 
-export const { resetCart } = cartProductSlice.actions;
+export const { resetProductCart, setInitialProductCart } =
+  cartProductSlice.actions;

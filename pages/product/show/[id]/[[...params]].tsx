@@ -7,12 +7,23 @@ import { productApi } from '@/redux/api/productApi';
 import { NextPage } from 'next';
 import MainHead from '@/components/MainHead';
 import { useTranslation } from 'react-i18next';
-import { useAppDispatch } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useEffect, useState, Fragment } from 'react';
-import { setCurrentModule } from '@/redux/slices/appSettingSlice';
-import { imageSizes, imgUrl } from '@/constants/*';
+import {
+  hideFooter,
+  setCurrentModule,
+  showFooter,
+} from '@/redux/slices/appSettingSlice';
+import { appLinks, imageSizes, imgUrl, submitBtnClass } from '@/constants/*';
 import CustomImage from '@/components/CustomImage';
 import { map } from 'lodash';
+import {
+  resetProductCart,
+  setInitialProductCart,
+} from '@/redux/slices/cartProductSlice';
+import Link from 'next/link';
+import PoweredByQ from '@/components/PoweredByQ';
+import AppFooter from '@/components/AppFooter';
 
 type Props = {
   element: Product;
@@ -20,12 +31,26 @@ type Props = {
 const ProductShow: NextPage<Props> = ({ element }) => {
   console.log('element', element);
   const { t } = useTranslation();
+  const {
+    locale: { isRTL },
+  } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const [currentQty, setCurrentyQty] = useState<number>(1);
   const [maxQty, setMaxQt] = useState<number>(1);
 
   useEffect(() => {
     dispatch(setCurrentModule(element.name));
+    dispatch(
+      setInitialProductCart({
+        ProductID: element.id,
+        ProductName: element.name,
+        ProductDesc: element.desc,
+        Price: parseFloat(element.price),
+      })
+    );
+    return () => {
+      dispatch(resetProductCart());
+    };
   }, [element]);
 
   const handleIncrease = () => {
@@ -128,7 +153,7 @@ const ProductShow: NextPage<Props> = ({ element }) => {
                   )}
               </div>
               {map(s.choices, (c, i) => (
-                <div key={c.id} className="flex items-center w-full" >
+                <div className="flex items-center w-full" key={i}>
                   {s.must_select === 'q_meter' ? (
                     <div
                       className={`flex flex-row w-full justify-between items-center`}
@@ -198,6 +223,14 @@ const ProductShow: NextPage<Props> = ({ element }) => {
             </div>
           ))}
         </div>
+        <AppFooter>
+          <Link
+            className={`flex flex-1 justify-center items-center ${submitBtnClass} opacity-100`}
+            href={`${appLinks.cartIndex.path}`}
+          >
+            {t('review_order')}
+          </Link>
+        </AppFooter>
       </MainContentLayout>
     </>
   );
