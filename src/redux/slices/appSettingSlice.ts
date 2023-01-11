@@ -7,6 +7,7 @@ const initialState: appSetting = {
   method: `delivery`,
   showHeader: true,
   showFooter: true,
+  showFooterElement: `home`,
   showCart: false,
   showAreaModal: false,
   showPickDateModal: false,
@@ -162,6 +163,24 @@ export const appSettingSlice = createSlice({
         userAgent: action.payload,
       };
     },
+    setShowFooterElement: (
+      state: typeof initialState,
+      action: PayloadAction<string>
+    ) => {
+      return {
+        ...state,
+        showFooterElement: action.payload,
+      };
+    },
+    resetShowFooterElement: (
+      state: typeof initialState,
+      action: PayloadAction<void>
+    ) => {
+      return {
+        ...state,
+        showFooterElement: `home`,
+      };
+    },
     setCartMethod: (
       state: typeof initialState,
       action: PayloadAction<appSetting['method']>
@@ -214,4 +233,6 @@ export const {
   resetAppSetting,
   setUserAgent,
   setCartMethod,
+  setShowFooterElement,
+  resetShowFooterElement,
 } = appSettingSlice.actions;
