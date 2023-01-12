@@ -13,6 +13,17 @@ import { isEmpty, isNull, map } from 'lodash';
 import CategoryWidget from '@/widgets/category/CategoryWidget';
 import { suppressText } from '@/constants/*';
 import { useTranslation } from 'react-i18next';
+
+import {
+  InfoOutlined,
+  DiscountOutlined,
+  MopedOutlined,
+  ElectricRickshawOutlined,
+  SearchOutlined,
+} from '@mui/icons-material';
+import Link from 'next/link';
+import GreyLine from '@/components/GreyLine';
+
 import { setLocale } from '@/redux/slices/localeSlice';
 import { setCurrentModule, setUserAgent } from '@/redux/slices/appSettingSlice';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
@@ -20,6 +31,7 @@ import HomeSelectMethod from '@/components/home/HomeSelectMethod';
 import HomeVendorMainInfo from '@/components/home/HomeVendorMainInfo';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { useLazyCreateTempIdQuery } from '@/redux/api/cartApi';
+
 
 type Props = {
   categories: Category[];
@@ -30,6 +42,8 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
   console.log(`::: Log Home Render :::: ${renderCounter++}`);
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
+
+  const addressType = undefined;
 
   useEffect(() => {
     dispatch(setCurrentModule(t('home')));

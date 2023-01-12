@@ -381,6 +381,7 @@
   "select_method" : "طريقة استلام الطلب",
   "product_search_index" : "البحث في المنتجات ..",
   "delivery_to" : "التوصيل لـ",
+  "name_and_phone_are_required":"يجب ادخال رقم الهاتف و الاسم",
   "search_branch": "ابحث عن فرع",
   "deliver_to" : "التوصيل لـ",
   "pickup_from" : "الاستلام من",

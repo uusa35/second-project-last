@@ -37,7 +37,10 @@ const VerProductWidget: FC<Props> = ({ element }): JSX.Element => {
             />
           </div>
           <div className="ps-5 w-[100%] pe-5">
-            <p className="text-lg truncate pb-5">{element.name}</p>
+            <p className="text-lg truncate pb-5">
+              {element.name}
+              {element.desc}
+            </p>
             <div>
               <div>
                 <p className="text-md text-primary_BG text-end uppercase pb-2">

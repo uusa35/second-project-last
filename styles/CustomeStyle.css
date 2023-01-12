@@ -1,0 +1,6 @@
+.PhoneInputInput{
+  border: none;
+}
+.PhoneInputInput :focus{
+  box-shadow: none;
+}

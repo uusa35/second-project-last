@@ -32,11 +32,11 @@ export const appLinks = {
       lowerCase(slug)
     )}&branchId=${branchId ?? `null`}&areaId=${areaId ?? ``}`,
   branchIndex: { path: '/branch' },
-  about: { path: '/about' },
   cartIndex: { path: '/cart' },
   cartSelectMethod: { path: '/cart/select' },
   order: { path: '/order' },
   trackOrder: { path: '/order/track' },
+  customerInfo:{path: '/customer/info'},
   vendorShow: { path: '/vendor/show' },
 };
 
