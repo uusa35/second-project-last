@@ -20,9 +20,6 @@ const TrackOrder: NextPage = (): JSX.Element => {
     dispatch(setCurrentModule(t('track_order')));
   }, []);
 
-  console.log('data', data);
-  console.log('orderCode', orderCode);
-
   const handleChange = (order_code: string) => {
     setOrderCode(order_code);
     if (order_code.length > 2) {
