@@ -1,4 +1,5 @@
 import { Area, Category, Country } from '@/types/queries';
+import { floated } from '@material-tailwind/react/types/components/card';
 
 export interface Product {
   id: number;
@@ -10,10 +11,10 @@ export interface Product {
   price_on_selection?: boolean;
   new_price?: string;
   img: img[];
-  sections?: productSections[];
+  sections?: ProductSection[];
 }
 
-export interface productSections {
+export interface ProductSection {
   id: number;
   title: string;
   must_select: string;
@@ -21,10 +22,10 @@ export interface productSections {
   hidden: boolean;
   min_q: number;
   max_q: number;
-  choices: sectionChoices[];
+  choices: SectionChoice[];
 }
 
-export interface sectionChoices {
+export interface SectionChoice {
   id: number;
   name: string;
   price: string;
@@ -110,7 +111,7 @@ export type appSetting = {
   };
 };
 
-export interface Cart {
+export interface ServerCart {
   UserAgent: string | null;
   Cart: ProductCart[];
   id: string;
@@ -119,14 +120,23 @@ export interface Cart {
   isEmpty?: boolean;
 }
 
+export interface ClientCart {
+  totalPrice: number;
+  totalQty: number;
+  items: ProductCart[];
+}
 export interface ProductCart {
   ProductID: number;
   ProductName: string;
   ProductDesc: string;
   Quantity: number;
   Price: number;
-  RadioBtnsAddons?: RadioBtns[];
-  CheckBoxes?: CheckBoxes[];
+  totalQty: number;
+  totalPrice: number;
+  subTotalPrice: number;
+  productId?: number;
+  RadioBtnsAddons: RadioBtns[];
+  CheckBoxes: CheckBoxes[];
   QuantityMeters: QuantityMeters[];
   id?: string;
 }
@@ -269,8 +279,8 @@ export interface UserAddressFields {
   value: string;
 }
 
-export interface CustomerInfo{
-  name:string,
-  email:string,
-  phone?:string
+export interface CustomerInfo {
+  name: string;
+  email: string;
+  phone?: string;
 }

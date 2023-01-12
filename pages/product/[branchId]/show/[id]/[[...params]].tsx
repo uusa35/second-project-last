@@ -2,40 +2,37 @@ import MainContentLayout from '@/layouts/MainContentLayout';
 import { wrapper } from '@/redux/store';
 import { AppQueryResult } from '@/types/queries';
 import { apiSlice } from '@/redux/api';
-import { Product, productSections } from '@/types/index';
+import { CheckBoxes, Product, ProductSection, RadioBtns } from '@/types/index';
 import { productApi } from '@/redux/api/productApi';
 import { NextPage } from 'next';
 import MainHead from '@/components/MainHead';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { useEffect, useState, Fragment } from 'react';
+import { useEffect, useState, Fragment, useMemo } from 'react';
 import {
-  hideFooter,
   resetShowFooterElement,
   setCurrentModule,
   setShowFooterElement,
-  showFooter,
 } from '@/redux/slices/appSettingSlice';
-import { appLinks, imageSizes, imgUrl, submitBtnClass } from '@/constants/*';
+import { imageSizes, imgUrl } from '@/constants/*';
 import CustomImage from '@/components/CustomImage';
 import { map } from 'lodash';
 import {
+  addToCheckBox,
+  removeFromCheckBox,
   resetProductCart,
+  setCartProductQty,
   setInitialProductCart,
 } from '@/redux/slices/cartProductSlice';
-import Link from 'next/link';
-import PoweredByQ from '@/components/PoweredByQ';
-import AppFooter from '@/components/AppFooter';
-import AppFooterElements from '@/components/AppFooterElements';
 
 type Props = {
   element: Product;
 };
 const ProductShow: NextPage<Props> = ({ element }) => {
-  console.log('element', element);
   const { t } = useTranslation();
   const {
     locale: { isRTL },
+    cartProduct,
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const [currentQty, setCurrentyQty] = useState<number>(1);
@@ -48,6 +45,10 @@ const ProductShow: NextPage<Props> = ({ element }) => {
         ProductID: element.id,
         ProductName: element.name,
         ProductDesc: element.desc,
+        Quantity: currentQty,
+        totalPrice: parseFloat(element.price),
+        subTotalPrice: parseFloat(element.price),
+        totalQty: currentQty,
         Price: parseFloat(element.price),
       })
     );
@@ -57,6 +58,9 @@ const ProductShow: NextPage<Props> = ({ element }) => {
       dispatch(resetShowFooterElement());
     };
   }, [element]);
+
+  console.log('element', element);
+  console.log('cartProduct', cartProduct);
 
   const handleIncrease = () => {
     if (element?.amount >= currentQty + 1) {
@@ -72,6 +76,37 @@ const ProductShow: NextPage<Props> = ({ element }) => {
 
   console.log('current', currentQty);
   console.log('element amount', element.amount);
+
+  const handleSelectAddOn = (
+    selection: ProductSection,
+    choice: any,
+    type: string,
+    checked: boolean
+  ) => {
+    if (checked) {
+      dispatch(
+        addToCheckBox({
+          addonID: selection.id,
+          addons: [
+            { attributeID: choice.id, name: choice.name, Value: choice.price },
+          ],
+        })
+      );
+    } else {
+      dispatch(
+        removeFromCheckBox({
+          addonID: selection.id,
+          addons: [
+            { attributeID: choice.id, name: choice.name, Value: choice.price },
+          ],
+        })
+      );
+    }
+  };
+
+  // useMemo(() => {
+  //   dispatch(setCartProductQty(currentQty));
+  // }, [currentQty]);
 
   return (
     <>
@@ -140,7 +175,7 @@ const ProductShow: NextPage<Props> = ({ element }) => {
           </div>
 
           {/*     sections  */}
-          {map(element.sections, (s: productSections, i) => (
+          {map(element.sections, (s: ProductSection, i) => (
             <div
               className="flex flex-col w-full justify-start items-start space-y-3 py-4 border-b-2 border-stone-200"
               key={i}
@@ -203,6 +238,14 @@ const ProductShow: NextPage<Props> = ({ element }) => {
                         name={s.title}
                         required={s.selection_type !== 'optional'}
                         type={s.must_select === 'multi' ? `checkbox` : 'radio'}
+                        onChange={(e) =>
+                          handleSelectAddOn(
+                            s,
+                            c,
+                            s.selection_type,
+                            e.target.checked
+                          )
+                        }
                         // defaultChecked={c.id === 'email'}
                         className="h-4 w-4 border-gray-300 ring-primary_BG-600 focus:ring-primary_BG-500"
                       />
@@ -218,7 +261,7 @@ const ProductShow: NextPage<Props> = ({ element }) => {
                           </label>
                         </div>
                         <div>
-                          {c.price} {t(`kwd`)}
+                          {cartProduct.totalPrice} {t(`kwd`)}
                         </div>
                       </div>
                     </Fragment>
