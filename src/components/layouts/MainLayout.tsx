@@ -64,7 +64,7 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
     }
     if (isNull(branchId)) {
       triggerGetBranches({ lang: locale.lang }).then((r: any) =>
-        dispatch(setArea(r.data.Data[0]))
+        dispatch(setBranch(r.data?.Data[0]))
       );
     }
     if (isNull(userAgent)) {

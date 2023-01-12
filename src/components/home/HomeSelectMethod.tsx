@@ -13,6 +13,7 @@ import { selectMethod } from '@/redux/slices/cartProductSlice';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
 import { setCartMethod } from '@/redux/slices/appSettingSlice';
+import Link from 'next/link';
 
 type Props = {
   element: Vendor;
@@ -33,9 +34,6 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
       .then(() => dispatch(setCartMethod(m)));
   };
 
-  console.log('the method', method);
-  console.log('the branch', branch);
-  console.log('the area', area);
   return (
     <>
       {/* Delivery / Pickup Btns */}
@@ -61,7 +59,11 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
       </div>
       <div className={`px-8 py-2 text-lg`}>
         {!isNull(branch.id) && method === 'pickup' && (
-          <div className="flex flex-1 w-full flex-row justify-between items-center mt-4 mb-2">
+          <Link
+            href={appLinks.cartSelectMethod.path}
+            scroll={false}
+            className="flex flex-1 w-full flex-row justify-between items-center mt-4 mb-2"
+          >
             <div
               className={`flex flex-grow justify-start items-center md:ltr:mr-3 md:rtl:ml-3`}
             >
@@ -70,11 +72,15 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
             <div className={`md:ltr:mr-3 md:rtl:ml-3 pt-2 text-primary_BG`}>
               {branch.name}
             </div>
-          </div>
+          </Link>
         )}
 
         {!isNull(area.id) && method === 'delivery' && (
-          <div className="flex flex-1 w-full flex-row justify-between items-center mt-4 mb-2">
+          <Link
+            href={appLinks.cartSelectMethod.path}
+            scroll={false}
+            className="flex flex-1 w-full flex-row justify-between items-center mt-4 mb-2"
+          >
             <div
               className={`flex flex-grow justify-start items-center md:ltr:mr-3 md:rtl:ml-3`}
             >
@@ -83,7 +89,7 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
             <div className={`md:ltr:mr-3 md:rtl:ml-3 pt-2 text-primary_BG`}>
               {area.name}
             </div>
-          </div>
+          </Link>
         )}
 
         <div className="flex flex-1 w-full flex-row justify-between items-center mt-2 mb-4">

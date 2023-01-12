@@ -55,11 +55,14 @@ export const cartProductSlice = createSlice({
         ...state,
         CheckBoxes: [...state.CheckBoxes, action.payload],
         totalPrice: sum([
-          Number(state.Price),
+          Number(state.totalPrice),
           Number(action.payload.addons[0].Value),
         ]),
         subTotalPrice: multiply(
-          sum([Number(state.Price), Number(action.payload.addons[0].Value)]),
+          sum([
+            Number(state.totalPrice),
+            Number(action.payload.addons[0].Value),
+          ]),
           state.Quantity
         ),
       };
@@ -75,11 +78,14 @@ export const cartProductSlice = createSlice({
           (c) => c.addonID === action.payload.addonID
         ),
         totalPrice: subtract(
-          Number(state.Price),
+          Number(state.totalPrice),
           Number(action.payload.addons[0].Value)
         ),
         subTotalPrice: multiply(
-          subtract(Number(state.Price), Number(action.payload.addons[0].Value)),
+          subtract(
+            Number(state.totalPrice),
+            Number(action.payload.addons[0].Value)
+          ),
           state.Quantity
         ),
       };
