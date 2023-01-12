@@ -42,7 +42,8 @@ const HorProductWidget: FC<Props> = ({ element }): JSX.Element => {
             className="text-md font-semibold truncate"
             suppressHydrationWarning={suppressText}
           >
-            {t(element.name)}
+            {element.name}
+              {element.desc}
           </p>
           <div className="flex justify-between items-center">
             <p

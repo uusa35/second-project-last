@@ -8,7 +8,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import MainLayout from '@/components/layouts/MainLayout';
 import 'src/i18n/config';
 import 'react-toastify/dist/ReactToastify.css';
-import '@/styles//galenderStyle.css';
+// import '@/styles//galenderStyle.css';
 import '@/styles/TabOrderHistory.css';
 import { AppProps } from 'next/app';
 import { FC } from 'react';

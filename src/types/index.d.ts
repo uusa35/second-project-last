@@ -125,10 +125,20 @@ export interface ProductCart {
   ProductDesc: string;
   Quantity: number;
   Price: number;
-  RadioBtnsAddons?: string[];
-  CheckBoxes?: string[];
+  RadioBtnsAddons?: RadioBtns[];
+  CheckBoxes?: CheckBoxes[];
   QuantityMeters: QuantityMeters[];
   id?: string;
+}
+
+export interface RadioBtns {
+  addonID: number;
+  addons: CartAddons[];
+}
+
+export interface CheckBoxes {
+  addonID: number;
+  addons: CartAddons[];
 }
 
 export interface QuantityMeters {
@@ -139,7 +149,7 @@ export interface QuantityMeters {
 export interface CartAddons {
   attributeID: number;
   name: string;
-  Value: number;
+  Value?: number;
 }
 
 export interface PaymentMethod {
@@ -257,4 +267,10 @@ export interface UserAddressFields {
   id: number | string;
   key: string;
   value: string;
+}
+
+export interface CustomerInfo{
+  name:string,
+  email:string,
+  phone?:string
 }
