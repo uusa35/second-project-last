@@ -14,7 +14,7 @@ const AppFooter: FC = (): JSX.Element => {
   const {
     appSetting: { showFooterElement },
     locale: { isRTL },
-    cartProduct,
+    cartProduct: { totalPrice, subTotalPrice },
   } = useAppSelector((state) => state);
   return (
     <Suspense>
@@ -35,7 +35,7 @@ const AppFooter: FC = (): JSX.Element => {
               {t('add_to_cart')}
             </button>
             <span className={`flex flex-row items-center gap-2`}>
-              <p className={`text-xl`}>{Price}</p> {t('kd')}
+              <p className={`text-xl`}>{totalPrice}</p> {t('kd')}
             </span>
           </div>
         )}
@@ -50,7 +50,7 @@ const AppFooter: FC = (): JSX.Element => {
               {t('continue')}
             </button>
             <span className={`flex flex-row items-center gap-2`}>
-              <p className={`text-xl`}>{cartProduct.totalPrice}</p> {t('kd')}
+              <p className={`text-xl`}>{subTotalPrice}</p> {t('kd')}
             </span>
           </div>
         )}

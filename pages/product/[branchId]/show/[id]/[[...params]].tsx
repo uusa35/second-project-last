@@ -104,9 +104,9 @@ const ProductShow: NextPage<Props> = ({ element }) => {
     }
   };
 
-  useMemo(() => {
-    dispatch(setCartProductQty(currentQty));
-  }, [currentQty]);
+  // useMemo(() => {
+  //   dispatch(setCartProductQty(currentQty));
+  // }, [currentQty]);
 
   return (
     <>
