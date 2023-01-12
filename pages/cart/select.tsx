@@ -65,6 +65,7 @@ const SelectMethod: NextPage = (): JSX.Element => {
   if (branchesLoading || locationsLoading) {
     return <LoadingSpinner />;
   }
+
   const Icon = ({ id, open }: { id: number; open: number }) => {
     return (
       <svg
@@ -182,7 +183,7 @@ const SelectMethod: NextPage = (): JSX.Element => {
                 {t('select_branch')}
               </p>
               <div className={`bg-LightGray p-3`}>
-                {map(branches, (b: Branch, i) => (
+                {map(branches.Data, (b: Branch, i) => (
                   <button
                     key={i}
                     onClick={() => handleSelectBranch(b)}

@@ -82,7 +82,7 @@ const MainAsideLayout: FC<Props> = ({ element }): JSX.Element => {
                 href={appLinks.trackOrder.path}
                 className={`flex flex-row p-1 px-4 justify-between items-center rounded-lg bg-white bg-opacity-90 text-black`}
               >
-                <CustomImage
+                <Image
                   src={TrackOrderIcon}
                   width={25}
                   height={25}

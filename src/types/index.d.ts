@@ -159,7 +159,7 @@ export interface QuantityMeters {
 export interface CartAddons {
   attributeID: number;
   name: string;
-  Value?: number;
+  Value?: number; // qty
 }
 
 export interface PaymentMethod {

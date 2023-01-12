@@ -261,7 +261,7 @@ const ProductShow: NextPage<Props> = ({ element }) => {
                           </label>
                         </div>
                         <div>
-                          {cartProduct.totalPrice} {t(`kwd`)}
+                          {c.price} {t(`kwd`)}
                         </div>
                       </div>
                     </Fragment>
