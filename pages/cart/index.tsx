@@ -68,7 +68,7 @@ const CartIndex: NextPage = (): JSX.Element => {
                         <div className='w-fit pb-2'>
                           <p className='text-xs pe-3 text-gray-400 border-e-2 border-gray-400 w-auto'>addons</p>
                         </div>
-                      </div>
+                      </div>++
                     </div>
 
                     <div className="px-3 flex justify-between items-center mt-3">
