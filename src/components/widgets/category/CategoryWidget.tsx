@@ -17,11 +17,12 @@ const CategoryWidget: FC<Props> = ({ element }) => {
   return (
     <Link
       href={appLinks.productIndex(
+        branch.id,
         element.id.toString(),
-        kebabCase(lowerCase(element.name)),
-        branch.id
+        kebabCase(lowerCase(element.name))
       )}
       className={`h-60 lg:h-72 shadow-lg rounded-lg `}
+      suppressHydrationWarning={suppressText}
     >
       <div className="relative">
         <div className="relative w-full h-auto overflow-hidden rounded-lg">

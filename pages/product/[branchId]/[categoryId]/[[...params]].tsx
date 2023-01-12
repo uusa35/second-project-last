@@ -36,9 +36,7 @@ const ProductIndex: NextPage<Props> = ({ elements }): JSX.Element => {
     setIsMenue(!IsMenue);
     SetIcon(!Icon);
   };
-  console.log('elements', elements, { router });
   const { query } = useRouter();
-  console.log('the query', query.slug);
 
   useEffect(() => {
     if (query.slug) {
@@ -113,8 +111,8 @@ export default ProductIndex;
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ query, locale }) => {
-      const { categoryId, branch_id, page, limit, areaId }: any = query;
-      if (!categoryId || !branch_id) {
+      const { categoryId, branchId, page, limit, areaId }: any = query;
+      if (!categoryId || !branchId) {
         return {
           notFound: true,
         };
@@ -130,7 +128,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
           category_id: categoryId,
           page: page ?? `1`,
           limit: limit ?? `10`,
-          branch_id: branch_id ?? `null`,
+          branch_id: branchId,
           area_id: areaId ?? ``,
           lang: locale,
         })

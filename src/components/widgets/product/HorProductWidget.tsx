@@ -7,12 +7,17 @@ import Link from 'next/link';
 import CustomImage from '@/components/CustomImage';
 import { useTranslation } from 'react-i18next';
 import { suppressText } from '@/constants/*';
+import { useAppSelector } from '@/redux/hooks';
 
 type Props = {
   element: Product;
 };
 const HorProductWidget: FC<Props> = ({ element }): JSX.Element => {
   const { t } = useTranslation();
+  const {
+    branch: { id: branchId },
+    area: { id: areaId },
+  } = useAppSelector((state) => state);
   const firstImage = !isEmpty(element.img)
     ? imgUrl(first(element.img).thumbnail)
     : NoFoundImage.src;
@@ -22,8 +27,10 @@ const HorProductWidget: FC<Props> = ({ element }): JSX.Element => {
     <Link
       href={`${appLinks.productShow(
         element.id.toString(),
+        branchId,
         element.id,
-        element.name
+        element.name,
+        areaId
       )}`}
       className={`h-80 lg:h-80 shadow-7xl rounded-lg  mb-5 block border-gray-100 border-2`}
     >
@@ -43,7 +50,7 @@ const HorProductWidget: FC<Props> = ({ element }): JSX.Element => {
             suppressHydrationWarning={suppressText}
           >
             {element.name}
-              {element.desc}
+            {element.desc}
           </p>
           <div className="flex justify-between items-center">
             <p

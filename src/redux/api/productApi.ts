@@ -8,9 +8,9 @@ export const productApi = apiSlice.injectEndpoints({
       AppQueryResult<Product[]>,
       {
         category_id: string | number;
+        branch_id: string | null;
         page: string;
         limit: string;
-        branch_id: string | null;
         area_id: string;
         lang: Locale['lang'] | string | undefined;
       }
@@ -30,16 +30,16 @@ export const productApi = apiSlice.injectEndpoints({
       AppQueryResult<Product[]>,
       {
         lang: Locale['lang'] | string | undefined;
+        branch_id: string;
         key?: string;
-        branchId?: string;
         areaId?: string;
       }
     >({
-      query: ({ lang, key = ``, branchId = null, areaId = `` }: any) => ({
+      query: ({ lang, key = ``, branch_id, areaId = `` }: any) => ({
         url: `search`,
         params: { key },
         headers: {
-          'x-branch-id': branchId,
+          'x-branch-id': branch_id,
           'x-area-id': areaId,
           lang,
         },

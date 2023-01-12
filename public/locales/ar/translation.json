@@ -396,5 +396,6 @@
   "enter_code_here": "أدخِل الكود هنا",
   "note": "ملاحظات",
   "enter_notes_here": "أدخِل الملاحظات هنا",
-  "delivery_services": "خدمات التوصيل"
+  "delivery_services": "خدمات التوصيل",
+  "back_to_home" : "العودة إلى الرئيسية"
 }

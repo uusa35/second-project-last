@@ -13,15 +13,15 @@ const OffLineWidget: FC<Props> = ({ message, img = null }): JSX.Element => {
   const { t } = useTranslation();
   return (
     <div
-      className={`flex w-full flex-col justify-center items-center space-y-10 mt-10`}
+      className={`flex w-full flex-col justify-center items-center space-y-10 mt-10 px-4`}
     >
       {!isNull(img) ? (
         <Image
-          className="h-90 w-1/3 rounded-lg shadow-lg"
+          className="h-90 w-full rounded-lg shadow-lg"
           alt="offline"
           fill={false}
-          width={imageSizes.xs}
-          height={imageSizes.xs}
+          width={imageSizes.lg}
+          height={imageSizes.lg}
           src={img}
         />
       ) : (

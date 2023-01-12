@@ -29,6 +29,9 @@ const SlideTopNav: FC<Props> = ({ offset }): JSX.Element => {
   const router = useRouter();
 
   const handleChangeLang = async (locale: string) => {
+    // console.log('router pathname', router.pathname);
+    // console.log('router asPath', router.asPath);
+    // console.log('router query', router.query);
     if (locale !== router.locale) {
       await dispatch(setLocale(locale));
       await router

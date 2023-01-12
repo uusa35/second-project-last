@@ -28,38 +28,41 @@ import Image from 'next/image';
 import SearchIcon from '@/appIcons/search.svg';
 import { isEmpty, isNull, map } from 'lodash';
 import { setArea } from '@/redux/slices/areaSlice';
-import { appSetting, Cart } from '@/types/index';
-import { selectMethod } from '@/redux/slices/cartProductSlice';
+import { appSetting } from '@/types/index';
 import { useRouter } from 'next/router';
 import { setBranch } from '@/redux/slices/branchSlice';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
+import { useGetBranchesQuery } from '@/redux/api/branchApi';
 
 const SelectMethod: NextPage = (): JSX.Element => {
   const { t } = useTranslation();
+  const router = useRouter();
+  const dispatch = useAppDispatch();
   const {
     locale: { lang },
-    branches,
     area: selectedArea,
     appSetting: { method },
     branch: { id: branch_id },
   } = useAppSelector((state) => state);
-  const { data: locations, isLoading } = useGetLocationsQuery<{
-    data: AppQueryResult<Location[]>;
+  const { data: locations, isLoading: locationsLoading } =
+    useGetLocationsQuery<{
+      data: AppQueryResult<Location[]>;
+      isLoading: boolean;
+    }>({ lang });
+  const { data: branches, isLoading: branchesLoading } = useGetBranchesQuery<{
+    data: AppQueryResult<Branch[]>;
     isLoading: boolean;
   }>({ lang });
   const [open, setOpen] = useState(0);
   const handleOpen = (value: any) => {
     setOpen(open === value ? 0 : value);
   };
-  const router = useRouter();
-  const dispatch = useAppDispatch();
-  console.log('the branches', branches);
 
   useEffect(() => {
     dispatch(setCurrentModule(t('select_method')));
   }, []);
 
-  if (isLoading) {
+  if (branchesLoading || locationsLoading) {
     return <LoadingSpinner />;
   }
   const Icon = ({ id, open }: { id: number; open: number }) => {

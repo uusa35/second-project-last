@@ -33,6 +33,9 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
       .then(() => dispatch(setCartMethod(m)));
   };
 
+  console.log('the method', method);
+  console.log('the branch', branch);
+  console.log('the area', area);
   return (
     <>
       {/* Delivery / Pickup Btns */}

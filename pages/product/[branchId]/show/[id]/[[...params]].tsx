@@ -239,7 +239,8 @@ export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ query, locale }) => {
       const { id, branchId, areaId }: any = query;
-      if (!id) {
+      console.log('query ======>', query);
+      if (!id || !branchId) {
         return {
           notFound: true,
         };
@@ -254,7 +255,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
         productApi.endpoints.getProduct.initiate({
           id,
           lang: locale,
-          branchId: branchId ?? null,
+          branchId: branchId,
           areaId: areaId ?? ``,
         })
       );

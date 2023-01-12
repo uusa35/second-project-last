@@ -9,26 +9,28 @@ export const appLinks = {
   root: { path: '/home' },
   home: { path: '/home' },
   productIndex: (
+    branchId: string,
     categoryId: string,
     slug: string,
-    branch_id?: string | null,
     areaId?: string,
     page?: string,
     limit?: string
   ) =>
-    `/product/${categoryId}?branch_id=${branch_id}&area_id=${
-      areaId ?? ``
-    }&page=${page ?? `1`}&limit=${limit ?? `10`}&slug=${slug}`,
+    `/product/${branchId}/${categoryId}?&area_id=${areaId ?? ``}&page=${
+      page ?? `1`
+    }&limit=${limit ?? `10`}&slug=${slug}`,
   productSearchIndex: (branchId: string, query?: string, areaId?: string) =>
-    `/product/?key=${query ?? ``}&branch_id=${branchId}&areaId=${areaId ?? ``}`,
+    `/product/${branchId}/?key=${query ?? ``}&branch_id=${branchId}&areaId=${
+      areaId ?? ``
+    }`,
   productShow: (
     id: string,
+    branchId: string,
     product_id?: number,
     slug?: string,
-    branchId?: string,
     areaId?: string
   ) =>
-    `/product/show/${id}?product_id=${product_id}&slug=${kebabCase(
+    `/product/${branchId}/show/${id}?product_id=${product_id}&slug=${kebabCase(
       lowerCase(slug)
     )}&branchId=${branchId ?? `null`}&areaId=${areaId ?? ``}`,
   branchIndex: { path: '/branch' },
@@ -36,7 +38,7 @@ export const appLinks = {
   cartSelectMethod: { path: '/cart/select' },
   order: { path: '/order' },
   trackOrder: { path: '/order/track' },
-  customerInfo:{path: '/customer/info'},
+  customerInfo: { path: '/customer/info' },
   vendorShow: { path: '/vendor/show' },
 };
 

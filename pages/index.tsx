@@ -32,7 +32,6 @@ import HomeVendorMainInfo from '@/components/home/HomeVendorMainInfo';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { useLazyCreateTempIdQuery } from '@/redux/api/cartApi';
 
-
 type Props = {
   categories: Category[];
   element: Vendor;

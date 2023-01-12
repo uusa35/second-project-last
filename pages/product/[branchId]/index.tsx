@@ -113,8 +113,8 @@ export default ProductSearchIndex;
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ query, locale }) => {
-      const { key, branch_id, area_id }: any = query;
-      if (!branch_id) {
+      const { key, branchId, area_id }: any = query;
+      if (!branchId) {
         return {
           notFound: true,
         };
@@ -122,7 +122,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
       const { data: elements, isError } = await store.dispatch(
         productApi.endpoints.getSearchProducts.initiate({
           key: key ?? ``,
-          branchId: branch_id ?? null,
+          branch_id: branchId,
           areaId: area_id ?? ``,
           lang: locale,
         })
