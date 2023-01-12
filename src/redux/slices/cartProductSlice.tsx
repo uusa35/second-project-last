@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ProductCart } from '@/types/index';
+import { CheckBoxes, ProductCart } from '@/types/index';
+import { concat, filter, first, multiply, subtract, sum } from 'lodash';
 
 const initialState: ProductCart = {
   ProductID: 0,
@@ -7,8 +8,22 @@ const initialState: ProductCart = {
   ProductDesc: ``,
   Quantity: 0,
   Price: 0,
+  totalQty: 0,
+  totalPrice: 0,
+  subTotalPrice: 0,
+  productId: 0,
   RadioBtnsAddons: [],
-  CheckBoxes: [],
+  CheckBoxes: [
+    {
+      addonID: 0,
+      addons: [
+        {
+          attributeID: 0,
+          name: ``,
+        },
+      ],
+    },
+  ],
   QuantityMeters: [
     {
       addonID: 0,
@@ -23,26 +38,60 @@ export const cartProductSlice = createSlice({
   reducers: {
     setInitialProductCart: (
       state: typeof initialState,
-      action: PayloadAction<Omit<ProductCart, 'Quantity' | 'QuantityMeters'>>
+      action: PayloadAction<
+        Omit<ProductCart, 'QuantityMeters' | 'CheckBoxes' | 'RadioBtnsAddons'>
+      >
     ) => {
       return {
         ...initialState,
         ...action.payload,
       };
     },
-    setQty: (state: typeof initialState, action: PayloadAction<number>) => {
+    addToCheckBox: (
+      state: typeof initialState,
+      action: PayloadAction<CheckBoxes>
+    ) => {
       return {
         ...state,
-        Quantity: action.payload,
+        CheckBoxes: [...state.CheckBoxes, action.payload],
+        totalPrice: sum([
+          Number(state.Price),
+          Number(action.payload.addons[0].Value),
+        ]),
+        subTotalPrice: multiply(
+          sum([Number(state.Price), Number(action.payload.addons[0].Value)]),
+          state.Quantity
+        ),
       };
     },
-    updatePrice: (
+    removeFromCheckBox: (
+      state: typeof initialState,
+      action: PayloadAction<CheckBoxes>
+    ) => {
+      return {
+        ...state,
+        CheckBoxes: filter(
+          state.CheckBoxes,
+          (c) => c.addonID === action.payload.addonID
+        ),
+        totalPrice: subtract(
+          Number(state.Price),
+          Number(action.payload.addons[0].Value)
+        ),
+        subTotalPrice: multiply(
+          subtract(Number(state.Price), Number(action.payload.addons[0].Value)),
+          state.Quantity
+        ),
+      };
+    },
+    setCartProductQty: (
       state: typeof initialState,
       action: PayloadAction<number>
     ) => {
       return {
         ...state,
-        Price: action.payload,
+        Quantity: action.payload,
+        subTotalPrice: multiply(state.totalPrice, action.payload),
       };
     },
     resetProductCart: (
@@ -56,5 +105,10 @@ export const cartProductSlice = createSlice({
   },
 });
 
-export const { resetProductCart, setInitialProductCart } =
-  cartProductSlice.actions;
+export const {
+  resetProductCart,
+  addToCheckBox,
+  setInitialProductCart,
+  removeFromCheckBox,
+  setCartProductQty,
+} = cartProductSlice.actions;
