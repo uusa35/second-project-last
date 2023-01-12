@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { FC, Suspense } from 'react';
-import { appLinks, submitBtnClass } from '@/constants/*';
+import { appLinks, submitBtnClass, suppressText } from '@/constants/*';
 import { useAppSelector } from '@/redux/hooks';
 import PoweredByQ from '@/components/PoweredByQ';
 
@@ -16,6 +16,7 @@ const AppFooter: FC = (): JSX.Element => {
     locale: { isRTL },
     cartProduct: { totalPrice, subTotalPrice },
   } = useAppSelector((state) => state);
+  console.log({showFooterElement})
   return (
     <Suspense>
       <footer
@@ -40,18 +41,12 @@ const AppFooter: FC = (): JSX.Element => {
           </div>
         )}
         {showFooterElement === 'cartIndex' && (
-          <div
-            className={`w-full h-1/2 flex  ${submitBtnClass} cursor-auto rounded-none opacity-100 flex justify-between items-center px-8 rounded-t-2xl`}
-          >
-            <button
-              // onClick={() => dispatch(addToCar)}
-              className={`p-2 px-4 rounded-2xl w-fit  bg-primary_BG hover:bg-opacity-90 bg-opacity-60  border border-primary_BG shadow-xl capitalize`}
-            >
-              {t('continue')}
-            </button>
-            <span className={`flex flex-row items-center gap-2`}>
-              <p className={`text-xl`}>{subTotalPrice}</p> {t('kd')}
-            </span>
+          <div className='bg-gray-100 w-full'>
+            <div className='bg-sky-600 w-full h-32 flex justify-center items-center rounded-t-xl'>
+                <button className='bg-sky-500 rounded-full text-white h-8 px-4 py-1' suppressHydrationWarning={suppressText}>
+                  {t('continue')}
+                </button>
+            </div>
           </div>
         )}
       </footer>

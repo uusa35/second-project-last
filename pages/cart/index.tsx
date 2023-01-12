@@ -3,7 +3,11 @@ import { NextPage } from 'next';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useTranslation } from 'react-i18next';
 import { useEffect } from 'react';
-import { setCurrentModule } from '@/redux/slices/appSettingSlice';
+import { 
+  setCurrentModule,
+  resetShowFooterElement,
+  setShowFooterElement, 
+} from '@/redux/slices/appSettingSlice';
 import NotFound from '@/appImages/not_found.png';
 import Image from 'next/image';
 import {
@@ -24,6 +28,10 @@ const CartIndex: NextPage = (): JSX.Element => {
 
   useEffect(() => {
     dispatch(setCurrentModule(t('cart')));
+    dispatch(setShowFooterElement(`cartIndex`));
+    return () => {
+      dispatch(resetShowFooterElement());
+    };
   }, []);
 
   return (
@@ -68,7 +76,7 @@ const CartIndex: NextPage = (): JSX.Element => {
                         <div className='w-fit pb-2'>
                           <p className='text-xs pe-3 text-gray-400 border-e-2 border-gray-400 w-auto'>addons</p>
                         </div>
-                      </div>++
+                      </div>
                     </div>
 
                     <div className="px-3 flex justify-between items-center mt-3">
@@ -111,7 +119,7 @@ const CartIndex: NextPage = (): JSX.Element => {
           type='number'
           placeholder={`${t('enter_code_here')}`}
           suppressHydrationWarning={suppressText}
-          className={`border-0 border-b-2 border-b-gray-200 w-full`}
+          className={`border-0 border-b-2 border-b-gray-200 w-full focus:ring-transparent`}
       />
         </div>
       </div>
@@ -131,7 +139,7 @@ const CartIndex: NextPage = (): JSX.Element => {
           type='text'
           placeholder={`${t('enter_notes_here')}`}
           suppressHydrationWarning={suppressText}
-          className={`border-0 border-b-2 border-b-gray-200 w-full`}
+          className={`border-0 border-b-2 border-b-gray-200 w-full focus:ring-transparent`}
         />
       </div>
 
@@ -153,7 +161,7 @@ const CartIndex: NextPage = (): JSX.Element => {
             </p>
           </div>
 
-          <div className="flex justify-between mb-3 text-lg ">
+          <div className="flex justify-between mb-3 text-lg">
             <p className='font-semibold' suppressHydrationWarning={suppressText}>{t("total")}</p>
             <p className='text-primary_BG' suppressHydrationWarning={suppressText}>
               delivery service {t('kwd')}
@@ -161,15 +169,6 @@ const CartIndex: NextPage = (): JSX.Element => {
           </div>
         </div>
       </div>
-
-      <div className='bg-gray-100'>
-        <div className='bg-sky-600 w-full h-32 flex justify-center items-center rounded-t-xl'>
-            <button className='bg-sky-500 rounded-full text-white h-8 px-4 py-1' suppressHydrationWarning={suppressText}>
-              {t('continue')}
-            </button>
-        </div>
-      </div>
-
     </div>
     </MainContentLayout>
   );
