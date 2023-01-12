@@ -239,7 +239,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ query, locale }) => {
       const { id, branchId, areaId }: any = query;
-      console.log('query ======>', query);
       if (!id || !branchId) {
         return {
           notFound: true,

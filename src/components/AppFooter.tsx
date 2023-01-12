@@ -30,9 +30,9 @@ const AppFooter: FC = (): JSX.Element => {
           >
             <button
               // onClick={() => dispatch(addToCar)}
-              className={`p-2 px-4 rounded-2xl w-fit  bg-primary_BG hover:bg-opacity-90 bg-opacity-60  border border-primary_BG shadow-xl`}
+              className={`p-2 px-4 rounded-2xl w-fit  bg-primary_BG hover:bg-opacity-90 bg-opacity-60  border border-primary_BG shadow-xl capitalize`}
             >
-              {t('start_ordering')}
+              {t('add_to_cart')}
             </button>
             <span className={`flex flex-row items-center gap-2`}>
               <p className={`text-xl`}>{Price}</p> {t('kd')}

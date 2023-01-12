@@ -131,7 +131,7 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
   return (
     <div
       dir={router.locale === 'ar' ? 'rtl' : 'ltr'}
-      className={`${tajwalFont} flex-col justify-start items-start grow  lg:flex lg:flex-row flex flex-row h-screen  [&>*]:capitalize`}
+      className={`${tajwalFont} flex-col justify-start items-start grow  lg:flex lg:flex-row flex flex-row h-screen  capitalize`}
     >
       {children}
       {/* Main Image & Logo */}
