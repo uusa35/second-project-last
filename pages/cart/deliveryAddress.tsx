@@ -217,7 +217,9 @@ const DeliveyAddress: NextPage = (): JSX.Element => {
                     </div>
                 </div>
                 <div className="mx-4">
-                    <p className="my-5 font-semibold text-base">{t("delivery_prefrences")}</p>
+                    <p className="my-5 font-semibold text-base" suppressHydrationWarning={suppressText}>
+                    {t("delivery_prefrences")}
+                    </p>
                         <div className="flex items-center mb-4">
                             <input id="deliverNow" type="radio" name="deliver" value="" 
                             className="w-8 h-8 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 
@@ -246,12 +248,16 @@ const DeliveyAddress: NextPage = (): JSX.Element => {
                        </div>
                     </div>
                     )}
-                    <button
-                        className={`${submitBtnClass}`}
-                        suppressHydrationWarning={suppressText}
-                        >
-                        {t('checkout')}
-                    </button>
+            </div>
+        </div>
+        <div className="bg-gray-100 w-full">
+            <div className="bg-sky-600 w-full h-32 flex justify-center items-center rounded-t-xl">
+                <button
+                    className="bg-sky-500 rounded-full text-white h-8 px-4 py-1"
+                    suppressHydrationWarning={suppressText}
+                >
+                    {t('continue')}
+                </button>
             </div>
         </div>
         </MainContentLayout>

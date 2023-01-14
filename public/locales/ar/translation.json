@@ -409,5 +409,6 @@
   "additional": "إضافي",
   "deliver_now": "التوصيل الآن",
   "deliver_later": "التوصيل لاحقًا",
-  "checkout": "الدفع"
+  "checkout": "الدفع",
+  "delivery_prefrences": "أولوية التسليم"
 }

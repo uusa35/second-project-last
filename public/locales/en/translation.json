@@ -397,5 +397,6 @@
   "additional": "additional",
   "deliver_now": "deliver now",
   "deliver_later": "deliver later",
-  "checkout": "checkout"
+  "checkout": "checkout",
+  "delivery_prefrences": "delivery prefrences"
 }
