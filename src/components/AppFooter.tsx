@@ -14,9 +14,9 @@ const AppFooter: FC = (): JSX.Element => {
   const {
     appSetting: { showFooterElement },
     locale: { isRTL },
-    cartProduct: { totalPrice, subTotalPrice },
+    // cartProduct: { totalPrice, subTotalPrice },
   } = useAppSelector((state) => state);
-  console.log({showFooterElement})
+  console.log({ showFooterElement });
   return (
     <Suspense>
       <footer
@@ -36,16 +36,19 @@ const AppFooter: FC = (): JSX.Element => {
               {t('add_to_cart')}
             </button>
             <span className={`flex flex-row items-center gap-2`}>
-              <p className={`text-xl`}>{totalPrice}</p> {t('kd')}
+              {/*<p className={`text-xl`}>{totalPrice}</p> {t('kd')}*/}
             </span>
           </div>
         )}
         {showFooterElement === 'cartIndex' && (
-          <div className='bg-gray-100 w-full'>
-            <div className='bg-sky-600 w-full h-32 flex justify-center items-center rounded-t-xl'>
-                <button className='bg-sky-500 rounded-full text-white h-8 px-4 py-1' suppressHydrationWarning={suppressText}>
-                  {t('continue')}
-                </button>
+          <div className="bg-gray-100 w-full">
+            <div className="bg-sky-600 w-full h-32 flex justify-center items-center rounded-t-xl">
+              <button
+                className="bg-sky-500 rounded-full text-white h-8 px-4 py-1"
+                suppressHydrationWarning={suppressText}
+              >
+                {t('continue')}
+              </button>
             </div>
           </div>
         )}

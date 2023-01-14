@@ -2,7 +2,14 @@ import MainContentLayout from '@/layouts/MainContentLayout';
 import { wrapper } from '@/redux/store';
 import { AppQueryResult } from '@/types/queries';
 import { apiSlice } from '@/redux/api';
-import { CheckBoxes, Product, ProductSection, RadioBtns } from '@/types/index';
+import {
+  CartAddons,
+  CheckBoxes,
+  Product,
+  ProductSection,
+  QuantityMeters,
+  RadioBtns,
+} from '@/types/index';
 import { productApi } from '@/redux/api/productApi';
 import { NextPage } from 'next';
 import MainHead from '@/components/MainHead';
@@ -16,14 +23,17 @@ import {
 } from '@/redux/slices/appSettingSlice';
 import { imageSizes, imgUrl } from '@/constants/*';
 import CustomImage from '@/components/CustomImage';
-import { map } from 'lodash';
+import { filter, map } from 'lodash';
 import {
+  addRadioBtn,
   addToCheckBox,
+  asyncUpdatePrice,
   removeFromCheckBox,
   resetProductCart,
   setCartProductQty,
   setInitialProductCart,
-} from '@/redux/slices/cartProductSlice';
+  updatePrice,
+} from '@/redux/slices/productCartSlice';
 import {
   Accordion,
   AccordionHeader,
@@ -37,16 +47,12 @@ const ProductShow: NextPage<Props> = ({ element }) => {
   const { t } = useTranslation();
   const {
     locale: { isRTL },
-    cartProduct,
+    productCart,
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const [currentQty, setCurrentyQty] = useState<number>(1);
   const [maxQty, setMaxQt] = useState<number>(1);
-  const [open, setOpen] = useState(0);
-
-  const [hiddenGroup, setHiddenGroup] = useState<
-    { id: number; hidden: boolean }[]
-  >([{ id: 0, hidden: false }]);
+  const [open, setOpen] = useState(1);
 
   useEffect(() => {
     dispatch(setCurrentModule(element.name));
@@ -63,24 +69,11 @@ const ProductShow: NextPage<Props> = ({ element }) => {
       })
     );
     dispatch(setShowFooterElement(`productShow`));
-    setHiddenGroup(
-      map(element.sections, (s) => {
-        return { id: s.id, hidden: s.hidden };
-      })
-    );
     return () => {
       dispatch(resetProductCart());
       dispatch(resetShowFooterElement());
     };
   }, [element]);
-
-  console.log('element', element);
-  console.log('cartProduct', cartProduct);
-  console.log('hiddenGroup', hiddenGroup);
-
-  const handleOpen = (value: number) => {
-    setOpen(open === value ? 0 : value);
-  };
 
   const customAnimation = {
     mount: { scale: 1 },
@@ -100,32 +93,61 @@ const ProductShow: NextPage<Props> = ({ element }) => {
   };
 
   console.log('current', currentQty);
-  console.log('element amount', element.amount);
+  console.log('element', element);
 
-  const handleSelectAddOn = (
+  const handleSelectAddOn = async (
     selection: ProductSection,
     choice: any,
     type: string,
     checked: boolean
   ) => {
-    if (checked) {
+    if (type === 'checkbox') {
+      if (checked) {
+        dispatch(
+          addToCheckBox({
+            addonID: choice.id,
+            addons: [
+              {
+                attributeID: selection.id,
+                name: choice.name,
+                Value: 1,
+                price: parseFloat(choice.price),
+              },
+            ],
+          })
+        );
+      } else {
+        dispatch(removeFromCheckBox(choice.id));
+      }
+    } else if (type === 'radio') {
       dispatch(
-        addToCheckBox({
-          addonID: selection.id,
+        addRadioBtn({
+          addonID: choice.id,
           addons: [
-            { attributeID: choice.id, name: choice.name, Value: choice.price },
+            {
+              attributeID: selection.id,
+              name: choice.name,
+              Value: 1,
+              price: parseFloat(choice.price),
+            },
           ],
         })
       );
-    } else {
-      dispatch(
-        removeFromCheckBox({
-          addonID: selection.id,
-          addons: [
-            { attributeID: choice.id, name: choice.name, Value: choice.price },
-          ],
-        })
-      );
+    } else if (type === 'q_meter') {
+      console.log('the select', selection);
+      console.log('the choice', choice);
+      if (checked) {
+        // increase
+        // dispatch(addMeter);
+        // console.log('increase');
+        const currentMeter = filter(
+          productCart.QuantityMeters,
+          (q: QuantityMeters) => q.addonID === choice.id
+        );
+      } else {
+        // decrease
+        console.log('decrease');
+      }
     }
   };
 
@@ -252,7 +274,9 @@ const ProductShow: NextPage<Props> = ({ element }) => {
                         <div>
                           <span className="isolate inline-flex rounded-xl shadow-sm">
                             <button
-                              onClick={() => handleIncrease()}
+                              onClick={() =>
+                                handleSelectAddOn(s, c, s.must_select, true)
+                              }
                               type="button"
                               className="relative inline-flex items-center ltr:rounded-l-xl rtl:rounded-r-xl bg-gray-100 px-4 py-2 text-sm font-medium text-black  focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
                             >
@@ -265,7 +289,9 @@ const ProductShow: NextPage<Props> = ({ element }) => {
                               {0}
                             </button>
                             <button
-                              onClick={() => handleDecrease()}
+                              onClick={() =>
+                                handleSelectAddOn(s, c, s.must_select, false)
+                              }
                               type="button"
                               className="relative -ml-px inline-flex items-center ltr:rounded-r-xl rtl:rounded-l-xl  bg-gray-100 px-4 py-2 text-sm font-medium text-black  focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
                             >
@@ -287,7 +313,7 @@ const ProductShow: NextPage<Props> = ({ element }) => {
                             handleSelectAddOn(
                               s,
                               c,
-                              s.selection_type,
+                              s.must_select === 'multi' ? `checkbox` : 'radio',
                               e.target.checked
                             )
                           }

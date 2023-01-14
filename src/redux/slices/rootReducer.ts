@@ -9,7 +9,7 @@ import { authSlice } from '@/redux/slices/authSlice';
 import { storeApi } from '@/redux/api/storeApi';
 import { categoryApi } from '@/redux/api/categoryApi';
 import { cartSlice } from '@/redux/slices/cartSlice';
-import { cartProductSlice } from '@/redux/slices/cartProductSlice';
+import { productCartSlice } from '@/redux/slices/productCartSlice';
 import { searchParamsSlice } from '@/redux/slices/searchParamsSlice';
 import { vendorApi } from '@/redux/api/vendorApi';
 import { currentElementSlice } from '@/redux/slices/currentElementSlice';
@@ -34,7 +34,7 @@ export const rootReducer = combineReducers({
   [authSlice.name]: authSlice.reducer,
   [appLoadingSlice.name]: appLoadingSlice.reducer,
   [cartSlice.name]: cartSlice.reducer,
-  [cartProductSlice.name]: cartProductSlice.reducer,
+  [productCartSlice.name]: productCartSlice.reducer,
   [orderSlice.name]: orderSlice.reducer,
   [searchParamsSlice.name]: searchParamsSlice.reducer,
   [addressSlice.name]: addressSlice.reducer,

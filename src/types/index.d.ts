@@ -161,6 +161,7 @@ export interface CartAddons {
   attributeID: number;
   name: string;
   Value?: number; // qty
+  price?: number;
 }
 
 export interface PaymentMethod {
