@@ -30,6 +30,7 @@ export interface SectionChoice {
   name: string;
   price: string;
   num: null | number;
+  hidden: boolean;
 }
 export interface img {
   thumbnail: string;

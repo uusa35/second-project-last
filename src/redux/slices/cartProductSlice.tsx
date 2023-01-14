@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { CheckBoxes, ProductCart } from '@/types/index';
-import { concat, filter, first, multiply, subtract, sum } from 'lodash';
+import { filter, multiply, subtract, sum } from 'lodash';
 
 const initialState: ProductCart = {
   ProductID: 0,
