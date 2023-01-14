@@ -398,4 +398,16 @@
   "enter_notes_here": "أدخِل الملاحظات هنا",
   "delivery_services": "خدمات التوصيل",
   "back_to_home" : "العودة إلى الرئيسية",
+  "delivery_location": "موقع التوصيل",
+  "edit": "تعديل",
+  "appartment": "شقة",
+  "house_no": "منزل رقم",
+  "floor#": "الطابق",
+  "office_no": "مكتب رقم",
+  "avenue": "رئيسي",
+  "paci": "الهيئة العامة للمعلومات المدنية",
+  "additional": "إضافي",
+  "deliver_now": "التوصيل الآن",
+  "deliver_later": "التوصيل لاحقًا",
+  "checkout": "الدفع"
 }

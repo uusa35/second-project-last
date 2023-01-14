@@ -67,7 +67,7 @@ const TrackOrder: NextPage = (): JSX.Element => {
             )}
         </div>
       </div>
-      {isSuccess && data.status && orderCode?.length > 2 && (
+      {isSuccess && data?.status && orderCode?.length > 2 && (
         <div>
           <div className="p-7 border-b-[12px] border-stone-100">
             <div className="flex justify-between mt-4">

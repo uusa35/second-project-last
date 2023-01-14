@@ -7,10 +7,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useTranslation } from 'react-i18next';
 import { AppQueryResult, Area, Branch } from '@/types/queries';
 import { useEffect, useState } from 'react';
-import {
-  setCartMethod,
-  setCurrentModule,
-} from '@/redux/slices/appSettingSlice';
+import { setCurrentModule } from '@/redux/slices/appSettingSlice';
 import {
   Accordion,
   AccordionHeader,
@@ -23,17 +20,21 @@ import {
   suppressText,
   inputFieldClass,
 } from '@/constants/*';
+import { appSetting } from '@/types/index';
+import { setCartMethod } from '@/redux/slices/appSettingSlice';
 import { Location } from '@/types/queries';
 import Image from 'next/image';
 import SearchIcon from '@/appIcons/search.svg';
 import { isEmpty, isNull, map } from 'lodash';
 import { setArea } from '@/redux/slices/areaSlice';
-import { appSetting } from '@/types/index';
 import { useRouter } from 'next/router';
 import { setBranch } from '@/redux/slices/branchSlice';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { useGetBranchesQuery } from '@/redux/api/branchApi';
-
+import DeliveryBtns from '@/components/widgets/cart/DeliveryBtns';
+type Props = {
+  handleSelectMethod: (m: string) => void;
+};
 const SelectMethod: NextPage = (): JSX.Element => {
   const { t } = useTranslation();
   const router = useRouter();
@@ -84,7 +85,7 @@ const SelectMethod: NextPage = (): JSX.Element => {
   };
 
   const handleSelectArea = (a: Area) => dispatch(setArea(a));
-
+  
   const handleSelectMethod = (m: appSetting['method']) =>
     dispatch(setCartMethod(m));
 
@@ -94,26 +95,7 @@ const SelectMethod: NextPage = (): JSX.Element => {
     <MainContentLayout>
       <Suspense>
         <div className={`px-4`}>
-          <div className="flex flex-1 w-full flex-row justify-between items-center px-14 text-lg py-8 ">
-            <button
-              className={`${
-                method === 'delivery' && `border-b-2 pb-4 border-b-primary_BG`
-              } md:ltr:mr-3 md:rtl:ml-3 capitalize `}
-              onClick={() => handleSelectMethod(`delivery`)}
-              suppressHydrationWarning={suppressText}
-            >
-              {t('delivery')}
-            </button>
-            <button
-              className={`${
-                method === 'pickup' && `border-b-2 pb-4 border-b-primary_BG`
-              } md:ltr:mr-3 md:rtl:ml-3 capitalize `}
-              onClick={() => handleSelectMethod(`pickup`)}
-              suppressHydrationWarning={suppressText}
-            >
-              {t('pickup')}
-            </button>
-          </div>
+          <DeliveryBtns handleSelectMethod={handleSelectMethod}/>
           <div className={`w-full mb-4`}>
             <div className="relative mt-1 rounded-md shadow-sm text-gray-400">
               <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center px-6">

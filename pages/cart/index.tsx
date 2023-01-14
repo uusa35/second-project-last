@@ -81,7 +81,7 @@ const CartIndex: NextPage = (): JSX.Element => {
                 </div>
 
                 <div className="px-3 flex justify-between items-center mt-3">
-                  <div>
+                  {/* <div>
                     <button className="bg-gray-100 text-primary_BG outline-none p-2 mx-2 rounded-md font-semibold">
                       <RemoveOutlined />
                     </button>
@@ -89,7 +89,29 @@ const CartIndex: NextPage = (): JSX.Element => {
                     <button className="bg-gray-100 text-primary_BG outline-none p-2 mx-2 rounded-md font-semibold">
                       <AddOutlined />
                     </button>
-                  </div>
+                  </div> */}
+                   <span className="flex rounded-xl shadow-sm">
+                    <button
+                      // onClick={() => handleIncrease()}
+                      type="button"
+                      className="relative inline-flex items-center ltr:rounded-l-xl rtl:rounded-r-xl bg-primary_BG px-4 py-2 text-sm font-medium text-white  focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                    >
+                      +
+                    </button>
+                    <button
+                      type="button"
+                      className="relative -ml-px inline-flex items-center  bg-primary_BG px-4 py-2 text-sm font-medium text-white  focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                    >
+                      {/* {currentQty} */}
+                    </button>
+                    <button
+                      // onClick={() => handleDecrease()}
+                      type="button"
+                      className="relative -ml-px inline-flex items-center ltr:rounded-r-xl rtl:rounded-l-xl  bg-primary_BG px-4 py-2 text-sm font-medium text-white  focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                    >
+                      -
+                    </button>
+                  </span>
                   <div>
                     <p
                       className="text-primary_BG"

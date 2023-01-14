@@ -386,5 +386,16 @@
   "enter_notes_here": "enter notes here",
   "delivery_services": "delivery services",
   "back_to_home" : "back to home",
-  
+  "delivery_location": "delivery location",
+  "edit": "edit",
+  "appartment": "appartment",
+  "house_no": "house no",
+  "floor#": "floor#",
+  "office_no": "office_no",
+  "avenue": "avenue",
+  "paci": "paci",
+  "additional": "additional",
+  "deliver_now": "deliver_now",
+  "deliver_later": "deliver_later",
+  "checkout": "checkout"
 }

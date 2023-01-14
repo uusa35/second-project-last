@@ -1,9 +1,8 @@
 import { NextPage } from 'next';
 import MainContentLayout from '@/layouts/MainContentLayout';
-import CustomImage from '@/components/customImage';
+import CustomImage from '@/components/CustomImage';
 import ContactInfo from '@/appImages/contact_info.png';
 import { imageSizes, submitBtnClass } from '@/constants/*';
-
 import { BadgeOutlined, EmailOutlined, Phone } from '@mui/icons-material';
 import GreyLine from '@/components/GreyLine';
 import { useTranslation } from 'react-i18next';
@@ -41,8 +40,8 @@ const CustomerInformation: NextPage = (): JSX.Element => {
       );
     } else {
       await saveCustomerInfo({ body: userData }).then((r: any) => {
-        console.log(r);
-      });
+        console.log(r, {userData});
+      })
     }
   };
 
