@@ -391,11 +391,11 @@
   "appartment": "appartment",
   "house_no": "house no",
   "floor#": "floor#",
-  "office_no": "office_no",
+  "office_no": "office no",
   "avenue": "avenue",
   "paci": "paci",
   "additional": "additional",
-  "deliver_now": "deliver_now",
-  "deliver_later": "deliver_later",
+  "deliver_now": "deliver now",
+  "deliver_later": "deliver later",
   "checkout": "checkout"
 }
