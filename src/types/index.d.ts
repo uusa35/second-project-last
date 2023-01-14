@@ -30,6 +30,7 @@ export interface SectionChoice {
   name: string;
   price: string;
   num: null | number;
+  hidden: boolean;
 }
 export interface img {
   thumbnail: string;
@@ -160,6 +161,7 @@ export interface CartAddons {
   attributeID: number;
   name: string;
   Value?: number; // qty
+  price?: number;
 }
 
 export interface PaymentMethod {
