@@ -10,14 +10,15 @@ import {
 } from '@/redux/slices/appSettingSlice';
 import NotFound from '@/appImages/not_found.png';
 import Image from 'next/image';
-import { AddOutlined, EditOutlined, RemoveOutlined } from '@mui/icons-material';
+import { EditOutlined } from '@mui/icons-material';
 import Promotion from '@/appIcons/promotion.svg';
 import Notes from '@/appIcons/notes.svg';
 import { suppressText } from '@/constants/*';
 import CustomImage from '@/components/CustomImage';
-import { map } from 'lodash';
-import { useRemoveFromCartMutation } from '@/redux/api/cartApi';
+import { map, sumBy } from 'lodash';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
+import { removeFromCart, resetCart, decreaseCartQty, increaseCartQty } from '@/redux/slices/cartSlice';
+import { useState } from 'react';
 const CartIndex: NextPage = (): JSX.Element => {
   const { t } = useTranslation();
   const {
@@ -26,8 +27,7 @@ const CartIndex: NextPage = (): JSX.Element => {
     cart,
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
-  const [RemoveFromCart, { data, isLoading, error }] =
-  useRemoveFromCartMutation<any>();
+  const [currentQty, setCurrentyQty] = useState<number>(0);
   useEffect(() => {
     dispatch(setCurrentModule(t('cart')));
     dispatch(setShowFooterElement(`cartIndex`));
@@ -35,16 +35,32 @@ const CartIndex: NextPage = (): JSX.Element => {
       dispatch(resetShowFooterElement());
     };
   }, []);
-  const handleRemove = async (ProductID: any) => {
-    await RemoveFromCart(ProductID)
-    .then((r: any) => {
-      if(r.data.success) {
-        // dispatch(
-        //   showToastMessage({ content: r.data.message, type: 'success' })
-        // )
-        console.log({r: r.data})
-      }
-    })
+  const handleRemove = (id: any) => {
+    dispatch(removeFromCart(id));
+    dispatch(
+      showToastMessage({
+        content: `item removed from cart`,
+        type: `info`,
+      })
+    );
+  }
+  const handleIncrease = (element: any) => {
+    dispatch(increaseCartQty(element));
+    dispatch(
+      showToastMessage({
+        content: `item count increased`,
+        type: `success`,
+      })
+    );
+  }
+  const handleDecreae = (element: any) => {
+    dispatch(decreaseCartQty(element));
+    dispatch(
+      showToastMessage({
+        content: `item count decreased`,
+        type: `success`,
+      })
+    );
   }
   console.log('the cart', cart);
 
@@ -72,7 +88,7 @@ const CartIndex: NextPage = (): JSX.Element => {
                       <CustomImage
                         className="w-full  rounded-lg border-[1px] border-gray-200"
                         alt={`${t('item')}`}
-                        src={NotFound.src}
+                        src={i.image? i.image: NotFound.src}
                       />
                     </div>
 
@@ -95,10 +111,14 @@ const CartIndex: NextPage = (): JSX.Element => {
                         </div>
                       </div>
                       <p className="font-semibold">{i.ProductName}</p>
-                      <div className="w-fit pb-2">
-                        <p className="text-xs pe-3 text-gray-400 border-e-2 border-gray-400 w-auto">
-                          addons
-                        </p>
+                      <div className='flex'>
+                        {map(i.QuantityMeters, a => (
+                          <div className="w-fit pb-2">
+                            <p className="text-xs px-2 pe-3 text-gray-400 border-e-2 border-gray-400 w-auto">
+                              {a.addons[0].name}
+                            </p>
+                          </div>
+                        ))}
                       </div>
                     </div>
                   </div>
@@ -115,9 +135,12 @@ const CartIndex: NextPage = (): JSX.Element => {
                     </div> */}
                     <span className="flex rounded-xl shadow-sm">
                     <button
-                        // onClick={() => handleIncrease()}
                         type="button"
                         className="relative inline-flex items-center ltr:rounded-l-xl rtl:rounded-r-xl bg-primary_BG px-4 py-2 text-sm font-medium text-white  focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDecreae(i);
+                        }}
                       >
                         -
                       </button>
@@ -128,9 +151,12 @@ const CartIndex: NextPage = (): JSX.Element => {
                         {i.totalQty}
                       </button>
                       <button
-                        // onClick={() => handleDecrease()}
                         type="button"
                         className="relative -ml-px inline-flex items-center ltr:rounded-r-xl rtl:rounded-l-xl  bg-primary_BG px-4 py-2 text-sm font-medium text-white  focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleIncrease(i);
+                        }}
                       >
                         +
                       </button>
@@ -148,6 +174,8 @@ const CartIndex: NextPage = (): JSX.Element => {
                 </div>
               </div>
             </div>
+            <div className="mt-10 px-5 py-7 bg-gray-100">
+        </div>
           </div>
         ))
           
@@ -196,11 +224,10 @@ const CartIndex: NextPage = (): JSX.Element => {
           />
         </div>
 
-        <div className="mt-10 px-5 py-7 bg-gray-100">
-          <div>
+        <div>
             <div className="flex justify-between mb-3 text-lg">
               <p suppressHydrationWarning={suppressText}>{t('subtotal')}</p>
-              <p suppressHydrationWarning={suppressText}>price {t('kwd')}</p>
+              <p suppressHydrationWarning={suppressText}>{sumBy(cart.items, (item: any) => item.subTotalPrice)} {t('kwd')}</p>
             </div>
 
             <div className="flex justify-between mb-3 text-lg">
@@ -208,7 +235,7 @@ const CartIndex: NextPage = (): JSX.Element => {
                 {t('delivery_services')}
               </p>
               <p suppressHydrationWarning={suppressText}>
-                delivery service {t('kwd')}
+                {0} {t('kwd')}
               </p>
             </div>
 
@@ -223,11 +250,11 @@ const CartIndex: NextPage = (): JSX.Element => {
                 className="text-primary_BG"
                 suppressHydrationWarning={suppressText}
               >
-                delivery service {t('kwd')}
+                {cart.grossTotal} {t('kwd')}
               </p>
             </div>
           </div>
-        </div>
+        
       </div>}
     </MainContentLayout>
   );
