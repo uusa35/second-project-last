@@ -15,13 +15,14 @@ import Image from 'next/image';
 import NotFoundImage from '@/appImages/not_found.png';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { setCurrentModule } from '@/redux/slices/appSettingSlice';
 import VerProductWidget from '@/widgets/product/VerProductWidget';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { AppQueryResult } from '@/types/queries';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 type Props = {
   elements: Product[];
@@ -83,28 +84,31 @@ const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
               />
             </div>
           </div>
-          <div className="flex flex-row justify-evenly items-center flex-wrap gap-3 my-3">
-            {isSuccess &&
-              map(topSearch.Data.topSearch, (searchKey, i) => (
-                <Link
-                  className={`p-2 rounded-md bg-stone-100`}
-                  key={i}
-                  href={appLinks.productSearchIndex(
-                    branchId,
-                    searchKey,
-                    areaId
-                  )}
-                >
-                  {searchKey}
-                </Link>
-              ))}
-            <Link
-              className={`p-2 rounded-md bg-red-700 text-white`}
-              href={appLinks.productSearchIndex(branchId)}
-            >
-              {t(`clear`)}
-            </Link>
-          </div>
+          <Suspense fallback={<LoadingSpinner fullWidth={false} />}>
+            <div className="flex flex-row justify-evenly items-center flex-wrap gap-3 my-3">
+              {isSuccess &&
+                map(topSearch.Data.topSearch, (searchKey, i) => (
+                  <Link
+                    className={`p-2 rounded-md bg-stone-100`}
+                    key={i}
+                    href={appLinks.productSearchIndex(
+                      branchId,
+                      searchKey,
+                      areaId
+                    )}
+                  >
+                    {searchKey}
+                  </Link>
+                ))}
+              <Link
+                className={`p-2 rounded-md bg-red-700 text-white`}
+                href={appLinks.productSearchIndex(branchId)}
+              >
+                {t(`clear`)}
+              </Link>
+            </div>
+          </Suspense>
+
           <div className="my-4">
             {isEmpty(elements) && (
               <Image

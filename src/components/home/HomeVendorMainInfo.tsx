@@ -17,13 +17,15 @@ const HomeVendorMainInfo: FC<Props> = ({ element }) => {
     <>
       <div className="flex gap-x-2 justify-between">
         <div className="flex flex-grow gap-x-2">
-          <CustomImage
-            width={imageSizes.xs}
-            height={imageSizes.xs}
-            className="rounded-md w-1/4 h-fit aspect-square"
-            alt={element.name}
-            src={imgUrl(element.logo)}
-          />
+          <Link href={appLinks.home.path} scroll={false} className={`w-1/4`}>
+            <CustomImage
+              width={imageSizes.xs}
+              height={imageSizes.xs}
+              className="rounded-md w-full h-fit aspect-square"
+              alt={element.name}
+              src={imgUrl(element.logo)}
+            />
+          </Link>
           <div className={`flex flex-col w-full p-2 space-y-2`}>
             <h1 className="font-bold text-lg">{element.name}</h1>
             <div className="text-sm text-neutral-400 space-y-1">
