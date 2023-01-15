@@ -23,14 +23,16 @@ import {
 } from '@/redux/slices/appSettingSlice';
 import { imageSizes, imgUrl } from '@/constants/*';
 import CustomImage from '@/components/CustomImage';
-import { filter, map } from 'lodash';
+import { filter, first, isEmpty, map, multiply, sum, sumBy } from 'lodash';
 import {
+  addMeter,
   addRadioBtn,
   addToCheckBox,
-  asyncUpdatePrice,
+  disableAddToCart,
+  enableAddToCart,
   removeFromCheckBox,
+  removeMeter,
   resetProductCart,
-  setCartProductQty,
   setInitialProductCart,
   updatePrice,
 } from '@/redux/slices/productCartSlice';
@@ -50,24 +52,13 @@ const ProductShow: NextPage<Props> = ({ element }) => {
     productCart,
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
-  const [currentQty, setCurrentyQty] = useState<number>(1);
+  const [currentQty, setCurrentyQty] = useState<number>(0);
   const [maxQty, setMaxQt] = useState<number>(1);
   const [open, setOpen] = useState(1);
 
   useEffect(() => {
     dispatch(setCurrentModule(element.name));
-    dispatch(
-      setInitialProductCart({
-        ProductID: element.id,
-        ProductName: element.name,
-        ProductDesc: element.desc,
-        Quantity: currentQty,
-        totalPrice: parseFloat(element.price),
-        subTotalPrice: parseFloat(element.price),
-        totalQty: currentQty,
-        Price: parseFloat(element.price),
-      })
-    );
+    handleResetInitialProductCart();
     dispatch(setShowFooterElement(`productShow`));
     return () => {
       dispatch(resetProductCart());
@@ -89,11 +80,28 @@ const ProductShow: NextPage<Props> = ({ element }) => {
   const handleDecrease = () => {
     if (currentQty - 1 > 0) {
       setCurrentyQty(currentQty - 1);
+    } else {
+      setCurrentyQty(0);
+      handleResetInitialProductCart();
     }
   };
 
-  console.log('current', currentQty);
-  console.log('element', element);
+  const handleResetInitialProductCart = () => {
+    dispatch(
+      setInitialProductCart({
+        ProductID: element.id,
+        ProductName: element.name,
+        ProductDesc: element.desc,
+        Quantity: currentQty,
+        totalPrice: parseFloat(element.price),
+        subTotalPrice: parseFloat(element.price),
+        totalQty: currentQty,
+        Price: parseFloat(element.price),
+        enabled: false,
+        image: imgUrl(element?.img[0]?.toString()),
+      })
+    );
+  };
 
   const handleSelectAddOn = async (
     selection: ProductSection,
@@ -134,26 +142,115 @@ const ProductShow: NextPage<Props> = ({ element }) => {
         })
       );
     } else if (type === 'q_meter') {
-      console.log('the select', selection);
-      console.log('the choice', choice);
+      const currentMeter = filter(
+        productCart.QuantityMeters,
+        (q: QuantityMeters) => q.addonID === choice.id && q.addons[0]
+      );
+      // console.log('current meter from productCart', isEmpty(currentMeter));
+      // console.log('the select', selection);
+      // console.log('the choice', choice);
       if (checked) {
         // increase
-        // dispatch(addMeter);
-        // console.log('increase');
-        const currentMeter = filter(
-          productCart.QuantityMeters,
-          (q: QuantityMeters) => q.addonID === choice.id
+        const Value = isEmpty(currentMeter)
+          ? 1
+          : parseFloat(currentMeter[0]?.addons[0].Value) + 1 <= selection.max_q
+          ? parseFloat(currentMeter[0]?.addons[0].Value) + 1
+          : parseFloat(currentMeter[0]?.addons[0].Value);
+        dispatch(
+          addMeter({
+            addonID: choice.id,
+            addons: [
+              {
+                attributeID: selection.id,
+                name: choice.name,
+                Value,
+                price: parseFloat(choice.price),
+              },
+            ],
+          })
         );
       } else {
         // decrease
-        console.log('decrease');
+        if (!isEmpty(currentMeter)) {
+          const Value = isEmpty(currentMeter)
+            ? 1
+            : parseFloat(currentMeter[0]?.addons[0].Value) - 1 >= 0
+            ? parseFloat(currentMeter[0]?.addons[0].Value) - 1
+            : parseFloat(currentMeter[0]?.addons[0].Value);
+          dispatch(
+            addMeter({
+              addonID: choice.id,
+              addons: [
+                {
+                  attributeID: selection.id,
+                  name: choice.name,
+                  Value,
+                  price: parseFloat(choice.price),
+                },
+              ],
+            })
+          );
+        } else {
+          dispatch(removeMeter(choice.id));
+        }
       }
     }
   };
 
-  // useMemo(() => {
-  //   dispatch(setCartProductQty(currentQty));
-  // }, [currentQty]);
+  useEffect(() => {
+    if (isEmpty(productCart.QuantityMeters)) {
+      dispatch(disableAddToCart());
+    } else {
+      const allAddons = map(productCart.QuantityMeters, (q) => q.addons[0]);
+      const currentValue = sumBy(allAddons, (a) => a.Value);
+      if (currentValue > 0 && currentQty > 0) {
+        dispatch(enableAddToCart());
+      } else {
+        // handleResetInitialProductCart();
+        dispatch(disableAddToCart());
+      }
+    }
+  }, [productCart.QuantityMeters]);
+
+  useEffect(() => {
+    if (!isEmpty(productCart) && currentQty >= 1) {
+      console.log('inside');
+      const allCheckboxes = map(productCart.CheckBoxes, (q) => q.addons[0]);
+      const allRadioBtns = map(productCart.RadioBtnsAddons, (q) => q.addons[0]);
+      const allMeters = map(productCart.QuantityMeters, (q) => q.addons[0]);
+      const metersSum = sumBy(allMeters, (a) => multiply(a.price, a.Value)); // qty
+      const checkboxesSum = sumBy(allCheckboxes, (a) => a.Value * a.price); // qty
+      const radioBtnsSum = sumBy(allRadioBtns, (a) => a.Value * a.price); // qty
+      // console.log('all meters', allMeters);
+      // console.log('all checkboxes', allCheckboxes);
+      // console.log('all radios', allRadioBtns);
+      // console.log('metersSum', metersSum);
+      // console.log('checkboxdsum', checkboxesSum);
+      // console.log('radioBtnSum', radioBtnsSum);
+      // console.log(
+      //   'the sum',
+      //   sum([parseFloat(element.price), metersSum, checkboxesSum, radioBtnsSum])
+      // );
+      dispatch(
+        updatePrice({
+          totalPrice: sum([
+            parseFloat(element.price),
+            metersSum,
+            checkboxesSum,
+            radioBtnsSum,
+          ]),
+          totalQty: currentQty,
+        })
+      );
+    }
+  }, [
+    productCart.QuantityMeters,
+    productCart.CheckBoxes,
+    productCart.RadioBtnsAddons,
+    currentQty,
+  ]);
+
+  console.log('currentQty', currentQty);
 
   return (
     <>
@@ -286,7 +383,12 @@ const ProductShow: NextPage<Props> = ({ element }) => {
                               type="button"
                               className="relative -ml-px inline-flex items-center  bg-gray-100 px-4 py-2 text-sm font-medium text-primary_BG  focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
                             >
-                              {0}
+                              {filter(
+                                productCart.QuantityMeters,
+                                (q) =>
+                                  q.addonID === c.id &&
+                                  q.addons[0].attributeID === s.id
+                              )[0]?.addons[0]?.Value ?? 0}
                             </button>
                             <button
                               onClick={() =>
@@ -308,6 +410,17 @@ const ProductShow: NextPage<Props> = ({ element }) => {
                           required={s.selection_type !== 'optional'}
                           type={
                             s.must_select === 'multi' ? `checkbox` : 'radio'
+                          }
+                          checked={
+                            s.must_select !== 'multi'
+                              ? filter(
+                                  productCart.RadioBtnsAddons,
+                                  (q) => q.addonID === c.id
+                                )[0]?.addonID === c.id
+                              : filter(
+                                  productCart.CheckBoxes,
+                                  (q) => q.addonID === c.id
+                                )[0]?.addonID === c.id
                           }
                           onChange={(e) =>
                             handleSelectAddOn(

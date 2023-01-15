@@ -398,6 +398,7 @@
   "enter_notes_here": "أدخِل الملاحظات هنا",
   "delivery_services": "خدمات التوصيل",
   "back_to_home" : "العودة إلى الرئيسية",
+<<<<<<< HEAD
   "delivery_location": "موقع التوصيل",
   "edit": "تعديل",
   "appartment": "شقة",
@@ -410,5 +411,6 @@
   "deliver_now": "التوصيل الآن",
   "deliver_later": "التوصيل لاحقًا",
   "checkout": "الدفع",
-  "delivery_prefrences": "أولوية التسليم"
+  "delivery_prefrences": "أولوية التسليم",
+  "please_review_sections_some_r_required" : "بعض الاقسام مطلوبة لاستكمال اضافة المنتج لعربة التسوق .. يرجى مراجعة الأقسام الفرعية"
 }

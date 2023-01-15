@@ -386,6 +386,7 @@
   "enter_notes_here": "enter notes here",
   "delivery_services": "delivery services",
   "back_to_home" : "back to home",
+<<<<<<< HEAD
   "delivery_location": "delivery location",
   "edit": "edit",
   "appartment": "appartment",
@@ -398,5 +399,6 @@
   "deliver_now": "deliver now",
   "deliver_later": "deliver later",
   "checkout": "checkout",
-  "delivery_prefrences": "delivery prefrences"
+  "delivery_prefrences": "delivery prefrences",
+  "please_review_sections_some_r_required" : "some sections are required in order to successfully add to your shopping cart. please review product's sections."
 }

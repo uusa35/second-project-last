@@ -60,85 +60,93 @@ const TrackOrder: NextPage = (): JSX.Element => {
           {isSuccess &&
             !isEmpty(data) &&
             !data?.status &&
+            orderCode &&
             orderCode?.length > 2 && (
               <p className=" text-sm font-semibold text-red-700 text-center pt-6">
-                {t(lowerCase(snakeCase(data?.msg)))}
+                {data && data.msg && t(lowerCase(snakeCase(data.msg)))}
               </p>
             )}
         </div>
       </div>
-      {isSuccess && data?.status && orderCode?.length > 2 && (
-        <div>
-          <div className="p-7 border-b-[12px] border-stone-100">
-            <div className="flex justify-between mt-4">
-              <p
-                className="text-primary_BG font-semibold"
-                suppressHydrationWarning={suppressText}
-              >
-                {t('order_id')}
-              </p>
-              <p>{}</p>
-            </div>
-
-            <div className="flex justify-between mt-5">
-              <p
-                className="text-primary_BG font-semibold"
-                suppressHydrationWarning={suppressText}
-              >
-                {t('estimated_time')}
-              </p>
-              <p>{}</p>
-            </div>
-          </div>
-          <div className={`p-7`}>
-            <div className="flex justify-between items-end  mb-5 ">
-              <p
-                className="font-semibold"
-                suppressHydrationWarning={suppressText}
-              >
-                {t('order_status')}
-              </p>
-              <p></p>
-            </div>
-            <div className="flex justify-between items-end  ">
-              <p
-                className="font-semibold"
-                suppressHydrationWarning={suppressText}
-              >
-                {t('pending')}
-              </p>
-              <p className="font-semibold"></p>
-            </div>
-          </div>
-
-          <div className="flex flex-col items-center pt-5">
-            <p className="mb-4 text-lg" suppressHydrationWarning={suppressText}>
-              {t('delivering_to_your_address')}
-            </p>
-            <p className="text-lg text-center text-primary_BG">{}</p>
-          </div>
-          <div className="pt-5 px-4 mt-[40%]">
-            <button className={`${submitBtnClass} px-4`}>
-              <div className="flex justify-between items-center">
-                <a
-                  href="tel:+"
-                  className="text-white px-2"
+      {isSuccess &&
+        data &&
+        data?.status &&
+        orderCode &&
+        orderCode?.length > 2 && (
+          <div>
+            <div className="p-7 border-b-[12px] border-stone-100">
+              <div className="flex justify-between mt-4">
+                <p
+                  className="text-primary_BG font-semibold"
                   suppressHydrationWarning={suppressText}
                 >
-                  {t('call_delivery')}
-                </a>
-                <a
-                  href="tel:+"
-                  className="text-White"
-                  suppressHydrationWarning={suppressText}
-                >
-                  {}
-                </a>
+                  {t('order_id')}
+                </p>
+                <p>{}</p>
               </div>
-            </button>
+
+              <div className="flex justify-between mt-5">
+                <p
+                  className="text-primary_BG font-semibold"
+                  suppressHydrationWarning={suppressText}
+                >
+                  {t('estimated_time')}
+                </p>
+                <p>{}</p>
+              </div>
+            </div>
+            <div className={`p-7`}>
+              <div className="flex justify-between items-end  mb-5 ">
+                <p
+                  className="font-semibold"
+                  suppressHydrationWarning={suppressText}
+                >
+                  {t('order_status')}
+                </p>
+                <p></p>
+              </div>
+              <div className="flex justify-between items-end  ">
+                <p
+                  className="font-semibold"
+                  suppressHydrationWarning={suppressText}
+                >
+                  {t('pending')}
+                </p>
+                <p className="font-semibold"></p>
+              </div>
+            </div>
+
+            <div className="flex flex-col items-center pt-5">
+              <p
+                className="mb-4 text-lg"
+                suppressHydrationWarning={suppressText}
+              >
+                {t('delivering_to_your_address')}
+              </p>
+              <p className="text-lg text-center text-primary_BG">{}</p>
+            </div>
+            <div className="pt-5 px-4 mt-[40%]">
+              <button className={`${submitBtnClass} px-4`}>
+                <div className="flex justify-between items-center">
+                  <a
+                    href="tel:+"
+                    className="text-white px-2"
+                    suppressHydrationWarning={suppressText}
+                  >
+                    {t('call_delivery')}
+                  </a>
+                  <a
+                    href="tel:+"
+                    className="text-White"
+                    suppressHydrationWarning={suppressText}
+                  >
+                    {}
+                  </a>
+                </div>
+              </button>
+            </div>
           </div>
-        </div>
-      )}
+        )}
     </MainContentLayout>
   );
 };

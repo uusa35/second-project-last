@@ -40,7 +40,6 @@ export const storeApi = apiSlice.injectEndpoints({
           response.status === 200 && result.success,
       }),
     }),
-
     getPaymentMethods: builder.query<
       AppQueryResult<PaymentMethod[]>,
       {
@@ -58,7 +57,6 @@ export const storeApi = apiSlice.injectEndpoints({
           response.status === 200 && result.success,
       }),
     }),
-
     proceedToStorePayment: builder.mutation<
       PaymentProcess,
       {

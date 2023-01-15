@@ -122,8 +122,7 @@ export interface ServerCart {
 }
 
 export interface ClientCart {
-  totalPrice: number;
-  totalQty: number;
+  grossTotal: number;
   items: ProductCart[];
 }
 export interface ProductCart {
@@ -140,6 +139,8 @@ export interface ProductCart {
   CheckBoxes: CheckBoxes[];
   QuantityMeters: QuantityMeters[];
   id?: string;
+  enabled: boolean;
+  image: string;
 }
 
 export interface RadioBtns {
@@ -153,8 +154,8 @@ export interface CheckBoxes {
 }
 
 export interface QuantityMeters {
-  addonID: number;
-  addons: CartAddons[];
+  addonID: number; // choiceId
+  addons: CartAddons[]; // selectionId
 }
 
 export interface CartAddons {
