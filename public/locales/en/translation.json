@@ -385,6 +385,7 @@
   "note": "note",
   "enter_notes_here": "enter notes here",
   "delivery_services": "delivery services",
-  "back_to_home" : "back to home"
+  "back_to_home" : "back to home",
+  "please_review_sections_some_r_required" : "some sections are required in order to successfully add to your shopping cart. please review product's sections."
   
 }

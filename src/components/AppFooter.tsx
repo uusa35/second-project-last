@@ -1,8 +1,10 @@
 import { useTranslation } from 'react-i18next';
 import { FC, Suspense } from 'react';
 import { appLinks, submitBtnClass, suppressText } from '@/constants/*';
-import { useAppSelector } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import PoweredByQ from '@/components/PoweredByQ';
+import { showToastMessage } from '@/redux/slices/appSettingSlice';
+import { setAddToCart } from '@/redux/slices/cartSlice';
 
 type Props = {
   productShow: boolean;
@@ -14,9 +16,26 @@ const AppFooter: FC = (): JSX.Element => {
   const {
     appSetting: { showFooterElement },
     locale: { isRTL },
-    // cartProduct: { totalPrice, subTotalPrice },
+    productCart,
   } = useAppSelector((state) => state);
-  console.log({ showFooterElement });
+  const dispatch = useAppDispatch();
+
+  const handleAddToCart = () => {
+    if (!productCart.enabled) {
+      dispatch(
+        showToastMessage({
+          content: `please_review_sections_some_r_required`,
+          type: `info`,
+        })
+      );
+    } else {
+      dispatch(setAddToCart(productCart));
+      dispatch(
+        showToastMessage({ content: `item_added_success`, type: `success` })
+      );
+    }
+  };
+
   return (
     <Suspense>
       <footer
@@ -30,13 +49,14 @@ const AppFooter: FC = (): JSX.Element => {
             className={`w-full h-1/2 flex  ${submitBtnClass} cursor-auto rounded-none opacity-100 flex justify-between items-center px-8 rounded-t-2xl`}
           >
             <button
-              // onClick={() => dispatch(addToCar)}
-              className={`p-2 px-4 rounded-2xl w-fit  bg-primary_BG hover:bg-opacity-90 bg-opacity-60  border border-primary_BG shadow-xl capitalize`}
+              // disabled={!productCart.enabled}
+              onClick={() => handleAddToCart()}
+              className={`p-2 px-4 rounded-2xl w-fit  bg-primary_BG disabled:bg-stone-600 disabled:text-stone-700 disabled:bg-opacity-40 disabled:opacity-60 hover:bg-opacity-90 bg-opacity-60  border border-primary_BG shadow-xl capitalize`}
             >
               {t('add_to_cart')}
             </button>
             <span className={`flex flex-row items-center gap-2`}>
-              {/*<p className={`text-xl`}>{totalPrice}</p> {t('kd')}*/}
+              <p className={`text-xl`}>{productCart.subTotalPrice}</p> {t('kd')}
             </span>
           </div>
         )}

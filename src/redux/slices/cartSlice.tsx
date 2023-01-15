@@ -1,61 +1,28 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ProductCart, ClientCart } from '@/types/index';
-import { concat, filter, multiply, sum, sumBy } from 'lodash';
+import { filter, sum, sumBy } from 'lodash';
 
 const initialState: ClientCart = {
-  totalPrice: 0,
-  totalQty: 0,
-  items: [
-    {
-      ProductID: 0,
-      ProductName: ``,
-      ProductDesc: ``,
-      Quantity: 0,
-      Price: 0,
-      totalQty: 0,
-      totalPrice: 0,
-      subTotalPrice: 0,
-      productId: 0,
-      RadioBtnsAddons: [],
-      CheckBoxes: [
-        {
-          addonID: 0,
-          addons: [
-            {
-              attributeID: 0,
-              name: ``,
-            },
-          ],
-        },
-      ],
-      QuantityMeters: [
-        {
-          addonID: 0,
-          addons: [],
-        },
-      ],
-    },
-  ],
+  grossTotal: 0,
+  items: [],
 };
 
 export const cartSlice = createSlice({
-  name: 'cartSlice',
+  name: 'cart',
   initialState,
   reducers: {
-    setProductCart: (
+    setAddToCart: (
       state: typeof initialState,
       action: PayloadAction<ProductCart>
     ) => {
+      const items = filter(
+        state.items,
+        (item) => item.productId !== action.payload.productId
+      );
+      const grossTotal = sumBy(items, (item) => item.subTotalPrice);
       return {
-        totalPrice: sum([action.payload.totalPrice, state.totalPrice]),
-        totalQty: sum([action.payload.totalQty, state.totalQty]),
-        items: concat(
-          filter(
-            state.items,
-            (item) => item.productId !== action.payload.productId
-          ),
-          action.payload
-        ),
+        grossTotal: sum([action.payload.subTotalPrice, grossTotal]),
+        items: [...items, action.payload],
       };
     },
     removeFromCart: (
@@ -66,13 +33,9 @@ export const cartSlice = createSlice({
         state.items,
         (item) => item.productId === action.payload
       );
-      const totalPrice = sumBy(items, (item) =>
-        multiply(item.totalPrice, item.totalQty)
-      );
-      const totalQty = sumBy(items, (item) => item.totalQty);
+      const grossTotal = sumBy(items, (item) => item.subTotalPrice);
       return {
-        totalQty,
-        totalPrice,
+        grossTotal,
         items,
       };
     },
@@ -84,4 +47,4 @@ export const cartSlice = createSlice({
   },
 });
 
-export const { resetCart } = cartSlice.actions;
+export const { resetCart, setAddToCart, removeFromCart } = cartSlice.actions;

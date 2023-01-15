@@ -1,15 +1,11 @@
-import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
-  CartAddons,
   CheckBoxes,
   ProductCart,
   QuantityMeters,
   RadioBtns,
 } from '@/types/index';
-import { concat, filter, map, multiply, subtract, sum, sumBy } from 'lodash';
-import { searchParamsSlice } from '@/redux/slices/searchParamsSlice';
-import { countrySlice } from '@/redux/slices/countrySlice';
-import { act } from 'react-dom/test-utils';
+import { filter, multiply } from 'lodash';
 
 const initialState: ProductCart = {
   ProductID: 0,
@@ -17,13 +13,15 @@ const initialState: ProductCart = {
   ProductDesc: ``,
   Quantity: 0,
   Price: 0,
+  RadioBtnsAddons: [],
+  CheckBoxes: [],
+  QuantityMeters: [],
   totalQty: 0,
   totalPrice: 0,
   subTotalPrice: 0,
   productId: 0,
-  RadioBtnsAddons: [],
-  CheckBoxes: [],
-  QuantityMeters: [],
+  enabled: false,
+  image: ``,
 };
 
 export const productCartSlice = createSlice({
@@ -122,38 +120,37 @@ export const productCartSlice = createSlice({
       state: typeof initialState,
       action: PayloadAction<{
         totalPrice: number;
-        subTotalPrice: number;
         totalQty: number;
       }>
     ) => {
       return {
         ...state,
         ...action.payload,
+        subTotalPrice: multiply(
+          action.payload.totalPrice,
+          action.payload.totalQty
+        ),
       };
     },
-    // updatePrice: (
-    //   state: typeof initialState,
-    //   action: PayloadAction<number>
-    // ) => {
-    //   return {
-    //     ...state,
-    //     Quantity: action.payload,
-    //     totalPrice: sum([
-    //       Number(state.totalPrice),
-    //       Number(
-    //         sumBy(
-    //           concat(
-    //             map(state.RadioBtnsAddons, (r) => r.addons),
-    //             map(state.CheckBoxes, (c) => c.addons),
-    //             map(state.QuantityMeters, (m) => m.addons)
-    //           ),
-    //           (item) => item.price
-    //         )
-    //       ),
-    //     ]),
-    //     subTotalPrice: multiply(state.totalPrice, state.totalQty),
-    //   };
-    // },
+
+    enableAddToCart: (
+      state: typeof initialState,
+      action: PayloadAction<void>
+    ) => {
+      return {
+        ...state,
+        enabled: true,
+      };
+    },
+    disableAddToCart: (
+      state: typeof initialState,
+      action: PayloadAction<void>
+    ) => {
+      return {
+        ...state,
+        enabled: false,
+      };
+    },
     resetProductCart: (
       state: typeof initialState,
       action: PayloadAction<void>
@@ -173,4 +170,8 @@ export const {
   setCartProductQty,
   addRadioBtn,
   updatePrice,
+  addMeter,
+  removeMeter,
+  enableAddToCart,
+  disableAddToCart,
 } = productCartSlice.actions;

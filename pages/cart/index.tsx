@@ -3,10 +3,10 @@ import { NextPage } from 'next';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useTranslation } from 'react-i18next';
 import { useEffect } from 'react';
-import { 
+import {
   setCurrentModule,
   resetShowFooterElement,
-  setShowFooterElement, 
+  setShowFooterElement,
 } from '@/redux/slices/appSettingSlice';
 import NotFound from '@/appImages/not_found.png';
 import Image from 'next/image';
@@ -20,6 +20,7 @@ const CartIndex: NextPage = (): JSX.Element => {
   const {
     locale: { lang },
     branches,
+    cart,
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
 
@@ -30,6 +31,8 @@ const CartIndex: NextPage = (): JSX.Element => {
       dispatch(resetShowFooterElement());
     };
   }, []);
+
+  console.log('the cart', cart);
 
   return (
     <MainContentLayout>
