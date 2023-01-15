@@ -163,6 +163,17 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                   {t('call')}
                 </p>
               </Link>
+              <div
+                className={`relative bottom-0 flex justify-center items-center mt-1`}
+                suppressHydrationWarning={suppressText}
+              >
+                <p
+                  className={`text-stone-200 text-center`}
+                  suppressHydrationWarning={suppressText}
+                >
+                  v. {process.env.NEXT_PUBLIC_APP_VERSION}
+                </p>
+              </div>
             </footer>
           </div>
         )}
