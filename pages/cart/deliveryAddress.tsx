@@ -27,7 +27,6 @@ const DeliveyAddress: NextPage = (): JSX.Element => {
     const { t } = useTranslation();
     const [openTab, setOpenTab] = useState(1);
     const [show, SetShow] = useState(false);
-    const color = 'primary_BG';
     const handleSelectMethod = (m: appSetting['method']) => {
         dispatch(setCartMethod(m));
         router.push('/cart/select');
