@@ -23,7 +23,6 @@ const CustomerInformation: NextPage = (): JSX.Element => {
     email: '',
     phone: '',
   });
-
   const [
     saveCustomerInfo,
     { isLoading: SaveCustomerLoading, error: customerInfoError },

@@ -250,8 +250,6 @@ const ProductShow: NextPage<Props> = ({ element }) => {
     currentQty,
   ]);
 
-  console.log('currentQty', currentQty);
-
   return (
     <>
       <MainHead

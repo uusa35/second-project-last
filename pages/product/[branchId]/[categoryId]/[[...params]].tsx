@@ -1,18 +1,21 @@
 import { useEffect, useState } from 'react';
 import MainContentLayout from '@/layouts/MainContentLayout';
 import { wrapper } from '@/redux/store';
-import { productApi } from '@/redux/api/productApi';
+import {
+  productApi,
+  useLazyGetSearchProductsQuery,
+} from '@/redux/api/productApi';
 import { Product } from '@/types/index';
 import { NextPage } from 'next';
 import { apiSlice } from '@/redux/api';
 import MainHead from '@/components/MainHead';
 import { imageSizes, suppressText } from '@/constants/*';
-import { isEmpty, map, replace } from 'lodash';
+import { debounce, isEmpty, map, replace } from 'lodash';
 import Image from 'next/image';
 import NotFoundImage from '@/appImages/not_found.png';
 import HorProductWidget from '@/widgets/product/HorProductWidget';
 import { AppQueryResult, ProductPagination } from '@/types/queries';
-import { useAppDispatch } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setCurrentModule } from '@/redux/slices/appSettingSlice';
 import { useTranslation } from 'react-i18next';
 import VerProductWidget from '@/components/widgets/product/VerProductWidget';
@@ -27,24 +30,43 @@ type Props = {
 };
 const ProductIndex: NextPage<Props> = ({ elements }): JSX.Element => {
   const { t } = useTranslation();
+  const {
+    locale: { lang },
+    branch: { id: branch_id },
+  } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
-  const router = useRouter();
   const [IsMenue, setIsMenue] = useState(true);
   const [Icon, SetIcon] = useState(true);
+  const [trigger] = useLazyGetSearchProductsQuery<{
+    trigger: () => void;
+  }>();
   // change menue view to list view
   const changeStyle = () => {
     setIsMenue(!IsMenue);
     SetIcon(!Icon);
   };
-  const { query } = useRouter();
+  const { query }: any = useRouter();
+  const [currentProducts, setCurrentProducts] = useState<any>([]);
 
   useEffect(() => {
-    if (query.slug) {
-      dispatch(setCurrentModule(replace(query.slug, '-', ' ')));
+    if (query && query.slug) {
+      dispatch(setCurrentModule(replace(query?.slug, '-', ' ')));
     } else {
       dispatch(setCurrentModule(`product_index`));
     }
+    setCurrentProducts(elements.products);
   }, []);
+
+  const handleChange = (key: string) => {
+    if (key.length > 2) {
+      trigger({ key, lang, branch_id }).then((r: any) =>
+        setCurrentProducts(r.data.Data)
+      );
+    } else {
+      setCurrentProducts(elements.products);
+    }
+  };
+
   return (
     <>
       <MainHead title={`productIndex`} description={`productIndex`} />
@@ -61,6 +83,7 @@ const ProductIndex: NextPage<Props> = ({ elements }): JSX.Element => {
                   type="search"
                   name="search"
                   id="search"
+                  onChange={debounce((e) => handleChange(e.target.value), 400)}
                   className="block w-full focus:ring-1 focus:ring-primary_BG rounded-md  pl-20 border-none  bg-gray-100 py-3 h-16  text-lg capitalize"
                   suppressHydrationWarning={suppressText}
                   placeholder={`${t(`search_products`)}`}
@@ -82,7 +105,7 @@ const ProductIndex: NextPage<Props> = ({ elements }): JSX.Element => {
                 : 'my-4 p-4'
             }
           >
-            {isEmpty(elements.products) && (
+            {isEmpty(currentProducts) && (
               <Image
                 src={NotFoundImage.src}
                 alt={`not_found`}
@@ -91,14 +114,14 @@ const ProductIndex: NextPage<Props> = ({ elements }): JSX.Element => {
                 className={`w-60 h-auto`}
               />
             )}
-
-            {map(elements.products, (p: Product, i) =>
-              IsMenue ? (
-                <HorProductWidget element={p} key={i} />
-              ) : (
-                <VerProductWidget element={p} key={i} />
-              )
-            )}
+            {!isEmpty(currentProducts) &&
+              map(currentProducts, (p: Product, i) =>
+                IsMenue ? (
+                  <HorProductWidget element={p} key={i} />
+                ) : (
+                  <VerProductWidget element={p} key={i} />
+                )
+              )}
           </div>
         </div>
       </MainContentLayout>

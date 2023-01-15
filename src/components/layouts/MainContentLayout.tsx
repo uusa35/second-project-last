@@ -1,9 +1,8 @@
-import { FC, ReactNode } from 'react';
+import { FC, ReactNode, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import { useAppSelector } from '@/redux/hooks';
 import { useTranslation } from 'react-i18next';
-import { Offline, Online } from 'react-detect-offline';
 import OffLineWidget from '@/widgets/OffLineWidget';
 import NoInternet from '@/appImages/no_internet.png';
 const AppHeader = dynamic(() => import(`@/components/AppHeader`), {
@@ -36,6 +35,19 @@ const MainContentLayout: FC<Props> = ({
     appSetting: { showHeader, showFooter },
     locale: { isRTL },
   } = useAppSelector((state) => state);
+  const [isOnline, setIsOnline] = useState(true);
+
+  useEffect(() => {
+    const handleStatusChange = () => {
+      setIsOnline(navigator.onLine);
+    };
+    window.addEventListener('online', handleStatusChange);
+    window.addEventListener('offline', handleStatusChange);
+    return () => {
+      window.removeEventListener('online', handleStatusChange);
+      window.removeEventListener('offline', handleStatusChange);
+    };
+  }, [isOnline]);
 
   return (
     <div
@@ -51,15 +63,16 @@ const MainContentLayout: FC<Props> = ({
             bounce: 5,
             duration: showMotion ? 0.2 : 0,
           }}
-          style={{height:'100%'}}
+          style={{ height: '100%' }}
         >
-          <Online>{children}</Online>
-          <Offline>
+          {isOnline ? (
+            children
+          ) : (
             <OffLineWidget
               message={`network_is_not_available_please_check_your_internet`}
               img={`${NoInternet.src}`}
             />
-          </Offline>
+          )}
         </motion.div>
       </main>
       <AppFooter />

@@ -11,7 +11,7 @@ import { Vendor } from '@/types/index';
 import { categoryApi } from '@/redux/api/categoryApi';
 import { isEmpty, isNull, map } from 'lodash';
 import CategoryWidget from '@/widgets/category/CategoryWidget';
-import { suppressText } from '@/constants/*';
+import { appLinks, suppressText } from '@/constants/*';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -31,6 +31,7 @@ import HomeSelectMethod from '@/components/home/HomeSelectMethod';
 import HomeVendorMainInfo from '@/components/home/HomeVendorMainInfo';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { useLazyCreateTempIdQuery } from '@/redux/api/cartApi';
+import { useRouter } from 'next/router';
 
 type Props = {
   categories: Category[];
@@ -41,13 +42,19 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
   console.log(`::: Log Home Render :::: ${renderCounter++}`);
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-
+  const router = useRouter();
+  const {
+    branch: { id: branchId },
+    area: { id: areaId },
+  } = useAppSelector((state) => state);
   const addressType = undefined;
 
   useEffect(() => {
     dispatch(setCurrentModule(t('home')));
   }, []);
 
+  const handleFocus = () =>
+    router.push(appLinks.productSearchIndex(branchId, ``, areaId));
   return (
     <>
       {/* SEO Head DEV*/}
@@ -71,6 +78,7 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
                 type="search"
                 name="search"
                 id="search"
+                onFocus={() => handleFocus()}
                 className="block w-full rounded-md  pl-20 focus:ring-1 focus:ring-primary_BG border-none  bg-gray-100 py-3 h-16  text-lg capitalize"
                 suppressHydrationWarning={suppressText}
                 placeholder={`${t(`search_products`)}`}
