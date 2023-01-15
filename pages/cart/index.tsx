@@ -15,6 +15,9 @@ import Promotion from '@/appIcons/promotion.svg';
 import Notes from '@/appIcons/notes.svg';
 import { suppressText } from '@/constants/*';
 import CustomImage from '@/components/CustomImage';
+import { map } from 'lodash';
+import { useRemoveFromCartMutation } from '@/redux/api/cartApi';
+import { showToastMessage } from '@/redux/slices/appSettingSlice';
 const CartIndex: NextPage = (): JSX.Element => {
   const { t } = useTranslation();
   const {
@@ -23,7 +26,8 @@ const CartIndex: NextPage = (): JSX.Element => {
     cart,
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
-
+  const [RemoveFromCart, { data, isLoading, error }] =
+  useRemoveFromCartMutation<any>();
   useEffect(() => {
     dispatch(setCurrentModule(t('cart')));
     dispatch(setShowFooterElement(`cartIndex`));
@@ -31,104 +35,123 @@ const CartIndex: NextPage = (): JSX.Element => {
       dispatch(resetShowFooterElement());
     };
   }, []);
-
+  const handleRemove = async (ProductID: any) => {
+    await RemoveFromCart(ProductID)
+    .then((r: any) => {
+      if(r.data.success) {
+        // dispatch(
+        //   showToastMessage({ content: r.data.message, type: 'success' })
+        // )
+        console.log({r: r.data})
+      }
+    })
+  }
   console.log('the cart', cart);
 
   return (
     <MainContentLayout>
-      <div className={'px-4'}>
-        <div>
-          {/* if cart is empty */}
-          <div className="flex justify-center py-5">
+       {/* if cart is empty */}
+      {cart.items.length === 0 ?  <div className={'px-4'}>
+      <div className="flex justify-center py-5">
             <p suppressHydrationWarning={suppressText}>
               {t('your_cart_is_empty')}
             </p>
           </div>
+      </div> :
+      <div className={'px-4'}>
+        {map(cart.items, i => (
+          <div key={i.ProductID}>
+            <div>
+              <p className="mx-7 text-lg" suppressHydrationWarning={suppressText}>
+                {t('items')}
+              </p>
+              <div className=" pt-5">
+                <div className="mb-10 ">
+                  <div className="flex px-5">
+                    <div className="ltr:pr-3 rtl:pl-3 w-1/5">
+                      <CustomImage
+                        className="w-full  rounded-lg border-[1px] border-gray-200"
+                        alt={`${t('item')}`}
+                        src={NotFound.src}
+                      />
+                    </div>
 
-          <div>
-            <p className="mx-7 text-lg" suppressHydrationWarning={suppressText}>
-              {t('items')}
-            </p>
-            <div className=" pt-5">
-              <div className="mb-10 ">
-                <div className="flex px-5">
-                  <div className="ltr:pr-3 rtl:pl-3 w-1/5">
-                    <CustomImage
-                      className="w-full  rounded-lg border-[1px] border-gray-200"
-                      alt={`${t('item')}`}
-                      src={NotFound.src}
-                    />
-                  </div>
-
-                  <div className="w-full">
-                    <div>
-                      <div className="text-end">
-                        <button
-                          className="text-CustomRed pe-5 capitalize"
-                          suppressHydrationWarning={suppressText}
-                        >
-                          {t('remove')}
-                        </button>
-                        <button>
-                          <EditOutlined />
-                        </button>
+                    <div className="w-full">
+                      <div>
+                        <div className="text-end">
+                          <button
+                            className="text-CustomRed pe-5 capitalize"
+                            suppressHydrationWarning={suppressText}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleRemove(i.ProductID);
+                            }}
+                          >
+                            {t('remove')}
+                          </button>
+                          <button>
+                            <EditOutlined />
+                          </button>
+                        </div>
+                      </div>
+                      <p className="font-semibold">{i.ProductName}</p>
+                      <div className="w-fit pb-2">
+                        <p className="text-xs pe-3 text-gray-400 border-e-2 border-gray-400 w-auto">
+                          addons
+                        </p>
                       </div>
                     </div>
-                    <p className="font-semibold">product name</p>
-                    <div className="w-fit pb-2">
-                      <p className="text-xs pe-3 text-gray-400 border-e-2 border-gray-400 w-auto">
-                        addons
+                  </div>
+
+                  <div className="px-3 flex justify-between items-center mt-3">
+                    {/* <div>
+                      <button className="bg-gray-100 text-primary_BG outline-none p-2 mx-2 rounded-md font-semibold">
+                        <RemoveOutlined />
+                      </button>
+                      <button className="text-primary_BG">quantity</button>
+                      <button className="bg-gray-100 text-primary_BG outline-none p-2 mx-2 rounded-md font-semibold">
+                        <AddOutlined />
+                      </button>
+                    </div> */}
+                    <span className="flex rounded-xl shadow-sm">
+                    <button
+                        // onClick={() => handleIncrease()}
+                        type="button"
+                        className="relative inline-flex items-center ltr:rounded-l-xl rtl:rounded-r-xl bg-primary_BG px-4 py-2 text-sm font-medium text-white  focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                      >
+                        -
+                      </button>
+                      <button
+                        type="button"
+                        className="relative -ml-px inline-flex items-center  bg-primary_BG px-4 py-2 text-sm font-medium text-white  focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                      >
+                        {i.totalQty}
+                      </button>
+                      <button
+                        // onClick={() => handleDecrease()}
+                        type="button"
+                        className="relative -ml-px inline-flex items-center ltr:rounded-r-xl rtl:rounded-l-xl  bg-primary_BG px-4 py-2 text-sm font-medium text-white  focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                      >
+                        +
+                      </button>
+                    </span>
+                    <div>
+                      <p
+                        className="text-primary_BG"
+                        suppressHydrationWarning={suppressText}
+                      >
+                        {i.Price} {t('kwd')}
                       </p>
                     </div>
                   </div>
+                  <div className="bg-gray-200 w-full mt-5 p-0 h-2"></div>
                 </div>
-
-                <div className="px-3 flex justify-between items-center mt-3">
-                  {/* <div>
-                    <button className="bg-gray-100 text-primary_BG outline-none p-2 mx-2 rounded-md font-semibold">
-                      <RemoveOutlined />
-                    </button>
-                    <button className="text-primary_BG">quantity</button>
-                    <button className="bg-gray-100 text-primary_BG outline-none p-2 mx-2 rounded-md font-semibold">
-                      <AddOutlined />
-                    </button>
-                  </div> */}
-                   <span className="flex rounded-xl shadow-sm">
-                    <button
-                      // onClick={() => handleIncrease()}
-                      type="button"
-                      className="relative inline-flex items-center ltr:rounded-l-xl rtl:rounded-r-xl bg-primary_BG px-4 py-2 text-sm font-medium text-white  focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                    >
-                      +
-                    </button>
-                    <button
-                      type="button"
-                      className="relative -ml-px inline-flex items-center  bg-primary_BG px-4 py-2 text-sm font-medium text-white  focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                    >
-                      {/* {currentQty} */}
-                    </button>
-                    <button
-                      // onClick={() => handleDecrease()}
-                      type="button"
-                      className="relative -ml-px inline-flex items-center ltr:rounded-r-xl rtl:rounded-l-xl  bg-primary_BG px-4 py-2 text-sm font-medium text-white  focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                    >
-                      -
-                    </button>
-                  </span>
-                  <div>
-                    <p
-                      className="text-primary_BG"
-                      suppressHydrationWarning={suppressText}
-                    >
-                      price {t('kwd')}
-                    </p>
-                  </div>
-                </div>
-                <div className="bg-gray-200 w-full mt-5 p-0 h-2"></div>
               </div>
             </div>
           </div>
-        </div>
+        ))
+          
+        }
 
         <div className="px-5">
           <div className="flex items-center">
@@ -205,7 +228,7 @@ const CartIndex: NextPage = (): JSX.Element => {
             </div>
           </div>
         </div>
-      </div>
+      </div>}
     </MainContentLayout>
   );
 };
