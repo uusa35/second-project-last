@@ -44,7 +44,6 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const {
-    locale: { lang },
     branch: { id: branchId },
     area: { id: areaId },
   } = useAppSelector((state) => state);
