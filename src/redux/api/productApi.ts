@@ -90,5 +90,9 @@ export const productApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetProductsQuery, useGetProductQuery, useGetTopSearchQuery } =
-  productApi;
+export const {
+  useGetProductsQuery,
+  useGetProductQuery,
+  useGetTopSearchQuery,
+  useLazyGetSearchProductsQuery,
+} = productApi;
