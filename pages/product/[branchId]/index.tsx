@@ -1,24 +1,27 @@
 import MainContentLayout from '@/layouts/MainContentLayout';
 import { wrapper } from '@/redux/store';
-import { productApi, useGetTopSearchQuery } from '@/redux/api/productApi';
+import {
+  productApi,
+  useGetTopSearchQuery,
+  useLazyGetSearchProductsQuery,
+} from '@/redux/api/productApi';
 import { Product } from '@/types/index';
 import { NextPage } from 'next';
 import { apiSlice } from '@/redux/api';
-import { isEmpty, map } from 'lodash';
+import { debounce, isEmpty, map } from 'lodash';
 import { appLinks, imageSizes, suppressText } from '@/constants/*';
 import MainHead from '@/components/MainHead';
 import Image from 'next/image';
 import NotFoundImage from '@/appImages/not_found.png';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { setCurrentModule } from '@/redux/slices/appSettingSlice';
 import VerProductWidget from '@/widgets/product/VerProductWidget';
-import SearchIcon from '@/appIcons/search.svg';
-import { inputFieldClass } from '@/constants/*';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { AppQueryResult } from '@/types/queries';
 
 type Props = {
   elements: Product[];
@@ -38,12 +41,25 @@ const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
     branchId,
     areaId,
   });
-  console.log('elements', elements);
-  console.log('top', topSearch);
+  const [trigger] = useLazyGetSearchProductsQuery<{
+    trigger: () => void;
+  }>();
+  const [currentProducts, setCurrentProducts] = useState<any>([]);
 
   useEffect(() => {
     dispatch(setCurrentModule(t('product_search_index')));
+    setCurrentProducts(elements);
   }, []);
+
+  const handleChange = (key: string) => {
+    if (key.length > 2) {
+      trigger({ key, lang, branch_id: branchId }).then((r: any) =>
+        setCurrentProducts(r.data.Data)
+      );
+    } else {
+      setCurrentProducts(elements);
+    }
+  };
 
   return (
     <>
@@ -60,6 +76,7 @@ const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
                 type="search"
                 name="search"
                 id="search"
+                onChange={debounce((e) => handleChange(e.target.value), 400)}
                 className="block w-full focus:ring-1 focus:ring-primary_BG rounded-md  pl-20 border-none  bg-gray-100 py-3 h-16  text-lg capitalize"
                 suppressHydrationWarning={suppressText}
                 placeholder={`${t(`search_products`)}`}
@@ -98,7 +115,7 @@ const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
                 className={`w-60 h-auto`}
               />
             )}
-            {map(elements, (p, i) => (
+            {map(currentProducts, (p, i) => (
               <VerProductWidget element={p} key={i} />
             ))}
           </div>

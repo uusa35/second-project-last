@@ -37,12 +37,9 @@ const ProductIndex: NextPage<Props> = ({ elements }): JSX.Element => {
   const dispatch = useAppDispatch();
   const [IsMenue, setIsMenue] = useState(true);
   const [Icon, SetIcon] = useState(true);
-  const [trigger, { data: searchProducts, isSuccess }] =
-    useLazyGetSearchProductsQuery<{
-      trigger: () => void;
-      data: AppQueryResult<Product[]>;
-      isSuccess: boolean;
-    }>();
+  const [trigger] = useLazyGetSearchProductsQuery<{
+    trigger: () => void;
+  }>();
   // change menue view to list view
   const changeStyle = () => {
     setIsMenue(!IsMenue);
@@ -57,6 +54,7 @@ const ProductIndex: NextPage<Props> = ({ elements }): JSX.Element => {
     } else {
       dispatch(setCurrentModule(`product_index`));
     }
+    setCurrentProducts(elements.products);
   }, []);
 
   const handleChange = (key: string) => {
@@ -68,10 +66,6 @@ const ProductIndex: NextPage<Props> = ({ elements }): JSX.Element => {
       setCurrentProducts(elements.products);
     }
   };
-
-  useEffect(() => {
-    setCurrentProducts(elements.products);
-  }, []);
 
   return (
     <>
@@ -111,7 +105,7 @@ const ProductIndex: NextPage<Props> = ({ elements }): JSX.Element => {
                 : 'my-4 p-4'
             }
           >
-            {isEmpty(elements.products) && (
+            {isEmpty(currentProducts) && (
               <Image
                 src={NotFoundImage.src}
                 alt={`not_found`}
@@ -120,7 +114,6 @@ const ProductIndex: NextPage<Props> = ({ elements }): JSX.Element => {
                 className={`w-60 h-auto`}
               />
             )}
-
             {!isEmpty(currentProducts) &&
               map(currentProducts, (p: Product, i) =>
                 IsMenue ? (
