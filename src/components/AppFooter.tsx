@@ -46,7 +46,7 @@ const AppFooter: FC = (): JSX.Element => {
         <PoweredByQ />
         {showFooterElement === 'productShow' && (
           <div
-            className={`w-full h-1/2 flex  ${submitBtnClass} cursor-auto rounded-none opacity-100 flex justify-between items-center px-8 rounded-t-2xl`}
+            className={`w-full h-fit flex ${submitBtnClass} cursor-auto rounded-none opacity-100 flex justify-between items-center px-8 py-8 rounded-t-2xl`}
           >
             <button
               // disabled={!productCart.enabled}
@@ -66,7 +66,7 @@ const AppFooter: FC = (): JSX.Element => {
               <button
                 className="bg-sky-500 rounded-full text-white h-8 px-4 py-1"
                 suppressHydrationWarning={suppressText}
-                onClick={()=>router.push(`/customer/info`)}
+                onClick={() => router.push(`/customer/info`)}
               >
                 {t('continue')}
               </button>

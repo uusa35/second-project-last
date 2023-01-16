@@ -1,8 +1,13 @@
-import { useAppSelector } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { FC, Suspense } from 'react';
 import { useRouter } from 'next/router';
 import { isNull } from 'lodash';
-import { suppressText } from '../constants';
+import { appLinks, suppressText } from '../constants';
+import Link from 'next/link';
+import { ShoppingBagOutlined } from '@mui/icons-material';
+import { setLocale } from '@/redux/slices/localeSlice';
+import { showToastMessage } from '@/redux/slices/appSettingSlice';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   backHome: boolean;
@@ -17,15 +22,36 @@ const BackBtn: FC<Props> = ({
 }): JSX.Element => {
   const {
     appSetting: { currentModule },
-    locale: { lang },
+    locale: { lang, otherLang },
     country,
   } = useAppSelector((state) => state);
   const router = useRouter();
+  const dispatch = useAppDispatch();
+  const { t } = useTranslation();
 
   const handleGoHome = () => {
     router.push(`/`, ``, {
       scroll: false,
     });
+  };
+
+  const handleChangeLang = async (locale: string) => {
+    if (locale !== router.locale) {
+      await dispatch(setLocale(locale));
+      await router
+        .push(router.pathname, router.asPath, {
+          locale,
+          scroll: false,
+        })
+        .then(() =>
+          dispatch(
+            showToastMessage({
+              content: `language_changed_successfully`,
+              type: `info`,
+            })
+          )
+        );
+    }
   };
 
   return (
@@ -80,15 +106,24 @@ const BackBtn: FC<Props> = ({
             </svg>
           )}
         </button>
-        <div
-          className={`flex flex-1 justify-center items-center pt-1 ltr:pr-20 rtl:pl-20`}
-        >
+        <div className={`flex flex-1 justify-center items-center pt-1`}>
           <span
             className={`text-md capitalize truncate overflow-hidden max-w-md`}
             suppressHydrationWarning={suppressText}
           >
             {currentModule}
           </span>
+        </div>
+        <div className={`flex flex-row justify-between items-center w-20 z-50`}>
+          <Link scroll={false} href={appLinks.cartIndex.path}>
+            <ShoppingBagOutlined className={`w-8 h-8 text-black`} />
+          </Link>
+          <button
+            onClick={() => handleChangeLang(otherLang)}
+            className={`w-8 h-8 text-black text-2xl font-bold capitalize`}
+          >
+            {t(`${otherLang}`)}
+          </button>
         </div>
       </div>
     </Suspense>

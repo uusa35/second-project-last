@@ -85,7 +85,7 @@ const SelectMethod: NextPage = (): JSX.Element => {
   };
 
   const handleSelectArea = (a: Area) => dispatch(setArea(a));
-  
+
   const handleSelectMethod = (m: appSetting['method']) =>
     dispatch(setCartMethod(m));
 
@@ -95,7 +95,7 @@ const SelectMethod: NextPage = (): JSX.Element => {
     <MainContentLayout>
       <Suspense>
         <div className={`px-4`}>
-          <DeliveryBtns handleSelectMethod={handleSelectMethod}/>
+          <DeliveryBtns handleSelectMethod={handleSelectMethod} />
           <div className={`w-full mb-4`}>
             <div className="relative mt-1 rounded-md shadow-sm text-gray-400">
               <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center px-6">
@@ -187,7 +187,7 @@ const SelectMethod: NextPage = (): JSX.Element => {
             </div>
           )}
           <button
-            onClick={() => router.replace(`/`)}
+            onClick={() => router.back()}
             disabled={isNull(branch_id) && isNull(selectedArea.id)}
             className={`${submitBtnClass} mt-12`}
             suppressHydrationWarning={suppressText}
