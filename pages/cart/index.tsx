@@ -52,21 +52,9 @@ const CartIndex: NextPage = (): JSX.Element => {
   };
   const handleIncrease = (element: any) => {
         dispatch(increaseCartQty(element));
-        dispatch(
-          showToastMessage({
-            content: `item count increased`,
-            type: `success`,
-          })
-        );
       }
       const handleDecreae = (element: any) => {
         dispatch(decreaseCartQty(element));
-        dispatch(
-          showToastMessage({
-            content: `item count decreased`,
-            type: `success`,
-          })
-        );
        }
   console.log('the cart', cart);
   return (
@@ -81,7 +69,7 @@ const CartIndex: NextPage = (): JSX.Element => {
           </div>
         </div>
       ) : (
-        <div className={'px-4'}>
+        <div>
           {map(cart.items, (item, i) => (
             <div key={i}>
               <div>
@@ -146,7 +134,7 @@ const CartIndex: NextPage = (): JSX.Element => {
                       <span className="flex rounded-xl shadow-sm">
                         <button
                           type="button"
-                          className="relative inline-flex items-center ltr:rounded-l-xl rtl:rounded-r-xl bg-primary_BG px-4 py-2 text-sm font-medium text-white  focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                          className="relative inline-flex items-center ltr:rounded-l-xl rtl:rounded-r-xl bg-gray-100 px-4 py-2 text-sm font-medium text-black  focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
                           onClick={(e) => {
                             e.stopPropagation();
                             handleDecreae(item);
@@ -156,13 +144,13 @@ const CartIndex: NextPage = (): JSX.Element => {
                         </button>
                         <button
                           type="button"
-                          className="relative -ml-px inline-flex items-center  bg-primary_BG px-4 py-2 text-sm font-medium text-white  focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                          className="relative -ml-px inline-flex items-center  bg-gray-100 px-4 py-2 text-sm font-medium text-primary_BG  focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
                         >
                           {item.totalQty}
                         </button>
                         <button
                           type="button"
-                          className="relative -ml-px inline-flex items-center ltr:rounded-r-xl rtl:rounded-l-xl  bg-primary_BG px-4 py-2 text-sm font-medium text-white  focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                          className="relative -ml-px inline-flex items-center ltr:rounded-r-xl rtl:rounded-l-xl  bg-gray-100 px-4 py-2 text-sm font-medium text-black  focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
                           onClick={(e) => {
                             e.stopPropagation();
                             handleIncrease(item);
@@ -184,7 +172,6 @@ const CartIndex: NextPage = (): JSX.Element => {
                   </div>
                 </div>
               </div>
-              <div className="mt-10 px-5 py-2 bg-gray-100"></div>
             </div>
           ))}
 
@@ -235,7 +222,7 @@ const CartIndex: NextPage = (): JSX.Element => {
             />
           </div>
 
-          <div>
+          <div className={`px-4`}>
             <div className="flex justify-between mb-3 text-lg">
               <p suppressHydrationWarning={suppressText}>{t('subtotal')}</p>
               <p suppressHydrationWarning={suppressText}>
