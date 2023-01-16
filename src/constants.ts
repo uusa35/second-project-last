@@ -47,7 +47,7 @@ export const isClient = typeof window !== undefined;
 // export const isLocal = process.env.NODE_ENV !== 'production';
 export const isLocal = true;
 export const inputFieldClass = `rounded-md px-3 py-2.5 mb-2 text-sm bg-gray-100 outline-none border-none capitalize`;
-export const mainBg = `bg-gradient-to-tl from-primary_BG via-primary_BG to-primaryLight rounded-md text-sm text-white cursor-pointer shadow-lg drop-shadow-md`;
+export const mainBg = `bg-gradient-to-tl from-primary_BG via-primary_BG to-primaryLight rounded-md text-sm text-white shadow-lg drop-shadow-md`;
 export const submitBtnClass = `w-full ${mainBg} rounded-md text-sm text-white py-4 my-2 cursor-pointer shadow-lg capitalize disabled:from-gray-200 disabled:to-gray-400 drop-shadow-md`;
 export const normalBtnClass = `w-full rounded-md text-sm text-white py-4 my-2 cursor-pointer shadow-lg capitalize disabled:from-gray-200 disabled:to-gray-400 drop-shadow-md text-black border border-stone-400 hover:bg-stone-100`;
 export const subCategoryBtnClass = `flex w-full flex-row items-center justify-between border border-gray-200 rounded-lg p-4 shadow-md capitalize
@@ -55,7 +55,7 @@ export const subCategoryBtnClass = `flex w-full flex-row items-center justify-be
                   `;
 export const grayBtnClass = `rounded-lg bg-SearchGrey text-xs px-[6px] border border-SearchGrey shadow-sm py-1 capitalize drop-shadow-md`;
 export const addressInputField = `border-0 outline-none border-b-4 border-b-gray-100 w-full py-4 focus:ring-0`;
-export const footerBtnClass = `p-2 px-6 rounded-lg w-fit  bg-primary_BG disabled:bg-stone-600 disabled:text-stone-700 disabled:bg-opacity-40 disabled:opacity-60 hover:bg-opacity-90 bg-opacity-60  border border-primary_BG shadow-xl capitalize`;
+export const footerBtnClass = `p-2 px-6 rounded-lg w-fit bg-primary_BG disabled:bg-stone-600 disabled:text-stone-700 disabled:bg-opacity-40 disabled:opacity-60 hover:bg-opacity-90 bg-opacity-60  border border-primary_BG shadow-xl capitalize ring-1 hover:ring-sky-600`;
 export const tajwalFont = `font-tajwal-medium`;
 export const futureFont = `font-future-bold`;
 export const langOptions = [

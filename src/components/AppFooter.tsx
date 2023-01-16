@@ -68,7 +68,7 @@ const AppFooter: FC = (): JSX.Element => {
         )}
         {showFooterElement === 'cartIndex' && (
           <div
-            className={`${mainBg} bg-sky-600 w-full h-32 flex justify-center items-center rounded-t-xl`}
+            className={`${mainBg} w-full h-32 flex justify-center items-center rounded-t-xl`}
           >
             <button
               className={`${footerBtnClass}`}
