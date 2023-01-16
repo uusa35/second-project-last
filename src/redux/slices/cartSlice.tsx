@@ -23,8 +23,10 @@ export const cartSlice = createSlice({
     ) => {
       const items = filter(
         state.items,
-        (item) => item.productId !== action.payload.productId
+        (item) => item.ProductID !== action.payload.ProductID
       );
+      console.log('the items', items);
+      console.log('the action payload', action.payload);
       const grossTotal = sumBy(items, (item) => item.subTotalPrice);
       return {
         ...state,
@@ -38,7 +40,7 @@ export const cartSlice = createSlice({
     ) => {
       const items = filter(
         state.items,
-        (item) => item.productId === action.payload
+        (item) => item.ProductID === action.payload
       );
       const grossTotal = sumBy(items, (item) => item.subTotalPrice);
       return {
@@ -53,35 +55,39 @@ export const cartSlice = createSlice({
       };
     },
     increaseCartQty: (
-      state: typeof initialState, 
+      state: typeof initialState,
       action: PayloadAction<ProductCart>
-      ) => {
-      const itemIndex = state.items.findIndex((item)=>item.productId === action.payload.productId);
+    ) => {
+      const itemIndex = state.items.findIndex(
+        (item) => item.ProductID === action.payload.ProductID
+      );
       state.items[itemIndex].totalQty += 1;
       state.items[itemIndex].subTotalPrice = multiply(
-      state.items[itemIndex].totalPrice,
-      state.items[itemIndex].totalQty
-      )
+        state.items[itemIndex].totalPrice,
+        state.items[itemIndex].totalQty
+      );
       state.grossTotal = sumBy(state.items, (item) => item.subTotalPrice);
     },
     decreaseCartQty: (
       state: typeof initialState,
       action: PayloadAction<ProductCart>
     ) => {
-      const itemIndex = state.items.findIndex((item)=>item.productId === action.payload.productId);
+      const itemIndex = state.items.findIndex(
+        (item) => item.ProductID === action.payload.ProductID
+      );
       if (state.items[itemIndex].totalQty > 1) {
-          state.items[itemIndex].totalQty -= 1; 
+        state.items[itemIndex].totalQty -= 1;
       } else if (state.items[itemIndex].totalQty === 1) {
         const nextCartItems = state.items.filter(
-          (item) => item.productId !== action.payload.productId
+          (item) => item.ProductID !== action.payload.ProductID
         );
         state.items = nextCartItems;
       }
       state.items[itemIndex].subTotalPrice = multiply(
         state.items[itemIndex].totalPrice,
         state.items[itemIndex].totalQty
-    )
-    state.grossTotal = sumBy(state.items, (item) => item.subTotalPrice);
+      );
+      state.grossTotal = sumBy(state.items, (item) => item.subTotalPrice);
     },
   },
 });
