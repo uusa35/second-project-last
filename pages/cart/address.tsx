@@ -333,12 +333,12 @@ const CartAddress: NextPage = (): JSX.Element => {
             {show && (
               <div className={`flex flex-col gap-3`}>
                 <div className="flex justify-between py-2 border-b-4 border-stone-100">
-                  <input type="date" className={`border-none`} />
-                  <CalendarDaysIcon className="text-primary_BG w-8 h-8" />
+                  <input type="date" className={`border-none w-full`} />
+                  {/*<CalendarDaysIcon className="text-primary_BG w-8 h-8" />*/}
                 </div>
                 <div className="flex justify-between py-2 border-b-4 border-stone-100">
-                  <input type="time" className={`border-none`} />
-                  <ClockIcon className="text-primary_BG w-8 h-8" />
+                  <input type="time" className={`border-none w-full`} />
+                  {/*<ClockIcon className="text-primary_BG w-8 h-8" />*/}
                 </div>
               </div>
             )}

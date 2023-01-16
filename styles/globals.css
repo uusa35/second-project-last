@@ -98,11 +98,17 @@ input[type=number] {
 }
 
 
-input[type="date"]::-webkit-inner-spin-button,
-input[type="date"]::-webkit-calendar-picker-indicator,
-input[type="time"]::-webkit-inner-spin-button,
-input[type="time"]::-webkit-calendar-picker-indicator
-{
-    display: none;
-    -webkit-appearance: none;
+input[type="date"]::-webkit-calendar-picker-indicator {
+    opacity: 1;
+    display: flex;
+    background: url('../public/assets/icons/calender.svg') no-repeat;
+    width: 3vh;
+    height: 3vh;
+}
+input[type="time"]::-webkit-calendar-picker-indicator {
+    opacity: 1;
+    display: flex;
+    background: url('../public/assets/icons/clock.svg') no-repeat;
+    width: 2vh;
+    height: 2vh;
 }
