@@ -21,7 +21,7 @@ import Image from 'next/image';
 import { Home } from '@mui/icons-material';
 import { addressInputField, submitBtnClass, suppressText } from '@/constants/*';
 
-const CartSelectMethod: NextPage = (): JSX.Element => {
+const CartAddress: NextPage = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { t } = useTranslation();
@@ -309,4 +309,4 @@ const CartSelectMethod: NextPage = (): JSX.Element => {
     </MainContentLayout>
   );
 };
-export default CartSelectMethod;
+export default CartAddress;

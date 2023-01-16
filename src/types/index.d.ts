@@ -124,6 +124,12 @@ export interface ServerCart {
 export interface ClientCart {
   grossTotal: number;
   items: ProductCart[];
+  PromoCode: string | null;
+  promoCode: {
+    total_cart_before_tax: number;
+    total_cart_after_tax: number;
+    free_delivery: `true` | `false`;
+  };
 }
 export interface ProductCart {
   ProductID: number;

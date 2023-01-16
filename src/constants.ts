@@ -40,6 +40,7 @@ export const appLinks = {
   trackOrder: { path: '/order/track' },
   customerInfo: { path: '/customer/info' },
   vendorShow: { path: '/vendor/show' },
+  address: { path: `/cart/address` },
 };
 
 export const isClient = typeof window !== undefined;

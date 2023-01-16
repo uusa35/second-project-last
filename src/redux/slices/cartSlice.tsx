@@ -5,6 +5,12 @@ import { filter, sum, sumBy, multiply } from 'lodash';
 const initialState: ClientCart = {
   grossTotal: 0,
   items: [],
+  PromoCode: null,
+  promoCode: {
+    total_cart_before_tax: 0,
+    total_cart_after_tax: 0,
+    free_delivery: `false`,
+  },
 };
 
 export const cartSlice = createSlice({
@@ -21,6 +27,7 @@ export const cartSlice = createSlice({
       );
       const grossTotal = sumBy(items, (item) => item.subTotalPrice);
       return {
+        ...state,
         grossTotal: sum([action.payload.subTotalPrice, grossTotal]),
         items: [...items, action.payload],
       };
@@ -35,6 +42,7 @@ export const cartSlice = createSlice({
       );
       const grossTotal = sumBy(items, (item) => item.subTotalPrice);
       return {
+        ...state,
         grossTotal,
         items,
       };
