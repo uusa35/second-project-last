@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import PoweredByQ from '@/components/PoweredByQ';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
 import { setAddToCart } from '@/redux/slices/cartSlice';
-
+import { useRouter } from 'next/router';
 type Props = {
   productShow: boolean;
   cartReview: boolean;
@@ -19,7 +19,7 @@ const AppFooter: FC = (): JSX.Element => {
     productCart,
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
-
+  const router = useRouter();
   const handleAddToCart = () => {
     if (!productCart.enabled) {
       dispatch(
@@ -66,6 +66,7 @@ const AppFooter: FC = (): JSX.Element => {
               <button
                 className="bg-sky-500 rounded-full text-white h-8 px-4 py-1"
                 suppressHydrationWarning={suppressText}
+                onClick={()=>router.push(`/customer/info`)}
               >
                 {t('continue')}
               </button>

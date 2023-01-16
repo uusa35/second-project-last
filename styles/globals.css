@@ -93,4 +93,6 @@ input[type=number] {
     background-color: white;
 }
 
-
+.PhoneInputInput {
+    border: 0
+}

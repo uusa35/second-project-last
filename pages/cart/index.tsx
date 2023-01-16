@@ -25,6 +25,7 @@ const CartIndex: NextPage = (): JSX.Element => {
     locale: { lang },
     branches,
     cart,
+    order
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const [currentQty, setCurrentyQty] = useState<number>(0);
@@ -63,7 +64,6 @@ const CartIndex: NextPage = (): JSX.Element => {
     );
   }
   console.log('the cart', cart);
-
   return (
     <MainContentLayout>
        {/* if cart is empty */}
@@ -174,7 +174,7 @@ const CartIndex: NextPage = (): JSX.Element => {
                 </div>
               </div>
             </div>
-            <div className="mt-10 px-5 py-7 bg-gray-100">
+            <div className="mt-10 px-5 py-2 bg-gray-100">
         </div>
           </div>
         ))

@@ -13,11 +13,13 @@ import { CustomerInfo } from '@/types/index';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
 import { useDispatch } from 'react-redux';
 import { useSaveCustomerInfoMutation } from '@/redux/api/CustomerApi';
+import { useRouter } from 'next/router';
 // import '../../styles/CustomeStyle.css';
 
 const CustomerInformation: NextPage = (): JSX.Element => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const router = useRouter();
   const [userData, setUserData] = useState<CustomerInfo>({
     name: '',
     email: '',
@@ -41,6 +43,9 @@ const CustomerInformation: NextPage = (): JSX.Element => {
       await saveCustomerInfo({ body: userData }).then((r: any) => {
         console.log(r, {userData});
       })
+      .then(()=> {
+        router.push(`/cart/deliveryAddress`)
+      });
     }
   };
 
@@ -53,48 +58,44 @@ const CustomerInformation: NextPage = (): JSX.Element => {
               src={ContactInfo.src}
               alt="customer"
               width={imageSizes.xl}
-              height={imageSizes.lg}
+              height={imageSizes.xl}
               className={`my-10 lg:my-0 w-auto h-auto`}
             />
           </div>
 
           <div className="lg:mt-10">
-            <div className="flex space-x-2 px-2">
+            <div className="flex space-x-2 px-2 border-b-4 border-b-gray-200 w-full focus:ring-transparent py-4">
               <BadgeOutlined className="text-primary_BG" />
               <input
                 onChange={(e) =>
                   setUserData((prev) => ({ ...prev, name: e.target.value }))
                 }
-                className="text-lg outline-none w-4/6"
+                className={`border-0 focus:ring-transparent`}
                 type="string"
-                placeholder={`${t('Enter your name')}`}
+                placeholder={`${t('enter_your_name')}`}
               ></input>
             </div>
 
-            <GreyLine className="mb-3 " />
-
-            <div className="flex space-x-2 items-center px-2">
+            <div className="flex items-center space-x-2 px-2 border-b-4 border-b-gray-200 w-full focus:ring-transparent py-4">
               <EmailOutlined className="text-primary_BG" />
               <input
                 onChange={(e) =>
                   setUserData((prev) => ({ ...prev, email: e.target.value }))
                 }
-                className="text-lg outline-none w-4/6 border-none p-0 focus:ring-0"
+                className={`border-0 focus:ring-transparent`}
                 type="email"
                 pattern='/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/'
-                placeholder={`${t('Enter your Email')}`}
+                placeholder={`${t('enter_your_email')}`}
               ></input>
             </div>
 
-            <GreyLine className="mb-3 " />
-
-            <div className="flex items-center gap-x-2 px-2">
+            <div className="flex items-center space-x-2 px-2 border-b-4 border-b-gray-200 w-full focus:ring-transparent py-4">
               <Phone className="text-primary_BG" />
               <PhoneInput
                 international
                 defaultCountry="KW"
                 className="text-lg outline-none w-4/6 border-none p-0 focus:ring-0"
-                placeholder={`${t('enter_your_Phone')}`}
+                placeholder={`${t('enter_your_phone')}`}
                 value={userData.phone}
                 onChange={(value) =>
                   setUserData((prev) => ({ ...prev, phone: value?.toString() }))
