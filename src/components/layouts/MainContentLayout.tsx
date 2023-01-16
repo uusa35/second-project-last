@@ -55,7 +55,7 @@ const MainContentLayout: FC<Props> = ({
     >
       <SideMenu />
       {showHeader && <AppHeader />}
-      <main className={`w-full mb-36 relative`}>
+      <main className={`w-full mb-[50%] relative`}>
         <motion.div
           animate={{ x: [isRTL ? -1000 : 1000, 0, 0] }}
           transition={{

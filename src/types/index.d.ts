@@ -289,6 +289,7 @@ export interface UserAddressFields {
 }
 
 export interface CustomerInfo {
+  id: number;
   name: string;
   email: string;
   phone?: string;

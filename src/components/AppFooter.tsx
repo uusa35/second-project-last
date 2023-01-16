@@ -1,6 +1,12 @@
 import { useTranslation } from 'react-i18next';
 import { FC, Suspense } from 'react';
-import { appLinks, submitBtnClass, suppressText } from '@/constants/*';
+import {
+  appLinks,
+  footerBtnClass,
+  mainBg,
+  submitBtnClass,
+  suppressText,
+} from '@/constants/*';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import PoweredByQ from '@/components/PoweredByQ';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
@@ -41,17 +47,17 @@ const AppFooter: FC = (): JSX.Element => {
       <footer
         className={`${!isRTL ? `left-0` : `right-0`} ${
           showFooterElement === `home` ? `bottom-0` : `-bottom-2`
-        } fixed w-full lg:w-2/4 xl:w-1/3 h-auto  flex flex-col justify-center items-center text-center bg-white bg-opacity-60`}
+        } fixed w-full lg:w-2/4 xl:w-1/3 h-auto flex flex-col justify-center items-center text-center bg-white bg-opacity-60`}
       >
         <PoweredByQ />
         {showFooterElement === 'productShow' && (
           <div
-            className={`w-full h-fit flex ${submitBtnClass} cursor-auto rounded-none opacity-100 flex justify-between items-center px-8 py-8 rounded-t-2xl`}
+            className={`${mainBg} w-full h-fit flex cursor-auto rounded-none opacity-100 flex justify-between items-center px-8 py-8 rounded-t-2xl
+            `}
           >
             <button
-              // disabled={!productCart.enabled}
               onClick={() => handleAddToCart()}
-              className={`p-2 px-4 rounded-2xl w-fit  bg-primary_BG disabled:bg-stone-600 disabled:text-stone-700 disabled:bg-opacity-40 disabled:opacity-60 hover:bg-opacity-90 bg-opacity-60  border border-primary_BG shadow-xl capitalize`}
+              className={`${footerBtnClass}`}
             >
               {t('add_to_cart')}
             </button>
@@ -61,16 +67,29 @@ const AppFooter: FC = (): JSX.Element => {
           </div>
         )}
         {showFooterElement === 'cartIndex' && (
-          <div className="bg-gray-100 w-full">
-            <div className="bg-sky-600 w-full h-32 flex justify-center items-center rounded-t-xl">
-              <button
-                className="bg-sky-500 rounded-full text-white h-8 px-4 py-1"
-                suppressHydrationWarning={suppressText}
-                onClick={() => router.push(`/customer/info`)}
-              >
-                {t('continue')}
-              </button>
-            </div>
+          <div
+            className={`${mainBg} bg-sky-600 w-full h-32 flex justify-center items-center rounded-t-xl`}
+          >
+            <button
+              className={`${footerBtnClass}`}
+              suppressHydrationWarning={suppressText}
+              onClick={() => router.push(`/customer/info`)}
+            >
+              {t('continue')}
+            </button>
+          </div>
+        )}
+        {showFooterElement === 'cartAddress' && (
+          <div
+            className={`${mainBg} bg-sky-600 w-full h-32 flex justify-center items-center rounded-t-xl`}
+          >
+            <button
+              className={`${footerBtnClass}`}
+              suppressHydrationWarning={suppressText}
+              onClick={() => router.push(`/customer/info`)}
+            >
+              {t('continue')}
+            </button>
           </div>
         )}
       </footer>
