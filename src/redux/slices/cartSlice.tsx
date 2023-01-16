@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ProductCart, ClientCart } from '@/types/index';
-import { filter, sum, sumBy } from 'lodash';
+import { filter, sum, sumBy, multiply, subtract } from 'lodash';
 
 const initialState: ClientCart = {
   grossTotal: 0,
@@ -53,29 +53,35 @@ export const cartSlice = createSlice({
       };
     },
     increaseCartQty: (
-      state: typeof initialState,
+      state: typeof initialState, 
       action: PayloadAction<ProductCart>
-    ) => {
-      const itemIndex = state.items.findIndex(
-        (item) => item.productId === action.payload.productId
-      );
-      state.items[itemIndex].totalQty += 1; // subTotalPrice
+      ) => {
+      const itemIndex = state.items.findIndex((item)=>item.productId === action.payload.productId);
+      state.items[itemIndex].totalQty += 1;
+      state.items[itemIndex].subTotalPrice = multiply(
+      state.items[itemIndex].totalPrice,
+      state.items[itemIndex].totalQty
+      )
+      state.grossTotal = sum([state.items[itemIndex].subTotalPrice, state.grossTotal])
     },
     decreaseCartQty: (
       state: typeof initialState,
       action: PayloadAction<ProductCart>
     ) => {
-      const itemIndex = state.items.findIndex(
-        (item) => item.productId === action.payload.productId
-      );
+      const itemIndex = state.items.findIndex((item)=>item.productId === action.payload.productId);
       if (state.items[itemIndex].totalQty > 1) {
-        state.items[itemIndex].totalQty -= 1;
+          state.items[itemIndex].totalQty -= 1;
       } else if (state.items[itemIndex].totalQty === 1) {
         const nextCartItems = state.items.filter(
           (item) => item.productId !== action.payload.productId
         );
         state.items = nextCartItems;
       }
+      state.items[itemIndex].subTotalPrice = multiply(
+        state.items[itemIndex].totalPrice,
+        state.items[itemIndex].totalQty
+      )
+      state.grossTotal = subtract((state.grossTotal), (state.items[itemIndex].subTotalPrice))
     },
   },
 });
