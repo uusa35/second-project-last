@@ -14,16 +14,20 @@ import { showToastMessage } from '@/redux/slices/appSettingSlice';
 import { useDispatch } from 'react-redux';
 import { useSaveCustomerInfoMutation } from '@/redux/api/CustomerApi';
 import { useRouter } from 'next/router';
+import { setCustomer } from '@/redux/slices/customerSlice';
+import { useAppSelector } from '@/redux/hooks';
 // import '../../styles/CustomeStyle.css';
 
 const CustomerInformation: NextPage = (): JSX.Element => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const router = useRouter();
+  const { customer } = useAppSelector((state) => state);
   const [userData, setUserData] = useState<CustomerInfo>({
-    name: '',
-    email: '',
-    phone: '',
+    id: customer.id ?? 0,
+    name: customer.name ?? ``,
+    email: customer.email ?? ``,
+    phone: customer.phone ?? ``,
   });
   const [
     saveCustomerInfo,
@@ -42,7 +46,7 @@ const CustomerInformation: NextPage = (): JSX.Element => {
     } else {
       await saveCustomerInfo({ body: userData })
         .then((r: any) => {
-          console.log(r, { userData });
+          dispatch(setCustomer(r.data.Data));
         })
         .then(() => {
           router.push(appLinks.address.path);
@@ -71,6 +75,7 @@ const CustomerInformation: NextPage = (): JSX.Element => {
                 onChange={(e) =>
                   setUserData((prev) => ({ ...prev, name: e.target.value }))
                 }
+                defaultValue={userData.name}
                 className={`border-0 focus:ring-transparent`}
                 type="string"
                 placeholder={`${t('enter_your_name')}`}
@@ -83,6 +88,7 @@ const CustomerInformation: NextPage = (): JSX.Element => {
                 onChange={(e) =>
                   setUserData((prev) => ({ ...prev, email: e.target.value }))
                 }
+                defaultValue={userData.email}
                 className={`border-0 focus:ring-transparent`}
                 type="email"
                 pattern='/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/'

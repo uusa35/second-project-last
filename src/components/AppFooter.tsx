@@ -41,7 +41,7 @@ const AppFooter: FC = (): JSX.Element => {
       <footer
         className={`${!isRTL ? `left-0` : `right-0`} ${
           showFooterElement === `home` ? `bottom-0` : `-bottom-2`
-        } fixed w-full lg:w-2/4 xl:w-1/3 h-auto  flex flex-col justify-center items-center text-center bg-white bg-opacity-60`}
+        } fixed w-full lg:w-2/4 xl:w-1/3 h-auto flex flex-col justify-center items-center text-center bg-white bg-opacity-60`}
       >
         <PoweredByQ />
         {showFooterElement === 'productShow' && (
@@ -61,6 +61,19 @@ const AppFooter: FC = (): JSX.Element => {
           </div>
         )}
         {showFooterElement === 'cartIndex' && (
+          <div className="bg-gray-100 w-full">
+            <div className="bg-sky-600 w-full h-32 flex justify-center items-center rounded-t-xl">
+              <button
+                className="bg-sky-500 rounded-full text-white h-8 px-4 py-1"
+                suppressHydrationWarning={suppressText}
+                onClick={() => router.push(`/customer/info`)}
+              >
+                {t('continue')}
+              </button>
+            </div>
+          </div>
+        )}
+        {showFooterElement === 'cartAddress' && (
           <div className="bg-gray-100 w-full">
             <div className="bg-sky-600 w-full h-32 flex justify-center items-center rounded-t-xl">
               <button
