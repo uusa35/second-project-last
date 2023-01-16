@@ -7,6 +7,8 @@ import { Vendor } from '@/types/index';
 const initialState: Vendor = {
   id: ``,
   name: ``,
+  name_ar: ``,
+  name_en: ``,
   status: ``,
   phone: ``,
   desc: ``,

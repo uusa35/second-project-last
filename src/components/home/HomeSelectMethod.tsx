@@ -14,6 +14,7 @@ import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
 import { setCartMethod } from '@/redux/slices/appSettingSlice';
 import Link from 'next/link';
+import TextTrans from '@/components/TextTrans';
 
 type Props = {
   element: Vendor;
@@ -70,7 +71,7 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
               <h1 className={`pt-2`}>{t('pickup_from')}</h1>
             </div>
             <div className={`md:ltr:mr-3 md:rtl:ml-3 pt-2 text-primary_BG`}>
-              {branch.name}
+              <TextTrans ar={branch.name_ar} en={branch.name_en} />
             </div>
           </Link>
         )}
@@ -87,7 +88,7 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
               <h1 className={`pt-2`}>{t('deliver_to')}</h1>
             </div>
             <div className={`md:ltr:mr-3 md:rtl:ml-3 pt-2 text-primary_BG`}>
-              {area.name}
+              <TextTrans ar={area.name_ar} en={area.name_en} />
             </div>
           </Link>
         )}

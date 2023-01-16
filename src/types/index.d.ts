@@ -61,6 +61,8 @@ export interface AddonOption {
 export interface Vendor {
   id: string | number;
   name: string;
+  name_ar: string;
+  name_en: string;
   status: string;
   phone: string;
   desc: string;

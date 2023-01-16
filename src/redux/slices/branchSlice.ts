@@ -4,6 +4,8 @@ import { Branch } from '@/types/queries';
 const initialState: Branch = {
   id: null,
   name: ``,
+  name_ar: ``,
+  name_en: ``,
   location: ``,
   mobile: ``,
   lang: ``,

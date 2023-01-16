@@ -4,6 +4,8 @@ import { Area } from '@/types/queries';
 const initialState: Area = {
   id: null,
   name: ``,
+  name_ar: ``,
+  name_en: ``,
 };
 
 export const areaSlice = createSlice({
