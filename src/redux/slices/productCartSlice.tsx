@@ -132,7 +132,6 @@ export const productCartSlice = createSlice({
         ),
       };
     },
-
     enableAddToCart: (
       state: typeof initialState,
       action: PayloadAction<void>

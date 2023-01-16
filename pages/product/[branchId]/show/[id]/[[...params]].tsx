@@ -2,20 +2,13 @@ import MainContentLayout from '@/layouts/MainContentLayout';
 import { wrapper } from '@/redux/store';
 import { AppQueryResult } from '@/types/queries';
 import { apiSlice } from '@/redux/api';
-import {
-  CartAddons,
-  CheckBoxes,
-  Product,
-  ProductSection,
-  QuantityMeters,
-  RadioBtns,
-} from '@/types/index';
+import { Product, ProductSection, QuantityMeters } from '@/types/index';
 import { productApi } from '@/redux/api/productApi';
 import { NextPage } from 'next';
 import MainHead from '@/components/MainHead';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { useEffect, useState, Fragment, useMemo } from 'react';
+import { useEffect, useState, Fragment } from 'react';
 import {
   resetShowFooterElement,
   setCurrentModule,
@@ -23,7 +16,7 @@ import {
 } from '@/redux/slices/appSettingSlice';
 import { imageSizes, imgUrl } from '@/constants/*';
 import CustomImage from '@/components/CustomImage';
-import { filter, first, isEmpty, map, multiply, sum, sumBy } from 'lodash';
+import { filter, isEmpty, map, multiply, sum, sumBy } from 'lodash';
 import {
   addMeter,
   addRadioBtn,
@@ -47,13 +40,9 @@ type Props = {
 };
 const ProductShow: NextPage<Props> = ({ element }) => {
   const { t } = useTranslation();
-  const {
-    locale: { isRTL },
-    productCart,
-  } = useAppSelector((state) => state);
+  const { productCart } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
-  const [currentQty, setCurrentyQty] = useState<number>(0);
-  const [maxQty, setMaxQt] = useState<number>(1);
+  const [currentQty, setCurrentyQty] = useState<number>(1);
   const [open, setOpen] = useState(1);
 
   useEffect(() => {
@@ -146,9 +135,6 @@ const ProductShow: NextPage<Props> = ({ element }) => {
         productCart.QuantityMeters,
         (q: QuantityMeters) => q.addonID === choice.id && q.addons[0]
       );
-      // console.log('current meter from productCart', isEmpty(currentMeter));
-      // console.log('the select', selection);
-      // console.log('the choice', choice);
       if (checked) {
         // increase
         const Value = isEmpty(currentMeter)
@@ -214,7 +200,6 @@ const ProductShow: NextPage<Props> = ({ element }) => {
 
   useEffect(() => {
     if (!isEmpty(productCart) && currentQty >= 1) {
-      console.log('inside');
       const allCheckboxes = map(productCart.CheckBoxes, (q) => q.addons[0]);
       const allRadioBtns = map(productCart.RadioBtnsAddons, (q) => q.addons[0]);
       const allMeters = map(productCart.QuantityMeters, (q) => q.addons[0]);
@@ -315,7 +300,6 @@ const ProductShow: NextPage<Props> = ({ element }) => {
               </p>
             </div>
           </div>
-
           {/*     sections  */}
           {map(element.sections, (s: ProductSection, i) => (
             <Accordion
@@ -369,6 +353,7 @@ const ProductShow: NextPage<Props> = ({ element }) => {
                         <div>
                           <span className="isolate inline-flex rounded-xl shadow-sm">
                             <button
+                              disabled={currentQty < 1}
                               onClick={() =>
                                 handleSelectAddOn(s, c, s.must_select, true)
                               }
@@ -378,6 +363,7 @@ const ProductShow: NextPage<Props> = ({ element }) => {
                               +
                             </button>
                             <button
+                              disabled={currentQty < 1}
                               type="button"
                               className="relative -ml-px inline-flex items-center  bg-gray-100 px-4 py-2 text-sm font-medium text-primary_BG  focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
                             >

@@ -44,8 +44,13 @@ export const cartSlice = createSlice({
         ...initialState,
       };
     },
-    increaseCartQty: (state: typeof initialState, action: PayloadAction<ProductCart>)=>{
-      const itemIndex = state.items.findIndex((item)=>item.productId === action.payload.productId);
+    increaseCartQty: (
+      state: typeof initialState,
+      action: PayloadAction<ProductCart>
+    ) => {
+      const itemIndex = state.items.findIndex(
+        (item) => item.productId === action.payload.productId
+      );
       state.items[itemIndex].totalQty += 1;
       state.items[itemIndex].subTotalPrice = multiply(
       state.items[itemIndex].totalPrice,
@@ -53,14 +58,20 @@ export const cartSlice = createSlice({
       )
       state.grossTotal = sum([state.items[itemIndex].subTotalPrice, state.grossTotal])
     },
-    decreaseCartQty: (state: typeof initialState, action: PayloadAction<ProductCart>)=>{
-      const itemIndex = state.items.findIndex((item)=>item.productId === action.payload.productId);
-      if(state.items[itemIndex].totalQty>1){
-          state.items[itemIndex].totalQty -= 1;
-      }
-      else if(state.items[itemIndex].totalQty===1){
-          const nextCartItems = state.items.filter((item)=>item.productId!==action.payload.productId);
-          state.items = nextCartItems;
+    decreaseCartQty: (
+      state: typeof initialState,
+      action: PayloadAction<ProductCart>
+    ) => {
+      const itemIndex = state.items.findIndex(
+        (item) => item.productId === action.payload.productId
+      );
+      if (state.items[itemIndex].totalQty > 1) {
+        state.items[itemIndex].totalQty -= 1;
+      } else if (state.items[itemIndex].totalQty === 1) {
+        const nextCartItems = state.items.filter(
+          (item) => item.productId !== action.payload.productId
+        );
+        state.items = nextCartItems;
       }
       state.items[itemIndex].subTotalPrice = multiply(
       state.items[itemIndex].totalPrice,
@@ -71,4 +82,10 @@ export const cartSlice = createSlice({
   },
 });
 
-export const { resetCart, setAddToCart, removeFromCart, increaseCartQty,  decreaseCartQty } = cartSlice.actions;
+export const {
+  resetCart,
+  setAddToCart,
+  removeFromCart,
+  increaseCartQty,
+  decreaseCartQty,
+} = cartSlice.actions;
