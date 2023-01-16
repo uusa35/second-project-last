@@ -31,6 +31,7 @@ import {
   suppressText,
 } from '@/constants/*';
 import { isEmpty } from 'lodash';
+import { CalendarDaysIcon, ClockIcon } from '@heroicons/react/24/outline';
 
 const CartAddress: NextPage = (): JSX.Element => {
   const dispatch = useAppDispatch();
@@ -330,14 +331,14 @@ const CartAddress: NextPage = (): JSX.Element => {
               </label>
             </div>
             {show && (
-              <div>
-                <div className="flex justify-between py-2">
-                  <p className="text-base font-semibold">date</p>
-                  <CalendarMonthOutlined className="text-primary_BG text-2xl" />
+              <div className={`flex flex-col gap-3`}>
+                <div className="flex justify-between py-2 border-b-4 border-stone-100">
+                  <input type="date" className={`border-none`} />
+                  <CalendarDaysIcon className="text-primary_BG w-8 h-8" />
                 </div>
-                <div className="flex justify-between py-2">
-                  <p className="text-base font-semibold">time</p>
-                  <AccessTimeOutlined className="text-primary_BG text-2xl" />
+                <div className="flex justify-between py-2 border-b-4 border-stone-100">
+                  <input type="time" className={`border-none`} />
+                  <ClockIcon className="text-primary_BG w-8 h-8" />
                 </div>
               </div>
             )}
