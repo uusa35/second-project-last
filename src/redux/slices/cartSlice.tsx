@@ -62,7 +62,7 @@ export const cartSlice = createSlice({
       state.items[itemIndex].totalPrice,
       state.items[itemIndex].totalQty
       )
-      state.grossTotal = sum([state.items[itemIndex].subTotalPrice, state.grossTotal])
+      state.grossTotal = sumBy(state.items, (item) => item.subTotalPrice);
     },
     decreaseCartQty: (
       state: typeof initialState,
@@ -70,7 +70,7 @@ export const cartSlice = createSlice({
     ) => {
       const itemIndex = state.items.findIndex((item)=>item.productId === action.payload.productId);
       if (state.items[itemIndex].totalQty > 1) {
-          state.items[itemIndex].totalQty -= 1;
+          state.items[itemIndex].totalQty -= 1; 
       } else if (state.items[itemIndex].totalQty === 1) {
         const nextCartItems = state.items.filter(
           (item) => item.productId !== action.payload.productId
@@ -80,8 +80,8 @@ export const cartSlice = createSlice({
       state.items[itemIndex].subTotalPrice = multiply(
         state.items[itemIndex].totalPrice,
         state.items[itemIndex].totalQty
-      )
-      state.grossTotal = subtract((state.grossTotal), (state.items[itemIndex].subTotalPrice))
+    )
+    state.grossTotal = sumBy(state.items, (item) => item.subTotalPrice);
     },
   },
 });

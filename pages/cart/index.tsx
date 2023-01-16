@@ -51,23 +51,11 @@ const CartIndex: NextPage = (): JSX.Element => {
     );
   };
   const handleIncrease = (element: any) => {
-    dispatch(increaseCartQty(element));
-    dispatch(
-      showToastMessage({
-        content: `item count increased`,
-        type: `success`,
-      })
-    );
-  };
-  const handleDecreae = (element: any) => {
-    dispatch(decreaseCartQty(element));
-    dispatch(
-      showToastMessage({
-        content: `item count decreased`,
-        type: `success`,
-      })
-    );
-  };
+        dispatch(increaseCartQty(element));
+      }
+      const handleDecreae = (element: any) => {
+        dispatch(decreaseCartQty(element));
+       }
   console.log('the cart', cart);
   return (
     <MainContentLayout>
@@ -81,27 +69,27 @@ const CartIndex: NextPage = (): JSX.Element => {
               </p>
             </div>
           </div>
-        ) : (
-          <div className={'px-4'}>
-            {map(cart.items, (item, i) => (
-              <div key={i}>
-                <div>
-                  <p
-                    className="mx-7 text-lg"
-                    suppressHydrationWarning={suppressText}
-                  >
-                    {t('items')}
-                  </p>
-                  <div className=" pt-5">
-                    <div className="mb-10 ">
-                      <div className="flex px-5">
-                        <div className="ltr:pr-3 rtl:pl-3 w-1/5">
-                          <CustomImage
-                            className="w-full  rounded-lg border-[1px] border-gray-200"
-                            alt={`${t('item')}`}
-                            src={item.image ? item.image : NotFound.src}
-                          />
-                        </div>
+      ) : (
+        <div>
+          {map(cart.items, (item, i) => (
+            <div key={i}>
+              <div>
+                <p
+                  className="mx-7 text-lg"
+                  suppressHydrationWarning={suppressText}
+                >
+                  {t('items')}
+                </p>
+                <div className=" pt-5">
+                  <div className="mb-10 ">
+                    <div className="flex px-5">
+                      <div className="ltr:pr-3 rtl:pl-3 w-1/5">
+                        <CustomImage
+                          className="w-full  rounded-lg border-[1px] border-gray-200"
+                          alt={`${t('item')}`}
+                          src={item.image ? item.image : NotFound.src}
+                        />
+                      </div>
 
                         <div className="w-full">
                           <div>
@@ -144,42 +132,42 @@ const CartIndex: NextPage = (): JSX.Element => {
                         <AddOutlined />
                       </button>
                     </div> */}
-                        <span className="flex rounded-xl shadow-sm">
-                          <button
-                            type="button"
-                            className="relative inline-flex items-center ltr:rounded-l-xl rtl:rounded-r-xl bg-primary_BG px-4 py-2 text-sm font-medium text-white  focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleDecreae(item);
-                            }}
-                          >
-                            -
-                          </button>
-                          <button
-                            type="button"
-                            className="relative -ml-px inline-flex items-center  bg-primary_BG px-4 py-2 text-sm font-medium text-white  focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                          >
-                            {item.totalQty}
-                          </button>
-                          <button
-                            type="button"
-                            className="relative -ml-px inline-flex items-center ltr:rounded-r-xl rtl:rounded-l-xl  bg-primary_BG px-4 py-2 text-sm font-medium text-white  focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleIncrease(item);
-                            }}
-                          >
-                            +
-                          </button>
-                        </span>
-                        <div>
-                          <p
-                            className="text-primary_BG"
-                            suppressHydrationWarning={suppressText}
-                          >
-                            {item.Price} {t('kwd')}
-                          </p>
-                        </div>
+                      <span className="flex rounded-xl shadow-sm">
+                        <button
+                          type="button"
+                          className="relative inline-flex items-center ltr:rounded-l-xl rtl:rounded-r-xl bg-gray-100 px-4 py-2 text-sm font-medium text-black  focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDecreae(item);
+                          }}
+                        >
+                          -
+                        </button>
+                        <button
+                          type="button"
+                          className="relative -ml-px inline-flex items-center  bg-gray-100 px-4 py-2 text-sm font-medium text-primary_BG  focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
+                        >
+                          {item.totalQty}
+                        </button>
+                        <button
+                          type="button"
+                          className="relative -ml-px inline-flex items-center ltr:rounded-r-xl rtl:rounded-l-xl  bg-gray-100 px-4 py-2 text-sm font-medium text-black  focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleIncrease(item);
+                          }}
+                        >
+                          +
+                        </button>
+                      </span>
+                      <div>
+                        <p
+                          className="text-primary_BG"
+                          suppressHydrationWarning={suppressText}
+                        >
+                          {item.Price} {t('kwd')}
+                        </p>
+
                       </div>
                       <div className="bg-gray-200 w-full mt-5 p-0 h-2"></div>
                     </div>
@@ -187,7 +175,9 @@ const CartIndex: NextPage = (): JSX.Element => {
                 </div>
                 <div className="mt-10 px-5 py-2 bg-gray-100"></div>
               </div>
-            ))}
+            </div>
+          ))}
+
 
             <div className="px-5">
               <div className="flex items-center">
@@ -245,14 +235,14 @@ const CartIndex: NextPage = (): JSX.Element => {
                 </p>
               </div>
 
-              <div className="flex justify-between mb-3 text-lg">
-                <p suppressHydrationWarning={suppressText}>
-                  {t('delivery_services')}
-                </p>
-                <p suppressHydrationWarning={suppressText}>
-                  {0} {t('kwd')}
-                </p>
-              </div>
+          <div className={`px-4`}>
+            <div className="flex justify-between mb-3 text-lg">
+              <p suppressHydrationWarning={suppressText}>{t('subtotal')}</p>
+              <p suppressHydrationWarning={suppressText}>
+                {sumBy(cart.items, (item: any) => item.subTotalPrice)}{' '}
+                {t('kwd')}
+              </p>
+            </div>
 
               <div className="flex justify-between mb-3 text-lg ">
                 <p
@@ -269,8 +259,8 @@ const CartIndex: NextPage = (): JSX.Element => {
                 </p>
               </div>
             </div>
-          </div>
-        )}
+            </div>
+        </div>
       </Suspense>
     </MainContentLayout>
   );
