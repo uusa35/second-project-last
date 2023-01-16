@@ -31,7 +31,6 @@ export const cartApi = apiSlice.injectEndpoints({
           response.status == 200 && result.status,
       }),
     }),
-
     GetCartProducts: builder.query<
       AppQueryResult<any>,
       {
