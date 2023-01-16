@@ -260,7 +260,7 @@ const CartIndex: NextPage = (): JSX.Element => {
               </div>
             </div>
             </div>
-        </div>
+        </div>)}
       </Suspense>
     </MainContentLayout>
   );
