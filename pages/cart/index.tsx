@@ -24,6 +24,7 @@ import {
   increaseCartQty,
 } from '@/redux/slices/cartSlice';
 import { useState } from 'react';
+import { ProductCart } from '@/types/index';
 const CartIndex: NextPage = (): JSX.Element => {
   const { t } = useTranslation();
   const {
@@ -33,7 +34,6 @@ const CartIndex: NextPage = (): JSX.Element => {
     order,
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
-  const [currentQty, setCurrentyQty] = useState<number>(0);
   useEffect(() => {
     dispatch(setCurrentModule(t('cart')));
     dispatch(setShowFooterElement(`cartIndex`));
@@ -51,23 +51,23 @@ const CartIndex: NextPage = (): JSX.Element => {
     );
   };
   const handleIncrease = (element: any) => {
-    dispatch(increaseCartQty(element));
-    dispatch(
-      showToastMessage({
-        content: `item count increased`,
-        type: `success`,
-      })
-    );
-  };
-  const handleDecreae = (element: any) => {
-    dispatch(decreaseCartQty(element));
-    dispatch(
-      showToastMessage({
-        content: `item count decreased`,
-        type: `success`,
-      })
-    );
-  };
+        dispatch(increaseCartQty(element));
+        dispatch(
+          showToastMessage({
+            content: `item count increased`,
+            type: `success`,
+          })
+        );
+      }
+      const handleDecreae = (element: any) => {
+        dispatch(decreaseCartQty(element));
+        dispatch(
+          showToastMessage({
+            content: `item count decreased`,
+            type: `success`,
+          })
+        );
+       }
   console.log('the cart', cart);
   return (
     <MainContentLayout>
@@ -149,7 +149,7 @@ const CartIndex: NextPage = (): JSX.Element => {
                           className="relative inline-flex items-center ltr:rounded-l-xl rtl:rounded-r-xl bg-primary_BG px-4 py-2 text-sm font-medium text-white  focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                           onClick={(e) => {
                             e.stopPropagation();
-                            handleDecreae(i);
+                            handleDecreae(item);
                           }}
                         >
                           -
@@ -165,7 +165,7 @@ const CartIndex: NextPage = (): JSX.Element => {
                           className="relative -ml-px inline-flex items-center ltr:rounded-r-xl rtl:rounded-l-xl  bg-primary_BG px-4 py-2 text-sm font-medium text-white  focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                           onClick={(e) => {
                             e.stopPropagation();
-                            handleIncrease(i);
+                            handleIncrease(item);
                           }}
                         >
                           +
