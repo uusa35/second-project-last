@@ -125,7 +125,7 @@ const CartAddress: NextPage = (): JSX.Element => {
                 role="tablist"
               >
                 <li className="-mb-px mr-2 last:mr-0 flex-auto text-center">
-                  <div
+                  <a
                     className={
                       'text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal ' +
                       (openTab === 1 ? 'text-white bg-primary_BG' : 'bg-white')
@@ -147,10 +147,10 @@ const CartAddress: NextPage = (): JSX.Element => {
                         {t('home')}
                       </p>
                     </div>
-                  </div>
+                  </a>
                 </li>
                 <li className="-mb-px mr-2 last:mr-0 flex-auto text-center">
-                  <div
+                  <a
                     className={
                       'text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal ' +
                       (openTab === 2 ? 'text-white bg-primary_BG' : 'bg-white')
@@ -179,10 +179,10 @@ const CartAddress: NextPage = (): JSX.Element => {
                         {t('appartment')}
                       </p>
                     </div>
-                  </div>
+                  </a>
                 </li>
                 <li className="-mb-px mr-2 last:mr-0 flex-auto text-center">
-                  <div
+                  <a
                     className={
                       'text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal ' +
                       (openTab === 3 ? 'text-white bg-primary_BG' : 'bg-white')
@@ -209,7 +209,7 @@ const CartAddress: NextPage = (): JSX.Element => {
                         {t('office')}
                       </p>
                     </div>
-                  </div>
+                  </a>
                 </li>
               </ul>
               <input
