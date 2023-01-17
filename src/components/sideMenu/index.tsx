@@ -45,11 +45,12 @@ const SideMenu: FC<Props> = (): JSX.Element => {
   } = useAppSelector((state) => state);
 
   const handleChangeLang = async (locale: string) => {
-    await dispatch(setLocale(locale));
-    await router.replace(router.pathname, router.asPath, {
-      locale,
-      scroll: false,
-    });
+    await router
+      .replace(router.pathname, router.asPath, {
+        locale,
+        scroll: false,
+      })
+      .then(() => dispatch(setLocale(locale)));
   };
 
   return (
