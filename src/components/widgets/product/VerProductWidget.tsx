@@ -6,12 +6,18 @@ import { first, isEmpty } from 'lodash';
 import Link from 'next/link';
 import CustomImage from '@/components/CustomImage';
 import { useTranslation } from 'react-i18next';
+import { useAppSelector } from '@/redux/hooks';
+import TextTrans from '@/components/TextTrans';
 
 type Props = {
   element: Product;
 };
 const VerProductWidget: FC<Props> = ({ element }): JSX.Element => {
   const { t } = useTranslation();
+  const {
+    branch: { id: branchId },
+    area: { id: areaId },
+  } = useAppSelector((state) => state);
   const firstImage = !isEmpty(element.img)
     ? imgUrl(first(element.img).thumbnail)
     : NoFoundImage.src;
@@ -20,8 +26,10 @@ const VerProductWidget: FC<Props> = ({ element }): JSX.Element => {
     <Link
       href={`${appLinks.productShow(
         element.id.toString(),
+        branchId,
         element.id,
-        element.name
+        element.name,
+        areaId
       )}`}
       className={`h-36 shadow-7xl rounded-lg mb-10 block border-gray-100 border-2`}
     >
@@ -38,8 +46,11 @@ const VerProductWidget: FC<Props> = ({ element }): JSX.Element => {
           </div>
           <div className="ps-5 w-[100%] pe-5">
             <p className="text-lg truncate pb-5">
-              {element.name}
-              {element.desc}
+              <TextTrans ar={element.name_ar} en={element.name_en} />
+              <TextTrans
+                ar={element.description_ar}
+                en={element.description_en}
+              />
             </p>
             <div>
               <div>

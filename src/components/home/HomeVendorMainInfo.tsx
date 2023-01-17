@@ -1,11 +1,11 @@
-import { FC, Suspense } from 'react';
+import { FC } from 'react';
 import CustomImage from '@/components/CustomImage';
 import { appLinks, imageSizes, imgUrl, suppressText } from '@/constants/*';
 import Link from 'next/link';
 import { InfoOutlined, Check } from '@mui/icons-material';
 import { Vendor } from '@/types/index';
 import { useTranslation } from 'react-i18next';
-import LoadingSpinner from '@/components/LoadingSpinner';
+import TextTrans from '@/components/TextTrans';
 
 type Props = {
   element: Vendor;
@@ -17,15 +17,19 @@ const HomeVendorMainInfo: FC<Props> = ({ element }) => {
     <>
       <div className="flex gap-x-2 justify-between">
         <div className="flex flex-grow gap-x-2">
-          <CustomImage
-            width={imageSizes.xs}
-            height={imageSizes.xs}
-            className="rounded-md w-1/4 h-fit aspect-square"
-            alt={element.name}
-            src={imgUrl(element.logo)}
-          />
+          <Link href={appLinks.home.path} scroll={false} className={`w-1/4`}>
+            <CustomImage
+              width={imageSizes.xs}
+              height={imageSizes.xs}
+              className="rounded-md w-full h-fit aspect-square"
+              alt={element.name}
+              src={imgUrl(element.logo)}
+            />
+          </Link>
           <div className={`flex flex-col w-full p-2 space-y-2`}>
-            <h1 className="font-bold text-lg">{element.name}</h1>
+            <h1 className="font-bold text-lg">
+              <TextTrans ar={element.name_ar} en={element.name_en} />
+            </h1>
             <div className="text-sm text-neutral-400 space-y-1">
               <p suppressHydrationWarning={suppressText}>
                 <Check className="text-lime-400 text-base" />{' '}

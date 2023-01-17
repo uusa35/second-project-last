@@ -1,4 +1,4 @@
-import { useState, useEffect, Suspense } from 'react';
+import { useEffect } from 'react';
 import { wrapper } from '@/redux/store';
 import { apiSlice } from '@/redux/api';
 import { NextPage } from 'next';
@@ -9,29 +9,16 @@ import MainHead from '@/components/MainHead';
 import { vendorApi } from '@/redux/api/vendorApi';
 import { Vendor } from '@/types/index';
 import { categoryApi } from '@/redux/api/categoryApi';
-import { isEmpty, isNull, map } from 'lodash';
+import { isEmpty, map } from 'lodash';
 import CategoryWidget from '@/widgets/category/CategoryWidget';
-import { suppressText } from '@/constants/*';
+import { appLinks, suppressText } from '@/constants/*';
 import { useTranslation } from 'react-i18next';
-
-import {
-  InfoOutlined,
-  DiscountOutlined,
-  MopedOutlined,
-  ElectricRickshawOutlined,
-  SearchOutlined,
-} from '@mui/icons-material';
-import Link from 'next/link';
-import GreyLine from '@/components/GreyLine';
-
 import { setLocale } from '@/redux/slices/localeSlice';
-import { setCurrentModule, setUserAgent } from '@/redux/slices/appSettingSlice';
+import { setCurrentModule } from '@/redux/slices/appSettingSlice';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import HomeSelectMethod from '@/components/home/HomeSelectMethod';
 import HomeVendorMainInfo from '@/components/home/HomeVendorMainInfo';
-import LoadingSpinner from '@/components/LoadingSpinner';
-import { useLazyCreateTempIdQuery } from '@/redux/api/cartApi';
-
+import { useRouter } from 'next/router';
 
 type Props = {
   categories: Category[];
@@ -42,13 +29,18 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
   console.log(`::: Log Home Render :::: ${renderCounter++}`);
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-
-  const addressType = undefined;
+  const router = useRouter();
+  const {
+    branch: { id: branchId },
+    area: { id: areaId },
+  } = useAppSelector((state) => state);
 
   useEffect(() => {
     dispatch(setCurrentModule(t('home')));
   }, []);
 
+  const handleFocus = () =>
+    router.push(appLinks.productSearchIndex(branchId, ``, areaId));
   return (
     <>
       {/* SEO Head DEV*/}
@@ -72,6 +64,7 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
                 type="search"
                 name="search"
                 id="search"
+                onFocus={() => handleFocus()}
                 className="block w-full rounded-md  pl-20 focus:ring-1 focus:ring-primary_BG border-none  bg-gray-100 py-3 h-16  text-lg capitalize"
                 suppressHydrationWarning={suppressText}
                 placeholder={`${t(`search_products`)}`}

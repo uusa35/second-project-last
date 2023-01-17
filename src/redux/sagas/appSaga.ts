@@ -5,7 +5,7 @@ import route from 'next/router';
 import { toast, TypeOptions } from 'react-toastify';
 import { Auth, Guest } from '@/types/queries';
 import { appSettingSlice } from '@/redux/slices/appSettingSlice';
-import { lowerCase, snakeCase } from 'lodash';
+import { lowerCase, map, multiply, snakeCase, subtract } from 'lodash';
 import { orderSlice } from '@/redux/slices/orderSlice';
 import { apiLogin, apiLogout, apiVerified } from '@/constants/*';
 import { searchParamsSlice } from '@/redux/slices/searchParamsSlice';
@@ -22,6 +22,32 @@ export function* startResetEnireAppSceanrio() {
 
 export function* startEnableLoadingScenario(action: PayloadAction) {
   try {
+  } catch (e) {
+  } finally {
+  }
+}
+
+export function* startUpdateCartProductScenario(action: PayloadAction<any>) {
+  try {
+    // totalPrice: subtract(
+    //     Number(state.totalPrice),
+    //     Number(action.payload.addons[0].Value)
+    // ),
+    //     subTotalPrice: multiply(
+    //     subtract(
+    //         Number(state.totalPrice),
+    //         Number(action.payload.addons[0].Value)
+    //     ),
+    //     state.Quantity
+    // ),
+    const { productCart } = yield select();
+    console.log('the current ProductCart', productCart);
+    const checkboxes = map(productCart.CheckBoxes, (c) => c.addons);
+    const radioBtns = map(productCart.RadioBtnsAddons, (c) => c.addons);
+    const meters = map(productCart.QuantityMeters, (c) => c.addons);
+    console.log('checkboxes', checkboxes);
+    console.log('radios', radioBtns);
+    console.log('meters', meters);
   } catch (e) {
   } finally {
   }

@@ -7,10 +7,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useTranslation } from 'react-i18next';
 import { AppQueryResult, Area, Branch } from '@/types/queries';
 import { useEffect, useState } from 'react';
-import {
-  setCartMethod,
-  setCurrentModule,
-} from '@/redux/slices/appSettingSlice';
+import { setCurrentModule } from '@/redux/slices/appSettingSlice';
 import {
   Accordion,
   AccordionHeader,
@@ -23,45 +20,52 @@ import {
   suppressText,
   inputFieldClass,
 } from '@/constants/*';
+import { appSetting } from '@/types/index';
+import { setCartMethod } from '@/redux/slices/appSettingSlice';
 import { Location } from '@/types/queries';
 import Image from 'next/image';
 import SearchIcon from '@/appIcons/search.svg';
 import { isEmpty, isNull, map } from 'lodash';
 import { setArea } from '@/redux/slices/areaSlice';
-import { appSetting, Cart } from '@/types/index';
-import { selectMethod } from '@/redux/slices/cartProductSlice';
 import { useRouter } from 'next/router';
 import { setBranch } from '@/redux/slices/branchSlice';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
+import { useGetBranchesQuery } from '@/redux/api/branchApi';
+import DeliveryBtns from '@/components/widgets/cart/DeliveryBtns';
+import TextTrans from '@/components/TextTrans';
 
 const SelectMethod: NextPage = (): JSX.Element => {
   const { t } = useTranslation();
+  const router = useRouter();
+  const dispatch = useAppDispatch();
   const {
     locale: { lang },
-    branches,
     area: selectedArea,
     appSetting: { method },
     branch: { id: branch_id },
   } = useAppSelector((state) => state);
-  const { data: locations, isLoading } = useGetLocationsQuery<{
-    data: AppQueryResult<Location[]>;
+  const { data: locations, isLoading: locationsLoading } =
+    useGetLocationsQuery<{
+      data: AppQueryResult<Location[]>;
+      isLoading: boolean;
+    }>({ lang });
+  const { data: branches, isLoading: branchesLoading } = useGetBranchesQuery<{
+    data: AppQueryResult<Branch[]>;
     isLoading: boolean;
   }>({ lang });
   const [open, setOpen] = useState(0);
   const handleOpen = (value: any) => {
     setOpen(open === value ? 0 : value);
   };
-  const router = useRouter();
-  const dispatch = useAppDispatch();
-  console.log('the branches', branches);
 
   useEffect(() => {
     dispatch(setCurrentModule(t('select_method')));
   }, []);
 
-  if (isLoading) {
+  if (branchesLoading || locationsLoading) {
     return <LoadingSpinner />;
   }
+
   const Icon = ({ id, open }: { id: number; open: number }) => {
     return (
       <svg
@@ -90,26 +94,7 @@ const SelectMethod: NextPage = (): JSX.Element => {
     <MainContentLayout>
       <Suspense>
         <div className={`px-4`}>
-          <div className="flex flex-1 w-full flex-row justify-between items-center px-14 text-lg py-8 ">
-            <button
-              className={`${
-                method === 'delivery' && `border-b-2 pb-4 border-b-primary_BG`
-              } md:ltr:mr-3 md:rtl:ml-3 capitalize `}
-              onClick={() => handleSelectMethod(`delivery`)}
-              suppressHydrationWarning={suppressText}
-            >
-              {t('delivery')}
-            </button>
-            <button
-              className={`${
-                method === 'pickup' && `border-b-2 pb-4 border-b-primary_BG`
-              } md:ltr:mr-3 md:rtl:ml-3 capitalize `}
-              onClick={() => handleSelectMethod(`pickup`)}
-              suppressHydrationWarning={suppressText}
-            >
-              {t('pickup')}
-            </button>
-          </div>
+          <DeliveryBtns handleSelectMethod={handleSelectMethod} />
           <div className={`w-full mb-4`}>
             <div className="relative mt-1 rounded-md shadow-sm text-gray-400">
               <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center px-6">
@@ -139,7 +124,7 @@ const SelectMethod: NextPage = (): JSX.Element => {
                       onClick={() => handleOpen(item.id)}
                       suppressHydrationWarning={suppressText}
                     >
-                      {t(item.City)}
+                      <TextTrans ar={item.name_ar} en={item.name_en} />
                     </AccordionHeader>
                     <AccordionBody>
                       <div className="bg-LightGray">
@@ -153,7 +138,7 @@ const SelectMethod: NextPage = (): JSX.Element => {
                               className="text-base text-black"
                               suppressHydrationWarning={suppressText}
                             >
-                              {t(area.name)}
+                              <TextTrans ar={area.name_ar} en={area.name_en} />
                             </p>
                             {!isEmpty(selectedArea) &&
                             area.id === selectedArea?.id ? (
@@ -179,14 +164,16 @@ const SelectMethod: NextPage = (): JSX.Element => {
                 {t('select_branch')}
               </p>
               <div className={`bg-LightGray p-3`}>
-                {map(branches, (b: Branch, i) => (
+                {map(branches.Data, (b: Branch, i) => (
                   <button
                     key={i}
                     onClick={() => handleSelectBranch(b)}
                     className={`flex flex-row  w-full justify-between items-center p-1`}
                   >
                     <label htmlFor={b.name} className="py-1 form-check-label">
-                      <p>{b.name}</p>
+                      <p>
+                        <TextTrans ar={b.name_ar} en={b.name_en} />
+                      </p>
                     </label>
                     <input
                       className="form-check-input appearance-none rounded-full h-5 w-5 border border-gray-200 focus:ring-lime-400 focus:ring-offset-1 focus:border-2 text-lime-400 focus:border-lime-400 checked:border-lime-400 bg-gray-100 checked:bg-lime-400 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
@@ -201,7 +188,7 @@ const SelectMethod: NextPage = (): JSX.Element => {
             </div>
           )}
           <button
-            onClick={() => router.replace(`/`)}
+            onClick={() => router.back()}
             disabled={isNull(branch_id) && isNull(selectedArea.id)}
             className={`${submitBtnClass} mt-12`}
             suppressHydrationWarning={suppressText}

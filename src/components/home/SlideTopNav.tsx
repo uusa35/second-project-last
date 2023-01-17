@@ -50,7 +50,7 @@ const SlideTopNav: FC<Props> = ({ offset }): JSX.Element => {
   return (
     <div
       className={`${
-        offset < 80 ? `hidden` : `flex`
+        offset <= 80 ? `hidden` : `flex`
       } flex flex-row  justify-start items-center w-full pb-4 pt-8 px-4 h-22 top-0  relative bg-white 
       `}
       // bg-gradient-to-tr from-gray-50 to-gray-100 lg:from-white lg:to-white

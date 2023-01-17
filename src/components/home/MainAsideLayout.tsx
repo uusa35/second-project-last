@@ -10,7 +10,10 @@ import { useTranslation } from 'react-i18next';
 import { setLocale } from '@/redux/slices/localeSlice';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
 import LoadingSpinner from '@/components/LoadingSpinner';
-import { HomeIcon } from '@heroicons/react/24/outline';
+import {
+  ClipboardDocumentCheckIcon,
+  HomeIcon,
+} from '@heroicons/react/24/outline';
 import TrackOrderIcon from '@/appIcons/my_orders.svg';
 
 type Props = {
@@ -82,12 +85,8 @@ const MainAsideLayout: FC<Props> = ({ element }): JSX.Element => {
                 href={appLinks.trackOrder.path}
                 className={`flex flex-row p-1 px-4 justify-between items-center rounded-lg bg-white bg-opacity-90 text-black`}
               >
-                <CustomImage
-                  src={TrackOrderIcon}
-                  width={25}
-                  height={25}
-                  alt={t('track_order')}
-                  className={`w-6 h-6 rtl:ml-2 ltr:mr-2 text-black`}
+                <ClipboardDocumentCheckIcon
+                  className={`w-7 h-7 rtl:ml-2 ltr:mr-2 text-stone-700`}
                 />
                 <p suppressHydrationWarning={suppressText} className={`mt-2`}>
                   {t('track_order')}

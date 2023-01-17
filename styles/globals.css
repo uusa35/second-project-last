@@ -93,4 +93,22 @@ input[type=number] {
     background-color: white;
 }
 
+.PhoneInputInput {
+    border: 0
+}
 
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    opacity: 1;
+    display: flex;
+    background: url('../public/assets/icons/calender.svg') no-repeat;
+    width: 3vh;
+    height: 3vh;
+}
+input[type="time"]::-webkit-calendar-picker-indicator {
+    opacity: 1;
+    display: flex;
+    background: url('../public/assets/icons/clock.svg') no-repeat;
+    width: 2vh;
+    height: 2vh;
+}

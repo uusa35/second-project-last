@@ -10,18 +10,17 @@ import dynamic from 'next/dynamic';
 import { useGetVendorQuery } from '@/redux/api/vendorApi';
 import { AppQueryResult, Branch } from '@/types/queries';
 import { Vendor } from '@/types/index';
-
-import Link from 'next/link';
-import { useTranslation } from 'react-i18next';
-import { ShoppingBagOutlined } from '@mui/icons-material';
-import CustomImage from '../customImage';
 import { setVendor } from '@/redux/slices/vendorSlice';
-
-import { isEmpty, isNull } from 'lodash';
-import { useGetBranchesQuery } from '@/redux/api/branchApi';
+import { isNull } from 'lodash';
+import {
+  useGetBranchesQuery,
+  useLazyGetBranchesQuery,
+} from '@/redux/api/branchApi';
 import { setBranch } from '@/redux/slices/branchSlice';
 import { setBranches } from '@/redux/slices/branchesSlice';
 import { useLazyCreateTempIdQuery } from '@/redux/api/cartApi';
+import { useLazyGetLocationsQuery } from '@/redux/api/locationApi';
+import { setArea } from '@/redux/slices/areaSlice';
 const MainAsideLayout = dynamic(
   async () => await import(`@/components/home/MainAsideLayout`),
   {
@@ -47,6 +46,7 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
     appSetting: { sideMenuOpen, userAgent },
     locale,
     branch: { id: branchId },
+    area: { id: areaId },
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -54,25 +54,27 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
     data: AppQueryResult<Vendor>;
     isSuccess: boolean;
   }>({ lang: locale.lang });
-  const { data: branches, isSuccess: branchesSuccess } = useGetBranchesQuery<{
-    data: AppQueryResult<Branch[]>;
-    isSuccess: boolean;
-  }>({ lang: locale.lang });
+  const [triggerGetBranches] = useLazyGetBranchesQuery();
+  const [triggerGetLocations] = useLazyGetLocationsQuery();
   const [triggerCreateTempId] = useLazyCreateTempIdQuery();
 
   useEffect(() => {
     if (isSuccess) {
       dispatch(setVendor(vendor.Data));
     }
-    if (branchesSuccess) {
-      if (isNull(branchId)) {
-        dispatch(setBranch(branches.Data[0]));
-      }
-      dispatch(setBranches(branches.Data));
+    if (isNull(branchId)) {
+      triggerGetBranches({ lang: locale.lang }).then((r: any) =>
+        dispatch(setBranch(r.data?.Data[0]))
+      );
     }
     if (isNull(userAgent)) {
       triggerCreateTempId().then((r: any) =>
         dispatch(setUserAgent(r.data.Data?.Id))
+      );
+    }
+    if (isNull(areaId)) {
+      triggerGetLocations({ lang: locale.lang }).then((r: any) =>
+        dispatch(setArea(r.data.Data[0]?.Areas[0]))
       );
     }
   }, []);
@@ -129,7 +131,7 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
   return (
     <div
       dir={router.locale === 'ar' ? 'rtl' : 'ltr'}
-      className={`${tajwalFont} flex-col justify-start items-start grow  lg:flex lg:flex-row flex flex-row h-screen  [&>*]:capitalize`}
+      className={`${tajwalFont} flex-col justify-start items-start grow  lg:flex lg:flex-row flex flex-row h-screen  capitalize`}
     >
       {children}
       {/* Main Image & Logo */}

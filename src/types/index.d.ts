@@ -1,19 +1,24 @@
 import { Area, Category, Country } from '@/types/queries';
+import { floated } from '@material-tailwind/react/types/components/card';
 
 export interface Product {
   id: number;
   name: string;
+  name_ar: string;
+  name_en: string;
   desc: string;
+  description_ar: string;
+  description_en: string;
   price: string;
   amount: number | undefined;
   branch_id?: string;
   price_on_selection?: boolean;
   new_price?: string;
   img: img[];
-  sections?: productSections[];
+  sections?: ProductSection[];
 }
 
-export interface productSections {
+export interface ProductSection {
   id: number;
   title: string;
   must_select: string;
@@ -21,14 +26,15 @@ export interface productSections {
   hidden: boolean;
   min_q: number;
   max_q: number;
-  choices: sectionChoices[];
+  choices: SectionChoice[];
 }
 
-export interface sectionChoices {
+export interface SectionChoice {
   id: number;
   name: string;
   price: string;
   num: null | number;
+  hidden: boolean;
 }
 export interface img {
   thumbnail: string;
@@ -59,6 +65,8 @@ export interface AddonOption {
 export interface Vendor {
   id: string | number;
   name: string;
+  name_ar: string;
+  name_en: string;
   status: string;
   phone: string;
   desc: string;
@@ -110,7 +118,7 @@ export type appSetting = {
   };
 };
 
-export interface Cart {
+export interface ServerCart {
   UserAgent: string | null;
   Cart: ProductCart[];
   id: string;
@@ -119,16 +127,31 @@ export interface Cart {
   isEmpty?: boolean;
 }
 
+export interface ClientCart {
+  grossTotal: number;
+  items: ProductCart[];
+  PromoCode: string | null;
+  promoCode: {
+    total_cart_before_tax: number;
+    total_cart_after_tax: number;
+    free_delivery: `true` | `false`;
+  };
+}
 export interface ProductCart {
   ProductID: number;
   ProductName: string;
   ProductDesc: string;
   Quantity: number;
   Price: number;
-  RadioBtnsAddons?: RadioBtns[];
-  CheckBoxes?: CheckBoxes[];
+  totalQty: number;
+  totalPrice: number;
+  subTotalPrice: number;
+  RadioBtnsAddons: RadioBtns[];
+  CheckBoxes: CheckBoxes[];
   QuantityMeters: QuantityMeters[];
   id?: string;
+  enabled: boolean;
+  image: string;
 }
 
 export interface RadioBtns {
@@ -142,14 +165,15 @@ export interface CheckBoxes {
 }
 
 export interface QuantityMeters {
-  addonID: number;
-  addons: CartAddons[];
+  addonID: number; // choiceId
+  addons: CartAddons[]; // selectionId
 }
 
 export interface CartAddons {
   attributeID: number;
   name: string;
-  Value?: number;
+  Value?: number; // qty
+  price?: number;
 }
 
 export interface PaymentMethod {
@@ -269,8 +293,9 @@ export interface UserAddressFields {
   value: string;
 }
 
-export interface CustomerInfo{
-  name:string,
-  email:string,
-  phone?:string
+export interface CustomerInfo {
+  id: number;
+  name: string;
+  email: string;
+  phone?: string;
 }

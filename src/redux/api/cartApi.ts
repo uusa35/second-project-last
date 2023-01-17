@@ -1,6 +1,6 @@
 import { apiSlice } from './index';
 import { AppQueryResult } from '@/types/queries';
-import { Cart, Locale } from '@/types/index';
+import { ServerCart, Locale } from '@/types/index';
 
 export const cartApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -12,7 +12,7 @@ export const cartApi = apiSlice.injectEndpoints({
       }),
     }),
     addToCart: builder.mutation<
-      AppQueryResult<Cart>,
+      AppQueryResult<ServerCart>,
       {
         lang: Locale['lang'];
         country: string;
@@ -31,7 +31,6 @@ export const cartApi = apiSlice.injectEndpoints({
           response.status == 200 && result.status,
       }),
     }),
-
     GetCartProducts: builder.query<
       AppQueryResult<any>,
       {

@@ -1,10 +1,10 @@
-import { FC, ReactNode } from 'react';
+import { FC, ReactNode, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import { useAppSelector } from '@/redux/hooks';
 import { useTranslation } from 'react-i18next';
-import Link from 'next/link';
-import { appLinks, submitBtnClass } from '@/constants/*';
+import OffLineWidget from '@/widgets/OffLineWidget';
+import NoInternet from '@/appImages/no_internet.png';
 const AppHeader = dynamic(() => import(`@/components/AppHeader`), {
   ssr: false,
 });
@@ -35,6 +35,19 @@ const MainContentLayout: FC<Props> = ({
     appSetting: { showHeader, showFooter },
     locale: { isRTL },
   } = useAppSelector((state) => state);
+  const [isOnline, setIsOnline] = useState(true);
+
+  useEffect(() => {
+    const handleStatusChange = () => {
+      setIsOnline(navigator.onLine);
+    };
+    window.addEventListener('online', handleStatusChange);
+    window.addEventListener('offline', handleStatusChange);
+    return () => {
+      window.removeEventListener('online', handleStatusChange);
+      window.removeEventListener('offline', handleStatusChange);
+    };
+  }, [isOnline]);
 
   return (
     <div
@@ -42,7 +55,7 @@ const MainContentLayout: FC<Props> = ({
     >
       <SideMenu />
       {showHeader && <AppHeader />}
-      <main className={`w-full mb-36 relative`}>
+      <main className={`w-full mb-[50%] relative`}>
         <motion.div
           animate={{ x: [isRTL ? -1000 : 1000, 0, 0] }}
           transition={{
@@ -50,9 +63,16 @@ const MainContentLayout: FC<Props> = ({
             bounce: 5,
             duration: showMotion ? 0.2 : 0,
           }}
-          style={{height:'100%'}}
+          style={{ height: '100%' }}
         >
-          {children}
+          {isOnline ? (
+            children
+          ) : (
+            <OffLineWidget
+              message={`network_is_not_available_please_check_your_internet`}
+              img={`${NoInternet.src}`}
+            />
+          )}
         </motion.div>
       </main>
       <AppFooter />

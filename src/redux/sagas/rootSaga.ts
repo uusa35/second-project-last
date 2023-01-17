@@ -9,6 +9,7 @@ import {
   triggerOrderMade,
   triggerResetApp,
   triggerResetEntireApp,
+  triggerUpdateCartProductPrice,
 } from './triggers';
 
 export default function* rootSaga() {
@@ -21,6 +22,7 @@ export default function* rootSaga() {
     fork(triggerOrderMade),
     fork(triggerResetApp),
     fork(triggerResetEntireApp),
+    fork(triggerUpdateCartProductPrice),
   ]);
   yield take(REHYDRATE); // Wait for rehydrate to prevent sagas from running with empty store
   yield take(PURGE);

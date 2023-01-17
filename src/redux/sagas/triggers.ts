@@ -17,12 +17,14 @@ import {
   startResetEnireAppSceanrio,
   startOrderMadeScenario,
   startResetAppScenario,
+  startUpdateCartProductScenario,
 } from './appSaga';
 import { orderSlice } from '@/redux/slices/orderSlice';
 import { appSettingSlice } from '@/redux/slices/appSettingSlice';
 import { appLoadingSlice } from '@/redux/slices/appLoadingSlice';
 import { localeSlice } from '@/redux/slices/localeSlice';
 import { authSlice } from '@/redux/slices/authSlice';
+import { productCartSlice } from '@/redux/slices/productCartSlice';
 
 export function* triggerResetApp() {
   yield takeLatest(`resetApp`, startResetAppScenario);
@@ -30,6 +32,25 @@ export function* triggerResetApp() {
 
 export function* triggerResetEntireApp() {
   yield takeLatest(`resetEntireApp`, startResetEnireAppSceanrio);
+}
+
+export function* triggerUpdateCartProductPrice() {
+  yield takeLatest(
+    `${productCartSlice.actions.addToCheckBox}`,
+    startUpdateCartProductScenario
+  );
+  yield takeLatest(
+    `${productCartSlice.actions.removeFromCheckBox}`,
+    startUpdateCartProductScenario
+  );
+  yield takeLatest(
+    `${productCartSlice.actions.addRadioBtn}`,
+    startUpdateCartProductScenario
+  );
+  yield takeLatest(
+    `${productCartSlice.actions.setCartProductQty}`,
+    startUpdateCartProductScenario
+  );
 }
 
 export function* triggerEnableLoading() {

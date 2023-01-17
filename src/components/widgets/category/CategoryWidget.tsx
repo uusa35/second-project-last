@@ -7,6 +7,7 @@ import { useAppSelector } from '@/redux/hooks';
 import { kebabCase, lowerCase } from 'lodash';
 import { suppressText } from '@/constants/*';
 import { useTranslation } from 'react-i18next';
+import TextTrans from '@/components/TextTrans';
 
 type Props = {
   element: Category;
@@ -17,11 +18,12 @@ const CategoryWidget: FC<Props> = ({ element }) => {
   return (
     <Link
       href={appLinks.productIndex(
+        branch.id,
         element.id.toString(),
-        kebabCase(lowerCase(element.name)),
-        branch.id
+        kebabCase(lowerCase(element.name))
       )}
       className={`h-60 lg:h-72 shadow-lg rounded-lg `}
+      suppressHydrationWarning={suppressText}
     >
       <div className="relative">
         <div className="relative w-full h-auto overflow-hidden rounded-lg">
@@ -43,7 +45,7 @@ const CategoryWidget: FC<Props> = ({ element }) => {
               className="relative text-md font-semibold text-white"
               suppressHydrationWarning={suppressText}
             >
-              {t(element.name)}
+              <TextTrans ar={element.name_ar} en={element.name_en} />
             </p>
           </div>
         </div>
