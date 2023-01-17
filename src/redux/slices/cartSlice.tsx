@@ -25,8 +25,6 @@ export const cartSlice = createSlice({
         state.items,
         (item) => item.ProductID !== action.payload.ProductID
       );
-      console.log('the items', items);
-      console.log('the action payload', action.payload);
       const grossTotal = sumBy(items, (item) => item.subTotalPrice);
       return {
         ...state,
@@ -40,7 +38,7 @@ export const cartSlice = createSlice({
     ) => {
       const items = filter(
         state.items,
-        (item) => item.ProductID === action.payload
+        (item) => item.ProductID !== action.payload
       );
       const grossTotal = sumBy(items, (item) => item.subTotalPrice);
       return {

@@ -40,6 +40,7 @@ const CartIndex: NextPage = (): JSX.Element => {
     };
   }, []);
   const handleRemove = (id: any) => {
+    console.log('id', id);
     dispatch(removeFromCart(id));
     dispatch(
       showToastMessage({
