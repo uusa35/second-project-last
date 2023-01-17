@@ -77,17 +77,19 @@ export const cartSlice = createSlice({
       );
       if (state.items[itemIndex].totalQty > 1) {
         state.items[itemIndex].totalQty -= 1;
-      } else if (state.items[itemIndex].totalQty === 1) {
-        const nextCartItems = state.items.filter(
-          (item) => item.ProductID !== action.payload.ProductID
+        state.items[itemIndex].subTotalPrice = multiply(
+          state.items[itemIndex].totalPrice,
+          state.items[itemIndex].totalQty
         );
-        state.items = nextCartItems;
+        state.grossTotal = sumBy(state.items, (item) => item.subTotalPrice);
       }
-      state.items[itemIndex].subTotalPrice = multiply(
-        state.items[itemIndex].totalPrice,
-        state.items[itemIndex].totalQty
-      );
-      state.grossTotal = sumBy(state.items, (item) => item.subTotalPrice);
+
+      // else if (state.items[itemIndex].totalQty === 1) {
+      //   const nextCartItems = state.items.filter(
+      //     (item) => item.ProductID !== action.payload.ProductID
+      //   );
+      //   state.items = nextCartItems;
+      // }
     },
   },
 });
