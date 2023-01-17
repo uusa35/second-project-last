@@ -19,7 +19,8 @@ import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import HomeSelectMethod from '@/components/home/HomeSelectMethod';
 import HomeVendorMainInfo from '@/components/home/HomeVendorMainInfo';
 import { useRouter } from 'next/router';
-
+import Image from 'next/image';
+import { imgUrl, imageSizes } from '@/constants/*';
 type Props = {
   categories: Category[];
   element: Vendor;
@@ -33,6 +34,7 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
   const {
     branch: { id: branchId },
     area: { id: areaId },
+    vendor
   } = useAppSelector((state) => state);
 
   useEffect(() => {
@@ -47,6 +49,13 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
       <MainHead title={element.name} mainImage={element.logo} />
       <MainContentLayout>
         {/*  HomePage Header */}
+       <Image
+            src={`${imgUrl(vendor.cover)}`}
+            alt={vendor.name}
+            width={imageSizes.sm}
+            height={imageSizes.sm}
+            className={`sm:hidden xs:block w-full rounded-b-lg`}
+          />
         <div className={`px-14 mt-4`}>
           <HomeVendorMainInfo element={element} />
         </div>
@@ -73,7 +82,7 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
           </div>
         </div>
         {/* Categories List */}
-        <div className="py-4 px-8 grid sm:grid-cols-3 lg:grid-cols-2 gap-6 ">
+        <div className="py-4 px-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-6">
           {!isEmpty(categories) &&
             map(categories, (c, i) => <CategoryWidget element={c} key={i} />)}
         </div>

@@ -5,6 +5,7 @@ import { useAppSelector } from '@/redux/hooks';
 import { useTranslation } from 'react-i18next';
 import OffLineWidget from '@/widgets/OffLineWidget';
 import NoInternet from '@/appImages/no_internet.png';
+
 const AppHeader = dynamic(() => import(`@/components/AppHeader`), {
   ssr: false,
 });
@@ -20,7 +21,7 @@ type Props = {
   backHome?: boolean;
   hideBack?: boolean;
   showMotion?: boolean;
-  backRoute?: string | null;
+  backRoute?: string | null
 };
 
 const MainContentLayout: FC<Props> = ({
@@ -33,7 +34,7 @@ const MainContentLayout: FC<Props> = ({
   const { t } = useTranslation();
   const {
     appSetting: { showHeader, showFooter },
-    locale: { isRTL },
+    locale: { isRTL }
   } = useAppSelector((state) => state);
   const [isOnline, setIsOnline] = useState(true);
 
@@ -49,13 +50,13 @@ const MainContentLayout: FC<Props> = ({
     };
   }, [isOnline]);
 
-  return (
+  return (    
     <div
       className={`flex flex-col justify-start items-start w-full lg:w-2/4 xl:w-1/3 relative`}
     >
       <SideMenu />
       {showHeader && <AppHeader />}
-      <main className={`w-full mb-[50%] relative`}>
+      <main className={`w-full mb-[50%] relative rounded-t-full`}>
         <motion.div
           animate={{ x: [isRTL ? -1000 : 1000, 0, 0] }}
           transition={{
