@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ProductCart, ClientCart } from '@/types/index';
-import { filter, sum, sumBy, multiply, subtract } from 'lodash';
+import { filter, sum, sumBy, multiply } from 'lodash';
 
 const initialState: ClientCart = {
   grossTotal: 0,
@@ -81,13 +81,6 @@ export const cartSlice = createSlice({
         );
         state.grossTotal = sumBy(state.items, (item) => item.subTotalPrice);
       }
-
-      // else if (state.items[itemIndex].totalQty === 1) {
-      //   const nextCartItems = state.items.filter(
-      //     (item) => item.ProductID !== action.payload.ProductID
-      //   );
-      //   state.items = nextCartItems;
-      // }
     },
   },
 });
