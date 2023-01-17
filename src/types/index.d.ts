@@ -4,7 +4,11 @@ import { floated } from '@material-tailwind/react/types/components/card';
 export interface Product {
   id: number;
   name: string;
+  name_ar: string;
+  name_en: string;
   desc: string;
+  description_ar: string;
+  description_en: string;
   price: string;
   amount: number | undefined;
   branch_id?: string;

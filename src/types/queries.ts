@@ -18,6 +18,8 @@ export type ProductPagination<T> = {
 export type Category = {
   id: number;
   name: string;
+  name_ar: string;
+  name_en: string;
   img: string;
 };
 

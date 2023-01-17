@@ -8,6 +8,7 @@ import CustomImage from '@/components/CustomImage';
 import { useTranslation } from 'react-i18next';
 import { suppressText } from '@/constants/*';
 import { useAppSelector } from '@/redux/hooks';
+import TextTrans from '@/components/TextTrans';
 
 type Props = {
   element: Product;
@@ -18,7 +19,7 @@ const HorProductWidget: FC<Props> = ({ element }): JSX.Element => {
     branch: { id: branchId },
     area: { id: areaId },
   } = useAppSelector((state) => state);
-  const firstImage = !isEmpty(element.img)
+  const firstImage: any = !isEmpty(element.img)
     ? imgUrl(first(element.img).thumbnail)
     : NoFoundImage.src;
 
@@ -49,8 +50,11 @@ const HorProductWidget: FC<Props> = ({ element }): JSX.Element => {
             className="text-md font-semibold truncate"
             suppressHydrationWarning={suppressText}
           >
-            {element.name}
-            {element.desc}
+            <TextTrans ar={element.name_ar} en={element.name_en} />
+            <TextTrans
+              ar={element.description_ar}
+              en={element.description_en}
+            />
           </p>
           <div className="flex justify-between items-center">
             <p

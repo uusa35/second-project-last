@@ -34,6 +34,7 @@ import {
   AccordionHeader,
   AccordionBody,
 } from '@material-tailwind/react';
+import TextTrans from '@/components/TextTrans';
 
 type Props = {
   element: Product;
@@ -238,8 +239,8 @@ const ProductShow: NextPage<Props> = ({ element }) => {
   return (
     <>
       <MainHead
-        title={element.name}
-        description={element.desc}
+        title={`${element.name_ar} - ${element.name_en}`}
+        description={`${element.description_ar} - ${element.description_en}`}
         mainImage={`${imgUrl(element?.img[0]?.toString())}`}
       />
       <MainContentLayout>
@@ -269,7 +270,7 @@ const ProductShow: NextPage<Props> = ({ element }) => {
               onClick={() => handleIncrease()}
               type="button"
               className="relative inline-flex items-center ltr:rounded-l-xl rtl:rounded-r-xl bg-gray-100 px-4 py-2 text-sm font-medium text-black  focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
-              >
+            >
               +
             </button>
             <button
@@ -291,8 +292,15 @@ const ProductShow: NextPage<Props> = ({ element }) => {
           {/*   name and desc */}
           <div className="flex flex-row w-full justify-between items-center pb-4 border-b-2 border-stone-200">
             <div className={` flex-1 space-y-3`}>
-              <p>{element.name}</p>
-              <p>{element.desc}</p>
+              <p>
+                <TextTrans ar={element.name_ar} en={element.name_en} />
+              </p>
+              <p className={` rtl:pl-1 ltr:pr-1`}>
+                <TextTrans
+                  ar={element.description_ar}
+                  en={element.description_en}
+                />
+              </p>
             </div>
             <div className={`shrink-0`}>
               <p className={`text-primary_BG text-lg `}>

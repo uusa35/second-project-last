@@ -7,6 +7,7 @@ import Link from 'next/link';
 import CustomImage from '@/components/CustomImage';
 import { useTranslation } from 'react-i18next';
 import { useAppSelector } from '@/redux/hooks';
+import TextTrans from '@/components/TextTrans';
 
 type Props = {
   element: Product;
@@ -45,8 +46,11 @@ const VerProductWidget: FC<Props> = ({ element }): JSX.Element => {
           </div>
           <div className="ps-5 w-[100%] pe-5">
             <p className="text-lg truncate pb-5">
-              {element.name}
-              {element.desc}
+              <TextTrans ar={element.name_ar} en={element.name_en} />
+              <TextTrans
+                ar={element.description_ar}
+                en={element.description_en}
+              />
             </p>
             <div>
               <div>
