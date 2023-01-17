@@ -1,15 +1,8 @@
-import {
-  appLinks,
-  imageSizes,
-  normalBtnClass,
-  submitBtnClass,
-  suppressText,
-} from '@/constants/*';
+import { appLinks, suppressText } from '@/constants/*';
 import { isNull } from 'lodash';
 import { FC } from 'react';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { appSetting, Cart, Vendor } from '@/types/index';
-import { selectMethod } from '@/redux/slices/cartProductSlice';
+import { appSetting, Vendor } from '@/types/index';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
 import { setCartMethod } from '@/redux/slices/appSettingSlice';

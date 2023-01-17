@@ -10,11 +10,7 @@ import {
 } from '@/redux/slices/appSettingSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useRouter } from 'next/router';
-import {
-  AccessTimeOutlined,
-  LocationOnOutlined,
-  CalendarMonthOutlined,
-} from '@mui/icons-material';
+import { LocationOnOutlined } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import GoogleMapReact from 'google-map-react';
 
@@ -24,14 +20,8 @@ import OfficeIcon from '@/appIcons/office.svg';
 import OfficeAcitveIcon from '@/appIcons/office_active.svg';
 import Image from 'next/image';
 import { Home } from '@mui/icons-material';
-import {
-  addressInputField,
-  appLinks,
-  submitBtnClass,
-  suppressText,
-} from '@/constants/*';
+import { addressInputField, appLinks, suppressText } from '@/constants/*';
 import { isEmpty } from 'lodash';
-import { CalendarDaysIcon, ClockIcon } from '@heroicons/react/24/outline';
 
 const CartAddress: NextPage = (): JSX.Element => {
   const dispatch = useAppDispatch();

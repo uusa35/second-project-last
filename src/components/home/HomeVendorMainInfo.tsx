@@ -1,11 +1,10 @@
-import { FC, Suspense } from 'react';
+import { FC } from 'react';
 import CustomImage from '@/components/CustomImage';
 import { appLinks, imageSizes, imgUrl, suppressText } from '@/constants/*';
 import Link from 'next/link';
 import { InfoOutlined, Check } from '@mui/icons-material';
 import { Vendor } from '@/types/index';
 import { useTranslation } from 'react-i18next';
-import LoadingSpinner from '@/components/LoadingSpinner';
 import TextTrans from '@/components/TextTrans';
 
 type Props = {
