@@ -22,11 +22,6 @@ import { apiSlice } from './api';
 import { storeApi } from '@/redux/api/storeApi';
 import { categoryApi } from '@/redux/api/categoryApi';
 import { vendorApi } from '@/redux/api/vendorApi';
-// import hardSet from 'redux-persist/lib/stateReconciler/hardSet';
-// import {
-//   composeWithDevTools,
-//   devToolsEnhancer,
-// } from '@redux-devtools/extension';
 import { isLocal } from '@/constants/*';
 import { locationApi } from '@/redux/api/locationApi';
 import { branchApi } from '@/redux/api/branchApi';
@@ -34,7 +29,7 @@ import { branchApi } from '@/redux/api/branchApi';
 const persistConfig = {
   key: 'root',
   storage,
-  blacklist: ['appSetting', 'cart'],
+  blacklist: ['appSetting'],
   // stateReconciler: hardSet,
   debug: isLocal,
 };
