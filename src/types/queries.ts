@@ -18,12 +18,16 @@ export type ProductPagination<T> = {
 export type Category = {
   id: number;
   name: string;
+  name_ar: string;
+  name_en: string;
   img: string;
 };
 
 export type Branch = {
   id: number | null;
   name: string;
+  name_ar: string;
+  name_en: string;
   location: string;
   mobile: string;
   lang: string;
@@ -66,6 +70,8 @@ export interface Auth {
 export interface Area {
   id: string | number | null;
   name: string;
+  name_ar: string;
+  name_en: string;
 }
 
 export interface StaticPage {
@@ -99,5 +105,7 @@ export interface PaymentProcess {
 export interface Location {
   id: number;
   City: string;
+  name_ar: string;
+  name_en: string;
   Areas: Area[];
 }

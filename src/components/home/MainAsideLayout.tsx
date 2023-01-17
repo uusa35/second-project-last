@@ -30,7 +30,6 @@ const MainAsideLayout: FC<Props> = ({ element }): JSX.Element => {
 
   const handleChangeLang = async (locale: string) => {
     if (locale !== router.locale) {
-      await dispatch(setLocale(locale));
       await router
         .push(router.pathname, router.asPath, {
           locale,
@@ -43,7 +42,8 @@ const MainAsideLayout: FC<Props> = ({ element }): JSX.Element => {
               type: `info`,
             })
           )
-        );
+        )
+        .then(() => dispatch(setLocale(locale)));
     }
   };
 

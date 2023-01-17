@@ -1,4 +1,4 @@
-import { useState, useEffect, Suspense } from 'react';
+import { useEffect } from 'react';
 import { wrapper } from '@/redux/store';
 import { apiSlice } from '@/redux/api';
 import { NextPage } from 'next';
@@ -9,28 +9,15 @@ import MainHead from '@/components/MainHead';
 import { vendorApi } from '@/redux/api/vendorApi';
 import { Vendor } from '@/types/index';
 import { categoryApi } from '@/redux/api/categoryApi';
-import { isEmpty, isNull, map } from 'lodash';
+import { isEmpty, map } from 'lodash';
 import CategoryWidget from '@/widgets/category/CategoryWidget';
 import { appLinks, suppressText } from '@/constants/*';
 import { useTranslation } from 'react-i18next';
-
-import {
-  InfoOutlined,
-  DiscountOutlined,
-  MopedOutlined,
-  ElectricRickshawOutlined,
-  SearchOutlined,
-} from '@mui/icons-material';
-import Link from 'next/link';
-import GreyLine from '@/components/GreyLine';
-
 import { setLocale } from '@/redux/slices/localeSlice';
-import { setCurrentModule, setUserAgent } from '@/redux/slices/appSettingSlice';
+import { setCurrentModule } from '@/redux/slices/appSettingSlice';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import HomeSelectMethod from '@/components/home/HomeSelectMethod';
 import HomeVendorMainInfo from '@/components/home/HomeVendorMainInfo';
-import LoadingSpinner from '@/components/LoadingSpinner';
-import { useLazyCreateTempIdQuery } from '@/redux/api/cartApi';
 import { useRouter } from 'next/router';
 
 type Props = {
@@ -47,7 +34,6 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
     branch: { id: branchId },
     area: { id: areaId },
   } = useAppSelector((state) => state);
-  const addressType = undefined;
 
   useEffect(() => {
     dispatch(setCurrentModule(t('home')));

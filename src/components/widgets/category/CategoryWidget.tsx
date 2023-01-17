@@ -7,6 +7,7 @@ import { useAppSelector } from '@/redux/hooks';
 import { kebabCase, lowerCase } from 'lodash';
 import { suppressText } from '@/constants/*';
 import { useTranslation } from 'react-i18next';
+import TextTrans from '@/components/TextTrans';
 
 type Props = {
   element: Category;
@@ -44,7 +45,7 @@ const CategoryWidget: FC<Props> = ({ element }) => {
               className="relative text-md font-semibold text-white"
               suppressHydrationWarning={suppressText}
             >
-              {t(element.name)}
+              <TextTrans ar={element.name_ar} en={element.name_en} />
             </p>
           </div>
         </div>

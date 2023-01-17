@@ -19,7 +19,6 @@ const initialState: ProductCart = {
   totalQty: 0,
   totalPrice: 0,
   subTotalPrice: 0,
-  productId: 0,
   enabled: false,
   image: ``,
 };

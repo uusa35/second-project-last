@@ -32,9 +32,8 @@ import { setBranch } from '@/redux/slices/branchSlice';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { useGetBranchesQuery } from '@/redux/api/branchApi';
 import DeliveryBtns from '@/components/widgets/cart/DeliveryBtns';
-type Props = {
-  handleSelectMethod: (m: string) => void;
-};
+import TextTrans from '@/components/TextTrans';
+
 const SelectMethod: NextPage = (): JSX.Element => {
   const { t } = useTranslation();
   const router = useRouter();
@@ -125,7 +124,7 @@ const SelectMethod: NextPage = (): JSX.Element => {
                       onClick={() => handleOpen(item.id)}
                       suppressHydrationWarning={suppressText}
                     >
-                      {t(item.City)}
+                      <TextTrans ar={item.name_ar} en={item.name_en} />
                     </AccordionHeader>
                     <AccordionBody>
                       <div className="bg-LightGray">
@@ -139,7 +138,7 @@ const SelectMethod: NextPage = (): JSX.Element => {
                               className="text-base text-black"
                               suppressHydrationWarning={suppressText}
                             >
-                              {t(area.name)}
+                              <TextTrans ar={area.name_ar} en={area.name_en} />
                             </p>
                             {!isEmpty(selectedArea) &&
                             area.id === selectedArea?.id ? (
@@ -172,7 +171,9 @@ const SelectMethod: NextPage = (): JSX.Element => {
                     className={`flex flex-row  w-full justify-between items-center p-1`}
                   >
                     <label htmlFor={b.name} className="py-1 form-check-label">
-                      <p>{b.name}</p>
+                      <p>
+                        <TextTrans ar={b.name_ar} en={b.name_en} />
+                      </p>
                     </label>
                     <input
                       className="form-check-input appearance-none rounded-full h-5 w-5 border border-gray-200 focus:ring-lime-400 focus:ring-offset-1 focus:border-2 text-lime-400 focus:border-lime-400 checked:border-lime-400 bg-gray-100 checked:bg-lime-400 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"

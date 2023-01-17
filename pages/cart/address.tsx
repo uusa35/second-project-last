@@ -10,11 +10,7 @@ import {
 } from '@/redux/slices/appSettingSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useRouter } from 'next/router';
-import {
-  AccessTimeOutlined,
-  LocationOnOutlined,
-  CalendarMonthOutlined,
-} from '@mui/icons-material';
+import { LocationOnOutlined } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import GoogleMapReact from 'google-map-react';
 
@@ -24,12 +20,7 @@ import OfficeIcon from '@/appIcons/office.svg';
 import OfficeAcitveIcon from '@/appIcons/office_active.svg';
 import Image from 'next/image';
 import { Home } from '@mui/icons-material';
-import {
-  addressInputField,
-  appLinks,
-  submitBtnClass,
-  suppressText,
-} from '@/constants/*';
+import { addressInputField, appLinks, suppressText } from '@/constants/*';
 import { isEmpty } from 'lodash';
 
 const CartAddress: NextPage = (): JSX.Element => {
@@ -124,7 +115,7 @@ const CartAddress: NextPage = (): JSX.Element => {
                 className="flex mb-0 list-none flex-wrap pt-3 pb-4 flex-row"
                 role="tablist"
               >
-                <li className="-mb-px mr-2 last:mr-0 flex-auto text-center">
+                <li className=" ltr:ml-2 rtl:mr-2 flex-auto text-center border border-stone-300 rounded-md">
                   <a
                     className={
                       'text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal ' +
@@ -149,7 +140,7 @@ const CartAddress: NextPage = (): JSX.Element => {
                     </div>
                   </a>
                 </li>
-                <li className="-mb-px mr-2 last:mr-0 flex-auto text-center">
+                <li className=" ltr:ml-2 rtl:mr-2 flex-auto text-center border border-stone-300 rounded-md">
                   <a
                     className={
                       'text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal ' +
@@ -181,7 +172,7 @@ const CartAddress: NextPage = (): JSX.Element => {
                     </div>
                   </a>
                 </li>
-                <li className="-mb-px mr-2 last:mr-0 flex-auto text-center">
+                <li className=" ltr:ml-2 rtl:mr-2 flex-auto text-center border border-stone-300 rounded-md">
                   <a
                     className={
                       'text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal ' +
@@ -330,14 +321,14 @@ const CartAddress: NextPage = (): JSX.Element => {
               </label>
             </div>
             {show && (
-              <div>
-                <div className="flex justify-between py-2">
-                  <p className="text-base font-semibold">date</p>
-                  <CalendarMonthOutlined className="text-primary_BG text-2xl" />
+              <div className={`flex flex-col gap-3`}>
+                <div className="flex justify-between py-2 border-b-4 border-stone-100">
+                  <input type="date" className={`border-none w-full`} />
+                  {/*<CalendarDaysIcon className="text-primary_BG w-8 h-8" />*/}
                 </div>
-                <div className="flex justify-between py-2">
-                  <p className="text-base font-semibold">time</p>
-                  <AccessTimeOutlined className="text-primary_BG text-2xl" />
+                <div className="flex justify-between py-2 border-b-4 border-stone-100">
+                  <input type="time" className={`border-none w-full`} />
+                  {/*<ClockIcon className="text-primary_BG w-8 h-8" />*/}
                 </div>
               </div>
             )}
