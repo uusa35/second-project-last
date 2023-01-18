@@ -428,5 +428,15 @@
   "we're_sorry": "آسفون",
   "your_order_placement_is_failed": "تم فشل حجز طلبك",
   "you_can_retry_your_order_placement_or_check_your_cart_items_before_processing_your_order": "يمكنك إعادة محاولة الطلب أو التحقق من العناصر قبل إجراء عملية الطلب",
-  "retry_order": "إعادة الطلب"
+  "retry_order": "إعادة الطلب",
+  "pick_up_now": "استلم الآن",
+  "customer_info": "معلومات العميل",
+  "pick_up_details": "تفاصيل الاستلام",
+  "branch": "فرع",
+  "payment_details": "تفاصيل الدفع",
+  "order_details": "تفاصيل الطلب",
+  "qty": "الكمية",
+  "item": "عنصر",
+  "add_on": "إضافات",
+  "sp_req": "رقم الطلب"
 }

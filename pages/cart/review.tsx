@@ -206,7 +206,7 @@ const CartReview: NextPage = () => {
                 </p>
               </div>
               <div className="flex justify-between mb-3 text-lg">
-                <p suppressHydrationWarning={suppressText}>{t('subtotal')}</p>
+                <p suppressHydrationWarning={suppressText}>{t('delivery_services')}</p>
                 <p suppressHydrationWarning={suppressText}>
                   {t('kwd')}
                 </p>
