@@ -57,7 +57,8 @@ export const cartApi = apiSlice.injectEndpoints({
       query: ({ userAgent, PromoCode }) => ({
         url: `checkPromoCode`,
         params: { userAgent, PromoCode },
-        validateStatus: (response, result) => console.log('result', result),
+        validateStatus: (response, result) =>
+          response.status == 200 && result.status,
       }),
     }),
     RemoveFromCart: builder.mutation<
