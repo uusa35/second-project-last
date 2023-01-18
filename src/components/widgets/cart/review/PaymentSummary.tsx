@@ -8,6 +8,7 @@ const PaymentSummary: FC = () => {
   const { t } = useTranslation();
   const { cart } = useAppSelector((state) => state);
 
+  console.log('the cart', cart);
   return (
     <div className={`px-4 py-4`}>
       <div className="flex justify-between mb-3 text-lg">

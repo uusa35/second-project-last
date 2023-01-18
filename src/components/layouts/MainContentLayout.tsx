@@ -21,7 +21,7 @@ type Props = {
   backHome?: boolean;
   hideBack?: boolean;
   showMotion?: boolean;
-  backRoute?: string | null
+  backRoute?: string | null;
 };
 
 const MainContentLayout: FC<Props> = ({
@@ -34,7 +34,7 @@ const MainContentLayout: FC<Props> = ({
   const { t } = useTranslation();
   const {
     appSetting: { showHeader, showFooter },
-    locale: { isRTL }
+    locale: { isRTL },
   } = useAppSelector((state) => state);
   const [isOnline, setIsOnline] = useState(true);
 
@@ -50,34 +50,33 @@ const MainContentLayout: FC<Props> = ({
     };
   }, [isOnline]);
 
-  return (    
-    <div
+  return (
+    <motion.div
+      animate={{ x: [isRTL ? -1000 : 1000, 0, 0] }}
+      transition={{
+        type: 'spring',
+        bounce: 5,
+        duration: showMotion ? 0.2 : 0,
+      }}
       className={`flex flex-col justify-start items-start w-full lg:w-2/4 xl:w-1/3 relative`}
     >
       <SideMenu />
       {showHeader && <AppHeader />}
-      <main className={`w-full mb-[50%] relative rounded-t-full`}>
-        <motion.div
-          animate={{ x: [isRTL ? -1000 : 1000, 0, 0] }}
-          transition={{
-            type: 'spring',
-            bounce: 5,
-            duration: showMotion ? 0.2 : 0,
-          }}
-          style={{ height: '100%' }}
-        >
-          {isOnline ? (
-            children
-          ) : (
-            <OffLineWidget
-              message={`network_is_not_available_please_check_your_internet`}
-              img={`${NoInternet.src}`}
-            />
-          )}
-        </motion.div>
+      <main
+        className={`w-full mb-[50%] relative rounded-t-full min-h-screen`}
+        style={{ height: '100%' }}
+      >
+        {isOnline ? (
+          children
+        ) : (
+          <OffLineWidget
+            message={`network_is_not_available_please_check_your_internet`}
+            img={`${NoInternet.src}`}
+          />
+        )}
       </main>
       <AppFooter />
-    </div>
+    </motion.div>
   );
 };
 

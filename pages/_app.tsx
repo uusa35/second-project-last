@@ -29,11 +29,11 @@ const App: FC<AppProps> = ({ Component, ...rest }) => {
         options={{ showSpinner: false }}
       />
       {/*<DevTools />*/}
-      <AnimatePresence mode={`wait`}>
-        <MainLayout>
-          <Component {...pageProps} />
-        </MainLayout>
-      </AnimatePresence>
+      {/*<AnimatePresence mode={`wait`}>*/}
+      <MainLayout>
+        <Component {...pageProps} />
+      </MainLayout>
+      {/*</AnimatePresence>*/}
     </Provider>
   );
 };
