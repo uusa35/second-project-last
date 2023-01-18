@@ -24,6 +24,7 @@ const SlideTopNav: FC<Props> = ({ offset }): JSX.Element => {
     vendor,
     appSetting: { sideMenuOpen },
     locale: { lang, otherLang },
+    cart: { items },
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -85,9 +86,18 @@ const SlideTopNav: FC<Props> = ({ offset }): JSX.Element => {
             <div className="flex sm:hidden flex-1  pt-2 ">{vendor.name}</div>
           </Link>
         </div>
-        <div className={`flex flex-row justify-between items-center w-20 z-50`}>
-          <Link scroll={false} href={appLinks.cartIndex.path}>
+        <div className={`flex flex-row justify-between items-center w-20`}>
+          <Link
+            scroll={false}
+            href={appLinks.cartIndex.path}
+            className={`relative`}
+          >
             <ShoppingBagOutlined className={`w-8 h-8 text-black`} />
+            {items.length > 0 && (
+              <div className="absolute -left-2 -top-2 opacity-90  rounded-full bg-red-600 w-6 h-6 top-0 shadow-xl flex items-center justify-center text-white">
+                <span className={`pt-[3.5px] shadow-md`}>{items.length}</span>
+              </div>
+            )}
           </Link>
           <button
             onClick={() => handleChangeLang(otherLang)}

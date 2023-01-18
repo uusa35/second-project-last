@@ -8,33 +8,50 @@ import {
   resetShowFooterElement,
   setShowFooterElement,
 } from '@/redux/slices/appSettingSlice';
-import NotFound from '@/appImages/not_found.png';
-import Image from 'next/image';
 import { EditOutlined } from '@mui/icons-material';
 import Promotion from '@/appIcons/promotion.svg';
 import Notes from '@/appIcons/notes.svg';
 import { appLinks, suppressText } from '@/constants/*';
 import CustomImage from '@/components/CustomImage';
-import { map, sumBy } from 'lodash';
+import {
+  debounce,
+  isEmpty,
+  isNull,
+  kebabCase,
+  lowerCase,
+  map,
+  sumBy,
+} from 'lodash';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
 import {
   removeFromCart,
   decreaseCartQty,
   increaseCartQty,
+  setCartNotes,
+  setCartPromoCode,
 } from '@/redux/slices/cartSlice';
 import { QuantityMeters } from '@/types/index';
 import Link from 'next/link';
+import {
+  useAddToCartMutation,
+  useLazyCheckPromoCodeQuery,
+} from '@/redux/api/cartApi';
 const CartIndex: NextPage = (): JSX.Element => {
   const { t } = useTranslation();
   const {
-    locale: { lang },
-    branches,
     cart,
-    order,
     branch: { id: branchId },
-    area: { id: areaId }
+    area: { id: areaId },
+    appSetting: { userAgent },
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
+  const [triggerAddToCart, { data: serverCart, isSuccess }] =
+    useAddToCartMutation();
+  const [
+    triggerCheckPromoCode,
+    { data: promoCodeData, isSuccess: promoCodeSuccess },
+  ] = useLazyCheckPromoCodeQuery();
+
   useEffect(() => {
     dispatch(setCurrentModule(t('cart')));
     dispatch(setShowFooterElement(`cartIndex`));
@@ -42,23 +59,88 @@ const CartIndex: NextPage = (): JSX.Element => {
       dispatch(resetShowFooterElement());
     };
   }, []);
-  const handleRemove = (id: any) => {
-    console.log('id', id);
-    dispatch(removeFromCart(id));
-    dispatch(
+
+  useEffect(() => {
+    if (branchId && !isNull(branchId) && !isEmpty(cart.items) && userAgent) {
+      triggerAddToCart({
+        branchId,
+        body: { UserAgent: userAgent, Cart: cart.items },
+      }).then((r: any) => {
+        if (r.data && r.data.status && r.data.msg) {
+          dispatch(
+            showToastMessage({
+              content: lowerCase(kebabCase(r.data.msg)),
+              type: `success`,
+            })
+          );
+        } else {
+          dispatch(
+            showToastMessage({
+              content: lowerCase(
+                kebabCase(
+                  r.error?.data?.msg ?? `cart_is_not_ready_error_occured`
+                )
+              ),
+              type: `error`,
+            })
+          );
+        }
+      });
+    }
+  }, [cart.items, branchId]);
+
+  const handleRemove = async (id: any) => {
+    await dispatch(removeFromCart(id));
+    await dispatch(
       showToastMessage({
-        content: `item removed from cart`,
+        content: `item_removed_from_cart`,
         type: `info`,
       })
     );
   };
+
   const handleIncrease = (element: any) => {
     dispatch(increaseCartQty(element));
   };
+
   const handleDecrease = (element: any) => {
     dispatch(decreaseCartQty(element));
   };
-  console.log('the cart', cart);
+
+  const handleChange = (notes: string) => {
+    if (notes.length > 3) {
+      dispatch(setCartNotes(notes));
+    }
+  };
+
+  const handleCoupon = (coupon: string) => {
+    if (coupon.length > 3 && userAgent) {
+      dispatch(setCartPromoCode(coupon));
+      console.log('userAgent', userAgent);
+      console.log('coupon', coupon);
+      triggerCheckPromoCode({
+        userAgent,
+        PromoCode: coupon,
+      }).then((r) => {
+        console.log('r ===>', r);
+        if (r.error?.data?.msg) {
+          dispatch(
+            showToastMessage({
+              content: lowerCase(kebabCase(r.error.data.msg)),
+              type: `error`,
+            })
+          );
+        }
+      });
+    }
+  };
+
+  // useEffect(() => {
+  //   if (!isNull(cart.PromoCode)) {
+  //
+  //   }
+  // }, [cart.PromoCode]);
+
   return (
     <MainContentLayout>
       <Suspense>
@@ -108,20 +190,25 @@ const CartIndex: NextPage = (): JSX.Element => {
                           </div>
                         </div>
                         <Link
-                        href={`${appLinks.productShow(
-                          item.ProductID.toString(),
-                          branchId,
-                          item.ProductID,
-                          item.ProductName,
-                          areaId
-                        )}`}
-                      >
-                        <p className="font-semibold">{item.ProductName}</p>
-                      </Link>
+                          href={`${appLinks.productShow(
+                            item.ProductID.toString(),
+                            branchId,
+                            item.ProductID,
+                            item.ProductName,
+                            areaId
+                          )}`}
+                        >
+                          <p className="font-semibold">{item.ProductName}</p>
+                        </Link>
                         <div className="flex">
                           {map(item.QuantityMeters, (a: QuantityMeters) => (
                             <div className="w-fit pb-2">
-                              <p className={`text-xs px-2 pe-3 text-gray-400 w-auto ${item.QuantityMeters.length > 1 && 'border-e-2 border-gray-400' }`}>
+                              <p
+                                className={`text-xs px-2 pe-3 text-gray-400 w-auto ${
+                                  item.QuantityMeters.length > 1 &&
+                                  'border-e-2 border-gray-400'
+                                }`}
+                              >
                                 {a.addons[0].name}
                               </p>
                             </div>
@@ -198,8 +285,9 @@ const CartIndex: NextPage = (): JSX.Element => {
 
               <div className="flex items-center justify-between px-2 pt-3">
                 <input
-                  type="number"
+                  type="text"
                   placeholder={`${t('enter_code_here')}`}
+                  onChange={debounce((e) => handleCoupon(e.target.value), 400)}
                   suppressHydrationWarning={suppressText}
                   className={`border-0 border-b-2 border-b-gray-200 w-full focus:ring-transparent`}
                 />
@@ -224,6 +312,7 @@ const CartIndex: NextPage = (): JSX.Element => {
                 type="text"
                 placeholder={`${t('enter_notes_here')}`}
                 suppressHydrationWarning={suppressText}
+                onChange={debounce((e) => handleChange(e.target.value), 400)}
                 className={`border-0 border-b-2 border-b-gray-200 w-full focus:ring-transparent`}
               />
             </div>
