@@ -15,8 +15,8 @@ const HomeVendorMainInfo: FC<Props> = ({ element }) => {
 
   return (
     <>
-      <div className="inline-flex gap-x-2 justify-between">
-        <div className="flex flex-grow gap-x-2">
+      <div className="flex gap-x-2 justify-between items-center">
+        <div className="flex grow gap-x-2">
           <Link href={appLinks.home.path} scroll={false} className={`w-1/4`}>
             <CustomImage
               width={imageSizes.xs}
@@ -32,18 +32,22 @@ const HomeVendorMainInfo: FC<Props> = ({ element }) => {
             </h1>
             <div className="text-sm text-neutral-400 space-y-1">
               <p suppressHydrationWarning={suppressText}>
-                <Check className="text-lime-400 text-base" />{' '}
+                <Check className="text-lime-400 text-base" />
                 {t('payment_by_cards')}
               </p>
               <p suppressHydrationWarning={suppressText}>
-                <Check className="text-lime-400 text-base" />{' '}
+                <Check className="text-lime-400 text-base" />
                 {t('cash_on_delivery')}
               </p>
             </div>
           </div>
         </div>
 
-        <Link href={appLinks.vendorShow.path} scroll={false}>
+        <Link
+          href={appLinks.vendorShow.path}
+          scroll={false}
+          className={`flex-none`}
+        >
           <InfoOutlined className="text-primary_BG w-6 h-6 lg:w-8 lg:h-8" />
         </Link>
       </div>

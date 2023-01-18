@@ -131,6 +131,7 @@ export interface ClientCart {
   grossTotal: number;
   items: ProductCart[];
   PromoCode: string | null;
+  notes: string;
   promoCode: {
     total_cart_before_tax: number;
     total_cart_after_tax: number;
@@ -149,7 +150,7 @@ export interface ProductCart {
   RadioBtnsAddons: RadioBtns[];
   CheckBoxes: CheckBoxes[];
   QuantityMeters: QuantityMeters[];
-  id?: string;
+  id: string;
   enabled: boolean;
   image: string;
 }

@@ -5,7 +5,7 @@ import {
   QuantityMeters,
   RadioBtns,
 } from '@/types/index';
-import { filter, multiply } from 'lodash';
+import { filter, multiply, random } from 'lodash';
 
 const initialState: ProductCart = {
   ProductID: 0,
@@ -21,6 +21,7 @@ const initialState: ProductCart = {
   subTotalPrice: 0,
   enabled: false,
   image: ``,
+  id: random(11111, 999999).toString(),
 };
 
 export const productCartSlice = createSlice({

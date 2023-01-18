@@ -1,11 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ProductCart, ClientCart } from '@/types/index';
 import { filter, sum, sumBy, multiply } from 'lodash';
+import { searchParamsSlice } from '@/redux/slices/searchParamsSlice';
+import { appSettingSlice } from '@/redux/slices/appSettingSlice';
 
 const initialState: ClientCart = {
   grossTotal: 0,
   items: [],
   PromoCode: null,
+  notes: ``,
   promoCode: {
     total_cart_before_tax: 0,
     total_cart_after_tax: 0,
@@ -82,6 +85,24 @@ export const cartSlice = createSlice({
         state.grossTotal = sumBy(state.items, (item) => item.subTotalPrice);
       }
     },
+    setCartNotes: (
+      state: typeof initialState,
+      action: PayloadAction<string>
+    ) => {
+      return {
+        ...state,
+        notes: action.payload,
+      };
+    },
+    setCartPromoCode: (
+      state: typeof initialState,
+      action: PayloadAction<string>
+    ) => {
+      return {
+        ...state,
+        PromoCode: action.payload,
+      };
+    },
   },
 });
 
@@ -91,4 +112,6 @@ export const {
   removeFromCart,
   increaseCartQty,
   decreaseCartQty,
+  setCartNotes,
+  setCartPromoCode,
 } = cartSlice.actions;

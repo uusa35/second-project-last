@@ -399,5 +399,9 @@
   "deliver_later": "deliver later",
   "checkout": "checkout",
   "delivery_prefrences": "delivery prefrences",
-  "please_review_sections_some_r_required" : "some sections are required in order to successfully add to your shopping cart. please review product's sections."
+  "please_review_sections_some_r_required" : "some sections are required in order to successfully add to your shopping cart. please review product's sections.",
+  "cart_is_not_ready_error_occurred" : "your cart is not ready. unknown error occurred !!",
+  "item_added_to_cart_success" : "your shopping cart updated successfully.",
+  "no_branch_found_pleas_add_branch_or_area" : "please select one of our branches in case of delivery selection. thank you",
+  "userid_or/and_tempid_not_found_!_please_enter_valid_userid_or_tempid" : "sys error: user id or temp id does not exist."
 }
