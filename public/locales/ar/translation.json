@@ -423,5 +423,6 @@
   "thank_you": "شكرًا لك",
   "your_order_is_confirmed_and_on_its_way": "تم تأكيد طلبك وفي طريقه",
   "track_your_order_and_check_the_status_of_it_live": "تتبع طلبك وتحقق من حالته",
-  "order_again": "اطلب مرة ثانية"
+  "order_again": "اطلب مرة ثانية",
+  "promo_code_is_invalid" : "رقم الكوبون غير صحيح"
 }

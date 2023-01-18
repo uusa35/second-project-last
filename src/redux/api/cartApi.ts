@@ -29,20 +29,14 @@ export const cartApi = apiSlice.injectEndpoints({
       }),
     }),
     GetCartProducts: builder.query<
-      AppQueryResult<any>,
+      AppQueryResult<ServerCart>,
       {
-        lang: Locale['lang'];
-        country: string;
-        params: any;
+        UserAgent: string;
       }
     >({
-      query: ({ country, params, lang }) => ({
-        url: `cart`,
-        params: { ...params },
-        headers: {
-          'Accept-Language': lang,
-          country,
-        },
+      query: ({ UserAgent }) => ({
+        url: `shoppingCart`,
+        params: { UserAgent },
         validateStatus: (response, result) =>
           response.status == 200 && result.status,
       }),
@@ -106,4 +100,5 @@ export const {
   useUpdateItemInCartMutation,
   useAddToCartMutation,
   useLazyCheckPromoCodeQuery,
+  useLazyGetCartProductsQuery,
 } = cartApi;

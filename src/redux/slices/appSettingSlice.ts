@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { appSetting } from '@/types/index';
 import { searchParamsSlice } from '@/redux/slices/searchParamsSlice';
+import { cartSlice } from '@/redux/slices/cartSlice';
 
 const initialState: appSetting = {
   userAgent: null, /// ==== tempId for the cart

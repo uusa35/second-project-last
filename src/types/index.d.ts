@@ -129,8 +129,11 @@ export interface ServerCart {
 
 export interface ClientCart {
   grossTotal: number;
+  subTotal: number;
+  total: number;
   items: ProductCart[];
   PromoCode: string | null;
+  promoEnabled: boolean;
   notes: string;
   promoCode: {
     total_cart_before_tax: number;

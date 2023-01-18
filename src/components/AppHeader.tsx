@@ -13,13 +13,13 @@ const AppHeader: FC = () => {
   );
 
   useEffect(() => {
-    const onScroll = () => null;
-    const handleMouseUp = () => setOffset(window.pageYOffset);
+    const onScroll = () => setOffset(window.pageYOffset);
+    // const handleMouseUp = () => console.log('up');
     window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('mouseup', handleMouseUp);
+    // window.addEventListener('mouseup', handleMouseUp);
     return () => {
       window.removeEventListener('scroll', debounce(onScroll, 400));
-      window.removeEventListener('scroll', handleMouseUp);
+      // window.removeEventListener('mouseup', handleMouseUp);
     };
   }, [router.pathname]);
 

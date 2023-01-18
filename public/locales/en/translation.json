@@ -411,5 +411,6 @@
   "thank_you": "thank you",
   "your_order_is_confirmed_and_on_its_way": "your order is confirmed and on its way",
   "track_your_order_and_check_the_status_of_it_live": "track your order and check the status of it live",
-  "order_again": "order again"
+  "order_again": "order again",
+  "promo_code_is_invalid" : "promo code is invalid"
 }

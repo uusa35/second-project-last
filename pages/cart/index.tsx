@@ -29,13 +29,17 @@ import {
   increaseCartQty,
   setCartNotes,
   setCartPromoCode,
+  setCartTotalAndSubTotal,
+  setCartPromoSuccess,
 } from '@/redux/slices/cartSlice';
 import { QuantityMeters } from '@/types/index';
 import Link from 'next/link';
 import {
   useAddToCartMutation,
   useLazyCheckPromoCodeQuery,
+  useLazyGetCartProductsQuery,
 } from '@/redux/api/cartApi';
+import PaymentSummary from '@/widgets/cart/review/PaymentSummary';
 const CartIndex: NextPage = (): JSX.Element => {
   const { t } = useTranslation();
   const {
@@ -45,12 +49,16 @@ const CartIndex: NextPage = (): JSX.Element => {
     appSetting: { userAgent },
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
-  const [triggerAddToCart, { data: serverCart, isSuccess }] =
+  const [triggerAddToCart, { isSuccess: addToCartIsSuccess }] =
     useAddToCartMutation();
   const [
     triggerCheckPromoCode,
     { data: promoCodeData, isSuccess: promoCodeSuccess },
   ] = useLazyCheckPromoCodeQuery();
+  const [
+    triggerGetCartProducts,
+    { data: serverCart, isSuccess: serverCartIsSuccess },
+  ] = useLazyGetCartProductsQuery();
 
   useEffect(() => {
     dispatch(setCurrentModule(t('cart')));
@@ -73,6 +81,16 @@ const CartIndex: NextPage = (): JSX.Element => {
               type: `success`,
             })
           );
+          triggerGetCartProducts({ UserAgent: userAgent }).then((r: any) => {
+            if (r.data && r.data.status) {
+              dispatch(
+                setCartTotalAndSubTotal({
+                  total: r.data.total,
+                  subTotal: r.data.subTotal,
+                })
+              );
+            }
+          });
         } else {
           dispatch(
             showToastMessage({
@@ -114,19 +132,32 @@ const CartIndex: NextPage = (): JSX.Element => {
   };
 
   const handleCoupon = (coupon: string) => {
-    if (coupon.length > 3 && userAgent) {
+    if (coupon.length > 3 && userAgent && !isEmpty(cart.items)) {
       dispatch(setCartPromoCode(coupon));
-      console.log('userAgent', userAgent);
-      console.log('coupon', coupon);
       triggerCheckPromoCode({
         userAgent,
         PromoCode: coupon,
       }).then((r) => {
-        console.log('r ===>', r);
-        if (r.error?.data?.msg) {
+        if (r.data && r.data.status && r.data.promoCode) {
+          // promoCode Success
+          dispatch(setCartPromoSuccess(r.data.promoCode));
+          dispatch(
+            showToastMessage({
+              content: lowerCase(kebabCase(r.data.msg)),
+              type: `success`,
+            })
+          );
+        } else if (r.error && r.error.data && r.error.data?.msg) {
           dispatch(
             showToastMessage({
               content: lowerCase(kebabCase(r.error.data.msg)),
+              type: `error`,
+            })
+          );
+        } else {
+          dispatch(
+            showToastMessage({
+              content: `cart_unknown_coupon_error`,
               type: `error`,
             })
           );
@@ -134,12 +165,6 @@ const CartIndex: NextPage = (): JSX.Element => {
       });
     }
   };
-
-  // useEffect(() => {
-  //   if (!isNull(cart.PromoCode)) {
-  //
-  //   }
-  // }, [cart.PromoCode]);
 
   return (
     <MainContentLayout>
@@ -201,8 +226,8 @@ const CartIndex: NextPage = (): JSX.Element => {
                           <p className="font-semibold">{item.ProductName}</p>
                         </Link>
                         <div className="flex">
-                          {map(item.QuantityMeters, (a: QuantityMeters) => (
-                            <div className="w-fit pb-2">
+                          {map(item.QuantityMeters, (a: QuantityMeters, i) => (
+                            <div className="w-fit pb-2" key={i}>
                               <p
                                 className={`text-xs px-2 pe-3 text-gray-400 w-auto ${
                                   item.QuantityMeters.length > 1 &&
@@ -316,37 +341,7 @@ const CartIndex: NextPage = (): JSX.Element => {
                 className={`border-0 border-b-2 border-b-gray-200 w-full focus:ring-transparent`}
               />
             </div>
-            <div className={`px-4 py-4`}>
-              <div className="flex justify-between mb-3 text-lg">
-                <p suppressHydrationWarning={suppressText}>{t('subtotal')}</p>
-                <p suppressHydrationWarning={suppressText}>
-                  {sumBy(cart.items, (item: any) => item.subTotalPrice)}{' '}
-                  {t('kwd')}
-                </p>
-              </div>
-              <div className="flex justify-between mb-3 text-lg">
-                <p suppressHydrationWarning={suppressText}>{t('subtotal')}</p>
-                <p suppressHydrationWarning={suppressText}>
-                  {sumBy(cart.items, (item: any) => item.subTotalPrice)}{' '}
-                  {t('kwd')}
-                </p>
-              </div>
-
-              <div className="flex justify-between mb-3 text-lg ">
-                <p
-                  className="font-semibold"
-                  suppressHydrationWarning={suppressText}
-                >
-                  {t('total')}
-                </p>
-                <p
-                  className="text-primary_BG"
-                  suppressHydrationWarning={suppressText}
-                >
-                  {cart.grossTotal} {t('kwd')}
-                </p>
-              </div>
-            </div>
+            {serverCartIsSuccess && addToCartIsSuccess && <PaymentSummary />}
           </div>
         )}
       </Suspense>

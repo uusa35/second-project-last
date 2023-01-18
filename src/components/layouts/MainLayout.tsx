@@ -17,7 +17,6 @@ import {
   useLazyGetBranchesQuery,
 } from '@/redux/api/branchApi';
 import { setBranch } from '@/redux/slices/branchSlice';
-import { setBranches } from '@/redux/slices/branchesSlice';
 import { useLazyCreateTempIdQuery } from '@/redux/api/cartApi';
 import { useLazyGetLocationsQuery } from '@/redux/api/locationApi';
 import { setArea } from '@/redux/slices/areaSlice';
