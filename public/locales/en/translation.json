@@ -415,5 +415,6 @@
   "you_can_retry_your_order_placement_or_check_your_cart_items_before_processing_your_order": "you can retry your order placement or check your cart items before processing your order",
   "failure": "failure",
   "'we_re_sorry": "we're sorry",
-  "your_order_placement_is_failed": "your order placement is failed"
+  "your_order_placement_is_failed": "your order placement is failed",
+  "retry_order": "retry order"
 }

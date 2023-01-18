@@ -4,6 +4,7 @@ import Image from "next/image";
 import Failure from '@/appImages/failed.png';
 import { suppressText, submitBtnClass } from '@/constants/*';
 import { useTranslation } from "react-i18next";
+import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
 const OrderFailure: NextPage = (): JSX.Element => {
     const { t } = useTranslation();
     return (
@@ -21,9 +22,16 @@ const OrderFailure: NextPage = (): JSX.Element => {
                         {t('you_can_retry_your_order_placement_or_check_your_cart_items_before_processing_your_order')}
                     </p>
                     </div>
-                    <button className={`${submitBtnClass}`} suppressHydrationWarning={suppressText}>{t('view_receipt')}</button>
-                    <button className={`${submitBtnClass}`} suppressHydrationWarning={suppressText}>{t('track_order')}</button>
-                    <button className={`${submitBtnClass}`} suppressHydrationWarning={suppressText}>{t('order_again')}</button>
+                    <button className={`${submitBtnClass}`} suppressHydrationWarning={suppressText}>
+                        <div className="flex items-center justify-center">
+                            <div className="bg-CustomRed rounded-full w-6 h-6 flex items-center justify-center border-2 border-white">
+                                <p>0</p>
+                            </div>
+                            <ShoppingBagOutlinedIcon className="w-6 h-6" />
+                            <p className="pt-1">{t('my_cart')}</p>
+                        </div>
+                    </button>
+                    <button className={`${submitBtnClass}`} suppressHydrationWarning={suppressText}>{t('retry_order')}</button>
                 </div>
             </div>
         </MainContentLayout>
