@@ -402,5 +402,10 @@
   "please_review_sections_some_r_required" : "some sections are required in order to successfully add to your shopping cart. please review product's sections.",
   "expected_delivery_time": "expected delivery time",
   "order_summary": "order summary",
-  "select_payments": "select payments"
+  "select_payments": "select payments",
+  "success": "success",
+  "thank_you": "thank you",
+  "your_order_is_confirmed_and_on_its_way": "your order is confirmed and on its way",
+  "track_your_order_and_check_the_status_of_it_live": "track your order and check the status of it live",
+  "order_again": "order again"
 }
