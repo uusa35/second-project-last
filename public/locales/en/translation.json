@@ -399,5 +399,8 @@
   "deliver_later": "deliver later",
   "checkout": "checkout",
   "delivery_prefrences": "delivery prefrences",
-  "please_review_sections_some_r_required" : "some sections are required in order to successfully add to your shopping cart. please review product's sections."
+  "please_review_sections_some_r_required" : "some sections are required in order to successfully add to your shopping cart. please review product's sections.",
+  "expected_delivery_time": "expected delivery time",
+  "order_summary": "order summary",
+  "select_payments": "select payments"
 }

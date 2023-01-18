@@ -411,5 +411,8 @@
   "deliver_later": "التوصيل لاحقًا",
   "checkout": "الدفع",
   "delivery_prefrences": "أولوية التسليم",
-  "please_review_sections_some_r_required" : "بعض الاقسام مطلوبة لاستكمال اضافة المنتج لعربة التسوق .. يرجى مراجعة الأقسام الفرعية"
+  "please_review_sections_some_r_required" : "بعض الاقسام مطلوبة لاستكمال اضافة المنتج لعربة التسوق .. يرجى مراجعة الأقسام الفرعية",
+  "expected_delivery_time": "الوقت المتوقع للوصول",
+  "order_summary": "ملخص الطلب",
+  "select_payments": "اختر طريقة الدفع"
 }
