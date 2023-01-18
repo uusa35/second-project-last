@@ -15,7 +15,7 @@ const HomeVendorMainInfo: FC<Props> = ({ element }) => {
 
   return (
     <>
-      <div className="flex gap-x-2 justify-between">
+      <div className="inline-flex gap-x-2 justify-between">
         <div className="flex flex-grow gap-x-2">
           <Link href={appLinks.home.path} scroll={false} className={`w-1/4`}>
             <CustomImage

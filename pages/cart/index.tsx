@@ -13,7 +13,7 @@ import Image from 'next/image';
 import { EditOutlined } from '@mui/icons-material';
 import Promotion from '@/appIcons/promotion.svg';
 import Notes from '@/appIcons/notes.svg';
-import { suppressText } from '@/constants/*';
+import { appLinks, suppressText } from '@/constants/*';
 import CustomImage from '@/components/CustomImage';
 import { map, sumBy } from 'lodash';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
@@ -23,6 +23,7 @@ import {
   increaseCartQty,
 } from '@/redux/slices/cartSlice';
 import { QuantityMeters } from '@/types/index';
+import Link from 'next/link';
 const CartIndex: NextPage = (): JSX.Element => {
   const { t } = useTranslation();
   const {
@@ -30,6 +31,8 @@ const CartIndex: NextPage = (): JSX.Element => {
     branches,
     cart,
     order,
+    branch: { id: branchId },
+    area: { id: areaId }
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   useEffect(() => {
@@ -77,7 +80,7 @@ const CartIndex: NextPage = (): JSX.Element => {
               <div key={i}>
                 <div className="px-4">
                   <div className="mb-10 ">
-                    <div className="flex px-5">
+                    <div className="flex px-5 items-center">
                       <div className="ltr:pr-3 rtl:pl-3 w-1/5">
                         <CustomImage
                           className="w-full  rounded-lg border-[1px] border-gray-200"
@@ -104,11 +107,21 @@ const CartIndex: NextPage = (): JSX.Element => {
                             </button>
                           </div>
                         </div>
+                        <Link
+                        href={`${appLinks.productShow(
+                          item.ProductID.toString(),
+                          branchId,
+                          item.ProductID,
+                          item.ProductName,
+                          areaId
+                        )}`}
+                      >
                         <p className="font-semibold">{item.ProductName}</p>
+                      </Link>
                         <div className="flex">
                           {map(item.QuantityMeters, (a: QuantityMeters) => (
                             <div className="w-fit pb-2">
-                              <p className="text-xs px-2 pe-3 text-gray-400 border-e-2 border-gray-400 w-auto">
+                              <p className={`text-xs px-2 pe-3 text-gray-400 w-auto ${item.QuantityMeters.length > 1 && 'border-e-2 border-gray-400' }`}>
                                 {a.addons[0].name}
                               </p>
                             </div>
@@ -164,7 +177,7 @@ const CartIndex: NextPage = (): JSX.Element => {
                     </div>
                   </div>
                 </div>
-                <div className="mt-10 px-5 py-2 bg-gray-100"></div>
+                <div className="mt-10 px-5 py-1 bg-gray-100"></div>
               </div>
             ))}
 
