@@ -4,7 +4,7 @@ import MainContentLayout from '@/layouts/MainContentLayout';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 import TrunkClock from '@/appIcons/trunk_clock.svg';
-import { suppressText } from '@/constants/*';
+import { suppressText, footerBtnClass, mainBg } from '@/constants/*';
 import { LocationOnOutlined } from '@mui/icons-material';
 import Home from '@/appIcons/home.svg';
 import IDCard from '@/appIcons/id_card.svg';
@@ -227,6 +227,16 @@ const CartReview: NextPage = () => {
                 </p>
               </div>
             </div>
+            <div
+            className={`${mainBg} bg-sky-600 w-full h-32 flex justify-center items-center rounded-t-xl`}
+          >
+            <button
+              className={`${footerBtnClass}`}
+              suppressHydrationWarning={suppressText}
+            >
+              {t('checkout')}
+            </button>
+          </div>
         </div>
       </Suspense>
     </MainContentLayout>
