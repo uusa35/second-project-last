@@ -56,10 +56,14 @@ const CustomerInformation: NextPage = (): JSX.Element => {
 
   const handelSaveCustomerInfo = async () => {
     // console.log(userData);
-    if (userData.name === '' || userData.phone === '') {
+    if (
+      userData.name.length < 2 ||
+      userData.phone?.length < 2 ||
+      userData.email.length < 2
+    ) {
       dispatch(
         showToastMessage({
-          content: `name_and_phone_are_required`,
+          content: `some_fields_r_missing`,
           type: `info`,
         })
       );
@@ -98,33 +102,35 @@ const CustomerInformation: NextPage = (): JSX.Element => {
             />
           </div> */}
 
-        <div className="lg:mt-20">
-          <div className="flex gap-x-2 px-2 border-b-4 border-b-gray-200 w-full focus:ring-transparent py-4">
-            <BadgeOutlined className="text-primary_BG" />
-            <input
-              onChange={(e) =>
-                setUserData((prev) => ({ ...prev, name: e.target.value }))
-              }
-              defaultValue={userData.name}
-              className={`border-0 focus:ring-transparent outline-none`}
-              type="string"
-              placeholder={`${t('enter_your_name')}`}
-            ></input>
-          </div>
+          <div className="lg:mt-10">
+            <div className="flex space-x-2 px-2 border-b-4 border-b-gray-200 w-full focus:ring-transparent py-4">
+              <BadgeOutlined className="text-primary_BG" />
+              <input
+                onChange={(e) =>
+                  setUserData((prev) => ({ ...prev, name: e.target.value }))
+                }
+                defaultValue={userData.name}
+                className={`border-0 focus:ring-transparent`}
+                type="string"
+                required
+                placeholder={`${t('enter_your_name')}`}
+              ></input>
+            </div>
 
-          <div className="flex items-center gap-x-2 px-2 border-b-4 border-b-gray-200 w-full focus:ring-transparent py-4">
-            <EmailOutlined className="text-primary_BG" />
-            <input
-              onChange={(e) =>
-                setUserData((prev) => ({ ...prev, email: e.target.value }))
-              }
-              defaultValue={userData.email}
-              className={`border-0 focus:ring-transparent p-0`}
-              type="email"
-              pattern='/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/'
-              placeholder={`${t('enter_your_email')}`}
-            ></input>
-          </div>
+            <div className="flex items-center space-x-2 px-2 border-b-4 border-b-gray-200 w-full focus:ring-transparent py-4">
+              <EmailOutlined className="text-primary_BG" />
+              <input
+                onChange={(e) =>
+                  setUserData((prev) => ({ ...prev, email: e.target.value }))
+                }
+                defaultValue={userData.email}
+                className={`border-0 focus:ring-transparent`}
+                type="email"
+                required
+                pattern='/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/'
+                placeholder={`${t('enter_your_email')}`}
+              ></input>
+            </div>
 
           <div className="flex items-center gap-x-2 px-2 border-b-4 border-b-gray-200 w-full focus:ring-transparent py-4">
             <Phone className="text-primary_BG" />

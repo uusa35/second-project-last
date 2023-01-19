@@ -432,5 +432,7 @@
   "cart_address" : "address details",
   "order_review" : "order review",
   "enter_your_name":"enter your name",
-  "enter_your_email":"enter your email"
+  "enter_your_email":"enter your email",
+  "some_fields_r_missing" : "some fields are missing",
+  "item_removed_from_cart" : "item removed from cart successfully."
 }

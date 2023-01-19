@@ -8,7 +8,7 @@ const PaymentSummary: FC = () => {
   const { t } = useTranslation();
   const { cart } = useAppSelector((state) => state);
 
-  console.log('the cart', cart);
+  console.log('the cart from globalState ====>', cart);
   return (
     <Suspense fallback={<LoadingSpinner fullWidth={false} />}>
       <div className={`px-4 py-4`}>
