@@ -8,9 +8,13 @@ import GreyLine from '@/components/GreyLine';
 import { useTranslation } from 'react-i18next';
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CustomerInfo } from '@/types/index';
-import { showToastMessage } from '@/redux/slices/appSettingSlice';
+import {
+  setCurrentModule,
+  setShowFooterElement,
+  showToastMessage,
+} from '@/redux/slices/appSettingSlice';
 import { useDispatch } from 'react-redux';
 import { useSaveCustomerInfoMutation } from '@/redux/api/CustomerApi';
 import { useRouter } from 'next/router';
@@ -53,6 +57,11 @@ const CustomerInformation: NextPage = (): JSX.Element => {
         });
     }
   };
+
+  useEffect(() => {
+    dispatch(setCurrentModule(t('customer_info')));
+    dispatch(setShowFooterElement('home'));
+  }, []);
 
   return (
     <MainContentLayout>

@@ -62,7 +62,7 @@ const CartIndex: NextPage = (): JSX.Element => {
 
   useEffect(() => {
     dispatch(setCurrentModule(t('cart')));
-    dispatch(setShowFooterElement(`cartIndex`));
+    dispatch(setShowFooterElement(`cart_index`));
     return () => {
       dispatch(resetShowFooterElement());
     };
@@ -117,9 +117,10 @@ const CartIndex: NextPage = (): JSX.Element => {
         userAgent,
         PromoCode: coupon,
       }).then((r) => {
-        if (r.data && r.data.status && r.data.promoCode) {
+        console.log('promoCode request ====>', r);
+        if (r.data && r.data.status && r.data?.promoCode) {
           // promoCode Success
-          dispatch(setCartPromoSuccess(r.data.promoCode));
+          dispatch(setCartPromoSuccess(r.data?.promoCode));
           dispatch(
             showToastMessage({
               content: lowerCase(kebabCase(r.data.msg)),

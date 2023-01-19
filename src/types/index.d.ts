@@ -121,10 +121,10 @@ export type appSetting = {
 export interface ServerCart {
   UserAgent: string | null;
   Cart: ProductCart[];
-  id: string;
   subTotal?: number;
   total?: number;
   isEmpty?: boolean;
+  promoCode?: any;
 }
 
 export interface ClientCart {
@@ -153,7 +153,7 @@ export interface ProductCart {
   RadioBtnsAddons: RadioBtns[];
   CheckBoxes: CheckBoxes[];
   QuantityMeters: QuantityMeters[];
-  id: string;
+  id?: string;
   enabled: boolean;
   image: string;
 }

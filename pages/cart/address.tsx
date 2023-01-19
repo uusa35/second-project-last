@@ -6,6 +6,7 @@ import DeliveryBtns from '@/components/widgets/cart/DeliveryBtns';
 import { appSetting } from '@/types/index';
 import {
   setCartMethod,
+  setCurrentModule,
   setShowFooterElement,
 } from '@/redux/slices/appSettingSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -44,7 +45,8 @@ const CartAddress: NextPage = (): JSX.Element => {
   console.log('method', method);
 
   useEffect(() => {
-    dispatch(setShowFooterElement('cartAddress'));
+    dispatch(setCurrentModule(t('cart_address')));
+    dispatch(setShowFooterElement('cart_address'));
   }, []);
 
   return (

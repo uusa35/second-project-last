@@ -49,7 +49,7 @@ const ProductShow: NextPage<Props> = ({ element }) => {
   useEffect(() => {
     dispatch(setCurrentModule(element.name));
     handleResetInitialProductCart();
-    dispatch(setShowFooterElement(`productShow`));
+    dispatch(setShowFooterElement(`product_show`));
     return () => {
       dispatch(resetProductCart());
       dispatch(resetShowFooterElement());

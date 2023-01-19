@@ -42,7 +42,7 @@ export const cartApi = apiSlice.injectEndpoints({
       }),
     }),
     checkPromoCode: builder.query<
-      AppQueryResult<any>,
+      AppQueryResult<ServerCart>,
       {
         userAgent: string;
         PromoCode: string;

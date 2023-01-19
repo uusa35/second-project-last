@@ -427,5 +427,8 @@
   "qty": "qty",
   "item": "item",
   "add_on": "add on",
-  "sp_req": "sp req"
+  "sp_req": "sp req",
+  "delivery_fees" : "delivery fees",
+  "cart_address" : "address details",
+  "order_review" : "order review"
 }
