@@ -7,6 +7,14 @@ const initialState: CustomerInfo = {
   name: ``,
   email: ``,
   phone: ``,
+  address: {
+    customer_id: 0,
+    address_type: 0,
+    block: ``,
+    street: ``,
+    longitude: ``,
+    latitude: ``,
+  },
 };
 
 export const customerSlice = createSlice({
@@ -16,10 +24,45 @@ export const customerSlice = createSlice({
     setCustomer: (
       state: typeof initialState,
       action: PayloadAction<CustomerInfo>
-    ) => action.payload,
-    removeCustomer: (state: typeof initialState, action: PayloadAction<void>) =>
-      initialState,
+    ) => {
+      return {
+        ...action.payload,
+        ...state,
+      };
+    },
+    removeCustomer: (
+      state: typeof initialState,
+      action: PayloadAction<void>
+    ) => {
+      return {
+        ...initialState,
+        address: state.address,
+      };
+    },
+    setCustomerAddress: (
+      state: typeof initialState,
+      action: PayloadAction<CustomerInfo['address']>
+    ) => {
+      return {
+        ...state,
+        address: action.payload,
+      };
+    },
+    resetCustomerAddress: (
+      state: typeof initialState,
+      action: PayloadAction<void>
+    ) => {
+      return {
+        ...state,
+        address: initialState.address,
+      };
+    },
   },
 });
 
-export const { setCustomer, removeCustomer } = customerSlice.actions;
+export const {
+  setCustomer,
+  removeCustomer,
+  setCustomerAddress,
+  resetCustomerAddress,
+} = customerSlice.actions;

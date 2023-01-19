@@ -35,7 +35,7 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
   const {
     branch: { id: branchId },
     area: { id: areaId },
-    vendor
+    vendor,
   } = useAppSelector((state) => state);
 
   useEffect(() => {
