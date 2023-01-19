@@ -23,6 +23,7 @@ const BackBtn: FC<Props> = ({
   const {
     appSetting: { currentModule },
     locale: { lang, otherLang },
+    cart: { items },
     country,
   } = useAppSelector((state) => state);
   const router = useRouter();
@@ -37,7 +38,6 @@ const BackBtn: FC<Props> = ({
 
   const handleChangeLang = async (locale: string) => {
     if (locale !== router.locale) {
-      await dispatch(setLocale(locale));
       await router
         .push(router.pathname, router.asPath, {
           locale,
@@ -50,7 +50,8 @@ const BackBtn: FC<Props> = ({
               type: `info`,
             })
           )
-        );
+        )
+        .then(() => dispatch(setLocale(locale)));
     }
   };
 
@@ -115,8 +116,17 @@ const BackBtn: FC<Props> = ({
           </span>
         </div>
         <div className={`flex flex-row justify-between items-center w-20 z-50`}>
-          <Link scroll={false} href={appLinks.cartIndex.path}>
+          <Link
+            scroll={false}
+            href={appLinks.cartIndex.path}
+            className={`relative`}
+          >
             <ShoppingBagOutlined className={`w-8 h-8 text-black`} />
+            {items.length > 0 && (
+              <div className="absolute -left-2 -top-2 opacity-90  rounded-full bg-red-600 w-6 h-6 top-0 shadow-xl flex items-center justify-center text-white">
+                <span className={`pt-[3.5px] shadow-md`}>{items.length}</span>
+              </div>
+            )}
           </Link>
           <button
             onClick={() => handleChangeLang(otherLang)}

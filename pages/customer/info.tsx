@@ -68,6 +68,11 @@ const CustomerInformation: NextPage = (): JSX.Element => {
     }
   };
 
+  useEffect(() => {
+    dispatch(setCurrentModule(t('customer_info')));
+    dispatch(setShowFooterElement('home'));
+  }, []);
+
   return (
     <MainContentLayout >
       <div className="flex-col justify-between h-full px-5">

@@ -20,7 +20,8 @@ import HomeSelectMethod from '@/components/home/HomeSelectMethod';
 import HomeVendorMainInfo from '@/components/home/HomeVendorMainInfo';
 import { useRouter } from 'next/router';
 import CustomImage from '@/components/CustomImage';
-
+import Image from 'next/image';
+import {  imageSizes } from '@/constants/*';
 type Props = {
   categories: Category[];
   element: Vendor;
@@ -34,6 +35,7 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
   const {
     branch: { id: branchId },
     area: { id: areaId },
+    vendor
   } = useAppSelector((state) => state);
 
   useEffect(() => {
@@ -84,7 +86,7 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
             </div>
           </div>
           {/* Categories List */}
-          <div className="py-4 px-8 grid sm:grid-cols-3 lg:grid-cols-2 gap-6 ">
+          <div className="py-4 px-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-6">
             {!isEmpty(categories) &&
               map(categories, (c, i) => <CategoryWidget element={c} key={i} />)}
           </div>

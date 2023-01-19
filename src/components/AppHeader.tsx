@@ -14,9 +14,12 @@ const AppHeader: FC = () => {
 
   useEffect(() => {
     const onScroll = () => setOffset(window.pageYOffset);
+    // const handleMouseUp = () => console.log('up');
     window.addEventListener('scroll', onScroll, { passive: true });
+    // window.addEventListener('mouseup', handleMouseUp);
     return () => {
       window.removeEventListener('scroll', debounce(onScroll, 400));
+      // window.removeEventListener('mouseup', handleMouseUp);
     };
   }, [router.pathname]);
 

@@ -1,6 +1,6 @@
 import { apiSlice } from './index';
 import { AppQueryResult } from '@/types/queries';
-import { ServerCart, Locale } from '@/types/index';
+import { ServerCart, Locale, ProductCart } from '@/types/index';
 
 export const cartApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -14,64 +14,61 @@ export const cartApi = apiSlice.injectEndpoints({
     addToCart: builder.mutation<
       AppQueryResult<ServerCart>,
       {
-        lang: Locale['lang'];
-        country: string;
-        body: any;
+        branchId: any;
+        body: { UserAgent: string; Cart: ProductCart[] };
       }
     >({
-      query: ({ country, body, lang }) => ({
-        url: `cart/store`,
+      query: ({ branchId, body }) => ({
+        url: `addToCart`,
         method: `POST`,
         body,
         headers: {
-          'Accept-Language': lang,
-          country,
+          'x-branch-id': branchId,
         },
-        validateStatus: (response, result) =>
-          response.status == 200 && result.status,
+        validateStatus: (response, result) => result.status,
       }),
     }),
     GetCartProducts: builder.query<
-      AppQueryResult<any>,
+      AppQueryResult<ServerCart>,
       {
-        lang: Locale['lang'];
-        country: string;
-        params: any;
+        UserAgent: string;
       }
     >({
-      query: ({ country, params, lang }) => ({
-        url: `cart`,
-        params: { ...params },
-        headers: {
-          'Accept-Language': lang,
-          country,
-        },
+      query: ({ UserAgent }) => ({
+        url: `shoppingCart`,
+        params: { UserAgent },
         validateStatus: (response, result) =>
           response.status == 200 && result.status,
       }),
     }),
-
+    checkPromoCode: builder.query<
+      AppQueryResult<ServerCart>,
+      {
+        userAgent: string;
+        PromoCode: string;
+      }
+    >({
+      query: ({ userAgent, PromoCode }) => ({
+        url: `checkPromoCode`,
+        params: { userAgent, PromoCode },
+        validateStatus: (response, result) =>
+          response.status == 200 && result.status,
+      }),
+    }),
     RemoveFromCart: builder.mutation<
       AppQueryResult<any>,
       {
-        lang: Locale['lang'];
-        country: string;
         body: any;
       }
     >({
-      query: ({ country, body, lang }) => ({
+      query: ({ body }) => ({
         url: `cart/clear/item`,
         method: `POST`,
         body,
-        headers: {
-          'Accept-Language': lang,
-          country,
-        },
         validateStatus: (response, result) =>
           response.status == 200 && result.status,
       }),
     }),
-
     UpdateItemInCart: builder.mutation<
       AppQueryResult<any>,
       {
@@ -101,4 +98,7 @@ export const {
   useGetCartProductsQuery,
   useRemoveFromCartMutation,
   useUpdateItemInCartMutation,
+  useAddToCartMutation,
+  useLazyCheckPromoCodeQuery,
+  useLazyGetCartProductsQuery,
 } = cartApi;

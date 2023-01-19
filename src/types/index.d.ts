@@ -121,16 +121,20 @@ export type appSetting = {
 export interface ServerCart {
   UserAgent: string | null;
   Cart: ProductCart[];
-  id: string;
   subTotal?: number;
   total?: number;
   isEmpty?: boolean;
+  promoCode?: any;
 }
 
 export interface ClientCart {
   grossTotal: number;
+  subTotal: number;
+  total: number;
   items: ProductCart[];
   PromoCode: string | null;
+  promoEnabled: boolean;
+  notes: string;
   promoCode: {
     total_cart_before_tax: number;
     total_cart_after_tax: number;
