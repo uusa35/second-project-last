@@ -442,5 +442,6 @@
   "sp_req": "رقم الطلب",
   "delivery_fees" : "رسوم التوصيل",
   "cart_address" : "تفاصيل العنوان",
-  "order_review" : "مراجعة الطلب"
+  "order_review" : "مراجعة الطلب",
+  "some_fields_r_missing" : "جميع الحقول مطلوبة .. يرجى تعبئه الحقول بالكامل"
 }

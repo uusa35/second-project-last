@@ -40,10 +40,14 @@ const CustomerInformation: NextPage = (): JSX.Element => {
 
   const handelSaveCustomerInfo = async () => {
     console.log(userData);
-    if (userData.name === '' || userData.phone === '') {
+    if (
+      userData.name.length > 4 ||
+      userData.phone?.length > 4 ||
+      userData.email.length > 4
+    ) {
       dispatch(
         showToastMessage({
-          content: `name_and_phone_are_required`,
+          content: `some_fields_r_missing`,
           type: `info`,
         })
       );
