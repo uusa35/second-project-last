@@ -33,7 +33,6 @@ const MainContentLayout: FC<Props> = ({
   showMotion = true,
   handleSubmit,
 }): JSX.Element => {
-  const { t } = useTranslation();
   const {
     appSetting: { showHeader, showFooter },
     locale: { isRTL },

@@ -1,4 +1,4 @@
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 import { NextPage } from 'next';
 import MainContentLayout from '@/layouts/MainContentLayout';
 import Image from 'next/image';
@@ -12,11 +12,22 @@ import OrderSummary from '@/appIcons/summary.svg';
 import CustomImage from '@/components/CustomImage';
 import NotFound from '@/appImages/not_found.png';
 import Knet from '@/appImages/Knet.png';
-import Payment from '@/appIcons/payment_card.svg';
 import ReceiptIcon from '@mui/icons-material/Receipt';
+import {
+  setCurrentModule,
+  setShowFooterElement,
+} from '@/redux/slices/appSettingSlice';
+import { useAppDispatch } from '@/redux/hooks';
 
 const CartReview: NextPage = () => {
   const { t } = useTranslation();
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(setCurrentModule(t('order_review')));
+    dispatch(setShowFooterElement('order_review'));
+  }, []);
+
   return (
     <MainContentLayout>
       <Suspense>
@@ -77,11 +88,7 @@ const CartReview: NextPage = () => {
             <div className="flex justify-between">
               <div className="flex items-center">
                 <Image src={Home} alt="home" width={25} height={25} />
-                <p
-                  className="text-md ps-5"
-                >
-                  location
-                </p>
+                <p className="text-md ps-5">location</p>
               </div>
               <button
                 className="text-primary_BG text-base font-semibold"
@@ -95,11 +102,7 @@ const CartReview: NextPage = () => {
             <div className="flex items-center">
               <Image src={IDCard} alt="id" width={25} height={25} />
               <div className="ps-5">
-                <h4
-                  className="font-semibold text-base"
-                >
-                  customer name
-                </h4>
+                <h4 className="font-semibold text-base">customer name</h4>
                 <p>customer phone</p>
               </div>
             </div>
@@ -110,7 +113,7 @@ const CartReview: NextPage = () => {
               {t('edit')}
             </button>
           </div>
-          <div className='px-4'>
+          <div className="px-4">
             <div className="flex items-center py-3">
               <Image src={OrderSummary} alt="id" width={25} height={25} />
               <div className="ps-5">
@@ -135,7 +138,7 @@ const CartReview: NextPage = () => {
                 </div>
 
                 <div className="w-full">
-                  <div className='flex justify-between'>
+                  <div className="flex justify-between">
                     <div>
                       <p className="font-semibold">product name</p>
                       <div className="w-fit pb-2">
@@ -144,90 +147,93 @@ const CartReview: NextPage = () => {
                         </p>
                       </div>
                     </div>
-                    <button className='text-primary_BG font-semibold' suppressHydrationWarning={suppressText}>
+                    <button
+                      className="text-primary_BG font-semibold"
+                      suppressHydrationWarning={suppressText}
+                    >
                       {t('edit')}
                     </button>
                   </div>
-                  <div className='flex justify-between'>
-                      <p className='text-primary_BG font-semibold'>price</p>
-                      <button className='text-CustomRed font-semibold'>remove</button>
+                  <div className="flex justify-between">
+                    <p className="text-primary_BG font-semibold">price</p>
+                    <button className="text-CustomRed font-semibold">
+                      remove
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
           </div>
           <div className="bg-gray-200 w-full mt-5 p-0 h-2"></div>
-          <div className='px-4'>
+          <div className="px-4">
             <div className="flex items-center py-3">
-                <Image src={OrderSummary} alt="payment" width={25} height={25} />
-                <div className="ps-5">
-                  <h4
-                    className="font-semibold text-lg"
-                    suppressHydrationWarning={suppressText}
-                  >
-                    {t('select_payments')}
-                  </h4>
-                </div>
+              <Image src={OrderSummary} alt="payment" width={25} height={25} />
+              <div className="ps-5">
+                <h4
+                  className="font-semibold text-lg"
+                  suppressHydrationWarning={suppressText}
+                >
+                  {t('select_payments')}
+                </h4>
+              </div>
             </div>
-            <div className='flex justify-between'>
-              <div className='bg-gray-200 flex justify-center items-center w-24 h-24'>
+            <div className="flex justify-between">
+              <div className="bg-gray-200 flex justify-center items-center w-24 h-24">
                 <div>
-                <Image src={Knet} alt="payment" width={50} height={25} />
+                  <Image src={Knet} alt="payment" width={50} height={25} />
                 </div>
               </div>
-              <div className='bg-gray-200 flex justify-center items-center w-24 h-24'>
+              <div className="bg-gray-200 flex justify-center items-center w-24 h-24">
                 <div>
-                <Image src={Knet} alt="payment" width={50} height={25} />
+                  <Image src={Knet} alt="payment" width={50} height={25} />
                 </div>
               </div>
-              <div className='bg-gray-200 flex justify-center items-center w-24 h-24'>
+              <div className="bg-gray-200 flex justify-center items-center w-24 h-24">
                 <div>
-                <Image src={Knet} alt="payment" width={50} height={25} />
+                  <Image src={Knet} alt="payment" width={50} height={25} />
                 </div>
               </div>
             </div>
           </div>
           <div className={`px-4 py-4`}>
-          <div className="flex items-center py-3">
-                <ReceiptIcon className='text-primary_BG'/>
-                <div className="ps-5">
-                  <h4
-                    className="font-semibold text-lg"
-                    suppressHydrationWarning={suppressText}
-                  >
-                    {t('payment_summary')}
-                  </h4>
-                </div>
+            <div className="flex items-center py-3">
+              <ReceiptIcon className="text-primary_BG" />
+              <div className="ps-5">
+                <h4
+                  className="font-semibold text-lg"
+                  suppressHydrationWarning={suppressText}
+                >
+                  {t('payment_summary')}
+                </h4>
+              </div>
             </div>
-              <div className="flex justify-between mb-3 text-lg">
-                <p suppressHydrationWarning={suppressText}>{t('subtotal')}</p>
-                <p suppressHydrationWarning={suppressText}>
-                  {t('kwd')}
-                </p>
-              </div>
-              <div className="flex justify-between mb-3 text-lg">
-                <p suppressHydrationWarning={suppressText}>{t('delivery_services')}</p>
-                <p suppressHydrationWarning={suppressText}>
-                  {t('kwd')}
-                </p>
-              </div>
+            <div className="flex justify-between mb-3 text-lg">
+              <p suppressHydrationWarning={suppressText}>{t('subtotal')}</p>
+              <p suppressHydrationWarning={suppressText}>{t('kwd')}</p>
+            </div>
+            <div className="flex justify-between mb-3 text-lg">
+              <p suppressHydrationWarning={suppressText}>
+                {t('delivery_services')}
+              </p>
+              <p suppressHydrationWarning={suppressText}>{t('kwd')}</p>
+            </div>
 
-              <div className="flex justify-between mb-3 text-lg ">
-                <p
-                  className="font-semibold"
-                  suppressHydrationWarning={suppressText}
-                >
-                  {t('total')}
-                </p>
-                <p
-                  className="text-primary_BG"
-                  suppressHydrationWarning={suppressText}
-                >
-                   {t('kwd')}
-                </p>
-              </div>
+            <div className="flex justify-between mb-3 text-lg ">
+              <p
+                className="font-semibold"
+                suppressHydrationWarning={suppressText}
+              >
+                {t('total')}
+              </p>
+              <p
+                className="text-primary_BG"
+                suppressHydrationWarning={suppressText}
+              >
+                {t('kwd')}
+              </p>
             </div>
-            <div
+          </div>
+          <div
             className={`${mainBg} bg-sky-600 w-full h-32 flex justify-center items-center rounded-t-xl`}
           >
             <button

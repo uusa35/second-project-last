@@ -60,7 +60,13 @@ const CustomerInformation: NextPage = (): JSX.Element => {
     } else {
       await saveCustomerInfo({ body: userData })
         .then((r: any) => {
-          dispatch(setCustomer(r.data.Data));
+          if (r.data.Data && r.data.status) {
+            dispatch(setCustomer(r.data.Data));
+          } else {
+            dispatch(
+              showToastMessage({ content: `address_error`, type: `error` })
+            );
+          }
         })
         .then(() => {
           router.push(appLinks.address.path);
