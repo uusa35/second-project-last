@@ -146,17 +146,20 @@ export interface ProductCart {
 
 export interface RadioBtns {
   addonID: number;
+  uId: string;
   addons: CartAddons[];
 }
 
 export interface CheckBoxes {
   addonID: number;
+  uId: string;
   addons: CartAddons[];
 }
 
 export interface QuantityMeters {
-  addonID: number; // choiceId
-  addons: CartAddons[]; // selectionId
+  addonID: number; // selectionId
+  uId: string; // addonId+AttributeId
+  addons: CartAddons[]; // choiceId
 }
 
 export interface CartAddons {

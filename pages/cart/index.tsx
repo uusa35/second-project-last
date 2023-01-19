@@ -2,7 +2,7 @@ import MainContentLayout from '@/layouts/MainContentLayout';
 import { NextPage } from 'next';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useTranslation } from 'react-i18next';
-import { useEffect, Suspense } from 'react';
+import { useEffect, Suspense, useCallback, useMemo } from 'react';
 import {
   setCurrentModule,
   resetShowFooterElement,
@@ -70,9 +70,8 @@ const CartIndex: NextPage = (): JSX.Element => {
   }, []);
 
   useEffect(() => {
+    console.log('fired');
     if (branchId && !isNull(branchId) && !isEmpty(cart.items) && userAgent) {
-      console.log('fired ====> branchId', branchId);
-      console.log('fired ====> cartItems', cart.items);
       triggerAddToCart({
         branchId,
         body: { UserAgent: userAgent, Cart: cart.items },
@@ -85,7 +84,6 @@ const CartIndex: NextPage = (): JSX.Element => {
             })
           );
           triggerGetCartProducts({ UserAgent: userAgent }).then((r: any) => {
-            console.log('the r from GetCartProducts====> ', r.data);
             if (r.data && r.data.status) {
               dispatch(
                 setCartTotalAndSubTotal({
@@ -96,11 +94,12 @@ const CartIndex: NextPage = (): JSX.Element => {
             }
           });
         } else {
+          console.log('error case', r);
           dispatch(
             showToastMessage({
               content: lowerCase(
                 kebabCase(
-                  r.error?.data?.msg ?? `cart_is_not_ready_error_occured`
+                  r.error?.data?.msg ?? `cart_is_not_ready_error_occurred`
                 )
               ),
               type: `error`,
@@ -109,16 +108,17 @@ const CartIndex: NextPage = (): JSX.Element => {
         }
       });
     }
-  }, [cart.items, branchId]);
+  }, [cart.grossTotal, cart.promoEnabled]);
 
-  const handleCoupon = (coupon: string) => {
+  console.log('cart grossTotal', cart.grossTotal);
+
+  const handleCoupon = async (coupon: string) => {
     if (coupon.length > 3 && userAgent && !isEmpty(cart.items)) {
       dispatch(setCartPromoCode(coupon));
-      triggerCheckPromoCode({
+      await triggerCheckPromoCode({
         userAgent,
         PromoCode: coupon,
       }).then((r) => {
-        console.log('promoCode request ====>', r);
         if (r.data && r.data.status && r.data?.promoCode) {
           // promoCode Success
           dispatch(setCartPromoSuccess(r.data?.promoCode));
@@ -157,12 +157,14 @@ const CartIndex: NextPage = (): JSX.Element => {
     );
   };
 
-  const handleIncrease = (element: any) => {
-    dispatch(increaseCartQty(element));
+  const handleIncrease = async (element: any) => {
+    await dispatch(increaseCartQty(element));
+    // await handleCartCalculations();
   };
 
-  const handleDecrease = (element: any) => {
-    dispatch(decreaseCartQty(element));
+  const handleDecrease = async (element: any) => {
+    await dispatch(decreaseCartQty(element));
+    // await handleCartCalculations();
   };
 
   const handleChange = (notes: string) => {
@@ -290,7 +292,7 @@ const CartIndex: NextPage = (): JSX.Element => {
                             className="text-primary_BG"
                             suppressHydrationWarning={suppressText}
                           >
-                            {item.Price} {t('kwd')}
+                            {item.subTotalPrice} {t('kwd')}
                           </p>
                         </div>
                       </div>
@@ -350,7 +352,7 @@ const CartIndex: NextPage = (): JSX.Element => {
                   className={`border-0 border-b-2 border-b-gray-200 w-full focus:ring-transparent`}
                 />
               </div>
-              {serverCartIsSuccess && addToCartIsSuccess && <PaymentSummary />}
+              {<PaymentSummary />}
             </div>
           </Suspense>
         )}

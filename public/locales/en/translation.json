@@ -432,5 +432,6 @@
   "cart_address" : "address details",
   "order_review" : "order review",
   "some_fields_r_missing" : "some fields are missing",
-  "item_removed_from_cart" : "item removed from cart successfully."
+  "item_removed_from_cart" : "item removed from cart successfully.",
+  "cart_is_not_ready_error_occurred" : "cart is not ready error occurred"
 }
