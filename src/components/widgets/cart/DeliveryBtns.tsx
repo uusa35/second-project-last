@@ -16,7 +16,7 @@ const DeliveryBtns: FC<Props>= ({handleSelectMethod}): JSX.Element => {
       } = useAppSelector((state) => state);
 
     return (
-        <div className="flex flex-1 w-full flex-row justify-between items-center px-14 text-lg py-8 ">
+        <div className="flex flex-1 w-full flex-row justify-between items-center px-5 text-lg py-8 ">
             <button
               className={`${
                 method === 'delivery' && `bg-primary_BG text-white`
