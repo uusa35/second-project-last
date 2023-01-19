@@ -50,7 +50,13 @@ const CustomerInformation: NextPage = (): JSX.Element => {
     } else {
       await saveCustomerInfo({ body: userData })
         .then((r: any) => {
-          dispatch(setCustomer(r.data.Data));
+          if (r.data.Data && r.data.status) {
+            dispatch(setCustomer(r.data.Data));
+          } else {
+            dispatch(
+              showToastMessage({ content: `address_error`, type: `error` })
+            );
+          }
         })
         .then(() => {
           router.push(appLinks.address.path);
@@ -87,6 +93,7 @@ const CustomerInformation: NextPage = (): JSX.Element => {
                 defaultValue={userData.name}
                 className={`border-0 focus:ring-transparent`}
                 type="string"
+                required
                 placeholder={`${t('enter_your_name')}`}
               ></input>
             </div>
@@ -100,6 +107,7 @@ const CustomerInformation: NextPage = (): JSX.Element => {
                 defaultValue={userData.email}
                 className={`border-0 focus:ring-transparent`}
                 type="email"
+                required
                 pattern='/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/'
                 placeholder={`${t('enter_your_email')}`}
               ></input>
