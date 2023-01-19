@@ -435,5 +435,6 @@
   "delivery_now": "delivery now",
   "pickup_now": "pickup now",
   "store_branch": "store/branch",
-  "time_date": "time/date"
+  "time_date": "time/date",
+  "item_removed_from_cart" : "item removed from cart successfully."
 }

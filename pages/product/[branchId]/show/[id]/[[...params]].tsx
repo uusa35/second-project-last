@@ -81,6 +81,8 @@ const ProductShow: NextPage<Props> = ({ element }) => {
       setInitialProductCart({
         ProductID: element.id,
         ProductName: element.name,
+        name_ar: element.name_ar,
+        name_en: element.name_en,
         ProductDesc: element.desc,
         Quantity: currentQty,
         totalPrice: parseFloat(element.price),
@@ -108,6 +110,8 @@ const ProductShow: NextPage<Props> = ({ element }) => {
               {
                 attributeID: selection.id,
                 name: choice.name,
+                name_ar: choice.name_ar,
+                name_en: choice.name_en,
                 Value: 1,
                 price: parseFloat(choice.price),
               },
@@ -125,6 +129,8 @@ const ProductShow: NextPage<Props> = ({ element }) => {
             {
               attributeID: selection.id,
               name: choice.name,
+              name_ar: choice.name_ar,
+              name_en: choice.name_en,
               Value: 1,
               price: parseFloat(choice.price),
             },
@@ -150,6 +156,8 @@ const ProductShow: NextPage<Props> = ({ element }) => {
               {
                 attributeID: selection.id,
                 name: choice.name,
+                name_ar: choice.name_ar,
+                name_en: choice.name_en,
                 Value,
                 price: parseFloat(choice.price),
               },
@@ -171,6 +179,8 @@ const ProductShow: NextPage<Props> = ({ element }) => {
                 {
                   attributeID: selection.id,
                   name: choice.name,
+                  name_ar: choice.name_ar,
+                  name_en: choice.name_en,
                   Value,
                   price: parseFloat(choice.price),
                 },
