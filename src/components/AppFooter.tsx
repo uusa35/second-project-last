@@ -27,6 +27,7 @@ const AppFooter: FC = (): JSX.Element => {
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const router = useRouter();
+
   const handleAddToCart = () => {
     if (!productCart.enabled) {
       dispatch(
@@ -74,7 +75,7 @@ const AppFooter: FC = (): JSX.Element => {
             <button
               className={`${footerBtnClass}`}
               suppressHydrationWarning={suppressText}
-              onClick={() => router.push(`/customer/info`)}
+              onClick={() => router.push(appLinks.customerInfo.path)}
             >
               {t('continue')}
             </button>
