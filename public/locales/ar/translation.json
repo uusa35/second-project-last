@@ -443,5 +443,6 @@
   "delivery_fees" : "رسوم التوصيل",
   "cart_address" : "تفاصيل العنوان",
   "order_review" : "مراجعة الطلب",
-  "some_fields_r_missing" : "جميع الحقول مطلوبة .. يرجى تعبئه الحقول بالكامل"
+  "some_fields_r_missing" : "جميع الحقول مطلوبة .. يرجى تعبئه الحقول بالكامل",
+  "item_removed_from_cart" : "تم حذف العنصر بنجاح"
 }

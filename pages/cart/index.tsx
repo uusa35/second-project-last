@@ -40,6 +40,7 @@ import {
   useLazyGetCartProductsQuery,
 } from '@/redux/api/cartApi';
 import PaymentSummary from '@/widgets/cart/review/PaymentSummary';
+import TextTrans from '@/components/TextTrans';
 const CartIndex: NextPage = (): JSX.Element => {
   const { t } = useTranslation();
   const {
@@ -84,7 +85,7 @@ const CartIndex: NextPage = (): JSX.Element => {
             })
           );
           triggerGetCartProducts({ UserAgent: userAgent }).then((r: any) => {
-            console.log('the r ====> ', r);
+            console.log('the r from GetCartProducts====> ', r.data);
             if (r.data && r.data.status) {
               dispatch(
                 setCartTotalAndSubTotal({
@@ -231,7 +232,9 @@ const CartIndex: NextPage = (): JSX.Element => {
                               areaId
                             )}`}
                           >
-                            <p className="font-semibold">{item.ProductName}</p>
+                            <p className="font-semibold">
+                              <TextTrans ar={item.name_ar} en={item.name_en} />
+                            </p>
                           </Link>
                           <div className="flex">
                             {map(
@@ -244,7 +247,10 @@ const CartIndex: NextPage = (): JSX.Element => {
                                       'border-e-2 border-gray-400'
                                     }`}
                                   >
-                                    {a.addons[0].name}
+                                    <TextTrans
+                                      ar={a.addons[0].name_ar}
+                                      en={a.addons[0].name_en}
+                                    />
                                   </p>
                                 </div>
                               )

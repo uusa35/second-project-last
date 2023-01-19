@@ -21,6 +21,8 @@ export interface Product {
 export interface ProductSection {
   id: number;
   title: string;
+  title_ar: string;
+  title_en: string;
   must_select: string;
   selection_type: string;
   hidden: boolean;
@@ -32,6 +34,8 @@ export interface ProductSection {
 export interface SectionChoice {
   id: number;
   name: string;
+  name_ar: string;
+  name_en: string;
   price: string;
   num: null | number;
   hidden: boolean;
@@ -39,27 +43,6 @@ export interface SectionChoice {
 export interface img {
   thumbnail: string;
   original: string;
-}
-export interface ProductAddon {
-  id: string | number;
-  qty: string | number;
-  getLocalized?: (name?: string) => string;
-  name: string;
-  name_ar?: string;
-  name_en?: string;
-  selection?: string;
-  type?: string;
-  options?: AddonOption[];
-}
-
-export interface AddonOption {
-  id: string | number;
-  getLocalized?: (name?: string) => string;
-  name: string;
-  name_ar?: string;
-  name_en?: string;
-  price?: string | number;
-  stock?: string | number;
 }
 
 export interface Vendor {
@@ -145,6 +128,8 @@ export interface ClientCart {
 export interface ProductCart {
   ProductID: number;
   ProductName: string;
+  name_ar: string;
+  name_en: string;
   ProductDesc: string;
   Quantity: number;
   Price: number;
@@ -177,6 +162,8 @@ export interface QuantityMeters {
 export interface CartAddons {
   attributeID: number;
   name: string;
+  name_ar: string;
+  name_en: string;
   Value?: number; // qty
   price?: number;
 }
