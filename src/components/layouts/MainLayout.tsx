@@ -1,4 +1,4 @@
-import { FC, ReactNode, useEffect, useState } from 'react';
+import { FC, ReactNode, useEffect, useState, Suspense } from 'react';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import i18n from 'i18next';
 import { useRouter } from 'next/router';
@@ -8,14 +8,11 @@ import { setLocale } from '@/redux/slices/localeSlice';
 import moment from 'moment';
 import dynamic from 'next/dynamic';
 import { useGetVendorQuery } from '@/redux/api/vendorApi';
-import { AppQueryResult, Branch } from '@/types/queries';
+import { AppQueryResult } from '@/types/queries';
 import { Vendor } from '@/types/index';
 import { setVendor } from '@/redux/slices/vendorSlice';
-import { isNull } from 'lodash';
-import {
-  useGetBranchesQuery,
-  useLazyGetBranchesQuery,
-} from '@/redux/api/branchApi';
+import { isEmpty, isNull } from 'lodash';
+import { useLazyGetBranchesQuery } from '@/redux/api/branchApi';
 import { setBranch } from '@/redux/slices/branchSlice';
 import { useLazyCreateTempIdQuery } from '@/redux/api/cartApi';
 import { useLazyGetLocationsQuery } from '@/redux/api/locationApi';
@@ -46,10 +43,11 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
     locale,
     branch: { id: branchId },
     area: { id: areaId },
+    vendor,
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const { data: vendor, isSuccess } = useGetVendorQuery<{
+  const { data: vendorElement, isSuccess } = useGetVendorQuery<{
     data: AppQueryResult<Vendor>;
     isSuccess: boolean;
   }>({ lang: locale.lang });
@@ -59,7 +57,7 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
 
   useEffect(() => {
     if (isSuccess) {
-      dispatch(setVendor(vendor.Data));
+      dispatch(setVendor(vendorElement.Data));
     }
     if (isNull(branchId)) {
       triggerGetBranches({ lang: locale.lang }).then((r: any) =>
@@ -134,7 +132,7 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
     >
       {children}
       {/* Main Image & Logo */}
-      {isSuccess && vendor.Data && <MainAsideLayout element={vendor.Data} />}
+      {isSuccess && <MainAsideLayout element={vendor} />}
       <ToastAppContainer />
     </div>
   );

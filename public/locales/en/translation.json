@@ -381,9 +381,9 @@
   "items": "items",
   "promotion": "promotion",
   "promotion_code": "promotion code",
-  "enter_code_here": "enter code here",
+  "enter_code_here": "enter code",
   "note": "note",
-  "enter_notes_here": "enter notes here",
+  "enter_notes_here": "enter notes",
   "delivery_services": "delivery services",
   "back_to_home" : "back to home",
   "delivery_location": "delivery location",
@@ -393,7 +393,7 @@
   "floor#": "floor#",
   "office_no": "office no",
   "avenue": "avenue",
-  "paci": "paci",
+  "paci": "civil id",
   "additional": "additional",
   "deliver_now": "deliver now",
   "deliver_later": "deliver later",
@@ -426,5 +426,9 @@
   "order_details": "order details",
   "qty": "qty",
   "item": "item",
-  "add_on": "add on"
+  "add_on": "add on",
+  "sp_req": "sp req",
+  "delivery_fees" : "delivery fees",
+  "cart_address" : "address details",
+  "order_review" : "order review"
 }

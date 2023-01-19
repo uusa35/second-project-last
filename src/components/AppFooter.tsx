@@ -12,12 +12,12 @@ import PoweredByQ from '@/components/PoweredByQ';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
 import { setAddToCart } from '@/redux/slices/cartSlice';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 type Props = {
-  productShow: boolean;
-  cartReview: boolean;
+  handleSubmit?: () => void;
 };
 
-const AppFooter: FC = (): JSX.Element => {
+const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
   const { t } = useTranslation();
   const {
     appSetting: { showFooterElement },
@@ -26,6 +26,7 @@ const AppFooter: FC = (): JSX.Element => {
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const router = useRouter();
+
   const handleAddToCart = () => {
     if (!productCart.enabled) {
       dispatch(
@@ -50,7 +51,7 @@ const AppFooter: FC = (): JSX.Element => {
         } fixed w-full lg:w-2/4 xl:w-1/3 h-auto flex flex-col justify-center items-center text-center bg-white bg-opacity-60`}
       >
         <PoweredByQ />
-        {showFooterElement === 'productShow' && (
+        {showFooterElement === 'product_show' && (
           <div
             className={`${mainBg} w-full h-fit flex cursor-auto rounded-none opacity-100 flex justify-between items-center px-8 py-8 rounded-t-2xl
             `}
@@ -66,30 +67,43 @@ const AppFooter: FC = (): JSX.Element => {
             </span>
           </div>
         )}
-        {showFooterElement === 'cartIndex' && (
+        {showFooterElement === 'cart_index' && (
           <div
             className={`${mainBg} w-full h-32 flex justify-center items-center rounded-t-xl`}
           >
             <button
               className={`${footerBtnClass}`}
               suppressHydrationWarning={suppressText}
-              onClick={() => router.push(`/customer/info`)}
+              onClick={() => router.push(appLinks.customerInfo.path)}
             >
               {t('continue')}
             </button>
           </div>
         )}
-        {showFooterElement === 'cartAddress' && (
+        {showFooterElement === 'cart_address' && (
           <div
             className={`${mainBg} bg-sky-600 w-full h-32 flex justify-center items-center rounded-t-xl`}
           >
             <button
               className={`${footerBtnClass}`}
               suppressHydrationWarning={suppressText}
-              onClick={() => router.push(`/customer/info`)}
+              onClick={() => (handleSubmit ? handleSubmit() : null)}
             >
               {t('continue')}
             </button>
+          </div>
+        )}
+        {showFooterElement === 'order_review' && (
+          <div
+            className={`${mainBg} bg-sky-600 w-full h-32 flex justify-center items-center rounded-t-xl`}
+          >
+            <Link
+              className={`${footerBtnClass}`}
+              suppressHydrationWarning={suppressText}
+              href={`#`}
+            >
+              {t('payment')}
+            </Link>
           </div>
         )}
       </footer>

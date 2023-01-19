@@ -101,6 +101,7 @@ export type position = {
 export type appSetting = {
   userAgent: string | null;
   method: `delivery` | `pickup`;
+  productPreview: `hor` | `ver`;
   showFooterElement: string;
   showHeader: boolean;
   showFooter: boolean;
@@ -121,10 +122,10 @@ export type appSetting = {
 export interface ServerCart {
   UserAgent: string | null;
   Cart: ProductCart[];
-  id: string;
   subTotal?: number;
   total?: number;
   isEmpty?: boolean;
+  promoCode?: any;
 }
 
 export interface ClientCart {
@@ -153,7 +154,7 @@ export interface ProductCart {
   RadioBtnsAddons: RadioBtns[];
   CheckBoxes: CheckBoxes[];
   QuantityMeters: QuantityMeters[];
-  id: string;
+  id?: string;
   enabled: boolean;
   image: string;
 }
@@ -302,4 +303,12 @@ export interface CustomerInfo {
   name: string;
   email: string;
   phone?: string;
+  address: {
+    customer_id: number;
+    address_type: number;
+    block: string;
+    street: string;
+    longitude?: string;
+    latitude?: string;
+  };
 }

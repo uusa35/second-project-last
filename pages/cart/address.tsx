@@ -6,6 +6,7 @@ import DeliveryBtns from '@/components/widgets/cart/DeliveryBtns';
 import { appSetting } from '@/types/index';
 import {
   setCartMethod,
+  setCurrentModule,
   setShowFooterElement,
 } from '@/redux/slices/appSettingSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -44,11 +45,14 @@ const CartAddress: NextPage = (): JSX.Element => {
   console.log('method', method);
 
   useEffect(() => {
-    dispatch(setShowFooterElement('cartAddress'));
+    dispatch(setCurrentModule(t('cart_address')));
+    dispatch(setShowFooterElement('cart_address'));
   }, []);
 
+  const handleSubmit = () => console.log('element');
+
   return (
-    <MainContentLayout>
+    <MainContentLayout handleSubmit={handleSubmit}>
       <Suspense>
         <div className={'px-4'}>
           {/* delivery method buttons */}
