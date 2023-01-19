@@ -6,6 +6,7 @@ import { cartSlice } from '@/redux/slices/cartSlice';
 const initialState: appSetting = {
   userAgent: null, /// ==== tempId for the cart
   method: `delivery`,
+  productPreview: `hor`,
   showHeader: true,
   showFooter: true,
   showFooterElement: `home`,
@@ -191,6 +192,15 @@ export const appSettingSlice = createSlice({
         method: action.payload,
       };
     },
+    setProductPreview: (
+      state: typeof initialState,
+      action: PayloadAction<appSetting['productPreview']>
+    ) => {
+      return {
+        ...state,
+        productPreview: action.payload,
+      };
+    },
     resetAppSetting: (state: typeof initialState, action: PayloadAction) => {
       return {
         ...initialState,
@@ -235,5 +245,6 @@ export const {
   setUserAgent,
   setCartMethod,
   setShowFooterElement,
+  setProductPreview,
   resetShowFooterElement,
 } = appSettingSlice.actions;

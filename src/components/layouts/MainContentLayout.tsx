@@ -22,6 +22,7 @@ type Props = {
   hideBack?: boolean;
   showMotion?: boolean;
   backRoute?: string | null;
+  handleSubmit?: () => void;
 };
 
 const MainContentLayout: FC<Props> = ({
@@ -30,6 +31,7 @@ const MainContentLayout: FC<Props> = ({
   hideBack = false,
   backRoute = null,
   showMotion = true,
+  handleSubmit,
 }): JSX.Element => {
   const { t } = useTranslation();
   const {
@@ -75,7 +77,7 @@ const MainContentLayout: FC<Props> = ({
           />
         )}
       </main>
-      <AppFooter />
+      <AppFooter handleSubmit={handleSubmit} />
     </motion.div>
   );
 };

@@ -101,6 +101,7 @@ export type position = {
 export type appSetting = {
   userAgent: string | null;
   method: `delivery` | `pickup`;
+  productPreview: `hor` | `ver`;
   showFooterElement: string;
   showHeader: boolean;
   showFooter: boolean;

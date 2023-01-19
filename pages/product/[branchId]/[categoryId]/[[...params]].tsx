@@ -5,7 +5,7 @@ import {
   productApi,
   useLazyGetSearchProductsQuery,
 } from '@/redux/api/productApi';
-import { Product } from '@/types/index';
+import { appSetting, Product } from '@/types/index';
 import { NextPage } from 'next';
 import { apiSlice } from '@/redux/api';
 import MainHead from '@/components/MainHead';
@@ -16,7 +16,10 @@ import NotFoundImage from '@/appImages/not_found.png';
 import HorProductWidget from '@/widgets/product/HorProductWidget';
 import { AppQueryResult, ProductPagination } from '@/types/queries';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { setCurrentModule } from '@/redux/slices/appSettingSlice';
+import {
+  setCurrentModule,
+  setProductPreview,
+} from '@/redux/slices/appSettingSlice';
 import { useTranslation } from 'react-i18next';
 import VerProductWidget from '@/components/widgets/product/VerProductWidget';
 import { inputFieldClass } from '@/constants/*';
@@ -33,16 +36,16 @@ const ProductIndex: NextPage<Props> = ({ elements }): JSX.Element => {
   const {
     locale: { lang },
     branch: { id: branch_id },
+    appSetting: { productPreview },
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
-  const [IsMenue, setIsMenue] = useState(true);
   const [Icon, SetIcon] = useState(true);
   const [trigger] = useLazyGetSearchProductsQuery<{
     trigger: () => void;
   }>();
   // change menue view to list view
-  const changeStyle = () => {
-    setIsMenue(!IsMenue);
+  const changeStyle = (preview: appSetting['productPreview']) => {
+    dispatch(setProductPreview(preview));
     SetIcon(!Icon);
   };
   const { query }: any = useRouter();
@@ -90,7 +93,12 @@ const ProductIndex: NextPage<Props> = ({ elements }): JSX.Element => {
                 />
               </div>
             </div>
-            <button onClick={changeStyle} className="pt-1 ps-2">
+            <button
+              onClick={() =>
+                changeStyle(productPreview === 'ver' ? 'hor' : 'ver')
+              }
+              className="pt-1 ps-2"
+            >
               {Icon ? (
                 <Image src={Menu} alt="menu" className={'w-8 h-8'} />
               ) : (
@@ -100,7 +108,7 @@ const ProductIndex: NextPage<Props> = ({ elements }): JSX.Element => {
           </div>
           <div
             className={
-              IsMenue
+              productPreview === 'hor'
                 ? 'mt-4 p-4 grid sm:grid-cols-3 lg:grid-cols-2 gap-6'
                 : 'my-4 p-4'
             }
@@ -116,7 +124,7 @@ const ProductIndex: NextPage<Props> = ({ elements }): JSX.Element => {
             )}
             {!isEmpty(currentProducts) &&
               map(currentProducts, (p: Product, i) =>
-                IsMenue ? (
+                productPreview === 'hor' ? (
                   <HorProductWidget element={p} key={i} />
                 ) : (
                   <VerProductWidget element={p} key={i} />
