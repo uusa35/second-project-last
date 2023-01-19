@@ -14,11 +14,10 @@ import { setAddToCart } from '@/redux/slices/cartSlice';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 type Props = {
-  productShow: boolean;
-  cartReview: boolean;
+  handleSubmit?: () => void;
 };
 
-const AppFooter: FC = (): JSX.Element => {
+const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
   const { t } = useTranslation();
   const {
     appSetting: { showFooterElement },
@@ -27,6 +26,7 @@ const AppFooter: FC = (): JSX.Element => {
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const router = useRouter();
+
   const handleAddToCart = () => {
     if (!productCart.enabled) {
       dispatch(
@@ -74,7 +74,7 @@ const AppFooter: FC = (): JSX.Element => {
             <button
               className={`${footerBtnClass}`}
               suppressHydrationWarning={suppressText}
-              onClick={() => router.push(`/customer/info`)}
+              onClick={() => router.push(appLinks.customerInfo.path)}
             >
               {t('continue')}
             </button>
@@ -87,7 +87,7 @@ const AppFooter: FC = (): JSX.Element => {
             <button
               className={`${footerBtnClass}`}
               suppressHydrationWarning={suppressText}
-              onClick={() => router.push(appLinks.orderReview.path)}
+              onClick={() => (handleSubmit ? handleSubmit() : null)}
             >
               {t('continue')}
             </button>

@@ -49,8 +49,10 @@ const CartAddress: NextPage = (): JSX.Element => {
     dispatch(setShowFooterElement('cart_address'));
   }, []);
 
+  const handleSubmit = () => console.log('element');
+
   return (
-    <MainContentLayout>
+    <MainContentLayout handleSubmit={handleSubmit}>
       <Suspense>
         <div className={'px-4'}>
           {/* delivery method buttons */}
