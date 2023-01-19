@@ -2,7 +2,13 @@ import { NextPage } from 'next';
 import MainContentLayout from '@/layouts/MainContentLayout';
 import CustomImage from '@/components/CustomImage';
 import ContactInfo from '@/appImages/contact_info.png';
-import { appLinks, footerBtnClass, imageSizes, mainBg, submitBtnClass } from '@/constants/*';
+import {
+  appLinks,
+  footerBtnClass,
+  imageSizes,
+  mainBg,
+  submitBtnClass,
+} from '@/constants/*';
 import { BadgeOutlined, EmailOutlined, Phone } from '@mui/icons-material';
 import GreyLine from '@/components/GreyLine';
 import { useTranslation } from 'react-i18next';
@@ -49,7 +55,7 @@ const CustomerInformation: NextPage = (): JSX.Element => {
   }, []);
 
   const handelSaveCustomerInfo = async () => {
-    console.log(userData);
+    // console.log(userData);
     if (userData.name === '' || userData.phone === '') {
       dispatch(
         showToastMessage({
@@ -76,14 +82,13 @@ const CustomerInformation: NextPage = (): JSX.Element => {
 
   useEffect(() => {
     dispatch(setCurrentModule(t('customer_info')));
-    dispatch(setShowFooterElement('home'));
+    dispatch(setShowFooterElement('customerInfo'));
   }, []);
 
   return (
-    <MainContentLayout >
-      <div className="flex-col justify-between h-full px-5">
-        <div>
-          <div className="flex justify-center py-10 lg:my-5 lg:pb-5">
+    <MainContentLayout handleSubmit={handelSaveCustomerInfo}>
+      <div className="flex-col justify-center h-full px-5">
+        {/* <div className="flex justify-center py-10 lg:my-5 lg:pb-5">
             <CustomImage
               src={ContactInfo.src}
               alt="customer"
@@ -91,63 +96,51 @@ const CustomerInformation: NextPage = (): JSX.Element => {
               height={imageSizes.xl}
               className={`my-10 lg:my-0 w-auto h-auto`}
             />
+          </div> */}
+
+        <div className="lg:mt-20">
+          <div className="flex gap-x-2 px-2 border-b-4 border-b-gray-200 w-full focus:ring-transparent py-4">
+            <BadgeOutlined className="text-primary_BG" />
+            <input
+              onChange={(e) =>
+                setUserData((prev) => ({ ...prev, name: e.target.value }))
+              }
+              defaultValue={userData.name}
+              className={`border-0 focus:ring-transparent outline-none`}
+              type="string"
+              placeholder={`${t('enter_your_name')}`}
+            ></input>
           </div>
 
-          <div className="lg:mt-10">
-            <div className="flex space-x-2 px-2 border-b-4 border-b-gray-200 w-full focus:ring-transparent py-4">
-              <BadgeOutlined className="text-primary_BG" />
-              <input
-                onChange={(e) =>
-                  setUserData((prev) => ({ ...prev, name: e.target.value }))
-                }
-                defaultValue={userData.name}
-                className={`border-0 focus:ring-transparent`}
-                type="string"
-                placeholder={`${t('enter_your_name')}`}
-              ></input>
-            </div>
-
-            <div className="flex items-center space-x-2 px-2 border-b-4 border-b-gray-200 w-full focus:ring-transparent py-4">
-              <EmailOutlined className="text-primary_BG" />
-              <input
-                onChange={(e) =>
-                  setUserData((prev) => ({ ...prev, email: e.target.value }))
-                }
-                defaultValue={userData.email}
-                className={`border-0 focus:ring-transparent`}
-                type="email"
-                pattern='/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/'
-                placeholder={`${t('enter_your_email')}`}
-              ></input>
-            </div>
-
-            <div className="flex items-center space-x-2 px-2 border-b-4 border-b-gray-200 w-full focus:ring-transparent py-4">
-              <Phone className="text-primary_BG" />
-              <PhoneInput
-                international
-                defaultCountry="KW"
-                className="text-lg outline-none w-4/6 border-none p-0 focus:ring-0"
-                placeholder={`${t('enter_your_phone')}`}
-                value={userData.phone}
-                onChange={(value) =>
-                  setUserData((prev) => ({ ...prev, phone: value?.toString() }))
-                }
-              />
-            </div>
-            <GreyLine />
+          <div className="flex items-center gap-x-2 px-2 border-b-4 border-b-gray-200 w-full focus:ring-transparent py-4">
+            <EmailOutlined className="text-primary_BG" />
+            <input
+              onChange={(e) =>
+                setUserData((prev) => ({ ...prev, email: e.target.value }))
+              }
+              defaultValue={userData.email}
+              className={`border-0 focus:ring-transparent p-0`}
+              type="email"
+              pattern='/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/'
+              placeholder={`${t('enter_your_email')}`}
+            ></input>
           </div>
+
+          <div className="flex items-center gap-x-2 px-2 border-b-4 border-b-gray-200 w-full focus:ring-transparent py-4">
+            <Phone className="text-primary_BG" />
+            <PhoneInput
+              international
+              defaultCountry="KW"
+              className="text-lg outline-none w-4/6 focus:border-none p-0 focus:ring-0"
+              placeholder={`${t('enter_your_phone')}`}
+              value={userData.phone}
+              onChange={(value) =>
+                setUserData((prev) => ({ ...prev, phone: value?.toString() }))
+              }
+            />
+          </div>
+          <GreyLine />
         </div>
-
-        <button
-          onClick={() => {
-            handelSaveCustomerInfo();
-          }}
-          className={`${submitBtnClass} mt-10 mx-0`}
-        >
-          {t('continue')}
-        </button>
-
-        
       </div>
     </MainContentLayout>
   );
