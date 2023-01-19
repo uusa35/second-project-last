@@ -41,9 +41,9 @@ const CustomerInformation: NextPage = (): JSX.Element => {
   const handelSaveCustomerInfo = async () => {
     console.log(userData);
     if (
-      userData.name.length > 4 ||
-      userData.phone?.length > 4 ||
-      userData.email.length > 4
+      userData.name.length < 2 ||
+      userData.phone?.length < 2 ||
+      userData.email.length < 2
     ) {
       dispatch(
         showToastMessage({
