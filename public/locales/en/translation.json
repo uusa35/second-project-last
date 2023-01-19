@@ -431,5 +431,9 @@
   "delivery_fees" : "delivery fees",
   "cart_address" : "address details",
   "order_review" : "order review",
-  "some_fields_r_missing" : "some fields are missing"
+  "some_fields_r_missing" : "some fields are missing",
+  "delivery_now": "delivery now",
+  "pickup_now": "pickup now",
+  "store_branch": "store/branch",
+  "time_date": "time/date"
 }
