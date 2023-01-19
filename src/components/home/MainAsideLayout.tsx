@@ -22,30 +22,6 @@ type Props = {
 const MainAsideLayout: FC<Props> = ({ element }): JSX.Element => {
   const { t } = useTranslation();
   const router = useRouter();
-  const dispatch = useAppDispatch();
-  const {
-    locale: { otherLang },
-    branch: { id: branchId },
-  } = useAppSelector((state) => state);
-
-  const handleChangeLang = async (locale: string) => {
-    if (locale !== router.locale) {
-      await router
-        .push(router.pathname, router.asPath, {
-          locale,
-          scroll: false,
-        })
-        .then(() =>
-          dispatch(
-            showToastMessage({
-              content: `language_changed_successfully`,
-              type: `info`,
-            })
-          )
-        )
-        .then(() => dispatch(setLocale(locale)));
-    }
-  };
 
   return (
     <Suspense fallback={<LoadingSpinner fullWidth={false} />}>
@@ -55,7 +31,7 @@ const MainAsideLayout: FC<Props> = ({ element }): JSX.Element => {
         }`}
       >
         <div className="flex relative justify-center items-center top-0  w-full h-screen bg-gradient-to-tr from-gray-400 to-gray-800">
-          <Image
+          <CustomImage
             src={`${imgUrl(element.cover)}`}
             alt={element.name}
             className={`absolute top-0 object-cover w-full h-screen mix-blend-overlay`}
@@ -74,6 +50,7 @@ const MainAsideLayout: FC<Props> = ({ element }): JSX.Element => {
                 scroll={false}
                 href={appLinks.home.path}
                 className={`flex flex-row p-1 px-4 justify-between items-center rounded-lg bg-white bg-opacity-90 text-black`}
+                suppressHydrationWarning={suppressText}
               >
                 <HomeIcon className={`w-6 h-6 rtl:ml-2 ltr:mr-2`} />
                 <p suppressHydrationWarning={suppressText} className={`mt-2`}>
@@ -84,6 +61,7 @@ const MainAsideLayout: FC<Props> = ({ element }): JSX.Element => {
                 scroll={false}
                 href={appLinks.trackOrder.path}
                 className={`flex flex-row p-1 px-4 justify-between items-center rounded-lg bg-white bg-opacity-90 text-black`}
+                suppressHydrationWarning={suppressText}
               >
                 <ClipboardDocumentCheckIcon
                   className={`w-7 h-7 rtl:ml-2 ltr:mr-2 text-stone-700`}

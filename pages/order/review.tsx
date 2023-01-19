@@ -1,6 +1,6 @@
 import MainContentLayout from '@/layouts/MainContentLayout';
 import { NextPage } from 'next';
-import { useEffect } from 'react';
+import { useEffect, Suspense } from 'react';
 import {
   setCurrentModule,
   setShowFooterElement,
@@ -18,7 +18,9 @@ const OrderReview: NextPage = () => {
 
   return (
     <MainContentLayout>
-      <h1>Order Review</h1>
+      <Suspense>
+        <h1>Order Review</h1>
+      </Suspense>
     </MainContentLayout>
   );
 };

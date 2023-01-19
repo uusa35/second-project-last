@@ -266,12 +266,12 @@ const CartIndex: NextPage = (): JSX.Element => {
                         <span className="flex rounded-xl shadow-sm">
                           <button
                             type="button"
-                            className="relative inline-flex items-center ltr:rounded-l-xl rtl:rounded-r-xl bg-gray-100 px-4 py-2 text-sm font-medium text-black  focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
+                            className="relative -ml-px inline-flex items-center ltr:rounded-l-xl rtl:rounded-r-xl  bg-gray-100 px-4 py-2 text-sm font-medium text-black  focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
                             onClick={() => {
-                              handleDecrease(item);
+                              handleIncrease(item);
                             }}
                           >
-                            -
+                            +
                           </button>
                           <button
                             type="button"
@@ -281,12 +281,12 @@ const CartIndex: NextPage = (): JSX.Element => {
                           </button>
                           <button
                             type="button"
-                            className="relative -ml-px inline-flex items-center ltr:rounded-r-xl rtl:rounded-l-xl  bg-gray-100 px-4 py-2 text-sm font-medium text-black  focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
+                            className="relative inline-flex items-center ltr:rounded-r-xl rtl:rounded-l-xl bg-gray-100 px-4 py-2 text-sm font-medium text-black  focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
                             onClick={() => {
-                              handleIncrease(item);
+                              handleDecrease(item);
                             }}
                           >
-                            +
+                            -
                           </button>
                         </span>
                         <div>
