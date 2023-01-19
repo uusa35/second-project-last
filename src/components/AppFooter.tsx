@@ -92,6 +92,20 @@ const AppFooter: FC = (): JSX.Element => {
             </button>
           </div>
         )}
+
+        {showFooterElement === 'customerInfo' && (
+          <div
+            className={`${mainBg} bg-sky-600 w-full h-32 flex justify-center items-center rounded-t-xl`}
+          >
+            <button
+              className={`${footerBtnClass}`}
+              suppressHydrationWarning={suppressText}
+              onClick={() => router.push(`/customer/info`)}
+            >
+              {t('continue')}
+            </button>
+          </div>
+        )}
       </footer>
     </Suspense>
   );

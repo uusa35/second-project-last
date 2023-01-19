@@ -2,20 +2,26 @@ import { NextPage } from 'next';
 import MainContentLayout from '@/layouts/MainContentLayout';
 import CustomImage from '@/components/CustomImage';
 import ContactInfo from '@/appImages/contact_info.png';
-import { appLinks, imageSizes, submitBtnClass } from '@/constants/*';
+import { appLinks, footerBtnClass, imageSizes, mainBg, submitBtnClass } from '@/constants/*';
 import { BadgeOutlined, EmailOutlined, Phone } from '@mui/icons-material';
 import GreyLine from '@/components/GreyLine';
 import { useTranslation } from 'react-i18next';
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CustomerInfo } from '@/types/index';
-import { showToastMessage } from '@/redux/slices/appSettingSlice';
+import {
+  resetShowFooterElement,
+  setCurrentModule,
+  setShowFooterElement,
+  showToastMessage,
+} from '@/redux/slices/appSettingSlice';
 import { useDispatch } from 'react-redux';
 import { useSaveCustomerInfoMutation } from '@/redux/api/CustomerApi';
 import { useRouter } from 'next/router';
 import { setCustomer } from '@/redux/slices/customerSlice';
 import { useAppSelector } from '@/redux/hooks';
+import { setCurrentElement } from '@/redux/slices/currentElementSlice';
 // import '../../styles/CustomeStyle.css';
 
 const CustomerInformation: NextPage = (): JSX.Element => {
@@ -33,6 +39,14 @@ const CustomerInformation: NextPage = (): JSX.Element => {
     saveCustomerInfo,
     { isLoading: SaveCustomerLoading, error: customerInfoError },
   ] = useSaveCustomerInfoMutation();
+
+  useEffect(() => {
+    dispatch(setCurrentModule(t('customer_info')));
+    dispatch(setShowFooterElement(`customerInfo`));
+    return () => {
+      dispatch(resetShowFooterElement());
+    };
+  }, []);
 
   const handelSaveCustomerInfo = async () => {
     console.log(userData);
@@ -55,7 +69,7 @@ const CustomerInformation: NextPage = (): JSX.Element => {
   };
 
   return (
-    <MainContentLayout>
+    <MainContentLayout >
       <div className="flex-col justify-between h-full px-5">
         <div>
           <div className="flex justify-center py-10 lg:my-5 lg:pb-5">
@@ -121,6 +135,8 @@ const CustomerInformation: NextPage = (): JSX.Element => {
         >
           {t('Continue')}
         </button>
+
+        
       </div>
     </MainContentLayout>
   );

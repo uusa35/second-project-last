@@ -25,6 +25,8 @@ const AppHeader: FC = () => {
       <header
         className={`${
           offset <= 80 ? `bg-white` : `bg-transparent`
+        } ${
+          isHome ? `bg-transparent`: `bg-white` 
         } relative sticky top-0 z-50 flex flex-col justify-start items-center w-full scroll-smooth`}
       >
         {router.asPath === '/' ||
