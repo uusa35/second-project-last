@@ -24,9 +24,21 @@ export const customerSlice = createSlice({
     setCustomer: (
       state: typeof initialState,
       action: PayloadAction<CustomerInfo>
-    ) => action.payload,
-    removeCustomer: (state: typeof initialState, action: PayloadAction<void>) =>
-      initialState,
+    ) => {
+      return {
+        ...action.payload,
+        ...state,
+      };
+    },
+    removeCustomer: (
+      state: typeof initialState,
+      action: PayloadAction<void>
+    ) => {
+      return {
+        ...initialState,
+        address: state.address,
+      };
+    },
     setCustomerAddress: (
       state: typeof initialState,
       action: PayloadAction<CustomerInfo['address']>
