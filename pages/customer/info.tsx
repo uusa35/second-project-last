@@ -128,7 +128,7 @@ const CustomerInformation: NextPage = (): JSX.Element => {
           }}
           className={`${submitBtnClass} mt-10 mx-0`}
         >
-          {t('Continue')}
+          {t('continue')}
         </button>
       </div>
     </MainContentLayout>

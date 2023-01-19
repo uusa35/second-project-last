@@ -198,7 +198,7 @@ const CartIndex: NextPage = (): JSX.Element => {
                       <div className="flex px-5 items-center">
                         <div className="ltr:pr-3 rtl:pl-3 w-1/5">
                           <CustomImage
-                            className="w-full  rounded-lg border-[1px] border-gray-200"
+                            className="w-full rounded-lg border-[1px] border-gray-200"
                             alt={`${t('item')}`}
                             src={item.image}
                           />
@@ -252,17 +252,7 @@ const CartIndex: NextPage = (): JSX.Element => {
                           </div>
                         </div>
                       </div>
-
                       <div className="px-3 flex justify-between items-center mt-3">
-                        {/* <div>
-                      <button className="bg-gray-100 text-primary_BG outline-none p-2 mx-2 rounded-md font-semibold">
-                        <RemoveOutlined />
-                      </button>
-                      <button className="text-primary_BG">quantity</button>
-                      <button className="bg-gray-100 text-primary_BG outline-none p-2 mx-2 rounded-md font-semibold">
-                        <AddOutlined />
-                      </button>
-                    </div> */}
                         <span className="flex rounded-xl shadow-sm">
                           <button
                             type="button"
@@ -303,7 +293,6 @@ const CartIndex: NextPage = (): JSX.Element => {
                   <div className="mt-10 px-5 py-1 bg-gray-100"></div>
                 </div>
               ))}
-
               <div className="px-5">
                 <div className="flex items-center">
                   <CustomImage

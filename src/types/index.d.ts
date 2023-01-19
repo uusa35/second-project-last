@@ -302,4 +302,12 @@ export interface CustomerInfo {
   name: string;
   email: string;
   phone?: string;
+  address: {
+    customer_id: number;
+    address_type: number;
+    block: string;
+    street: string;
+    longitude?: string;
+    latitude?: string;
+  };
 }

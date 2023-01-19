@@ -34,7 +34,7 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
   const {
     branch: { id: branchId },
     area: { id: areaId },
-    vendor
+    vendor,
   } = useAppSelector((state) => state);
 
   useEffect(() => {
@@ -49,13 +49,13 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
       <MainHead title={element.name} mainImage={element.logo} />
       <MainContentLayout>
         {/*  HomePage Header */}
-       <Image
-            src={`${imgUrl(vendor.cover)}`}
-            alt={vendor.name}
-            width={imageSizes.sm}
-            height={imageSizes.sm}
-            className={`sm:hidden xs:block w-full rounded-b-lg`}
-          />
+        <Image
+          src={`${imgUrl(vendor.cover)}`}
+          alt={vendor.name}
+          width={imageSizes.sm}
+          height={imageSizes.sm}
+          className={`sm:hidden xs:block w-full rounded-b-lg`}
+        />
         <div className={`px-14 mt-4`}>
           <HomeVendorMainInfo element={element} />
         </div>
