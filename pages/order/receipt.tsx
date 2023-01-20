@@ -13,10 +13,11 @@ const Receipt: NextPage = (): JSX.Element => {
     const handleMapLocation = (lat: string, long: string) => {
         window.open(`https://maps.google.com?q=${lat},${long}`);
     }
+    console.log("order", order)
     return (
         <MainContentLayout>
             <div>
-                <div className="flex px-4 justify-between pt-5">
+                <div className="flex px-4  pt-5 justify-between items-center">
                     <div className="flex items-center">
                         <Image src={`${imgUrl(vendor.logo)}`} alt='logo' width={60} height={60} />
                         <h4 className="px-2 font-semibold">{vendor.name}</h4>
