@@ -64,6 +64,7 @@ export const cartSlice = createSlice({
         (item) => item.ProductID === action.payload.ProductID
       );
       state.items[itemIndex].totalQty += 1;
+      state.items[itemIndex].Quantity += 1;
       state.items[itemIndex].subTotalPrice = multiply(
         state.items[itemIndex].totalPrice,
         state.items[itemIndex].totalQty
@@ -79,6 +80,7 @@ export const cartSlice = createSlice({
       );
       if (state.items[itemIndex].totalQty > 1) {
         state.items[itemIndex].totalQty -= 1;
+        state.items[itemIndex].Quantity -= 1;
         state.items[itemIndex].subTotalPrice = multiply(
           state.items[itemIndex].totalPrice,
           state.items[itemIndex].totalQty
