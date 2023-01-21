@@ -442,6 +442,8 @@
   "delivery_fees" : "رسوم التوصيل",
   "cart_address" : "تفاصيل العنوان",
   "order_review" : "مراجعة الطلب",
+  "enter_your_name":"ادخل اسمك",
+  "enter_your_email":"ادخل عنوان بريدك الالكتروني",
   "some_fields_r_missing" : "جميع الحقول مطلوبة .. يرجى تعبئه الحقول بالكامل",
   "delivery_now": "توصيل الآن",
   "pickup_now": "استلام الآن",

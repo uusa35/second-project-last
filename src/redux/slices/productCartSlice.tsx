@@ -39,17 +39,13 @@ export const productCartSlice = createSlice({
       return {
         ...initialState,
         ...action.payload,
-        id: `${state.id}${action.payload.ProductID}${state.id}`,
+        id: `${state.id}${action.payload.ProductID}`,
       };
     },
     addMeter: (
       state: typeof initialState,
       action: PayloadAction<QuantityMeters>
     ) => {
-      const exist = filter(
-        state.QuantityMeters,
-        (m) => m.uId === action.payload.uId
-      );
       return {
         ...state,
         QuantityMeters: [

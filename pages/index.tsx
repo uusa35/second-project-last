@@ -11,7 +11,7 @@ import { Vendor } from '@/types/index';
 import { categoryApi } from '@/redux/api/categoryApi';
 import { isEmpty, map } from 'lodash';
 import CategoryWidget from '@/widgets/category/CategoryWidget';
-import { appLinks, suppressText } from '@/constants/*';
+import { appLinks, imgUrl, suppressText } from '@/constants/*';
 import { useTranslation } from 'react-i18next';
 import { setLocale } from '@/redux/slices/localeSlice';
 import { setCurrentModule } from '@/redux/slices/appSettingSlice';
@@ -19,15 +19,14 @@ import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import HomeSelectMethod from '@/components/home/HomeSelectMethod';
 import HomeVendorMainInfo from '@/components/home/HomeVendorMainInfo';
 import { useRouter } from 'next/router';
+import CustomImage from '@/components/CustomImage';
 import Image from 'next/image';
-import { imgUrl, imageSizes } from '@/constants/*';
+import {  imageSizes } from '@/constants/*';
 type Props = {
   categories: Category[];
   element: Vendor;
 };
-let renderCounter: number = 0;
 const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
-  console.log(`::: Log Home Render :::: ${renderCounter++}`);
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -40,6 +39,8 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
     dispatch(setCurrentModule(t('home')));
   }, []);
 
+  console.log(element)
+
   const handleFocus = () =>
     router.push(appLinks.productSearchIndex(branchId, ``, areaId));
   return (
@@ -47,43 +48,45 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
       {/* SEO Head DEV*/}
       <MainHead title={element.name} mainImage={element.logo} />
       <MainContentLayout>
-        {/*  HomePage Header */}
-        <Image
-          src={`${imgUrl(vendor.cover)}`}
-          alt={vendor.name}
-          width={imageSizes.sm}
-          height={imageSizes.sm}
-          className={`sm:hidden xs:block w-full rounded-b-lg`}
-        />
-        <div className={`px-14 mt-4`}>
-          <HomeVendorMainInfo element={element} />
+        <div className='absolute top-0 lg:hidden w-full h-52"'>
+          <CustomImage
+            src={`${imgUrl(element.cover)}`}
+            alt="vendor panner"
+            className="w-full h-52"
+          />
         </div>
-        <HomeSelectMethod element={element} />
-        {/* Search Input */}
-        <div
-          className={`flex flex-1 w-auto flex-grow mx-8 pb-8 border-b border-stone-100`}
-        >
-          <div className={`w-full`}>
-            <div className="relative mt-1 rounded-md shadow-sm text-gray-400">
-              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center px-6">
-                <MagnifyingGlassIcon className="h-8 w-8" aria-hidden="true" />
+        <div className="bg-white rounded-3xl lg:rounded-none relative -top-10 lg:top-auto  pt-1 lg:pt-0 ">
+          {/*  HomePage Header */}
+          <div className={`px-10 mt-4`}>
+            <HomeVendorMainInfo element={element} />
+          </div>
+          <HomeSelectMethod element={element} />
+          {/* Search Input */}
+          <div
+            className={`flex flex-1 w-auto flex-grow mx-8 pb-8 border-b border-stone-100`}
+          >
+            <div className={`w-full`}>
+              <div className="relative mt-1 rounded-md shadow-sm text-gray-400">
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center px-6">
+                  <MagnifyingGlassIcon className="h-8 w-8" aria-hidden="true" />
+                </div>
+                <input
+                  type="search"
+                  name="search"
+                  id="search"
+                  onFocus={() => handleFocus()}
+                  className="block w-full rounded-md  pl-20 focus:ring-1 focus:ring-primary_BG border-none  bg-gray-100 py-3 h-16  text-lg capitalize"
+                  suppressHydrationWarning={suppressText}
+                  placeholder={`${t(`search_products`)}`}
+                />
               </div>
-              <input
-                type="search"
-                name="search"
-                id="search"
-                onFocus={() => handleFocus()}
-                className="block w-full rounded-md  pl-20 focus:ring-1 focus:ring-primary_BG border-none  bg-gray-100 py-3 h-16  text-lg capitalize"
-                suppressHydrationWarning={suppressText}
-                placeholder={`${t(`search_products`)}`}
-              />
             </div>
           </div>
-        </div>
-        {/* Categories List */}
-        <div className="py-4 px-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-6">
-          {!isEmpty(categories) &&
-            map(categories, (c, i) => <CategoryWidget element={c} key={i} />)}
+          {/* Categories List */}
+          <div className="py-4 px-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-6">
+            {!isEmpty(categories) &&
+              map(categories, (c, i) => <CategoryWidget element={c} key={i} />)}
+          </div>
         </div>
       </MainContentLayout>
     </>

@@ -77,7 +77,7 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
         )}
         {showFooterElement === 'cart_index' && cart.items.length > 0 && (
           <div
-            className={`${mainBg} w-full h-32 flex justify-center items-center rounded-t-xl`}
+            className={`${mainBg} w-full h-20 flex justify-center items-center rounded-t-xl`}
           >
             <button
               className={`${footerBtnClass}`}
@@ -90,7 +90,21 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
         )}
         {showFooterElement === 'cart_address' && (
           <div
-            className={`${mainBg} bg-sky-600 w-full h-32 flex justify-center items-center rounded-t-xl`}
+            className={`${mainBg} bg-sky-600 w-full h-20 flex justify-center items-center rounded-t-xl`}
+          >
+            <button
+              className={`${footerBtnClass}`}
+              suppressHydrationWarning={suppressText}
+              onClick={() => (handleSubmit ? handleSubmit() : null)}
+            >
+              {t('continue')}
+            </button>
+          </div>
+        )}
+
+        {showFooterElement === 'customerInfo' && (
+          <div
+            className={`${mainBg} bg-sky-600 w-full h-20 flex justify-center items-center rounded-t-xl`}
           >
             <button
               className={`${footerBtnClass}`}
@@ -103,7 +117,7 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
         )}
         {showFooterElement === 'order_review' && (
           <div
-            className={`${mainBg} bg-sky-600 w-full h-32 flex justify-center items-center rounded-t-xl`}
+            className={`${mainBg} bg-sky-600 w-full h-20 flex justify-center items-center rounded-t-xl`}
           >
             <Link
               className={`${footerBtnClass}`}

@@ -54,11 +54,13 @@ const CartAddress: NextPage = (): JSX.Element => {
   return (
     <MainContentLayout handleSubmit={handleSubmit}>
       <Suspense>
-        <div className={'px-4'}>
-          {/* delivery method buttons */}
-          <DeliveryBtns handleSelectMethod={handleSelectMethod} />
-          <div className="bg-gray-200 w-full mt-5 p-0 h-2"></div>
+        {/* delivery method buttons */}
+        <DeliveryBtns handleSelectMethod={handleSelectMethod} />
 
+        <div className={'px-4'}>
+          
+          <div className="bg-gray-200 w-full mt-5 p-0 h-2"></div>
+          
           {/* location */}
           <div className="py-5">
             {method === `delivery` && !isEmpty(branch) && (
@@ -220,6 +222,7 @@ const CartAddress: NextPage = (): JSX.Element => {
                 className={`${addressInputField}`}
                 suppressHydrationWarning={suppressText}
               />
+
               <div className="relative flex flex-col">
                 <div className="flex-auto">
                   <div className="tab-content tab-space">
@@ -281,6 +284,8 @@ const CartAddress: NextPage = (): JSX.Element => {
               />
             </div>
           </div>
+
+          {/* delivery prefrences */}
           <div className="mx-4">
             <p
               className="my-5 font-semibold text-base"

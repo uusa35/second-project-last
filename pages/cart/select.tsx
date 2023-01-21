@@ -195,6 +195,8 @@ const SelectMethod: NextPage = (): JSX.Element => {
           >
             {t('done')}
           </button>
+
+          
         </div>
       </Suspense>
     </MainContentLayout>

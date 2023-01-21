@@ -71,46 +71,8 @@ const CartIndex: NextPage = (): JSX.Element => {
 
   useEffect(() => {
     console.log('fired');
-    if (branchId && !isNull(branchId) && !isEmpty(cart.items) && userAgent) {
-      triggerAddToCart({
-        branchId,
-        body: { UserAgent: userAgent, Cart: cart.items },
-      }).then((r: any) => {
-        if (r.data && r.data.status && r.data.msg) {
-          dispatch(
-            showToastMessage({
-              content: lowerCase(kebabCase(r.data.msg)),
-              type: `success`,
-            })
-          );
-          triggerGetCartProducts({ UserAgent: userAgent }).then((r: any) => {
-            if (r.data && r.data.status) {
-              dispatch(
-                setCartTotalAndSubTotal({
-                  total: r.data.data.total,
-                  subTotal: r.data.data.subTotal,
-                })
-              );
-            }
-          });
-        } else {
-          console.log('error case', r);
-          dispatch(
-            showToastMessage({
-              content: lowerCase(
-                kebabCase(
-                  r.error?.data?.msg ?? `cart_is_not_ready_error_occurred`
-                )
-              ),
-              type: `error`,
-            })
-          );
-        }
-      });
-    }
+    handleCartCalculations();
   }, [cart.grossTotal, cart.promoEnabled]);
-
-  console.log('cart grossTotal', cart.grossTotal);
 
   const handleCoupon = async (coupon: string) => {
     if (coupon.length > 3 && userAgent && !isEmpty(cart.items)) {
@@ -157,6 +119,48 @@ const CartIndex: NextPage = (): JSX.Element => {
     );
   };
 
+  const handleCartCalculations = async () => {
+    if (branchId && !isNull(branchId) && !isEmpty(cart.items) && userAgent) {
+      await triggerAddToCart({
+        branchId,
+        body: { UserAgent: userAgent, Cart: cart.items },
+      }).then((r: any) => {
+        if (r.data && r.data.status && r.data.msg) {
+          triggerGetCartProducts({ UserAgent: userAgent })
+            .then((r: any) => {
+              if (r.data && r.data.status) {
+                dispatch(
+                  setCartTotalAndSubTotal({
+                    total: r.data.data.total,
+                    subTotal: r.data.data.subTotal,
+                  })
+                );
+              }
+            })
+            .then(() =>
+              dispatch(
+                showToastMessage({
+                  content: lowerCase(kebabCase(r.data.msg)),
+                  type: `success`,
+                })
+              )
+            );
+        } else {
+          console.log('error case', r);
+          dispatch(
+            showToastMessage({
+              content: lowerCase(
+                kebabCase(
+                  r.error?.data?.msg ?? `cart_is_not_ready_error_occurred`
+                )
+              ),
+              type: `error`,
+            })
+          );
+        }
+      });
+    }
+  };
   const handleIncrease = async (element: any) => {
     await dispatch(increaseCartQty(element));
     // await handleCartCalculations();
