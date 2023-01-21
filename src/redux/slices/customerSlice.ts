@@ -26,8 +26,8 @@ export const customerSlice = createSlice({
       action: PayloadAction<CustomerInfo>
     ) => {
       return {
-        ...action.payload,
         ...state,
+        ...action.payload,      
       };
     },
     removeCustomer: (

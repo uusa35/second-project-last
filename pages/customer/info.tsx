@@ -2,7 +2,13 @@ import { NextPage } from 'next';
 import MainContentLayout from '@/layouts/MainContentLayout';
 import CustomImage from '@/components/CustomImage';
 import ContactInfo from '@/appImages/contact_info.png';
-import { appLinks, imageSizes, submitBtnClass } from '@/constants/*';
+import {
+  appLinks,
+  footerBtnClass,
+  imageSizes,
+  mainBg,
+  submitBtnClass,
+} from '@/constants/*';
 import { BadgeOutlined, EmailOutlined, Phone } from '@mui/icons-material';
 import GreyLine from '@/components/GreyLine';
 import { useTranslation } from 'react-i18next';
@@ -11,6 +17,7 @@ import 'react-phone-number-input/style.css';
 import { useEffect, useState } from 'react';
 import { CustomerInfo } from '@/types/index';
 import {
+  resetShowFooterElement,
   setCurrentModule,
   setShowFooterElement,
   showToastMessage,
@@ -20,6 +27,7 @@ import { useSaveCustomerInfoMutation } from '@/redux/api/CustomerApi';
 import { useRouter } from 'next/router';
 import { setCustomer } from '@/redux/slices/customerSlice';
 import { useAppSelector } from '@/redux/hooks';
+import { setCurrentElement } from '@/redux/slices/currentElementSlice';
 // import '../../styles/CustomeStyle.css';
 
 const CustomerInformation: NextPage = (): JSX.Element => {
@@ -38,8 +46,16 @@ const CustomerInformation: NextPage = (): JSX.Element => {
     { isLoading: SaveCustomerLoading, error: customerInfoError },
   ] = useSaveCustomerInfoMutation();
 
+  useEffect(() => {
+    dispatch(setCurrentModule(t('customer_info')));
+    dispatch(setShowFooterElement(`customerInfo`));
+    return () => {
+      dispatch(resetShowFooterElement());
+    };
+  }, []);
+
   const handelSaveCustomerInfo = async () => {
-    console.log(userData);
+    // console.log(userData);
     if (
       userData.name.length < 2 ||
       userData.phone?.length < 2 ||
@@ -70,14 +86,13 @@ const CustomerInformation: NextPage = (): JSX.Element => {
 
   useEffect(() => {
     dispatch(setCurrentModule(t('customer_info')));
-    dispatch(setShowFooterElement('home'));
+    dispatch(setShowFooterElement('customerInfo'));
   }, []);
 
   return (
-    <MainContentLayout>
-      <div className="flex-col justify-between h-full px-5">
-        <div>
-          <div className="flex justify-center py-10 lg:my-5 lg:pb-5">
+    <MainContentLayout handleSubmit={handelSaveCustomerInfo}>
+      <div className="flex-col justify-center h-full px-5">
+        {/* <div className="flex justify-center py-10 lg:my-5 lg:pb-5">
             <CustomImage
               src={ContactInfo.src}
               alt="customer"
@@ -85,7 +100,7 @@ const CustomerInformation: NextPage = (): JSX.Element => {
               height={imageSizes.xl}
               className={`my-10 lg:my-0 w-auto h-auto`}
             />
-          </div>
+          </div> */}
 
           <div className="lg:mt-10">
             <div className="flex space-x-2 px-2 border-b-4 border-b-gray-200 w-full focus:ring-transparent py-4">
@@ -117,31 +132,21 @@ const CustomerInformation: NextPage = (): JSX.Element => {
               ></input>
             </div>
 
-            <div className="flex items-center space-x-2 px-2 border-b-4 border-b-gray-200 w-full focus:ring-transparent py-4">
-              <Phone className="text-primary_BG" />
-              <PhoneInput
-                international
-                defaultCountry="KW"
-                className="text-lg outline-none w-4/6 border-none p-0 focus:ring-0"
-                placeholder={`${t('enter_your_phone')}`}
-                value={userData.phone}
-                onChange={(value) =>
-                  setUserData((prev) => ({ ...prev, phone: value?.toString() }))
-                }
-              />
-            </div>
-            <GreyLine />
+          <div className="flex items-center gap-x-2 px-2 border-b-4 border-b-gray-200 w-full focus:ring-transparent py-4">
+            <Phone className="text-primary_BG" />
+            <PhoneInput
+              international
+              defaultCountry="KW"
+              className="text-lg outline-none w-4/6 focus:border-none p-0 focus:ring-0"
+              placeholder={`${t('enter_your_phone')}`}
+              value={userData.phone}
+              onChange={(value) =>
+                setUserData((prev) => ({ ...prev, phone: value?.toString() }))
+              }
+            />
           </div>
+          <GreyLine />
         </div>
-
-        <button
-          onClick={() => {
-            handelSaveCustomerInfo();
-          }}
-          className={`${submitBtnClass} mt-10 mx-0`}
-        >
-          {t('continue')}
-        </button>
       </div>
     </MainContentLayout>
   );
