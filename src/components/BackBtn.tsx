@@ -23,7 +23,7 @@ const BackBtn: FC<Props> = ({
   const {
     appSetting: { currentModule },
     locale: { lang, otherLang },
-    cart: { items },
+    cart: { items, grossTotal },
     country,
   } = useAppSelector((state) => state);
   const router = useRouter();
@@ -122,7 +122,7 @@ const BackBtn: FC<Props> = ({
             className={`relative`}
           >
             <ShoppingBagOutlined className={`w-8 h-8 text-black`} />
-            {items.length > 0 && (
+            {grossTotal > 0 && items.length > 0 && (
               <div className="absolute -left-2 -top-2 opacity-90  rounded-full bg-red-600 w-6 h-6 top-0 shadow-xl flex items-center justify-center text-white">
                 <span className={`pt-[3.5px] shadow-md`}>{items.length}</span>
               </div>

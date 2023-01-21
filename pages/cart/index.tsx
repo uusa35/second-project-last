@@ -43,8 +43,8 @@ const CartIndex: NextPage = (): JSX.Element => {
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const [triggerAddToCart] = useAddToCartMutation();
-  const [triggerCheckPromoCode] = useLazyCheckPromoCodeQuery();
   const [triggerGetCartProducts] = useLazyGetCartProductsQuery();
+  const [triggerCheckPromoCode] = useLazyCheckPromoCodeQuery();
 
   useEffect(() => {
     dispatch(setCurrentModule(t('cart')));
@@ -100,43 +100,31 @@ const CartIndex: NextPage = (): JSX.Element => {
   };
 
   const handleCartCalculations = async () => {
-    if (branchId && !isNull(branchId) && !isEmpty(cart.items) && userAgent) {
+    if (branchId && !isNull(branchId) && userAgent) {
       await triggerAddToCart({
         branchId,
         body: { UserAgent: userAgent, Cart: cart.items },
       }).then((r: any) => {
         if (r.data && r.data.status && r.data.msg) {
-          triggerGetCartProducts({ UserAgent: userAgent })
-            .then((r: any) => {
-              if (r.data && r.data.status) {
-                dispatch(
-                  setCartTotalAndSubTotal({
-                    total: r.data.data.total,
-                    subTotal: r.data.data.subTotal,
-                    delivery_fees: r.data.data.delivery_fees,
-                  })
-                );
-              }
-            })
-            .then(() =>
+          triggerGetCartProducts({ UserAgent: userAgent }).then((r: any) => {
+            if (r.data && r.data.status) {
               dispatch(
-                showToastMessage({
-                  content: lowerCase(kebabCase(r.data.msg)),
-                  type: `success`,
+                setCartTotalAndSubTotal({
+                  total: r.data.data.total,
+                  subTotal: r.data.data.subTotal,
+                  delivery_fees: r.data.data.delivery_fees,
                 })
-              )
-            );
-        } else {
-          dispatch(
-            showToastMessage({
-              content: lowerCase(
-                kebabCase(
-                  r.error?.data?.msg ?? `cart_is_not_ready_error_occurred`
-                )
-              ),
-              type: `error`,
-            })
-          );
+              );
+            }
+          });
+          // .then(() =>
+          //   dispatch(
+          //     showToastMessage({
+          //       content: lowerCase(kebabCase(r.data.msg)),
+          //       type: `success`,
+          //     })
+          //   )
+          // );
         }
       });
     }
@@ -188,121 +176,122 @@ const CartIndex: NextPage = (): JSX.Element => {
               >
                 {t('items')}
               </p>
-              {map(cart.items, (item, i) => (
-                <div key={i}>
-                  <div className="px-4">
-                    <div className="mb-10 ">
-                      <div className="flex px-5 items-center">
-                        <div className="ltr:pr-3 rtl:pl-3 w-1/5">
-                          <CustomImage
-                            className="w-full rounded-lg border-[1px] border-gray-200"
-                            alt={`${t('item')}`}
-                            src={item.image}
-                          />
-                        </div>
+              {cart.grossTotal > 0 &&
+                map(cart.items, (item, i) => (
+                  <div key={i}>
+                    <div className="px-4">
+                      <div className="mb-10 ">
+                        <div className="flex px-5 items-center">
+                          <div className="ltr:pr-3 rtl:pl-3 w-1/5">
+                            <CustomImage
+                              className="w-full rounded-lg border-[1px] border-gray-200"
+                              alt={`${t('item')}`}
+                              src={item.image}
+                            />
+                          </div>
 
-                        <div className="w-full">
-                          <div>
-                            <div className="text-end">
-                              <button
-                                className="text-CustomRed pe-5 capitalize"
-                                suppressHydrationWarning={suppressText}
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  handleRemove(item.ProductID);
-                                }}
-                              >
-                                {t('remove')}
-                              </button>
-                              <Link
-                                href={`${appLinks.productShow(
-                                  item.ProductID.toString(),
-                                  branchId,
-                                  item.ProductID,
-                                  item.ProductName,
-                                  areaId
-                                )}`}
-                              >
-                                <EditOutlined />
-                              </Link>
+                          <div className="w-full">
+                            <div>
+                              <div className="text-end">
+                                <button
+                                  className="text-CustomRed pe-5 capitalize"
+                                  suppressHydrationWarning={suppressText}
+                                  onClick={() => handleRemove(item.id)}
+                                >
+                                  {t('remove')}
+                                </button>
+                                <Link
+                                  href={`${appLinks.productShow(
+                                    item.ProductID.toString(),
+                                    branchId,
+                                    item.ProductID,
+                                    item.ProductName,
+                                    areaId
+                                  )}`}
+                                >
+                                  <EditOutlined />
+                                </Link>
+                              </div>
+                            </div>
+                            <Link
+                              href={`${appLinks.productShow(
+                                item.ProductID.toString(),
+                                branchId,
+                                item.ProductID,
+                                item.ProductName,
+                                areaId
+                              )}`}
+                            >
+                              <p className="font-semibold">
+                                <TextTrans
+                                  ar={item.name_ar}
+                                  en={item.name_en}
+                                />
+                              </p>
+                            </Link>
+                            <div className="flex">
+                              {map(
+                                item.QuantityMeters,
+                                (a: QuantityMeters, i) => (
+                                  <div className="w-fit pb-2" key={i}>
+                                    <p
+                                      className={`text-xs px-2 pe-3 text-gray-400 w-auto ${
+                                        item.QuantityMeters.length > 1 &&
+                                        'border-e-2 border-gray-400'
+                                      }`}
+                                    >
+                                      <TextTrans
+                                        ar={a.addons[0].name_ar}
+                                        en={a.addons[0].name_en}
+                                      />
+                                    </p>
+                                  </div>
+                                )
+                              )}
                             </div>
                           </div>
-                          <Link
-                            href={`${appLinks.productShow(
-                              item.ProductID.toString(),
-                              branchId,
-                              item.ProductID,
-                              item.ProductName,
-                              areaId
-                            )}`}
-                          >
-                            <p className="font-semibold">
-                              <TextTrans ar={item.name_ar} en={item.name_en} />
-                            </p>
-                          </Link>
-                          <div className="flex">
-                            {map(
-                              item.QuantityMeters,
-                              (a: QuantityMeters, i) => (
-                                <div className="w-fit pb-2" key={i}>
-                                  <p
-                                    className={`text-xs px-2 pe-3 text-gray-400 w-auto ${
-                                      item.QuantityMeters.length > 1 &&
-                                      'border-e-2 border-gray-400'
-                                    }`}
-                                  >
-                                    <TextTrans
-                                      ar={a.addons[0].name_ar}
-                                      en={a.addons[0].name_en}
-                                    />
-                                  </p>
-                                </div>
-                              )
-                            )}
-                          </div>
                         </div>
-                      </div>
-                      <div className="px-3 flex justify-between items-center mt-3">
-                        <span className="flex rounded-xl shadow-sm">
-                          <button
-                            type="button"
-                            className="relative -ml-px inline-flex items-center ltr:rounded-l-xl rtl:rounded-r-xl  bg-gray-100 px-4 py-2 text-sm font-medium text-black  focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
-                            onClick={() => {
-                              handleIncrease(item);
-                            }}
-                          >
-                            +
-                          </button>
-                          <button
-                            type="button"
-                            className="relative -ml-px inline-flex items-center  bg-gray-100 px-4 py-2 text-sm font-medium text-primary_BG  focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
-                          >
-                            {item.totalQty}
-                          </button>
-                          <button
-                            type="button"
-                            className="relative inline-flex items-center ltr:rounded-r-xl rtl:rounded-l-xl bg-gray-100 px-4 py-2 text-sm font-medium text-black  focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
-                            onClick={() => {
-                              handleDecrease(item);
-                            }}
-                          >
-                            -
-                          </button>
-                        </span>
-                        <div>
-                          <p
-                            className="text-primary_BG"
-                            suppressHydrationWarning={suppressText}
-                          >
-                            {item.subTotalPrice} {t('kwd')}
-                          </p>
+                        <div className="px-3 flex justify-between items-center mt-3">
+                          <span className="flex rounded-xl shadow-sm">
+                            <button
+                              type="button"
+                              className="relative -ml-px inline-flex items-center ltr:rounded-l-xl rtl:rounded-r-xl  bg-gray-100 px-4 py-2 text-sm font-medium text-black  focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
+                              onClick={() => {
+                                handleIncrease(item);
+                              }}
+                            >
+                              +
+                            </button>
+                            <button
+                              type="button"
+                              className="relative -ml-px inline-flex items-center  bg-gray-100 px-4 py-2 text-sm font-medium text-primary_BG  focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
+                            >
+                              {item.totalQty}
+                            </button>
+                            <button
+                              type="button"
+                              className="relative inline-flex items-center ltr:rounded-r-xl rtl:rounded-l-xl bg-gray-100 px-4 py-2 text-sm font-medium text-black  focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
+                              onClick={() => {
+                                handleDecrease(item);
+                              }}
+                            >
+                              -
+                            </button>
+                          </span>
+                          <div>
+                            <p
+                              className="text-primary_BG"
+                              suppressHydrationWarning={suppressText}
+                            >
+                              {item.subTotalPrice} {t('kwd')}
+                            </p>
+                          </div>
                         </div>
                       </div>
                     </div>
+                    <div className="mt-10 px-5 py-1 bg-gray-100"></div>
                   </div>
-                  <div className="mt-10 px-5 py-1 bg-gray-100"></div>
-                </div>
-              ))}
+                ))}
               <div className="px-5">
                 <div className="flex items-center">
                   <CustomImage

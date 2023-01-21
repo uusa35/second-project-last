@@ -13,10 +13,21 @@ import {
   resetShowFooterElement,
   setCurrentModule,
   setShowFooterElement,
+  showToastMessage,
 } from '@/redux/slices/appSettingSlice';
 import { imageSizes, imgUrl } from '@/constants/*';
 import CustomImage from '@/components/CustomImage';
-import { filter, isEmpty, map, multiply, sum, sumBy } from 'lodash';
+import {
+  filter,
+  isEmpty,
+  isNull,
+  kebabCase,
+  lowerCase,
+  map,
+  multiply,
+  sum,
+  sumBy,
+} from 'lodash';
 import {
   addMeter,
   addRadioBtn,
@@ -35,16 +46,28 @@ import {
   AccordionBody,
 } from '@material-tailwind/react';
 import TextTrans from '@/components/TextTrans';
+import { setCartTotalAndSubTotal } from '@/redux/slices/cartSlice';
+import {
+  useAddToCartMutation,
+  useLazyGetCartProductsQuery,
+} from '@/redux/api/cartApi';
 
 type Props = {
   element: Product;
 };
 const ProductShow: NextPage<Props> = ({ element }) => {
   const { t } = useTranslation();
-  const { productCart } = useAppSelector((state) => state);
+  const {
+    productCart,
+    cart,
+    branch: { id: branchId },
+    appSetting: { userAgent },
+  } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const [currentQty, setCurrentyQty] = useState<number>(1);
   const [open, setOpen] = useState(1);
+  const [triggerAddToCart] = useAddToCartMutation();
+  const [triggerGetCartProducts] = useLazyGetCartProductsQuery();
 
   useEffect(() => {
     dispatch(setCurrentModule(element.name));
@@ -80,8 +103,6 @@ const ProductShow: NextPage<Props> = ({ element }) => {
       handleResetInitialProductCart();
     }
   };
-
-  console.log('element amount', element.amount);
 
   const handleResetInitialProductCart = () => {
     dispatch(
@@ -220,7 +241,12 @@ const ProductShow: NextPage<Props> = ({ element }) => {
   }, [productCart.QuantityMeters]);
 
   useEffect(() => {
-    if (!isEmpty(productCart) && currentQty >= 1) {
+    if (
+      !isEmpty(productCart) &&
+      currentQty >= 1 &&
+      element.amount &&
+      element.amount >= currentQty
+    ) {
       const allCheckboxes = map(productCart.CheckBoxes, (q) => q.addons[0]);
       const allRadioBtns = map(productCart.RadioBtnsAddons, (q) => q.addons);
       const allMeters = map(productCart.QuantityMeters, (q) => q.addons[0]);
@@ -245,6 +271,29 @@ const ProductShow: NextPage<Props> = ({ element }) => {
     productCart.RadioBtnsAddons,
     currentQty,
   ]);
+
+  useEffect(() => {
+    if (branchId && !isNull(branchId) && !isEmpty(cart.items) && userAgent) {
+      triggerAddToCart({
+        branchId,
+        body: { UserAgent: userAgent, Cart: cart.items },
+      }).then((r: any) => {
+        if (r.data && r.data.status && r.data.msg) {
+          triggerGetCartProducts({ UserAgent: userAgent }).then((r: any) => {
+            if (r.data && r.data.status) {
+              dispatch(
+                setCartTotalAndSubTotal({
+                  total: r.data.data.total,
+                  subTotal: r.data.data.subTotal,
+                  delivery_fees: r.data.data.delivery_fees,
+                })
+              );
+            }
+          });
+        }
+      });
+    }
+  }, [cart.items, cart.grossTotal]);
 
   return (
     <>
