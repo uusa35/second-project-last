@@ -64,104 +64,98 @@ const VendorShow: NextPage<Props> = ({ element }) => {
     );
   };
   return (
-    <>
+    <Suspense>
       <MainHead
         title={element.name}
         description={element.desc}
         mainImage={element.logo}
       />
       <MainContentLayout>
-        <Suspense>
-          <VendorDetailsItem
-            icon={
+        <VendorDetailsItem
+          icon={
+            <CustomImage
+              src={Clock}
+              width={20}
+              height={20}
+              alt={t('work_hours')}
+              className={`w-6 h-6`}
+            />
+          }
+          text="work_hours"
+          content={element.WorkHours}
+        />
+        <VendorDetailsItem
+          icon={
+            <CustomImage
+              src={DeliveryIcon}
+              width={22}
+              height={22}
+              alt={t('delivery_time')}
+              className={`w-6 h-6`}
+            />
+          }
+          text="delivery_time"
+          content={element.DeliveryTime}
+        />
+        <VendorDetailsItem
+          icon={
+            <CustomImage
+              src={PreOrderAvailabilityIcon}
+              width={25}
+              height={25}
+              alt={t('preorder_availability')}
+              className={`w-6 h-6`}
+            />
+          }
+          text="preorder_availability"
+          content={element.Preorder_availability}
+        />
+        <div className="px-4 py-6 shadow-md">
+          <div className="flex justify-between pb-20 ps-3">
+            <div className="flex items-center">
               <CustomImage
-                src={Clock}
-                width={20}
-                height={20}
-                alt={t('work_hours')}
-                className={`w-6 h-6`}
-              />
-            }
-            text="work_hours"
-            content={element.WorkHours}
-          />
-          <VendorDetailsItem
-            icon={
-              <CustomImage
-                src={DeliveryIcon}
-                width={22}
-                height={22}
-                alt={t('delivery_time')}
-                className={`w-6 h-6`}
-              />
-            }
-            text="delivery_time"
-            content={element.DeliveryTime}
-          />
-          <VendorDetailsItem
-            icon={
-              <CustomImage
-                src={PreOrderAvailabilityIcon}
+                src={PaymentIcon}
                 width={25}
                 height={25}
-                alt={t('preorder_availability')}
+                alt={t('payment_methods')}
                 className={`w-6 h-6`}
               />
-            }
-            text="preorder_availability"
-            content={element.Preorder_availability}
-          />
-          <div className="px-4 py-6 shadow-md">
-            <div className="flex justify-between pb-20 ps-3">
-              <div className="flex items-center">
-                <CustomImage
-                  src={PaymentIcon}
-                  width={25}
-                  height={25}
-                  alt={t('payment_methods')}
-                  className={`w-6 h-6`}
-                />
-                <p
-                  className="px-2 font-semibold"
-                  suppressHydrationWarning={suppressText}
-                >
-                  {t('payment_methods')}
-                </p>
-              </div>
-              <div className="flex items-center">
-                {element.Payment_Methods.visa && (
-                  <Link href={'/'} className="px-5">
-                    <CustomImage
-                      src={Visa.src}
-                      className="h-10 w-12"
-                      alt={t('visa')}
-                    />
-                  </Link>
-                )}
-                {element.Payment_Methods.cash_on_delivery && (
-                  <Link href={'/'} className="px-5">
-                    <CustomImage
-                      className="h-10 w-12"
-                      src={CashOnDelivery.src}
-                      alt={t('cash_on_delivery')}
-                    />
-                  </Link>
-                )}
-                {element.Payment_Methods.knet && (
-                  <Link href={'/'} className="px-5">
-                    <CustomImage
-                      className="h-8 w-12"
-                      src={Knet.src}
-                      alt="knet"
-                    />
-                  </Link>
-                )}
-              </div>
+              <p
+                className="px-2 font-semibold"
+                suppressHydrationWarning={suppressText}
+              >
+                {t('payment_methods')}
+              </p>
+            </div>
+            <div className="flex items-center">
+              {element.Payment_Methods.visa && (
+                <Link href={'/'} className="px-5">
+                  <CustomImage
+                    src={Visa.src}
+                    className="h-10 w-12"
+                    alt={t('visa')}
+                  />
+                </Link>
+              )}
+              {element.Payment_Methods.cash_on_delivery && (
+                <Link href={'/'} className="px-5">
+                  <CustomImage
+                    className="h-10 w-12"
+                    src={CashOnDelivery.src}
+                    alt={t('cash_on_delivery')}
+                  />
+                </Link>
+              )}
+              {element.Payment_Methods.knet && (
+                <Link href={'/'} className="px-5">
+                  <CustomImage className="h-8 w-12" src={Knet.src} alt="knet" />
+                </Link>
+              )}
             </div>
           </div>
-        </Suspense>
+        </div>
       </MainContentLayout>
-    </>
+    </Suspense>
   );
 };
 

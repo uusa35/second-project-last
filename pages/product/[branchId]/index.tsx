@@ -19,10 +19,7 @@ import { useEffect, useState, Suspense } from 'react';
 import { setCurrentModule } from '@/redux/slices/appSettingSlice';
 import VerProductWidget from '@/widgets/product/VerProductWidget';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { AppQueryResult } from '@/types/queries';
-import LoadingSpinner from '@/components/LoadingSpinner';
 
 type Props = {
   elements: Product[];
@@ -30,8 +27,6 @@ type Props = {
 const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-  const router = useRouter();
-  const { query } = router;
   const {
     locale: { lang },
     branch: { id: branchId },
@@ -63,7 +58,7 @@ const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
   };
 
   return (
-    <>
+    <Suspense>
       <MainHead title={`productIndex`} description={`productIndex`} />
       <MainContentLayout>
         <div className={`px-4`}>
@@ -84,30 +79,30 @@ const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
               />
             </div>
           </div>
-          <Suspense fallback={<LoadingSpinner fullWidth={false} />}>
-            <div className="flex flex-row justify-evenly items-center flex-wrap gap-3 my-3">
-              {isSuccess &&
-                map(topSearch.Data.topSearch, (searchKey, i) => (
-                  <Link
-                    className={`p-2 rounded-md bg-stone-100`}
-                    key={i}
-                    href={appLinks.productSearchIndex(
-                      branchId,
-                      searchKey,
-                      areaId
-                    )}
-                  >
-                    {searchKey}
-                  </Link>
-                ))}
-              <Link
-                className={`p-2 rounded-md bg-red-700 text-white`}
-                href={appLinks.productSearchIndex(branchId)}
-              >
-                {t(`clear`)}
-              </Link>
-            </div>
-          </Suspense>
+          <div className="flex flex-row justify-evenly items-center flex-wrap gap-3 my-3">
+            {isSuccess &&
+              topSearch &&
+              topSearch.Data &&
+              map(topSearch.Data.topSearch, (searchKey, i) => (
+                <Link
+                  className={`p-2 rounded-md bg-stone-100`}
+                  key={i}
+                  href={appLinks.productSearchIndex(
+                    branchId,
+                    searchKey,
+                    areaId
+                  )}
+                >
+                  {searchKey}
+                </Link>
+              ))}
+            <Link
+              className={`p-2 rounded-md bg-red-700 text-white`}
+              href={appLinks.productSearchIndex(branchId)}
+            >
+              {t(`clear`)}
+            </Link>
+          </div>
 
           <div className="my-4">
             {isEmpty(elements) && (
@@ -125,7 +120,7 @@ const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
           </div>
         </div>
       </MainContentLayout>
-    </>
+    </Suspense>
   );
 };
 

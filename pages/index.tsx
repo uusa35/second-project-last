@@ -20,6 +20,7 @@ import HomeSelectMethod from '@/components/home/HomeSelectMethod';
 import HomeVendorMainInfo from '@/components/home/HomeVendorMainInfo';
 import { useRouter } from 'next/router';
 import CustomImage from '@/components/CustomImage';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 type Props = {
   categories: Category[];
@@ -39,60 +40,54 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
 
   const handleFocus = () =>
     router.push(appLinks.productSearchIndex(branchId, ``, areaId));
+
   return (
-    <>
+    <Suspense fallback={<LoadingSpinner fullWidth={false} />}>
       {/* SEO Head DEV*/}
       <MainHead title={element.name} mainImage={`${baseUrl}${element.logo}`} />
       <MainContentLayout>
-        <Suspense>
-          <div className='absolute top-0 lg:hidden w-full h-52"'>
-            <CustomImage
-              src={`${imgUrl(element.cover)}`}
-              alt="vendor panner"
-              className="w-full h-52"
-            />
+        <div className='absolute top-0 lg:hidden w-full h-52"'>
+          <CustomImage
+            src={`${imgUrl(element.cover)}`}
+            alt="vendor panner"
+            className="w-full h-52"
+          />
+        </div>
+        <div className="bg-white rounded-3xl lg:rounded-none relative -top-10 lg:top-auto  pt-1 lg:pt-0 ">
+          {/*  HomePage Header */}
+          <div className={`px-10 mt-4`}>
+            <HomeVendorMainInfo element={element} />
           </div>
-          <div className="bg-white rounded-3xl lg:rounded-none relative -top-10 lg:top-auto  pt-1 lg:pt-0 ">
-            {/*  HomePage Header */}
-            <div className={`px-10 mt-4`}>
-              <HomeVendorMainInfo element={element} />
-            </div>
-            <HomeSelectMethod element={element} />
-            {/* Search Input */}
-            <div
-              className={`flex flex-1 w-auto flex-grow mx-8 pb-8 border-b border-stone-100`}
-            >
-              <div className={`w-full`}>
-                <div className="relative mt-1 rounded-md shadow-sm text-gray-400">
-                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center px-6">
-                    <MagnifyingGlassIcon
-                      className="h-8 w-8"
-                      aria-hidden="true"
-                    />
-                  </div>
-                  <input
-                    type="search"
-                    name="search"
-                    id="search"
-                    onFocus={() => handleFocus()}
-                    className="block w-full rounded-md  pl-20 focus:ring-1 focus:ring-primary_BG border-none  bg-gray-100 py-3 h-16  text-lg capitalize"
-                    suppressHydrationWarning={suppressText}
-                    placeholder={`${t(`search_products`)}`}
-                  />
+          <HomeSelectMethod element={element} />
+          {/* Search Input */}
+          <div
+            className={`flex flex-1 w-auto flex-grow mx-8 pb-8 border-b border-stone-100`}
+          >
+            <div className={`w-full`}>
+              <div className="relative mt-1 rounded-md shadow-sm text-gray-400">
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center px-6">
+                  <MagnifyingGlassIcon className="h-8 w-8" aria-hidden="true" />
                 </div>
+                <input
+                  type="search"
+                  name="search"
+                  id="search"
+                  onFocus={() => handleFocus()}
+                  className="block w-full rounded-md  pl-20 focus:ring-1 focus:ring-primary_BG border-none  bg-gray-100 py-3 h-16  text-lg capitalize"
+                  suppressHydrationWarning={suppressText}
+                  placeholder={`${t(`search_products`)}`}
+                />
               </div>
             </div>
-            {/* Categories List */}
-            <div className="py-4 px-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-6">
-              {!isEmpty(categories) &&
-                map(categories, (c, i) => (
-                  <CategoryWidget element={c} key={i} />
-                ))}
-            </div>
           </div>
-        </Suspense>
+          {/* Categories List */}
+          <div className="py-4 px-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-6">
+            {!isEmpty(categories) &&
+              map(categories, (c, i) => <CategoryWidget element={c} key={i} />)}
+          </div>
+        </div>
       </MainContentLayout>
-    </>
+    </Suspense>
   );
 };
 
