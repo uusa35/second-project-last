@@ -1,22 +1,16 @@
 import { Suspense, useEffect } from 'react';
 import { NextPage } from 'next';
 import MainContentLayout from '@/layouts/MainContentLayout';
-import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 import TrunkClock from '@/appIcons/trunk_clock.svg';
-import {
-  suppressText,
-  footerBtnClass,
-  mainBg,
-  imageSizes,
-} from '@/constants/*';
+import { suppressText, imageSizes } from '@/constants/*';
 import { LocationOnOutlined } from '@mui/icons-material';
 import Home from '@/appIcons/home.svg';
 import IDCard from '@/appIcons/id_card.svg';
 import OrderSummary from '@/appIcons/summary.svg';
 import CustomImage from '@/components/CustomImage';
 import NotFound from '@/appImages/not_found.png';
-import Knet from '@/appImages/Knet.png';
+import Knet from '@/appImages/knet.png';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import {
   setCurrentModule,

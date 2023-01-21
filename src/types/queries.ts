@@ -4,6 +4,7 @@ export type AppQueryResult<T> = {
   message: string;
   msg?: string;
   data: T;
+  Data?: T;
 };
 
 export type ProductPagination<T> = {
