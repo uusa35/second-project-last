@@ -11,16 +11,21 @@ import {
 import { useTranslation } from 'react-i18next';
 import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
 import Link from 'next/link';
-import { useAppSelector } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import CustomImage from '@/components/CustomImage';
+import { useEffect } from 'react';
+import { setCurrentModule } from '@/redux/slices/appSettingSlice';
 const OrderFailure: NextPage = (): JSX.Element => {
   const { t } = useTranslation();
-  const {
+  const { 
     branch: { id: branchId },
-    area: { id: areaId },
+    area: { id: areaId},
     cart: { items }
   } = useAppSelector((state) => state);
-  
+  const dispatch = useAppDispatch();
+    useEffect(() => {
+      dispatch(setCurrentModule(t('order_failure')));
+    }, []);
   return (
     <MainContentLayout>
       <div>
@@ -53,19 +58,18 @@ const OrderFailure: NextPage = (): JSX.Element => {
               )}
             </p>
           </div>
-          <button
-            className={`${submitBtnClass}`}
+          <Link
+            href={appLinks.cartIndex.path}
+            className={`${submitBtnClass} flex items-center justify-center`}
             suppressHydrationWarning={suppressText}
           >
-            <div className="flex items-center justify-center">
               <div className="bg-CustomRed rounded-full w-6 h-6 flex items-center justify-center border-2 border-white">
                 <p>{items.length}</p>
               </div>
               <ShoppingBagOutlinedIcon className="w-6 h-6" />
               <p className="pt-1">{t('my_cart')}</p>
-            </div>
-          </button>
-          <Link href={appLinks.cartIndex.path}>
+          </Link>
+          <Link href={appLinks.productSearchIndex(branchId, ``, areaId)}>
             <p
               className={`${submitBtnClass} text-center`}
               suppressHydrationWarning={suppressText}
