@@ -8,10 +8,10 @@ const initialState: CustomerInfo = {
   email: ``,
   phone: ``,
   address: {
+    id:0,
     customer_id: 0,
-    address_type: 0,
-    block: ``,
-    street: ``,
+    type: 0,
+    address:{},
     longitude: ``,
     latitude: ``,
   },
@@ -25,6 +25,7 @@ export const customerSlice = createSlice({
       state: typeof initialState,
       action: PayloadAction<CustomerInfo>
     ) => {
+      console.log('customer state', {...state})
       return {
         ...state,
         ...action.payload,      
