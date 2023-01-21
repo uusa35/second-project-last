@@ -110,3 +110,15 @@ export interface Location {
   name_en: string;
   Areas: Area[];
 }
+
+
+export interface Address {
+  id: number | string;
+  type: number | string;
+  longitude: number | string;
+  latitude: number | string;
+  customer_id: number | string;
+  address: { [key: string]: any };
+}
+
+

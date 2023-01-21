@@ -434,12 +434,16 @@
   "enter_your_name":"enter your name",
   "enter_your_email":"enter your email",
   "some_fields_r_missing" : "some fields are missing",
+  "select_atleast_one_address_field":"fill atleast one address field",
+  "address_saved_successfully":"address saved successfully",
   "delivery_now": "delivery now",
   "pickup_now": "pickup now",
   "store_branch": "store/branch",
   "time_date": "time/date",
   "item_removed_from_cart" : "item removed from cart successfully.",
   "user_cart_data" : "cart updated successfully. please proceed to complete..",
+  "pickup_prefrences":"pickup prefrences",
+  "pickup_later":"pickup later",
   "order_time": "order time",
   "order_status": "order status"
 }

@@ -1,145 +1,51 @@
 import { apiSlice } from './index';
-import { AppQueryResult, Area, Country } from '@/types/queries';
-import { Cart, Locale } from '@/types/index';
+import { Address, AppQueryResult } from '@/types/queries';
+import { Prefrences } from '@/types/index';
 
 export const addressApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getAddressFields: builder.query<
-      AppQueryResult<any>,
-      {
-        lang: Locale['lang'];
-        country: string;
-      }
-    >({
-      query: ({ country, lang }) => ({
-        url: `address-field`,
-        headers: {
-          'Accept-Language': lang,
-          country,
-        },
-        validateStatus: (response, result) =>
-          response.status === 200 && result.success,
-      }),
-    }),
-
-    getAllAddresses: builder.query<
-      AppQueryResult<any>,
-      {
-        lang: Locale['lang'];
-        country: string;
-        token: string;
-      }
-    >({
-      query: ({ country, token, lang }) => ({
-        url: `address/index`,
-        headers: {
-          'Accept-Language': lang,
-          country,
-          Authorization: `Bearer ${token}`,
-        },
-        validateStatus: (response, result) =>
-          response.status === 200 && result.success,
-      }),
-    }),
-
-    getAddress: builder.query<
-      AppQueryResult<any>,
-      {
-        lang: Locale['lang'];
-        country: string;
-        token: string;
-        params: any;
-      }
-    >({
-      query: ({ country, token, lang, params }) => ({
-        url: `address/index`,
-        params: params,
-        headers: {
-          'Accept-Language': lang,
-          country,
-          Authorization: `Bearer ${token}`,
-        },
-        validateStatus: (response, result) =>
-          response.status === 200 && result.success,
-      }),
-    }),
-
     createAddress: builder.mutation<
-      AppQueryResult<any>,
+      AppQueryResult<Address>,
       {
-        lang: Locale['lang'];
-        country: string;
-        token: string;
-        body: any;
+        body: {
+          address_type: number | string;
+          longitude: number | string;
+          latitude: number | string;
+          customer_id: number | string;
+          address: { [key: string]: any };
+        };
       }
     >({
-      query: ({ country, token, lang, body }) => ({
-        url: `address/store`,
+      query: ({ body }) => ({
+        url: `add-address`,
         method: `POST`,
         body,
-        headers: {
-          'Accept-Language': lang,
-          country,
-          Authorization: `Bearer ${token}`,
-        },
         validateStatus: (response, result) =>
-          response.status === 200 && result.success,
+          response.status === 200 && result.status,
       }),
     }),
 
-    updateAddress: builder.mutation<
+    checkTimeAvilability: builder.mutation<
       AppQueryResult<any>,
       {
-        lang: Locale['lang'];
-        country: string;
-        token: string;
-        id: number | string;
-        body: any;
+        params: Prefrences;
+        process_type: string;
+        area_branch:string
       }
     >({
-      query: ({ country, token, lang, id, body }) => ({
-        url: `address/update/${id}`,
-        method: `POST`,
-        body,
-        headers: {
-          'Accept-Language': lang,
-          country,
-          Authorization: `Bearer ${token}`,
+      query: ({ params ,process_type,area_branch}) => ({
+        url: `checkAvailableTime`,
+        params: { ...params },
+        headers:{
+          ...(process_type === 'delivery' && {'x-area-id': area_branch}),
+          ...(process_type === 'pickup' && {'x-area-id': area_branch})
         },
         validateStatus: (response, result) =>
-          response.status === 200 && result.success,
-      }),
-    }),
-
-    deleteAddress: builder.mutation<
-      AppQueryResult<any>,
-      {
-        lang: Locale['lang'];
-        country: string;
-        token: string;
-        id: number | string;
-      }
-    >({
-      query: ({ country, token, lang, id }) => ({
-        url: `address/delete/${id}`,
-        method: `POST`,
-        headers: {
-          'Accept-Language': lang,
-          country,
-          Authorization: `Bearer ${token}`,
-        },
-        validateStatus: (response, result) =>
-          response.status === 200 && result.success,
+          response.status === 200 && result.status,
       }),
     }),
   }),
 });
 
-export const {
-    useGetAddressFieldsQuery,
-    useGetAllAddressesQuery,
-    useGetAddressQuery,
-    useCreateAddressMutation,
-    useUpdateAddressMutation,
-    useDeleteAddressMutation
-} = addressApi;
+export const { useCreateAddressMutation, useCheckTimeAvilabilityMutation } =
+  addressApi;
