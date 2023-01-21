@@ -1,4 +1,4 @@
-import { useEffect, useState, Suspense } from 'react';
+import { useEffect, useState, Suspense, useCallback } from 'react';
 import { NextPage } from 'next';
 import MainContentLayout from '@/layouts/MainContentLayout';
 import { useTranslation } from 'react-i18next';
@@ -9,6 +9,7 @@ import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { useLazyCheckOrderStatusQuery, useLazyTrackOrderQuery } from '@/redux/api/orderApi';
 import { debounce, isEmpty, lowerCase, snakeCase } from 'lodash';
 import { useRouter } from 'next/router';
+import { setOrder } from '@/redux/slices/orderSlice';
 
 const TrackOrder: NextPage = (): JSX.Element => {
   const { t } = useTranslation();
@@ -19,23 +20,14 @@ const TrackOrder: NextPage = (): JSX.Element => {
   const router = useRouter();
   useEffect(() => {
     dispatch(setCurrentModule(t('track_order')));
+    setOrderCode(`${router.query.order_code}`);
   }, []);
-
-  const handleChange = async (order_code: string) => {
-    await checkOrderStatus({
-      status: 'success',
-      order_id: `${router.query.order_id}`
-    })
-    .then((r: any) => {
-      setOrderCode(r.data.data.orderCode);
-      console.log({orderCode})
-      if(orderCode !== null && orderCode?.length > 2) {
-        trigger({ order_code: `${orderCode}` });
-      }
-    });
-  };
-
-
+  const handleChange = useCallback(async (order_code: string)=>{
+    setOrderCode(order_code);
+    if(orderCode.length > 2) {
+     await trigger({ order_code: `${orderCode}` })
+    }
+  }, [orderCode])
   return (
     <MainContentLayout>
       <h4
@@ -60,7 +52,7 @@ const TrackOrder: NextPage = (): JSX.Element => {
               type="search"
               name="search"
               id="search"
-              onChange={((e) => handleChange(e.target.value))}
+              onChange={debounce((e)=>handleChange(e.target.value), 400)}
               className="block w-full rounded-md  focus:ring-1 focus:ring-primary_BG pl-10 border-none bg-gray-100 capitalize h-14"
               suppressHydrationWarning={suppressText}
               placeholder={`${t(`enter_order_id`)}`}

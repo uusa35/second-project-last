@@ -74,7 +74,7 @@ const OrderSuccess: NextPage<Props> = ({ element }) => {
                     <Link href={{
                       
                         pathname: `/order/track`,
-                        query: {order_id: element.order_id}
+                        query: {order_code: element.orderCode}
                     }}>
                         <p className={`${submitBtnClass} text-center`} suppressHydrationWarning={suppressText}>
                             {t('track_order')}
