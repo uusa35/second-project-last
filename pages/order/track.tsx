@@ -1,4 +1,4 @@
-import { useEffect, useState, Suspense } from 'react';
+import { useEffect, useState, Suspense, useCallback } from 'react';
 import { NextPage } from 'next';
 import MainContentLayout from '@/layouts/MainContentLayout';
 import { useTranslation } from 'react-i18next';
@@ -6,25 +6,30 @@ import { suppressText, submitBtnClass } from '@/constants/*';
 import { setCurrentModule } from '@/redux/slices/appSettingSlice';
 import { useAppDispatch } from '@/redux/hooks';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-import { useLazyTrackOrderQuery } from '@/redux/api/orderApi';
+import { useLazyCheckOrderStatusQuery, useLazyTrackOrderQuery } from '@/redux/api/orderApi';
 import { debounce, isEmpty, lowerCase, snakeCase } from 'lodash';
+import { useRouter } from 'next/router';
+import { setOrder } from '@/redux/slices/orderSlice';
 
 const TrackOrder: NextPage = (): JSX.Element => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const [trigger, { data, isSuccess }] = useLazyTrackOrderQuery();
+  const [checkOrderStatus, { data: orderSuccess, isSuccess: isSuccessOrder }] = useLazyCheckOrderStatusQuery();
   const [orderCode, setOrderCode] = useState<string | null>(null);
-
+  const router = useRouter();
   useEffect(() => {
     dispatch(setCurrentModule(t('track_order')));
+    // setOrderCode(`${router.query.order_code}`);
   }, []);
-
-  const handleChange = (order_code: string) => {
+  const handleChange = async (order_code: string)=>{
     setOrderCode(order_code);
-    if (order_code.length > 2) {
-      trigger({ order_code });
+    if(orderCode.length > 2) {
+     await trigger({ order_code: `${orderCode}` })
     }
-  };
+  }
+  useEffect(() => handleChange(`${router.query.order_code}`), [orderCode])
+
 
   return (
     <MainContentLayout>
@@ -50,7 +55,7 @@ const TrackOrder: NextPage = (): JSX.Element => {
               type="search"
               name="search"
               id="search"
-              onChange={debounce((e) => handleChange(e.target.value), 400)}
+              onChange={debounce((e)=>handleChange(e.target.value), 400)}
               className="block w-full rounded-md  focus:ring-1 focus:ring-primary_BG pl-10 border-none bg-gray-100 capitalize h-14"
               suppressHydrationWarning={suppressText}
               placeholder={`${t(`enter_order_id`)}`}
@@ -87,7 +92,7 @@ const TrackOrder: NextPage = (): JSX.Element => {
                   >
                     {t('order_id')}
                   </p>
-                  <p>{}</p>
+                  <p>{router.query.order_id}</p>
                 </div>
 
                 <div className="flex justify-between mt-5">
@@ -97,7 +102,7 @@ const TrackOrder: NextPage = (): JSX.Element => {
                   >
                     {t('estimated_time')}
                   </p>
-                  <p>{}</p>
+                  <p>{data.data.estimated_time}</p>
                 </div>
               </div>
               <div className={`p-7`}>
@@ -108,16 +113,16 @@ const TrackOrder: NextPage = (): JSX.Element => {
                   >
                     {t('order_status')}
                   </p>
-                  <p></p>
+                  <p>{data.data.order_status}</p>
                 </div>
                 <div className="flex justify-between items-end  ">
                   <p
                     className="font-semibold"
                     suppressHydrationWarning={suppressText}
                   >
-                    {t('pending')}
+                    {t('order_time')}
                   </p>
-                  <p className="font-semibold"></p>
+                  <p className="font-semibold">{data.data.order_time}</p>
                 </div>
               </div>
 
@@ -134,18 +139,18 @@ const TrackOrder: NextPage = (): JSX.Element => {
                 <button className={`${submitBtnClass} px-4`}>
                   <div className="flex justify-between items-center">
                     <a
-                      href="tel:+"
+                      href={`tel:+${data.data.branch_phone}`}
                       className="text-white px-2"
                       suppressHydrationWarning={suppressText}
                     >
                       {t('call_delivery')}
                     </a>
                     <a
-                      href="tel:+"
+                      href={`tel:+${data.data.branch_phone}`}
                       className="text-White"
                       suppressHydrationWarning={suppressText}
                     >
-                      {}
+                      {data.data.branch_phone}
                     </a>
                   </div>
                 </button>
