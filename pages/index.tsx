@@ -11,7 +11,7 @@ import { Vendor } from '@/types/index';
 import { categoryApi } from '@/redux/api/categoryApi';
 import { isEmpty, map } from 'lodash';
 import CategoryWidget from '@/widgets/category/CategoryWidget';
-import { appLinks, imgUrl, suppressText } from '@/constants/*';
+import { apiUrl, appLinks, baseUrl, imgUrl, suppressText } from '@/constants/*';
 import { useTranslation } from 'react-i18next';
 import { setLocale } from '@/redux/slices/localeSlice';
 import { setCurrentModule } from '@/redux/slices/appSettingSlice';
@@ -42,7 +42,7 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
   return (
     <>
       {/* SEO Head DEV*/}
-      <MainHead title={element.name} mainImage={element.logo} />
+      <MainHead title={element.name} mainImage={`${baseUrl}${element.logo}`} />
       <MainContentLayout>
         <Suspense>
           <div className='absolute top-0 lg:hidden w-full h-52"'>
