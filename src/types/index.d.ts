@@ -254,6 +254,7 @@ export interface OrderTrack {
   order_code: string;
   branch_phone: string;
   estimated_time: string | null;
+  order_time: string | null;
   address: {
     latitude: string;
     longitude: string;

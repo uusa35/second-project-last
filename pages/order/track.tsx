@@ -29,13 +29,10 @@ const TrackOrder: NextPage = (): JSX.Element => {
     .then((r: any) => {
       setOrderCode(r.data.data.orderCode);
       console.log({orderCode})
-      trigger({ order_code: `${orderCode}` })
-        .then((r: any) => {
-          console.log({res: r});
-          console.log({data})
-        })
+      if(orderCode !== null && orderCode?.length > 2) {
+        trigger({ order_code: `${orderCode}` });
       }
-      )
+    });
   };
 
 
@@ -63,7 +60,7 @@ const TrackOrder: NextPage = (): JSX.Element => {
               type="search"
               name="search"
               id="search"
-              onChange={debounce((e) => handleChange(e.target.value), 400)}
+              onChange={((e) => handleChange(e.target.value))}
               className="block w-full rounded-md  focus:ring-1 focus:ring-primary_BG pl-10 border-none bg-gray-100 capitalize h-14"
               suppressHydrationWarning={suppressText}
               placeholder={`${t(`enter_order_id`)}`}
