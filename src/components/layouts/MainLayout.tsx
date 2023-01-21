@@ -56,7 +56,7 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
   const [triggerCreateTempId] = useLazyCreateTempIdQuery();
 
   useEffect(() => {
-    if (isSuccess) {
+    if (isSuccess && vendorElement.Data) {
       dispatch(setVendor(vendorElement.Data));
     }
     if (isNull(branchId)) {
