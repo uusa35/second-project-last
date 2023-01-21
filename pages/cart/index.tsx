@@ -2,7 +2,7 @@ import MainContentLayout from '@/layouts/MainContentLayout';
 import { NextPage } from 'next';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useTranslation } from 'react-i18next';
-import { useEffect, Suspense, useCallback, useMemo } from 'react';
+import { useEffect, Suspense, useCallback } from 'react';
 import {
   setCurrentModule,
   resetShowFooterElement,
@@ -13,15 +13,7 @@ import Promotion from '@/appIcons/promotion.svg';
 import Notes from '@/appIcons/notes.svg';
 import { appLinks, suppressText } from '@/constants/*';
 import CustomImage from '@/components/CustomImage';
-import {
-  debounce,
-  isEmpty,
-  isNull,
-  kebabCase,
-  lowerCase,
-  map,
-  sumBy,
-} from 'lodash';
+import { debounce, isEmpty, isNull, kebabCase, lowerCase, map } from 'lodash';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
 import {
   removeFromCart,
@@ -50,16 +42,9 @@ const CartIndex: NextPage = (): JSX.Element => {
     appSetting: { userAgent },
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
-  const [triggerAddToCart, { isSuccess: addToCartIsSuccess }] =
-    useAddToCartMutation();
-  const [
-    triggerCheckPromoCode,
-    { data: promoCodeData, isSuccess: promoCodeSuccess },
-  ] = useLazyCheckPromoCodeQuery();
-  const [
-    triggerGetCartProducts,
-    { data: serverCart, isSuccess: serverCartIsSuccess },
-  ] = useLazyGetCartProductsQuery();
+  const [triggerAddToCart] = useAddToCartMutation();
+  const [triggerCheckPromoCode] = useLazyCheckPromoCodeQuery();
+  const [triggerGetCartProducts] = useLazyGetCartProductsQuery();
 
   useEffect(() => {
     dispatch(setCurrentModule(t('cart')));
