@@ -105,10 +105,11 @@ const ProductShow: NextPage<Props> = ({ element }) => {
       if (checked) {
         dispatch(
           addToCheckBox({
-            addonID: choice.id,
+            addonID: selection.id,
+            uId: `${selection.id}${choice.id}`,
             addons: [
               {
-                attributeID: selection.id,
+                attributeID: choice.id,
                 name: choice.name,
                 name_ar: choice.name_ar,
                 name_en: choice.name_en,
@@ -119,28 +120,28 @@ const ProductShow: NextPage<Props> = ({ element }) => {
           })
         );
       } else {
-        dispatch(removeFromCheckBox(choice.id));
+        dispatch(removeFromCheckBox(`${selection.id}${choice.id}`));
       }
     } else if (type === 'radio') {
       dispatch(
         addRadioBtn({
-          addonID: choice.id,
-          addons: [
-            {
-              attributeID: selection.id,
-              name: choice.name,
-              name_ar: choice.name_ar,
-              name_en: choice.name_en,
-              Value: 1,
-              price: parseFloat(choice.price),
-            },
-          ],
+          addonID: selection.id,
+          uId: `${selection.id}${choice.id}`,
+          addons: {
+            attributeID: choice.id,
+            name: choice.name,
+            name_ar: choice.name_ar,
+            name_en: choice.name_en,
+            Value: 1,
+            price: parseFloat(choice.price),
+          },
         })
       );
     } else if (type === 'q_meter') {
       const currentMeter = filter(
         productCart.QuantityMeters,
-        (q: QuantityMeters) => q.addonID === choice.id && q.addons[0]
+        (q: QuantityMeters) =>
+          q.uId === `${selection.id}${choice.id}` && q.addons[0]
       );
       if (checked) {
         // increase
@@ -151,10 +152,11 @@ const ProductShow: NextPage<Props> = ({ element }) => {
           : parseFloat(currentMeter[0]?.addons[0].Value);
         dispatch(
           addMeter({
-            addonID: choice.id,
+            addonID: selection.id,
+            uId: `${selection.id}${choice.id}`,
             addons: [
               {
-                attributeID: selection.id,
+                attributeID: choice.id,
                 name: choice.name,
                 name_ar: choice.name_ar,
                 name_en: choice.name_en,
@@ -174,10 +176,11 @@ const ProductShow: NextPage<Props> = ({ element }) => {
             : parseFloat(currentMeter[0]?.addons[0].Value);
           dispatch(
             addMeter({
-              addonID: choice.id,
+              addonID: selection.id,
+              uId: `${selection.id}${choice.id}`,
               addons: [
                 {
-                  attributeID: selection.id,
+                  attributeID: choice.id,
                   name: choice.name,
                   name_ar: choice.name_ar,
                   name_en: choice.name_en,
@@ -188,7 +191,7 @@ const ProductShow: NextPage<Props> = ({ element }) => {
             })
           );
         } else {
-          dispatch(removeMeter(choice.id));
+          dispatch(removeMeter(`${selection.id}${choice.id}`));
         }
       }
     }
@@ -212,21 +215,11 @@ const ProductShow: NextPage<Props> = ({ element }) => {
   useEffect(() => {
     if (!isEmpty(productCart) && currentQty >= 1) {
       const allCheckboxes = map(productCart.CheckBoxes, (q) => q.addons[0]);
-      const allRadioBtns = map(productCart.RadioBtnsAddons, (q) => q.addons[0]);
+      const allRadioBtns = map(productCart.RadioBtnsAddons, (q) => q.addons);
       const allMeters = map(productCart.QuantityMeters, (q) => q.addons[0]);
       const metersSum = sumBy(allMeters, (a) => multiply(a.price, a.Value)); // qty
       const checkboxesSum = sumBy(allCheckboxes, (a) => a.Value * a.price); // qty
       const radioBtnsSum = sumBy(allRadioBtns, (a) => a.Value * a.price); // qty
-      // console.log('all meters', allMeters);
-      // console.log('all checkboxes', allCheckboxes);
-      // console.log('all radios', allRadioBtns);
-      // console.log('metersSum', metersSum);
-      // console.log('checkboxdsum', checkboxesSum);
-      // console.log('radioBtnSum', radioBtnsSum);
-      // console.log(
-      //   'the sum',
-      //   sum([parseFloat(element.price), metersSum, checkboxesSum, radioBtnsSum])
-      // );
       dispatch(
         updatePrice({
           totalPrice: sum([
@@ -387,9 +380,7 @@ const ProductShow: NextPage<Props> = ({ element }) => {
                             >
                               {filter(
                                 productCart.QuantityMeters,
-                                (q) =>
-                                  q.addonID === c.id &&
-                                  q.addons[0].attributeID === s.id
+                                (q) => q.uId === `${s.id}${c.id}`
                               )[0]?.addons[0]?.Value ?? 0}
                             </button>
                             <button
@@ -417,12 +408,12 @@ const ProductShow: NextPage<Props> = ({ element }) => {
                             s.must_select !== 'multi'
                               ? filter(
                                   productCart.RadioBtnsAddons,
-                                  (q) => q.addonID === c.id
-                                )[0]?.addonID === c.id
+                                  (q) => q.uId === `${s.id}${c.id}`
+                                )[0]?.uId === `${s.id}${c.id}`
                               : filter(
                                   productCart.CheckBoxes,
-                                  (q) => q.addonID === c.id
-                                )[0]?.addonID === c.id
+                                  (q) => q.uId === `${s.id}${c.id}`
+                                )[0]?.uId === `${s.id}${c.id}`
                           }
                           onChange={(e) =>
                             handleSelectAddOn(

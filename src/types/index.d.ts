@@ -107,6 +107,7 @@ export interface ServerCart {
   Cart: ProductCart[];
   subTotal?: number;
   total?: number;
+  delivery_fees: string;
   isEmpty?: boolean;
   promoCode?: any;
 }
@@ -119,6 +120,7 @@ export interface ClientCart {
   PromoCode: string | null;
   promoEnabled: boolean;
   notes: string;
+  delivery_fees: string | number | null;
   promoCode: {
     total_cart_before_tax: number;
     total_cart_after_tax: number;
@@ -146,17 +148,20 @@ export interface ProductCart {
 
 export interface RadioBtns {
   addonID: number;
-  addons: CartAddons[];
+  uId: string;
+  addons: CartAddons;
 }
 
 export interface CheckBoxes {
   addonID: number;
+  uId: string;
   addons: CartAddons[];
 }
 
 export interface QuantityMeters {
-  addonID: number; // choiceId
-  addons: CartAddons[]; // selectionId
+  addonID: number; // selectionId
+  uId: string; // addonId+AttributeId
+  addons: CartAddons[]; // choiceId
 }
 
 export interface CartAddons {
@@ -185,7 +190,7 @@ export interface SearchParams {
 }
 
 export interface Order {
-  orderId: number;
+  order_id: number;
   vendor_name: string;
   endor_logo: string;
   vendor_description: string[];

@@ -6,6 +6,7 @@ const initialState: ClientCart = {
   grossTotal: 0,
   subTotal: 0,
   total: 0,
+  delivery_fees: `0`,
   items: [],
   PromoCode: null,
   promoEnabled: false,
@@ -64,6 +65,7 @@ export const cartSlice = createSlice({
         (item) => item.ProductID === action.payload.ProductID
       );
       state.items[itemIndex].totalQty += 1;
+      state.items[itemIndex].Quantity += 1;
       state.items[itemIndex].subTotalPrice = multiply(
         state.items[itemIndex].totalPrice,
         state.items[itemIndex].totalQty
@@ -79,6 +81,7 @@ export const cartSlice = createSlice({
       );
       if (state.items[itemIndex].totalQty > 1) {
         state.items[itemIndex].totalQty -= 1;
+        state.items[itemIndex].Quantity -= 1;
         state.items[itemIndex].subTotalPrice = multiply(
           state.items[itemIndex].totalPrice,
           state.items[itemIndex].totalQty
@@ -117,7 +120,11 @@ export const cartSlice = createSlice({
     },
     setCartTotalAndSubTotal: (
       state: typeof initialState,
-      action: PayloadAction<{ total: number; subTotal: number }>
+      action: PayloadAction<{
+        total: number;
+        subTotal: number;
+        delivery_fees: string;
+      }>
     ) => {
       return {
         ...state,

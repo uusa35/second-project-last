@@ -3,7 +3,7 @@ export type AppQueryResult<T> = {
   status: string | number;
   message: string;
   msg?: string;
-  Data: T;
+  data: T;
 };
 
 export type ProductPagination<T> = {

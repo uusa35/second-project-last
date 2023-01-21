@@ -2,7 +2,7 @@ import MainContentLayout from '@/layouts/MainContentLayout';
 import { NextPage } from 'next';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useTranslation } from 'react-i18next';
-import { useEffect, Suspense } from 'react';
+import { useEffect, Suspense, useCallback, useMemo } from 'react';
 import {
   setCurrentModule,
   resetShowFooterElement,
@@ -69,56 +69,13 @@ const CartIndex: NextPage = (): JSX.Element => {
     };
   }, []);
 
-  useEffect(() => {
-    if (branchId && !isNull(branchId) && !isEmpty(cart.items) && userAgent) {
-      console.log('fired ====> branchId', branchId);
-      console.log('fired ====> cartItems', cart.items);
-      triggerAddToCart({
-        branchId,
-        body: { UserAgent: userAgent, Cart: cart.items },
-      }).then((r: any) => {
-        if (r.data && r.data.status && r.data.msg) {
-          dispatch(
-            showToastMessage({
-              content: lowerCase(kebabCase(r.data.msg)),
-              type: `success`,
-            })
-          );
-          triggerGetCartProducts({ UserAgent: userAgent }).then((r: any) => {
-            console.log('the r from GetCartProducts====> ', r.data);
-            if (r.data && r.data.status) {
-              dispatch(
-                setCartTotalAndSubTotal({
-                  total: r.data.data.total,
-                  subTotal: r.data.data.subTotal,
-                })
-              );
-            }
-          });
-        } else {
-          dispatch(
-            showToastMessage({
-              content: lowerCase(
-                kebabCase(
-                  r.error?.data?.msg ?? `cart_is_not_ready_error_occured`
-                )
-              ),
-              type: `error`,
-            })
-          );
-        }
-      });
-    }
-  }, [cart.items, branchId]);
-
-  const handleCoupon = (coupon: string) => {
+  const handleCoupon = async (coupon: string) => {
     if (coupon.length > 3 && userAgent && !isEmpty(cart.items)) {
       dispatch(setCartPromoCode(coupon));
-      triggerCheckPromoCode({
+      await triggerCheckPromoCode({
         userAgent,
         PromoCode: coupon,
       }).then((r) => {
-        console.log('promoCode request ====>', r);
         if (r.data && r.data.status && r.data?.promoCode) {
           // promoCode Success
           dispatch(setCartPromoSuccess(r.data?.promoCode));
@@ -157,13 +114,66 @@ const CartIndex: NextPage = (): JSX.Element => {
     );
   };
 
-  const handleIncrease = (element: any) => {
-    dispatch(increaseCartQty(element));
+  const handleCartCalculations = async () => {
+    if (branchId && !isNull(branchId) && !isEmpty(cart.items) && userAgent) {
+      await triggerAddToCart({
+        branchId,
+        body: { UserAgent: userAgent, Cart: cart.items },
+      }).then((r: any) => {
+        if (r.data && r.data.status && r.data.msg) {
+          triggerGetCartProducts({ UserAgent: userAgent })
+            .then((r: any) => {
+              if (r.data && r.data.status) {
+                dispatch(
+                  setCartTotalAndSubTotal({
+                    total: r.data.data.total,
+                    subTotal: r.data.data.subTotal,
+                    delivery_fees: r.data.data.delivery_fees,
+                  })
+                );
+              }
+            })
+            .then(() =>
+              dispatch(
+                showToastMessage({
+                  content: lowerCase(kebabCase(r.data.msg)),
+                  type: `success`,
+                })
+              )
+            );
+        } else {
+          dispatch(
+            showToastMessage({
+              content: lowerCase(
+                kebabCase(
+                  r.error?.data?.msg ?? `cart_is_not_ready_error_occurred`
+                )
+              ),
+              type: `error`,
+            })
+          );
+        }
+      });
+    }
   };
 
-  const handleDecrease = (element: any) => {
-    dispatch(decreaseCartQty(element));
-  };
+  useEffect(() => {
+    handleCartCalculations();
+  }, [cart.promoEnabled, cart.total, cart.grossTotal]);
+
+  const handleIncrease = useCallback(
+    (element: any) => {
+      dispatch(increaseCartQty(element));
+    },
+    [cart.total, cart.grossTotal]
+  );
+
+  const handleDecrease = useCallback(
+    (element: any) => {
+      dispatch(decreaseCartQty(element));
+    },
+    [cart.total, cart.grossTotal]
+  );
 
   const handleChange = (notes: string) => {
     if (notes.length > 3) {
@@ -218,9 +228,17 @@ const CartIndex: NextPage = (): JSX.Element => {
                               >
                                 {t('remove')}
                               </button>
-                              <button>
+                              <Link
+                                href={`${appLinks.productShow(
+                                  item.ProductID.toString(),
+                                  branchId,
+                                  item.ProductID,
+                                  item.ProductName,
+                                  areaId
+                                )}`}
+                              >
                                 <EditOutlined />
-                              </button>
+                              </Link>
                             </div>
                           </div>
                           <Link
@@ -290,7 +308,7 @@ const CartIndex: NextPage = (): JSX.Element => {
                             className="text-primary_BG"
                             suppressHydrationWarning={suppressText}
                           >
-                            {item.Price} {t('kwd')}
+                            {item.subTotalPrice} {t('kwd')}
                           </p>
                         </div>
                       </div>
@@ -350,7 +368,7 @@ const CartIndex: NextPage = (): JSX.Element => {
                   className={`border-0 border-b-2 border-b-gray-200 w-full focus:ring-transparent`}
                 />
               </div>
-              {serverCartIsSuccess && addToCartIsSuccess && <PaymentSummary />}
+              {<PaymentSummary />}
             </div>
           </Suspense>
         )}

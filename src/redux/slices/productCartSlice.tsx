@@ -10,6 +10,8 @@ import { filter, multiply, random } from 'lodash';
 const initialState: ProductCart = {
   ProductID: 0,
   ProductName: ``,
+  name_ar: ``,
+  name_en: ``,
   ProductDesc: ``,
   Quantity: 0,
   Price: 0,
@@ -37,36 +39,30 @@ export const productCartSlice = createSlice({
       return {
         ...initialState,
         ...action.payload,
+        id: `${state.id}${action.payload.ProductID}`,
       };
     },
     addMeter: (
       state: typeof initialState,
       action: PayloadAction<QuantityMeters>
     ) => {
-      const exist = filter(
-        state.QuantityMeters,
-        (m) => m.addonID === action.payload.addonID
-      );
       return {
         ...state,
         QuantityMeters: [
           action.payload,
-          ...filter(
-            state.QuantityMeters,
-            (m) => m.addonID !== action.payload.addonID
-          ),
+          ...filter(state.QuantityMeters, (m) => m.uId !== action.payload.uId),
         ],
       };
     },
     removeMeter: (
       state: typeof initialState,
-      action: PayloadAction<number>
+      action: PayloadAction<string>
     ) => {
       return {
         ...state,
         QuantityMeters: filter(
           state.QuantityMeters,
-          (c) => c.addonID !== action.payload
+          (c) => c.uId !== action.payload
         ),
       };
     },
@@ -78,23 +74,17 @@ export const productCartSlice = createSlice({
         ...state,
         CheckBoxes: [
           action.payload,
-          ...filter(
-            state.CheckBoxes,
-            (c) => c.addonID !== action.payload.addonID
-          ),
+          ...filter(state.CheckBoxes, (c) => c.uId !== action.payload.uId),
         ],
       };
     },
     removeFromCheckBox: (
       state: typeof initialState,
-      action: PayloadAction<number>
+      action: PayloadAction<string>
     ) => {
       return {
         ...state,
-        CheckBoxes: filter(
-          state.CheckBoxes,
-          (c) => c.addonID !== action.payload
-        ),
+        CheckBoxes: filter(state.CheckBoxes, (c) => c.uId !== action.payload),
       };
     },
     addRadioBtn: (

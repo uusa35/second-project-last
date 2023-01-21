@@ -1,4 +1,4 @@
-import { FC, ReactNode, useEffect, useState, Suspense } from 'react';
+import { FC, ReactNode, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import i18n from 'i18next';
 import { useRouter } from 'next/router';
@@ -11,7 +11,7 @@ import { useGetVendorQuery } from '@/redux/api/vendorApi';
 import { AppQueryResult } from '@/types/queries';
 import { Vendor } from '@/types/index';
 import { setVendor } from '@/redux/slices/vendorSlice';
-import { isEmpty, isNull } from 'lodash';
+import { isNull } from 'lodash';
 import { useLazyGetBranchesQuery } from '@/redux/api/branchApi';
 import { setBranch } from '@/redux/slices/branchSlice';
 import { useLazyCreateTempIdQuery } from '@/redux/api/cartApi';

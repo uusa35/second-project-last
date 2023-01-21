@@ -26,9 +26,7 @@ type Props = {
   categories: Category[];
   element: Vendor;
 };
-let renderCounter: number = 0;
 const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
-  console.log(`::: Log Home Render :::: ${renderCounter++}`);
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -37,7 +35,6 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
     area: { id: areaId },
     vendor,
   } = useAppSelector((state) => state);
-
   useEffect(() => {
     dispatch(setCurrentModule(t('home')));
   }, []);
