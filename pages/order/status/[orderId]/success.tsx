@@ -11,6 +11,7 @@ import { AppQueryResult } from '@/types/queries';
 import { orderApi } from '@/redux/api/orderApi';
 import { Order } from "@/types/index";
 import { apiSlice } from '@/redux/api';
+import TextTrans from "@/components/TextTrans";
 
 type Props = {
     element: Order
@@ -21,6 +22,7 @@ const OrderSuccess: NextPage<Props> = ({ element }) => {
         branch: { id: branchId },
         area: { id: areaId}
       } = useAppSelector((state) => state);
+      console.log({element})
     return (
         <MainContentLayout>
            <div>
@@ -51,7 +53,7 @@ const OrderSuccess: NextPage<Props> = ({ element }) => {
                     <h4 className="text-base font-semibold text-primary_BG" suppressHydrationWarning={suppressText}>
                         {t('vendor_name')}
                     </h4>
-                    <p>{element.vendor_name}</p>
+                    <TextTrans ar={element.vendor_name_ar} en={element.vendor_name_en} />
                 </div>
             </div>
             <div className="mt-5 px-5 py-1 bg-gray-100"></div>
