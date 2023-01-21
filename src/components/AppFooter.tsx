@@ -55,10 +55,9 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
     <Suspense>
       <footer
         className={`${!isRTL ? `left-0` : `right-0`} ${
-          showFooterElement === `home` ? `bottom-0` : `-bottom-2`
+          showFooterElement === `home` ? `bottom-0` : `bottom-0`
         } fixed w-full lg:w-2/4 xl:w-1/3 h-auto flex flex-col justify-center items-center text-center bg-white bg-opacity-60`}
       >
-        <PoweredByQ />
         {showFooterElement === 'product_show' && (
           <div
             className={`${mainBg} w-full h-fit flex cursor-auto rounded-none opacity-100 flex justify-between items-center px-8 py-8 rounded-t-2xl
@@ -173,6 +172,7 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
             </div>
           </div>
         )}
+        <PoweredByQ />
       </footer>
     </Suspense>
   );

@@ -62,19 +62,26 @@ const ProductShow: NextPage<Props> = ({ element }) => {
   };
 
   const handleIncrease = () => {
-    if (element && element.amount && element?.amount >= currentQty + 1) {
+    if (
+      element &&
+      element.amount &&
+      element.amount &&
+      element.amount >= currentQty + 1
+    ) {
       setCurrentyQty(currentQty + 1);
     }
   };
 
   const handleDecrease = () => {
-    if (currentQty - 1 > 0) {
+    if (currentQty - 1 > 0 && element.amount && currentQty <= element.amount) {
       setCurrentyQty(currentQty - 1);
     } else {
       setCurrentyQty(0);
       handleResetInitialProductCart();
     }
   };
+
+  console.log('element amount', element.amount);
 
   const handleResetInitialProductCart = () => {
     dispatch(
