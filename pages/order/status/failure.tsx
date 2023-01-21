@@ -2,11 +2,17 @@ import MainContentLayout from "@/layouts/MainContentLayout";
 import { NextPage } from "next";
 import Image from "next/image";
 import Failure from '@/appImages/failed.png';
-import { suppressText, submitBtnClass } from '@/constants/*';
+import { suppressText, submitBtnClass, appLinks } from '@/constants/*';
 import { useTranslation } from "react-i18next";
 import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
+import Link from 'next/link';
+import { useAppSelector } from '@/redux/hooks';
 const OrderFailure: NextPage = (): JSX.Element => {
     const { t } = useTranslation();
+    const {
+        branch: { id: branchId },
+        area: { id: areaId}
+      } = useAppSelector((state) => state);
     return (
         <MainContentLayout>
             <div>
@@ -41,9 +47,11 @@ const OrderFailure: NextPage = (): JSX.Element => {
                             <p className="pt-1">{t('my_cart')}</p>
                         </div>
                     </button>
-                    <button className={`${submitBtnClass}`} suppressHydrationWarning={suppressText}>
-                        {t('retry_order')}
-                    </button>
+                    <Link  href={appLinks.productSearchIndex(branchId, ``, areaId)}>
+                        <p className={`${submitBtnClass} text-center`} suppressHydrationWarning={suppressText}>
+                            {t('retry_order')}
+                        </p>
+                    </Link>
                 </div>
             </div>
         </MainContentLayout>
