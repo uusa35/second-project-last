@@ -86,7 +86,7 @@ const ProductShow: NextPage<Props> = ({ element }) => {
         ProductDesc: element.desc,
         Quantity: currentQty,
         totalPrice: parseFloat(element.price),
-        subTotalPrice: parseFloat(element.price),
+        grossTotalPrice: parseFloat(element.price),
         totalQty: currentQty,
         Price: parseFloat(element.price),
         enabled: false,

@@ -20,7 +20,7 @@ const initialState: ProductCart = {
   QuantityMeters: [],
   totalQty: 0,
   totalPrice: 0,
-  subTotalPrice: 0,
+  grossTotalPrice: 0,
   enabled: false,
   image: ``,
   id: random(11111, 999999).toString(),
@@ -103,7 +103,7 @@ export const productCartSlice = createSlice({
       return {
         ...state,
         Quantity: action.payload,
-        subTotalPrice: multiply(state.totalPrice, action.payload),
+        grossTotalPrice: multiply(state.totalPrice, action.payload),
       };
     },
     updatePrice: (
@@ -116,7 +116,7 @@ export const productCartSlice = createSlice({
       return {
         ...state,
         ...action.payload,
-        subTotalPrice: multiply(
+        grossTotalPrice: multiply(
           action.payload.totalPrice,
           action.payload.totalQty
         ),

@@ -163,6 +163,7 @@ const CartIndex: NextPage = (): JSX.Element => {
 
   const handleIncrease = useCallback(
     (element: any) => {
+      // console.log('element', element);
       dispatch(increaseCartQty(element));
     },
     [cart.total, cart.grossTotal]
