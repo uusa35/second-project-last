@@ -38,7 +38,7 @@ const TrackOrder: NextPage = (): JSX.Element => {
 
   useEffect(() => {
     if (router.query && router.query.order_code) {
-      setOrderCode(router.query?.order_code);
+      setOrderCode(router?.query?.order_code);
     }
   }, [orderCode]);
 

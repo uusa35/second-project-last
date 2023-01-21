@@ -35,7 +35,7 @@ const OrderSuccess: NextPage<Props> = ({ element }) => {
           <div className="flex flex-col items-center">
             <CustomImage
               className=""
-              src={Success}
+              src={Success.src}
               alt={t('success')}
               width={80}
               height={80}

@@ -70,7 +70,7 @@ const CartIndex: NextPage = (): JSX.Element => {
               type: `success`,
             })
           );
-        } else if (r.error && r.error.data && r.error.data?.msg) {
+        } else if (r.error && r.error?.data && r.error?.data?.msg) {
           dispatch(
             showToastMessage({
               content: lowerCase(kebabCase(r.error.data.msg)),
