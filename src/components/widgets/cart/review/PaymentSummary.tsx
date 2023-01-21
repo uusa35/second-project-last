@@ -14,9 +14,10 @@ const PaymentSummary: FC = () => {
         {cart.promoEnabled ? (
           <>
             <div className="flex justify-between mb-3 text-lg">
-              <p suppressHydrationWarning={suppressText}>{t('total')}</p>
+              <p suppressHydrationWarning={suppressText}>{t('subtotal')} </p>
               <p suppressHydrationWarning={suppressText}>
-                {cart.promoCode.total_cart_before_tax} {t('kwd')}
+                {cart.promoCode.total_cart_after_tax}
+                {t('kwd')}
               </p>
             </div>
             {cart.promoCode.free_delivery !== `false` && (
@@ -30,21 +31,14 @@ const PaymentSummary: FC = () => {
               </div>
             )}
             <div className="flex justify-between mb-3 text-lg">
-              <p suppressHydrationWarning={suppressText}>{t('subtotal')} </p>
+              <p suppressHydrationWarning={suppressText}>{t('total')}</p>
               <p suppressHydrationWarning={suppressText}>
-                {cart.promoCode.total_cart_after_tax}
-                {t('kwd')}
+                {cart.promoCode.total_cart_before_tax} {t('kwd')}
               </p>
             </div>
           </>
         ) : (
           <>
-            <div className="flex justify-between mb-3 text-lg">
-              <p suppressHydrationWarning={suppressText}>{t('total')}</p>
-              <p suppressHydrationWarning={suppressText}>
-                {cart.total} {t('kwd')}
-              </p>
-            </div>
             <div className="flex justify-between mb-3 text-lg">
               <p suppressHydrationWarning={suppressText}>
                 {t('delivery_fees')}
@@ -60,13 +54,25 @@ const PaymentSummary: FC = () => {
                 {t('kwd')}
               </p>
             </div>
+            <div className="flex justify-between mb-3 text-lg">
+              <p suppressHydrationWarning={suppressText}>{t('total')}</p>
+              <p suppressHydrationWarning={suppressText}>
+                {cart.total} {t('kwd')}
+              </p>
+            </div>
           </>
         )}
         <div className="flex justify-between mb-3 text-lg">
-          <p suppressHydrationWarning={suppressText}>
+          <p
+            suppressHydrationWarning={suppressText}
+            className={`${cart.promoEnabled && `line-through`}`}
+          >
             {t('subtotal')} (Client Side)
           </p>
-          <p suppressHydrationWarning={suppressText}>
+          <p
+            suppressHydrationWarning={suppressText}
+            className={`${cart.promoEnabled && `line-through`}`}
+          >
             {cart.grossTotal}
             {t('kwd')}
           </p>

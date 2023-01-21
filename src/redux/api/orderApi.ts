@@ -98,6 +98,5 @@ export const {
   useLazyTrackOrderQuery,
   useLazyGetCustomerInfoQuery,
   useLazyGetInvoiceQuery,
-  useGetInvoiceQuery,
-  useCheckOrderStatusQuery
+  useGetInvoiceQuery
 } = orderApi;

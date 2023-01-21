@@ -44,6 +44,9 @@ export const appLinks = {
   customerInfo: { path: '/customer/info' },
   vendorShow: { path: '/vendor/show' },
   address: { path: `/cart/address` },
+  orderInvoice: (
+    orderId: string
+  ) => `/order/${orderId}/invoice`
 };
 
 export const isClient = typeof window !== undefined;

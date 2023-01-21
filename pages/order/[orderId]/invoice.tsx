@@ -1,5 +1,5 @@
 import MainContentLayout from '@/layouts/MainContentLayout';
-import { useAppSelector } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { NextPage } from 'next';
 import Image from 'next/image';
 import { imgUrl, suppressText } from '@/constants/*';
@@ -10,6 +10,8 @@ import { wrapper } from '@/redux/store';
 import { AppQueryResult } from '@/types/queries';
 import { OrderInvoice } from '@/types/index';
 import { apiSlice } from '@/redux/api';
+import { useEffect } from 'react';
+import { setCurrentModule } from '@/redux/slices/appSettingSlice';
 
 type Props = {
   element: OrderInvoice;
@@ -18,9 +20,14 @@ const OrderInvoice: NextPage<Props> = ({ element }): JSX.Element => {
   console.log('element', element);
   const { vendor } = useAppSelector((state) => state);
   const { t } = useTranslation();
+  const dispatch = useAppDispatch();
   const handleMapLocation = (lat: string, long: string) => {
     window.open(`https://maps.google.com?q=${lat},${long}`);
   };
+
+  useEffect(() => {
+    dispatch(setCurrentModule(t('invoice')));
+  }, []);
 
   return (
     <MainContentLayout>

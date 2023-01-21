@@ -1,17 +1,16 @@
 import { Suspense, useEffect } from 'react';
 import { NextPage } from 'next';
 import MainContentLayout from '@/layouts/MainContentLayout';
-import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 import TrunkClock from '@/appIcons/trunk_clock.svg';
-import { suppressText, footerBtnClass, mainBg } from '@/constants/*';
+import { suppressText, imageSizes } from '@/constants/*';
 import { LocationOnOutlined } from '@mui/icons-material';
 import Home from '@/appIcons/home.svg';
 import IDCard from '@/appIcons/id_card.svg';
 import OrderSummary from '@/appIcons/summary.svg';
 import CustomImage from '@/components/CustomImage';
 import NotFound from '@/appImages/not_found.png';
-import Knet from '@/appImages/Knet.png';
+import Knet from '@/appImages/knet.png';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import {
   setCurrentModule,
@@ -33,11 +32,12 @@ const CartReview: NextPage = () => {
       <Suspense>
         <div>
           <div className="flex justify-center items-center py-5 px-4">
-            <Image
-              src={TrunkClock}
+            <CustomImage
+              src={TrunkClock.src}
               alt={`${t('trunk')}`}
-              width={60}
-              height={60}
+              width={imageSizes.sm}
+              height={imageSizes.sm}
+              className={`w-8 h-8`}
             />
             <div className="px-2">
               <h4
@@ -82,12 +82,18 @@ const CartReview: NextPage = () => {
                         lng: parseInt(b.lang),
                         }}
                         defaultZoom={11}
-                        >  
+                        >
                         </GoogleMapReact> */}
             </div>
             <div className="flex justify-between">
               <div className="flex items-center">
-                <Image src={Home} alt="home" width={25} height={25} />
+                <CustomImage
+                  src={Home.src}
+                  alt="home"
+                  width={imageSizes.xs}
+                  height={imageSizes.xs}
+                  className={`w-8 h-8`}
+                />
                 <p className="text-md ps-5">location</p>
               </div>
               <button
@@ -100,7 +106,13 @@ const CartReview: NextPage = () => {
           </div>
           <div className="flex justify-between items-center py-3 px-4">
             <div className="flex items-center">
-              <Image src={IDCard} alt="id" width={25} height={25} />
+              <CustomImage
+                src={IDCard.src}
+                alt="id"
+                width={imageSizes.xs}
+                height={imageSizes.xs}
+                className={`w-8 h-8`}
+              />
               <div className="ps-5">
                 <h4 className="font-semibold text-base">customer name</h4>
                 <p>customer phone</p>
@@ -115,7 +127,13 @@ const CartReview: NextPage = () => {
           </div>
           <div className="px-4">
             <div className="flex items-center py-3">
-              <Image src={OrderSummary} alt="id" width={25} height={25} />
+              <CustomImage
+                src={OrderSummary.src}
+                alt="id"
+                width={imageSizes.xs}
+                height={imageSizes.xs}
+                className={`w-8 h-8`}
+              />
               <div className="ps-5">
                 <h4
                   className="font-semibold text-base"
@@ -167,7 +185,13 @@ const CartReview: NextPage = () => {
           <div className="bg-gray-200 w-full mt-5 p-0 h-2"></div>
           <div className="px-4">
             <div className="flex items-center py-3">
-              <Image src={OrderSummary} alt="payment" width={25} height={25} />
+              <CustomImage
+                src={OrderSummary.src}
+                alt="payment"
+                width={imageSizes.xs}
+                height={imageSizes.xs}
+                className={`w-8 h-8`}
+              />
               <div className="ps-5">
                 <h4
                   className="font-semibold text-lg"
@@ -180,17 +204,35 @@ const CartReview: NextPage = () => {
             <div className="flex justify-between">
               <div className="bg-gray-200 flex justify-center items-center w-24 h-24">
                 <div>
-                  <Image src={Knet} alt="payment" width={50} height={25} />
+                  <CustomImage
+                    src={Knet.src}
+                    alt="payment"
+                    width={imageSizes.xs}
+                    height={imageSizes.xs}
+                    className={`w-8 h-8`}
+                  />
                 </div>
               </div>
               <div className="bg-gray-200 flex justify-center items-center w-24 h-24">
                 <div>
-                  <Image src={Knet} alt="payment" width={50} height={25} />
+                  <CustomImage
+                    src={Knet.src}
+                    alt="payment"
+                    width={imageSizes.xs}
+                    height={imageSizes.xs}
+                    className={`w-8 h-8`}
+                  />
                 </div>
               </div>
               <div className="bg-gray-200 flex justify-center items-center w-24 h-24">
                 <div>
-                  <Image src={Knet} alt="payment" width={50} height={25} />
+                  <CustomImage
+                    src={Knet.src}
+                    alt="payment"
+                    width={imageSizes.xs}
+                    height={imageSizes.xs}
+                    className={`w-8 h-8`}
+                  />
                 </div>
               </div>
             </div>
@@ -232,16 +274,6 @@ const CartReview: NextPage = () => {
                 {t('kwd')}
               </p>
             </div>
-          </div>
-          <div
-            className={`${mainBg} bg-sky-600 w-full h-32 flex justify-center items-center rounded-t-xl`}
-          >
-            <button
-              className={`${footerBtnClass}`}
-              suppressHydrationWarning={suppressText}
-            >
-              {t('checkout')}
-            </button>
           </div>
         </div>
       </Suspense>

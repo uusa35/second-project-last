@@ -29,9 +29,9 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
     appSetting: { showFooterElement },
     locale: { isRTL },
     productCart,
-    cart
+    cart,
   } = useAppSelector((state) => state);
-  console.log("cart length", cart.items.length)
+  console.log('cart length', cart.items.length);
   const dispatch = useAppDispatch();
   const router = useRouter();
 
@@ -55,10 +55,9 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
     <Suspense>
       <footer
         className={`${!isRTL ? `left-0` : `right-0`} ${
-          showFooterElement === `home` ? `bottom-0` : `-bottom-2`
+          showFooterElement === `home` ? `bottom-0` : `bottom-0`
         } fixed w-full lg:w-2/4 xl:w-1/3 h-auto flex flex-col justify-center items-center text-center bg-white bg-opacity-60`}
       >
-        <PoweredByQ />
         {showFooterElement === 'product_show' && (
           <div
             className={`${mainBg} w-full h-fit flex cursor-auto rounded-none opacity-100 flex justify-between items-center px-8 py-8 rounded-t-2xl
@@ -71,7 +70,8 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
               {t('add_to_cart')}
             </button>
             <span className={`flex flex-row items-center gap-2`}>
-              <p className={`text-xl`}>{productCart.subTotalPrice}</p> {t('kd')}
+              <p className={`text-xl`}>{productCart.grossTotalPrice}</p>{' '}
+              {t('kd')}
             </span>
           </div>
         )}
@@ -124,12 +124,12 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
               suppressHydrationWarning={suppressText}
               href={`#`}
             >
-              {t('payment')}
+              {t('checkout')}
             </Link>
           </div>
         )}
         {showFooterElement === 'vendor_show' && (
-          <div className='w-full py-8 px-4'>
+          <div className="w-full py-8 px-4">
             <div className="py-5">
               <button className={`${submitBtnClass}`}>
                 <div className="flex justify-center items-center">
@@ -172,6 +172,7 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
             </div>
           </div>
         )}
+        <PoweredByQ />
       </footer>
     </Suspense>
   );

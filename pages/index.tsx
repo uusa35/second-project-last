@@ -21,7 +21,7 @@ import HomeVendorMainInfo from '@/components/home/HomeVendorMainInfo';
 import { useRouter } from 'next/router';
 import CustomImage from '@/components/CustomImage';
 import Image from 'next/image';
-import {  imageSizes } from '@/constants/*';
+import { imageSizes } from '@/constants/*';
 type Props = {
   categories: Category[];
   element: Vendor;
@@ -39,7 +39,7 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
     dispatch(setCurrentModule(t('home')));
   }, []);
 
-  console.log(element)
+  console.log(element);
 
   const handleFocus = () =>
     router.push(appLinks.productSearchIndex(branchId, ``, areaId));

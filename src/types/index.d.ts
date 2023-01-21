@@ -137,7 +137,7 @@ export interface ProductCart {
   Price: number;
   totalQty: number;
   totalPrice: number;
-  subTotalPrice: number;
+  grossTotalPrice: number;
   RadioBtnsAddons: RadioBtns[];
   CheckBoxes: CheckBoxes[];
   QuantityMeters: QuantityMeters[];
@@ -192,6 +192,9 @@ export interface SearchParams {
 export interface Order {
   order_id: number;
   vendor_name: string;
+  vendor_name_ar: string;
+  vendor_name_en: string;
+  orderCode: string;
   endor_logo: string;
   vendor_description: string[];
   branch_phone: string;
@@ -252,6 +255,7 @@ export interface OrderTrack {
   order_code: string;
   branch_phone: string;
   estimated_time: string | null;
+  order_time: string | null;
   address: {
     latitude: string;
     longitude: string;

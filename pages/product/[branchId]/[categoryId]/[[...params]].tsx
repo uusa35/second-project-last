@@ -28,6 +28,7 @@ import Menu from '@/appIcons/menu.svg';
 import List from '@/appIcons/list.svg';
 import { useRouter } from 'next/router';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
+import CustomImage from '@/components/CustomImage';
 type Props = {
   elements: ProductPagination<Product[]>;
 };
@@ -70,6 +71,8 @@ const ProductIndex: NextPage<Props> = ({ elements }): JSX.Element => {
     }
   };
 
+  console.log('productpreview', productPreview);
+
   return (
     <>
       <MainHead title={`productIndex`} description={`productIndex`} />
@@ -100,9 +103,9 @@ const ProductIndex: NextPage<Props> = ({ elements }): JSX.Element => {
               className="pt-1 ps-2"
             >
               {Icon ? (
-                <Image src={Menu} alt="menu" className={'w-8 h-8'} />
+                <CustomImage src={Menu} alt="menu" className={'w-8 h-8'} />
               ) : (
-                <Image src={List} alt="menu" className={'w-8 h-8'} />
+                <CustomImage src={List} alt="menu" className={'w-8 h-8'} />
               )}
             </button>
           </div>
@@ -114,7 +117,7 @@ const ProductIndex: NextPage<Props> = ({ elements }): JSX.Element => {
             }
           >
             {isEmpty(currentProducts) && (
-              <Image
+              <CustomImage
                 src={NotFoundImage.src}
                 alt={`not_found`}
                 width={imageSizes.sm}

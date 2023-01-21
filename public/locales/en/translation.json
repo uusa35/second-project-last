@@ -443,5 +443,7 @@
   "item_removed_from_cart" : "item removed from cart successfully.",
   "user_cart_data" : "cart updated successfully. please proceed to complete..",
   "pickup_prefrences":"pickup prefrences",
-  "pickup_later":"pickup later"
+  "pickup_later":"pickup later",
+  "order_time": "order time",
+  "order_status": "order status"
 }
