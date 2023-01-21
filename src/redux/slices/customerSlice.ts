@@ -15,6 +15,11 @@ const initialState: CustomerInfo = {
     longitude: ``,
     latitude: ``,
   },
+  prefrences:{
+    type:'',
+    date:'',
+    time:""
+  }
 };
 
 export const customerSlice = createSlice({
@@ -58,6 +63,27 @@ export const customerSlice = createSlice({
         address: initialState.address,
       };
     },
+
+
+    setprefrences: (
+      state: typeof initialState,
+      action: PayloadAction<CustomerInfo['prefrences']>
+    ) => {
+      return {
+        ...state,
+        prefrences: action.payload,
+      };
+    },
+    
+    resetPrefrences: (
+      state: typeof initialState,
+      action: PayloadAction<void>
+    ) => {
+      return {
+        ...state,
+        prefrences: initialState.prefrences,
+      };
+    },
   },
 });
 
@@ -66,4 +92,6 @@ export const {
   removeCustomer,
   setCustomerAddress,
   resetCustomerAddress,
+  setprefrences,
+  resetPrefrences
 } = customerSlice.actions;

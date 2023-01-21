@@ -296,6 +296,11 @@ export interface CustomerInfo {
   email: string;
   phone?: string;
   address?: Address;
+  prefrences: Prefrences;
 }
 
-
+export interface Prefrences {
+  type: string;
+  date?: string | Date;
+  time?: string | Date;
+}

@@ -1,9 +1,9 @@
-import { useState, useEffect, Suspense } from 'react';
+import { useState, useEffect, Suspense, forwardRef } from 'react';
 import { NextPage } from 'next';
 import Link from 'next/link';
 import MainContentLayout from '@/layouts/MainContentLayout';
 import DeliveryBtns from '@/components/widgets/cart/DeliveryBtns';
-import { appSetting } from '@/types/index';
+import { appSetting, Prefrences } from '@/types/index';
 import {
   setCartMethod,
   setCurrentModule,
@@ -24,15 +24,22 @@ import Image from 'next/image';
 import { Home } from '@mui/icons-material';
 import { addressInputField, appLinks, suppressText } from '@/constants/*';
 import { isEmpty } from 'lodash';
-import { useCreateAddressMutation } from '@/redux/api/addressApi';
-import { setCustomerAddress } from '@/redux/slices/customerSlice';
+import {
+  useCheckTimeAvilabilityMutation,
+  useCreateAddressMutation,
+} from '@/redux/api/addressApi';
+import {
+  setCustomerAddress,
+  setprefrences,
+} from '@/redux/slices/customerSlice';
+import { AccessTime } from '@mui/icons-material';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const CartAddress: NextPage = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { t } = useTranslation();
-  const [openTab, setOpenTab] = useState(1);
-  const [show, SetShow] = useState(false);
   const {
     area,
     branch,
@@ -40,13 +47,84 @@ const CartAddress: NextPage = (): JSX.Element => {
     customer: { address, id },
   } = useAppSelector((state) => state);
 
+  const [openTab, setOpenTab] = useState(1);
+  const [show, SetShow] = useState(false);
   const [selectedAddressFields, setSelectedAddressFields] = useState({});
+  const [prefrences, setPrefrences] = useState<Prefrences>({
+    type:
+      method === 'delivery'
+        ? 'delivery_now'
+        : method === 'pickup'
+        ? 'pickup_now'
+        : '',
+    date: new Date(),
+    time: new Date(),
+  });
 
+  const CustomTimeInput = forwardRef(({ value, onClick }, ref) => (
+    <div
+      className="flex w-full items-center justify-between px-5 pt-5"
+      // dir={i18n.language === "en" ? "ltr" : "rtl"}
+    >
+      <input
+        className="text-lg outline-none"
+        type="text"
+        ref={ref}
+        value={value}
+      ></input>
+      <AccessTime onClick={onClick} />
+    </div>
+  ));
+
+  const [checkTime, { isLoading: checkTimeLoading }] =
+    useCheckTimeAvilabilityMutation();
+
+  const checkTimeAvilability = async () => {
+    await checkTime({
+      process_type: method,
+      area_branch:
+        method === 'delivery' ? area.id : method === 'pickup' && branch.id,
+      params: {
+        type: prefrences.type,
+        date: `${new Date(prefrences.date as Date).getFullYear()}-${
+          new Date(prefrences.date as Date).getMonth() + 1
+        }-${new Date(prefrences.date as Date).getDate()}`,
+        time: `${new Date(prefrences.time as Date).getHours()}:${new Date(
+          prefrences.time as Date
+        ).getMinutes()}:${new Date(prefrences.time as Date).getSeconds()}`,
+      },
+    }).then((r: any) => {
+      if (r.data?.status) {
+        if (r.data.Data.toLowerCase() === 'open') {
+          dispatch(
+            showToastMessage({
+              content: `store_is_open_at_this_time`,
+              type: `success`,
+            })
+          );
+          dispatch(setprefrences({ ...prefrences }));
+          router.push(appLinks.orderReview.path)
+        }
+
+        // dispatch(setCustomerAddress(r.data.Data));
+      } else {
+        // dispatch(
+        //   showToastMessage({
+        //     content: `select_atleast_one_address_field`,
+        //     type: `error`,
+        //   })
+        // );
+      }
+    });
+  };
+
+  // address
   const handleSelectMethod = (m: appSetting['method']) => {
     dispatch(setCartMethod(m));
     router.push('/cart/select');
   };
 
+  // address
   const handelOninputChange = (nm: string, value: any) => {
     setSelectedAddressFields((prev) => ({ ...prev, [nm]: value }));
   };
@@ -54,8 +132,41 @@ const CartAddress: NextPage = (): JSX.Element => {
   const [AddAddress, { isLoading: AddAddressLoading }] =
     useCreateAddressMutation();
 
+  const handelSaveAddress = async () => {
+    await AddAddress({
+      body: {
+        address_type: openTab,
+        longitude: '',
+        latitude: '',
+        customer_id: id,
+        address: { ...selectedAddressFields },
+      },
+    }).then((r: any) => {
+      // console.log('add address res', r);
+      if (r.data.status) {
+        dispatch(
+          showToastMessage({
+            content: `address_saved_successfully`,
+            type: `success`,
+          })
+        );
+        dispatch(setCustomerAddress(r.data.Data));
+        checkTimeAvilability();
+      } else {
+        // dispatch(
+        //   showToastMessage({
+        //     content: `select_atleast_one_address_field`,
+        //     type: `error`,
+        //   })
+        // );
+      }
+    });
+  };
+
+
   const handleSubmit = async () => {
     if (method === 'pickup') {
+      checkTimeAvilability();
     }
     if (method === 'delivery') {
       if (Object.keys(selectedAddressFields).length === 0) {
@@ -66,36 +177,18 @@ const CartAddress: NextPage = (): JSX.Element => {
           })
         );
       } else {
-        await AddAddress({
-          body: {
-            address_type: openTab,
-            longitude: '',
-            latitude: '',
-            customer_id: id,
-            address: { ...selectedAddressFields },
-          },
-        }).then((r: any) => {
-          console.log('add address res', r);
-          if(r.data.status){
-            dispatch(
-              showToastMessage({
-                content: `address_saved_successfully`,
-                type: `success`,
-              })
-            );
-            dispatch(setCustomerAddress(r.data.Data))
-          }
-          else{
-            // dispatch(
-            //   showToastMessage({
-            //     content: `select_atleast_one_address_field`,
-            //     type: `error`,
-            //   })
-            // );
-          }
-        });
-        console.log(selectedAddressFields);
+        handelSaveAddress();
       }
+
+      // console.log({
+      //   type: prefrences.type,
+      //   date: `${new Date(prefrences.date as Date).getFullYear()}-${
+      //     new Date(prefrences.date as Date).getMonth() + 1
+      //   }-${new Date(prefrences.date as Date).getDate()}`,
+      //   time: `${new Date(prefrences.time as Date).getHours()}:${new Date(
+      //     prefrences.time as Date
+      //   ).getMinutes()}:${new Date(prefrences.time as Date).getSeconds()}`,
+      // });
     }
   };
 
@@ -107,6 +200,10 @@ const CartAddress: NextPage = (): JSX.Element => {
     dispatch(setCurrentModule(t('cart_address')));
     dispatch(setShowFooterElement('cart_address'));
   }, []);
+
+  useEffect(() => {
+    console.log(prefrences);
+  }, [prefrences]);
 
   return (
     <MainContentLayout handleSubmit={handleSubmit}>
@@ -391,10 +488,17 @@ const CartAddress: NextPage = (): JSX.Element => {
                     id="deliverNow"
                     type="radio"
                     name="deliver"
-                    value=""
+                    checked={prefrences.type === 'delivery_now'}
                     className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 
                             dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                    onClick={() => SetShow(false)}
+                    onClick={() => {
+                      SetShow(false);
+                      setPrefrences({
+                        type: 'delivery_now',
+                        date: Date.now().toString(),
+                        time: Date.now().toString(),
+                      });
+                    }}
                   />
                   <label
                     htmlFor="deliverNow"
@@ -409,10 +513,16 @@ const CartAddress: NextPage = (): JSX.Element => {
                     id="deliverLater"
                     type="radio"
                     name="deliver"
-                    value=""
+                    checked={prefrences.type === 'delivery_later'}
                     className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 
                             rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                    onClick={() => SetShow(true)}
+                    onClick={() => {
+                      SetShow(true);
+                      setPrefrences({
+                        ...prefrences,
+                        type: 'delivery_later',
+                      });
+                    }}
                   />
                   <label
                     htmlFor="deliverLater"
@@ -425,11 +535,35 @@ const CartAddress: NextPage = (): JSX.Element => {
                 {show && (
                   <div className={`flex flex-col gap-3`}>
                     <div className="flex justify-between py-2 border-b-4 border-stone-100">
-                      <input type="date" className={`border-none w-full`} />
+                      <input
+                        type="date"
+                        className={`border-none w-full`}
+                        min={new Date().toISOString().split('T')[0]}
+                        onChange={(e) => {
+                          setPrefrences({
+                            ...prefrences,
+                            date: e.target.value.toString(),
+                          });
+                        }}
+                      />
                       {/*<CalendarDaysIcon className="text-primary_BG w-8 h-8" />*/}
                     </div>
                     <div className="flex justify-between py-2 border-b-4 border-stone-100">
-                      <input type="time" className={`border-none w-full`} />
+                      <DatePicker
+                        selected={prefrences.time as Date}
+                        onChange={(date) => {
+                          setPrefrences({ ...prefrences, time: date as Date });
+                        }}
+                        customInput={<CustomTimeInput />}
+                        startDate={new Date()}
+                        showTimeSelect
+                        showTimeSelectOnly
+                        timeCaption="Time"
+                        dateFormat="hh:mm"
+                        locale="en"
+                        // minTime={sethours(setMinutes(new Date(), 0), 17)}
+                      ></DatePicker>
+
                       {/*<ClockIcon className="text-primary_BG w-8 h-8" />*/}
                     </div>
                   </div>
@@ -445,52 +579,87 @@ const CartAddress: NextPage = (): JSX.Element => {
                 className="my-5 font-semibold text-base"
                 suppressHydrationWarning={suppressText}
               >
-                {t('delivery_prefrences')}
+                {t('pickup_prefrences')}
               </p>
               <div className="flex items-center mb-4">
                 <input
-                  id="deliverNow"
                   type="radio"
-                  name="deliver"
-                  value=""
-                  className="w-8 h-8 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 
-              dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                  onClick={() => SetShow(false)}
+                  name="pickup"
+                  checked={prefrences.type === 'pickup_now'}
+                  className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 
+                        dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  onClick={() => {
+                    SetShow(false);
+                    setPrefrences({
+                      type: 'pickup_now',
+                      date: Date.now().toString(),
+                      time: Date.now().toString(),
+                    });
+                  }}
                 />
                 <label
                   htmlFor="deliverNow"
                   className="ms-2 font-medium text-gray-900 dark:text-gray-300"
                   suppressHydrationWarning={suppressText}
                 >
-                  {t('deliver_now')}
+                  {t('pickup_now')}
                 </label>
               </div>
               <div className="flex items-center mb-4">
                 <input
-                  id="deliverLater"
                   type="radio"
-                  name="deliver"
-                  value=""
-                  className="w-8 h-8 text-blue-600 bg-gray-100 border-gray-300 
-              rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                  onClick={() => SetShow(true)}
+                  name="pickup"
+                  checked={prefrences.type === 'pickup_later'}
+                  className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 
+                        rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  onClick={() => {
+                    SetShow(true);
+                    setPrefrences({
+                      ...prefrences,
+                      type: 'pickup_later',
+                    });
+                  }}
                 />
                 <label
                   htmlFor="deliverLater"
                   className="ms-2 font-medium text-gray-900 dark:text-gray-300"
                   suppressHydrationWarning={suppressText}
                 >
-                  {t('deliver_later')}
+                  {t('pickup_later')}
                 </label>
               </div>
               {show && (
                 <div className={`flex flex-col gap-3`}>
                   <div className="flex justify-between py-2 border-b-4 border-stone-100">
-                    <input type="date" className={`border-none w-full`} />
+                    <input
+                      type="date"
+                      className={`border-none w-full`}
+                      min={new Date().toISOString().split('T')[0]}
+                      onChange={(e) => {
+                        setPrefrences({
+                          ...prefrences,
+                          date: e.target.value.toString(),
+                        });
+                      }}
+                    />
                     {/*<CalendarDaysIcon className="text-primary_BG w-8 h-8" />*/}
                   </div>
                   <div className="flex justify-between py-2 border-b-4 border-stone-100">
-                    <input type="time" className={`border-none w-full`} />
+                    <DatePicker
+                      selected={prefrences.time as Date}
+                      onChange={(date) => {
+                        setPrefrences({ ...prefrences, time: date });
+                      }}
+                      customInput={<CustomTimeInput />}
+                      startDate={new Date()}
+                      showTimeSelect
+                      showTimeSelectOnly
+                      timeCaption="Time"
+                      dateFormat="hh:mm"
+                      locale="en"
+                      // minTime={sethours(setMinutes(new Date(), 0), 17)}
+                    ></DatePicker>
+
                     {/*<ClockIcon className="text-primary_BG w-8 h-8" />*/}
                   </div>
                 </div>
