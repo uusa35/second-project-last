@@ -125,7 +125,7 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
               suppressHydrationWarning={suppressText}
               href={`#`}
             >
-              {t('payment')}
+              {t('checkout')}
             </Link>
           </div>
         )}

@@ -4,6 +4,7 @@ import KnetImage from '@/appImages/payment/knet.png';
 import CashImage from '@/appImages/cash_on_delivery.png';
 import { FC } from 'react';
 import { imageSizes } from '@/constants/*';
+import CustomImage from '@/components/CustomImage';
 
 type Props = {
   paymentMethod: string;
@@ -12,8 +13,8 @@ const PaymentImage: FC<Props> = ({ paymentMethod }) => {
   switch (paymentMethod) {
     case `visa`:
       return (
-        <Image
-          src={VisaImage}
+        <CustomImage
+          src={VisaImage.src}
           alt={`${paymentMethod}`}
           width={imageSizes.xs}
           height={imageSizes.xs}
@@ -23,8 +24,8 @@ const PaymentImage: FC<Props> = ({ paymentMethod }) => {
       break;
     case `knet`:
       return (
-        <Image
-          src={KnetImage}
+        <CustomImage
+          src={KnetImage.src}
           width={imageSizes.xs}
           height={imageSizes.xs}
           alt={`${paymentMethod}`}
@@ -34,8 +35,8 @@ const PaymentImage: FC<Props> = ({ paymentMethod }) => {
       break;
     case `cash`:
       return (
-        <Image
-          src={CashImage}
+        <CustomImage
+          src={CashImage.src}
           width={imageSizes.xs}
           height={imageSizes.xs}
           alt={`${paymentMethod}`}
@@ -45,8 +46,8 @@ const PaymentImage: FC<Props> = ({ paymentMethod }) => {
       break;
     default:
       return (
-        <Image
-          src={CashImage}
+        <CustomImage
+          src={CashImage.src}
           width={imageSizes.xs}
           height={imageSizes.xs}
           alt={`${paymentMethod}`}
