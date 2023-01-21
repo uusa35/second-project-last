@@ -132,8 +132,8 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
     >
       {children}
       {/* Main Image & Logo */}
-      {isSuccess && <MainAsideLayout element={vendor} />}
       <ToastAppContainer />
+      {isSuccess && <MainAsideLayout element={vendor} />}
     </div>
   );
 };

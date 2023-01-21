@@ -1,20 +1,15 @@
 import React, { FC, Suspense } from 'react';
-import Image from 'next/image';
 import { appLinks, imageSizes, imgUrl, suppressText } from '@/constants/*';
 import Link from 'next/link';
 import CustomImage from '@/components/CustomImage';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useRouter } from 'next/router';
 import { Vendor } from '@/types/index';
 import { useTranslation } from 'react-i18next';
-import { setLocale } from '@/redux/slices/localeSlice';
-import { showToastMessage } from '@/redux/slices/appSettingSlice';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import {
   ClipboardDocumentCheckIcon,
   HomeIcon,
 } from '@heroicons/react/24/outline';
-import TrackOrderIcon from '@/appIcons/my_orders.svg';
 
 type Props = {
   element: Vendor;
