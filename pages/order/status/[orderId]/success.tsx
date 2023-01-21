@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import Image from 'next/image';
 import Link from 'next/link';
 import Success from '@/appImages/success.png';
-import { submitBtnClass, suppressText, appLinks } from "@/constants/*";
+import { submitBtnClass, suppressText, appLinks, imgUrl } from "@/constants/*";
 import { useAppSelector } from '@/redux/hooks';
 import { wrapper } from '@/redux/store';
 import { AppQueryResult } from '@/types/queries';
@@ -12,6 +12,8 @@ import { orderApi } from '@/redux/api/orderApi';
 import { Order } from "@/types/index";
 import { apiSlice } from '@/redux/api';
 import TextTrans from "@/components/TextTrans";
+import CustomImage from "@/components/CustomImage";
+import { useRouter } from "next/router";
 
 type Props = {
     element: Order
@@ -22,18 +24,19 @@ const OrderSuccess: NextPage<Props> = ({ element }) => {
         branch: { id: branchId },
         area: { id: areaId}
       } = useAppSelector((state) => state);
+    const router = useRouter();
       console.log({element})
     return (
         <MainContentLayout>
            <div>
             <div className="flex flex-col items-center">
-                <Image 
-                    src={Success} 
-                    alt={`${t('success')}`} 
+            <CustomImage
+                    className=""
+                    src={Success}
+                    alt={t('success')}
                     width={80} 
                     height={80} 
-                    suppressHydrationWarning={suppressText} 
-                />
+                  />
                 <h4 className="text-primary_BG font-semibold py-3" suppressHydrationWarning={suppressText}>
                     {t('thank_you')}
                 </h4>
@@ -62,13 +65,14 @@ const OrderSuccess: NextPage<Props> = ({ element }) => {
                         {t('track_your_order_and_check_the_status_of_it_live')}
                     </p>
                     <Link href={{
-                        pathname: `/order/${element.order_id}/invoice`
+                      pathname: appLinks.orderInvoice(`${element.order_id}`)
                     }}>
                         <p className={`${submitBtnClass} text-center`} suppressHydrationWarning={suppressText}>
                             {t('view_receipt')}
                         </p>
                     </Link>
                     <Link href={{
+                      
                         pathname: `/order/track`,
                         query: {order_id: element.order_id}
                     }}>

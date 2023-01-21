@@ -6,25 +6,38 @@ import { suppressText, submitBtnClass } from '@/constants/*';
 import { setCurrentModule } from '@/redux/slices/appSettingSlice';
 import { useAppDispatch } from '@/redux/hooks';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-import { useLazyTrackOrderQuery } from '@/redux/api/orderApi';
+import { useLazyCheckOrderStatusQuery, useLazyTrackOrderQuery } from '@/redux/api/orderApi';
 import { debounce, isEmpty, lowerCase, snakeCase } from 'lodash';
+import { useRouter } from 'next/router';
 
 const TrackOrder: NextPage = (): JSX.Element => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const [trigger, { data, isSuccess }] = useLazyTrackOrderQuery();
+  const [checkOrderStatus, { data: orderSuccess, isSuccess: isSuccessOrder }] = useLazyCheckOrderStatusQuery();
   const [orderCode, setOrderCode] = useState<string | null>(null);
-
+  const router = useRouter();
   useEffect(() => {
     dispatch(setCurrentModule(t('track_order')));
   }, []);
 
-  const handleChange = (order_code: string) => {
-    setOrderCode(order_code);
-    if (order_code.length > 2) {
-      trigger({ order_code });
-    }
+  const handleChange = async (order_code: string) => {
+    await checkOrderStatus({
+      status: 'success',
+      order_id: `${router.query.order_id}`
+    })
+    .then((r: any) => {
+      setOrderCode(r.data.data.orderCode);
+      console.log({orderCode})
+      trigger({ order_code: `${orderCode}` })
+        .then((r: any) => {
+          console.log({res: r});
+          console.log({data})
+        })
+      }
+      )
   };
+
 
   return (
     <MainContentLayout>
@@ -87,7 +100,7 @@ const TrackOrder: NextPage = (): JSX.Element => {
                   >
                     {t('order_id')}
                   </p>
-                  <p>{}</p>
+                  <p>{router.query.order_id}</p>
                 </div>
 
                 <div className="flex justify-between mt-5">
@@ -97,7 +110,7 @@ const TrackOrder: NextPage = (): JSX.Element => {
                   >
                     {t('estimated_time')}
                   </p>
-                  <p>{}</p>
+                  <p>{data.data.estimated_time}</p>
                 </div>
               </div>
               <div className={`p-7`}>
@@ -108,16 +121,16 @@ const TrackOrder: NextPage = (): JSX.Element => {
                   >
                     {t('order_status')}
                   </p>
-                  <p></p>
+                  <p>{data.data.order_status}</p>
                 </div>
                 <div className="flex justify-between items-end  ">
                   <p
                     className="font-semibold"
                     suppressHydrationWarning={suppressText}
                   >
-                    {t('pending')}
+                    {t('order_time')}
                   </p>
-                  <p className="font-semibold"></p>
+                  <p className="font-semibold">{data.data.order_time}</p>
                 </div>
               </div>
 
@@ -134,18 +147,18 @@ const TrackOrder: NextPage = (): JSX.Element => {
                 <button className={`${submitBtnClass} px-4`}>
                   <div className="flex justify-between items-center">
                     <a
-                      href="tel:+"
+                      href={`tel:+${data.data.branch_phone}`}
                       className="text-white px-2"
                       suppressHydrationWarning={suppressText}
                     >
                       {t('call_delivery')}
                     </a>
                     <a
-                      href="tel:+"
+                      href={`tel:+${data.data.branch_phone}`}
                       className="text-White"
                       suppressHydrationWarning={suppressText}
                     >
-                      {}
+                      {data.data.branch_phone}
                     </a>
                   </div>
                 </button>
