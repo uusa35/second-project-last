@@ -1,4 +1,4 @@
-import { Area, Category, Country } from '@/types/queries';
+import { Address, Area, Category, Country } from '@/types/queries';
 import { floated } from '@material-tailwind/react/types/components/card';
 
 export interface Product {
@@ -299,12 +299,12 @@ export interface CustomerInfo {
   name: string;
   email: string;
   phone?: string;
-  address?: {
-    customer_id: number;
-    address_type: number;
-    block: string;
-    street: string;
-    longitude?: string;
-    latitude?: string;
-  };
+  address?: Address;
+  prefrences: Prefrences;
+}
+
+export interface Prefrences {
+  type: string;
+  date?: string | Date;
+  time?: string | Date;
 }

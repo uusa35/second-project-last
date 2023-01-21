@@ -8,13 +8,18 @@ const initialState: CustomerInfo = {
   email: ``,
   phone: ``,
   address: {
+    id:0,
     customer_id: 0,
-    address_type: 0,
-    block: ``,
-    street: ``,
+    type: 0,
+    address:{},
     longitude: ``,
     latitude: ``,
   },
+  prefrences:{
+    type:'',
+    date:'',
+    time:""
+  }
 };
 
 export const customerSlice = createSlice({
@@ -25,6 +30,7 @@ export const customerSlice = createSlice({
       state: typeof initialState,
       action: PayloadAction<CustomerInfo>
     ) => {
+      console.log('customer state', {...state})
       return {
         ...state,
         ...action.payload,      
@@ -57,6 +63,27 @@ export const customerSlice = createSlice({
         address: initialState.address,
       };
     },
+
+
+    setprefrences: (
+      state: typeof initialState,
+      action: PayloadAction<CustomerInfo['prefrences']>
+    ) => {
+      return {
+        ...state,
+        prefrences: action.payload,
+      };
+    },
+    
+    resetPrefrences: (
+      state: typeof initialState,
+      action: PayloadAction<void>
+    ) => {
+      return {
+        ...state,
+        prefrences: initialState.prefrences,
+      };
+    },
   },
 });
 
@@ -65,4 +92,6 @@ export const {
   removeCustomer,
   setCustomerAddress,
   resetCustomerAddress,
+  setprefrences,
+  resetPrefrences
 } = customerSlice.actions;

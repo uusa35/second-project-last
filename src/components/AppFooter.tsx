@@ -89,10 +89,10 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
         )}
         {showFooterElement === 'cart_address' && (
           <div
-            className={`${mainBg} bg-sky-600 w-full h-20 flex justify-center items-center rounded-t-xl`}
+            className={` bg-primary_BG text-white w-full h-24 flex justify-center items-center rounded-t-xl`}
           >
             <button
-              className={`${footerBtnClass}`}
+              className={`${footerBtnClass} rounded-full bg-blue-400 py-1`}
               suppressHydrationWarning={suppressText}
               onClick={() => (handleSubmit ? handleSubmit() : null)}
             >
@@ -103,7 +103,7 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
 
         {showFooterElement === 'customerInfo' && (
           <div
-            className={`${mainBg} bg-sky-600 w-full h-20 flex justify-center items-center rounded-t-xl`}
+            className={`${mainBg} bg-sky-600 w-full h-24 flex justify-center items-center rounded-t-xl`}
           >
             <button
               className={`${footerBtnClass}`}
