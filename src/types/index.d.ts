@@ -120,7 +120,7 @@ export interface ClientCart {
   PromoCode: string | null;
   promoEnabled: boolean;
   notes: string;
-  delivery_fees: string;
+  delivery_fees: string | number | null;
   promoCode: {
     total_cart_before_tax: number;
     total_cart_after_tax: number;
@@ -234,7 +234,7 @@ export interface OrderInvoice {
   order_summary: {
     sub_total: string;
     total: string;
-    delivery_fee: string;
+    delivery_fees: string;
     items: [
       {
         quantity: number;

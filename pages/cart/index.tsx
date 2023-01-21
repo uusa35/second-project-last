@@ -69,11 +69,6 @@ const CartIndex: NextPage = (): JSX.Element => {
     };
   }, []);
 
-  useEffect(() => {
-    console.log('fired');
-    handleCartCalculations();
-  }, [cart.grossTotal, cart.promoEnabled]);
-
   const handleCoupon = async (coupon: string) => {
     if (coupon.length > 3 && userAgent && !isEmpty(cart.items)) {
       dispatch(setCartPromoCode(coupon));
@@ -133,6 +128,7 @@ const CartIndex: NextPage = (): JSX.Element => {
                   setCartTotalAndSubTotal({
                     total: r.data.data.total,
                     subTotal: r.data.data.subTotal,
+                    delivery_fees: r.data.data.delivery_fees,
                   })
                 );
               }
@@ -146,7 +142,6 @@ const CartIndex: NextPage = (): JSX.Element => {
               )
             );
         } else {
-          console.log('error case', r);
           dispatch(
             showToastMessage({
               content: lowerCase(
@@ -161,15 +156,24 @@ const CartIndex: NextPage = (): JSX.Element => {
       });
     }
   };
-  const handleIncrease = async (element: any) => {
-    await dispatch(increaseCartQty(element));
-    // await handleCartCalculations();
-  };
 
-  const handleDecrease = async (element: any) => {
-    await dispatch(decreaseCartQty(element));
-    // await handleCartCalculations();
-  };
+  useEffect(() => {
+    handleCartCalculations();
+  }, [cart.promoEnabled, cart.total, cart.grossTotal]);
+
+  const handleIncrease = useCallback(
+    (element: any) => {
+      dispatch(increaseCartQty(element));
+    },
+    [cart.total, cart.grossTotal]
+  );
+
+  const handleDecrease = useCallback(
+    (element: any) => {
+      dispatch(decreaseCartQty(element));
+    },
+    [cart.total, cart.grossTotal]
+  );
 
   const handleChange = (notes: string) => {
     if (notes.length > 3) {
@@ -224,7 +228,7 @@ const CartIndex: NextPage = (): JSX.Element => {
                               >
                                 {t('remove')}
                               </button>
-                              <Link 
+                              <Link
                                 href={`${appLinks.productShow(
                                   item.ProductID.toString(),
                                   branchId,

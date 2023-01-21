@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useAppSelector } from '@/redux/hooks';
 import { suppressText } from '@/constants/*';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import { isNull } from 'lodash';
 
 const PaymentSummary: FC = () => {
   const { t } = useTranslation();
@@ -49,7 +50,7 @@ const PaymentSummary: FC = () => {
                 {t('delivery_fees')}
               </p>
               <p suppressHydrationWarning={suppressText}>
-                {0} {t('kwd')}
+                {isNull(cart.delivery_fees) ? 0 : cart.delivery_fee} {t('kwd')}
               </p>
             </div>
             <div className="flex justify-between mb-3 text-lg">
