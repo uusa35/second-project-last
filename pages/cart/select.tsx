@@ -1,4 +1,3 @@
-import { Suspense } from 'react';
 import MainContentLayout from '@/layouts/MainContentLayout';
 import { useGetLocationsQuery } from '@/redux/api/locationApi';
 import LoadingSpinner from '@/components/LoadingSpinner';
@@ -6,7 +5,7 @@ import { NextPage } from 'next';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useTranslation } from 'react-i18next';
 import { AppQueryResult, Area, Branch } from '@/types/queries';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { setCurrentModule } from '@/redux/slices/appSettingSlice';
 import {
   Accordion,
@@ -14,17 +13,10 @@ import {
   AccordionBody,
 } from '@material-tailwind/react';
 import { CircleOutlined, CheckCircle } from '@mui/icons-material';
-import {
-  submitBtnClass,
-  normalBtnClass,
-  suppressText,
-  inputFieldClass,
-} from '@/constants/*';
+import { submitBtnClass, suppressText } from '@/constants/*';
 import { appSetting } from '@/types/index';
 import { setCartMethod } from '@/redux/slices/appSettingSlice';
 import { Location } from '@/types/queries';
-import Image from 'next/image';
-import SearchIcon from '@/appIcons/search.svg';
 import { isEmpty, isNull, map } from 'lodash';
 import { setArea } from '@/redux/slices/areaSlice';
 import { useRouter } from 'next/router';
@@ -91,8 +83,8 @@ const SelectMethod: NextPage = (): JSX.Element => {
   const handleSelectBranch = (b: Branch) => dispatch(setBranch(b));
 
   return (
-    <MainContentLayout>
-      <Suspense>
+    <Suspense>
+      <MainContentLayout>
         <div className={`px-4`}>
           <DeliveryBtns handleSelectMethod={handleSelectMethod} />
           <div className={`w-full mb-4`}>
@@ -195,11 +187,9 @@ const SelectMethod: NextPage = (): JSX.Element => {
           >
             {t('done')}
           </button>
-
-          
         </div>
-      </Suspense>
-    </MainContentLayout>
+      </MainContentLayout>
+    </Suspense>
   );
 };
 

@@ -300,7 +300,7 @@ export interface CustomerInfo {
   email: string;
   phone?: string;
   address?: Address;
-  prefrences: Prefrences;
+  prefrences?: Prefrences;
 }
 
 export interface Prefrences {

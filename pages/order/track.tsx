@@ -6,62 +6,73 @@ import { suppressText, submitBtnClass } from '@/constants/*';
 import { setCurrentModule } from '@/redux/slices/appSettingSlice';
 import { useAppDispatch } from '@/redux/hooks';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-import { useLazyCheckOrderStatusQuery, useLazyTrackOrderQuery } from '@/redux/api/orderApi';
+import {
+  useLazyCheckOrderStatusQuery,
+  useLazyTrackOrderQuery,
+} from '@/redux/api/orderApi';
 import { debounce, isEmpty, lowerCase, snakeCase } from 'lodash';
 import { useRouter } from 'next/router';
-import { setOrder } from '@/redux/slices/orderSlice';
 
 const TrackOrder: NextPage = (): JSX.Element => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const [trigger, { data, isSuccess }] = useLazyTrackOrderQuery();
-  const [checkOrderStatus, { data: orderSuccess, isSuccess: isSuccessOrder }] = useLazyCheckOrderStatusQuery();
+  const [checkOrderStatus, { data: orderSuccess, isSuccess: isSuccessOrder }] =
+    useLazyCheckOrderStatusQuery();
   const [orderCode, setOrderCode] = useState<string | null>(null);
   const router = useRouter();
   useEffect(() => {
     dispatch(setCurrentModule(t('track_order')));
     // setOrderCode(`${router.query.order_code}`);
   }, []);
-  const handleChange = async (order_code: string)=>{
-    setOrderCode(order_code);
-    if(orderCode.length > 2) {
-     await trigger({ order_code: `${orderCode}` })
-    }
-  }
-  useEffect(() => handleChange(`${router.query.order_code}`), [orderCode])
 
+  const handleChange = useCallback(
+    (order_code: string) => {
+      setOrderCode(order_code);
+      if (orderCode && orderCode.length > 2) {
+        trigger({ order_code: `${orderCode}` });
+      }
+    },
+    [orderCode]
+  );
+
+  useEffect(() => {
+    if (router.query && router.query.order_code) {
+      setOrderCode(router.query?.order_code);
+    }
+  }, [orderCode]);
 
   return (
-    <MainContentLayout>
-      <h4
-        className="text-center text-primary_BG font-semibold pt-2"
-        suppressHydrationWarning={suppressText}
-      >
-        {t('track_order')}
-      </h4>
-      <div className="px-5 pb-7 border-b-[12px] border-stone-100">
-        <p className="my-3 text-sm font-semibold">
-          {t('check_your_order_status')}
-        </p>
-        <div className={`w-full`}>
-          <div className="relative mt-1 rounded-md shadow-sm">
-            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-              <MagnifyingGlassIcon
-                className="h-5 w-5 text-gray-400"
-                aria-hidden="true"
+    <Suspense>
+      <MainContentLayout>
+        <h4
+          className="text-center text-primary_BG font-semibold pt-2"
+          suppressHydrationWarning={suppressText}
+        >
+          {t('track_order')}
+        </h4>
+        <div className="px-5 pb-7 border-b-[12px] border-stone-100">
+          <p className="my-3 text-sm font-semibold">
+            {t('check_your_order_status')}
+          </p>
+          <div className={`w-full`}>
+            <div className="relative mt-1 rounded-md shadow-sm">
+              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                <MagnifyingGlassIcon
+                  className="h-5 w-5 text-gray-400"
+                  aria-hidden="true"
+                />
+              </div>
+              <input
+                type="search"
+                name="search"
+                id="search"
+                onChange={debounce((e) => handleChange(e.target.value), 400)}
+                className="block w-full rounded-md  focus:ring-1 focus:ring-primary_BG pl-10 border-none bg-gray-100 capitalize h-14"
+                suppressHydrationWarning={suppressText}
+                placeholder={`${t(`enter_order_id`)}`}
               />
             </div>
-            <input
-              type="search"
-              name="search"
-              id="search"
-              onChange={debounce((e)=>handleChange(e.target.value), 400)}
-              className="block w-full rounded-md  focus:ring-1 focus:ring-primary_BG pl-10 border-none bg-gray-100 capitalize h-14"
-              suppressHydrationWarning={suppressText}
-              placeholder={`${t(`enter_order_id`)}`}
-            />
-          </div>
-          <Suspense>
             {isSuccess &&
               !isEmpty(data) &&
               !data?.status &&
@@ -74,10 +85,8 @@ const TrackOrder: NextPage = (): JSX.Element => {
                   {data && data.msg && t(lowerCase(snakeCase(data.msg)))}
                 </p>
               )}
-          </Suspense>
+          </div>
         </div>
-      </div>
-      <Suspense>
         {isSuccess &&
           data &&
           data?.status &&
@@ -157,8 +166,8 @@ const TrackOrder: NextPage = (): JSX.Element => {
               </div>
             </div>
           )}
-      </Suspense>
-    </MainContentLayout>
+      </MainContentLayout>
+    </Suspense>
   );
 };
 

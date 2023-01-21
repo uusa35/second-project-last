@@ -28,12 +28,16 @@ const CartReview: NextPage = () => {
     dispatch(setCurrentModule(t('order_review')));
     dispatch(setShowFooterElement('order_review'));
   }, []);
-  const { cart, branch, appSetting: { userAgent } } = useAppSelector((state) => state);
-  const {data, isSuccess} = useGetCartProductsQuery({ UserAgent: userAgent });
-  console.log({cart})
+  const {
+    cart,
+    branch,
+    appSetting: { userAgent },
+  } = useAppSelector((state) => state);
+  const { data, isSuccess } = useGetCartProductsQuery({ UserAgent: userAgent });
+
   return (
-    <MainContentLayout>
-      <Suspense>
+    <Suspense>
+      <MainContentLayout>
         <div>
           <div className="flex justify-center items-center py-5 px-4">
             <CustomImage
@@ -75,18 +79,17 @@ const CartReview: NextPage = () => {
             </div>
             <div className="w-full h-36 rounded-md">
               <GoogleMapReact
-                        bootstrapURLKeys={{
-                        key: 'AIzaSyChibV0_W_OlSRJg2GjL8TWVU8CzpRHRAE',
-                        language: 'en',
-                        region: 'US',
-                        }}
-                        defaultCenter={{
-                        lat: parseInt(branch.lat),
-                        lng: parseInt(branch.lang),
-                        }}
-                        defaultZoom={11}
-                        >
-                        </GoogleMapReact>
+                bootstrapURLKeys={{
+                  key: 'AIzaSyChibV0_W_OlSRJg2GjL8TWVU8CzpRHRAE',
+                  language: 'en',
+                  region: 'US',
+                }}
+                defaultCenter={{
+                  lat: parseInt(branch.lat),
+                  lng: parseInt(branch.lang),
+                }}
+                defaultZoom={11}
+              ></GoogleMapReact>
             </div>
             <div className="flex justify-between">
               <div className="flex items-center">
@@ -279,11 +282,9 @@ const CartReview: NextPage = () => {
             </div>
           </div>
         </div>
-      </Suspense>
-    </MainContentLayout>
+      </MainContentLayout>
+    </Suspense>
   );
 };
 
 export default CartReview;
-
-

@@ -1,20 +1,12 @@
 import { NextPage } from 'next';
 import MainContentLayout from '@/layouts/MainContentLayout';
-import CustomImage from '@/components/CustomImage';
-import ContactInfo from '@/appImages/contact_info.png';
-import {
-  appLinks,
-  footerBtnClass,
-  imageSizes,
-  mainBg,
-  submitBtnClass,
-} from '@/constants/*';
+import { appLinks } from '@/constants/*';
 import { BadgeOutlined, EmailOutlined, Phone } from '@mui/icons-material';
 import GreyLine from '@/components/GreyLine';
 import { useTranslation } from 'react-i18next';
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { CustomerInfo } from '@/types/index';
 import {
   resetShowFooterElement,
@@ -27,8 +19,6 @@ import { useSaveCustomerInfoMutation } from '@/redux/api/CustomerApi';
 import { useRouter } from 'next/router';
 import { setCustomer } from '@/redux/slices/customerSlice';
 import { useAppSelector } from '@/redux/hooks';
-import { setCurrentElement } from '@/redux/slices/currentElementSlice';
-// import '../../styles/CustomeStyle.css';
 
 const CustomerInformation: NextPage = (): JSX.Element => {
   const { t } = useTranslation();
@@ -58,7 +48,7 @@ const CustomerInformation: NextPage = (): JSX.Element => {
     // console.log(userData);
     if (
       userData.name.length < 2 ||
-      userData.phone?.length < 2 ||
+      userData.phone.length < 2 ||
       userData.email.length < 2
     ) {
       dispatch(
@@ -90,9 +80,10 @@ const CustomerInformation: NextPage = (): JSX.Element => {
   }, []);
 
   return (
-    <MainContentLayout handleSubmit={handelSaveCustomerInfo}>
-      <div className="flex-col justify-center h-full px-5">
-        {/* <div className="flex justify-center py-10 lg:my-5 lg:pb-5">
+    <Suspense>
+      <MainContentLayout handleSubmit={handelSaveCustomerInfo}>
+        <div className="flex-col justify-center h-full px-5">
+          {/* <div className="flex justify-center py-10 lg:my-5 lg:pb-5">
             <CustomImage
               src={ContactInfo.src}
               alt="customer"
@@ -132,23 +123,24 @@ const CustomerInformation: NextPage = (): JSX.Element => {
               ></input>
             </div>
 
-          <div className="flex items-center gap-x-2 px-2 border-b-4 border-b-gray-200 w-full focus:ring-transparent py-4">
-            <Phone className="text-primary_BG" />
-            <PhoneInput
-              international
-              defaultCountry="KW"
-              className="text-lg outline-none w-4/6 focus:border-none p-0 focus:ring-0"
-              placeholder={`${t('enter_your_phone')}`}
-              value={userData.phone}
-              onChange={(value) =>
-                setUserData((prev) => ({ ...prev, phone: value?.toString() }))
-              }
-            />
+            <div className="flex items-center gap-x-2 px-2 border-b-4 border-b-gray-200 w-full focus:ring-transparent py-4">
+              <Phone className="text-primary_BG" />
+              <PhoneInput
+                international
+                defaultCountry="KW"
+                className="text-lg outline-none w-4/6 focus:border-none p-0 focus:ring-0"
+                placeholder={`${t('enter_your_phone')}`}
+                value={userData.phone}
+                onChange={(value) =>
+                  setUserData((prev) => ({ ...prev, phone: value?.toString() }))
+                }
+              />
+            </div>
+            <GreyLine />
           </div>
-          <GreyLine />
         </div>
-      </div>
-    </MainContentLayout>
+      </MainContentLayout>
+    </Suspense>
   );
 };
 
