@@ -188,7 +188,7 @@ export interface SearchParams {
 }
 
 export interface Order {
-  orderId: number;
+  order_id: number;
   vendor_name: string;
   endor_logo: string;
   vendor_description: string[];

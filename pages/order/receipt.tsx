@@ -6,9 +6,11 @@ import { imgUrl, suppressText } from '@/constants/*';
 import { useTranslation } from "react-i18next";
 import { useGetInvoiceQuery } from "@/redux/api/orderApi";
 import { map } from "lodash";
+import { useRouter } from "next/router";
 const Receipt: NextPage = (): JSX.Element => {
     const { vendor } = useAppSelector(state=>state);
-    const { data: order, isSuccess} = useGetInvoiceQuery({order_id: `${130}`});
+    const router = useRouter();
+    const { data: order, isSuccess} = useGetInvoiceQuery({order_id: `${router.query.order_id}`});
     const { t } = useTranslation();
     const handleMapLocation = (lat: string, long: string) => {
         window.open(`https://maps.google.com?q=${lat},${long}`);

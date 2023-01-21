@@ -7,6 +7,7 @@ import Success from '@/appImages/success.png';
 import { submitBtnClass, suppressText, appLinks } from "@/constants/*";
 import { useAppSelector } from '@/redux/hooks';
 import { kebabCase, lowerCase } from 'lodash';
+import { useCheckOrderStatusQuery } from "@/redux/api/orderApi";
 
 const OrderSuccess: NextPage = () => {
     const { t } = useTranslation();
@@ -14,7 +15,11 @@ const OrderSuccess: NextPage = () => {
         branch: { id: branchId },
         area: { id: areaId}
       } = useAppSelector((state) => state);
-    
+      const { data: orderSuccess, isSuccess} = useCheckOrderStatusQuery({
+        status: 'success',
+        order_id: `${130}`
+    });
+    console.log({orderSuccess})
     return (
         <MainContentLayout>
            <div>
@@ -39,13 +44,13 @@ const OrderSuccess: NextPage = () => {
                     <h4 className="text-base font-semibold text-primary_BG" suppressHydrationWarning={suppressText}>
                         {t('order_id')}
                     </h4>
-                    <p>id</p>
+                    <p>{orderSuccess?.data.order_id}</p>
                 </div>
                 <div className="flex justify-between pt-4">
                     <h4 className="text-base font-semibold text-primary_BG" suppressHydrationWarning={suppressText}>
-                        {t('estimated_time')}
+                        {t('vendor_name')}
                     </h4>
-                    <p>time</p>
+                    <p>{orderSuccess?.data.vendor_name}</p>
                 </div>
             </div>
             <div className="mt-5 px-5 py-1 bg-gray-100"></div>
@@ -53,12 +58,18 @@ const OrderSuccess: NextPage = () => {
                     <p className="text-center pt-4 pb-2" suppressHydrationWarning={suppressText}>
                         {t('track_your_order_and_check_the_status_of_it_live')}
                     </p>
-                    <Link href={`/order/receipt`}>
+                    <Link href={{
+                        pathname: `/order/receipt`,
+                        query: {order_id: orderSuccess?.data.order_id}
+                    }}>
                         <p className={`${submitBtnClass} text-center`} suppressHydrationWarning={suppressText}>
                             {t('view_receipt')}
                         </p>
                     </Link>
-                    <Link href={`/order/track`}>
+                    <Link href={{
+                        pathname: `/order/track`,
+                        query: {order_id: orderSuccess?.data.order_id}
+                    }}>
                         <p className={`${submitBtnClass} text-center`} suppressHydrationWarning={suppressText}>
                             {t('track_order')}
                         </p>
