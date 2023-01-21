@@ -449,5 +449,6 @@
   "pickup_now": "استلام الآن",
   "store_branch": "مخزن/ فرع",
   "time_date": "الوقت/ التاريخ",
-  "item_removed_from_cart" : "تم حذف العنصر بنجاح"
+  "item_removed_from_cart" : "تم حذف العنصر بنجاح",
+  "user_cart_data" : "تم تحديث عربة التسوق بنجاح. يرجى المتابعة لاستكمال طلب."
 }

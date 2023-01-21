@@ -120,7 +120,11 @@ export const cartSlice = createSlice({
     },
     setCartTotalAndSubTotal: (
       state: typeof initialState,
-      action: PayloadAction<{ total: number; subTotal: number }>
+      action: PayloadAction<{
+        total: number;
+        subTotal: number;
+        delivery_fees: string;
+      }>
     ) => {
       return {
         ...state,
