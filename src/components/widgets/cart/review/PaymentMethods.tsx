@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import Image from 'next/image';
 import { Cart, PaymentMethod } from '@/types/index';
 import { imageSizes, suppressText } from '@/constants/*';
+import CustomImage from '@/components/CustomImage';
 
 type Props = {
   paymentMethod: PaymentMethod | null;
@@ -35,7 +36,7 @@ const PaymentMethods: FC<Props> = ({
                 `ring-offset-2 ring-2 ring-primary_BG `
               } rounded-md`}
             >
-              <Image
+              <CustomImage
                 className="w-40 h-fit object-cover rounded-md mb-3"
                 src={p.image}
                 width={imageSizes.xs}

@@ -137,7 +137,7 @@ export interface ProductCart {
   Price: number;
   totalQty: number;
   totalPrice: number;
-  subTotalPrice: number;
+  grossTotalPrice: number;
   RadioBtnsAddons: RadioBtns[];
   CheckBoxes: CheckBoxes[];
   QuantityMeters: QuantityMeters[];

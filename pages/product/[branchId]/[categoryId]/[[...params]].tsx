@@ -71,6 +71,8 @@ const ProductIndex: NextPage<Props> = ({ elements }): JSX.Element => {
     }
   };
 
+  console.log('productpreview', productPreview);
+
   return (
     <>
       <MainHead title={`productIndex`} description={`productIndex`} />

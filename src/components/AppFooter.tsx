@@ -29,9 +29,9 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
     appSetting: { showFooterElement },
     locale: { isRTL },
     productCart,
-    cart
+    cart,
   } = useAppSelector((state) => state);
-  console.log("cart length", cart.items.length)
+  console.log('cart length', cart.items.length);
   const dispatch = useAppDispatch();
   const router = useRouter();
 
@@ -71,7 +71,8 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
               {t('add_to_cart')}
             </button>
             <span className={`flex flex-row items-center gap-2`}>
-              <p className={`text-xl`}>{productCart.subTotalPrice}</p> {t('kd')}
+              <p className={`text-xl`}>{productCart.grossTotalPrice}</p>{' '}
+              {t('kd')}
             </span>
           </div>
         )}
@@ -124,12 +125,12 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
               suppressHydrationWarning={suppressText}
               href={`#`}
             >
-              {t('payment')}
+              {t('checkout')}
             </Link>
           </div>
         )}
         {showFooterElement === 'vendor_show' && (
-          <div className='w-full py-8 px-4'>
+          <div className="w-full py-8 px-4">
             <div className="py-5">
               <button className={`${submitBtnClass}`}>
                 <div className="flex justify-center items-center">
