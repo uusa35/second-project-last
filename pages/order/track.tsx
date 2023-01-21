@@ -20,14 +20,17 @@ const TrackOrder: NextPage = (): JSX.Element => {
   const router = useRouter();
   useEffect(() => {
     dispatch(setCurrentModule(t('track_order')));
-    setOrderCode(`${router.query.order_code}`);
+    // setOrderCode(`${router.query.order_code}`);
   }, []);
-  const handleChange = useCallback(async (order_code: string)=>{
+  const handleChange = async (order_code: string)=>{
     setOrderCode(order_code);
     if(orderCode.length > 2) {
      await trigger({ order_code: `${orderCode}` })
     }
-  }, [orderCode])
+  }
+  useEffect(() => handleChange(`${router.query.order_code}`), [orderCode])
+
+
   return (
     <MainContentLayout>
       <h4

@@ -18,7 +18,9 @@ const OrderFailure: NextPage = (): JSX.Element => {
   const {
     branch: { id: branchId },
     area: { id: areaId },
+    cart: { items }
   } = useAppSelector((state) => state);
+  
   return (
     <MainContentLayout>
       <div>
@@ -57,13 +59,13 @@ const OrderFailure: NextPage = (): JSX.Element => {
           >
             <div className="flex items-center justify-center">
               <div className="bg-CustomRed rounded-full w-6 h-6 flex items-center justify-center border-2 border-white">
-                <p>{0}</p>
+                <p>{items.length}</p>
               </div>
               <ShoppingBagOutlinedIcon className="w-6 h-6" />
               <p className="pt-1">{t('my_cart')}</p>
             </div>
           </button>
-          <Link href={appLinks.productSearchIndex(branchId, ``, areaId)}>
+          <Link href={appLinks.cartIndex.path}>
             <p
               className={`${submitBtnClass} text-center`}
               suppressHydrationWarning={suppressText}
