@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Success from '@/appImages/success.png';
 import { submitBtnClass, suppressText, appLinks, imgUrl } from "@/constants/*";
-import { useAppSelector } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { wrapper } from '@/redux/store';
 import { AppQueryResult } from '@/types/queries';
 import { orderApi } from '@/redux/api/orderApi';
@@ -14,6 +14,8 @@ import { apiSlice } from '@/redux/api';
 import TextTrans from "@/components/TextTrans";
 import CustomImage from "@/components/CustomImage";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { setCurrentModule } from "@/redux/slices/appSettingSlice";
 
 type Props = {
     element: Order
@@ -24,8 +26,10 @@ const OrderSuccess: NextPage<Props> = ({ element }) => {
         branch: { id: branchId },
         area: { id: areaId}
       } = useAppSelector((state) => state);
-    const router = useRouter();
-      console.log({element})
+    const dispatch = useAppDispatch();
+    useEffect(() => {
+      dispatch(setCurrentModule(t('order_success')));
+    }, []);
     return (
         <MainContentLayout>
            <div>
@@ -80,7 +84,7 @@ const OrderSuccess: NextPage<Props> = ({ element }) => {
                             {t('track_order')}
                         </p>
                     </Link>
-                    <Link  href={appLinks.productSearchIndex(branchId, ``, areaId)}>
+                    <Link href={appLinks.productSearchIndex(branchId, ``, areaId)}>
                         <p className={`${submitBtnClass} text-center`} suppressHydrationWarning={suppressText}>
                             {t('order_again')}
                         </p>
