@@ -192,6 +192,8 @@ export interface SearchParams {
 export interface Order {
   order_id: number;
   vendor_name: string;
+  vendor_name_ar: string;
+  vendor_name_en: string;
   endor_logo: string;
   vendor_description: string[];
   branch_phone: string;
