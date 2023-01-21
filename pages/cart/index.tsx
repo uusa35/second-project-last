@@ -224,9 +224,17 @@ const CartIndex: NextPage = (): JSX.Element => {
                               >
                                 {t('remove')}
                               </button>
-                              <button>
+                              <Link 
+                                href={`${appLinks.productShow(
+                                  item.ProductID.toString(),
+                                  branchId,
+                                  item.ProductID,
+                                  item.ProductName,
+                                  areaId
+                                )}`}
+                              >
                                 <EditOutlined />
-                              </button>
+                              </Link>
                             </div>
                           </div>
                           <Link

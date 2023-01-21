@@ -47,9 +47,8 @@ const BranchIndex: NextPage<Props> = ({ elements }) => {
                 {t(b.name)}
               </p>
               <div className="w-full h-36 rounded-md">
-                {/* <GoogleMapReact
+                <GoogleMapReact
                 bootstrapURLKeys={{
-                  // remove the key if you want to fork
                   key: 'AIzaSyChibV0_W_OlSRJg2GjL8TWVU8CzpRHRAE',
                   language: 'en',
                   region: 'US',
@@ -60,7 +59,7 @@ const BranchIndex: NextPage<Props> = ({ elements }) => {
                 }}
                 defaultZoom={11}
               >  
-              </GoogleMapReact>*/}
+              </GoogleMapReact>
               </div>
               <div className="flex justify-between my-5 items-center">
                 <p

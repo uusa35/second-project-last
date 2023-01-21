@@ -94,16 +94,16 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                 </div>
               </header>
 
-              <div className="flex-col  gap-y-2 my-3 ">
+              <div className="flex-col  gap-y-2 my-3">
                 <Link scroll={false} href={appLinks.root.path}>
-                  <div className="flex gap-x-3 pb-7 items-center">
+                  <div className="flex gap-x-3 pb-7 items-center ps-1">
                     <HomeOutlined className={`h-8 w-8 text-primary_BG`} />
                     <p suppressHydrationWarning={suppressText}>{t('home')}</p>
                   </div>
                 </Link>
 
                 <Link scroll={false} href={appLinks.cartIndex.path}>
-                  <div className="flex gap-x-3 pb-7 items-center">
+                  <div className="flex gap-x-3 pb-7 items-center ps-1">
                     <ShoppingBagOutlined
                       className={`h-8 w-8 text-primary_BG`}
                     />
@@ -115,7 +115,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
 
                 <Link scroll={false} href={appLinks.cartSelectMethod.path}>
                   <div className="flex gap-x-3 pb-7 items-center">
-                    <MapPinIcon className={`h-8 w-8 text-primary_BG`} />
+                    <MapPinIcon className={`h-6 w-8 text-primary_BG`} />
                     <p suppressHydrationWarning={suppressText}>
                       {t('change_delivery_area')}
                     </p>
@@ -126,14 +126,14 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                   scroll={false}
                   href={appLinks.productSearchIndex(branchId)}
                 >
-                  <div className="flex gap-x-3 pb-7 items-center">
+                  <div className="flex gap-x-3 pb-7 items-center ps-1">
                     <PlagiarismOutlined className={`h-8 w-8 text-primary_BG`} />
                     <p suppressHydrationWarning={suppressText}>{t('search')}</p>
                   </div>
                 </Link>
 
                 <Link scroll={false} href={appLinks.trackOrder.path}>
-                  <div className="flex gap-x-3 pb-7 items-center">
+                  <div className="flex gap-x-3 pb-7 items-center ps-1">
                     <PendingActionsOutlined
                       className={`h-8 w-8 text-primary_BG`}
                     />
@@ -144,9 +144,9 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                 </Link>
 
                 <Link scroll={false} href={appLinks.branchIndex.path}>
-                  <div className="flex gap-x-3 pb-7 items-center">
+                  <div className="flex gap-x-3 pb-7 items-center ps-1">
                     <BuildingStorefrontIcon
-                      className={`h-8 w-8 text-primary_BG`}
+                      className={`h-6 w-6 text-primary_BG`}
                     />
                     <p suppressHydrationWarning={suppressText}>
                       {t('our_branches')}

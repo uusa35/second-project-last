@@ -34,7 +34,6 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
     area: { id: areaId },
     vendor,
   } = useAppSelector((state) => state);
-
   useEffect(() => {
     dispatch(setCurrentModule(t('home')));
   }, []);

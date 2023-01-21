@@ -13,6 +13,12 @@ import { showToastMessage } from '@/redux/slices/appSettingSlice';
 import { setAddToCart } from '@/redux/slices/cartSlice';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import FeedbackIcon from '@/appIcons/feedback.svg';
+import Facebook from '@/appIcons/facebook.svg';
+import Twitter from '@/appIcons/twitter.svg';
+import Instagram from '@/appIcons/instagram.svg';
+import CustomImage from '@/components/CustomImage';
+
 type Props = {
   handleSubmit?: () => void;
 };
@@ -23,7 +29,9 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
     appSetting: { showFooterElement },
     locale: { isRTL },
     productCart,
+    cart
   } = useAppSelector((state) => state);
+  console.log("cart length", cart.items.length)
   const dispatch = useAppDispatch();
   const router = useRouter();
 
@@ -67,7 +75,7 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
             </span>
           </div>
         )}
-        {showFooterElement === 'cart_index' && (
+        {showFooterElement === 'cart_index' && cart.items.length > 0 && (
           <div
             className={`${mainBg} w-full h-32 flex justify-center items-center rounded-t-xl`}
           >
@@ -104,6 +112,50 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
             >
               {t('payment')}
             </Link>
+          </div>
+        )}
+        {showFooterElement === 'vendor_show' && (
+          <div className='w-full py-8 px-4'>
+            <div className="py-5">
+              <button className={`${submitBtnClass}`}>
+                <div className="flex justify-center items-center">
+                  <CustomImage
+                    className="w-5 h-5"
+                    src={FeedbackIcon}
+                    alt={t('feedback')}
+                  />
+                  <p
+                    className="text-white px-2"
+                    suppressHydrationWarning={suppressText}
+                  >
+                    {t('leave_feedback')}
+                  </p>
+                </div>
+              </button>
+            </div>
+            <div className="flex justify-evenly items-center w-[80%] m-auto">
+              <Link href={'/'}>
+                <CustomImage
+                  className="w-5 h-5"
+                  src={Facebook}
+                  alt={t('facebook')}
+                />
+              </Link>
+              <Link href={'/'}>
+                <CustomImage
+                  className="w-5 h-5"
+                  src={Instagram}
+                  alt={t('instagram')}
+                />
+              </Link>
+              <Link href={'/'}>
+                <CustomImage
+                  className="w-5 h-5"
+                  src={Twitter}
+                  alt={t('twiiter')}
+                />
+              </Link>
+            </div>
           </div>
         )}
       </footer>

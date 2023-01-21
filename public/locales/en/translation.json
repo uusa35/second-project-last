@@ -415,7 +415,7 @@
   "promo_code_is_invalid" : "promo code is invalid",
   "you_can_retry_your_order_placement_or_check_your_cart_items_before_processing_your_order": "you can retry your order placement or check your cart items before processing your order",
   "failure": "failure",
-  "'we_re_sorry": "we're sorry",
+  "we_re_sorry": "we're sorry",
   "your_order_placement_is_failed": "your order placement is failed",
   "retry_order": "retry order",
   "pick_up_now": "pick up now",
@@ -432,6 +432,9 @@
   "cart_address" : "address details",
   "order_review" : "order review",
   "some_fields_r_missing" : "some fields are missing",
-  "item_removed_from_cart" : "item removed from cart successfully.",
-  "cart_is_not_ready_error_occurred" : "cart is not ready error occurred"
+  "delivery_now": "delivery now",
+  "pickup_now": "pickup now",
+  "store_branch": "store/branch",
+  "time_date": "time/date",
+  "item_removed_from_cart" : "item removed from cart successfully."
 }

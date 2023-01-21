@@ -11,9 +11,19 @@ const OrderFailure: NextPage = (): JSX.Element => {
         <MainContentLayout>
             <div>
                 <div className="flex flex-col items-center">
-                    <Image src={Failure} alt={`${t('failure')}`} width={80} height={80} suppressHydrationWarning={suppressText} />
-                    <h4 className="text-CustomRed font-semibold py-3" suppressHydrationWarning={suppressText}>{t('we_re_sorry')}</h4>
-                    <p suppressHydrationWarning={suppressText}>{t('your_order_placement_is_failed')}</p>
+                    <Image 
+                        src={Failure} 
+                        alt={`${t('failure')}`} 
+                        width={80} 
+                        height={80} 
+                        suppressHydrationWarning={suppressText} 
+                    />
+                    <h4 className="text-CustomRed font-semibold py-3" 
+                        suppressHydrationWarning={suppressText}>{t('we_re_sorry')}
+                    </h4>
+                    <p suppressHydrationWarning={suppressText}>
+                        {t('your_order_placement_is_failed')}
+                    </p>
                 </div>
                 <div className="mt-10 px-5 py-1 bg-gray-100"></div>
                 <div className="px-2">
@@ -25,13 +35,15 @@ const OrderFailure: NextPage = (): JSX.Element => {
                     <button className={`${submitBtnClass}`} suppressHydrationWarning={suppressText}>
                         <div className="flex items-center justify-center">
                             <div className="bg-CustomRed rounded-full w-6 h-6 flex items-center justify-center border-2 border-white">
-                                <p>0</p>
+                                <p>{0}</p>
                             </div>
                             <ShoppingBagOutlinedIcon className="w-6 h-6" />
                             <p className="pt-1">{t('my_cart')}</p>
                         </div>
                     </button>
-                    <button className={`${submitBtnClass}`} suppressHydrationWarning={suppressText}>{t('retry_order')}</button>
+                    <button className={`${submitBtnClass}`} suppressHydrationWarning={suppressText}>
+                        {t('retry_order')}
+                    </button>
                 </div>
             </div>
         </MainContentLayout>
