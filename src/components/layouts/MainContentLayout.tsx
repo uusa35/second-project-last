@@ -2,10 +2,8 @@ import { FC, ReactNode, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import { useAppSelector } from '@/redux/hooks';
-import { useTranslation } from 'react-i18next';
 import OffLineWidget from '@/widgets/OffLineWidget';
 import NoInternet from '@/appImages/no_internet.png';
-
 const AppHeader = dynamic(() => import(`@/components/AppHeader`), {
   ssr: false,
 });

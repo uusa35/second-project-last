@@ -6,6 +6,7 @@ const initialState: ClientCart = {
   grossTotal: 0,
   subTotal: 0,
   total: 0,
+  delivery_fees: `0`,
   items: [],
   PromoCode: null,
   promoEnabled: false,

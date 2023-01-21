@@ -25,9 +25,7 @@ type Props = {
   categories: Category[];
   element: Vendor;
 };
-let renderCounter: number = 0;
 const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
-  console.log(`::: Log Home Render :::: ${renderCounter++}`);
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const router = useRouter();

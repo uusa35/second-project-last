@@ -127,16 +127,14 @@ const ProductShow: NextPage<Props> = ({ element }) => {
         addRadioBtn({
           addonID: selection.id,
           uId: `${selection.id}${choice.id}`,
-          addons: [
-            {
-              attributeID: choice.id,
-              name: choice.name,
-              name_ar: choice.name_ar,
-              name_en: choice.name_en,
-              Value: 1,
-              price: parseFloat(choice.price),
-            },
-          ],
+          addons: {
+            attributeID: choice.id,
+            name: choice.name,
+            name_ar: choice.name_ar,
+            name_en: choice.name_en,
+            Value: 1,
+            price: parseFloat(choice.price),
+          },
         })
       );
     } else if (type === 'q_meter') {
@@ -217,21 +215,11 @@ const ProductShow: NextPage<Props> = ({ element }) => {
   useEffect(() => {
     if (!isEmpty(productCart) && currentQty >= 1) {
       const allCheckboxes = map(productCart.CheckBoxes, (q) => q.addons[0]);
-      const allRadioBtns = map(productCart.RadioBtnsAddons, (q) => q.addons[0]);
+      const allRadioBtns = map(productCart.RadioBtnsAddons, (q) => q.addons);
       const allMeters = map(productCart.QuantityMeters, (q) => q.addons[0]);
       const metersSum = sumBy(allMeters, (a) => multiply(a.price, a.Value)); // qty
       const checkboxesSum = sumBy(allCheckboxes, (a) => a.Value * a.price); // qty
       const radioBtnsSum = sumBy(allRadioBtns, (a) => a.Value * a.price); // qty
-      // console.log('all meters', allMeters);
-      // console.log('all checkboxes', allCheckboxes);
-      // console.log('all radios', allRadioBtns);
-      // console.log('metersSum', metersSum);
-      // console.log('checkboxdsum', checkboxesSum);
-      // console.log('radioBtnSum', radioBtnsSum);
-      // console.log(
-      //   'the sum',
-      //   sum([parseFloat(element.price), metersSum, checkboxesSum, radioBtnsSum])
-      // );
       dispatch(
         updatePrice({
           totalPrice: sum([
