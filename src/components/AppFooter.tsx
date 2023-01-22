@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { FC, Suspense, useEffect, useMemo, useState } from 'react';
+import { FC, Suspense } from 'react';
 import {
   appLinks,
   footerBtnClass,
@@ -10,11 +10,6 @@ import {
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import PoweredByQ from '@/components/PoweredByQ';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
-import {
-  removeFromCart,
-  setAddToCart,
-  setCartTotalAndSubTotal,
-} from '@/redux/slices/cartSlice';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import FeedbackIcon from '@/appIcons/feedback.svg';
@@ -27,8 +22,7 @@ import {
   useGetCartProductsQuery,
   useLazyGetCartProductsQuery,
 } from '@/redux/api/cartApi';
-import { userAgent } from 'next/server';
-import { filter, isEmpty, isNull, kebabCase, lowerCase } from 'lodash';
+import { isEmpty, isNull } from 'lodash';
 
 type Props = {
   handleSubmit?: () => void;
