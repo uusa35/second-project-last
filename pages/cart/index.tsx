@@ -15,7 +15,6 @@ import { appLinks, cartInitialState, suppressText } from '@/constants/*';
 import CustomImage from '@/components/CustomImage';
 import { debounce, filter, isEmpty, kebabCase, lowerCase, map } from 'lodash';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
-import { removeFromCart } from '@/redux/slices/cartSlice';
 import { ProductCart, QuantityMeters, ServerCart } from '@/types/index';
 import Link from 'next/link';
 import {
@@ -92,20 +91,23 @@ const CartIndex: NextPage = (): JSX.Element => {
     }
   };
 
+  console.log('Cart Now ==+>', cartItems?.data?.Cart);
   const handleRemove = async (element: ProductCart) => {
-    console.log('cartItems', cartItems.data?.Cart);
-    console.log('element', element.id);
-    const items = filter(
-      cartItems.data?.Cart,
-      (item) => item.id !== element.id?.toString()
+    const currentItems = filter(
+      cartItems.data.Cart,
+      (i) => i.id !== element.id
     );
-    const currentItems = isEmpty(items) ? [cartInitialState.items] : items;
-    console.log('currentItems', currentItems);
     triggerAddToCart({
       branchId,
       body: {
         UserAgent: userAgent,
-        Cart: currentItems,
+        Cart:
+          isSuccess &&
+          cartItems.data &&
+          cartItems.data.Cart &&
+          !isEmpty(currentItems)
+            ? currentItems
+            : cartItems.data.Cart, // empty Cart Case !!!
       },
     }).then((r) => {
       if (r.data?.status) {
@@ -145,7 +147,6 @@ const CartIndex: NextPage = (): JSX.Element => {
     });
   };
 
-  console.log('cartItems', cartItems?.data?.Cart);
   const handleDecrease = (element: ProductCart) => {
     triggerAddToCart({
       branchId,

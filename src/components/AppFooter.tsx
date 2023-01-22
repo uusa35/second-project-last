@@ -22,7 +22,7 @@ import {
   useGetCartProductsQuery,
   useLazyGetCartProductsQuery,
 } from '@/redux/api/cartApi';
-import { isEmpty, isNull } from 'lodash';
+import { filter, isEmpty, isNull } from 'lodash';
 
 type Props = {
   handleSubmit?: () => void;
@@ -67,7 +67,10 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
               serverCartSuccess &&
               cartFromServer.data &&
               cartFromServer.data.Cart
-                ? cartFromServer.data.Cart.concat(productCart)
+                ? filter(
+                    cartFromServer.data.Cart,
+                    (i) => i.id !== productCart.id
+                  ).concat(productCart)
                 : [productCart],
           },
         }).then((r) => {
