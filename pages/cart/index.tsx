@@ -120,11 +120,18 @@ const CartIndex: NextPage = (): JSX.Element => {
   };
 
   const handleIncrease = (element: ProductCart) => {
+    console.log('qt', element.Quantity + 1);
     triggerAddToCart({
       branchId,
       body: {
         UserAgent: userAgent,
-        Cart: [{ ...element, Quantity: element.Quantity + 1 }],
+        Cart:
+          isSuccess && cartItems.data && cartItems.data.Cart
+            ? filter(cartItems.data.Cart, (i) => i.id !== element.id).concat({
+                ...element,
+                Quantity: element.Quantity + 1,
+              })
+            : cartItems.data.Cart,
       },
     }).then((r) => {
       if (r.data?.status) {
@@ -138,12 +145,19 @@ const CartIndex: NextPage = (): JSX.Element => {
     });
   };
 
+  console.log('cartItems', cartItems?.data?.Cart);
   const handleDecrease = (element: ProductCart) => {
     triggerAddToCart({
       branchId,
       body: {
         UserAgent: userAgent,
-        Cart: [{ ...element, Quantity: element.Quantity - 1 }],
+        Cart:
+          isSuccess && cartItems.data && cartItems.data.Cart
+            ? filter(cartItems.data.Cart, (i) => i.id !== element.id).concat({
+                ...element,
+                Quantity: element.Quantity - 1,
+              })
+            : cartItems.data.Cart,
       },
     }).then((r) => {
       if (r.data?.status) {
@@ -162,8 +176,6 @@ const CartIndex: NextPage = (): JSX.Element => {
       dispatch(setNotes(notes));
     }
   };
-
-  console.log('cartItems[0]', cartItems?.data?.Cart[0]);
 
   return (
     <Suspense>
