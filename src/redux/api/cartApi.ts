@@ -15,7 +15,7 @@ export const cartApi = apiSlice.injectEndpoints({
       AppQueryResult<ServerCart>,
       {
         branchId: any;
-        body: { UserAgent: string; Cart: ProductCart[] };
+        body: { UserAgent: string; Cart: any };
       }
     >({
       query: ({ branchId, body }) => ({

@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { FC, Suspense, useEffect, useMemo } from 'react';
+import { FC, Suspense, useEffect, useMemo, useState } from 'react';
 import {
   appLinks,
   footerBtnClass,
@@ -45,10 +45,16 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const [triggerAddToCart] = useAddToCartMutation();
+  const [triggerAddToCart, { data: cartResult }] = useAddToCartMutation();
+  const { data: cartFromServer, isSuccess: serverCartSuccess } =
+    useGetCartProductsQuery({
+      UserAgent: userAgent,
+    });
   const [triggerGetCartProducts, { data: cartItems, isSuccess }] =
     useLazyGetCartProductsQuery();
 
+  console.log('cartFromServer', cartFromServer?.data?.Cart);
+  console.log('productcart', productCart);
   const handleAddToCart = async () => {
     if (!productCart.enabled) {
       dispatch(
@@ -61,9 +67,19 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
       if (branchId && !isNull(branchId) && !isEmpty(productCart) && userAgent) {
         triggerAddToCart({
           branchId,
-          body: { UserAgent: userAgent, Cart: [productCart] },
+          body: {
+            UserAgent: userAgent,
+            Cart:
+              serverCartSuccess &&
+              cartFromServer.data &&
+              cartFromServer.data.Cart
+                ? cartFromServer.data.Cart.concat(productCart)
+                : [productCart],
+          },
         }).then((r) => {
+          console.log('the rrr=>>>', r);
           if (
+            r.data &&
             r.data.status &&
             r.data.data.Cart &&
             r.data.data.Cart.length > 0

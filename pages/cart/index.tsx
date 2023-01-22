@@ -2,7 +2,7 @@ import MainContentLayout from '@/layouts/MainContentLayout';
 import { NextPage } from 'next';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useTranslation } from 'react-i18next';
-import { useEffect, Suspense } from 'react';
+import { useEffect, Suspense, Fragment } from 'react';
 import {
   setCurrentModule,
   resetShowFooterElement,
@@ -31,7 +31,6 @@ import { setNotes } from '@/redux/slices/customerSlice';
 const CartIndex: NextPage = (): JSX.Element => {
   const { t } = useTranslation();
   const {
-    cart,
     branch: { id: branchId },
     area: { id: areaId },
     customer: { userAgent, notes },
@@ -164,6 +163,8 @@ const CartIndex: NextPage = (): JSX.Element => {
     }
   };
 
+  console.log('cartItems[0]', cartItems?.data?.Cart[0]);
+
   return (
     <Suspense>
       <MainContentLayout>
@@ -233,33 +234,27 @@ const CartIndex: NextPage = (): JSX.Element => {
                             </p>
                           </Link>
                           <div className="flex">
-                            {isSuccess &&
-                              map(
-                                cartItems.data?.Cart,
-                                (item: ProductCart, i) => (
-                                  <div className="w-fit pb-2" key={i}>
-                                    <p
-                                      className={`text-xs px-2 pe-3 text-gray-400 w-auto ${
-                                        item.QuantityMeters.length > 1 &&
-                                        'border-e-2 border-gray-400'
-                                      }`}
-                                    >
-                                      {!isEmpty(item.QuantityMeters) &&
-                                        map(item.QuantityMeters, (q) => (
-                                          <>
-                                            {map(q.addons, (addon) => (
-                                              <TextTrans
-                                                ar={addon.name}
-                                                en={addon.name}
-                                              />
-                                            ))}
-                                            |
-                                          </>
+                            {isSuccess && (
+                              <div className="w-fit pb-2">
+                                <div
+                                  className={`flex text-gray-400 w-auto flex-wrap justify-between`}
+                                >
+                                  {!isEmpty(item.QuantityMeters) &&
+                                    map(item.QuantityMeters, (q, i) => (
+                                      <Fragment key={i}>
+                                        {map(q.addons, (addon, i) => (
+                                          <TextTrans
+                                            key={i}
+                                            className={`border-r-2 last:border-r-0 first:pr-1 px-1 text-xxs`}
+                                            ar={addon.name}
+                                            en={addon.name}
+                                          />
                                         ))}
-                                    </p>
-                                  </div>
-                                )
-                              )}
+                                      </Fragment>
+                                    ))}
+                                </div>
+                              </div>
+                            )}
                           </div>
                         </div>
                       </div>
