@@ -53,8 +53,6 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
   const [triggerGetCartProducts, { data: cartItems, isSuccess }] =
     useLazyGetCartProductsQuery();
 
-  console.log('cartFromServer', cartFromServer?.data?.Cart);
-  console.log('productcart', productCart);
   const handleAddToCart = async () => {
     if (!productCart.enabled) {
       dispatch(
