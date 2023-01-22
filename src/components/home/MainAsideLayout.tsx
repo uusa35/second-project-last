@@ -72,7 +72,7 @@ const MainAsideLayout: FC<Props> = ({ element }): JSX.Element => {
             <CustomImage
               src={`${imgUrl(element.logo)}`}
               alt={element.name}
-              className={`relative object-contain w-32 h-auto shadow-xl`}
+              className={`relative object-contain w-32 h-auto shadow-xl rounded-md`}
               width={imageSizes.lg}
               height={imageSizes.lg}
             />
