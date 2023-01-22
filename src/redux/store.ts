@@ -25,11 +25,11 @@ import { vendorApi } from '@/redux/api/vendorApi';
 import { isLocal } from '@/constants/*';
 import { locationApi } from '@/redux/api/locationApi';
 import { branchApi } from '@/redux/api/branchApi';
-
+// 12526241138
 const persistConfig = {
   key: 'root',
   storage,
-  blacklist: ['appSetting', 'cart'],
+  blacklist: ['appSetting'],
   // stateReconciler: hardSet,
   debug: isLocal,
 };

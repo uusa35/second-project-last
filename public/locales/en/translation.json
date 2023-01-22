@@ -447,5 +447,8 @@
   "order_time": "order time",
   "order_status": "order status",
   "cart_updated_successfully" : "cart updated successfully.",
-  "item_added_successfully" : "item added successfully."
+  "item_added_successfully" : "item added successfully.",
+  "time_and_date_saved_successfully":"time and date are saved successfully",
+  "shop_is_close_at_this_time":"shop is close at this time",
+  "shop_is_busy_at_this_time":"shop is busy at this time"
 }
