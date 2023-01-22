@@ -63,16 +63,16 @@ const CartAddress: NextPage = (): JSX.Element => {
 
   const CustomTimeInput = forwardRef(({ value, onClick }, ref) => (
     <div
-      className="flex w-full items-center justify-between px-5 pt-5"
+      className="flex w-full items-center justify-between px-2"
       // dir={i18n.language === "en" ? "ltr" : "rtl"}
     >
       <input
-        className="text-lg outline-none"
+        className="text-lg outline-none border-none"
         type="text"
         ref={ref}
         value={value}
       ></input>
-      <AccessTime onClick={onClick} />
+      <AccessTime onClick={onClick} className="text-primary_BG" />
     </div>
   ));
 
@@ -95,18 +95,42 @@ const CartAddress: NextPage = (): JSX.Element => {
       },
     }).then((r: any) => {
       if (r.data?.status) {
-        if (r.data.Data.toLowerCase() === 'open') {
-          dispatch(
-            showToastMessage({
-              content: `store_is_open_at_this_time`,
-              type: `success`,
-            })
-          );
-          dispatch(setprefrences({ ...prefrences }));
-          router.push(appLinks.orderReview.path)
-        }
+        switch(r.data.Data.toLowerCase()){
+          case 'open':{
+            dispatch(
+              showToastMessage({
+                content: `time_and_date_saved_successfully`,
+                type: `success`,
+              })
+            );
+            dispatch(setprefrences({ ...prefrences }));
+            router.push(appLinks.orderReview.path);
+          }
+          break;
 
-        // dispatch(setCustomerAddress(r.data.Data));
+          case 'busy':
+          case 'closed':
+            dispatch(
+              showToastMessage({
+                content: `shop is ${r.data.Data.toLowerCase()} at this time`,
+                type: `error`,
+              })
+            );
+          break;
+
+          default:
+            dispatch(
+              showToastMessage({
+                content: `something went wrong`,
+                type: `error`,
+              })
+            );
+
+        }
+        // if (r.data.Data.toLowerCase() === 'open') {         
+        // }
+        // else if (r.data.Data.toLowerCase() === 'close') {          
+        // }
       } else {
         // dispatch(
         //   showToastMessage({
@@ -162,7 +186,6 @@ const CartAddress: NextPage = (): JSX.Element => {
       }
     });
   };
-
 
   const handleSubmit = async () => {
     if (method === 'pickup') {
@@ -495,8 +518,8 @@ const CartAddress: NextPage = (): JSX.Element => {
                       SetShow(false);
                       setPrefrences({
                         type: 'delivery_now',
-                        date: Date.now().toString(),
-                        time: Date.now().toString(),
+                        date: new Date(),
+                        time: new Date(),
                       });
                     }}
                   />
@@ -542,11 +565,10 @@ const CartAddress: NextPage = (): JSX.Element => {
                         onChange={(e) => {
                           setPrefrences({
                             ...prefrences,
-                            date: e.target.value.toString(),
+                            date: new Date(e.target.value),
                           });
                         }}
                       />
-                      {/*<CalendarDaysIcon className="text-primary_BG w-8 h-8" />*/}
                     </div>
                     <div className="flex justify-between py-2 border-b-4 border-stone-100">
                       <DatePicker
@@ -561,10 +583,9 @@ const CartAddress: NextPage = (): JSX.Element => {
                         timeCaption="Time"
                         dateFormat="hh:mm"
                         locale="en"
-                        // minTime={sethours(setMinutes(new Date(), 0), 17)}
+                        minTime={prefrences.time as Date}
+                        maxTime={new Date(new Date().setHours(23, 59))}
                       ></DatePicker>
-
-                      {/*<ClockIcon className="text-primary_BG w-8 h-8" />*/}
                     </div>
                   </div>
                 )}
@@ -592,8 +613,8 @@ const CartAddress: NextPage = (): JSX.Element => {
                     SetShow(false);
                     setPrefrences({
                       type: 'pickup_now',
-                      date: Date.now().toString(),
-                      time: Date.now().toString(),
+                      date: new Date(),
+                      time: new Date(),
                     });
                   }}
                 />
@@ -638,7 +659,7 @@ const CartAddress: NextPage = (): JSX.Element => {
                       onChange={(e) => {
                         setPrefrences({
                           ...prefrences,
-                          date: e.target.value.toString(),
+                          date: new Date(e.target.value),
                         });
                       }}
                     />
@@ -648,7 +669,7 @@ const CartAddress: NextPage = (): JSX.Element => {
                     <DatePicker
                       selected={prefrences.time as Date}
                       onChange={(date) => {
-                        setPrefrences({ ...prefrences, time: date });
+                        setPrefrences({ ...prefrences, time: date as Date });
                       }}
                       customInput={<CustomTimeInput />}
                       startDate={new Date()}
@@ -657,10 +678,8 @@ const CartAddress: NextPage = (): JSX.Element => {
                       timeCaption="Time"
                       dateFormat="hh:mm"
                       locale="en"
-                      // minTime={sethours(setMinutes(new Date(), 0), 17)}
+                      // minTime={prefrences.time as Date}
                     ></DatePicker>
-
-                    {/*<ClockIcon className="text-primary_BG w-8 h-8" />*/}
                   </div>
                 </div>
               )}

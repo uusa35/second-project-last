@@ -456,5 +456,8 @@
   "pickup_prefrences":"تفضيلات الاستلام",
   "pickup_later":"الاستلام لاحقا",
   "order_time": "وقت الطلب",
-  "order_status": "حالة الطلب"
+  "order_status": "حالة الطلب",
+  "time_and_date_saved_successfully":"تم حفظ الوقت و التاريخ بنجاح",
+  "shop_is_close_at_this_time":"المتجر مغلق في هذا الموعد",
+  "shop_is_busy_at_this_time":"المتجر مشغول في هذا الموعد"
 }

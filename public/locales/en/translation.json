@@ -445,5 +445,8 @@
   "pickup_prefrences":"pickup prefrences",
   "pickup_later":"pickup later",
   "order_time": "order time",
-  "order_status": "order status"
+  "order_status": "order status",
+  "time_and_date_saved_successfully":"time and date are saved successfully",
+  "shop_is_close_at_this_time":"shop is close at this time",
+  "shop_is_busy_at_this_time":"shop is busy at this time"
 }
