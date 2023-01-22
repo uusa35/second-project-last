@@ -189,13 +189,22 @@ const CartIndex: NextPage = (): JSX.Element => {
                   <div className="px-4">
                     <div className="mb-10 ">
                       <div className="flex px-5 items-center">
-                        <div className="ltr:pr-3 rtl:pl-3 w-1/5">
+                        <Link
+                          href={`${appLinks.productShow(
+                            item.ProductID.toString(),
+                            branchId,
+                            item.ProductID,
+                            item.ProductName,
+                            areaId
+                          )}`}
+                          className="ltr:pr-3 rtl:pl-3 w-1/5"
+                        >
                           <CustomImage
                             className="w-full rounded-lg border-[1px] border-gray-200"
                             alt={`${t('item')}`}
                             src={item.image}
                           />
-                        </div>
+                        </Link>
 
                         <div className="w-full">
                           <div>
