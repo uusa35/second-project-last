@@ -2,7 +2,7 @@ import MainContentLayout from '@/layouts/MainContentLayout';
 import { NextPage } from 'next';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useTranslation } from 'react-i18next';
-import { useEffect, Suspense, useCallback } from 'react';
+import { useEffect, Suspense } from 'react';
 import {
   setCurrentModule,
   resetShowFooterElement,
@@ -11,39 +11,46 @@ import {
 import { EditOutlined } from '@mui/icons-material';
 import Promotion from '@/appIcons/promotion.svg';
 import Notes from '@/appIcons/notes.svg';
-import { appLinks, suppressText } from '@/constants/*';
+import { appLinks, cartInitialState, suppressText } from '@/constants/*';
 import CustomImage from '@/components/CustomImage';
-import { debounce, isEmpty, isNull, kebabCase, lowerCase, map } from 'lodash';
+import { debounce, filter, isEmpty, kebabCase, lowerCase, map } from 'lodash';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
-import {
-  removeFromCart,
-  decreaseCartQty,
-  increaseCartQty,
-  setCartNotes,
-  setCartPromoCode,
-  setCartTotalAndSubTotal,
-  setCartPromoSuccess,
-} from '@/redux/slices/cartSlice';
-import { QuantityMeters } from '@/types/index';
+import { removeFromCart } from '@/redux/slices/cartSlice';
+import { ProductCart, QuantityMeters, ServerCart } from '@/types/index';
 import Link from 'next/link';
 import {
   useAddToCartMutation,
+  useGetCartProductsQuery,
   useLazyCheckPromoCodeQuery,
   useLazyGetCartProductsQuery,
 } from '@/redux/api/cartApi';
 import PaymentSummary from '@/widgets/cart/review/PaymentSummary';
 import TextTrans from '@/components/TextTrans';
+import { AppQueryResult } from '@/types/queries';
+import { setNotes } from '@/redux/slices/customerSlice';
 const CartIndex: NextPage = (): JSX.Element => {
   const { t } = useTranslation();
   const {
     cart,
     branch: { id: branchId },
     area: { id: areaId },
-    appSetting: { userAgent },
+    customer: { userAgent, notes },
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const [triggerAddToCart] = useAddToCartMutation();
-  const [triggerGetCartProducts] = useLazyGetCartProductsQuery();
+  const {
+    data: cartItems,
+    isSuccess,
+    isLoading,
+    refetch: refetcCart,
+  } = useGetCartProductsQuery<{
+    data: AppQueryResult<ServerCart>;
+    isSuccess: boolean;
+    isLoading: boolean;
+    refetch: () => void;
+  }>({
+    UserAgent: userAgent,
+  });
   const [triggerCheckPromoCode] = useLazyCheckPromoCodeQuery();
 
   useEffect(() => {
@@ -55,15 +62,19 @@ const CartIndex: NextPage = (): JSX.Element => {
   }, []);
 
   const handleCoupon = async (coupon: string) => {
-    if (coupon.length > 3 && userAgent && !isEmpty(cart.items)) {
-      dispatch(setCartPromoCode(coupon));
+    if (
+      coupon.length > 3 &&
+      userAgent &&
+      isSuccess &&
+      !isEmpty(cartItems.data?.Cart)
+    ) {
       await triggerCheckPromoCode({
         userAgent,
         PromoCode: coupon,
       }).then((r) => {
         if (r.data && r.data.status && r.data.promoCode) {
           // promoCode Success
-          dispatch(setCartPromoSuccess(r.data.promoCode));
+          console.log('r promoeCode', r.data.promoCode);
           dispatch(
             showToastMessage({
               content: lowerCase(kebabCase(r.data.msg)),
@@ -77,81 +88,79 @@ const CartIndex: NextPage = (): JSX.Element => {
               type: `error`,
             })
           );
-        } else {
-          dispatch(
-            showToastMessage({
-              content: `cart_unknown_coupon_error`,
-              type: `error`,
-            })
-          );
         }
       });
     }
   };
 
-  const handleRemove = async (id: any) => {
-    await dispatch(removeFromCart(id));
-    await dispatch(
-      showToastMessage({
-        content: `item_removed_from_cart`,
-        type: `info`,
-      })
+  const handleRemove = async (element: ProductCart) => {
+    console.log('cartItems', cartItems.data?.Cart);
+    console.log('element', element.id);
+    const items = filter(
+      cartItems.data?.Cart,
+      (item) => item.id !== element.id?.toString()
     );
+    const currentItems = isEmpty(items) ? [cartInitialState.items] : items;
+    console.log('currentItems', currentItems);
+    triggerAddToCart({
+      branchId,
+      body: {
+        UserAgent: userAgent,
+        Cart: currentItems,
+      },
+    }).then((r) => {
+      if (r.data?.status) {
+        dispatch(
+          showToastMessage({
+            content: `cart_updated_successfully`,
+            type: `success`,
+          })
+        );
+      }
+    });
   };
 
-  const handleCartCalculations = async () => {
-    if (branchId && !isNull(branchId) && userAgent) {
-      await triggerAddToCart({
-        branchId,
-        body: { UserAgent: userAgent, Cart: cart.items },
-      }).then((r: any) => {
-        if (r.data && r.data.status && r.data.msg) {
-          triggerGetCartProducts({ UserAgent: userAgent }).then((r: any) => {
-            if (r.data && r.data.status) {
-              dispatch(
-                setCartTotalAndSubTotal({
-                  total: r.data.data.total,
-                  subTotal: r.data.data.subTotal,
-                  delivery_fees: r.data.data.delivery_fees,
-                })
-              );
-            }
-          });
-          // .then(() =>
-          //   dispatch(
-          //     showToastMessage({
-          //       content: lowerCase(kebabCase(r.data.msg)),
-          //       type: `success`,
-          //     })
-          //   )
-          // );
-        }
-      });
-    }
+  const handleIncrease = (element: ProductCart) => {
+    triggerAddToCart({
+      branchId,
+      body: {
+        UserAgent: userAgent,
+        Cart: [{ ...element, Quantity: element.Quantity + 1 }],
+      },
+    }).then((r) => {
+      if (r.data?.status) {
+        dispatch(
+          showToastMessage({
+            content: `cart_updated_successfully`,
+            type: `success`,
+          })
+        );
+      }
+    });
   };
 
-  useEffect(() => {
-    handleCartCalculations();
-  }, [cart.promoEnabled, cart.total, cart.grossTotal]);
+  const handleDecrease = (element: ProductCart) => {
+    triggerAddToCart({
+      branchId,
+      body: {
+        UserAgent: userAgent,
+        Cart: [{ ...element, Quantity: element.Quantity - 1 }],
+      },
+    }).then((r) => {
+      if (r.data?.status) {
+        dispatch(
+          showToastMessage({
+            content: `cart_updated_successfully`,
+            type: `success`,
+          })
+        );
+      }
+    });
+  };
 
-  const handleIncrease = useCallback(
-    (element: any) => {
-      // console.log('element', element);
-      dispatch(increaseCartQty(element));
-    },
-    [cart.total, cart.grossTotal]
-  );
-
-  const handleDecrease = useCallback(
-    (element: any) => {
-      dispatch(decreaseCartQty(element));
-    },
-    [cart.total, cart.grossTotal]
-  );
-
-  const handleChange = (notes: string) => {
+  const handleSetNotes = (notes: string) => {
     if (notes.length > 3) {
-      dispatch(setCartNotes(notes));
+      dispatch(setNotes(notes));
     }
   };
 
@@ -159,7 +168,7 @@ const CartIndex: NextPage = (): JSX.Element => {
     <Suspense>
       <MainContentLayout>
         {/* if cart is empty */}
-        {isEmpty(cart.items) ? (
+        {isSuccess && isEmpty(cartItems?.data?.Cart) ? (
           <div className={'px-4'}>
             <div className="flex justify-center py-5">
               <p suppressHydrationWarning={suppressText}>
@@ -172,8 +181,9 @@ const CartIndex: NextPage = (): JSX.Element => {
             <p className="mx-7 text-lg" suppressHydrationWarning={suppressText}>
               {t('items')}
             </p>
-            {cart.grossTotal > 0 &&
-              map(cart.items, (item, i) => (
+            {isSuccess &&
+              cartItems.data?.subTotal > 0 &&
+              map(cartItems.data?.Cart, (item, i) => (
                 <div key={i}>
                   <div className="px-4">
                     <div className="mb-10 ">
@@ -192,7 +202,7 @@ const CartIndex: NextPage = (): JSX.Element => {
                               <button
                                 className="text-CustomRed pe-5 capitalize"
                                 suppressHydrationWarning={suppressText}
-                                onClick={() => handleRemove(item.id)}
+                                onClick={() => handleRemove(item)}
                               >
                                 {t('remove')}
                               </button>
@@ -223,63 +233,74 @@ const CartIndex: NextPage = (): JSX.Element => {
                             </p>
                           </Link>
                           <div className="flex">
-                            {map(
-                              item.QuantityMeters,
-                              (a: QuantityMeters, i) => (
-                                <div className="w-fit pb-2" key={i}>
-                                  <p
-                                    className={`text-xs px-2 pe-3 text-gray-400 w-auto ${
-                                      item.QuantityMeters.length > 1 &&
-                                      'border-e-2 border-gray-400'
-                                    }`}
-                                  >
-                                    <TextTrans
-                                      ar={a.addons[0].name_ar}
-                                      en={a.addons[0].name_en}
-                                    />
-                                  </p>
-                                </div>
-                              )
-                            )}
+                            {isSuccess &&
+                              map(
+                                cartItems.data?.Cart,
+                                (item: ProductCart, i) => (
+                                  <div className="w-fit pb-2" key={i}>
+                                    <p
+                                      className={`text-xs px-2 pe-3 text-gray-400 w-auto ${
+                                        item.QuantityMeters.length > 1 &&
+                                        'border-e-2 border-gray-400'
+                                      }`}
+                                    >
+                                      {!isEmpty(item.QuantityMeters) &&
+                                        map(item.QuantityMeters, (q) => (
+                                          <>
+                                            {map(q.addons, (addon) => (
+                                              <TextTrans
+                                                ar={addon.name}
+                                                en={addon.name}
+                                              />
+                                            ))}
+                                            |
+                                          </>
+                                        ))}
+                                    </p>
+                                  </div>
+                                )
+                              )}
                           </div>
                         </div>
                       </div>
-                      <div className="px-3 flex justify-between items-center mt-3">
-                        <span className="flex rounded-xl shadow-sm">
-                          <button
-                            type="button"
-                            className="relative -ml-px inline-flex items-center ltr:rounded-l-xl rtl:rounded-r-xl  bg-gray-100 px-4 py-2 text-sm font-medium text-black  focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
-                            onClick={() => {
-                              handleIncrease(item);
-                            }}
-                          >
-                            +
-                          </button>
-                          <button
-                            type="button"
-                            className="relative -ml-px inline-flex items-center  bg-gray-100 px-4 py-2 text-sm font-medium text-primary_BG  focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
-                          >
-                            {item.totalQty}
-                          </button>
-                          <button
-                            type="button"
-                            className="relative inline-flex items-center ltr:rounded-r-xl rtl:rounded-l-xl bg-gray-100 px-4 py-2 text-sm font-medium text-black  focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
-                            onClick={() => {
-                              handleDecrease(item);
-                            }}
-                          >
-                            -
-                          </button>
-                        </span>
-                        <div>
-                          <p
-                            className="text-primary_BG"
-                            suppressHydrationWarning={suppressText}
-                          >
-                            {item.subTotalPrice} {t('kwd')}
-                          </p>
+                      {isSuccess && (
+                        <div className="px-3 flex justify-between items-center mt-3">
+                          <span className="flex rounded-xl shadow-sm">
+                            <button
+                              type="button"
+                              className="relative -ml-px inline-flex items-center ltr:rounded-l-xl rtl:rounded-r-xl  bg-gray-100 px-4 py-2 text-sm font-medium text-black  focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
+                              onClick={() => {
+                                handleIncrease(item);
+                              }}
+                            >
+                              +
+                            </button>
+                            <button
+                              type="button"
+                              className="relative -ml-px inline-flex items-center  bg-gray-100 px-4 py-2 text-sm font-medium text-primary_BG  focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
+                            >
+                              {item.Quantity}
+                            </button>
+                            <button
+                              type="button"
+                              className="relative inline-flex items-center ltr:rounded-r-xl rtl:rounded-l-xl bg-gray-100 px-4 py-2 text-sm font-medium text-black  focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
+                              onClick={() => {
+                                handleDecrease(item);
+                              }}
+                            >
+                              -
+                            </button>
+                          </span>
+                          <div>
+                            <p
+                              className="text-primary_BG"
+                              suppressHydrationWarning={suppressText}
+                            >
+                              {item.Price} {t('kwd')}
+                            </p>
+                          </div>
                         </div>
-                      </div>
+                      )}
                     </div>
                   </div>
                   <div className="mt-10 px-5 py-1 bg-gray-100"></div>
@@ -289,7 +310,7 @@ const CartIndex: NextPage = (): JSX.Element => {
               <div className="flex items-center">
                 <CustomImage
                   className="w-8 h-8"
-                  src={Promotion}
+                  src={Promotion.src}
                   alt={t('promotion')}
                 />
                 <p
@@ -315,7 +336,7 @@ const CartIndex: NextPage = (): JSX.Element => {
               <div className="flex items-center">
                 <CustomImage
                   className="w-6 h-6"
-                  src={Notes}
+                  src={Notes.src}
                   alt={`${t('note')}`}
                 />
                 <p
@@ -329,11 +350,19 @@ const CartIndex: NextPage = (): JSX.Element => {
                 type="text"
                 placeholder={`${t('enter_notes_here')}`}
                 suppressHydrationWarning={suppressText}
-                onChange={debounce((e) => handleChange(e.target.value), 400)}
+                defaultValue={notes}
+                onChange={debounce((e) => handleSetNotes(e.target.value), 400)}
                 className={`border-0 border-b-2 border-b-gray-200 w-full focus:ring-transparent`}
               />
             </div>
-            {<PaymentSummary />}
+            {isSuccess && (
+              <PaymentSummary
+                total={parseFloat(cartItems.data.total)}
+                subTotal={parseFloat(cartItems.data.subTotal)}
+                delivery={cartItems.data.delivery_fees}
+                isLoading={isLoading}
+              />
+            )}
           </div>
         )}
       </MainContentLayout>

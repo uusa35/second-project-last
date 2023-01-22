@@ -204,7 +204,7 @@
   "quantity": "quantity",
   "total_price": "total price",
   "change_password": "change password",
-  "old_password": "old password", 
+  "old_password": "old password",
   "password_confirmation": "password confirmation",
   "save": "save",
   "date_selected": "date selected",
@@ -445,5 +445,7 @@
   "pickup_prefrences":"pickup prefrences",
   "pickup_later":"pickup later",
   "order_time": "order time",
-  "order_status": "order status"
+  "order_status": "order status",
+  "cart_updated_successfully" : "cart updated successfully.",
+  "item_added_successfully" : "item added successfully."
 }

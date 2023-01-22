@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { FC, Suspense } from 'react';
+import { FC, Suspense, useEffect, useMemo } from 'react';
 import {
   appLinks,
   footerBtnClass,
@@ -10,7 +10,11 @@ import {
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import PoweredByQ from '@/components/PoweredByQ';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
-import { setAddToCart } from '@/redux/slices/cartSlice';
+import {
+  removeFromCart,
+  setAddToCart,
+  setCartTotalAndSubTotal,
+} from '@/redux/slices/cartSlice';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import FeedbackIcon from '@/appIcons/feedback.svg';
@@ -18,6 +22,13 @@ import Facebook from '@/appIcons/facebook.svg';
 import Twitter from '@/appIcons/twitter.svg';
 import Instagram from '@/appIcons/instagram.svg';
 import CustomImage from '@/components/CustomImage';
+import {
+  useAddToCartMutation,
+  useGetCartProductsQuery,
+  useLazyGetCartProductsQuery,
+} from '@/redux/api/cartApi';
+import { userAgent } from 'next/server';
+import { filter, isEmpty, isNull, kebabCase, lowerCase } from 'lodash';
 
 type Props = {
   handleSubmit?: () => void;
@@ -27,14 +38,18 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
   const { t } = useTranslation();
   const {
     appSetting: { showFooterElement },
+    customer: { userAgent },
     locale: { isRTL },
     productCart,
-    cart,
+    branch: { id: branchId },
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const [triggerAddToCart] = useAddToCartMutation();
+  const [triggerGetCartProducts, { data: cartItems, isSuccess }] =
+    useLazyGetCartProductsQuery();
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     if (!productCart.enabled) {
       dispatch(
         showToastMessage({
@@ -43,10 +58,27 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
         })
       );
     } else {
-      dispatch(setAddToCart(productCart));
-      dispatch(
-        showToastMessage({ content: `item_added_success`, type: `success` })
-      );
+      if (branchId && !isNull(branchId) && !isEmpty(productCart) && userAgent) {
+        triggerAddToCart({
+          branchId,
+          body: { UserAgent: userAgent, Cart: [productCart] },
+        }).then((r) => {
+          if (
+            r.data.status &&
+            r.data.data.Cart &&
+            r.data.data.Cart.length > 0
+          ) {
+            triggerGetCartProducts({ UserAgent: userAgent }).then((r) => {
+              dispatch(
+                showToastMessage({
+                  content: 'item_added_successfully',
+                  type: `success`,
+                })
+              );
+            });
+          }
+        });
+      }
     }
   };
 
@@ -74,19 +106,21 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
             </span>
           </div>
         )}
-        {showFooterElement === 'cart_index' && cart.items.length > 0 && (
-          <div
-            className={`${mainBg} w-full h-20 flex justify-center items-center rounded-t-xl`}
-          >
-            <button
-              className={`${footerBtnClass}`}
-              suppressHydrationWarning={suppressText}
-              onClick={() => router.push(appLinks.customerInfo.path)}
+        {showFooterElement === 'cart_index' &&
+          isSuccess &&
+          cartItems.data?.Cart?.length > 0 && (
+            <div
+              className={`${mainBg} w-full h-20 flex justify-center items-center rounded-t-xl`}
             >
-              {t('continue')}
-            </button>
-          </div>
-        )}
+              <button
+                className={`${footerBtnClass}`}
+                suppressHydrationWarning={suppressText}
+                onClick={() => router.push(appLinks.customerInfo.path)}
+              >
+                {t('continue')}
+              </button>
+            </div>
+          )}
         {showFooterElement === 'cart_address' && (
           <div
             className={` bg-primary_BG text-white w-full h-24 flex justify-center items-center rounded-t-xl`}

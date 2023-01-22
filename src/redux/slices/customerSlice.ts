@@ -1,25 +1,26 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Area } from '@/types/queries';
 import { CustomerInfo } from '@/types/index';
 
 const initialState: CustomerInfo = {
   id: 0,
+  userAgent: null, /// ==== tempId for the cart
   name: ``,
   email: ``,
   phone: ``,
   address: {
-    id:0,
+    id: 0,
     customer_id: 0,
     type: 0,
-    address:{},
+    address: {},
     longitude: ``,
     latitude: ``,
   },
-  prefrences:{
-    type:'',
-    date:'',
-    time:""
-  }
+  prefrences: {
+    type: '',
+    date: '',
+    time: '',
+  },
+  notes: ``,
 };
 
 export const customerSlice = createSlice({
@@ -30,10 +31,10 @@ export const customerSlice = createSlice({
       state: typeof initialState,
       action: PayloadAction<CustomerInfo>
     ) => {
-      console.log('customer state', {...state})
+      console.log('customer state', { ...state });
       return {
         ...state,
-        ...action.payload,      
+        ...action.payload,
       };
     },
     removeCustomer: (
@@ -54,6 +55,21 @@ export const customerSlice = createSlice({
         address: action.payload,
       };
     },
+    setUserAgent: (
+      state: typeof initialState,
+      action: PayloadAction<string>
+    ) => {
+      return {
+        ...state,
+        userAgent: action.payload,
+      };
+    },
+    setNotes: (state: typeof initialState, action: PayloadAction<string>) => {
+      return {
+        ...state,
+        notes: action.payload,
+      };
+    },
     resetCustomerAddress: (
       state: typeof initialState,
       action: PayloadAction<void>
@@ -64,7 +80,6 @@ export const customerSlice = createSlice({
       };
     },
 
-
     setprefrences: (
       state: typeof initialState,
       action: PayloadAction<CustomerInfo['prefrences']>
@@ -74,7 +89,7 @@ export const customerSlice = createSlice({
         prefrences: action.payload,
       };
     },
-    
+
     resetPrefrences: (
       state: typeof initialState,
       action: PayloadAction<void>
@@ -93,5 +108,7 @@ export const {
   setCustomerAddress,
   resetCustomerAddress,
   setprefrences,
-  resetPrefrences
+  resetPrefrences,
+  setUserAgent,
+  setNotes,
 } = customerSlice.actions;

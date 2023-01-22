@@ -16,7 +16,19 @@ import {
 } from '@/redux/slices/appSettingSlice';
 import { imageSizes, imgUrl } from '@/constants/*';
 import CustomImage from '@/components/CustomImage';
-import { filter, isEmpty, isNull, map, multiply, sum, sumBy } from 'lodash';
+import {
+  concat,
+  filter,
+  first,
+  isEmpty,
+  isNull,
+  join,
+  map,
+  multiply,
+  now,
+  sum,
+  sumBy,
+} from 'lodash';
 import {
   addMeter,
   addRadioBtn,
@@ -26,7 +38,9 @@ import {
   removeFromCheckBox,
   removeMeter,
   resetProductCart,
+  setCartProductQty,
   setInitialProductCart,
+  updateId,
   updatePrice,
 } from '@/redux/slices/productCartSlice';
 import {
@@ -50,7 +64,7 @@ const ProductShow: NextPage<Props> = ({ element }) => {
     productCart,
     cart,
     branch: { id: branchId },
-    appSetting: { userAgent },
+    customer: { userAgent },
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const [currentQty, setCurrentyQty] = useState<number>(1);
@@ -81,12 +95,14 @@ const ProductShow: NextPage<Props> = ({ element }) => {
       element.amount >= currentQty + 1
     ) {
       setCurrentyQty(currentQty + 1);
+      dispatch(setCartProductQty(currentQty + 1));
     }
   };
 
   const handleDecrease = () => {
     if (currentQty - 1 > 0 && element.amount && currentQty <= element.amount) {
       setCurrentyQty(currentQty - 1);
+      dispatch(setCartProductQty(currentQty - 1));
     } else {
       setCurrentyQty(0);
       handleResetInitialProductCart();
@@ -108,6 +124,7 @@ const ProductShow: NextPage<Props> = ({ element }) => {
         Price: parseFloat(element.price),
         enabled: false,
         image: imgUrl(element?.img[0]?.toString()),
+        id: now().toString(),
       })
     );
   };
@@ -208,6 +225,7 @@ const ProductShow: NextPage<Props> = ({ element }) => {
             })
           );
         } else {
+          console.log('else');
           dispatch(removeMeter(`${selection.id}${choice.id}`));
         }
       }
@@ -253,6 +271,14 @@ const ProductShow: NextPage<Props> = ({ element }) => {
           totalQty: currentQty,
         })
       );
+      const uIds = concat(
+        productCart.QuantityMeters &&
+          map(productCart.QuantityMeters, (q) => q.uId),
+        productCart.CheckBoxes && map(productCart.CheckBoxes, (c) => c.uId),
+        productCart.RadioBtnsAddons &&
+          map(productCart.RadioBtnsAddons, (r) => r.uId)
+      );
+      dispatch(updateId(`${productCart.ProductID}${join(uIds, '')}`));
     }
   }, [
     productCart.QuantityMeters,
@@ -260,29 +286,6 @@ const ProductShow: NextPage<Props> = ({ element }) => {
     productCart.RadioBtnsAddons,
     currentQty,
   ]);
-
-  useEffect(() => {
-    if (branchId && !isNull(branchId) && !isEmpty(cart.items) && userAgent) {
-      triggerAddToCart({
-        branchId,
-        body: { UserAgent: userAgent, Cart: cart.items },
-      }).then((r: any) => {
-        if (r.data && r.data.status && r.data.msg) {
-          triggerGetCartProducts({ UserAgent: userAgent }).then((r: any) => {
-            if (r.data && r.data.status) {
-              dispatch(
-                setCartTotalAndSubTotal({
-                  total: r.data.data.total,
-                  subTotal: r.data.data.subTotal,
-                  delivery_fees: r.data.data.delivery_fees,
-                })
-              );
-            }
-          });
-        }
-      });
-    }
-  }, [cart.items, cart.grossTotal]);
 
   return (
     <Suspense>
@@ -328,6 +331,7 @@ const ProductShow: NextPage<Props> = ({ element }) => {
               {currentQty}
             </button>
             <button
+              disabled={currentQty === 0}
               onClick={() => handleDecrease()}
               type="button"
               className="relative -ml-px inline-flex items-center ltr:rounded-r-xl rtl:rounded-l-xl  bg-gray-100 px-4 py-2 text-sm font-medium text-black  focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
@@ -419,7 +423,7 @@ const ProductShow: NextPage<Props> = ({ element }) => {
                               +
                             </button>
                             <button
-                              disabled={currentQty < 1}
+                              disabled={currentQty === 0}
                               type="button"
                               className="relative -ml-px inline-flex items-center  bg-gray-100 px-4 py-2 text-sm font-medium text-primary_BG  focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
                             >
@@ -429,6 +433,15 @@ const ProductShow: NextPage<Props> = ({ element }) => {
                               )[0]?.addons[0]?.Value ?? 0}
                             </button>
                             <button
+                              disabled={
+                                currentQty === 0 ||
+                                first(
+                                  filter(
+                                    productCart.QuantityMeters,
+                                    (q) => q.uId === `${s.id}${c.id}`
+                                  )
+                                )?.addons.Value === 0
+                              }
                               onClick={() =>
                                 handleSelectAddOn(s, c, s.must_select, false)
                               }

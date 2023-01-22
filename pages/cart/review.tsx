@@ -43,7 +43,7 @@ const CartReview: NextPage = () => {
     area,
     branch: { id: branchId },
     area: { id: areaId },
-    appSetting: { userAgent },
+    customer: { userAgent }
   } = useAppSelector((state) => state);
   const { data, isSuccess } = useGetCartProductsQuery({ UserAgent: userAgent });
   const handleRemove = async (id: any) => {
@@ -299,7 +299,12 @@ const CartReview: NextPage = () => {
                   </h4>
                 </div>
               </div>
-            {<PaymentSummary />}
+            {<PaymentSummary
+                total={parseFloat(cart.total)}
+                subTotal={parseFloat(cart.subTotal)}
+                delivery={cart.delivery_fees}
+                isLoading={false}
+              />}
           </div>
         </div>
       </MainContentLayout>
