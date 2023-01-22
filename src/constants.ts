@@ -37,7 +37,7 @@ export const appLinks = {
   cartIndex: { path: '/cart' },
   cartSelectMethod: { path: '/cart/select' },
   trackOrder: { path: '/order/track' },
-  orderReview: { path: '/order/review' },
+  orderReview: { path: '/cart/review' },
   orderFailure: { path: '/order/status/failure' },
   orderSuccess: { path: '/order/status/success' },
   orderReceipt: { path: '/order/status/receipt' },
