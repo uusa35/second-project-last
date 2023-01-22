@@ -38,7 +38,7 @@ export const addressApi = apiSlice.injectEndpoints({
         params: { ...params },
         headers:{
           ...(process_type === 'delivery' && {'x-area-id': area_branch}),
-          ...(process_type === 'pickup' && {'x-area-id': area_branch})
+          ...(process_type === 'pickup' && {'x-branch-id': area_branch})
         },
         validateStatus: (response, result) =>
           response.status === 200 && result.status,
