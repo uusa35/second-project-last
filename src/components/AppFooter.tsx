@@ -39,13 +39,15 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const [triggerAddToCart, { data: cartResult }] = useAddToCartMutation();
+  const [triggerAddToCart] = useAddToCartMutation();
   const { data: cartFromServer, isSuccess: serverCartSuccess } =
     useGetCartProductsQuery({
       UserAgent: userAgent,
     });
-  const [triggerGetCartProducts, { data: cartItems, isSuccess }] =
-    useLazyGetCartProductsQuery();
+  const [triggerGetCartProducts] = useLazyGetCartProductsQuery();
+  const { data: cartItems, isSuccess } = useGetCartProductsQuery({
+    UserAgent: userAgent,
+  });
 
   const handleAddToCart = async () => {
     if (!productCart.enabled) {
