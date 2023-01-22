@@ -5,80 +5,56 @@ import { suppressText } from '@/constants/*';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { isNull } from 'lodash';
 
-const PaymentSummary: FC = () => {
+type Props = {
+  total: number;
+  subTotal: number;
+  delivery: number | null;
+  isLoading: boolean;
+};
+const PaymentSummary: FC<Props> = ({
+  total,
+  subTotal,
+  delivery,
+  isLoading,
+}) => {
   const { t } = useTranslation();
-  const { cart } = useAppSelector((state) => state);
   return (
-    <Suspense fallback={<LoadingSpinner fullWidth={false} />}>
-      <div className={`px-4 py-4`}>
-        {cart.promoEnabled ? (
-          <>
-            <div className="flex justify-between mb-3 text-lg">
-              <p suppressHydrationWarning={suppressText}>{t('subtotal')} </p>
-              <p suppressHydrationWarning={suppressText}>
-                {cart.promoCode.total_cart_after_tax}
-                {t('kwd')}
+    <div className={`px-4 py-4`}>
+      {isLoading ? (
+        <LoadingSpinner fullWidth={false} />
+      ) : (
+        <>
+          <div className="flex justify-between mb-3 text-lg">
+            <p suppressHydrationWarning={suppressText}>{t('subtotal')} </p>
+            <div className={`flex flex-row`}>
+              <p suppressHydrationWarning={suppressText} className={`px-2`}>
+                {subTotal}
               </p>
+              <p>{t('kwd')}</p>
             </div>
-            {cart.promoCode.free_delivery !== `false` && (
-              <div className="flex justify-between mb-3 text-lg">
-                <p suppressHydrationWarning={suppressText}>
-                  {t('delivery_fees')}
-                </p>
-                <p suppressHydrationWarning={suppressText}>
-                  {cart.promoCode.free_delivery} {t('kwd')}
-                </p>
-              </div>
-            )}
-            <div className="flex justify-between mb-3 text-lg">
-              <p suppressHydrationWarning={suppressText}>{t('total')}</p>
-              <p suppressHydrationWarning={suppressText}>
-                {cart.promoCode.total_cart_before_tax} {t('kwd')}
+          </div>
+          <div className="flex justify-between mb-3 text-lg">
+            <p suppressHydrationWarning={suppressText}>{t('delivery_fees')}</p>
+            <p suppressHydrationWarning={suppressText}></p>
+            <div className={`flex flex-row`}>
+              <p suppressHydrationWarning={suppressText} className={`px-2`}>
+                {isNull(delivery) ? 0 : delivery}
               </p>
+              <p>{t('kwd')}</p>
             </div>
-          </>
-        ) : (
-          <>
-            <div className="flex justify-between mb-3 text-lg">
-              <p suppressHydrationWarning={suppressText}>
-                {t('delivery_fees')}
+          </div>
+          <div className="flex justify-between mb-3 text-lg">
+            <p suppressHydrationWarning={suppressText}>{t('total')}</p>
+            <div className={`flex flex-row`}>
+              <p suppressHydrationWarning={suppressText} className={`px-2`}>
+                {total}
               </p>
-              <p suppressHydrationWarning={suppressText}>
-                {isNull(cart.delivery_fees) ? 0 : cart.delivery_fee} {t('kwd')}
-              </p>
+              <p>{t('kwd')}</p>
             </div>
-            <div className="flex justify-between mb-3 text-lg">
-              <p suppressHydrationWarning={suppressText}>{t('subtotal')} </p>
-              <p suppressHydrationWarning={suppressText}>
-                {cart.subTotal}
-                {t('kwd')}
-              </p>
-            </div>
-            <div className="flex justify-between mb-3 text-lg">
-              <p suppressHydrationWarning={suppressText}>{t('total')}</p>
-              <p suppressHydrationWarning={suppressText}>
-                {cart.total} {t('kwd')}
-              </p>
-            </div>
-          </>
-        )}
-        <div className="flex justify-between mb-3 text-lg">
-          <p
-            suppressHydrationWarning={suppressText}
-            className={`${cart.promoEnabled && `line-through`}`}
-          >
-            {t('subtotal')} (Client Side)
-          </p>
-          <p
-            suppressHydrationWarning={suppressText}
-            className={`${cart.promoEnabled && `line-through`}`}
-          >
-            {cart.grossTotal}
-            {t('kwd')}
-          </p>
-        </div>
-      </div>
-    </Suspense>
+          </div>
+        </>
+      )}
+    </div>
   );
 };
 export default PaymentSummary;

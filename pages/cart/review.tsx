@@ -3,7 +3,7 @@ import { NextPage } from 'next';
 import MainContentLayout from '@/layouts/MainContentLayout';
 import { useTranslation } from 'react-i18next';
 import TrunkClock from '@/appIcons/trunk_clock.svg';
-import { suppressText, imageSizes } from '@/constants/*';
+import { suppressText, imageSizes, appLinks } from '@/constants/*';
 import { LocationOnOutlined } from '@mui/icons-material';
 import Home from '@/appIcons/home.svg';
 import IDCard from '@/appIcons/id_card.svg';
@@ -11,15 +11,23 @@ import OrderSummary from '@/appIcons/summary.svg';
 import CustomImage from '@/components/CustomImage';
 import NotFound from '@/appImages/not_found.png';
 import Knet from '@/appImages/knet.png';
+import Cash from '@/appImages/cash_on_delivery.jpg';
+import Visa from '@/appImages/visa.png';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import GoogleMapReact from 'google-map-react';
 import {
   setCurrentModule,
   setShowFooterElement,
+  showToastMessage,
 } from '@/redux/slices/appSettingSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 import TextTrans from '@/components/TextTrans';
+import { map } from 'lodash';
+import Link from 'next/link';
+import { QuantityMeters } from '@/types/index';
+import PaymentSummary from '@/components/widgets/cart/review/PaymentSummary';
+import { removeFromCart } from '@/redux/slices/cartSlice';
 
 const CartReview: NextPage = () => {
   const { t } = useTranslation();
@@ -31,10 +39,29 @@ const CartReview: NextPage = () => {
   const {
     cart,
     branch,
-    appSetting: { userAgent },
+    customer,
+    area,
+    branch: { id: branchId },
+    area: { id: areaId },
+    customer: { userAgent },
   } = useAppSelector((state) => state);
+  console.log({customer})
   const { data, isSuccess } = useGetCartProductsQuery({ UserAgent: userAgent });
+  const handleRemove = async (id: any) => {
+    await dispatch(removeFromCart(id));
+    await dispatch(
+      showToastMessage({
+        content: `item_removed_from_cart`,
+        type: `info`,
+      })
+    );
+  };
+  const paymentMethods = [
+    {id: "visa", src: Visa},
+    {id: "knet", src: Knet},
+    {id: "cash", src: Cash}
 
+  ]
   return (
     <Suspense>
       <MainContentLayout>
@@ -54,7 +81,7 @@ const CartReview: NextPage = () => {
               >
                 {t('expected_delivery_time')}
               </h4>
-              <p>{}</p>
+              <p>{customer.prefrences.time}</p>
             </div>
           </div>
           <div className="bg-gray-200 w-full mt-5 p-0 h-2 px-4"></div>
@@ -70,14 +97,17 @@ const CartReview: NextPage = () => {
                   {t('delivery_to')}
                 </h5>
               </div>
-              <button
+              <Link
+                href={{
+                  pathname: appLinks.address.path
+                }}
                 className="text-primary_BG text-base font-semibold"
                 suppressHydrationWarning={suppressText}
               >
                 {t('change')}
-              </button>
+              </Link>
             </div>
-            <div className="w-full h-36 rounded-md">
+            <div className="w-full h-36 rounded-md my-4">
               <GoogleMapReact
                 bootstrapURLKeys={{
                   key: 'AIzaSyChibV0_W_OlSRJg2GjL8TWVU8CzpRHRAE',
@@ -102,12 +132,14 @@ const CartReview: NextPage = () => {
                 />
                 <p className="text-md ps-5">location</p>
               </div>
-              <button
-                className="text-primary_BG text-base font-semibold"
+              <Link href={{
+                pathname: "/cart/select"
+              }}
+                className="text-primary_BG text-base font-semibold capitalize"
                 suppressHydrationWarning={suppressText}
               >
                 {t('edit')}
-              </button>
+              </Link>
             </div>
           </div>
           <div className="flex justify-between items-center py-3 px-4">
@@ -120,16 +152,18 @@ const CartReview: NextPage = () => {
                 className={`w-8 h-8`}
               />
               <div className="ps-5">
-                <h4 className="font-semibold text-base">customer name</h4>
-                <p>customer phone</p>
+                <h4 className="font-semibold text-base">{customer.name}</h4>
+                <p>{customer.phone}</p>
               </div>
             </div>
-            <button
-              className="text-primary_BG text-base font-semibold"
+            <Link href={{
+              pathname: "/customer/info"
+            }}
+              className="text-primary_BG text-base font-semibold capitalize"
               suppressHydrationWarning={suppressText}
             >
               {t('edit')}
-            </button>
+            </Link>
           </div>
           <div className="px-4">
             <div className="flex items-center py-3">
@@ -150,44 +184,75 @@ const CartReview: NextPage = () => {
               </div>
             </div>
           </div>
-          <div className=" pt-5 px-4">
-            <div className="mb-10 ">
-              <div className="flex px-5">
+          {map(cart.items, (item) => <div key={item.ProductID} className=" pt-5 px-4">
+            <div className="mb-10">
+              <div className="flex">
                 <div className="ltr:pr-3 rtl:pl-3 w-1/5">
                   <CustomImage
                     className="w-full  rounded-lg border-[1px] border-gray-200"
                     alt={`${t('item')}`}
-                    src={NotFound.src}
+                    src={item.image ? item.image: NotFound.src}
                   />
                 </div>
 
                 <div className="w-full">
                   <div className="flex justify-between">
                     <div>
-                      <p className="font-semibold">product name</p>
-                      <div className="w-fit pb-2">
-                        <p className="text-xs pe-3 text-gray-400 border-e-2 border-gray-400 w-auto">
-                          addons
-                        </p>
-                      </div>
+                    <Link
+                            href={`${appLinks.productShow(
+                              item.ProductID.toString(),
+                              branchId,
+                              item.ProductID,
+                              item.ProductName,
+                              areaId
+                            )}`}
+                          >
+                            <p className="font-semibold">
+                              <TextTrans ar={item.name_ar} en={item.name_en} />
+                            </p>
+                          </Link>
+                          <div className="flex">
+                            {map(
+                              item.QuantityMeters,
+                              (a: QuantityMeters, i) => (
+                                <div className="w-fit pb-2" key={i}>
+                                  <p
+                                    className={`text-xs px-2 pe-3 text-gray-400 w-auto ${
+                                      item.QuantityMeters.length > 1 &&
+                                      'border-e-2 border-gray-400'
+                                    }`}
+                                  >
+                                    <TextTrans
+                                      ar={a.addons[0].name_ar}
+                                      en={a.addons[0].name_en}
+                                    />
+                                  </p>
+                                </div>
+                              )
+                            )}
+                          </div>
                     </div>
                     <button
-                      className="text-primary_BG font-semibold"
+                      className="text-primary_BG font-semibold capitalize"
                       suppressHydrationWarning={suppressText}
                     >
                       {t('edit')}
                     </button>
                   </div>
                   <div className="flex justify-between">
-                    <p className="text-primary_BG font-semibold">price</p>
-                    <button className="text-CustomRed font-semibold">
-                      remove
+                    <p className="text-primary_BG font-semibold">{item.totalPrice}</p>
+                    <button
+                      className="text-CustomRed capitalize font-semibold"
+                      suppressHydrationWarning={suppressText}
+                      onClick={() => handleRemove(item.id)}
+                    >
+                      {t('remove')}
                     </button>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          </div>)}
           <div className="bg-gray-200 w-full mt-5 p-0 h-2"></div>
           <div className="px-4">
             <div className="flex items-center py-3">
@@ -198,7 +263,7 @@ const CartReview: NextPage = () => {
                 height={imageSizes.xs}
                 className={`w-8 h-8`}
               />
-              <div className="ps-5">
+              <div className="ps-5 py-2">
                 <h4
                   className="font-semibold text-lg"
                   suppressHydrationWarning={suppressText}
@@ -207,79 +272,40 @@ const CartReview: NextPage = () => {
                 </h4>
               </div>
             </div>
-            <div className="flex justify-between">
-              <div className="bg-gray-200 flex justify-center items-center w-24 h-24">
+            <div className='flex justify-between'>
+              {map(paymentMethods, (method) => <button key={method.id}
+              className="bg-gray-200 flex justify-center items-center w-24 h-24 rounded-md">
                 <div>
                   <CustomImage
-                    src={Knet.src}
+                    src={method.src}
                     alt="payment"
                     width={imageSizes.xs}
                     height={imageSizes.xs}
-                    className={`w-8 h-8`}
+                    className={`w-10 h-10`}
                   />
                 </div>
-              </div>
-              <div className="bg-gray-200 flex justify-center items-center w-24 h-24">
-                <div>
-                  <CustomImage
-                    src={Knet.src}
-                    alt="payment"
-                    width={imageSizes.xs}
-                    height={imageSizes.xs}
-                    className={`w-8 h-8`}
-                  />
-                </div>
-              </div>
-              <div className="bg-gray-200 flex justify-center items-center w-24 h-24">
-                <div>
-                  <CustomImage
-                    src={Knet.src}
-                    alt="payment"
-                    width={imageSizes.xs}
-                    height={imageSizes.xs}
-                    className={`w-8 h-8`}
-                  />
-                </div>
-              </div>
+              </button>)}
             </div>
           </div>
-          <div className={`px-4 py-4`}>
+          
+          <div className='px-4'>
             <div className="flex items-center py-3">
-              <ReceiptIcon className="text-primary_BG" />
-              <div className="ps-5">
-                <h4
-                  className="font-semibold text-lg"
-                  suppressHydrationWarning={suppressText}
-                >
-                  {t('payment_summary')}
-                </h4>
+                <ReceiptIcon className="text-primary_BG" />
+                <div className="ps-5">
+                  <h4
+                    className="font-semibold text-lg"
+                    suppressHydrationWarning={suppressText}
+                  >
+                    {t('payment_summary')}
+                  </h4>
+                </div>
               </div>
-            </div>
-            <div className="flex justify-between mb-3 text-lg">
-              <p suppressHydrationWarning={suppressText}>{t('subtotal')}</p>
-              <p suppressHydrationWarning={suppressText}>{t('kwd')}</p>
-            </div>
-            <div className="flex justify-between mb-3 text-lg">
-              <p suppressHydrationWarning={suppressText}>
-                {t('delivery_services')}
-              </p>
-              <p suppressHydrationWarning={suppressText}>{t('kwd')}</p>
-            </div>
-
-            <div className="flex justify-between mb-3 text-lg ">
-              <p
-                className="font-semibold"
-                suppressHydrationWarning={suppressText}
-              >
-                {t('total')}
-              </p>
-              <p
-                className="text-primary_BG"
-                suppressHydrationWarning={suppressText}
-              >
-                {t('kwd')}
-              </p>
-            </div>
+            {<PaymentSummary
+                total={parseFloat(cart.total)}
+                subTotal={parseFloat(cart.subTotal)}
+                delivery={cart.delivery_fees}
+                isLoading={false}
+              />}
           </div>
         </div>
       </MainContentLayout>

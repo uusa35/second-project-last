@@ -1,6 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ProductCart, ClientCart } from '@/types/index';
-import { filter, sum, sumBy, multiply, isEmpty } from 'lodash';
+import {
+  filter,
+  sum,
+  sumBy,
+  multiply,
+  isEmpty,
+  map,
+  concat,
+  flatten,
+  join,
+} from 'lodash';
 
 const initialState: ClientCart = {
   grossTotal: 0,
@@ -44,15 +54,27 @@ export const cartSlice = createSlice({
       state: typeof initialState,
       action: PayloadAction<ProductCart>
     ) => {
+      const uIds = concat(
+        action.payload.QuantityMeters &&
+          map(action.payload.QuantityMeters, (q) => q.uId),
+        action.payload.CheckBoxes &&
+          map(action.payload.CheckBoxes, (c) => c.uId),
+        action.payload.RadioBtnsAddons &&
+          map(action.payload.RadioBtnsAddons, (r) => r.uId)
+      );
+      const newItem = {
+        ...action.payload,
+        id: `${action.payload.ProductID}${join(uIds, '')}`,
+      };
       const items = filter(
         state.items,
-        (item) => item.id !== action.payload.id && item.ProductID !== 0
+        (item) => item.id !== newItem.id && item.ProductID !== 0
       );
       const grossTotal = sumBy(items, (item) => item.grossTotalPrice);
       return {
         ...state,
         grossTotal: sum([action.payload.grossTotalPrice, grossTotal]),
-        items: [...items, action.payload],
+        items: [...items, newItem],
         promoEnabled: false,
         promoCode: { ...initialState.promoCode },
       };
@@ -63,7 +85,6 @@ export const cartSlice = createSlice({
     ) => {
       const items = filter(state.items, (item) => item.id !== action.payload);
       const grossTotal = sumBy(items, (item) => item.grossTotalPrice);
-      console.log('items', items);
       return {
         ...state,
         grossTotal,
@@ -131,15 +152,6 @@ export const cartSlice = createSlice({
         };
       }
     },
-    setCartNotes: (
-      state: typeof initialState,
-      action: PayloadAction<string>
-    ) => {
-      return {
-        ...state,
-        notes: action.payload,
-      };
-    },
     setCartPromoCode: (
       state: typeof initialState,
       action: PayloadAction<string>
@@ -182,7 +194,6 @@ export const {
   removeFromCart,
   increaseCartQty,
   decreaseCartQty,
-  setCartNotes,
   setCartPromoCode,
   setCartTotalAndSubTotal,
   setCartPromoSuccess,

@@ -39,7 +39,6 @@ export const productCartSlice = createSlice({
       return {
         ...initialState,
         ...action.payload,
-        id: `${state.id}${action.payload.ProductID}`,
       };
     },
     addMeter: (
@@ -52,13 +51,16 @@ export const productCartSlice = createSlice({
           action.payload,
           ...filter(state.QuantityMeters, (m) => m.uId !== action.payload.uId),
         ],
-        id: action.payload.uId,
       };
     },
     removeMeter: (
       state: typeof initialState,
       action: PayloadAction<string>
     ) => {
+      console.log(
+        'filtered',
+        filter(state.QuantityMeters, (c) => c.uId !== action.payload)
+      );
       return {
         ...state,
         QuantityMeters: filter(
@@ -77,7 +79,6 @@ export const productCartSlice = createSlice({
           action.payload,
           ...filter(state.CheckBoxes, (c) => c.uId !== action.payload.uId),
         ],
-        id: action.payload.uId,
       };
     },
     removeFromCheckBox: (
@@ -96,7 +97,6 @@ export const productCartSlice = createSlice({
       return {
         ...state,
         RadioBtnsAddons: [action.payload],
-        id: action.payload.uId,
       };
     },
     setCartProductQty: (
@@ -107,6 +107,12 @@ export const productCartSlice = createSlice({
         ...state,
         Quantity: action.payload,
         grossTotalPrice: multiply(state.totalPrice, action.payload),
+      };
+    },
+    updateId: (state: typeof initialState, action: PayloadAction<string>) => {
+      return {
+        ...state,
+        id: action.payload,
       };
     },
     updatePrice: (
@@ -166,4 +172,5 @@ export const {
   removeMeter,
   enableAddToCart,
   disableAddToCart,
+  updateId,
 } = productCartSlice.actions;

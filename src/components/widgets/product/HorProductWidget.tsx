@@ -23,7 +23,6 @@ const HorProductWidget: FC<Props> = ({ element }): JSX.Element => {
     ? imgUrl(first(element.img).thumbnail)
     : NoFoundImage.src;
 
-  // console.log('element', element);
   return (
     <Link
       href={`${appLinks.productShow(
@@ -76,7 +75,7 @@ const HorProductWidget: FC<Props> = ({ element }): JSX.Element => {
             aria-hidden="true"
             className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black opacity-60"
           />
-          
+
         </div> */}
       </div>
     </Link>

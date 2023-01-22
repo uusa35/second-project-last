@@ -219,7 +219,7 @@
   "quantity": "الكمية",
   "total_price": "السعر الإجمالي",
   "change_password": "تغيير كلمة السر",
-  "old_password": "كلمة السر القديمة", 
+  "old_password": "كلمة السر القديمة",
   "save": "حفظ",
   "no_classes_found": "لا يوجد دروس",
   "no_products_found": "لا يوجد منتجات",
@@ -457,6 +457,8 @@
   "pickup_later":"الاستلام لاحقا",
   "order_time": "وقت الطلب",
   "order_status": "حالة الطلب",
+  "cart_updated_successfully" : "تم تحديث عربة التسوق بنجاح.",
+  "item_added_successfully" : "تم اضافة العنصر بنجاح.",
   "time_and_date_saved_successfully":"تم حفظ الوقت و التاريخ بنجاح",
   "shop_is_close_at_this_time":"المتجر مغلق في هذا الموعد",
   "shop_is_busy_at_this_time":"المتجر مشغول في هذا الموعد"

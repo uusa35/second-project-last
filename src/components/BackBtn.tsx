@@ -8,6 +8,7 @@ import { ShoppingBagOutlined } from '@mui/icons-material';
 import { setLocale } from '@/redux/slices/localeSlice';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
 import { useTranslation } from 'react-i18next';
+import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 
 type Props = {
   backHome: boolean;
@@ -24,8 +25,11 @@ const BackBtn: FC<Props> = ({
     appSetting: { currentModule },
     locale: { lang, otherLang },
     cart: { items, grossTotal },
-    country,
+    customer: { userAgent },
   } = useAppSelector((state) => state);
+  const { data: cartItems, isSuccess } = useGetCartProductsQuery({
+    UserAgent: userAgent,
+  });
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
@@ -122,11 +126,15 @@ const BackBtn: FC<Props> = ({
             className={`relative`}
           >
             <ShoppingBagOutlined className={`w-8 h-8 text-black`} />
-            {grossTotal > 0 && items.length > 0 && (
-              <div className="absolute -left-2 -top-2 opacity-90  rounded-full bg-red-600 w-6 h-6 top-0 shadow-xl flex items-center justify-center text-white">
-                <span className={`pt-[3.5px] shadow-md`}>{items.length}</span>
-              </div>
-            )}
+            {isSuccess &&
+              cartItems.data?.total > 0 &&
+              cartItems.data?.Cart?.length > 0 && (
+                <div className="absolute -left-2 -top-2 opacity-90  rounded-full bg-red-600 w-6 h-6 top-0 shadow-xl flex items-center justify-center text-white">
+                  <span className={`pt-[3.5px] shadow-md`}>
+                    {cartItems.data?.Cart?.length}
+                  </span>
+                </div>
+              )}
           </Link>
           <button
             onClick={() => handleChangeLang(otherLang)}
