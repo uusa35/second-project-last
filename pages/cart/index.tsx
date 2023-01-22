@@ -11,7 +11,7 @@ import {
 import { EditOutlined } from '@mui/icons-material';
 import Promotion from '@/appIcons/promotion.svg';
 import Notes from '@/appIcons/notes.svg';
-import { appLinks, cartInitialState, suppressText } from '@/constants/*';
+import { appLinks, suppressText } from '@/constants/*';
 import CustomImage from '@/components/CustomImage';
 import { debounce, filter, isEmpty, kebabCase, lowerCase, map } from 'lodash';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
@@ -89,6 +89,7 @@ const CartIndex: NextPage = (): JSX.Element => {
     }
   };
 
+  console.log('Cart Now ==+>', cartItems?.data?.Cart);
   const handleRemove = async (element: ProductCart) => {
     const currentItems = filter(
       cartItems.data.Cart,
@@ -248,7 +249,10 @@ const CartIndex: NextPage = (): JSX.Element => {
                             )}`}
                           >
                             <p className="font-semibold">
-                              <TextTrans ar={item.name_ar} en={item.name_en} />
+                              <TextTrans
+                                ar={item.ProductName}
+                                en={item.ProductName}
+                              />
                             </p>
                           </Link>
                           <div className="flex">
@@ -264,8 +268,8 @@ const CartIndex: NextPage = (): JSX.Element => {
                                           <TextTrans
                                             key={i}
                                             className={`ltr:border-r-2 ltr:last:border-r-0 ltr:first:pr-1 rtl:border-l-2 rtl:last:border-l-0 rtl:first:pl-1 px-1 text-xs`}
-                                            ar={addon.name_ar}
-                                            en={addon.name_en}
+                                            ar={addon.name}
+                                            en={addon.name}
                                           />
                                         ))}
                                       </Fragment>
