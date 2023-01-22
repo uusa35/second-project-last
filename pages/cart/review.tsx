@@ -12,24 +12,32 @@ import CustomImage from '@/components/CustomImage';
 import NotFound from '@/appImages/not_found.png';
 import Knet from '@/appImages/knet.png';
 import ReceiptIcon from '@mui/icons-material/Receipt';
+import GoogleMapReact from 'google-map-react';
 import {
   setCurrentModule,
   setShowFooterElement,
 } from '@/redux/slices/appSettingSlice';
-import { useAppDispatch } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { useGetCartProductsQuery } from '@/redux/api/cartApi';
+import TextTrans from '@/components/TextTrans';
 
 const CartReview: NextPage = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-
   useEffect(() => {
     dispatch(setCurrentModule(t('order_review')));
     dispatch(setShowFooterElement('order_review'));
   }, []);
+  const {
+    cart,
+    branch,
+    appSetting: { userAgent },
+  } = useAppSelector((state) => state);
+  const { data, isSuccess } = useGetCartProductsQuery({ UserAgent: userAgent });
 
   return (
-    <MainContentLayout>
-      <Suspense>
+    <Suspense>
+      <MainContentLayout>
         <div>
           <div className="flex justify-center items-center py-5 px-4">
             <CustomImage
@@ -70,20 +78,18 @@ const CartReview: NextPage = () => {
               </button>
             </div>
             <div className="w-full h-36 rounded-md">
-              {/* <GoogleMapReact
-                        bootstrapURLKeys={{
-                        // remove the key if you want to fork
-                        key: 'AIzaSyChibV0_W_OlSRJg2GjL8TWVU8CzpRHRAE',
-                        language: 'en',
-                        region: 'US',
-                        }}
-                        defaultCenter={{
-                        lat: parseInt(b.lat),
-                        lng: parseInt(b.lang),
-                        }}
-                        defaultZoom={11}
-                        >
-                        </GoogleMapReact> */}
+              <GoogleMapReact
+                bootstrapURLKeys={{
+                  key: 'AIzaSyChibV0_W_OlSRJg2GjL8TWVU8CzpRHRAE',
+                  language: 'en',
+                  region: 'US',
+                }}
+                defaultCenter={{
+                  lat: parseInt(branch.lat),
+                  lng: parseInt(branch.lang),
+                }}
+                defaultZoom={11}
+              ></GoogleMapReact>
             </div>
             <div className="flex justify-between">
               <div className="flex items-center">
@@ -276,8 +282,8 @@ const CartReview: NextPage = () => {
             </div>
           </div>
         </div>
-      </Suspense>
-    </MainContentLayout>
+      </MainContentLayout>
+    </Suspense>
   );
 };
 

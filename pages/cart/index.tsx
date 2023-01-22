@@ -43,8 +43,8 @@ const CartIndex: NextPage = (): JSX.Element => {
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const [triggerAddToCart] = useAddToCartMutation();
-  const [triggerCheckPromoCode] = useLazyCheckPromoCodeQuery();
   const [triggerGetCartProducts] = useLazyGetCartProductsQuery();
+  const [triggerCheckPromoCode] = useLazyCheckPromoCodeQuery();
 
   useEffect(() => {
     dispatch(setCurrentModule(t('cart')));
@@ -61,16 +61,16 @@ const CartIndex: NextPage = (): JSX.Element => {
         userAgent,
         PromoCode: coupon,
       }).then((r) => {
-        if (r.data && r.data.status && r.data?.promoCode) {
+        if (r.data && r.data.status && r.data.promoCode) {
           // promoCode Success
-          dispatch(setCartPromoSuccess(r.data?.promoCode));
+          dispatch(setCartPromoSuccess(r.data.promoCode));
           dispatch(
             showToastMessage({
               content: lowerCase(kebabCase(r.data.msg)),
               type: `success`,
             })
           );
-        } else if (r.error && r.error.data && r.error.data?.msg) {
+        } else if (r.error && r.error?.data && r.error?.data?.msg) {
           dispatch(
             showToastMessage({
               content: lowerCase(kebabCase(r.error.data.msg)),
@@ -100,43 +100,31 @@ const CartIndex: NextPage = (): JSX.Element => {
   };
 
   const handleCartCalculations = async () => {
-    if (branchId && !isNull(branchId) && !isEmpty(cart.items) && userAgent) {
+    if (branchId && !isNull(branchId) && userAgent) {
       await triggerAddToCart({
         branchId,
         body: { UserAgent: userAgent, Cart: cart.items },
       }).then((r: any) => {
         if (r.data && r.data.status && r.data.msg) {
-          triggerGetCartProducts({ UserAgent: userAgent })
-            .then((r: any) => {
-              if (r.data && r.data.status) {
-                dispatch(
-                  setCartTotalAndSubTotal({
-                    total: r.data.data.total,
-                    subTotal: r.data.data.subTotal,
-                    delivery_fees: r.data.data.delivery_fees,
-                  })
-                );
-              }
-            })
-            .then(() =>
+          triggerGetCartProducts({ UserAgent: userAgent }).then((r: any) => {
+            if (r.data && r.data.status) {
               dispatch(
-                showToastMessage({
-                  content: lowerCase(kebabCase(r.data.msg)),
-                  type: `success`,
+                setCartTotalAndSubTotal({
+                  total: r.data.data.total,
+                  subTotal: r.data.data.subTotal,
+                  delivery_fees: r.data.data.delivery_fees,
                 })
-              )
-            );
-        } else {
-          dispatch(
-            showToastMessage({
-              content: lowerCase(
-                kebabCase(
-                  r.error?.data?.msg ?? `cart_is_not_ready_error_occurred`
-                )
-              ),
-              type: `error`,
-            })
-          );
+              );
+            }
+          });
+          // .then(() =>
+          //   dispatch(
+          //     showToastMessage({
+          //       content: lowerCase(kebabCase(r.data.msg)),
+          //       type: `success`,
+          //     })
+          //   )
+          // );
         }
       });
     }
@@ -168,8 +156,8 @@ const CartIndex: NextPage = (): JSX.Element => {
   };
 
   return (
-    <MainContentLayout>
-      <Suspense>
+    <Suspense>
+      <MainContentLayout>
         {/* if cart is empty */}
         {isEmpty(cart.items) ? (
           <div className={'px-4'}>
@@ -180,15 +168,12 @@ const CartIndex: NextPage = (): JSX.Element => {
             </div>
           </div>
         ) : (
-          <Suspense>
-            <div className={`space-y-8`}>
-              <p
-                className="mx-7 text-lg"
-                suppressHydrationWarning={suppressText}
-              >
-                {t('items')}
-              </p>
-              {map(cart.items, (item, i) => (
+          <div className={`space-y-8`}>
+            <p className="mx-7 text-lg" suppressHydrationWarning={suppressText}>
+              {t('items')}
+            </p>
+            {cart.grossTotal > 0 &&
+              map(cart.items, (item, i) => (
                 <div key={i}>
                   <div className="px-4">
                     <div className="mb-10 ">
@@ -207,10 +192,7 @@ const CartIndex: NextPage = (): JSX.Element => {
                               <button
                                 className="text-CustomRed pe-5 capitalize"
                                 suppressHydrationWarning={suppressText}
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  handleRemove(item.ProductID);
-                                }}
+                                onClick={() => handleRemove(item.id)}
                               >
                                 {t('remove')}
                               </button>
@@ -303,63 +285,59 @@ const CartIndex: NextPage = (): JSX.Element => {
                   <div className="mt-10 px-5 py-1 bg-gray-100"></div>
                 </div>
               ))}
-              <div className="px-5">
-                <div className="flex items-center">
-                  <CustomImage
-                    className="w-8 h-8"
-                    src={Promotion}
-                    alt={t('promotion')}
-                  />
-                  <p
-                    className="font-semibold ps-2"
-                    suppressHydrationWarning={suppressText}
-                  >
-                    {t('promotion_code')}
-                  </p>
-                </div>
-
-                <div className="flex items-center justify-between px-2 pt-3">
-                  <input
-                    type="text"
-                    placeholder={`${t('enter_code_here')}`}
-                    onChange={debounce(
-                      (e) => handleCoupon(e.target.value),
-                      400
-                    )}
-                    suppressHydrationWarning={suppressText}
-                    className={`border-0 border-b-2 border-b-gray-200 w-full focus:ring-transparent`}
-                  />
-                </div>
+            <div className="px-5">
+              <div className="flex items-center">
+                <CustomImage
+                  className="w-8 h-8"
+                  src={Promotion}
+                  alt={t('promotion')}
+                />
+                <p
+                  className="font-semibold ps-2"
+                  suppressHydrationWarning={suppressText}
+                >
+                  {t('promotion_code')}
+                </p>
               </div>
 
-              <div className="px-5 mt-5">
-                <div className="flex items-center">
-                  <CustomImage
-                    className="w-6 h-6"
-                    src={Notes}
-                    alt={`${t('note')}`}
-                  />
-                  <p
-                    className="font-semibold ps-2"
-                    suppressHydrationWarning={suppressText}
-                  >
-                    {t('extra_notes')}
-                  </p>
-                </div>
+              <div className="flex items-center justify-between px-2 pt-3">
                 <input
                   type="text"
-                  placeholder={`${t('enter_notes_here')}`}
+                  placeholder={`${t('enter_code_here')}`}
+                  onChange={debounce((e) => handleCoupon(e.target.value), 400)}
                   suppressHydrationWarning={suppressText}
-                  onChange={debounce((e) => handleChange(e.target.value), 400)}
                   className={`border-0 border-b-2 border-b-gray-200 w-full focus:ring-transparent`}
                 />
               </div>
-              {<PaymentSummary />}
             </div>
-          </Suspense>
+
+            <div className="px-5 mt-5">
+              <div className="flex items-center">
+                <CustomImage
+                  className="w-6 h-6"
+                  src={Notes}
+                  alt={`${t('note')}`}
+                />
+                <p
+                  className="font-semibold ps-2"
+                  suppressHydrationWarning={suppressText}
+                >
+                  {t('extra_notes')}
+                </p>
+              </div>
+              <input
+                type="text"
+                placeholder={`${t('enter_notes_here')}`}
+                suppressHydrationWarning={suppressText}
+                onChange={debounce((e) => handleChange(e.target.value), 400)}
+                className={`border-0 border-b-2 border-b-gray-200 w-full focus:ring-transparent`}
+              />
+            </div>
+            {<PaymentSummary />}
+          </div>
         )}
-      </Suspense>
-    </MainContentLayout>
+      </MainContentLayout>
+    </Suspense>
   );
 };
 

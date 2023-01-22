@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, Suspense } from 'react';
 import MainContentLayout from '@/layouts/MainContentLayout';
 import { NextPage } from 'next';
 import { Vendor } from '@/types/index';
@@ -15,11 +15,11 @@ import CashOnDelivery from '@/appImages/cash_on_delivery.jpg';
 import Visa from '@/appImages/visa.png';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
-import { suppressText, submitBtnClass } from '@/constants/*';
-import { 
-  setCurrentModule, 
+import { suppressText } from '@/constants/*';
+import {
+  setCurrentModule,
   resetShowFooterElement,
-  setShowFooterElement 
+  setShowFooterElement,
 } from '@/redux/slices/appSettingSlice';
 import { useAppDispatch } from '@/redux/hooks';
 import CustomImage from '@/components/CustomImage';
@@ -64,7 +64,7 @@ const VendorShow: NextPage<Props> = ({ element }) => {
     );
   };
   return (
-    <>
+    <Suspense>
       <MainHead
         title={element.name}
         description={element.desc}
@@ -153,10 +153,9 @@ const VendorShow: NextPage<Props> = ({ element }) => {
               )}
             </div>
           </div>
-          
         </div>
       </MainContentLayout>
-    </>
+    </Suspense>
   );
 };
 

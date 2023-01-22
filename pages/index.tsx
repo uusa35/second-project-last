@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, Suspense } from 'react';
 import { wrapper } from '@/redux/store';
 import { apiSlice } from '@/redux/api';
 import { NextPage } from 'next';
@@ -11,7 +11,7 @@ import { Vendor } from '@/types/index';
 import { categoryApi } from '@/redux/api/categoryApi';
 import { isEmpty, map } from 'lodash';
 import CategoryWidget from '@/widgets/category/CategoryWidget';
-import { appLinks, imgUrl, suppressText } from '@/constants/*';
+import { apiUrl, appLinks, baseUrl, imgUrl, suppressText } from '@/constants/*';
 import { useTranslation } from 'react-i18next';
 import { setLocale } from '@/redux/slices/localeSlice';
 import { setCurrentModule } from '@/redux/slices/appSettingSlice';
@@ -20,8 +20,8 @@ import HomeSelectMethod from '@/components/home/HomeSelectMethod';
 import HomeVendorMainInfo from '@/components/home/HomeVendorMainInfo';
 import { useRouter } from 'next/router';
 import CustomImage from '@/components/CustomImage';
-import Image from 'next/image';
-import { imageSizes } from '@/constants/*';
+import LoadingSpinner from '@/components/LoadingSpinner';
+
 type Props = {
   categories: Category[];
   element: Vendor;
@@ -33,20 +33,18 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
   const {
     branch: { id: branchId },
     area: { id: areaId },
-    vendor,
   } = useAppSelector((state) => state);
   useEffect(() => {
     dispatch(setCurrentModule(t('home')));
   }, []);
 
-  console.log(element);
-
   const handleFocus = () =>
     router.push(appLinks.productSearchIndex(branchId, ``, areaId));
+
   return (
-    <>
+    <Suspense fallback={<LoadingSpinner fullWidth={false} />}>
       {/* SEO Head DEV*/}
-      <MainHead title={element.name} mainImage={element.logo} />
+      <MainHead title={element.name} mainImage={`${baseUrl}${element.logo}`} />
       <MainContentLayout>
         <div className='absolute top-0 lg:hidden w-full h-52"'>
           <CustomImage
@@ -89,7 +87,7 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
           </div>
         </div>
       </MainContentLayout>
-    </>
+    </Suspense>
   );
 };
 

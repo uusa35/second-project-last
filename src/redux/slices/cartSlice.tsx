@@ -1,13 +1,31 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ProductCart, ClientCart } from '@/types/index';
-import { filter, sum, sumBy, multiply } from 'lodash';
+import { filter, sum, sumBy, multiply, isEmpty } from 'lodash';
 
 const initialState: ClientCart = {
   grossTotal: 0,
   subTotal: 0,
   total: 0,
   delivery_fees: `0`,
-  items: [],
+  items: [
+    {
+      ProductID: 0,
+      ProductName: ``,
+      ProductDesc: ``,
+      name_ar: ``,
+      name_en: ``,
+      totalQty: 0,
+      totalPrice: 0,
+      grossTotalPrice: 0,
+      Quantity: 0,
+      Price: 0,
+      RadioBtnsAddons: [],
+      CheckBoxes: [],
+      QuantityMeters: [],
+      enabled: false,
+      image: ``,
+    },
+  ],
   PromoCode: null,
   promoEnabled: false,
   notes: ``,
@@ -28,7 +46,7 @@ export const cartSlice = createSlice({
     ) => {
       const items = filter(
         state.items,
-        (item) => item.ProductID !== action.payload.ProductID
+        (item) => item.id !== action.payload.id && item.ProductID !== 0
       );
       const grossTotal = sumBy(items, (item) => item.grossTotalPrice);
       return {
@@ -41,17 +59,17 @@ export const cartSlice = createSlice({
     },
     removeFromCart: (
       state: typeof initialState,
-      action: PayloadAction<number>
+      action: PayloadAction<string>
     ) => {
-      const items = filter(
-        state.items,
-        (item) => item.ProductID !== action.payload
-      );
+      const items = filter(state.items, (item) => item.id !== action.payload);
       const grossTotal = sumBy(items, (item) => item.grossTotalPrice);
+      console.log('items', items);
       return {
         ...state,
         grossTotal,
-        items,
+        total: !isEmpty(items) ? state.total : 0,
+        subTotal: !isEmpty(items) ? state.subTotal : 0,
+        items: !isEmpty(items) ? items : initialState.items,
         promoEnabled: false,
         promoCode: { ...initialState.promoCode },
       };
@@ -67,7 +85,7 @@ export const cartSlice = createSlice({
     ) => {
       const filteredItems = filter(
         state.items,
-        (item) => item.ProductID !== action.payload.ProductID
+        (item) => item.id !== action.payload.id
       );
       const currentItem = {
         ...action.payload,
@@ -92,7 +110,7 @@ export const cartSlice = createSlice({
     ) => {
       const filteredItems = filter(
         state.items,
-        (item) => item.ProductID !== action.payload.ProductID
+        (item) => item.id !== action.payload.id
       );
       if (action.payload.totalQty > 1) {
         const currentItem = {

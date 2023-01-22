@@ -23,7 +23,7 @@ const initialState: ProductCart = {
   grossTotalPrice: 0,
   enabled: false,
   image: ``,
-  id: random(11111, 999999).toString(),
+  id: random(1111111, 999999999).toString(),
 };
 
 export const productCartSlice = createSlice({
@@ -52,6 +52,7 @@ export const productCartSlice = createSlice({
           action.payload,
           ...filter(state.QuantityMeters, (m) => m.uId !== action.payload.uId),
         ],
+        id: action.payload.uId,
       };
     },
     removeMeter: (
@@ -76,6 +77,7 @@ export const productCartSlice = createSlice({
           action.payload,
           ...filter(state.CheckBoxes, (c) => c.uId !== action.payload.uId),
         ],
+        id: action.payload.uId,
       };
     },
     removeFromCheckBox: (
@@ -94,6 +96,7 @@ export const productCartSlice = createSlice({
       return {
         ...state,
         RadioBtnsAddons: [action.payload],
+        id: action.payload.uId,
       };
     },
     setCartProductQty: (

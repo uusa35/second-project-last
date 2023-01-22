@@ -229,8 +229,8 @@ const CartAddress: NextPage = (): JSX.Element => {
   }, [prefrences]);
 
   return (
-    <MainContentLayout handleSubmit={handleSubmit}>
-      <Suspense>
+    <Suspense>
+      <MainContentLayout handleSubmit={handleSubmit}>
         {/* delivery method buttons */}
         <DeliveryBtns handleSelectMethod={handleSelectMethod} />
 
@@ -512,7 +512,7 @@ const CartAddress: NextPage = (): JSX.Element => {
                     type="radio"
                     name="deliver"
                     checked={prefrences.type === 'delivery_now'}
-                    className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 
+                    className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500
                             dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                     onClick={() => {
                       SetShow(false);
@@ -537,7 +537,7 @@ const CartAddress: NextPage = (): JSX.Element => {
                     type="radio"
                     name="deliver"
                     checked={prefrences.type === 'delivery_later'}
-                    className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 
+                    className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300
                             rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                     onClick={() => {
                       SetShow(true);
@@ -607,7 +607,7 @@ const CartAddress: NextPage = (): JSX.Element => {
                   type="radio"
                   name="pickup"
                   checked={prefrences.type === 'pickup_now'}
-                  className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 
+                  className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500
                         dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                   onClick={() => {
                     SetShow(false);
@@ -631,7 +631,7 @@ const CartAddress: NextPage = (): JSX.Element => {
                   type="radio"
                   name="pickup"
                   checked={prefrences.type === 'pickup_later'}
-                  className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 
+                  className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300
                         rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                   onClick={() => {
                     SetShow(true);
@@ -686,8 +686,8 @@ const CartAddress: NextPage = (): JSX.Element => {
             </div>
           )}
         </div>
-      </Suspense>
-    </MainContentLayout>
+      </MainContentLayout>
+    </Suspense>
   );
 };
 export default CartAddress;

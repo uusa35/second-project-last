@@ -1,17 +1,16 @@
 import '../styles/globals.css';
+import 'react-toastify/dist/ReactToastify.css';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import 'react-loading-skeleton/dist/skeleton.css';
+import '@/styles/TabOrderHistory.css';
+import 'src/i18n/config';
 import type { NextWebVitalsMetric } from 'next/app';
 import { Provider } from 'react-redux';
 import { wrapper } from '@/redux//store';
-import 'react-loading-skeleton/dist/skeleton.css';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
 import MainLayout from '@/components/layouts/MainLayout';
-import 'src/i18n/config';
-import 'react-toastify/dist/ReactToastify.css';
-// import '@/styles//galenderStyle.css';
-import '@/styles/TabOrderHistory.css';
 import { AppProps } from 'next/app';
-import { FC } from 'react';
+import { FC, Suspense } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import NextNProgress from 'nextjs-progressbar';
 
@@ -19,7 +18,7 @@ const App: FC<AppProps> = ({ Component, ...rest }) => {
   const { store, props } = wrapper.useWrappedStore(rest);
   const { pageProps } = props;
   return (
-    <Provider store={store}>
+    <Suspense>
       <NextNProgress
         color="#189EC9"
         startPosition={0.3}
@@ -28,13 +27,14 @@ const App: FC<AppProps> = ({ Component, ...rest }) => {
         showOnShallow={true}
         options={{ showSpinner: false }}
       />
-      {/*<DevTools />*/}
-      {/*<AnimatePresence mode={`wait`}>*/}
-      <MainLayout>
-        <Component {...pageProps} />
-      </MainLayout>
-      {/*</AnimatePresence>*/}
-    </Provider>
+      <Provider store={store}>
+        <AnimatePresence mode={`wait`}>
+          <MainLayout>
+            <Component {...pageProps} />
+          </MainLayout>
+        </AnimatePresence>
+      </Provider>
+    </Suspense>
   );
 };
 

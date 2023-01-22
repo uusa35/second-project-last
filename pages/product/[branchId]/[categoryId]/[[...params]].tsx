@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import MainContentLayout from '@/layouts/MainContentLayout';
 import { wrapper } from '@/redux/store';
 import {
@@ -11,7 +11,6 @@ import { apiSlice } from '@/redux/api';
 import MainHead from '@/components/MainHead';
 import { imageSizes, suppressText } from '@/constants/*';
 import { debounce, isEmpty, map, replace } from 'lodash';
-import Image from 'next/image';
 import NotFoundImage from '@/appImages/not_found.png';
 import HorProductWidget from '@/widgets/product/HorProductWidget';
 import { AppQueryResult, ProductPagination } from '@/types/queries';
@@ -22,8 +21,6 @@ import {
 } from '@/redux/slices/appSettingSlice';
 import { useTranslation } from 'react-i18next';
 import VerProductWidget from '@/components/widgets/product/VerProductWidget';
-import { inputFieldClass } from '@/constants/*';
-import SearchIcon from '@/appIcons/search.svg';
 import Menu from '@/appIcons/menu.svg';
 import List from '@/appIcons/list.svg';
 import { useRouter } from 'next/router';
@@ -74,7 +71,7 @@ const ProductIndex: NextPage<Props> = ({ elements }): JSX.Element => {
   console.log('productpreview', productPreview);
 
   return (
-    <>
+    <Suspense>
       <MainHead title={`productIndex`} description={`productIndex`} />
       <MainContentLayout>
         <h1 suppressHydrationWarning={suppressText}></h1>
@@ -136,7 +133,7 @@ const ProductIndex: NextPage<Props> = ({ elements }): JSX.Element => {
           </div>
         </div>
       </MainContentLayout>
-    </>
+    </Suspense>
   );
 };
 

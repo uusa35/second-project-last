@@ -56,7 +56,7 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
   const [triggerCreateTempId] = useLazyCreateTempIdQuery();
 
   useEffect(() => {
-    if (isSuccess) {
+    if (isSuccess && vendorElement.Data) {
       dispatch(setVendor(vendorElement.Data));
     }
     if (isNull(branchId)) {
@@ -132,8 +132,8 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
     >
       {children}
       {/* Main Image & Logo */}
-      {isSuccess && <MainAsideLayout element={vendor} />}
       <ToastAppContainer />
+      {isSuccess && <MainAsideLayout element={vendor} />}
     </div>
   );
 };

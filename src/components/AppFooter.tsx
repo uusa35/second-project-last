@@ -31,7 +31,6 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
     productCart,
     cart,
   } = useAppSelector((state) => state);
-  console.log('cart length', cart.items.length);
   const dispatch = useAppDispatch();
   const router = useRouter();
 

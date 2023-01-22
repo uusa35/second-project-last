@@ -11,10 +11,9 @@ import { useAppDispatch } from '@/redux/hooks';
 import { setBranch } from '@/redux/slices/branchSlice';
 import GoogleMapReact from 'google-map-react';
 import Phone from '@/appIcons/phone.svg';
-import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 import { suppressText, submitBtnClass } from '@/constants/*';
-import { useEffect } from 'react';
+import { useEffect, Suspense } from 'react';
 import { setCurrentModule } from '@/redux/slices/appSettingSlice';
 import CustomImage from '@/components/CustomImage';
 
@@ -31,7 +30,7 @@ const BranchIndex: NextPage<Props> = ({ elements }) => {
   }, []);
 
   return (
-    <>
+    <Suspense>
       <MainHead title={`branchIndex`} description={`branchIndex`} />
       <MainContentLayout>
         <div className={`px-4`}>
@@ -48,18 +47,17 @@ const BranchIndex: NextPage<Props> = ({ elements }) => {
               </p>
               <div className="w-full h-36 rounded-md">
                 <GoogleMapReact
-                bootstrapURLKeys={{
-                  key: 'AIzaSyChibV0_W_OlSRJg2GjL8TWVU8CzpRHRAE',
-                  language: 'en',
-                  region: 'US',
-                }}
-                defaultCenter={{
-                  lat: parseInt(b.lat),
-                  lng: parseInt(b.lang),
-                }}
-                defaultZoom={11}
-              >  
-              </GoogleMapReact>
+                  bootstrapURLKeys={{
+                    key: 'AIzaSyChibV0_W_OlSRJg2GjL8TWVU8CzpRHRAE',
+                    language: 'en',
+                    region: 'US',
+                  }}
+                  defaultCenter={{
+                    lat: parseInt(b.lat),
+                    lng: parseInt(b.lang),
+                  }}
+                  defaultZoom={11}
+                ></GoogleMapReact>
               </div>
               <div className="flex justify-between my-5 items-center">
                 <p
@@ -93,7 +91,7 @@ const BranchIndex: NextPage<Props> = ({ elements }) => {
           </div>
         </div>
       </MainContentLayout>
-    </>
+    </Suspense>
   );
 };
 
