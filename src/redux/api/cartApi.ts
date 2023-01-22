@@ -27,6 +27,7 @@ export const cartApi = apiSlice.injectEndpoints({
         },
         validateStatus: (response, result) => result.status,
       }),
+      invalidatesTags: ['Cart'],
     }),
     GetCartProducts: builder.query<
       AppQueryResult<ServerCart>,
@@ -40,6 +41,7 @@ export const cartApi = apiSlice.injectEndpoints({
         validateStatus: (response, result) =>
           response.status == 200 && result.status,
       }),
+      providesTags: ['Cart'],
     }),
     checkPromoCode: builder.query<
       AppQueryResult<ServerCart>,

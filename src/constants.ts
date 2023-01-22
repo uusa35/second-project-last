@@ -1,6 +1,7 @@
 import * as yup from 'yup';
 import { kebabCase, lowerCase, split } from 'lodash';
 import { Country } from '@/types/queries';
+import { ClientCart } from '@/types/index';
 // export const baseUrl = `https://mybusiness.letsform.src/`;
 export const baseUrl = `https://pages-dash.testbedbynd.com/`;
 //https://pages.testbedbynd.com/
@@ -44,9 +45,7 @@ export const appLinks = {
   customerInfo: { path: '/customer/info' },
   vendorShow: { path: '/vendor/show' },
   address: { path: `/cart/address` },
-  orderInvoice: (
-    orderId: string
-  ) => `/order/${orderId}/invoice`
+  orderInvoice: (orderId: string) => `/order/${orderId}/invoice`,
 };
 
 export const isClient = typeof window !== undefined;
@@ -157,3 +156,37 @@ export function classNames(...classes: any) {
 }
 
 export const imgUrl = (img: string) => `${baseUrl}${img}`;
+
+export const cartInitialState: ClientCart = {
+  grossTotal: 0,
+  subTotal: 0,
+  total: 0,
+  delivery_fees: `0`,
+  items: [
+    {
+      ProductID: 0,
+      ProductName: ``,
+      ProductDesc: ``,
+      name_ar: ``,
+      name_en: ``,
+      totalQty: 0,
+      totalPrice: 0,
+      grossTotalPrice: 0,
+      Quantity: 0,
+      Price: 0,
+      RadioBtnsAddons: [],
+      CheckBoxes: [],
+      QuantityMeters: [],
+      enabled: false,
+      image: ``,
+    },
+  ],
+  PromoCode: null,
+  promoEnabled: false,
+  notes: ``,
+  promoCode: {
+    total_cart_before_tax: 0,
+    total_cart_after_tax: 0,
+    free_delivery: `false`,
+  },
+};

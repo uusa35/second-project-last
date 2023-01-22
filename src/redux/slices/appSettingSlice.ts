@@ -4,7 +4,6 @@ import { searchParamsSlice } from '@/redux/slices/searchParamsSlice';
 import { cartSlice } from '@/redux/slices/cartSlice';
 
 const initialState: appSetting = {
-  userAgent: null, /// ==== tempId for the cart
   method: `delivery`,
   productPreview: `hor`,
   showHeader: true,
@@ -156,15 +155,6 @@ export const appSettingSlice = createSlice({
         },
       };
     },
-    setUserAgent: (
-      state: typeof initialState,
-      action: PayloadAction<string>
-    ) => {
-      return {
-        ...state,
-        userAgent: action.payload,
-      };
-    },
     setShowFooterElement: (
       state: typeof initialState,
       action: PayloadAction<string>
@@ -242,7 +232,6 @@ export const {
   showChangePasswordModal,
   hideChangePasswordModal,
   resetAppSetting,
-  setUserAgent,
   setCartMethod,
   setShowFooterElement,
   setProductPreview,

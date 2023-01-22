@@ -31,7 +31,7 @@ const CartReview: NextPage = () => {
   const {
     cart,
     branch,
-    appSetting: { userAgent },
+    customer: { userAgent },
   } = useAppSelector((state) => state);
   const { data, isSuccess } = useGetCartProductsQuery({ UserAgent: userAgent });
 

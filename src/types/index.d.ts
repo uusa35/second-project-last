@@ -82,7 +82,6 @@ export type position = {
 };
 
 export type appSetting = {
-  userAgent: string | null;
   method: `delivery` | `pickup`;
   productPreview: `hor` | `ver`;
   showFooterElement: string;
@@ -103,10 +102,10 @@ export type appSetting = {
 };
 
 export interface ServerCart {
-  UserAgent: string | null;
+  UserAgent?: string | null;
   Cart: ProductCart[];
-  subTotal?: number;
-  total?: number;
+  subTotal: number;
+  total: number;
   delivery_fees: string;
   isEmpty?: boolean;
   promoCode?: any;
@@ -296,11 +295,13 @@ export interface UserAddressFields {
 
 export interface CustomerInfo {
   id: number;
+  userAgent: null | string;
   name: string;
   email: string;
   phone?: string;
   address?: Address;
   prefrences?: Prefrences;
+  notes: string;
 }
 
 export interface Prefrences {
