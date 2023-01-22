@@ -21,7 +21,6 @@ import {
   useAddToCartMutation,
   useGetCartProductsQuery,
   useLazyCheckPromoCodeQuery,
-  useLazyGetCartProductsQuery,
 } from '@/redux/api/cartApi';
 import PaymentSummary from '@/widgets/cart/review/PaymentSummary';
 import TextTrans from '@/components/TextTrans';
@@ -72,7 +71,6 @@ const CartIndex: NextPage = (): JSX.Element => {
       }).then((r) => {
         if (r.data && r.data.status && r.data.promoCode) {
           // promoCode Success
-          console.log('r promoeCode', r.data.promoCode);
           dispatch(
             showToastMessage({
               content: lowerCase(kebabCase(r.data.msg)),
@@ -91,7 +89,6 @@ const CartIndex: NextPage = (): JSX.Element => {
     }
   };
 
-  console.log('Cart Now ==+>', cartItems?.data?.Cart);
   const handleRemove = async (element: ProductCart) => {
     const currentItems = filter(
       cartItems.data.Cart,
@@ -122,7 +119,6 @@ const CartIndex: NextPage = (): JSX.Element => {
   };
 
   const handleIncrease = (element: ProductCart) => {
-    console.log('qt', element.Quantity + 1);
     triggerAddToCart({
       branchId,
       body: {
@@ -252,10 +248,7 @@ const CartIndex: NextPage = (): JSX.Element => {
                             )}`}
                           >
                             <p className="font-semibold">
-                              <TextTrans
-                                ar={item.ProductName}
-                                en={item.ProductName}
-                              />
+                              <TextTrans ar={item.name_ar} en={item.name_en} />
                             </p>
                           </Link>
                           <div className="flex">
@@ -271,8 +264,8 @@ const CartIndex: NextPage = (): JSX.Element => {
                                           <TextTrans
                                             key={i}
                                             className={`ltr:border-r-2 ltr:last:border-r-0 ltr:first:pr-1 rtl:border-l-2 rtl:last:border-l-0 rtl:first:pl-1 px-1 text-xs`}
-                                            ar={addon.name}
-                                            en={addon.name}
+                                            ar={addon.name_ar}
+                                            en={addon.name_en}
                                           />
                                         ))}
                                       </Fragment>

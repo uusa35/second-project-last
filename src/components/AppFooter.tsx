@@ -74,7 +74,6 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
                 : [productCart],
           },
         }).then((r) => {
-          console.log('the rrr=>>>', r);
           if (
             r.data &&
             r.data.status &&
