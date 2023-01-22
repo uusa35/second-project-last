@@ -43,8 +43,9 @@ const CartReview: NextPage = () => {
     area,
     branch: { id: branchId },
     area: { id: areaId },
-    customer: { userAgent }
+    customer: { userAgent },
   } = useAppSelector((state) => state);
+  console.log({customer})
   const { data, isSuccess } = useGetCartProductsQuery({ UserAgent: userAgent });
   const handleRemove = async (id: any) => {
     await dispatch(removeFromCart(id));
@@ -56,9 +57,9 @@ const CartReview: NextPage = () => {
     );
   };
   const paymentMethods = [
-    {src: Visa},
-    {src: Knet},
-    {src: Cash}
+    {id: "visa", src: Visa},
+    {id: "knet", src: Knet},
+    {id: "cash", src: Cash}
 
   ]
   return (
@@ -80,7 +81,7 @@ const CartReview: NextPage = () => {
               >
                 {t('expected_delivery_time')}
               </h4>
-              <p>{}</p>
+              <p>{customer.prefrences.time}</p>
             </div>
           </div>
           <div className="bg-gray-200 w-full mt-5 p-0 h-2 px-4"></div>
@@ -272,7 +273,7 @@ const CartReview: NextPage = () => {
               </div>
             </div>
             <div className='flex justify-between'>
-              {map(paymentMethods, (method) => <button key={method.src}
+              {map(paymentMethods, (method) => <button key={method.id}
               className="bg-gray-200 flex justify-center items-center w-24 h-24 rounded-md">
                 <div>
                   <CustomImage
