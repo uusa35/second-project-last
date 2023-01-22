@@ -184,7 +184,7 @@ const CartIndex: NextPage = (): JSX.Element => {
             </p>
             {isSuccess &&
               cartItems.data?.subTotal > 0 &&
-              map(cartItems.data?.Cart, (item, i) => (
+              map(cartItems.data?.Cart, (item: ProductCart, i) => (
                 <div key={i}>
                   <div className="px-4">
                     <div className="mb-10 ">
@@ -200,7 +200,7 @@ const CartIndex: NextPage = (): JSX.Element => {
                           className="ltr:pr-3 rtl:pl-3 w-1/5"
                         >
                           <CustomImage
-                            className="w-full rounded-lg border-[1px] border-gray-200"
+                            className="w-full rounded-lg border-[1px] border-gray-200 shadow-md"
                             alt={`${t('item')}`}
                             src={item.image}
                           />
@@ -239,7 +239,10 @@ const CartIndex: NextPage = (): JSX.Element => {
                             )}`}
                           >
                             <p className="font-semibold">
-                              <TextTrans ar={item.name_ar} en={item.name_en} />
+                              <TextTrans
+                                ar={item.ProductName}
+                                en={item.ProductName}
+                              />
                             </p>
                           </Link>
                           <div className="flex">
@@ -254,7 +257,7 @@ const CartIndex: NextPage = (): JSX.Element => {
                                         {map(q.addons, (addon, i) => (
                                           <TextTrans
                                             key={i}
-                                            className={`border-r-2 last:border-r-0 first:pr-1 px-1 text-xxs`}
+                                            className={`ltr:border-r-2 ltr:last:border-r-0 ltr:first:pr-1 rtl:border-l-2 rtl:last:border-l-0 rtl:first:pl-1 px-1 text-xs`}
                                             ar={addon.name}
                                             en={addon.name}
                                           />

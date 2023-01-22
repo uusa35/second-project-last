@@ -130,6 +130,7 @@ export interface ProductCart {
   ProductID: number;
   ProductName: string;
   name_ar: string;
+  name_ar: string;
   name_en: string;
   ProductDesc: string;
   Quantity: number;
