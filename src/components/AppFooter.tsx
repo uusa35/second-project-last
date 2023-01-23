@@ -167,7 +167,7 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
             <Link
               className={`${footerBtnClass}`}
               suppressHydrationWarning={suppressText}
-              href={`#`}
+              href={`/order/success`}
             >
               {t('checkout')}
             </Link>
