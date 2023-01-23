@@ -24,6 +24,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import CustomImage from '@/components/CustomImage';
 
+
 const schema = yup
   .object({
     id: yup.number(),
@@ -40,6 +41,8 @@ const CustomerInformation: NextPage = (): JSX.Element => {
   const {
     register,
     handleSubmit,
+    setValue,
+    control,
     formState: { errors },
   } = useForm<any>({
     resolver: yupResolver(schema),
@@ -133,86 +136,80 @@ const CustomerInformation: NextPage = (): JSX.Element => {
                 <BadgeOutlined className="text-primary_BG" />
                 <input
                   {...register('name')}
-                  // aria-invalid={errors.name ? 'true' : 'false'}
-                  // onChange={(e) =>
-                  //   setUserData((prev) => ({ ...prev, name: e.target.value }))
-                  // }
-                  // defaultValue={userData.name}
-                  className={`border-0 focus:ring-transparent outline-none`}
-                  type="string"
-                  required
+                  className={`border-0 w-full focus:ring-transparent outline-0`}
                   placeholder={`${t('enter_your_name')}`}
+                  onChange={(e)=>setValue('name', e.target.value)}
+                  aria-invalid={errors.name ? 'true' : 'false'}
                 />
-                <div>
-                  {errors?.name && (
+              </div>
+              <div>
+                  {errors?.name?.message && (
                     <p
-                      className={`text-sm text-red-800`}
+                      className={`text-base text-red-800 font-semibold py-2`}
                       suppressHydrationWarning={suppressText}
                     >
-                      {t(`${errors?.name?.message}`)}
+                      {t('name_is_required')}
                     </p>
                   )}
                 </div>
-              </div>
-
               <div className="flex items-center gap-x-2 px-2 border-b-4 border-b-gray-200 w-full focus:ring-transparent py-4">
                 <EmailOutlined className="text-primary_BG" />
                 <input
-                  // onChange={(e) =>
-                  //   setUserData((prev) => ({ ...prev, email: e.target.value }))
-                  // }
-                  // defaultValue={userData.email}
                   {...register('email')}
                   aria-invalid={errors.email ? 'true' : 'false'}
-                  className={`border-0 focus:ring-transparent px-0`}
-                  type="email"
-                  required
-                  // pattern='/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/'
+                  className={`border-0 w-full focus:ring-transparent outline-0`}
+                  onChange={(e)=>setValue('email', e.target.value)}
                   placeholder={`${t('enter_your_email')}`}
                 />
-                <div>
+              </div>
+              <div>
                   {errors?.email?.message && (
                     <p
                       className={`text-sm text-red-800`}
                       suppressHydrationWarning={suppressText}
                     >
-                      {t(`${errors?.email?.message}`)}
+                      {t('email_is_required')}
                     </p>
                   )}
-                </div>
               </div>
-
               <div className="flex items-center gap-x-2 px-2 border-b-4 border-b-gray-200 w-full focus:ring-transparent py-4">
                 <Phone className="text-primary_BG" />
-                {/* <Controller
-                name="phone"
-                // control={control}
-                rules={{ required: true }}
-                render={({ field: { onChange, value } }) => (
-                  <PhoneInput
-                    international
-                    value={value}
-                    defaultCountry="KW"
-                    className="text-lg outline-none w-4/6 focus:border-none p-0 focus:ring-0"
-                    placeholder={`${t('enter_your_phone')}`}
-                    onChange={onChange}
-                    id="phone-input"
-                  />
-                )}
-              /> */}
-                <PhoneInput
-                  international
-                  defaultCountry="KW"
-                  className="text-lg outline-none w-4/6 focus:border-none p-0 focus:ring-0"
-                  placeholder={`${t('enter_your_phone')}`}
-                  // value={userData.phone}
-                  // onChange={(value) =>
-                  //   setUserData((prev) => ({ ...prev, phone: value?.toString() }))
-                  // }
-                  {...register('phone')}
-                  aria-invalid={errors.phone ? 'true' : 'false'}
+                <Controller
+                  render={(props) => (
+                    <PhoneInput
+                      international
+                      defaultCountry="KW"
+                      placeholder={`${t('enter_your_phone')}`}
+                        inputRef={register}
+                        inputProps={{
+                          name: "phone",
+                          required: true,
+                          autoFocus: true
+                        }}
+                        id="phone"
+                        name="phone"
+                        autoComplete="phone"
+                        onChange={(value)=>setValue('phone', value)}
+                        error={!!errors.phone}
+                        helperText= {t(`${errors?.phone?.message}`)}
+                    />
+                  )}
+                  defaultValue=""
+                  name="phone"
+                  control={control}
+                  rules={{ required: true }}
                 />
               </div>
+              <div>
+                {errors?.phone?.message && (
+                  <p
+                    className={`text-sm text-red-800`}
+                    suppressHydrationWarning={suppressText}
+                  >
+                    {t('phone_is_required')}
+                  </p>
+                )}
+                </div>
               <GreyLine />
               <input type="submit" />
             </div>
