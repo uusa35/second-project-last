@@ -46,15 +46,7 @@ export const customerSlice = createSlice({
         address: state.address,
       };
     },
-    setCustomerAddress: (
-      state: typeof initialState,
-      action: PayloadAction<CustomerInfo['address']>
-    ) => {
-      return {
-        ...state,
-        address: action.payload,
-      };
-    },
+   
     setUserAgent: (
       state: typeof initialState,
       action: PayloadAction<string>
@@ -68,6 +60,15 @@ export const customerSlice = createSlice({
       return {
         ...state,
         notes: action.payload,
+      };
+    },
+    setCustomerAddress: (
+      state: typeof initialState,
+      action: PayloadAction<CustomerInfo['address']>
+    ) => {
+      return {
+        ...state,
+        address: action.payload,
       };
     },
     resetCustomerAddress: (

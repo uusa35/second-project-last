@@ -37,11 +37,12 @@ type Props = {
 const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
   const { t } = useTranslation();
   const {
-    appSetting: { showFooterElement },
+    appSetting: { showFooterElement, method },
     customer: { userAgent },
     locale: { isRTL },
     productCart,
     branch: { id: branchId },
+    area,
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -66,7 +67,9 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
     } else {
       if (branchId && !isNull(branchId) && !isEmpty(productCart) && userAgent) {
         triggerAddToCart({
-          branchId,
+          process_type: method,
+          area_branch:
+            method === 'delivery' ? area.id : method === 'pickup' && branchId,
           body: {
             UserAgent: userAgent,
             Cart:
