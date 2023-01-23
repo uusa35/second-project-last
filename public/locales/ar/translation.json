@@ -464,5 +464,6 @@
   "shop_is_busy_at_this_time":"المتجر مشغول في هذا الموعد",
   "You_’re_about_to_change_your_location":"انت علي وشك ان تغير موقعك",
   "changing_your_location_might_result_in_removing_the_items_from_your_cart":"تغييو موقعك قد يؤدي الي ازاله بعض المنتجات من عربة التسوق الخاصة بك",
-  "select_location":"حدد موقع"
+  "select_location":"حدد موقع",
+  "say_something_about_us": "قل شيئًا عنا"
 }

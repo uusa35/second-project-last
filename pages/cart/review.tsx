@@ -1,4 +1,4 @@
-import { Suspense, useEffect } from 'react';
+import { Suspense, useEffect, Fragment } from 'react';
 import { NextPage } from 'next';
 import MainContentLayout from '@/layouts/MainContentLayout';
 import { useTranslation } from 'react-i18next';
@@ -23,11 +23,12 @@ import {
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 import TextTrans from '@/components/TextTrans';
-import { map } from 'lodash';
+import { isEmpty, map } from 'lodash';
 import Link from 'next/link';
-import { QuantityMeters } from '@/types/index';
+import { ProductCart, QuantityMeters, ServerCart } from '@/types/index';
 import PaymentSummary from '@/components/widgets/cart/review/PaymentSummary';
 import { removeFromCart } from '@/redux/slices/cartSlice';
+import { AppQueryResult } from '@/types/queries';
 
 const CartReview: NextPage = () => {
   const { t } = useTranslation();
@@ -46,7 +47,19 @@ const CartReview: NextPage = () => {
     customer: { userAgent },
   } = useAppSelector((state) => state);
   console.log({customer})
-  const { data, isSuccess } = useGetCartProductsQuery({ UserAgent: userAgent });
+  const {
+    data: cartItems,
+    isSuccess,
+    isLoading,
+    refetch: refetcCart,
+  } = useGetCartProductsQuery<{
+    data: AppQueryResult<ServerCart>;
+    isSuccess: boolean;
+    isLoading: boolean;
+    refetch: () => void;
+  }>({
+    UserAgent: userAgent,
+  });
   const handleRemove = async (id: any) => {
     await dispatch(removeFromCart(id));
     await dispatch(
@@ -62,6 +75,7 @@ const CartReview: NextPage = () => {
     {id: "cash", src: Cash}
 
   ]
+  console.log({cartItems})
   return (
     <Suspense>
       <MainContentLayout>
@@ -81,7 +95,10 @@ const CartReview: NextPage = () => {
               >
                 {t('expected_delivery_time')}
               </h4>
-              <p>{customer.prefrences.time}</p>
+              <div className='flex'>
+                <p className='pe-5'>{customer.prefrences.date && new Date(customer.prefrences.date).toLocaleDateString()}</p>
+                <p>{customer.prefrences.time && new Date(customer.prefrences.time).toLocaleTimeString()}</p>
+              </div>
             </div>
           </div>
           <div className="bg-gray-200 w-full mt-5 p-0 h-2 px-4"></div>
@@ -188,7 +205,10 @@ const CartReview: NextPage = () => {
               </div>
             </div>
           </div>
-          {map(cart.items, (item) => <div key={item.ProductID} className=" pt-5 px-4">
+          {isSuccess &&
+            cartItems.data?.subTotal > 0 
+            && map(cartItems.data?.Cart, (item: ProductCart, i) => (
+          <div key={item.ProductID} className=" pt-5 px-4">
             <div className="mb-10">
               <div className="flex">
                 <div className="ltr:pr-3 rtl:pl-3 w-1/5">
@@ -212,28 +232,23 @@ const CartReview: NextPage = () => {
                             )}`}
                           >
                             <p className="font-semibold">
-                              <TextTrans ar={item.name_ar} en={item.name_en} />
+                              {item.ProductName}
                             </p>
                           </Link>
                           <div className="flex">
-                            {map(
-                              item.QuantityMeters,
-                              (a: QuantityMeters, i) => (
-                                <div className="w-fit pb-2" key={i}>
-                                  <p
-                                    className={`text-xs px-2 pe-3 text-gray-400 w-auto ${
-                                      item.QuantityMeters.length > 1 &&
-                                      'border-e-2 border-gray-400'
-                                    }`}
-                                  >
-                                    <TextTrans
-                                      ar={a.addons[0].name_ar}
-                                      en={a.addons[0].name_en}
-                                    />
-                                  </p>
-                                </div>
-                              )
-                            )}
+                          {!isEmpty(item.QuantityMeters) &&
+                                    map(item.QuantityMeters, (q, i) => (
+                                      <Fragment key={i}>
+                                        {map(q.addons, (addon, i) => (
+                                          <TextTrans
+                                            key={i}
+                                            className={`ltr:border-r-2 ltr:last:border-r-0 ltr:first:pr-1 rtl:border-l-2 rtl:last:border-l-0 rtl:first:pl-1 px-1 text-xs`}
+                                            ar={addon.name}
+                                            en={addon.name}
+                                          />
+                                        ))}
+                                      </Fragment>
+                                    ))}
                           </div>
                     </div>
                     <button
@@ -256,7 +271,7 @@ const CartReview: NextPage = () => {
                 </div>
               </div>
             </div>
-          </div>)}
+          </div>))}
           <div className="bg-gray-200 w-full mt-5 p-0 h-2"></div>
           <div className="px-4">
             <div className="flex items-center py-3">
@@ -304,12 +319,14 @@ const CartReview: NextPage = () => {
                   </h4>
                 </div>
               </div>
-            {<PaymentSummary
-                total={parseFloat(cart.total)}
-                subTotal={parseFloat(cart.subTotal)}
-                delivery={cart.delivery_fees}
-                isLoading={false}
-              />}
+              {isSuccess && (
+              <PaymentSummary
+                total={parseFloat(cartItems.data.total)}
+                subTotal={parseFloat(cartItems.data.subTotal)}
+                delivery={cartItems.data.delivery_fees}
+                isLoading={isLoading}
+              />
+            )}
           </div>
         </div>
       </MainContentLayout>

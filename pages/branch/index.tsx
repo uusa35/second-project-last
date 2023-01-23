@@ -29,10 +29,7 @@ const BranchIndex: NextPage<Props> = ({ elements }) => {
   }, []);
 
   return (
-    <Suspense>
-      <MainHead title={`branchIndex`} description={`branchIndex`} />
-      <MainContentLayout>
-        <div className={`px-4`}>
+    <div className={`px-4`}>
           <h4 className="text-center text-primary_BG font-semibold pt-2">
             {t('our_branches')}
           </h4>
@@ -89,8 +86,6 @@ const BranchIndex: NextPage<Props> = ({ elements }) => {
             </button>
           </div>
         </div>
-      </MainContentLayout>
-    </Suspense>
   );
 };
 
