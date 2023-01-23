@@ -81,7 +81,10 @@ const CartReview: NextPage = () => {
               >
                 {t('expected_delivery_time')}
               </h4>
-              <p>{customer.prefrences.time}</p>
+              <div className='flex'>
+                <p className='pe-5'>{customer.prefrences.date && new Date(customer.prefrences.date).toLocaleDateString()}</p>
+                <p>{customer.prefrences.time && new Date(customer.prefrences.time).toLocaleTimeString()}</p>
+              </div>
             </div>
           </div>
           <div className="bg-gray-200 w-full mt-5 p-0 h-2 px-4"></div>
