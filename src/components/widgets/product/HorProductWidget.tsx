@@ -26,10 +26,10 @@ const HorProductWidget: FC<Props> = ({ element }): JSX.Element => {
   return (
     <Link
       href={`${appLinks.productShow(
-        element.id.toString(),
-        branchId,
+        element.id.toString(),      
         element.id,
         element.name,
+        branchId,
         areaId
       )}`}
       className={`h-80 lg:h-80 shadow-7xl rounded-lg  mb-5 block border-gray-100 border-2`}

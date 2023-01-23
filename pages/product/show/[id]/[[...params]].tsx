@@ -517,7 +517,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ query, locale }) => {
       const { id, branchId, areaId }: any = query;
-      if (!id || !branchId) {
+      if (!id) {
         return {
           notFound: true,
         };
@@ -532,14 +532,14 @@ export const getServerSideProps = wrapper.getServerSideProps(
         productApi.endpoints.getProduct.initiate({
           id,
           lang: locale,
-          branchId: branchId,
-          areaId: areaId ?? ``,
+          ...(branchId ? {branch_id: branchId}: {}),
+          ...(areaId ? {area_id: areaId}: {}),
         })
       );
       await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
       if (isError || !element.status || !element.Data) {
         return {
-          notFound: true,
+          notFound: true,        
         };
       }
       return {

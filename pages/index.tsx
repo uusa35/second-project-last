@@ -39,7 +39,7 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
   }, []);
 
   const handleFocus = () =>
-    router.push(appLinks.productSearchIndex(branchId, ``, areaId));
+    router.push(appLinks.productSearchIndex('null', ``, 'null'));
 
   return (
     <Suspense fallback={<LoadingSpinner fullWidth={false} />}>

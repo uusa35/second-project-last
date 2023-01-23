@@ -5,6 +5,7 @@ import MainContentLayout from '@/layouts/MainContentLayout';
 import DeliveryBtns from '@/components/widgets/cart/DeliveryBtns';
 import { appSetting, Prefrences } from '@/types/index';
 import {
+  resetShowFooterElement,
   setCartMethod,
   setCurrentModule,
   setShowFooterElement,
@@ -222,6 +223,9 @@ const CartAddress: NextPage = (): JSX.Element => {
   useEffect(() => {
     dispatch(setCurrentModule(t('cart_address')));
     dispatch(setShowFooterElement('cart_address'));
+    return ()=>{
+      dispatch(resetShowFooterElement())
+    }
   }, []);
 
   useEffect(() => {

@@ -88,8 +88,8 @@ const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
                   className={`p-2 rounded-md bg-stone-100`}
                   key={i}
                   href={appLinks.productSearchIndex(
-                    branchId,
                     searchKey,
+                    branchId,                   
                     areaId
                   )}
                 >
@@ -98,7 +98,7 @@ const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
               ))}
             <Link
               className={`p-2 rounded-md bg-red-700 text-white`}
-              href={appLinks.productSearchIndex(branchId)}
+              href={appLinks.productSearchIndex(branchId,areaId)}
             >
               {t(`clear`)}
             </Link>
@@ -130,16 +130,11 @@ export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ query, locale }) => {
       const { key, branchId, area_id }: any = query;
-      if (!branchId) {
-        return {
-          notFound: true,
-        };
-      }
       const { data: elements, isError } = await store.dispatch(
         productApi.endpoints.getSearchProducts.initiate({
           key: key ?? ``,
-          branch_id: branchId,
-          areaId: area_id ?? ``,
+          ...(branchId ? { branch_id: branchId } : {}),
+          ...(area_id ? { areaId: area_id } : {}),
           lang: locale,
         })
       );

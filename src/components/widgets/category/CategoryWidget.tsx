@@ -13,13 +13,15 @@ type Props = {
   element: Category;
 };
 const CategoryWidget: FC<Props> = ({ element }) => {
-  const { branch } = useAppSelector((state) => state);
+  const { branch , area} = useAppSelector((state) => state);
+  const { t } = useTranslation();
+
   return (
     <Link
       href={appLinks.productIndex(
-        branch.id,
         element.id.toString(),
-        kebabCase(lowerCase(element.name))
+        kebabCase(lowerCase(element.name)),
+        branch.id,              
       )}
       className={`h-60 lg:h-72 shadow-lg rounded-lg `}
       suppressHydrationWarning={suppressText}
