@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { FC, Suspense, useEffect, useMemo, useState } from 'react';
+import { FC, Suspense } from 'react';
 import {
   appLinks,
   footerBtnClass,
@@ -10,11 +10,6 @@ import {
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import PoweredByQ from '@/components/PoweredByQ';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
-import {
-  removeFromCart,
-  setAddToCart,
-  setCartTotalAndSubTotal,
-} from '@/redux/slices/cartSlice';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import FeedbackIcon from '@/appIcons/feedback.svg';
@@ -27,8 +22,7 @@ import {
   useGetCartProductsQuery,
   useLazyGetCartProductsQuery,
 } from '@/redux/api/cartApi';
-import { userAgent } from 'next/server';
-import { filter, isEmpty, isNull, kebabCase, lowerCase } from 'lodash';
+import { filter, isEmpty, isNull } from 'lodash';
 
 type Props = {
   handleSubmit?: () => void;
@@ -46,16 +40,16 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const [triggerAddToCart, { data: cartResult }] = useAddToCartMutation();
+  const [triggerAddToCart] = useAddToCartMutation();
   const { data: cartFromServer, isSuccess: serverCartSuccess } =
     useGetCartProductsQuery({
       UserAgent: userAgent,
     });
-  const [triggerGetCartProducts, { data: cartItems, isSuccess }] =
-    useLazyGetCartProductsQuery();
+  const [triggerGetCartProducts] = useLazyGetCartProductsQuery();
+  const { data: cartItems, isSuccess } = useGetCartProductsQuery({
+    UserAgent: userAgent,
+  });
 
-  console.log('cartFromServer', cartFromServer?.data?.Cart);
-  console.log('productcart', productCart);
   const handleAddToCart = async () => {
     if (!productCart.enabled) {
       dispatch(
@@ -76,11 +70,13 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
               serverCartSuccess &&
               cartFromServer.data &&
               cartFromServer.data.Cart
-                ? cartFromServer.data.Cart.concat(productCart)
+                ? filter(
+                    cartFromServer.data.Cart,
+                    (i) => i.id !== productCart.id
+                  ).concat(productCart)
                 : [productCart],
           },
         }).then((r) => {
-          console.log('the rrr=>>>', r);
           if (
             r.data &&
             r.data.status &&

@@ -12,6 +12,8 @@ import {
 } from '@/redux/api/orderApi';
 import { debounce, isEmpty, lowerCase, snakeCase } from 'lodash';
 import { useRouter } from 'next/router';
+import Loading from 'react-loading';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 const TrackOrder: NextPage = (): JSX.Element => {
   const { t } = useTranslation();
@@ -20,30 +22,38 @@ const TrackOrder: NextPage = (): JSX.Element => {
   const [checkOrderStatus, { data: orderSuccess, isSuccess: isSuccessOrder }] =
     useLazyCheckOrderStatusQuery();
   const [orderCode, setOrderCode] = useState<string | null>(null);
+  const [renderedorderCode, setRenderedOrderCode] = useState<string | null>(null);
+
   const router = useRouter();
+  const { order_code } = router.query;
   useEffect(() => {
     dispatch(setCurrentModule(t('track_order')));
-    // setOrderCode(`${router.query.order_code}`);
   }, []);
 
-  const handleChange = useCallback(
-    (order_code: string) => {
-      setOrderCode(order_code);
-      if (orderCode && orderCode.length > 2) {
-        trigger({ order_code: `${orderCode}` });
-      }
-    },
-    [orderCode]
-  );
-
-  useEffect(() => {
-    if (router.query && router.query.order_code) {
-      setOrderCode(router?.query?.order_code);
+  // const handleChange = useCallback(
+  //   (order_code: string) => {
+  //     setOrderCode(order_code);
+  //     if (orderCode && orderCode.length > 2) {
+  //       trigger({ order_code: `${orderCode}` });
+  //     }
+  //   },
+  //   [orderCode]
+  // );
+  const handleChange = (order_code: string) => {
+    setOrderCode(order_code);
+    if (orderCode && orderCode.length > 2) {
+      trigger({ order_code: `${orderCode}` });
     }
-  }, [orderCode]);
+  }
+  
+  useEffect(() => {
+    if(!router.isReady) return;
+    setRenderedOrderCode(`${order_code}`);
+    handleChange(`${router.query.order_code}`);
+    }, [router.isReady, router.query.order_code, renderedorderCode]);
 
   return (
-    <Suspense>
+    <Suspense fallback={<LoadingSpinner fullWidth={false} />}>
       <MainContentLayout>
         <h4
           className="text-center text-primary_BG font-semibold pt-2"

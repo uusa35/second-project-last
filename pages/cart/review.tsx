@@ -101,13 +101,13 @@ const CartReview: NextPage = () => {
                 href={{
                   pathname: appLinks.address.path
                 }}
-                className="text-primary_BG text-base font-semibold"
+                className="text-primary_BG text-base font-semibold pb-4"
                 suppressHydrationWarning={suppressText}
               >
                 {t('change')}
               </Link>
             </div>
-            <div className="w-full h-36 rounded-md my-4">
+            {customer.address.longitude && customer.address.latitude && <div className="w-full h-36 rounded-md">
               <GoogleMapReact
                 bootstrapURLKeys={{
                   key: 'AIzaSyChibV0_W_OlSRJg2GjL8TWVU8CzpRHRAE',
@@ -115,13 +115,14 @@ const CartReview: NextPage = () => {
                   region: 'US',
                 }}
                 defaultCenter={{
-                  lat: parseInt(branch.lat),
-                  lng: parseInt(branch.lang),
+                  lat: parseInt(customer.address.latitude),
+                  lng: parseInt(customer.address.longitude),
                 }}
                 defaultZoom={11}
               ></GoogleMapReact>
-            </div>
-            <div className="flex justify-between">
+            </div>}
+            
+            <div className="flex justify-between pt-4">
               <div className="flex items-center">
                 <CustomImage
                   src={Home.src}
@@ -130,7 +131,10 @@ const CartReview: NextPage = () => {
                   height={imageSizes.xs}
                   className={`w-8 h-8`}
                 />
-                <p className="text-md ps-5">location</p>
+                {customer.address.address && map(customer.address.address, (address, idx) => <div key={idx}
+              className="flex">
+                <p className="text-md ps-5">{address}</p>
+              </div>)}
               </div>
               <Link href={{
                 pathname: "/cart/select"
