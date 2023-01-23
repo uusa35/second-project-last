@@ -40,6 +40,7 @@ const CustomerInformation: NextPage = (): JSX.Element => {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<any>({
     resolver: yupResolver(schema),
@@ -85,9 +86,7 @@ const CustomerInformation: NextPage = (): JSX.Element => {
     //   );
     // } else {
 
-      saveCustomerInfo({
-        body
-      })
+      saveCustomerInfo({body})
         .then((r: any) => {
           console.log({data: r})
           if (r.data.Data && r.data.status) {
@@ -111,7 +110,6 @@ const CustomerInformation: NextPage = (): JSX.Element => {
     dispatch(setCurrentModule(t('customer_info')));
     dispatch(setShowFooterElement('customerInfo'));
   }, []);
-  console.log({errors})
   return (
     <Suspense>
       <MainContentLayout>
@@ -132,13 +130,11 @@ const CustomerInformation: NextPage = (): JSX.Element => {
               <input
               {...register('name')}
               aria-invalid={errors.name ? 'true' : 'false'}
-                // onChange={(e) =>
-                //   setUserData((prev) => ({ ...prev, name: e.target.value }))
-                // }
+                onChange={(e) =>
+                  setValue('name', e.target.value)
+                }
                 // defaultValue={userData.name}
                 className={`border-0 focus:ring-transparent outline-none`}
-                type="string"
-                required
                 placeholder={`${t('enter_your_name')}`}
               />
               <div>
@@ -162,11 +158,11 @@ const CustomerInformation: NextPage = (): JSX.Element => {
                 // }
                 // defaultValue={userData.email}
                 {...register('email')}
+                onChange={(e) =>
+                  setValue('email', e.target.value)
+                }
                 aria-invalid={errors.email ? 'true' : 'false'}
                 className={`border-0 focus:ring-transparent px-0`}
-                type="email"
-                required
-                // pattern='/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/'
                 placeholder={`${t('enter_your_email')}`}
               />
               <div>
@@ -183,37 +179,27 @@ const CustomerInformation: NextPage = (): JSX.Element => {
 
             <div className="flex items-center gap-x-2 px-2 border-b-4 border-b-gray-200 w-full focus:ring-transparent py-4">
               <Phone className="text-primary_BG" />
-              {/* <Controller
-                name="phone"
-                // control={control}
-                rules={{ required: true }}
-                render={({ field: { onChange, value } }) => (
-                  <PhoneInput
-                    international   
-                    value={value}
-                    defaultCountry="KW"
-                    className="text-lg outline-none w-4/6 focus:border-none p-0 focus:ring-0"
-                    placeholder={`${t('enter_your_phone')}`}
-                    onChange={onChange}
-                    id="phone-input"
-                  />
-                )}
-              /> */}
               <PhoneInput
                 international
                 defaultCountry="KW"
                 className="text-lg outline-none w-4/6 focus:border-none p-0 focus:ring-0"
                 placeholder={`${t('enter_your_phone')}`}
-                // value={userData.phone}
-                // onChange={(value) =>
-                //   setUserData((prev) => ({ ...prev, phone: value?.toString() }))
-                // }
-                {...register('phone')}
+                onChange={(value) =>
+                  setValue('phone', value)
+                }
                 aria-invalid={errors.phone ? 'true' : 'false'}
               />
             </div>
+            {errors?.phone?.message && (
+                <p
+                  className={`text-sm text-red-800`}
+                  suppressHydrationWarning={suppressText}
+                >
+                  {t(`${errors?.email?.message}`)}
+                </p>
+              )}
             <GreyLine />
-            <input type="submit" />
+            <button type="submit">submit</button>
           </div>
           </form>
         </div>
