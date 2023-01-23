@@ -51,6 +51,15 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
   });
 
   const handleAddToCart = async () => {
+    if (isNull(area.id) || isNull(branchId)) {
+      router
+        .push(appLinks.cartSelectMethod.path)
+        .then(() =>
+          dispatch(
+            showToastMessage({ content: `choose_area_or_branch`, type: `info` })
+          )
+        );
+    }
     if (!productCart.enabled) {
       dispatch(
         showToastMessage({
@@ -99,8 +108,6 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
 
   const [showModal, SetShowModal] = useState(false);
 
-  
-  
   return (
     <Suspense>
       <footer
@@ -117,7 +124,9 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
               onClick={() => handleAddToCart()}
               className={`${footerBtnClass}`}
             >
-              {t('add_to_cart')}
+              {isNull(branchId) || isNull(area.id)
+                ? t(`start_ordering`)
+                : t('add_to_cart')}
             </button>
             <span className={`flex flex-row items-center gap-2`}>
               <p className={`text-xl`}>{productCart.grossTotalPrice}</p>{' '}
@@ -181,7 +190,7 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
           </div>
         )}
         {/* {showFooterElement === 'vendor_show' && (
-          
+
         )} */}
         <PoweredByQ />
       </footer>
