@@ -10,30 +10,33 @@ export const appLinks = {
   root: { path: '/home' },
   home: { path: '/home' },
   productIndex: (
-    branchId: string,
     categoryId: string,
     slug: string,
-    areaId?: string,
+    branchId?: string,
+    areaId?: string,   
     page?: string,
-    limit?: string
+    limit?: string,   
   ) =>
-    `/product/${branchId}/${categoryId}?&area_id=${areaId ?? ``}&page=${
-      page ?? `1`
-    }&limit=${limit ?? `10`}&slug=${slug}`,
-  productSearchIndex: (branchId: string, query?: string, areaId?: string) =>
-    `/product/${branchId}/?key=${query ?? ``}&branch_id=${branchId}&areaId=${
+    `/product/${categoryId}?&slug=${slug}&branch_id=${branchId ?? ''}&areaId=${
+      areaId ?? ``
+    }&page=${page ?? `1`}&limit=${limit ?? `10`}`,
+
+  productSearchIndex: (query?: string,branchId?: string, areaId?: string) =>
+    `/product/?key=${query ?? ``}&branch_id=${branchId ?? ''}&areaId=${
       areaId ?? ``
     }`,
+
   productShow: (
     id: string,
-    branchId: string,
+    branchId?: string,
     product_id?: number,
     slug?: string,
     areaId?: string
   ) =>
-    `/product/${branchId}/show/${id}?product_id=${product_id}&slug=${kebabCase(
+    `/product/show/${id}?product_id=${product_id}&slug=${kebabCase(
       lowerCase(slug)
-    )}&branchId=${branchId ?? `null`}&areaId=${areaId ?? ``}`,
+    )}&branchId=${branchId ?? ``}&areaId=${areaId ?? ``}`,
+
   branchIndex: { path: '/branch' },
   cartIndex: { path: '/cart' },
   cartSelectMethod: { path: '/cart/select' },
