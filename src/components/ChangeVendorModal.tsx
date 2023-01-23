@@ -1,12 +1,17 @@
 import React, { FC } from 'react';
 import Dialog from '@mui/material/Dialog';
 import { useTranslation } from 'react-i18next';
-import ChangeBranch from '@/appImages/store/change_branch.png';
-import Image from 'next/image';
+import ChangeBranch from '@/appImages/change_branch.png';
 import { imageSizes } from '@/constants/*';
+import CustomImage from './CustomImage';
+import { useLazyChangeLocationQuery } from '@/redux/api/cartApi';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { Area, Branch } from '@/types/queries';
+import { setBranch } from '@/redux/slices/branchSlice';
+import { setArea } from '@/redux/slices/areaSlice';
 
 type Props = {
-  ChangeVendor: () => void;
+  SelectedAreaOrBranch: Branch | Area | undefined;
   OnClose: () => void;
   OpenModal: boolean;
 };
@@ -14,27 +19,64 @@ type Props = {
 const ChangeVendorModal: FC<Props> = ({
   OnClose,
   OpenModal,
-  ChangeVendor,
+  SelectedAreaOrBranch,
 }): JSX.Element => {
   const { t } = useTranslation();
+  const {   
+    customer: { userAgent },
+    appSetting: { method },
+    branch: { id: branchId },
+    area: { id: areaId },
+  } = useAppSelector((state) => state);
+  const dispatch=useAppDispatch()
+
+  const [triggerChangeLocation] = useLazyChangeLocationQuery(); 
+
+  const handelChangeLocReq=async ()=>{
+    if (SelectedAreaOrBranch) {
+      if (method === 'pickup') {
+        dispatch(setBranch(SelectedAreaOrBranch as Branch));
+      }
+
+      if (method === 'delivery') {
+        dispatch(dispatch(setArea(SelectedAreaOrBranch as Area)));
+      }
+
+      await triggerChangeLocation({UserAgent: userAgent,process_type:method,area_branch:SelectedAreaOrBranch.id?.toString()?? ''}).then((r:any)=>{
+        console.log('area changed',r);
+        // OnClose();
+        // router.back();
+
+      })
+    }
+
+    
+  }
+
   return (
-    <Dialog onClose={OnClose} open={OpenModal} maxWidth="xs">
-      <div className="flex flex-col items-center rounded-3xl p-5">
+    <Dialog
+      className="w-1/3"
+      onClose={OnClose}
+      open={OpenModal}
+      maxWidth="xs"
+      // PaperProps={{ classes: { root: 'w-1/2 !rounded-3xl' } }}
+      PaperProps={{ classes: { root: 'w-2/3' } }}
+    >
+      <div className="flex flex-col items-center p-5">
         <div className="mt-5">
-          <Image
-            src={ChangeBranch}
-            alt="change"
-            width={imageSizes.xs}
-            height={imageSizes.xs}
-            className="h-auto w-auto"
-          />
+          <CustomImage  
+          src={ChangeBranch.src}
+          alt="change"
+          width={imageSizes.xs}
+          height={imageSizes.xs}
+          className="h-auto w-auto"/>
         </div>
-        <p className="text-lg font-semibold mb-3 mt-5">
-          {t(`${'You_’re_about_to_change_the_store'}`)}
+        <p className="text-center text-lg font-semibold mb-3 mt-5">
+          {t(`${'You_’re_about_to_change_your_location'}`)}
         </p>
         <p className="text-start text-sm">
           {t(
-            `${"changing_the_store_might_result_in_removing_the_items_from_your_cart_because_the_new_selected_store_deliver's_separately"}`
+            `${'changing_your_location_might_result_in_removing_the_items_from_your_cart'}`
           )}
         </p>
         <div className="flex justify-between w-full pt-5 gap-x-2 px-0 lg:px-5">
@@ -46,10 +88,9 @@ const ChangeVendorModal: FC<Props> = ({
           </button>
           <button
             onClick={() => {
-              ChangeVendor();
-              OnClose();
+              handelChangeLocReq()
             }}
-            className="text-CustomRed capitalize"
+            className="text-primary_BG  capitalize"
           >
             {t('change')}
           </button>

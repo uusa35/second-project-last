@@ -295,13 +295,13 @@ export interface UserAddressFields {
 
 export interface CustomerInfo {
   id: number;
-  userAgent: null | string;
+  userAgent?: null | string;
   name: string;
   email: string;
   phone?: string;
   address?: Address;
   prefrences?: Prefrences;
-  notes: string;
+  notes?: string;
 }
 
 export interface Prefrences {
