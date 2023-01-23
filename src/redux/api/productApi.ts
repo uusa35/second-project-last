@@ -31,17 +31,17 @@ export const productApi = apiSlice.injectEndpoints({
       AppQueryResult<Product[]>,
       {
         lang: Locale['lang'] | string | undefined;
-        branch_id: string;
+        branch_id?: string;
         key?: string;
         areaId?: string;
       }
     >({
-      query: ({ lang, key = ``, branch_id, areaId = `` }: any) => ({
+      query: ({ lang, key = ``, branch_id='', areaId = `` }: any) => ({
         url: `search`,
         params: { key },
         headers: {
-          'x-branch-id': branch_id,
-          'x-area-id': areaId,
+          ...(areaId && { 'x-area-id': areaId }),
+          ...(branch_id && { 'x-branch-id': branch_id }),
           lang,
         },
         validateStatus: (response, result) =>
