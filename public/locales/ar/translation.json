@@ -461,5 +461,6 @@
   "item_added_successfully" : "تم اضافة العنصر بنجاح.",
   "time_and_date_saved_successfully":"تم حفظ الوقت و التاريخ بنجاح",
   "shop_is_close_at_this_time":"المتجر مغلق في هذا الموعد",
-  "shop_is_busy_at_this_time":"المتجر مشغول في هذا الموعد"
+  "shop_is_busy_at_this_time":"المتجر مشغول في هذا الموعد",
+  "say_something_about_us": "قل شيئًا عنا"
 }

@@ -450,5 +450,6 @@
   "item_added_successfully" : "item added successfully.",
   "time_and_date_saved_successfully":"time and date are saved successfully",
   "shop_is_close_at_this_time":"shop is close at this time",
-  "shop_is_busy_at_this_time":"shop is busy at this time"
+  "shop_is_busy_at_this_time":"shop is busy at this time",
+  "say_something_about_us": "say something about us"
 }
