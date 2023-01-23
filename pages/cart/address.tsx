@@ -109,7 +109,7 @@ const CartAddress: NextPage = (): JSX.Element => {
           break;
 
           case 'busy':
-          case 'closed':
+          case 'close':
             dispatch(
               showToastMessage({
                 content: `shop is ${r.data.Data.toLowerCase()} at this time`,
@@ -276,6 +276,7 @@ const CartAddress: NextPage = (): JSX.Element => {
                         ? parseInt(address.longitude)
                         : 47.4979476,
                     }}
+                    onChange={()=>{}}
                     defaultZoom={11}
                   ></GoogleMapReact>
                 </div>

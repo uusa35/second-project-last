@@ -56,15 +56,32 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
           <Link
             href={appLinks.cartSelectMethod.path}
             scroll={false}
-            className="flex flex-1 w-full flex-row justify-between items-center mt-4 mb-2"
+            className="flex flex-1 gap-x-3 w-full flex-row justify-between items-center mt-4 mb-2"
           >
             <div
-              className={`flex flex-grow justify-start items-center md:ltr:mr-3 md:rtl:ml-3`}
+              className={`flex flex-grow justify-start items-center`}
             >
               <h1 className={`pt-2`}>{t('pickup_from')}</h1>
             </div>
-            <div className={`md:ltr:mr-3 md:rtl:ml-3 pt-2 text-primary_BG`}>
+            <div className={`pt-2 text-primary_BG`}>
               <TextTrans ar={branch.name_ar} en={branch.name_en} />
+            </div>
+          </Link>
+        )}
+
+        {isNull(area.id) && method === 'delivery' && (
+          <Link
+            href={appLinks.cartSelectMethod.path}
+            scroll={false}
+            className="flex gap-x-3 flex-1 w-full flex-row justify-between items-center mt-4 mb-2"
+          >
+            <div
+              className={`flex flex-grow justify-start items-center`}
+            >
+              <h1 className={`pt-2`}>{t('deliver_to')}</h1>
+            </div>
+            <div className={`pt-2 text-primary_BG`}>
+              {t('select_location')}
             </div>
           </Link>
         )}
@@ -73,28 +90,28 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
           <Link
             href={appLinks.cartSelectMethod.path}
             scroll={false}
-            className="flex flex-1 w-full flex-row justify-between items-center mt-4 mb-2"
+            className="flex flex-1 gap-x-3 w-full flex-row justify-between items-center mt-4 mb-2"
           >
             <div
-              className={`flex flex-grow justify-start items-center md:ltr:mr-3 md:rtl:ml-3`}
+              className={`flex flex-grow justify-start items-center `}
             >
               <h1 className={`pt-2`}>{t('deliver_to')}</h1>
             </div>
-            <div className={`md:ltr:mr-3 md:rtl:ml-3 pt-2 text-primary_BG`}>
+            <div className={`pt-2 text-primary_BG`}>
               <TextTrans ar={area.name_ar} en={area.name_en} />
             </div>
           </Link>
         )}
 
-        <div className="flex flex-1 w-full flex-row justify-between items-center mt-2 mb-4">
+        <div className="flex flex-1 gap-x-3 w-full flex-row justify-between items-center mt-2 mb-4">
           <div
-            className={`flex flex-grow justify-start items-center md:ltr:mr-3 md:rtl:ml-3`}
+            className={`flex flex-grow justify-start items-center`}
           >
             <h1 className={`pt-2`} suppressHydrationWarning={suppressText}>
               {t('earliest_delivery')}
             </h1>
           </div>
-          <div className={`md:ltr:mr-3 md:rtl:ml-3 pt-2 text-primary_BG`}>
+          <div className={`pt-2 text-primary_BG`}>
             {element.DeliveryTime}
           </div>
         </div>

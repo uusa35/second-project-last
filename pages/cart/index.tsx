@@ -31,6 +31,7 @@ const CartIndex: NextPage = (): JSX.Element => {
   const {
     branch: { id: branchId },
     area: { id: areaId },
+    appSetting: { method },
     customer: { userAgent, notes },
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
@@ -96,7 +97,9 @@ const CartIndex: NextPage = (): JSX.Element => {
       (i) => i.id !== element.id
     );
     triggerAddToCart({
-      branchId,
+      process_type: method,
+          area_branch:
+            method === 'delivery' ? areaId : method === 'pickup' && branchId,
       body: {
         UserAgent: userAgent,
         Cart:
@@ -121,7 +124,9 @@ const CartIndex: NextPage = (): JSX.Element => {
 
   const handleIncrease = (element: ProductCart) => {
     triggerAddToCart({
-      branchId,
+      process_type: method,
+          area_branch:
+            method === 'delivery' ? areaId : method === 'pickup' && branchId,
       body: {
         UserAgent: userAgent,
         Cart:
@@ -146,7 +151,9 @@ const CartIndex: NextPage = (): JSX.Element => {
 
   const handleDecrease = (element: ProductCart) => {
     triggerAddToCart({
-      branchId,
+      process_type: method,
+          area_branch:
+            method === 'delivery' ? areaId : method === 'pickup' && branchId,
       body: {
         UserAgent: userAgent,
         Cart:

@@ -14,16 +14,18 @@ export const cartApi = apiSlice.injectEndpoints({
     addToCart: builder.mutation<
       AppQueryResult<ServerCart>,
       {
-        branchId: any;
         body: { UserAgent: string; Cart: any };
+        process_type: string;
+        area_branch: string;
       }
     >({
-      query: ({ branchId, body }) => ({
+      query: ({ body, process_type, area_branch }) => ({
         url: `addToCart`,
         method: `POST`,
         body,
         headers: {
-          'x-branch-id': branchId,
+          ...(process_type === 'delivery' && { 'x-area-id': area_branch }),
+          ...(process_type === 'pickup' && { 'x-branch-id': area_branch }),
         },
         validateStatus: (response, result) => result.status,
       }),
@@ -57,35 +59,21 @@ export const cartApi = apiSlice.injectEndpoints({
           response.status == 200 && result.status,
       }),
     }),
-    RemoveFromCart: builder.mutation<
+
+    changeLocation: builder.query<
       AppQueryResult<any>,
       {
-        body: any;
+        UserAgent: string;
+        process_type: string;
+        area_branch: string;
       }
     >({
-      query: ({ body }) => ({
-        url: `cart/clear/item`,
-        method: `POST`,
-        body,
-        validateStatus: (response, result) =>
-          response.status == 200 && result.status,
-      }),
-    }),
-    UpdateItemInCart: builder.mutation<
-      AppQueryResult<any>,
-      {
-        lang: Locale['lang'];
-        country: string;
-        body: any;
-      }
-    >({
-      query: ({ country, body, lang }) => ({
-        url: `cart/update`,
-        method: `POST`,
-        body,
-        headers: {
-          'Accept-Language': lang,
-          country,
+      query: ({ UserAgent ,process_type, area_branch}) => ({
+        url: `changeArea`,
+        params: { UserAgent},
+        headers:{
+          ...(process_type === 'delivery' && { 'x-area-id': area_branch }),
+          ...(process_type === 'pickup' && { 'x-branch-id': area_branch }),
         },
         validateStatus: (response, result) =>
           response.status == 200 && result.status,
@@ -98,9 +86,8 @@ export const {
   useCreateTempIdQuery,
   useLazyCreateTempIdQuery,
   useGetCartProductsQuery,
-  useRemoveFromCartMutation,
-  useUpdateItemInCartMutation,
   useAddToCartMutation,
   useLazyCheckPromoCodeQuery,
   useLazyGetCartProductsQuery,
+  useLazyChangeLocationQuery
 } = cartApi;
