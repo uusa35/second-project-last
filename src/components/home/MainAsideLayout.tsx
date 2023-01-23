@@ -10,6 +10,7 @@ import {
   ClipboardDocumentCheckIcon,
   HomeIcon,
 } from '@heroicons/react/24/outline';
+import TextTrans from '@/components/TextTrans';
 
 type Props = {
   element: Vendor;
@@ -71,11 +72,11 @@ const MainAsideLayout: FC<Props> = ({ element }): JSX.Element => {
             <CustomImage
               src={`${imgUrl(element.logo)}`}
               alt={element.name}
-              className={`relative object-contain w-32 h-auto shadow-xl`}
+              className={`relative object-contain w-32 h-auto shadow-xl rounded-md`}
               width={imageSizes.lg}
               height={imageSizes.lg}
             />
-            <p suppressHydrationWarning={suppressText}>{element.name}</p>
+            <TextTrans ar={element.name_ar} en={element.name_en} />
           </div>
         </div>
       </div>

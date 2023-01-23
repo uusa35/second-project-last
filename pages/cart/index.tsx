@@ -11,18 +11,16 @@ import {
 import { EditOutlined } from '@mui/icons-material';
 import Promotion from '@/appIcons/promotion.svg';
 import Notes from '@/appIcons/notes.svg';
-import { appLinks, cartInitialState, suppressText } from '@/constants/*';
+import { appLinks, suppressText } from '@/constants/*';
 import CustomImage from '@/components/CustomImage';
 import { debounce, filter, isEmpty, kebabCase, lowerCase, map } from 'lodash';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
-import { removeFromCart } from '@/redux/slices/cartSlice';
 import { ProductCart, QuantityMeters, ServerCart } from '@/types/index';
 import Link from 'next/link';
 import {
   useAddToCartMutation,
   useGetCartProductsQuery,
   useLazyCheckPromoCodeQuery,
-  useLazyGetCartProductsQuery,
 } from '@/redux/api/cartApi';
 import PaymentSummary from '@/widgets/cart/review/PaymentSummary';
 import TextTrans from '@/components/TextTrans';
@@ -73,7 +71,6 @@ const CartIndex: NextPage = (): JSX.Element => {
       }).then((r) => {
         if (r.data && r.data.status && r.data.promoCode) {
           // promoCode Success
-          console.log('r promoeCode', r.data.promoCode);
           dispatch(
             showToastMessage({
               content: lowerCase(kebabCase(r.data.msg)),
@@ -92,20 +89,23 @@ const CartIndex: NextPage = (): JSX.Element => {
     }
   };
 
+  console.log('Cart Now ==+>', cartItems?.data?.Cart);
   const handleRemove = async (element: ProductCart) => {
-    console.log('cartItems', cartItems.data?.Cart);
-    console.log('element', element.id);
-    const items = filter(
-      cartItems.data?.Cart,
-      (item) => item.id !== element.id?.toString()
+    const currentItems = filter(
+      cartItems.data.Cart,
+      (i) => i.id !== element.id
     );
-    const currentItems = isEmpty(items) ? [cartInitialState.items] : items;
-    console.log('currentItems', currentItems);
     triggerAddToCart({
       branchId,
       body: {
         UserAgent: userAgent,
-        Cart: currentItems,
+        Cart:
+          isSuccess &&
+          cartItems.data &&
+          cartItems.data.Cart &&
+          !isEmpty(currentItems)
+            ? currentItems
+            : cartItems.data.Cart, // empty Cart Case !!!
       },
     }).then((r) => {
       if (r.data?.status) {
@@ -124,7 +124,13 @@ const CartIndex: NextPage = (): JSX.Element => {
       branchId,
       body: {
         UserAgent: userAgent,
-        Cart: [{ ...element, Quantity: element.Quantity + 1 }],
+        Cart:
+          isSuccess && cartItems.data && cartItems.data.Cart
+            ? filter(cartItems.data.Cart, (i) => i.id !== element.id).concat({
+                ...element,
+                Quantity: element.Quantity + 1,
+              })
+            : cartItems.data.Cart,
       },
     }).then((r) => {
       if (r.data?.status) {
@@ -143,7 +149,13 @@ const CartIndex: NextPage = (): JSX.Element => {
       branchId,
       body: {
         UserAgent: userAgent,
-        Cart: [{ ...element, Quantity: element.Quantity - 1 }],
+        Cart:
+          isSuccess && cartItems.data && cartItems.data.Cart
+            ? filter(cartItems.data.Cart, (i) => i.id !== element.id).concat({
+                ...element,
+                Quantity: element.Quantity - 1,
+              })
+            : cartItems.data.Cart,
       },
     }).then((r) => {
       if (r.data?.status) {
@@ -162,8 +174,6 @@ const CartIndex: NextPage = (): JSX.Element => {
       dispatch(setNotes(notes));
     }
   };
-
-  console.log('cartItems[0]', cartItems?.data?.Cart[0]);
 
   return (
     <Suspense>
@@ -184,18 +194,27 @@ const CartIndex: NextPage = (): JSX.Element => {
             </p>
             {isSuccess &&
               cartItems.data?.subTotal > 0 &&
-              map(cartItems.data?.Cart, (item, i) => (
+              map(cartItems.data?.Cart, (item: ProductCart, i) => (
                 <div key={i}>
                   <div className="px-4">
                     <div className="mb-10 ">
                       <div className="flex px-5 items-center">
-                        <div className="ltr:pr-3 rtl:pl-3 w-1/5">
+                        <Link
+                          href={`${appLinks.productShow(
+                            item.ProductID.toString(),
+                            branchId,
+                            item.ProductID,
+                            item.ProductName,
+                            areaId
+                          )}`}
+                          className="ltr:pr-3 rtl:pl-3 w-1/5"
+                        >
                           <CustomImage
-                            className="w-full rounded-lg border-[1px] border-gray-200"
+                            className="w-full rounded-lg border-[1px] border-gray-200 shadow-md"
                             alt={`${t('item')}`}
                             src={item.image}
                           />
-                        </div>
+                        </Link>
 
                         <div className="w-full">
                           <div>
@@ -230,7 +249,10 @@ const CartIndex: NextPage = (): JSX.Element => {
                             )}`}
                           >
                             <p className="font-semibold">
-                              <TextTrans ar={item.name_ar} en={item.name_en} />
+                              <TextTrans
+                                ar={item.ProductName}
+                                en={item.ProductName}
+                              />
                             </p>
                           </Link>
                           <div className="flex">
@@ -245,7 +267,7 @@ const CartIndex: NextPage = (): JSX.Element => {
                                         {map(q.addons, (addon, i) => (
                                           <TextTrans
                                             key={i}
-                                            className={`border-r-2 last:border-r-0 first:pr-1 px-1 text-xxs`}
+                                            className={`ltr:border-r-2 ltr:last:border-r-0 ltr:first:pr-1 rtl:border-l-2 rtl:last:border-l-0 rtl:first:pl-1 px-1 text-xs`}
                                             ar={addon.name}
                                             en={addon.name}
                                           />
