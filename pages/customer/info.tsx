@@ -29,7 +29,7 @@ const schema = yup
     id: yup.number(),
     name: yup.string().required().min(2).max(50),
     email: yup.string().email().required(),
-    phone: yup.number().min(100000).max(999999999999).required()
+    phone: yup.number().min(100000).max(999999999999).required(),
   })
   .required();
 const CustomerInformation: NextPage = (): JSX.Element => {
@@ -48,7 +48,7 @@ const CustomerInformation: NextPage = (): JSX.Element => {
       id: customer?.id ?? 0,
       name: customer?.name ?? ``,
       email: customer?.email ?? ``,
-      phone: customer?.phone ?? ``
+      phone: customer?.phone ?? ``,
     },
   });
   // const [userData, setUserData] = useState<CustomerInfo>({
@@ -70,8 +70,8 @@ const CustomerInformation: NextPage = (): JSX.Element => {
     };
   }, []);
 
-  const onSubmit = async (body) => {
-    console.log("submit", body)
+  const onSubmit = async (body: any) => {
+    console.log('submit', body);
     // console.log(userData);
     // if (
     //   userData.name.length < 2 ||
@@ -86,30 +86,35 @@ const CustomerInformation: NextPage = (): JSX.Element => {
     //   );
     // } else {
 
-      saveCustomerInfo({body})
-        .then((r: any) => {
-          console.log({data: r})
-          if (r.data.Data && r.data.status) {
-            dispatch(setCustomer(r.data.Data));
-          } else {
-            dispatch(
-              showToastMessage({
-                content: r.data?.message,
-                type: 'error',
-              })
-            );
-          }
-        })
-        .then(() => {
-          router.push(appLinks.address.path);
-        });
+    saveCustomerInfo({
+      body,
+    })
+      .then((r: any) => {
+        console.log({ data: r });
+        if (r.data.Data && r.data.status) {
+          dispatch(setCustomer(r.data.Data));
+        } else {
+          dispatch(
+            showToastMessage({
+              content: r.data?.message,
+              type: 'error',
+            })
+          );
+        }
+      })
+      .then(() => {
+        router.push(appLinks.address.path);
+      });
     // }
   };
+
+  console.log('customer', customer);
 
   useEffect(() => {
     dispatch(setCurrentModule(t('customer_info')));
     dispatch(setShowFooterElement('customerInfo'));
   }, []);
+  console.log({ errors });
   return (
     <Suspense>
       <MainContentLayout>
@@ -123,87 +128,97 @@ const CustomerInformation: NextPage = (): JSX.Element => {
               className={`my-10 lg:my-0 w-auto h-auto`}
             /> */}
           </div>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="lg:mt-10">
-            <div className="flex gap-x-2 px-2 border-b-4 border-b-gray-200 w-full focus:ring-transparent py-4">
-              <BadgeOutlined className="text-primary_BG" />
-              <input
-              {...register('name')}
-              aria-invalid={errors.name ? 'true' : 'false'}
-                onChange={(e) =>
-                  setValue('name', e.target.value)
-                }
-                // defaultValue={userData.name}
-                className={`border-0 focus:ring-transparent outline-none`}
-                placeholder={`${t('enter_your_name')}`}
-              />
-              <div>
-                {errors?.name && (
-                  <p
-                    className={`text-sm text-red-800`}
-                    suppressHydrationWarning={suppressText}
-                  >
-                    {t(`${errors?.name?.message}`)}
-                  </p>
-                )}
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="lg:mt-10">
+              <div className="flex gap-x-2 px-2 border-b-4 border-b-gray-200 w-full focus:ring-transparent py-4">
+                <BadgeOutlined className="text-primary_BG" />
+                <input
+                  {...register('name')}
+                  // aria-invalid={errors.name ? 'true' : 'false'}
+                  // onChange={(e) =>
+                  //   setUserData((prev) => ({ ...prev, name: e.target.value }))
+                  // }
+                  // defaultValue={userData.name}
+                  className={`border-0 focus:ring-transparent outline-none`}
+                  type="string"
+                  required
+                  placeholder={`${t('enter_your_name')}`}
+                />
+                <div>
+                  {errors?.name && (
+                    <p
+                      className={`text-sm text-red-800`}
+                      suppressHydrationWarning={suppressText}
+                    >
+                      {t(`${errors?.name?.message}`)}
+                    </p>
+                  )}
+                </div>
               </div>
 
-            </div>
+              <div className="flex items-center gap-x-2 px-2 border-b-4 border-b-gray-200 w-full focus:ring-transparent py-4">
+                <EmailOutlined className="text-primary_BG" />
+                <input
+                  // onChange={(e) =>
+                  //   setUserData((prev) => ({ ...prev, email: e.target.value }))
+                  // }
+                  // defaultValue={userData.email}
+                  {...register('email')}
+                  aria-invalid={errors.email ? 'true' : 'false'}
+                  className={`border-0 focus:ring-transparent px-0`}
+                  type="email"
+                  required
+                  // pattern='/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/'
+                  placeholder={`${t('enter_your_email')}`}
+                />
+                <div>
+                  {errors?.email?.message && (
+                    <p
+                      className={`text-sm text-red-800`}
+                      suppressHydrationWarning={suppressText}
+                    >
+                      {t(`${errors?.email?.message}`)}
+                    </p>
+                  )}
+                </div>
+              </div>
 
-            <div className="flex items-center gap-x-2 px-2 border-b-4 border-b-gray-200 w-full focus:ring-transparent py-4">
-              <EmailOutlined className="text-primary_BG" />
-              <input
-                // onChange={(e) =>
-                //   setUserData((prev) => ({ ...prev, email: e.target.value }))
-                // }
-                // defaultValue={userData.email}
-                {...register('email')}
-                onChange={(e) =>
-                  setValue('email', e.target.value)
-                }
-                aria-invalid={errors.email ? 'true' : 'false'}
-                className={`border-0 focus:ring-transparent px-0`}
-                placeholder={`${t('enter_your_email')}`}
-              />
-              <div>
-              {errors?.email?.message && (
-                <p
-                  className={`text-sm text-red-800`}
-                  suppressHydrationWarning={suppressText}
-                >
-                  {t(`${errors?.email?.message}`)}
-                </p>
-              )}
+              <div className="flex items-center gap-x-2 px-2 border-b-4 border-b-gray-200 w-full focus:ring-transparent py-4">
+                <Phone className="text-primary_BG" />
+                {/* <Controller
+                name="phone"
+                // control={control}
+                rules={{ required: true }}
+                render={({ field: { onChange, value } }) => (
+                  <PhoneInput
+                    international
+                    value={value}
+                    defaultCountry="KW"
+                    className="text-lg outline-none w-4/6 focus:border-none p-0 focus:ring-0"
+                    placeholder={`${t('enter_your_phone')}`}
+                    onChange={onChange}
+                    id="phone-input"
+                  />
+                )}
+              /> */}
+                <PhoneInput
+                  international
+                  defaultCountry="KW"
+                  className="text-lg outline-none w-4/6 focus:border-none p-0 focus:ring-0"
+                  placeholder={`${t('enter_your_phone')}`}
+                  // value={userData.phone}
+                  // onChange={(value) =>
+                  //   setUserData((prev) => ({ ...prev, phone: value?.toString() }))
+                  // }
+                  {...register('phone')}
+                  aria-invalid={errors.phone ? 'true' : 'false'}
+                />
+              </div>
+              <GreyLine />
+              <input type="submit" />
             </div>
-            </div>
-
-            <div className="flex items-center gap-x-2 px-2 border-b-4 border-b-gray-200 w-full focus:ring-transparent py-4">
-              <Phone className="text-primary_BG" />
-              <PhoneInput
-                international
-                defaultCountry="KW"
-                className="text-lg outline-none w-4/6 focus:border-none p-0 focus:ring-0"
-                placeholder={`${t('enter_your_phone')}`}
-                onChange={(value) =>
-                  setValue('phone', value)
-                }
-                aria-invalid={errors.phone ? 'true' : 'false'}
-              />
-            </div>
-            {errors?.phone?.message && (
-                <p
-                  className={`text-sm text-red-800`}
-                  suppressHydrationWarning={suppressText}
-                >
-                  {t(`${errors?.email?.message}`)}
-                </p>
-              )}
-            <GreyLine />
-            <button type="submit">submit</button>
-          </div>
           </form>
         </div>
-        
       </MainContentLayout>
     </Suspense>
   );
