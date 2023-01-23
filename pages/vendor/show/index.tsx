@@ -1,4 +1,4 @@
-import { useEffect, Suspense } from 'react';
+import { useEffect, Suspense, useState } from 'react';
 import MainContentLayout from '@/layouts/MainContentLayout';
 import { NextPage } from 'next';
 import { Vendor } from '@/types/index';
@@ -15,7 +15,7 @@ import CashOnDelivery from '@/appImages/cash_on_delivery.jpg';
 import Visa from '@/appImages/visa.png';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
-import { suppressText } from '@/constants/*';
+import { submitBtnClass, suppressText } from '@/constants/*';
 import {
   setCurrentModule,
   resetShowFooterElement,
@@ -23,6 +23,11 @@ import {
 } from '@/redux/slices/appSettingSlice';
 import { useAppDispatch } from '@/redux/hooks';
 import CustomImage from '@/components/CustomImage';
+import Feedback from '@/pages/feedback';
+import FeedbackIcon from '@/appIcons/feedback.svg';
+import Facebook from '@/appIcons/facebook.svg';
+import Twitter from '@/appIcons/twitter.svg';
+import Instagram from '@/appIcons/instagram.svg';
 type Props = {
   element: Vendor;
 };
@@ -45,6 +50,13 @@ const VendorShow: NextPage<Props> = ({ element }) => {
       dispatch(resetShowFooterElement());
     };
   }, []);
+  function handleClosePopup() {
+    SetShowModal(false);
+  }
+  const handleOpenPopup = () => {
+    SetShowModal(true);
+  }
+  const [showModal, SetShowModal] = useState(false);
   const VendorDetailsItem = ({ icon, text, content }: DetailsItem) => {
     return (
       <div className="flex justify-between px-4 py-6 m-3 shadow-md">
@@ -154,6 +166,54 @@ const VendorShow: NextPage<Props> = ({ element }) => {
             </div>
           </div>
         </div>
+        
+        <div className="w-full py-8 px-4">
+            <div className="py-5">
+              <button className={`${submitBtnClass}`}>
+                <div className="flex justify-center items-center">
+                  <CustomImage
+                    className="w-5 h-5"
+                    src={FeedbackIcon}
+                    alt={t('feedback')}
+                  />
+                  <p
+                    className="text-white px-2"
+                    suppressHydrationWarning={suppressText}
+                    onClick={handleOpenPopup}
+                  >
+                    {t('leave_feedback')}
+                  </p>
+                </div>
+              </button>
+            </div>
+            <div className="flex justify-evenly items-center w-[80%] m-auto">
+              <Link href={'/'}>
+                <CustomImage
+                  className="w-5 h-5"
+                  src={Facebook}
+                  alt={t('facebook')}
+                />
+              </Link>
+              <Link href={'/'}>
+                <CustomImage
+                  className="w-5 h-5"
+                  src={Instagram}
+                  alt={t('instagram')}
+                />
+              </Link>
+              <Link href={'/'}>
+                <CustomImage
+                  className="w-5 h-5"
+                  src={Twitter}
+                  alt={t('twiiter')}
+                />
+              </Link>
+            </div>
+          </div>
+        <Feedback right
+          isOpen={showModal}
+          ariaHideApp={false}
+          onRequestClose={handleClosePopup}  />
       </MainContentLayout>
     </Suspense>
   );
