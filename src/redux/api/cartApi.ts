@@ -16,16 +16,16 @@ export const cartApi = apiSlice.injectEndpoints({
       {
         body: { UserAgent: string; Cart: any };
         process_type: string;
-        area_branch:string
+        area_branch: string;
       }
     >({
-      query: ({body ,process_type,area_branch}) => ({
+      query: ({ body, process_type, area_branch }) => ({
         url: `addToCart`,
         method: `POST`,
         body,
-        headers:{
-          ...(process_type === 'delivery' && {'x-area-id': area_branch}),
-          ...(process_type === 'pickup' && {'x-branch-id': area_branch})
+        headers: {
+          ...(process_type === 'delivery' && { 'x-area-id': area_branch }),
+          ...(process_type === 'pickup' && { 'x-branch-id': area_branch }),
         },
         validateStatus: (response, result) => result.status,
       }),
@@ -59,6 +59,26 @@ export const cartApi = apiSlice.injectEndpoints({
           response.status == 200 && result.status,
       }),
     }),
+
+    changeLocation: builder.query<
+      AppQueryResult<any>,
+      {
+        UserAgent: string;
+        process_type: string;
+        area_branch: string;
+      }
+    >({
+      query: ({ UserAgent ,process_type, area_branch}) => ({
+        url: `changeArea`,
+        params: { UserAgent},
+        headers:{
+          ...(process_type === 'delivery' && { 'x-area-id': area_branch }),
+          ...(process_type === 'pickup' && { 'x-branch-id': area_branch }),
+        },
+        validateStatus: (response, result) =>
+          response.status == 200 && result.status,
+      }),
+    }),
   }),
 });
 
@@ -69,4 +89,5 @@ export const {
   useAddToCartMutation,
   useLazyCheckPromoCodeQuery,
   useLazyGetCartProductsQuery,
+  useLazyChangeLocationQuery
 } = cartApi;

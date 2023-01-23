@@ -14,7 +14,7 @@ import {
 } from '@material-tailwind/react';
 import { CircleOutlined, CheckCircle } from '@mui/icons-material';
 import { submitBtnClass, suppressText } from '@/constants/*';
-import { appSetting } from '@/types/index';
+import { appSetting, ServerCart } from '@/types/index';
 import { setCartMethod } from '@/redux/slices/appSettingSlice';
 import { Location } from '@/types/queries';
 import { isEmpty, isNull, map } from 'lodash';
@@ -25,6 +25,8 @@ import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { useGetBranchesQuery } from '@/redux/api/branchApi';
 import DeliveryBtns from '@/components/widgets/cart/DeliveryBtns';
 import TextTrans from '@/components/TextTrans';
+import ChangeVendorModal from '@/components/ChangeVendorModal';
+import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 
 const SelectMethod: NextPage = (): JSX.Element => {
   const { t } = useTranslation();
@@ -34,17 +36,40 @@ const SelectMethod: NextPage = (): JSX.Element => {
     locale: { lang },
     area: selectedArea,
     appSetting: { method },
-    branch: { id: branch_id },
+    branch,
+    customer: { userAgent },
   } = useAppSelector((state) => state);
+  const [showChangeLocModal, setShowChangeLocModal] = useState<boolean>(false);
+  const [selectedLocation, setSelectedLocation] = useState<
+    Branch | Area | undefined
+  >(method === 'delivery' ? selectedArea : branch);
+
+  const {
+    data: cartItems,
+    isSuccess,
+    isLoading,
+    refetch: refetchCart,
+  } = useGetCartProductsQuery<{
+    data: AppQueryResult<ServerCart>;
+    isSuccess: boolean;
+    isLoading: boolean;
+    refetch: () => void;
+  }>({
+    UserAgent: userAgent,
+  });
+
+
   const { data: locations, isLoading: locationsLoading } =
     useGetLocationsQuery<{
       data: AppQueryResult<Location[]>;
       isLoading: boolean;
     }>({ lang });
+
   const { data: branches, isLoading: branchesLoading } = useGetBranchesQuery<{
     data: AppQueryResult<Branch[]>;
     isLoading: boolean;
   }>({ lang });
+
   const [open, setOpen] = useState(0);
   const handleOpen = (value: any) => {
     setOpen(open === value ? 0 : value);
@@ -75,12 +100,65 @@ const SelectMethod: NextPage = (): JSX.Element => {
     );
   };
 
-  const handleSelectArea = (a: Area) => dispatch(setArea(a));
 
-  const handleSelectMethod = (m: appSetting['method']) =>
+  // const handleSelectArea = (a: Area) => {
+  //   if (
+  //     a.id !== selectedArea.id &&
+  //     isSuccess &&
+  //     cartItems.data &&
+  //     cartItems.data.Cart &&
+  //     !isEmpty(cartItems.data.Cart)
+  //   ) {
+  //     setShowChangeLocModal(true);
+  //   } else {
+  //     dispatch(setArea(a));
+  //   }
+  // };
+
+  // const handleSelectBranch = (b: Branch) => {
+  //   if (
+  //     b.id !== selectedArea.id &&
+  //     isSuccess &&
+  //     cartItems.data &&
+  //     cartItems.data.Cart &&
+  //     !isEmpty(cartItems.data.Cart)
+  //   ) {
+  //     setShowChangeLocModal(true);
+  //   } else {
+  //     dispatch(setBranch(b));
+  //   }
+  // };
+
+  const handelContinue = () => {
+    if (
+      selectedLocation?.id !== selectedArea.id ||
+      (selectedLocation?.id !== branch.id &&
+        isSuccess &&
+        cartItems.data &&
+        cartItems.data.Cart &&
+        !isEmpty(cartItems.data.Cart))
+    ) {
+      setShowChangeLocModal(true);
+    } 
+    else {
+      if (selectedLocation) {
+        if (method === 'pickup') {
+          dispatch(setBranch(selectedLocation as Branch));
+        }
+
+        if (method === 'delivery') {
+          dispatch(dispatch(setArea(selectedLocation as Area)));
+        }
+        router.back();
+      }
+    }
+  };
+
+ 
+
+  const handleSelectMethod = (m: appSetting['method']) => {
     dispatch(setCartMethod(m));
-
-  const handleSelectBranch = (b: Branch) => dispatch(setBranch(b));
+  };
 
   return (
     <Suspense>
@@ -124,7 +202,7 @@ const SelectMethod: NextPage = (): JSX.Element => {
                           <button
                             className={'flex justify-between w-full p-4 '}
                             key={i}
-                            onClick={() => handleSelectArea(area)}
+                            onClick={() => setSelectedLocation(area)}
                           >
                             <p
                               className="text-base text-black"
@@ -132,8 +210,8 @@ const SelectMethod: NextPage = (): JSX.Element => {
                             >
                               <TextTrans ar={area.name_ar} en={area.name_en} />
                             </p>
-                            {!isEmpty(selectedArea) &&
-                            area.id === selectedArea?.id ? (
+                            {!isEmpty(selectedLocation) &&
+                            area.id === selectedLocation?.id ? (
                               <CheckCircle className="text-lime-400" />
                             ) : (
                               <CircleOutlined className="text-gray-400" />
@@ -159,7 +237,7 @@ const SelectMethod: NextPage = (): JSX.Element => {
                 {map(branches.Data, (b: Branch, i) => (
                   <button
                     key={i}
-                    onClick={() => handleSelectBranch(b)}
+                    onClick={() => setSelectedLocation(b)}
                     className={`flex flex-row  w-full justify-between items-center p-1`}
                   >
                     <label htmlFor={b.name} className="py-1 form-check-label">
@@ -172,7 +250,7 @@ const SelectMethod: NextPage = (): JSX.Element => {
                       type="radio"
                       name="branch"
                       readOnly
-                      checked={branch_id === b.id}
+                      checked={selectedLocation?.id === b.id}
                     />
                   </button>
                 ))}
@@ -180,14 +258,21 @@ const SelectMethod: NextPage = (): JSX.Element => {
             </div>
           )}
           <button
-            onClick={() => router.back()}
-            disabled={isNull(branch_id) && isNull(selectedArea.id)}
+            onClick={() => {
+              handelContinue();
+            }}
+            disabled={isNull(branch.id) && isNull(selectedArea.id) && !selectedLocation?.id}
             className={`${submitBtnClass} mt-12`}
             suppressHydrationWarning={suppressText}
           >
             {t('done')}
           </button>
         </div>
+        <ChangeVendorModal
+          SelectedAreaOrBranch={selectedLocation}
+          OpenModal={showChangeLocModal}
+          OnClose={() => setShowChangeLocModal(false)}
+        />
       </MainContentLayout>
     </Suspense>
   );

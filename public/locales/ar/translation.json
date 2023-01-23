@@ -461,5 +461,8 @@
   "item_added_successfully" : "تم اضافة العنصر بنجاح.",
   "time_and_date_saved_successfully":"تم حفظ الوقت و التاريخ بنجاح",
   "shop_is_close_at_this_time":"المتجر مغلق في هذا الموعد",
-  "shop_is_busy_at_this_time":"المتجر مشغول في هذا الموعد"
+  "shop_is_busy_at_this_time":"المتجر مشغول في هذا الموعد",
+  "You_’re_about_to_change_your_location":"انت علي وشك ان تغير موقعك",
+  "changing_your_location_might_result_in_removing_the_items_from_your_cart":"تغييو موقعك قد يؤدي الي ازاله بعض المنتجات من عربة التسوق الخاصة بك",
+  "select_location":"حدد موقع"
 }
