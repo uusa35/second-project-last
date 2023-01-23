@@ -454,5 +454,7 @@
   "You_’re_about_to_change_your_location":"You’re about to change your location",
   "changing_your_location_might_result_in_removing_the_items_from_your_cart":"changing your location might result in removing the items from your cart",
   "select_location":"select location",
-  "say_something_about_us": "say something about us"
+  "say_something_about_us": "say something about us",
+  "choose_area_or_branch" : "please choose your area or the nearest branch.",
+  "start_ordering" : "start ordering"
 }

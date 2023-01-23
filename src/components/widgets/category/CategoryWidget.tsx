@@ -15,6 +15,7 @@ type Props = {
 const CategoryWidget: FC<Props> = ({ element }) => {
   const { branch , area} = useAppSelector((state) => state);
   const { t } = useTranslation();
+
   return (
     <Link
       href={appLinks.productIndex(
