@@ -24,12 +24,13 @@ const BackBtn: FC<Props> = ({
   const {
     appSetting: { currentModule },
     locale: { lang, otherLang },
-    cart: { items, grossTotal },
     customer: { userAgent },
   } = useAppSelector((state) => state);
+
   const { data: cartItems, isSuccess } = useGetCartProductsQuery({
     UserAgent: userAgent,
   });
+  
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { t } = useTranslation();

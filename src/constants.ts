@@ -27,10 +27,10 @@ export const appLinks = {
     }`,
 
   productShow: (
-    id: string,
-    branchId?: string,
+    id: string,   
     product_id?: number,
     slug?: string,
+    branchId?: string,
     areaId?: string
   ) =>
     `/product/show/${id}?product_id=${product_id}&slug=${kebabCase(

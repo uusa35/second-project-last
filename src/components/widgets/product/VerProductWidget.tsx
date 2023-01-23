@@ -25,10 +25,10 @@ const VerProductWidget: FC<Props> = ({ element }): JSX.Element => {
   return (
     <Link
       href={`${appLinks.productShow(
-        element.id.toString(),
-        branchId,
+        element.id.toString(),     
         element.id,
         element.name,
+        branchId,
         areaId
       )}`}
       className={`h-36 shadow-7xl rounded-lg mb-10 block border-gray-100 border-2`}
