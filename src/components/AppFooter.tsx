@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { FC, Suspense } from 'react';
+import { FC, Suspense, useState } from 'react';
 import {
   appLinks,
   footerBtnClass,
@@ -97,6 +97,10 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
     }
   };
 
+  const [showModal, SetShowModal] = useState(false);
+
+  
+  
   return (
     <Suspense>
       <footer
@@ -176,50 +180,9 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
             </Link>
           </div>
         )}
-        {showFooterElement === 'vendor_show' && (
-          <div className="w-full py-8 px-4">
-            <div className="py-5">
-              <button className={`${submitBtnClass}`}>
-                <div className="flex justify-center items-center">
-                  <CustomImage
-                    className="w-5 h-5"
-                    src={FeedbackIcon}
-                    alt={t('feedback')}
-                  />
-                  <p
-                    className="text-white px-2"
-                    suppressHydrationWarning={suppressText}
-                  >
-                    {t('leave_feedback')}
-                  </p>
-                </div>
-              </button>
-            </div>
-            <div className="flex justify-evenly items-center w-[80%] m-auto">
-              <Link href={'/'}>
-                <CustomImage
-                  className="w-5 h-5"
-                  src={Facebook}
-                  alt={t('facebook')}
-                />
-              </Link>
-              <Link href={'/'}>
-                <CustomImage
-                  className="w-5 h-5"
-                  src={Instagram}
-                  alt={t('instagram')}
-                />
-              </Link>
-              <Link href={'/'}>
-                <CustomImage
-                  className="w-5 h-5"
-                  src={Twitter}
-                  alt={t('twiiter')}
-                />
-              </Link>
-            </div>
-          </div>
-        )}
+        {/* {showFooterElement === 'vendor_show' && (
+          
+        )} */}
         <PoweredByQ />
       </footer>
     </Suspense>
