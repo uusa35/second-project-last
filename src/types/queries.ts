@@ -121,4 +121,10 @@ export interface Address {
   address: { [key: string]: any };
 }
 
+export interface Feedback {
+  user_name: string;
+  rate: number;
+  note: string;
+  phone: number | null
+}
 
