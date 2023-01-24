@@ -20,9 +20,11 @@ import CustomImage from '@/components/CustomImage';
 import {
   useAddToCartMutation,
   useGetCartProductsQuery,
+  useLazyCheckPromoCodeQuery,
   useLazyGetCartProductsQuery,
 } from '@/redux/api/cartApi';
-import { filter, isEmpty, isNull } from 'lodash';
+import { filter, isEmpty, isNull, kebabCase, lowerCase } from 'lodash';
+import { setCartPromoSuccess } from '@/redux/slices/cartSlice';
 
 type Props = {
   handleSubmit?: () => void;
@@ -36,19 +38,21 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
     locale: { isRTL },
     productCart,
     branch: { id: branchId },
+    cart: { promoCode: coupon },
     area,
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const router = useRouter();
   const [triggerAddToCart] = useAddToCartMutation();
-  const { data: cartFromServer, isSuccess: serverCartSuccess } =
-    useGetCartProductsQuery({
-      UserAgent: userAgent,
-    });
   const [triggerGetCartProducts] = useLazyGetCartProductsQuery();
-  const { data: cartItems, isSuccess } = useGetCartProductsQuery({
+  const {
+    data: cartItems,
+    isSuccess,
+    refetch: refetchCart,
+  } = useGetCartProductsQuery({
     UserAgent: userAgent,
   });
+  const [triggerCheckPromoCode] = useLazyCheckPromoCodeQuery();
 
   console.log('branch', branchId);
   console.log('area', area.id);
@@ -61,33 +65,117 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
             showToastMessage({ content: `choose_area_or_branch`, type: `info` })
           )
         );
-    }
-    if (!productCart.enabled) {
-      dispatch(
-        showToastMessage({
-          content: `please_review_sections_some_r_required`,
-          type: `info`,
-        })
-      );
     } else {
-      if ((branchId || area.id) && !isEmpty(productCart) && userAgent) {
-        triggerAddToCart({
-          process_type: method,
-          area_branch:
-            method === 'delivery' ? area.id : method === 'pickup' && branchId,
-          body: {
-            UserAgent: userAgent,
-            Cart:
-              serverCartSuccess &&
-              cartFromServer.data &&
-              cartFromServer.data.Cart
-                ? filter(
-                    cartFromServer.data.Cart,
-                    (i) => i.id !== productCart.id
-                  ).concat(productCart)
-                : [productCart],
-          },
+      if (!productCart.enabled) {
+        dispatch(
+          showToastMessage({
+            content: `please_review_sections_some_r_required`,
+            type: `info`,
+          })
+        );
+      } else {
+        if (
+          (isNull(branchId) ?? isNull(area.id)) &&
+          !isEmpty(productCart) &&
+          userAgent
+        ) {
+          await triggerAddToCart({
+            process_type: method,
+            area_branch:
+              method === 'delivery' ? area.id : method === 'pickup' && branchId,
+            body: {
+              UserAgent: userAgent,
+              Cart:
+                cartItems && cartItems.data && cartItems.data.Cart
+                  ? filter(
+                      cartItems.data.Cart,
+                      (i) => i.id !== productCart.id
+                    ).concat(productCart)
+                  : [productCart],
+            },
+          }).then((r: any) => {
+            if (
+              r &&
+              r.data &&
+              r.data.status &&
+              r.data.data &&
+              r.data.data.Cart &&
+              r.data.data.Cart.length > 0
+            ) {
+              triggerGetCartProducts({ UserAgent: userAgent }).then((r) => {
+                console.log('getCart', r); /// case here to change
+                if (r.data && r.data.data && r.data.data.Cart) {
+                }
+                dispatch(
+                  showToastMessage({
+                    content: 'item_added_successfully',
+                    type: `success`,
+                  })
+                );
+              });
+            }
+          });
+        }
+      }
+    }
+  };
+
+  const handleCartIndex = async () => {
+    if (
+      (isNull(branchId) ?? isNull(area.id)) &&
+      !isEmpty(productCart) &&
+      userAgent
+    ) {
+      // coupon case
+      if (
+        coupon.length > 3 &&
+        userAgent &&
+        isSuccess &&
+        cartItems &&
+        cartItems.data &&
+        !isEmpty(cartItems.data?.Cart)
+      ) {
+        await triggerCheckPromoCode({
+          userAgent,
+          PromoCode: coupon,
         }).then((r: any) => {
+          if (r.data && r.data.status && r.data.promoCode) {
+            // promoCode Success case
+            console.log('r=====>', r.data.promoCode);
+            dispatch(setCartPromoSuccess(r.data.promoCode));
+            refetchCart();
+            dispatch(
+              showToastMessage({
+                content: lowerCase(kebabCase(r.data.msg)),
+                type: `success`,
+              })
+            );
+          } else if (r.error && r.error?.data && r.error?.data?.msg) {
+            dispatch(
+              showToastMessage({
+                content: lowerCase(kebabCase(r.error.data.msg)),
+                type: `error`,
+              })
+            );
+          }
+        });
+      }
+      triggerAddToCart({
+        process_type: method,
+        area_branch:
+          method === 'delivery' ? area.id : method === 'pickup' && branchId,
+        body: {
+          UserAgent: userAgent,
+          Cart:
+            cartItems && cartItems.data && cartItems.data.Cart
+              ? filter(
+                  cartItems.data.Cart,
+                  (i) => i.id !== productCart.id
+                ).concat(productCart)
+              : [productCart],
+        },
+      })
+        .then((r: any) => {
           if (
             r &&
             r.data &&
@@ -97,6 +185,9 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
             r.data.data.Cart.length > 0
           ) {
             triggerGetCartProducts({ UserAgent: userAgent }).then((r) => {
+              console.log('getCart', r);
+              if (r.data && r.data.data && r.data.data.Cart) {
+              }
               dispatch(
                 showToastMessage({
                   content: 'item_added_successfully',
@@ -105,8 +196,8 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
               );
             });
           }
-        });
-      }
+        })
+        .then(() => router.push(appLinks.customerInfo.path));
     }
   };
 
@@ -145,7 +236,7 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
               <button
                 className={`${footerBtnClass}`}
                 suppressHydrationWarning={suppressText}
-                onClick={() => router.push(appLinks.customerInfo.path)}
+                onClick={() => handleCartIndex()}
               >
                 {t('continue')}
               </button>

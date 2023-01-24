@@ -26,6 +26,11 @@ import PaymentSummary from '@/widgets/cart/review/PaymentSummary';
 import TextTrans from '@/components/TextTrans';
 import { AppQueryResult } from '@/types/queries';
 import { setNotes } from '@/redux/slices/customerSlice';
+import {
+  setCartPromoCode,
+  setCartPromoSuccess,
+  setCartTotalAndSubTotal,
+} from '@/redux/slices/cartSlice';
 const CartIndex: NextPage = (): JSX.Element => {
   const { t } = useTranslation();
   const {
@@ -40,7 +45,7 @@ const CartIndex: NextPage = (): JSX.Element => {
     data: cartItems,
     isSuccess,
     isLoading,
-    refetch: refetcCart,
+    refetch: refetchCart,
   } = useGetCartProductsQuery<{
     data: AppQueryResult<ServerCart>;
     isSuccess: boolean;
@@ -50,6 +55,19 @@ const CartIndex: NextPage = (): JSX.Element => {
     UserAgent: userAgent,
   });
   const [triggerCheckPromoCode] = useLazyCheckPromoCodeQuery();
+
+  useEffect(() => {
+    console.log('here');
+    if (
+      isSuccess &&
+      cartItems.data &&
+      cartItems.data.Cart &&
+      !isEmpty(cartItems)
+    ) {
+      const { total, subTotal, delivery_fees }: any = cartItems.data;
+      dispatch(setCartTotalAndSubTotal({ total, subTotal, delivery_fees }));
+    }
+  }, [cartItems]);
 
   useEffect(() => {
     dispatch(setCurrentModule(t('cart')));
@@ -66,28 +84,39 @@ const CartIndex: NextPage = (): JSX.Element => {
       isSuccess &&
       !isEmpty(cartItems.data?.Cart)
     ) {
-      await triggerCheckPromoCode({
-        userAgent,
-        PromoCode: coupon,
-      }).then((r: any) => {
-        if (r.data && r.data.status && r.data.promoCode) {
-          // promoCode Success
-          console.log('r=====>', r.data.promoCode);
-          dispatch(
-            showToastMessage({
-              content: lowerCase(kebabCase(r.data.msg)),
-              type: `success`,
-            })
-          );
-        } else if (r.error && r.error?.data && r.error?.data?.msg) {
-          dispatch(
-            showToastMessage({
-              content: lowerCase(kebabCase(r.error.data.msg)),
-              type: `error`,
-            })
-          );
-        }
-      });
+      dispatch(setCartPromoCode(coupon));
+      if (
+        coupon.length > 3 &&
+        userAgent &&
+        isSuccess &&
+        cartItems &&
+        cartItems.data &&
+        !isEmpty(cartItems.data?.Cart)
+      ) {
+        await triggerCheckPromoCode({
+          userAgent,
+          PromoCode: coupon,
+        }).then((r: any) => {
+          if (r.data && r.data.status && r.data.promoCode) {
+            // promoCode Success case
+            dispatch(setCartPromoSuccess(r.data.promoCode));
+            refetchCart();
+            dispatch(
+              showToastMessage({
+                content: lowerCase(kebabCase(r.data.msg)),
+                type: `success`,
+              })
+            );
+          } else if (r.error && r.error?.data && r.error?.data?.msg) {
+            dispatch(
+              showToastMessage({
+                content: lowerCase(kebabCase(r.error.data.msg)),
+                type: `error`,
+              })
+            );
+          }
+        });
+      }
     }
   };
 
@@ -197,7 +226,10 @@ const CartIndex: NextPage = (): JSX.Element => {
           </div>
         ) : (
           <div className={`space-y-8`}>
-            <p className="mx-7 text-lg capitalize" suppressHydrationWarning={suppressText}>
+            <p
+              className="mx-7 text-lg capitalize"
+              suppressHydrationWarning={suppressText}
+            >
               {t('items')}
             </p>
             {isSuccess &&
@@ -380,14 +412,7 @@ const CartIndex: NextPage = (): JSX.Element => {
                 className={`border-0 border-b-2 border-b-gray-200 w-full focus:ring-transparent capitalize`}
               />
             </div>
-            {isSuccess && (
-              <PaymentSummary
-                total={parseFloat(cartItems.data.total)}
-                subTotal={parseFloat(cartItems.data.subTotal)}
-                delivery={cartItems.data.delivery_fees}
-                isLoading={isLoading}
-              />
-            )}
+            {isSuccess && <PaymentSummary />}
           </div>
         )}
       </MainContentLayout>

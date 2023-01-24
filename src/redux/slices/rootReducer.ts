@@ -34,7 +34,7 @@ export const rootReducer = combineReducers({
   [appSettingSlice.name]: appSettingSlice.reducer,
   [authSlice.name]: authSlice.reducer,
   [appLoadingSlice.name]: appLoadingSlice.reducer,
-  // [cartSlice.name]: cartSlice.reducer,
+  [cartSlice.name]: cartSlice.reducer,
   [customerSlice.name]: customerSlice.reducer,
   [productCartSlice.name]: productCartSlice.reducer,
   [orderSlice.name]: orderSlice.reducer,

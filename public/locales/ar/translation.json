@@ -472,5 +472,6 @@
   "phone_is_required": "رقم الهاتف مطلوب",
   "email_is_required": "الإيميل مطلوب",
   "all_fields_r_required" : "جميع الحقول مطلوبة.",
-  "block_is_required": "البلوك مطلوب"
+  "block_is_required": "البلوك مطلوب",
+  "promo_code_validation" : "تم تفعيل كود الخصم"
 }

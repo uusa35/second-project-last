@@ -1,59 +1,59 @@
-import { FC, Suspense } from 'react';
+import { FC, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useAppSelector } from '@/redux/hooks';
 import { suppressText } from '@/constants/*';
-import LoadingSpinner from '@/components/LoadingSpinner';
 import { isNull } from 'lodash';
+import { useAppSelector } from '@/redux/hooks';
 
-type Props = {
-  total: number;
-  subTotal: number;
-  delivery: number | string | null;
-  isLoading: boolean;
-};
-const PaymentSummary: FC<Props> = ({
-  total,
-  subTotal,
-  delivery,
-  isLoading,
-}) => {
+const PaymentSummary: FC = () => {
   const { t } = useTranslation();
+  const {
+    promoCode: coupon,
+    promoEnabled,
+    subTotal,
+    total,
+    delivery_fees,
+  } = useAppSelector((state) => state.cart);
+
+  useEffect(() => {}, [promoEnabled]);
+
   return (
     <div className={`px-4 py-4 capitalize`}>
-      {isLoading ? (
-        <LoadingSpinner fullWidth={false} />
-      ) : (
-        <>
-          <div className="flex justify-between mb-3 text-lg">
-            <p suppressHydrationWarning={suppressText}>{t('subtotal')} </p>
-            <div className={`flex flex-row`}>
-              <p suppressHydrationWarning={suppressText} className={`px-2`}>
-                {subTotal}
-              </p>
-              <p>{t('kwd')}</p>
-            </div>
+      <>
+        <div className="flex justify-between mb-3 text-lg">
+          <p suppressHydrationWarning={suppressText}>{t('subtotal')} </p>
+          <div className={`flex flex-row`}>
+            <p suppressHydrationWarning={suppressText} className={`px-2`}>
+              {promoEnabled ? coupon.total_cart_after_tax : subTotal}
+            </p>
+            <p>{t('kwd')}</p>
           </div>
-          <div className="flex justify-between mb-3 text-lg">
-            <p suppressHydrationWarning={suppressText}>{t('delivery_fees')}</p>
-            <p suppressHydrationWarning={suppressText}></p>
-            <div className={`flex flex-row`}>
-              <p suppressHydrationWarning={suppressText} className={`px-2`}>
-                {isNull(delivery) ? 0 : delivery}
-              </p>
-              <p>{t('kwd')}</p>
-            </div>
+        </div>
+        <div className="flex justify-between mb-3 text-lg">
+          <p suppressHydrationWarning={suppressText}>{t('delivery_fees')}</p>
+          <p suppressHydrationWarning={suppressText}></p>
+          <div className={`flex flex-row`}>
+            <p suppressHydrationWarning={suppressText} className={`px-2`}>
+              {promoEnabled
+                ? coupon.free_delivery === `false`
+                  ? 0
+                  : coupon.free_delivery
+                : isNull(delivery_fees)
+                ? 0
+                : delivery_fees}
+            </p>
+            <p>{t('kwd')}</p>
           </div>
-          <div className="flex justify-between mb-3 text-lg">
-            <p suppressHydrationWarning={suppressText}>{t('total')}</p>
-            <div className={`flex flex-row`}>
-              <p suppressHydrationWarning={suppressText} className={`px-2`}>
-                {total}
-              </p>
-              <p>{t('kwd')}</p>
-            </div>
+        </div>
+        <div className="flex justify-between mb-3 text-lg">
+          <p suppressHydrationWarning={suppressText}>{t('total')}</p>
+          <div className={`flex flex-row`}>
+            <p suppressHydrationWarning={suppressText} className={`px-2`}>
+              {promoEnabled ? coupon.total_cart_before_tax : total}
+            </p>
+            <p>{t('kwd')}</p>
           </div>
-        </>
-      )}
+        </div>
+      </>
     </div>
   );
 };

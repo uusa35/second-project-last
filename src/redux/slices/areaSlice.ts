@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Area } from '@/types/queries';
+import { appSettingSlice } from './appSettingSlice';
 
 const initialState: Area = {
   id: null,
@@ -16,6 +17,16 @@ export const areaSlice = createSlice({
       action.payload,
     removeArea: (state: typeof initialState, action: PayloadAction<void>) =>
       initialState,
+  },
+  extraReducers: (builder) => {
+    builder.addCase(
+      appSettingSlice.actions.setCartMethod,
+      (state, action) => {
+        if(action.payload === 'pickup'){
+          return initialState
+        }
+      }
+    );
   },
 });
 
