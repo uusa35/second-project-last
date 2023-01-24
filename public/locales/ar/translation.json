@@ -473,5 +473,11 @@
   "email_is_required": "الإيميل مطلوب",
   "all_fields_r_required" : "جميع الحقول مطلوبة.",
   "block_is_required": "البلوك مطلوب",
-  "promo_code_validation" : "تم تفعيل كود الخصم"
+  "promo_code_validation" : "تم تفعيل كود الخصم",
+  "thanks_for_your_feedback": "شكرًا لتقييمك",
+  "can_be_better": "يمكن أن يكون أفضل",
+  "it_was_okay": "إنه حسنًا",
+  "amazing": "مذهل!",
+  "note_is_required": "الملاحظات مطلوبة",
+  "optional": "اختياري"
 }

@@ -462,5 +462,11 @@
   "email_is_required": "email is required",
   "all_fields_r_required" : "all fields are required.",
   "block_is_required": "block is required",
-  "promo_code_validation" : "promo code activated and applied on your cart."
+  "promo_code_validation" : "promo code activated and applied on your cart.",
+  "thanks_for_your_feedback": "thanks for your feedback",
+  "can_be_better": "can_be_better",
+  "it_was_okay": "it_was_okay",
+  "amazing": "amazing!",
+  "note_is_required": "note is required",
+  "optional": "optional"
 }
