@@ -64,20 +64,11 @@ const CartAddress: NextPage = (): JSX.Element => {
     date: new Date(),
     time: new Date(),
   });
-  yup.addMethod(yup.object, 'atLeastOneOf', function (list) {
-    return this.test({
-      name: 'atLeastOneOf',
-      message: 'select_atleast_one_address_field',
-      exclusive: true,
-      params: { keys: list.join(', ') },
-      test: (value) => value == null || list.some((f: any) => value[f] != null),
-    });
-  });
 
   const schema = yup
     .object()
     .shape({
-      block: yup.string(),
+      block: yup.string().required(),
       street: yup.string(),
       house_no: yup.string(),
       avenue: yup.string(),
@@ -85,17 +76,7 @@ const CartAddress: NextPage = (): JSX.Element => {
       floor_no: yup.string(),
       office_no: yup.string(),
       additional: yup.string(),
-    })
-    .atLeastOneOf([
-      'block',
-      'street',
-      'house_no',
-      'avenue',
-      'paci',
-      'floor_no',
-      'office_no',
-      'additional',
-    ]);
+    }).required();
 
   const {
     register,
@@ -106,7 +87,7 @@ const CartAddress: NextPage = (): JSX.Element => {
   } = useForm<any>({
     resolver: yupResolver(schema),
     defaultValues: {
-      address_type: ``,
+      address_type: openTab ?? ``,
       longitude: ``,
       latitude: ``,
       customer_id: id ?? ``,
@@ -189,17 +170,6 @@ const CartAddress: NextPage = (): JSX.Element => {
               })
             );
         }
-        // if (r.data.Data.toLowerCase() === 'open') {
-        // }
-        // else if (r.data.Data.toLowerCase() === 'close') {
-        // }
-      } else {
-        // dispatch(
-        //   showToastMessage({
-        //     content: `select_atleast_one_address_field`,
-        //     type: `error`,
-        //   })
-        // );
       }
     });
   };
@@ -220,16 +190,8 @@ const CartAddress: NextPage = (): JSX.Element => {
 
   const handelSaveAddress = async (body: any) => {
     await AddAddress({
-      // body: {
-      //   address_type: openTab,
-      //   longitude: '',
-      //   latitude: '',
-      //   customer_id: id,
-      //   address: { ...selectedAddressFields },
-      // },
-      body,
+     body
     }).then((r: any) => {
-      console.log('add address res', r);
       if (r.data && r.data.status) {
         dispatch(
           showToastMessage({
@@ -239,14 +201,7 @@ const CartAddress: NextPage = (): JSX.Element => {
         );
         dispatch(setCustomerAddress(r.data.Data));
         checkTimeAvilability();
-      } else {
-        // dispatch(
-        //   showToastMessage({
-        //     content: `select_atleast_one_address_field`,
-        //     type: `error`,
-        //   })
-        // );
-      }
+      } 
     });
   };
   console.log({ errors });
@@ -256,16 +211,6 @@ const CartAddress: NextPage = (): JSX.Element => {
       await checkTimeAvilability();
     }
     if (method === 'delivery') {
-      // if (Object.keys(selectedAddressFields).length === 0) {
-      //   dispatch(
-      //     showToastMessage({
-      //       content: `select_atleast_one_address_field`,
-      //       type: `info`,
-      //     })
-      //   );
-      // } else {
-
-      // }
       await handelSaveAddress(body);
 
       // console.log({
@@ -477,7 +422,16 @@ const CartAddress: NextPage = (): JSX.Element => {
                       aria-invalid={errors.block ? 'true' : 'false'}
                       onChange={(e) => setValue('block', e.target.value)}
                     />
-
+                    <div>
+                      {errors?.block?.message && (
+                        <p
+                          className={`text-base text-red-800 font-semibold py-2 capitalize`}
+                          suppressHydrationWarning={suppressText}
+                        >
+                          {t(`block_is_required`)}
+                        </p>
+                      )}
+                    </div>
                     <input
                       placeholder={`${t(`street`)}`}
                       className={`${addressInputField}`}
