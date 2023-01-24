@@ -10,6 +10,7 @@ import { Area, Branch } from '@/types/queries';
 import { setBranch } from '@/redux/slices/branchSlice';
 import { setArea } from '@/redux/slices/areaSlice';
 import { useRouter } from 'next/router';
+import { isNull } from 'lodash';
 
 type Props = {
   SelectedAreaOrBranch: Branch | Area | undefined;
@@ -41,11 +42,14 @@ const ChangeVendorModal: FC<Props> = ({
         process_type: method,
         area_branch: SelectedAreaOrBranch.id?.toString() ?? '',
       }).then(() => {
-        router.push(previousRoute).then(() => {
-          method === `pickup`
-            ? dispatch(setBranch(SelectedAreaOrBranch as Branch))
-            : dispatch(dispatch(setArea(SelectedAreaOrBranch as Area)));
-        });
+        method === `pickup`
+          ? dispatch(setBranch(SelectedAreaOrBranch as Branch))
+          : dispatch(dispatch(setArea(SelectedAreaOrBranch as Area)));
+        if (isNull(previousRoute)) {
+          router.push(previousRoute);
+        } else {
+          router.back();
+        }
       });
     }
   };

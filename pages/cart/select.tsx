@@ -115,11 +115,14 @@ const SelectMethod: NextPage<Props> = ({ previousRoute }): JSX.Element => {
       setShowChangeLocModal(true);
     } else {
       if (selectedLocation && !showChangeLocModal) {
-        router.push(previousRoute).then(() => {
-          method === `pickup`
-            ? dispatch(setBranch(selectedLocation as Branch))
-            : dispatch(dispatch(setArea(selectedLocation as Area)));
-        });
+        method === `pickup`
+          ? dispatch(setBranch(selectedLocation as Branch))
+          : dispatch(dispatch(setArea(selectedLocation as Area)));
+        if (!isNull(previousRoute)) {
+          router.push(previousRoute);
+        } else {
+          router.back();
+        }
       }
     }
   };
@@ -257,7 +260,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
     async ({ req }) => {
       return {
         props: {
-          previousRoute: req.headers.referer,
+          previousRoute: req.headers.referer ?? null,
         },
       };
     }
