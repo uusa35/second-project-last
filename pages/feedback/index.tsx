@@ -8,7 +8,11 @@ import Comment from '@/appIcons/comment.svg';
 import Phone from '@/appIcons/phone.svg';
 import CustomImage from '@/components/CustomImage';
 import { useAppSelector } from '@/redux/hooks';
-
+import { useCreateFeedbackMutation } from '@/redux/api/feedbackApi';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import { submitBtnClass, suppressText } from '@/constants/*';
+import { useForm } from 'react-hook-form';
 type Props = {
   isOpen: boolean;
   ariaHideApp: boolean;
@@ -23,11 +27,48 @@ const Feedback: NextPage<Props> = ({
   const {
     locale: { isRTL },
   } = useAppSelector((state) => state);
+  
+  const schema = yup
+  .object({
+    user_name: yup.string().min(2).max(50).required(),
+    rate: yup.number().min(1).max(3).required(),
+    note: yup.string().required().min(2).max(50),
+    phone: yup.number().min(100000).max(999999999999),
+  })
+  .required();
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    control,
+    formState: { errors },
+  } = useForm<any>({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      user_name: ``,
+      rate: ``,
+      note: ``,
+      phone: `` 
+    },
+  });
+
+  const [triggerCreateFeedback] = useCreateFeedbackMutation();
+
+  const onSubmit = async (body: any) => {
+    await triggerCreateFeedback(body)
+    .then((r: any) => {
+      console.log({res: r, body})
+
+      if(r.data && r.data.status) {
+        console.log({res: r})
+      }
+    })
+  }
   return (
     <Modal
       isOpen={isOpen}
       ariaHideApp={ariaHideApp}
-      className={`absolute bottom-0 rounded-t-lg h-1/4 lg:w-2/6 ${
+      className={`rounded-t-lg h-1/4 w-full ${
         isRTL ? `right-0` : `left-0`
       }`}
       style={{ overlay: { backgroundColor: 'rgba(0, 0, 0, 0.5)' } }}
@@ -54,25 +95,54 @@ const Feedback: NextPage<Props> = ({
             X
           </button>
         </div>
-
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className="px-4">
+          <div className='flex'>
+            <button onClick={()=>setValue('rate', 1)}>
+                {t('can_be_better')}
+            </button>
+            <button onClick={()=>setValue('rate', 2)}>
+                {t('it_was_okay')}
+            </button>
+            <button onClick={()=>setValue('rate', 3)}>
+                {t('amazing')}
+            </button>
+            {errors?.rate?.message && (
+            <p
+              className={`text-base text-red-800 font-semibold py-2 capitalize`}
+              suppressHydrationWarning={suppressText}
+            >
+              {t('rate_is_required')}
+            </p>
+          )}          </div>
           <div className="flex text-black">
             <Image src={Card} alt="card" width={20} height={20} />
             <input
-              //   onChange={(e)=>{handelChangeDate('user_name',e.target.value)}}
+              {...register('name')}
               className={`border-0 focus:ring-transparent outline-none capitalize`}
               type="text"
               placeholder={`${t(`enter_your_name`)}`}
+              onChange={(e) => setValue('user_name', e.target.value)}
+              aria-invalid={errors.user_name ? 'true' : 'false'}
             />
           </div>
+          {errors?.user_name?.message && (
+            <p
+              className={`text-base text-red-800 font-semibold py-2 capitalize`}
+              suppressHydrationWarning={suppressText}
+            >
+              {t('name_is_required')}
+            </p>
+          )}
           <div className="my-2 px-5 py-1 bg-gray-100"></div>
           <div className="flex justify-between">
             <div className="flex text-black">
               <Image src={Phone} alt="phone" width={20} height={20} />
               <input
-                //   onChange={(e)=>{handelChangeDate('phone',e.target.value)}}
                 className={`border-0 focus:ring-transparent outline-none capitalize`}
                 type="text"
+                {...register('phone')}
+                onChange={(e) => setValue('phone', e.target.value)}
                 placeholder={`${t(`enter_your_phone`)}`}
               />
             </div>
@@ -85,20 +155,33 @@ const Feedback: NextPage<Props> = ({
           <div className="flex text-black">
             <Image src={Comment} alt="comment" width={20} height={20} />
             <input
-              //   onChange={(e)=>{handelChangeDate('note',e.target.value)}}
+              {...register('note')}
+              aria-invalid={errors.note ? 'true' : 'false'}
               className={`border-0 focus:ring-transparent outline-none capitalize`}
               type="text"
               placeholder={`${t(`say_something_about_us`)}`}
+              onChange={(e) => setValue('note', e.target.value)}
             />
+          </div>
+          <div>
+            {errors?.note?.message && (
+              <p
+                className={`text-base text-red-800 font-semibold py-2 capitalize`}
+                suppressHydrationWarning={suppressText}
+              >
+                {t('note_is_required')}
+              </p>
+            )}
           </div>
         </div>
 
         {/* buttons */}
         <div className="px-5 pb-5">
-          <button className="w-full py-2 bg-btnBG text-white rounded-md font-bold capitalize">
+          <button className={`w-full capitalize ${submitBtnClass}`}>
             {t('send_feedback')}
           </button>
         </div>
+        </form>
       </div>
     </Modal>
   );
