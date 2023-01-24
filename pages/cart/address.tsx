@@ -70,7 +70,7 @@ const CartAddress: NextPage = (): JSX.Element => {
       message: 'select_atleast_one_address_field',
       exclusive: true,
       params: { keys: list.join(', ') },
-      test: (value) => value == null || list.some((f) => value[f] != null),
+      test: (value) => value == null || list.some((f: any) => value[f] != null),
     });
   });
 
@@ -112,7 +112,7 @@ const CartAddress: NextPage = (): JSX.Element => {
       customer_id: id ?? ``,
       address: {
         block: ``,
-        string: ``,
+        street: ``,
         house_no: ``,
         avenue: ``,
         paci: ``,
@@ -169,10 +169,11 @@ const CartAddress: NextPage = (): JSX.Element => {
               router.push(appLinks.orderReview.path);
             }
             break;
-
           case 'busy':
+            return null;
+            break;
           case 'close':
-            dispatch(
+            return dispatch(
               showToastMessage({
                 content: `shop is ${r.data.Data.toLowerCase()} at this time`,
                 type: `error`,
@@ -217,15 +218,16 @@ const CartAddress: NextPage = (): JSX.Element => {
   const [AddAddress, { isLoading: AddAddressLoading }] =
     useCreateAddressMutation();
 
-  const handelSaveAddress = async () => {
+  const handelSaveAddress = async (body: any) => {
     await AddAddress({
-      body: {
-        address_type: openTab,
-        longitude: '',
-        latitude: '',
-        customer_id: id,
-        address: { ...selectedAddressFields },
-      },
+      // body: {
+      //   address_type: openTab,
+      //   longitude: '',
+      //   latitude: '',
+      //   customer_id: id,
+      //   address: { ...selectedAddressFields },
+      // },
+      body,
     }).then((r: any) => {
       console.log('add address res', r);
       if (r.data && r.data.status) {
@@ -248,9 +250,10 @@ const CartAddress: NextPage = (): JSX.Element => {
     });
   };
   console.log({ errors });
-  const onSubmit = async () => {
+  const onSubmit = async (body: any) => {
+    console.log('the body', body);
     if (method === 'pickup') {
-      checkTimeAvilability();
+      await checkTimeAvilability();
     }
     if (method === 'delivery') {
       // if (Object.keys(selectedAddressFields).length === 0) {
@@ -263,7 +266,7 @@ const CartAddress: NextPage = (): JSX.Element => {
       // } else {
 
       // }
-      handelSaveAddress();
+      await handelSaveAddress(body);
 
       // console.log({
       //   type: prefrences.type,
