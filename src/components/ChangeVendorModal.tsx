@@ -16,7 +16,7 @@ type Props = {
   SelectedAreaOrBranch: Branch | Area | undefined;
   OnClose: () => void;
   OpenModal: boolean;
-  previousRoute: string;
+  previousRoute: string | null;
 };
 
 const ChangeVendorModal: FC<Props> = ({
@@ -45,7 +45,7 @@ const ChangeVendorModal: FC<Props> = ({
         method === `pickup`
           ? dispatch(setBranch(SelectedAreaOrBranch as Branch))
           : dispatch(dispatch(setArea(SelectedAreaOrBranch as Area)));
-        if (isNull(previousRoute)) {
+        if (!isNull(previousRoute)) {
           router.push(previousRoute);
         } else {
           router.back();

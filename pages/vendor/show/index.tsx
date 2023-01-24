@@ -214,7 +214,6 @@ const VendorShow: NextPage<Props> = ({ element }) => {
           </div>
         </div>
         <Feedback
-          right={true}
           isOpen={showModal}
           ariaHideApp={false}
           onRequestClose={handleClosePopup}
