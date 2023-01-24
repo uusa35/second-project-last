@@ -73,7 +73,6 @@ const CustomerInformation: NextPage = (): JSX.Element => {
   }, []);
 
   const onSubmit = async (body: any) => {
-    console.log('submit', body);
     // console.log(userData);
     // if (
     //   userData.name.length < 2 ||
