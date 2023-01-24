@@ -22,7 +22,9 @@ const TrackOrder: NextPage = (): JSX.Element => {
   const [checkOrderStatus, { data: orderSuccess, isSuccess: isSuccessOrder }] =
     useLazyCheckOrderStatusQuery();
   const [orderCode, setOrderCode] = useState<string | null>(null);
-  const [renderedorderCode, setRenderedOrderCode] = useState<string | null>(null);
+  const [renderedorderCode, setRenderedOrderCode] = useState<string | null>(
+    null
+  );
 
   const router = useRouter();
   const { order_code } = router.query;
@@ -41,16 +43,16 @@ const TrackOrder: NextPage = (): JSX.Element => {
   // );
   const handleChange = (order_code: string) => {
     setOrderCode(order_code);
-    if (orderCode && orderCode.length > 2) {
+    if (orderCode && orderCode.length >= 3) {
       trigger({ order_code: `${orderCode}` });
     }
-  }
-  
+  };
+
   useEffect(() => {
-    if(!router.isReady || !router.query.order_code) return;
+    if (!router.isReady || !router.query.order_code) return;
     setRenderedOrderCode(`${order_code}`);
     handleChange(`${router.query.order_code}`);
-    }, [router.isReady, router.query.order_code, renderedorderCode]);
+  }, [router.isReady, router.query.order_code, renderedorderCode]);
 
   return (
     <Suspense fallback={<LoadingSpinner fullWidth={false} />}>
