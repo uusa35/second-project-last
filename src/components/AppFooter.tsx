@@ -106,8 +106,6 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
     }
   };
 
-  const [showModal, SetShowModal] = useState(false);
-
   return (
     <Suspense>
       <footer
