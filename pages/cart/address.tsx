@@ -246,7 +246,7 @@ const CartAddress: NextPage = (): JSX.Element => {
       <MainContentLayout>
         {/* delivery method buttons */}
         <DeliveryBtns handleSelectMethod={handleSelectMethod} />
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={method==='delivery'? handleSubmit(onSubmit): onSubmit}>
           <div className={'px-4'}>
             <div className="bg-gray-200 w-full mt-5 p-0 h-2"></div>
 
