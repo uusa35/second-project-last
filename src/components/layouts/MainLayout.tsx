@@ -126,7 +126,13 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
       {children}
       {/* Main Image & Logo */}
       <ToastAppContainer />
-      {isSuccess && <MainAsideLayout element={vendor} />}
+      <div
+        className={`hidden lg:block flex flex-row  w-full h-screen lg:w-2/4 xl:w-2/3 fixed ${
+          router.locale === 'ar' ? 'left-0' : 'right-0'
+        }`}
+      >
+        {isSuccess && <MainAsideLayout element={vendor} />}
+      </div>
     </div>
   );
 };
