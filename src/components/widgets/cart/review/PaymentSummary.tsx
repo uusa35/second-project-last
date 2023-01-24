@@ -1,13 +1,12 @@
-import { FC, Suspense } from 'react';
+import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useAppSelector } from '@/redux/hooks';
 import { suppressText } from '@/constants/*';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { isNull } from 'lodash';
 
 type Props = {
-  total: number;
-  subTotal: number;
+  total: number | string;
+  subTotal: number | string;
   delivery: number | string | null;
   isLoading: boolean;
 };
