@@ -28,8 +28,6 @@ const ChangeVendorModal: FC<Props> = ({
   const {
     customer: { userAgent },
     appSetting: { method },
-    branch: { id: branchId },
-    area: { id: areaId },
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -50,13 +48,6 @@ const ChangeVendorModal: FC<Props> = ({
         });
       });
     }
-    // if (method === 'pickup') {
-    //   dispatch(setBranch(SelectedAreaOrBranch as Branch));
-    // }
-    //
-    // if (method === 'delivery') {
-    //   dispatch(dispatch(setArea(SelectedAreaOrBranch as Area)));
-    // }
   };
 
   return (

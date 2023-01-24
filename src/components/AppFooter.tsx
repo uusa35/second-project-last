@@ -85,10 +85,12 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
                   ).concat(productCart)
                 : [productCart],
           },
-        }).then((r) => {
+        }).then((r: any) => {
           if (
+            r &&
             r.data &&
             r.data.status &&
+            r.data.data &&
             r.data.data.Cart &&
             r.data.data.Cart.length > 0
           ) {
