@@ -103,35 +103,6 @@ const SelectMethod: NextPage<Props> = ({ previousRoute }): JSX.Element => {
     );
   };
 
-  // const handleSelectArea = (a: Area) => {
-  //   if (
-  //     a.id !== selectedArea.id &&
-  //     isSuccess &&
-  //     cartItems.data &&
-  //     cartItems.data.Cart &&
-  //     !isEmpty(cartItems.data.Cart)
-  //   ) {
-  //     setShowChangeLocModal(true);
-  //   } else {
-  //     dispatch(setArea(a));
-  //   }
-  // };
-
-  // const handleSelectBranch = (b: Branch) => {
-  //   if (
-  //     b.id !== selectedArea.id &&
-  //     isSuccess &&
-  //     cartItems.data &&
-  //     cartItems.data.Cart &&
-  //     !isEmpty(cartItems.data.Cart)
-  //   ) {
-  //     setShowChangeLocModal(true);
-  //   } else {
-  //     dispatch(setBranch(b));
-  //   }
-  // };
-
-  console.log('prev', previousRoute);
   const handelContinue = async () => {
     if (
       selectedLocation?.id !== selectedArea.id ||
@@ -285,7 +256,6 @@ export default SelectMethod;
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ req }) => {
-      console.log('req ==========>', req.headers.referer);
       return {
         props: {
           previousRoute: req.headers.referer,
