@@ -118,9 +118,7 @@ const CartReview: NextPage = () => {
                 </h5>
               </div>
               <Link
-                href={{
-                  pathname: appLinks.address.path,
-                }}
+                href={appLinks.address.path}
                 className="text-primary_BG text-base font-semibold pb-4 capitalize"
                 suppressHydrationWarning={suppressText}
               >
