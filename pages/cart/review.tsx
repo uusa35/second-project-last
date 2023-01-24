@@ -311,7 +311,7 @@ const CartReview: NextPage = () => {
                 >
                   <div>
                     <CustomImage
-                      src={method.src}
+                      src={method}
                       alt="payment"
                       width={imageSizes.xs}
                       height={imageSizes.xs}
