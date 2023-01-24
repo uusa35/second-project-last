@@ -70,9 +70,9 @@ const CartReview: NextPage = () => {
     );
   };
   const paymentMethods = [
-    { id: 'visa', src: Visa },
-    { id: 'knet', src: Knet },
-    { id: 'cash', src: Cash },
+    { id: 'visa', src: Visa.src },
+    { id: 'knet', src: Knet.src },
+    { id: 'cash', src: Cash.src },
   ];
   console.log({ cartItems });
   return (

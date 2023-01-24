@@ -17,7 +17,6 @@ type Props = {
   element: OrderInvoice;
 };
 const OrderInvoice: NextPage<Props> = ({ element }): JSX.Element => {
-  console.log('element', element);
   const { vendor } = useAppSelector((state) => state);
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
