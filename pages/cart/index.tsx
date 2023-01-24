@@ -73,6 +73,7 @@ const CartIndex: NextPage = (): JSX.Element => {
         if (r.data && r.data.status && r.data.promoCode) {
           // promoCode Success
           console.log('r=====>', r.data.promoCode);
+          refetcCart();
           dispatch(
             showToastMessage({
               content: lowerCase(kebabCase(r.data.msg)),
@@ -197,7 +198,10 @@ const CartIndex: NextPage = (): JSX.Element => {
           </div>
         ) : (
           <div className={`space-y-8`}>
-            <p className="mx-7 text-lg capitalize" suppressHydrationWarning={suppressText}>
+            <p
+              className="mx-7 text-lg capitalize"
+              suppressHydrationWarning={suppressText}
+            >
               {t('items')}
             </p>
             {isSuccess &&
