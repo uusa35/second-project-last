@@ -15,13 +15,17 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import CustomImage from '@/components/CustomImage';
 import { useEffect } from 'react';
 import { setCurrentModule } from '@/redux/slices/appSettingSlice';
+import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 const OrderFailure: NextPage = (): JSX.Element => {
   const { t } = useTranslation();
   const { 
     branch: { id: branchId },
     area: { id: areaId},
-    cart: { items }
+    customer: { userAgent },
   } = useAppSelector((state) => state);
+  const { data: cartItems, isSuccess } = useGetCartProductsQuery({
+    UserAgent: userAgent,
+  });
   const dispatch = useAppDispatch();
     useEffect(() => {
       dispatch(setCurrentModule(t('order_failure')));
@@ -29,7 +33,7 @@ const OrderFailure: NextPage = (): JSX.Element => {
   return (
     <MainContentLayout>
       <div>
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center capitalize">
           <CustomImage
             src={Failure.src}
             alt={`${t('failure')}`}
@@ -64,7 +68,7 @@ const OrderFailure: NextPage = (): JSX.Element => {
             suppressHydrationWarning={suppressText}
           >
               <div className="bg-CustomRed rounded-full w-6 h-6 flex items-center justify-center border-2 border-white">
-                <p>{items.length}</p>
+                <p>{cartItems.data?.Cart?.length}</p>
               </div>
               <ShoppingBagOutlinedIcon className="w-6 h-6" />
               <p className="pt-1">{t('my_cart')}</p>

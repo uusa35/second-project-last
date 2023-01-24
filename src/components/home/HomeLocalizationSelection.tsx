@@ -102,7 +102,7 @@ const HomeLocalizationSelection: FC<Props> = ({ countries }): JSX.Element => {
   }, [country]);
 
   return (
-    <motion.div className="grid grid-cols-2 gap-x-5 gap-y-6  py-0 text-center">
+    <motion.div className="grid grid-cols-2 gap-x-5 gap-y-6  py-0 text-center capitalize">
       {/* select language */}
       <Select
         isSearchable={false}

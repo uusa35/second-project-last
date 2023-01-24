@@ -113,7 +113,7 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
       <footer
         className={`${!isRTL ? `left-0` : `right-0`} ${
           showFooterElement === `home` ? `bottom-0` : `bottom-0`
-        } fixed w-full lg:w-2/4 xl:w-1/3 h-auto flex flex-col justify-center items-center text-center bg-white bg-opacity-60`}
+        } fixed w-full lg:w-2/4 xl:w-1/3 h-auto flex flex-col justify-center items-center text-center bg-white bg-opacity-60 capitalize`}
       >
         {showFooterElement === 'product_show' && (
           <div

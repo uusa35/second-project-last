@@ -31,7 +31,7 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
   return (
     <>
       {/* Delivery / Pickup Btns */}
-      <div className="flex flex-1 w-full flex-row justify-between items-center my-2 border-t-[14px] border-stone-100 px-14 text-lg pt-8 ">
+      <div className="flex flex-1 w-full flex-row justify-between items-center my-2 border-t-[14px] border-stone-100 px-14 text-lg pt-8 capitalize">
         <button
           className={`${
             method === 'delivery' && `border-b-2 pb-4 border-b-primary_BG`
@@ -51,7 +51,7 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
           {t('pickup')}
         </button>
       </div>
-      <div className={`px-8 py-2 text-lg`}>
+      <div className={`px-8 py-2 text-lg capitalize`}>
         {!isNull(branch.id) && method === 'pickup' && (
           <Link
             href={appLinks.cartSelectMethod.path}

@@ -45,24 +45,24 @@ const MainAsideLayout: FC<Props> = ({ element }): JSX.Element => {
               <Link
                 scroll={false}
                 href={appLinks.home.path}
-                className={`flex flex-row p-1 px-4 justify-between items-center rounded-lg bg-white bg-opacity-90 text-black`}
+                className={`flex flex-row p-1 px-4 justify-between items-center rounded-lg bg-white bg-opacity-90 text-black capitalize`}
                 suppressHydrationWarning={suppressText}
               >
                 <HomeIcon className={`w-6 h-6 rtl:ml-2 ltr:mr-2`} />
-                <p suppressHydrationWarning={suppressText} className={`mt-2`}>
+                <p suppressHydrationWarning={suppressText} className={`mt-2 capitalize`}>
                   {t('home')}
                 </p>
               </Link>
               <Link
                 scroll={false}
                 href={appLinks.trackOrder.path}
-                className={`flex flex-row p-1 px-4 justify-between items-center rounded-lg bg-white bg-opacity-90 text-black`}
+                className={`flex flex-row p-1 px-4 justify-between items-center rounded-lg bg-white bg-opacity-90 text-black capitalize`}
                 suppressHydrationWarning={suppressText}
               >
                 <ClipboardDocumentCheckIcon
                   className={`w-7 h-7 rtl:ml-2 ltr:mr-2 text-stone-700`}
                 />
-                <p suppressHydrationWarning={suppressText} className={`mt-2`}>
+                <p suppressHydrationWarning={suppressText} className={`mt-2 capitalize`}>
                   {t('track_order')}
                 </p>
               </Link>
@@ -76,7 +76,7 @@ const MainAsideLayout: FC<Props> = ({ element }): JSX.Element => {
               width={imageSizes.lg}
               height={imageSizes.lg}
             />
-            <TextTrans ar={element.name_ar} en={element.name_en} />
+            <TextTrans ar={element.name_ar} en={element.name_en} className='capitalize' />
           </div>
         </div>
       </div>

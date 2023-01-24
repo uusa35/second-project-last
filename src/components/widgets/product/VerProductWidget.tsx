@@ -31,7 +31,7 @@ const VerProductWidget: FC<Props> = ({ element }): JSX.Element => {
         branchId,
         areaId
       )}`}
-      className={`h-36 shadow-7xl rounded-lg mb-10 block border-gray-100 border-2`}
+      className={`h-36 shadow-7xl rounded-lg mb-10 block border-gray-100 border-2 capitalize`}
     >
       <div className="relative">
         <div className="flex items-center">

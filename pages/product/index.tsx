@@ -63,7 +63,7 @@ const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
       <MainContentLayout>
         <div className={`px-4`}>
           {/*   search Input */}
-          <div className={`w-full`}>
+          <div className={`w-full capitalize`}>
             <div className="relative mt-1 rounded-md shadow-sm text-gray-400">
               <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center px-6">
                 <MagnifyingGlassIcon className="h-8 w-8" aria-hidden="true" />
@@ -79,7 +79,7 @@ const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
               />
             </div>
           </div>
-          <div className="flex flex-row justify-evenly items-center flex-wrap gap-3 my-3">
+          <div className="flex flex-row justify-evenly items-center flex-wrap gap-3 my-3 capitalize">
             {isSuccess &&
               topSearch &&
               topSearch.Data &&
@@ -104,7 +104,7 @@ const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
             </Link>
           </div>
 
-          <div className="my-4">
+          <div className="my-4 capitalize">
             {isEmpty(elements) && (
               <Image
                 src={NotFoundImage.src}

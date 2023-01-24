@@ -98,7 +98,7 @@ const CustomerInformation: NextPage = (): JSX.Element => {
                 <BadgeOutlined className="text-primary_BG" />
                 <input
                   {...register('name')}
-                  className={`border-0 w-full focus:ring-transparent outline-0`}
+                  className={`border-0 w-full focus:ring-transparent outline-0 capitalize`}
                   placeholder={`${t('enter_your_name')}`}
                   onChange={(e) => setValue('name', e.target.value)}
                   aria-invalid={errors.name ? 'true' : 'false'}
@@ -107,7 +107,7 @@ const CustomerInformation: NextPage = (): JSX.Element => {
               <div>
                 {errors?.name?.message && (
                   <p
-                    className={`text-base text-red-800 font-semibold py-2`}
+                    className={`text-base text-red-800 font-semibold py-2 capitalize`}
                     suppressHydrationWarning={suppressText}
                   >
                     {t('name_is_required')}
@@ -127,7 +127,7 @@ const CustomerInformation: NextPage = (): JSX.Element => {
               <div>
                 {errors?.email?.message && (
                   <p
-                    className={`text-base text-red-800 font-semibold py-2`}
+                    className={`text-base text-red-800 font-semibold py-2 capitalize`}
                     suppressHydrationWarning={suppressText}
                   >
                     {t('email_is_required')}
@@ -165,7 +165,7 @@ const CustomerInformation: NextPage = (): JSX.Element => {
               <div>
                 {errors?.phone?.message && (
                   <p
-                    className={`text-base text-red-800 font-semibold py-2`}
+                    className={`text-base text-red-800 font-semibold py-2 capitalize`}
                     suppressHydrationWarning={suppressText}
                   >
                     {t('phone_is_required')}
@@ -173,7 +173,6 @@ const CustomerInformation: NextPage = (): JSX.Element => {
                 )}
               </div>
               <GreyLine />
-              <input type="submit" />
             </div>
           </form>
         </div>

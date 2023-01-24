@@ -49,7 +49,7 @@ const MainHead: FC<Props> = ({
       </Head>
       {isLocal && false && (
         <div
-          className={`flex p-3 w-1/3 items-center bg-gray-100 rounded-md flex-col`}
+          className={`flex p-3 w-1/3 items-center bg-gray-100 rounded-md flex-col capitalize`}
           suppressHydrationWarning={suppressText}
         >
           <span
