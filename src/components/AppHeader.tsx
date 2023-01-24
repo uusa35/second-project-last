@@ -26,17 +26,15 @@ const AppHeader: FC = () => {
   return (
     <Suspense fallback={<LoadingSpinner fullWidth={false} />}>
       <header
-        className={`${
-          offset <= 80 ? `bg-white` : `bg-transparent`
-        } ${
-          isHome ? `bg-transparent`: `bg-white` 
+        className={`${offset <= 80 ? `bg-white` : `bg-transparent`} ${
+          isHome ? `bg-transparent` : `bg-white`
         } relative sticky top-0 z-50 flex flex-col justify-start items-center w-full scroll-smooth`}
       >
         {router.asPath === '/' ||
           (!router.asPath.includes('/home') && (
             <BackBtn backHome={false} offset={offset} />
           ))}
-        <SlideTopNav offset={isHome ? 100 : offset} />
+        <SlideTopNav offset={offset} />
       </header>
     </Suspense>
   );
