@@ -30,7 +30,7 @@ import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 import { wrapper } from '@/redux/store';
 
 type Props = {
-  previousRoute: string;
+  previousRoute: string | null;
 };
 const SelectMethod: NextPage<Props> = ({ previousRoute }): JSX.Element => {
   const { t } = useTranslation();
