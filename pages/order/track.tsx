@@ -47,7 +47,7 @@ const TrackOrder: NextPage = (): JSX.Element => {
   }
   
   useEffect(() => {
-    if(!router.isReady) return;
+    if(!router.isReady || !router.query.order_code) return;
     setRenderedOrderCode(`${order_code}`);
     handleChange(`${router.query.order_code}`);
     }, [router.isReady, router.query.order_code, renderedorderCode]);
