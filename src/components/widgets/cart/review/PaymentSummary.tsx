@@ -8,7 +8,7 @@ import { isNull } from 'lodash';
 type Props = {
   total: number;
   subTotal: number;
-  delivery: number | null;
+  delivery: number | string | null;
   isLoading: boolean;
 };
 const PaymentSummary: FC<Props> = ({

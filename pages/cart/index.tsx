@@ -69,9 +69,10 @@ const CartIndex: NextPage = (): JSX.Element => {
       await triggerCheckPromoCode({
         userAgent,
         PromoCode: coupon,
-      }).then((r) => {
+      }).then((r: any) => {
         if (r.data && r.data.status && r.data.promoCode) {
           // promoCode Success
+          console.log('r=====>', r.data.promoCode);
           dispatch(
             showToastMessage({
               content: lowerCase(kebabCase(r.data.msg)),
@@ -90,7 +91,7 @@ const CartIndex: NextPage = (): JSX.Element => {
     }
   };
 
-  console.log('Cart Now ==+>', cartItems?.data?.Cart);
+  console.log('Cart Now ==+>', cartItems?.data);
   const handleRemove = async (element: ProductCart) => {
     const currentItems = filter(
       cartItems.data.Cart,
@@ -98,8 +99,8 @@ const CartIndex: NextPage = (): JSX.Element => {
     );
     triggerAddToCart({
       process_type: method,
-          area_branch:
-            method === 'delivery' ? areaId : method === 'pickup' && branchId,
+      area_branch:
+        method === 'delivery' ? areaId : method === 'pickup' && branchId,
       body: {
         UserAgent: userAgent,
         Cart:
@@ -110,8 +111,8 @@ const CartIndex: NextPage = (): JSX.Element => {
             ? currentItems
             : cartItems.data.Cart, // empty Cart Case !!!
       },
-    }).then((r) => {
-      if (r.data?.status) {
+    }).then((r: any) => {
+      if (r.data && r.data?.status) {
         dispatch(
           showToastMessage({
             content: `cart_updated_successfully`,
@@ -125,8 +126,8 @@ const CartIndex: NextPage = (): JSX.Element => {
   const handleIncrease = (element: ProductCart) => {
     triggerAddToCart({
       process_type: method,
-          area_branch:
-            method === 'delivery' ? areaId : method === 'pickup' && branchId,
+      area_branch:
+        method === 'delivery' ? areaId : method === 'pickup' && branchId,
       body: {
         UserAgent: userAgent,
         Cart:
@@ -137,8 +138,8 @@ const CartIndex: NextPage = (): JSX.Element => {
               })
             : cartItems.data.Cart,
       },
-    }).then((r) => {
-      if (r.data?.status) {
+    }).then((r: any) => {
+      if (r.data && r.data?.status) {
         dispatch(
           showToastMessage({
             content: `cart_updated_successfully`,
@@ -152,8 +153,8 @@ const CartIndex: NextPage = (): JSX.Element => {
   const handleDecrease = (element: ProductCart) => {
     triggerAddToCart({
       process_type: method,
-          area_branch:
-            method === 'delivery' ? areaId : method === 'pickup' && branchId,
+      area_branch:
+        method === 'delivery' ? areaId : method === 'pickup' && branchId,
       body: {
         UserAgent: userAgent,
         Cart:
@@ -164,8 +165,8 @@ const CartIndex: NextPage = (): JSX.Element => {
               })
             : cartItems.data.Cart,
       },
-    }).then((r) => {
-      if (r.data?.status) {
+    }).then((r: any) => {
+      if (r.data && r.data?.status) {
         dispatch(
           showToastMessage({
             content: `cart_updated_successfully`,
@@ -210,7 +211,7 @@ const CartIndex: NextPage = (): JSX.Element => {
                           href={`${appLinks.productShow(
                             item.ProductID.toString(),
                             branchId,
-                            item.ProductID,
+                            item.ProductID.toString(),
                             item.ProductName,
                             areaId
                           )}`}
@@ -237,7 +238,7 @@ const CartIndex: NextPage = (): JSX.Element => {
                                 href={`${appLinks.productShow(
                                   item.ProductID.toString(),
                                   branchId,
-                                  item.ProductID,
+                                  item.ProductID.toString(),
                                   item.ProductName,
                                   areaId
                                 )}`}
@@ -250,7 +251,7 @@ const CartIndex: NextPage = (): JSX.Element => {
                             href={`${appLinks.productShow(
                               item.ProductID.toString(),
                               branchId,
-                              item.ProductID,
+                              item.ProductID.toString(),
                               item.ProductName,
                               areaId
                             )}`}
