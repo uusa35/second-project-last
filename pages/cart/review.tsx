@@ -59,14 +59,7 @@ const CartReview: NextPage = () => {
   }>({
     UserAgent: userAgent,
   });
-  const handleRemove = async (id: any) => {
-    await dispatch(
-      showToastMessage({
-        content: `item_removed_from_cart`,
-        type: `info`,
-      })
-    );
-  };
+
   const paymentMethods = [
     { id: 'visa', src: Visa.src },
     { id: 'knet', src: Knet.src },
@@ -77,15 +70,15 @@ const CartReview: NextPage = () => {
     <Suspense>
       <MainContentLayout>
         <div>
-          <div className="flex justify-center items-center py-5 px-4">
+          <div className="flex justify-center items-center p-5">
             <CustomImage
               src={TrunkClock.src}
               alt={`${t('trunk')}`}
               width={imageSizes.sm}
               height={imageSizes.sm}
-              className={`w-8 h-8`}
+              className={`w-11 h-11 shadow-lg`}
             />
-            <div className="px-2">
+            <div className="px-6">
               <h4
                 className="font-semibold text-lg capitalize"
                 suppressHydrationWarning={suppressText}
