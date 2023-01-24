@@ -459,5 +459,6 @@
   "start_ordering" : "start ordering",
   "name_is_required": "name is required",
   "phone_is_required": "phone is required",
-  "email_is_required": "email is required"
+  "email_is_required": "email is required",
+  "all_fields_r_required" : "all fields are required."
 }

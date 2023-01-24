@@ -1,6 +1,6 @@
 import { NextPage } from 'next';
 import MainContentLayout from '@/layouts/MainContentLayout';
-import { appLinks, suppressText } from '@/constants/*';
+import { appLinks, imageSizes, suppressText } from '@/constants/*';
 import { BadgeOutlined, EmailOutlined, Phone } from '@mui/icons-material';
 import GreyLine from '@/components/GreyLine';
 import { useTranslation } from 'react-i18next';
@@ -19,11 +19,11 @@ import { useSaveCustomerInfoMutation } from '@/redux/api/CustomerApi';
 import { useRouter } from 'next/router';
 import { setCustomer } from '@/redux/slices/customerSlice';
 import { useAppSelector } from '@/redux/hooks';
-import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import CustomImage from '@/components/CustomImage';
-
+import ContactImage from '@/appImages/contact_info.png';
 
 const schema = yup
   .object({
@@ -38,6 +38,7 @@ const CustomerInformation: NextPage = (): JSX.Element => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { customer } = useAppSelector((state) => state);
+  const [saveCustomerInfo] = useSaveCustomerInfoMutation();
   const {
     register,
     handleSubmit,
@@ -53,82 +54,43 @@ const CustomerInformation: NextPage = (): JSX.Element => {
       phone: customer?.phone ?? ``,
     },
   });
-  // const [userData, setUserData] = useState<CustomerInfo>({
-  //   id: customer.id ?? 0,
-  //   name: customer.name ?? ``,
-  //   email: customer.email ?? ``,
-  //   phone: customer.phone ?? ``,
-  // });
-  const [
-    saveCustomerInfo,
-    { isLoading: SaveCustomerLoading, error: customerInfoError },
-  ] = useSaveCustomerInfoMutation();
 
   useEffect(() => {
     dispatch(setCurrentModule(t('customer_info')));
     dispatch(setShowFooterElement(`customerInfo`));
-    return () => {
-      dispatch(resetShowFooterElement());
-    };
   }, []);
 
   const onSubmit = async (body: any) => {
-    console.log('submit', body);
-    // console.log(userData);
-    // if (
-    //   userData.name.length < 2 ||
-    //   userData.phone.length < 2 ||
-    //   userData.email.length < 2
-    // ) {
-    //   dispatch(
-    //     showToastMessage({
-    //       content: `some_fields_r_missing`,
-    //       type: `info`,
-    //     })
-    //   );
-    // } else {
-
-    saveCustomerInfo({
+    await saveCustomerInfo({
       body,
-    })
-      .then((r: any) => {
-        console.log({ data: r });
-        if (r.data.Data && r.data.status) {
-          dispatch(setCustomer(r.data.Data));
-        } else {
-          dispatch(
-            showToastMessage({
-              content: r.data?.message,
-              type: 'error',
-            })
-          );
-        }
-      })
-      .then(() => {
-        router.push(appLinks.address.path);
-      });
-    // }
+    }).then((r: any) => {
+      if (r.data && r.data.Data && r.data.status) {
+        router
+          .push(appLinks.address.path)
+          .then(() => dispatch(setCustomer(r.data.Data)));
+      } else {
+        dispatch(
+          showToastMessage({
+            content: `all_fields_r_required`,
+            type: 'error',
+          })
+        );
+      }
+    });
   };
 
-  console.log('customer', customer);
-
-  useEffect(() => {
-    dispatch(setCurrentModule(t('customer_info')));
-    dispatch(setShowFooterElement('customerInfo'));
-  }, []);
-  console.log({ errors });
   return (
     <Suspense>
-      <MainContentLayout>
+      <MainContentLayout handleSubmit={handleSubmit(onSubmit)}>
         <div className="flex-col justify-center h-full px-5">
           <div className="flex justify-center py-10 lg:my-5 lg:pb-5">
-            {/* <CustomImage
-              src={ContactInfo.src}
+            <CustomImage
+              src={ContactImage.src}
               alt="customer"
-              width={imageSizes.xl}
-              height={imageSizes.xl}
+              width={imageSizes.md}
+              height={imageSizes.md}
               className={`my-10 lg:my-0 w-auto h-auto`}
-            /> */}
+            />
           </div>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="lg:mt-10">
@@ -138,39 +100,39 @@ const CustomerInformation: NextPage = (): JSX.Element => {
                   {...register('name')}
                   className={`border-0 w-full focus:ring-transparent outline-0`}
                   placeholder={`${t('enter_your_name')}`}
-                  onChange={(e)=>setValue('name', e.target.value)}
+                  onChange={(e) => setValue('name', e.target.value)}
                   aria-invalid={errors.name ? 'true' : 'false'}
                 />
               </div>
               <div>
-                  {errors?.name?.message && (
-                    <p
-                      className={`text-base text-red-800 font-semibold py-2`}
-                      suppressHydrationWarning={suppressText}
-                    >
-                      {t('name_is_required')}
-                    </p>
-                  )}
-                </div>
+                {errors?.name?.message && (
+                  <p
+                    className={`text-base text-red-800 font-semibold py-2`}
+                    suppressHydrationWarning={suppressText}
+                  >
+                    {t('name_is_required')}
+                  </p>
+                )}
+              </div>
               <div className="flex items-center gap-x-2 px-2 border-b-4 border-b-gray-200 w-full focus:ring-transparent py-4">
                 <EmailOutlined className="text-primary_BG" />
                 <input
                   {...register('email')}
                   aria-invalid={errors.email ? 'true' : 'false'}
                   className={`border-0 w-full focus:ring-transparent outline-0`}
-                  onChange={(e)=>setValue('email', e.target.value)}
+                  onChange={(e) => setValue('email', e.target.value)}
                   placeholder={`${t('enter_your_email')}`}
                 />
               </div>
               <div>
-                  {errors?.email?.message && (
-                    <p
-                      className={`text-sm text-red-800`}
-                      suppressHydrationWarning={suppressText}
-                    >
-                      {t('email_is_required')}
-                    </p>
-                  )}
+                {errors?.email?.message && (
+                  <p
+                    className={`text-base text-red-800 font-semibold py-2`}
+                    suppressHydrationWarning={suppressText}
+                  >
+                    {t('email_is_required')}
+                  </p>
+                )}
               </div>
               <div className="flex items-center gap-x-2 px-2 border-b-4 border-b-gray-200 w-full focus:ring-transparent py-4">
                 <Phone className="text-primary_BG" />
@@ -180,18 +142,18 @@ const CustomerInformation: NextPage = (): JSX.Element => {
                       international
                       defaultCountry="KW"
                       placeholder={`${t('enter_your_phone')}`}
-                        inputRef={register}
-                        inputProps={{
-                          name: "phone",
-                          required: true,
-                          autoFocus: true
-                        }}
-                        id="phone"
-                        name="phone"
-                        autoComplete="phone"
-                        onChange={(value)=>setValue('phone', value)}
-                        error={!!errors.phone}
-                        helperText= {t(`${errors?.phone?.message}`)}
+                      inputRef={register}
+                      inputProps={{
+                        name: 'phone',
+                        required: true,
+                        autoFocus: true,
+                      }}
+                      id="phone"
+                      name="phone"
+                      autoComplete="phone"
+                      onChange={(value) => setValue('phone', value)}
+                      error={!!errors.phone}
+                      helperText={t(`${errors?.phone?.message}`)}
                     />
                   )}
                   defaultValue=""
@@ -203,13 +165,13 @@ const CustomerInformation: NextPage = (): JSX.Element => {
               <div>
                 {errors?.phone?.message && (
                   <p
-                    className={`text-sm text-red-800`}
+                    className={`text-base text-red-800 font-semibold py-2`}
                     suppressHydrationWarning={suppressText}
                   >
                     {t('phone_is_required')}
                   </p>
                 )}
-                </div>
+              </div>
               <GreyLine />
               <input type="submit" />
             </div>

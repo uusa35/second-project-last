@@ -20,7 +20,7 @@ type Props = {
   hideBack?: boolean;
   showMotion?: boolean;
   backRoute?: string | null;
-  handleSubmit?: () => void;
+  handleSubmit?: (element?: any) => void;
 };
 
 const MainContentLayout: FC<Props> = ({
