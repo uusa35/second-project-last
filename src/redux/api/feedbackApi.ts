@@ -4,13 +4,13 @@ import { AppQueryResult, Feedback } from '@/types/queries';
 export const feedbackApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     createFeedback: builder.mutation<
-    AppQueryResult<any>,
+    AppQueryResult<Feedback>,
     {
       body: {
         user_name: string;
         rate: number;
         note: string;
-        phone: number | null
+        phone: string
       }
     }
   >({

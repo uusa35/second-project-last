@@ -125,6 +125,6 @@ export interface Feedback {
   user_name: string;
   rate: number;
   note: string;
-  phone: number | null
+  phone: number
 }
 
