@@ -66,7 +66,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
         {!isEmpty(vendor) && (
           <div
             style={{ display: 'flex' }}
-            className="flex-col justify-between  bg-white h-full outline-none px-6"
+            className="flex-col justify-between  bg-white h-full outline-none px-6 capitalize"
           >
             <div>
               <header className="">
@@ -84,7 +84,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                   </div>
 
                   <p
-                    className="cursor-pointer"
+                    className="cursor-pointer capitalize"
                     id="CloseMenuBtn"
                     onClick={() => dispatch(hideSideMenu(undefined))}
                     suppressHydrationWarning={suppressText}
@@ -98,7 +98,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                 <Link scroll={false} href={appLinks.root.path}>
                   <div className="flex gap-x-3 pb-7 items-center ps-1">
                     <HomeOutlined className={`h-8 w-8 text-primary_BG`} />
-                    <p suppressHydrationWarning={suppressText}>{t('home')}</p>
+                    <p suppressHydrationWarning={suppressText} className='capitalize'>{t('home')}</p>
                   </div>
                 </Link>
 
@@ -107,7 +107,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                     <ShoppingBagOutlined
                       className={`h-8 w-8 text-primary_BG`}
                     />
-                    <p suppressHydrationWarning={suppressText}>
+                    <p suppressHydrationWarning={suppressText} className='capitalize'>
                       {t('my_cart')}
                     </p>
                   </div>
@@ -116,7 +116,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                 <Link scroll={false} href={appLinks.cartSelectMethod.path}>
                   <div className="flex gap-x-3 pb-7 items-center">
                     <MapPinIcon className={`h-6 w-8 text-primary_BG`} />
-                    <p suppressHydrationWarning={suppressText}>
+                    <p suppressHydrationWarning={suppressText} className='capitalize'>
                       {t('change_delivery_area')}
                     </p>
                   </div>
@@ -128,7 +128,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                 >
                   <div className="flex gap-x-3 pb-7 items-center ps-1">
                     <PlagiarismOutlined className={`h-8 w-8 text-primary_BG`} />
-                    <p suppressHydrationWarning={suppressText}>{t('search')}</p>
+                    <p suppressHydrationWarning={suppressText} className='capitalize'>{t('search')}</p>
                   </div>
                 </Link>
 
@@ -137,7 +137,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                     <PendingActionsOutlined
                       className={`h-8 w-8 text-primary_BG`}
                     />
-                    <p suppressHydrationWarning={suppressText}>
+                    <p suppressHydrationWarning={suppressText} className='capitalize'>
                       {t('track_order')}
                     </p>
                   </div>
@@ -148,7 +148,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                     <BuildingStorefrontIcon
                       className={`h-6 w-6 text-primary_BG`}
                     />
-                    <p suppressHydrationWarning={suppressText}>
+                    <p suppressHydrationWarning={suppressText} className='capitalize'>
                       {t('our_branches')}
                     </p>
                   </div>
@@ -158,7 +158,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
             <footer className={`w-full`}>
               <Link href={`tel: ${vendor.phone}`} scroll={false}>
                 <p
-                  className={`${submitBtnClass} text-center`}
+                  className={`${submitBtnClass} text-center capitalize`}
                   suppressHydrationWarning={suppressText}
                 >
                   {t('call')}
@@ -169,7 +169,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                 suppressHydrationWarning={suppressText}
               >
                 <p
-                  className={`text-stone-200 text-center`}
+                  className={`text-stone-200 text-center capitalize`}
                   suppressHydrationWarning={suppressText}
                 >
                   v. {process.env.NEXT_PUBLIC_APP_VERSION}

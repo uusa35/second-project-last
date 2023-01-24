@@ -73,15 +73,15 @@ const ChangeVendorModal: FC<Props> = ({
             className="h-auto w-auto"
           />
         </div>
-        <p className="text-center text-lg font-semibold mb-3 mt-5">
+        <p className="text-center text-lg font-semibold mb-3 mt-5 capitalize">
           {t(`${'You_’re_about_to_change_your_location'}`)}
         </p>
-        <p className="text-start text-sm">
+        <p className="text-start text-sm capitalize">
           {t(
             `${'changing_your_location_might_result_in_removing_the_items_from_your_cart'}`
           )}
         </p>
-        <div className="flex justify-between w-full pt-5 gap-x-2 px-0 lg:px-5">
+        <div className="flex justify-between w-full pt-5 gap-x-2 px-0 lg:px-5 capitalize">
           <button
             onClick={() => OnClose()}
             className="text-primary_BG capitalize"

@@ -19,7 +19,7 @@ const PaymentSummary: FC<Props> = ({
 }) => {
   const { t } = useTranslation();
   return (
-    <div className={`px-4 py-4`}>
+    <div className={`px-4 py-4 capitalize`}>
       {isLoading ? (
         <LoadingSpinner fullWidth={false} />
       ) : (

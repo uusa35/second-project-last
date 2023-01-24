@@ -90,7 +90,7 @@ const CartReview: NextPage = () => {
             />
             <div className="px-2">
               <h4
-                className="font-semibold text-lg"
+                className="font-semibold text-lg capitalize"
                 suppressHydrationWarning={suppressText}
               >
                 {t('expected_delivery_time')}
@@ -108,7 +108,7 @@ const CartReview: NextPage = () => {
               <div className="flex">
                 <LocationOnOutlined className="text-primary_BG" />
                 <h5
-                  className="px-2 text-base font-semibold"
+                  className="px-2 text-base font-semibold capitalize"
                   suppressHydrationWarning={suppressText}
                 >
                   {t('delivery_to')}
@@ -118,7 +118,7 @@ const CartReview: NextPage = () => {
                 href={{
                   pathname: appLinks.address.path
                 }}
-                className="text-primary_BG text-base font-semibold pb-4"
+                className="text-primary_BG text-base font-semibold pb-4 capitalize"
                 suppressHydrationWarning={suppressText}
               >
                 {t('change')}
@@ -150,7 +150,7 @@ const CartReview: NextPage = () => {
                 />
                 {customer.address.address && map(customer.address.address, (address, idx) => <div key={idx}
               className="flex">
-                <p className="text-md ps-5">{address}</p>
+                <p className="text-md ps-5 capitalize">{address}</p>
               </div>)}
               </div>
               <Link href={{
@@ -172,7 +172,7 @@ const CartReview: NextPage = () => {
                 height={imageSizes.xs}
                 className={`w-8 h-8`}
               />
-              <div className="ps-5">
+              <div className="ps-5 capitalize">
                 <h4 className="font-semibold text-base">{customer.name}</h4>
                 <p>{customer.phone}</p>
               </div>
@@ -197,7 +197,7 @@ const CartReview: NextPage = () => {
               />
               <div className="ps-5">
                 <h4
-                  className="font-semibold text-base"
+                  className="font-semibold text-base capitalize"
                   suppressHydrationWarning={suppressText}
                 >
                   {t('order_summary')}
@@ -219,7 +219,7 @@ const CartReview: NextPage = () => {
                   />
                 </div>
 
-                <div className="w-full">
+                <div className="w-full capitalize">
                   <div className="flex justify-between">
                     <div>
                     <Link

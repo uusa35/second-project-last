@@ -22,7 +22,7 @@ const CategoryWidget: FC<Props> = ({ element }) => {
         kebabCase(lowerCase(element.name)),
         branch.id
       )}
-      className={`h-60 lg:h-72 shadow-lg rounded-lg `}
+      className={`h-60 lg:h-72 shadow-lg rounded-lg capitalize`}
       suppressHydrationWarning={suppressText}
     >
       <div className="relative">

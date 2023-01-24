@@ -33,7 +33,7 @@ const Feedback: NextPage = (props): JSX.Element => {
                     src={ModalFeedbackIcon}
                     alt={t('feedback')}
                   />
-                <p className='ps-4'>{t("leave_feedback")}</p>
+                <p className='ps-4 capitalize text-primary_BG fontsemibold'>{t("leave_feedback")}</p>
               </div>
 
               <button
@@ -43,22 +43,13 @@ const Feedback: NextPage = (props): JSX.Element => {
                 X
               </button>
             </div>
-            <div className="flex justify-around px-4 py-2">
-              {/* {FeedBackData.rate === 1 ? <div><Emoji1/></div> : <div onClick={()=>{handelChangeDate('rate',1)}}><Emoji2/></div>}
-              {FeedBackData.rate === 2 ? <div><Emoji1/></div> : <div onClick={()=>{handelChangeDate('rate',2)}}><Emoji2/></div>}
-              {FeedBackData.rate === 3 ? <div><Emoji1/></div> : <div onClick={()=>{handelChangeDate('rate',3)}}><Emoji3/></div>}
-              {FeedBackData.rate === 4 ? <div><Emoji1/></div> : <div onClick={()=>{handelChangeDate('rate',4)}}><Emoji4/></div>}
-              {FeedBackData.rate === 5 ? <div><Emoji1/></div> : <div onClick={()=>{handelChangeDate('rate',5)}}><Emoji5/></div>} */}
-            </div>
-
-            {/* inputs */}
 
             <div className="px-4">
               <div className="flex text-black">
               <Image src={Card} alt='card' width={20} height={20} />
                 <input
                 //   onChange={(e)=>{handelChangeDate('user_name',e.target.value)}}
-                className={`border-0 focus:ring-transparent outline-none`}
+                  className={`border-0 focus:ring-transparent outline-none capitalize`}
                   type="text"
                   placeholder={`${t(`enter_your_name`)}`}
                 />
@@ -69,12 +60,12 @@ const Feedback: NextPage = (props): JSX.Element => {
                     <Image src={Phone} alt='phone' width={20} height={20} />
                     <input
                     //   onChange={(e)=>{handelChangeDate('phone',e.target.value)}}
-                    className={`border-0 focus:ring-transparent outline-none`}
+                    className={`border-0 focus:ring-transparent outline-none capitalize`}
                     type="text"
                     placeholder={`${t(`enter_your_phone`)}`}
                     />
                 </div>
-                <p className='text-primary_BG text-base'>{t('(optional)')}</p>
+                <p className='text-primary_BG text-base capitalize'>{t('(optional)')}</p>
               </div>
               <div className="my-2 px-5 py-1 bg-gray-100"></div>
 
@@ -82,7 +73,7 @@ const Feedback: NextPage = (props): JSX.Element => {
               <Image src={Comment} alt='comment' width={20} height={20} />
                 <input
                 //   onChange={(e)=>{handelChangeDate('note',e.target.value)}}
-                className={`border-0 focus:ring-transparent outline-none`}
+                  className={`border-0 focus:ring-transparent outline-none capitalize`}
                   type="text"
                   placeholder={`${t(`say_something_about_us`)}`}
                 />
@@ -91,7 +82,7 @@ const Feedback: NextPage = (props): JSX.Element => {
 
             {/* buttons */}
             <div className="px-5 pb-5">
-              <button className="w-full py-2 bg-btnBG text-white rounded-md font-bold">
+              <button className="w-full py-2 bg-btnBG text-white rounded-md font-bold capitalize">
                 {t("send_feedback")}
               </button>
             </div>

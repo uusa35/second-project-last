@@ -41,23 +41,23 @@ const OrderInvoice: NextPage<Props> = ({ element }): JSX.Element => {
                 width={60}
                 height={60}
               />
-              <h4 className="px-2 font-semibold">{vendor.name}</h4>
+              <h4 className="px-2 font-semibold capitalize">{vendor.name}</h4>
             </div>
             <h4
-              className="px-2 font-semibold"
+              className="px-2 font-semibold capitalize"
               suppressHydrationWarning={suppressText}
             >
               {t('order')} {element.order_code}
             </h4>
           </div>
           <p
-            className="font-semibold text-center pt-2"
+            className="font-semibold text-center pt-2 capitalize"
             suppressHydrationWarning={suppressText}
           >
             {t(`${element.order_type}`)}
           </p>
           <div className="my-5 px-5 py-1 bg-gray-100"></div>
-          <div className="flex justify-between px-4 py-2">
+          <div className="flex justify-between px-4 py-2 capitalize">
             <div>
               <h4
                 className="font-semibold"

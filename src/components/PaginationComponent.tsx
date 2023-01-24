@@ -17,7 +17,7 @@ const PaginationComponent: FC<Props> = ({ pagination }): JSX.Element => {
     <div>
       {pagination && (pagination.links.next || pagination.links.previous) && (
         <div
-          className={`flex flex-row flex-1 w-full items-center justify-center`}
+          className={`flex flex-row flex-1 w-full items-center justify-center capitalize`}
         >
           {pagination.meta.page.isPrevious && (
             <Link

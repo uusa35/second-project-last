@@ -166,7 +166,7 @@ const SelectMethod: NextPage<Props> = ({ previousRoute }): JSX.Element => {
                     icon={<Icon id={item.id} open={open} />}
                   >
                     <AccordionHeader
-                      className="px-2 pb-0 border-b-0"
+                      className="px-2 pb-0 border-b-0 capitalize"
                       onClick={() => handleOpen(item.id)}
                       suppressHydrationWarning={suppressText}
                     >
@@ -181,7 +181,7 @@ const SelectMethod: NextPage<Props> = ({ previousRoute }): JSX.Element => {
                             onClick={() => setSelectedLocation(area)}
                           >
                             <p
-                              className="text-base text-black"
+                              className="text-base text-black capitalize"
                               suppressHydrationWarning={suppressText}
                             >
                               <TextTrans ar={area.name_ar} en={area.name_en} />
@@ -204,7 +204,7 @@ const SelectMethod: NextPage<Props> = ({ previousRoute }): JSX.Element => {
           {method === 'pickup' && (
             <div className="px-4">
               <p
-                className="text-primary_BG p-3"
+                className="text-primary_BG p-3 capitalize"
                 suppressHydrationWarning={suppressText}
               >
                 {t('select_branch')}
@@ -216,7 +216,7 @@ const SelectMethod: NextPage<Props> = ({ previousRoute }): JSX.Element => {
                     onClick={() => setSelectedLocation(b)}
                     className={`flex flex-row  w-full justify-between items-center p-1`}
                   >
-                    <label htmlFor={b.name} className="py-1 form-check-label">
+                    <label htmlFor={b.name} className="py-1 form-check-label capitalize">
                       <p>
                         <TextTrans ar={b.name_ar} en={b.name_en} />
                       </p>
@@ -241,7 +241,7 @@ const SelectMethod: NextPage<Props> = ({ previousRoute }): JSX.Element => {
               (isNull(selectedArea.id) ?? isNull(branch.id)) &&
               !selectedLocation?.id
             }
-            className={`${submitBtnClass} mt-12`}
+            className={`${submitBtnClass} mt-12 capitalize`}
             suppressHydrationWarning={suppressText}
           >
             {t('done')}

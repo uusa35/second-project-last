@@ -71,7 +71,7 @@ const SlideTopNav: FC<Props> = ({ offset, isHome = false }): JSX.Element => {
         }
         className={`z-50`}
       >
-        <Bars3Icon className={`w-8 h-8 `} />
+        <Bars3Icon className={`w-8 h-8`} />
       </button>
 
       {/* logo */}

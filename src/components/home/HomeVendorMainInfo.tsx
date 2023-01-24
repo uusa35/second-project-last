@@ -15,7 +15,7 @@ const HomeVendorMainInfo: FC<Props> = ({ element }) => {
 
   return (
     <>
-      <div className="flex gap-x-2 justify-between items-center">
+      <div className="flex gap-x-2 justify-between items-center capitalize">
         <div className="flex grow gap-x-2">
           <Link href={appLinks.home.path} scroll={false} className={`w-1/4`}>
             <CustomImage
@@ -53,7 +53,7 @@ const HomeVendorMainInfo: FC<Props> = ({ element }) => {
       </div>
 
       {element.desc && (
-        <div className="flex gap-x-1 justify-center items-start mt-2">
+        <div className="flex gap-x-1 justify-center items-start mt-2 capitalize">
           <p
             suppressHydrationWarning={suppressText}
             className="text-sm text-neutral-400 px-2"

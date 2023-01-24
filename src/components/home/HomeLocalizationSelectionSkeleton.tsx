@@ -13,7 +13,7 @@ const HomeLocalizationSelectionSkeleton: FC = (): JSX.Element => {
         >
           <div className="h-4 bg-gray-200 rounded-sm dark:bg-gray-700 w-1/2  mx-4 "></div>
           <div className="h-4 bg-gray-200 rounded-sm dark:bg-gray-700 w-1/2  mx-4 "></div>
-          <span className="sr-only">{t('loading...')}</span>
+          <span className="sr-only capitalize">{t('loading...')}</span>
         </div>
       ))}
     </>

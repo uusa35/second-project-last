@@ -62,7 +62,7 @@ const VendorShow: NextPage<Props> = ({ element }) => {
   const [showModal, SetShowModal] = useState(false);
   const VendorDetailsItem = ({ icon, text, content }: DetailsItem) => {
     return (
-      <div className="flex justify-between px-4 py-6 m-3 shadow-md">
+      <div className="flex justify-between px-4 py-6 m-3 shadow-md capitalize">
         <div className="flex items-center">
           {icon}
           <p

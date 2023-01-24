@@ -47,7 +47,7 @@ const TrackOrder: NextPage = (): JSX.Element => {
   }
   
   useEffect(() => {
-    if(!router.isReady) return;
+    if(!router.isReady || !router.query.order_code) return;
     setRenderedOrderCode(`${order_code}`);
     handleChange(`${router.query.order_code}`);
     }, [router.isReady, router.query.order_code, renderedorderCode]);
@@ -56,12 +56,12 @@ const TrackOrder: NextPage = (): JSX.Element => {
     <Suspense fallback={<LoadingSpinner fullWidth={false} />}>
       <MainContentLayout>
         <h4
-          className="text-center text-primary_BG font-semibold pt-2"
+          className="text-center text-primary_BG font-semibold pt-2 capitalize"
           suppressHydrationWarning={suppressText}
         >
           {t('track_order')}
         </h4>
-        <div className="px-5 pb-7 border-b-[12px] border-stone-100">
+        <div className="px-5 pb-7 border-b-[12px] border-stone-100 capitalize">
           <p className="my-3 text-sm font-semibold">
             {t('check_your_order_status')}
           </p>
@@ -103,7 +103,7 @@ const TrackOrder: NextPage = (): JSX.Element => {
           orderCode &&
           orderCode?.length > 2 && (
             <div>
-              <div className="p-7 border-b-[12px] border-stone-100">
+              <div className="p-7 border-b-[12px] border-stone-100 capitalize">
                 <div className="flex justify-between mt-4">
                   <p
                     className="text-primary_BG font-semibold"
@@ -124,7 +124,7 @@ const TrackOrder: NextPage = (): JSX.Element => {
                   <p>{data.data.estimated_time}</p>
                 </div>
               </div>
-              <div className={`p-7`}>
+              <div className={`p-7 capitalize`}>
                 <div className="flex justify-between items-end  mb-5 ">
                   <p
                     className="font-semibold"
@@ -145,7 +145,7 @@ const TrackOrder: NextPage = (): JSX.Element => {
                 </div>
               </div>
 
-              <div className="flex flex-col items-center pt-5">
+              <div className="flex flex-col items-center pt-5 capitalize">
                 <p
                   className="mb-4 text-lg"
                   suppressHydrationWarning={suppressText}
@@ -154,7 +154,7 @@ const TrackOrder: NextPage = (): JSX.Element => {
                 </p>
                 <p className="text-lg text-center text-primary_BG">{}</p>
               </div>
-              <div className="pt-5 px-4 mt-[40%]">
+              <div className="pt-5 px-4 mt-[40%] capitalize">
                 <button className={`${submitBtnClass} px-4`}>
                   <div className="flex justify-between items-center">
                     <a

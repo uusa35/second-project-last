@@ -74,8 +74,8 @@ const ProductIndex: NextPage<Props> = ({ elements }): JSX.Element => {
     <Suspense>
       <MainHead title={`productIndex`} description={`productIndex`} />
       <MainContentLayout>
-        <h1 suppressHydrationWarning={suppressText}></h1>
-        <div className={`px-4`}>
+        <h1 className='capitalize' suppressHydrationWarning={suppressText}></h1>
+        <div className={`px-4 capitalize`}>
           <div className="flex justify-center items-center">
             <div className={`w-full`}>
               <div className="relative mt-1 rounded-md shadow-sm text-gray-400">
