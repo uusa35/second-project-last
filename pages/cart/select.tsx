@@ -18,9 +18,9 @@ import { appSetting, ServerCart } from '@/types/index';
 import { setCartMethod } from '@/redux/slices/appSettingSlice';
 import { Location } from '@/types/queries';
 import { isEmpty, isNull, map } from 'lodash';
-import { setArea } from '@/redux/slices/areaSlice';
+import { removeArea, setArea } from '@/redux/slices/areaSlice';
 import { useRouter } from 'next/router';
-import { setBranch } from '@/redux/slices/branchSlice';
+import { removeBranch, setBranch } from '@/redux/slices/branchSlice';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { useGetBranchesQuery } from '@/redux/api/branchApi';
 import DeliveryBtns from '@/components/widgets/cart/DeliveryBtns';
@@ -57,7 +57,6 @@ const SelectMethod: NextPage = (): JSX.Element => {
   }>({
     UserAgent: userAgent,
   });
-
 
   const { data: locations, isLoading: locationsLoading } =
     useGetLocationsQuery<{
@@ -100,7 +99,6 @@ const SelectMethod: NextPage = (): JSX.Element => {
     );
   };
 
-
   // const handleSelectArea = (a: Area) => {
   //   if (
   //     a.id !== selectedArea.id &&
@@ -131,33 +129,39 @@ const SelectMethod: NextPage = (): JSX.Element => {
 
   const handelContinue = () => {
     if (
-      selectedLocation?.id !== selectedArea.id ||
-      (selectedLocation?.id !== branch.id &&
-        isSuccess &&
-        cartItems.data &&
-        cartItems.data.Cart &&
-        !isEmpty(cartItems.data.Cart))
+      (selectedArea.id || branch.id) &&
+      (selectedLocation?.id !== selectedArea.id ||
+        selectedLocation?.id !== branch.id) &&
+      isSuccess &&
+      cartItems.data &&
+      cartItems.data.Cart &&
+      !isEmpty(cartItems.data.Cart)
     ) {
       setShowChangeLocModal(true);
-    } 
-    else {
+    } else {
       if (selectedLocation) {
         if (method === 'pickup') {
           dispatch(setBranch(selectedLocation as Branch));
+          dispatch(removeArea());
         }
 
         if (method === 'delivery') {
           dispatch(dispatch(setArea(selectedLocation as Area)));
+          dispatch(removeBranch());
         }
         router.back();
       }
     }
   };
 
- 
-
   const handleSelectMethod = (m: appSetting['method']) => {
     dispatch(setCartMethod(m));
+    if(m=== 'delivery'){
+      dispatch(removeBranch())
+    }
+    else{
+      dispatch(removeArea());
+    }
   };
 
   return (
@@ -261,7 +265,11 @@ const SelectMethod: NextPage = (): JSX.Element => {
             onClick={() => {
               handelContinue();
             }}
-            disabled={isNull(branch.id) && isNull(selectedArea.id) && !selectedLocation?.id}
+            disabled={
+              ((method === 'delivery' && isNull(selectedArea.id)) ||
+                (method === 'pickup' && isNull(branch.id))) &&
+              !selectedLocation?.id
+            }
             className={`${submitBtnClass} mt-12`}
             suppressHydrationWarning={suppressText}
           >
