@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Branch } from '@/types/queries';
+import { appSettingSlice } from './appSettingSlice';
 
 const initialState: Branch = {
   id: null,
@@ -22,6 +23,16 @@ export const branchSlice = createSlice({
       action.payload,
     removeBranch: (state: typeof initialState, action: PayloadAction<void>) =>
       initialState,
+  },
+  extraReducers: (builder) => {
+    builder.addCase(
+      appSettingSlice.actions.setCartMethod,
+      (state, action) => {
+        if(action.payload === 'delivery'){
+          return initialState
+        }
+      }
+    );
   },
 });
 
