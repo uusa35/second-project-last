@@ -120,7 +120,6 @@ const CartIndex: NextPage = (): JSX.Element => {
     }
   };
 
-  console.log('Cart Now ==+>', cartItems?.data);
   const handleRemove = async (element: ProductCart) => {
     const currentItems = filter(
       cartItems.data.Cart,
@@ -260,7 +259,7 @@ const CartIndex: NextPage = (): JSX.Element => {
                           <div>
                             <div className="text-end">
                               <button
-                                className="text-CustomRed pe-5 capitalize"
+                                className="text-red-700 pe-5 capitalize"
                                 suppressHydrationWarning={suppressText}
                                 onClick={() => handleRemove(item)}
                               >

@@ -4,7 +4,7 @@ import MainContentLayout from '@/layouts/MainContentLayout';
 import { useTranslation } from 'react-i18next';
 import TrunkClock from '@/appIcons/trunk_clock.svg';
 import { suppressText, imageSizes, appLinks } from '@/constants/*';
-import { LocationOnOutlined } from '@mui/icons-material';
+import { EditOutlined, LocationOnOutlined } from '@mui/icons-material';
 import Home from '@/appIcons/home.svg';
 import IDCard from '@/appIcons/id_card.svg';
 import OrderSummary from '@/appIcons/summary.svg';
@@ -25,9 +25,8 @@ import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 import TextTrans from '@/components/TextTrans';
 import { isEmpty, map } from 'lodash';
 import Link from 'next/link';
-import { ProductCart, QuantityMeters, ServerCart } from '@/types/index';
+import { ProductCart, ServerCart } from '@/types/index';
 import PaymentSummary from '@/components/widgets/cart/review/PaymentSummary';
-import { removeFromCart } from '@/redux/slices/cartSlice';
 import { AppQueryResult } from '@/types/queries';
 
 const CartReview: NextPage = () => {
@@ -46,7 +45,7 @@ const CartReview: NextPage = () => {
     area: { id: areaId },
     customer: { userAgent },
   } = useAppSelector((state) => state);
-  console.log({ customer });
+
   const {
     data: cartItems,
     isSuccess,
@@ -61,7 +60,6 @@ const CartReview: NextPage = () => {
     UserAgent: userAgent,
   });
   const handleRemove = async (id: any) => {
-    await dispatch(removeFromCart(id));
     await dispatch(
       showToastMessage({
         content: `item_removed_from_cart`,
@@ -74,7 +72,7 @@ const CartReview: NextPage = () => {
     { id: 'knet', src: Knet.src },
     { id: 'cash', src: Cash.src },
   ];
-  console.log({ cartItems });
+
   return (
     <Suspense>
       <MainContentLayout>
@@ -163,9 +161,7 @@ const CartReview: NextPage = () => {
                   ))}
               </div>
               <Link
-                href={{
-                  pathname: '/cart/select',
-                }}
+                href={appLinks.cartSelectMethod.path}
                 className="text-primary_BG text-base font-semibold capitalize"
                 suppressHydrationWarning={suppressText}
               >
@@ -188,9 +184,7 @@ const CartReview: NextPage = () => {
               </div>
             </div>
             <Link
-              href={{
-                pathname: '/customer/info',
-              }}
+              href={appLinks.customerInfo.path}
               className="text-primary_BG text-base font-semibold capitalize"
               suppressHydrationWarning={suppressText}
             >
@@ -216,24 +210,37 @@ const CartReview: NextPage = () => {
               </div>
             </div>
           </div>
+          <div className="bg-gray-200 w-full my-5 p-0 h-2"></div>
           {isSuccess &&
+            cartItems.data &&
+            cartItems.data.Cart &&
             cartItems.data?.subTotal > 0 &&
             map(cartItems.data?.Cart, (item: ProductCart, i) => (
-              <div key={item.ProductID} className=" pt-5 px-4">
-                <div className="mb-10">
-                  <div className="flex">
-                    <div className="ltr:pr-3 rtl:pl-3 w-1/5">
-                      <CustomImage
-                        className="w-full  rounded-lg border-[1px] border-gray-200"
-                        alt={`${t('item')}`}
-                        src={item.image ? item.image : NotFound.src}
-                      />
-                    </div>
+              <div key={i}>
+                <div className="px-4">
+                  <div className="mb-10 ">
+                    <div className="flex px-2 rtl:mr-1 ltr:ml-1 items-center">
+                      <Link
+                        href={`${appLinks.productShow(
+                          item.ProductID.toString(),
+                          branchId,
+                          item.ProductID.toString(),
+                          item.ProductName,
+                          areaId
+                        )}`}
+                        className="ltr:pr-3 rtl:pl-3 w-1/5"
+                      >
+                        <CustomImage
+                          className="w-full rounded-lg border-[1px] border-gray-200 shadow-md"
+                          alt={`${t('item')}`}
+                          src={item.image}
+                        />
+                      </Link>
 
-                    <div className="w-full capitalize">
-                      <div className="flex justify-between">
-                        <div>
+                      <div className="w-full">
+                        <div className={`flex justify-between items-center`}>
                           <Link
+                            className={`flex grow`}
                             href={`${appLinks.productShow(
                               item.ProductID.toString(),
                               branchId,
@@ -242,42 +249,81 @@ const CartReview: NextPage = () => {
                               areaId
                             )}`}
                           >
-                            <p className="font-semibold">{item.ProductName}</p>
+                            <p className="font-semibold capitalize">
+                              <TextTrans
+                                ar={item.ProductName}
+                                en={item.ProductName}
+                              />
+                            </p>
                           </Link>
                           <div className="flex">
-                            {!isEmpty(item.QuantityMeters) &&
-                              map(item.QuantityMeters, (q, i) => (
-                                <Fragment key={i}>
-                                  {map(q.addons, (addon, i) => (
-                                    <TextTrans
-                                      key={i}
-                                      className={`ltr:border-r-2 ltr:last:border-r-0 ltr:first:pr-1 rtl:border-l-2 rtl:last:border-l-0 rtl:first:pl-1 px-1 text-xs`}
-                                      ar={addon.name}
-                                      en={addon.name}
-                                    />
-                                  ))}
-                                </Fragment>
-                              ))}
+                            <Link
+                              className="text-primary_BG px-2 capitalize"
+                              suppressHydrationWarning={suppressText}
+                              href={appLinks.cartIndex.path}
+                            >
+                              {t('edit')}
+                            </Link>
+                            <Link
+                              href={`${appLinks.productShow(
+                                item.ProductID.toString(),
+                                branchId,
+                                item.ProductID.toString(),
+                                item.ProductName,
+                                areaId
+                              )}`}
+                            >
+                              <EditOutlined />
+                            </Link>
                           </div>
                         </div>
-                        <button
-                          className="text-primary_BG font-semibold capitalize"
-                          suppressHydrationWarning={suppressText}
-                        >
-                          {t('edit')}
-                        </button>
+                        {/* qty */}
+                        <div className="flex">
+                          <div className="w-fit pb-2">
+                            <div
+                              className={`flex text-gray-400 w-auto flex-wrap justify-between`}
+                            >
+                              {!isEmpty(item.QuantityMeters) &&
+                                map(item.QuantityMeters, (q, i) => (
+                                  <Fragment key={i}>
+                                    {map(q.addons, (addon, i) => (
+                                      <>
+                                        <TextTrans
+                                          key={i}
+                                          className={`ltr:border-r-2 ltr:last:border-r-0 ltr:first:pr-1 rtl:border-l-2 rtl:last:border-l-0 rtl:first:pl-1 px-1 text-xs capitalize`}
+                                          ar={addon.name}
+                                          en={addon.name}
+                                        />
+                                        {addon.price ?? ``}
+                                      </>
+                                    ))}
+                                  </Fragment>
+                                ))}
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                      <div className="flex justify-between">
-                        <p className="text-primary_BG font-semibold">
-                          {item.totalPrice}
-                        </p>
+                    </div>
+
+                    <div className="px-3 flex justify-between items-center mt-3">
+                      <span className="flex rounded-xl shadow-sm">
                         <button
-                          className="text-CustomRed capitalize font-semibold"
-                          suppressHydrationWarning={suppressText}
-                          onClick={() => handleRemove(item.id)}
+                          type="button"
+                          className="relative -ml-px inline-flex items-center  bg-gray-100 px-4 py-2 text-sm font-medium text-primary_BG  focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500 capitalize"
                         >
-                          {t('remove')}
+                          {t(`qty`)}
+                          <span className={`ltr:pl-2 rtl:pr-2`}>
+                            {item.Quantity}
+                          </span>
                         </button>
+                      </span>
+                      <div>
+                        <p
+                          className="text-primary_BG capitalize"
+                          suppressHydrationWarning={suppressText}
+                        >
+                          {item.Price} {t('kwd')}
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -304,14 +350,14 @@ const CartReview: NextPage = () => {
               </div>
             </div>
             <div className="flex justify-between">
-              {map(paymentMethods, (method) => (
+              {map(paymentMethods, (m) => (
                 <button
-                  key={method.id}
+                  key={m.id}
                   className="bg-gray-200 flex justify-center items-center w-24 h-24 rounded-md"
                 >
                   <div>
                     <CustomImage
-                      src={method}
+                      src={m.src}
                       alt="payment"
                       width={imageSizes.xs}
                       height={imageSizes.xs}
@@ -339,14 +385,7 @@ const CartReview: NextPage = () => {
               cartItems &&
               cartItems.data &&
               cartItems.data.total &&
-              cartItems.data.subTotal && (
-                <PaymentSummary
-                  total={parseFloat(cartItems?.data?.total)}
-                  subTotal={parseFloat(cartItems?.data?.subTotal)}
-                  delivery={cartItems.data.delivery_fees}
-                  isLoading={isLoading}
-                />
-              )}
+              cartItems.data.subTotal && <PaymentSummary />}
           </div>
         </div>
       </MainContentLayout>

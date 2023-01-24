@@ -18,18 +18,18 @@ import { setCurrentModule } from '@/redux/slices/appSettingSlice';
 import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 const OrderFailure: NextPage = (): JSX.Element => {
   const { t } = useTranslation();
-  const { 
+  const {
     branch: { id: branchId },
-    area: { id: areaId},
+    area: { id: areaId },
     customer: { userAgent },
   } = useAppSelector((state) => state);
   const { data: cartItems, isSuccess } = useGetCartProductsQuery({
     UserAgent: userAgent,
   });
   const dispatch = useAppDispatch();
-    useEffect(() => {
-      dispatch(setCurrentModule(t('order_failure')));
-    }, []);
+  useEffect(() => {
+    dispatch(setCurrentModule(t('order_failure')));
+  }, []);
   return (
     <MainContentLayout>
       <div>
@@ -41,7 +41,7 @@ const OrderFailure: NextPage = (): JSX.Element => {
             height={imageSizes.sm}
           />
           <h4
-            className="text-CustomRed font-semibold py-3"
+            className="text-red-700 font-semibold py-3"
             suppressHydrationWarning={suppressText}
           >
             {t('we_re_sorry')}
@@ -67,11 +67,11 @@ const OrderFailure: NextPage = (): JSX.Element => {
             className={`${submitBtnClass} flex items-center justify-center`}
             suppressHydrationWarning={suppressText}
           >
-              <div className="bg-CustomRed rounded-full w-6 h-6 flex items-center justify-center border-2 border-white">
-                <p>{cartItems.data?.Cart?.length}</p>
-              </div>
-              <ShoppingBagOutlinedIcon className="w-6 h-6" />
-              <p className="pt-1">{t('my_cart')}</p>
+            <div className="bg-CustomRed rounded-full w-6 h-6 flex items-center justify-center border-2 border-white">
+              <p>{cartItems.data?.Cart?.length}</p>
+            </div>
+            <ShoppingBagOutlinedIcon className="w-6 h-6" />
+            <p className="pt-1">{t('my_cart')}</p>
           </Link>
           <Link href={appLinks.productSearchIndex(branchId, ``, areaId)}>
             <p

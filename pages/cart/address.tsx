@@ -76,7 +76,8 @@ const CartAddress: NextPage = (): JSX.Element => {
       floor_no: yup.string(),
       office_no: yup.string(),
       additional: yup.string(),
-    }).required();
+    })
+    .required();
 
   const {
     register,
@@ -190,7 +191,7 @@ const CartAddress: NextPage = (): JSX.Element => {
 
   const handelSaveAddress = async (body: any) => {
     await AddAddress({
-     body
+      body,
     }).then((r: any) => {
       if (r.data && r.data.status) {
         dispatch(
@@ -201,12 +202,10 @@ const CartAddress: NextPage = (): JSX.Element => {
         );
         dispatch(setCustomerAddress(r.data.Data));
         checkTimeAvilability();
-      } 
+      }
     });
   };
-  console.log({ errors });
   const onSubmit = async (body: any) => {
-    console.log('the body', body);
     if (method === 'pickup') {
       await checkTimeAvilability();
     }
@@ -246,7 +245,9 @@ const CartAddress: NextPage = (): JSX.Element => {
       <MainContentLayout>
         {/* delivery method buttons */}
         <DeliveryBtns handleSelectMethod={handleSelectMethod} />
-        <form onSubmit={method==='delivery'? handleSubmit(onSubmit): onSubmit}>
+        <form
+          onSubmit={method === 'delivery' ? handleSubmit(onSubmit) : onSubmit}
+        >
           <div className={'px-4'}>
             <div className="bg-gray-200 w-full mt-5 p-0 h-2"></div>
 

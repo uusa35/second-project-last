@@ -68,13 +68,11 @@ const ProductIndex: NextPage<Props> = ({ elements }): JSX.Element => {
     }
   };
 
-  console.log('productpreview', productPreview);
-
   return (
     <Suspense>
       <MainHead title={`productIndex`} description={`productIndex`} />
       <MainContentLayout>
-        <h1 className='capitalize' suppressHydrationWarning={suppressText}></h1>
+        <h1 className="capitalize" suppressHydrationWarning={suppressText}></h1>
         <div className={`px-4 capitalize`}>
           <div className="flex justify-center items-center">
             <div className={`w-full`}>
@@ -141,9 +139,9 @@ export default ProductIndex;
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
-    async ({ query, locale}) => {
+    async ({ query, locale }) => {
       const { categoryId, branchId, page, limit, areaId }: any = query;
-      if (!categoryId ) {
+      if (!categoryId) {
         return {
           notFound: true,
         };
@@ -159,8 +157,8 @@ export const getServerSideProps = wrapper.getServerSideProps(
           category_id: categoryId,
           page: page ?? `1`,
           limit: limit ?? `10`,
-          ...(branchId ? {branch_id: branchId}: {}),
-          ...(areaId ? {area_id: areaId}: {}),
+          ...(branchId ? { branch_id: branchId } : {}),
+          ...(areaId ? { area_id: areaId } : {}),
           lang: locale,
         })
       );

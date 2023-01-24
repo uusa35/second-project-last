@@ -21,11 +21,11 @@ const VerProductWidget: FC<Props> = ({ element }): JSX.Element => {
   const firstImage = !isEmpty(element.img)
     ? imgUrl(first(element.img).thumbnail)
     : NoFoundImage.src;
-  console.log('element', element);
+
   return (
     <Link
       href={`${appLinks.productShow(
-        element.id.toString(),     
+        element.id.toString(),
         element.id,
         element.name,
         branchId,

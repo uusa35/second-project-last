@@ -57,10 +57,6 @@ export const productCartSlice = createSlice({
       state: typeof initialState,
       action: PayloadAction<string>
     ) => {
-      console.log(
-        'filtered',
-        filter(state.QuantityMeters, (c) => c.uId !== action.payload)
-      );
       return {
         ...state,
         QuantityMeters: filter(

@@ -141,7 +141,6 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
         }).then((r: any) => {
           if (r.data && r.data.status && r.data.promoCode) {
             // promoCode Success case
-            console.log('r=====>', r.data.promoCode);
             dispatch(setCartPromoSuccess(r.data.promoCode));
             refetchCart();
             dispatch(

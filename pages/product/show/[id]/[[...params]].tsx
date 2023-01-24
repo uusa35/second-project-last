@@ -225,7 +225,6 @@ const ProductShow: NextPage<Props> = ({ element }) => {
             })
           );
         } else {
-          console.log('else');
           dispatch(removeMeter(`${selection.id}${choice.id}`));
         }
       }
@@ -532,14 +531,14 @@ export const getServerSideProps = wrapper.getServerSideProps(
         productApi.endpoints.getProduct.initiate({
           id,
           lang: locale,
-          ...(branchId ? {branch_id: branchId}: {}),
-          ...(areaId ? {area_id: areaId}: {}),
+          ...(branchId ? { branch_id: branchId } : {}),
+          ...(areaId ? { area_id: areaId } : {}),
         })
       );
       await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
       if (isError || !element.status || !element.Data) {
         return {
-          notFound: true,        
+          notFound: true,
         };
       }
       return {
