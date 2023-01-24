@@ -48,6 +48,10 @@ const SelectMethod: NextPage<Props> = ({ previousRoute }): JSX.Element => {
     Branch | Area | undefined
   >(method === 'delivery' ? selectedArea : branch);
 
+  useEffect(()=>{
+    setSelectedLocation(method === 'delivery' ? selectedArea : branch)
+  },[method])
+
   const {
     data: cartItems,
     isSuccess,
@@ -126,13 +130,12 @@ const SelectMethod: NextPage<Props> = ({ previousRoute }): JSX.Element => {
 
   const handleSelectMethod = (m: appSetting['method']) => {
     dispatch(setCartMethod(m));
-    if(m=== 'delivery'){
-      dispatch(removeBranch())
-    }
-    else{
-      dispatch(removeArea());
-    }
+    
   };
+
+  
+
+ 
 
   return (
     <Suspense>
