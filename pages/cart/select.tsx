@@ -27,8 +27,12 @@ import DeliveryBtns from '@/components/widgets/cart/DeliveryBtns';
 import TextTrans from '@/components/TextTrans';
 import ChangeVendorModal from '@/components/ChangeVendorModal';
 import { useGetCartProductsQuery } from '@/redux/api/cartApi';
+import { wrapper } from '@/redux/store';
 
-const SelectMethod: NextPage = (): JSX.Element => {
+type Props = {
+  previousRoute: string;
+};
+const SelectMethod: NextPage<Props> = ({ previousRoute }): JSX.Element => {
   const { t } = useTranslation();
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -57,7 +61,6 @@ const SelectMethod: NextPage = (): JSX.Element => {
   }>({
     UserAgent: userAgent,
   });
-
 
   const { data: locations, isLoading: locationsLoading } =
     useGetLocationsQuery<{
@@ -100,7 +103,6 @@ const SelectMethod: NextPage = (): JSX.Element => {
     );
   };
 
-
   // const handleSelectArea = (a: Area) => {
   //   if (
   //     a.id !== selectedArea.id &&
@@ -129,7 +131,8 @@ const SelectMethod: NextPage = (): JSX.Element => {
   //   }
   // };
 
-  const handelContinue = () => {
+  console.log('prev', previousRoute);
+  const handelContinue = async () => {
     if (
       selectedLocation?.id !== selectedArea.id ||
       (selectedLocation?.id !== branch.id &&
@@ -139,22 +142,16 @@ const SelectMethod: NextPage = (): JSX.Element => {
         !isEmpty(cartItems.data.Cart))
     ) {
       setShowChangeLocModal(true);
-    } 
-    else {
-      if (selectedLocation) {
-        if (method === 'pickup') {
-          dispatch(setBranch(selectedLocation as Branch));
-        }
-
-        if (method === 'delivery') {
-          dispatch(dispatch(setArea(selectedLocation as Area)));
-        }
-        router.back();
+    } else {
+      if (selectedLocation && !showChangeLocModal) {
+        router.push(previousRoute).then(() => {
+          method === `pickup`
+            ? dispatch(setBranch(selectedLocation as Branch))
+            : dispatch(dispatch(setArea(selectedLocation as Area)));
+        });
       }
     }
   };
-
- 
 
   const handleSelectMethod = (m: appSetting['method']) => {
     dispatch(setCartMethod(m));
@@ -261,7 +258,11 @@ const SelectMethod: NextPage = (): JSX.Element => {
             onClick={() => {
               handelContinue();
             }}
-            disabled={isNull(branch.id) && isNull(selectedArea.id) && !selectedLocation?.id}
+            disabled={
+              isNull(branch.id) &&
+              isNull(selectedArea.id) &&
+              !selectedLocation?.id
+            }
             className={`${submitBtnClass} mt-12`}
             suppressHydrationWarning={suppressText}
           >
@@ -271,6 +272,7 @@ const SelectMethod: NextPage = (): JSX.Element => {
         <ChangeVendorModal
           SelectedAreaOrBranch={selectedLocation}
           OpenModal={showChangeLocModal}
+          previousRoute={previousRoute}
           OnClose={() => setShowChangeLocModal(false)}
         />
       </MainContentLayout>
@@ -279,3 +281,15 @@ const SelectMethod: NextPage = (): JSX.Element => {
 };
 
 export default SelectMethod;
+
+export const getServerSideProps = wrapper.getServerSideProps(
+  (store) =>
+    async ({ req }) => {
+      console.log('req ==========>', req.headers.referer);
+      return {
+        props: {
+          previousRoute: req.headers.referer,
+        },
+      };
+    }
+);

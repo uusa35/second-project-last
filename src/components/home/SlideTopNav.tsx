@@ -18,9 +18,10 @@ import CustomImage from '@/components/CustomImage';
 
 type Props = {
   offset: number;
+  isHome: boolean;
 };
 
-const SlideTopNav: FC<Props> = ({ offset }): JSX.Element => {
+const SlideTopNav: FC<Props> = ({ offset, isHome = false }): JSX.Element => {
   const { t } = useTranslation();
   const {
     vendor,
@@ -53,16 +54,15 @@ const SlideTopNav: FC<Props> = ({ offset }): JSX.Element => {
     }
   };
 
-  console.log('offset', offset);
   return (
     <div
       className={`${
-        offset <= -1
+        offset <= (isHome ? -1 : 80)
           ? `hidden `
           : `flex transition-opacity duration-3000 ${
               offset <= 80 ? `bg-transparent text-white` : `bg-white text-black`
             }`
-      } flex flex-row  justify-start items-center w-full pb-4 pt-8 px-4 h-28 top-0  relative lg:text-black lg:bg-white 
+      } flex flex-row  justify-start items-center w-full pb-4 pt-8 px-4 h-28 top-0  relative lg:text-black lg:bg-white
       `}
     >
       <button
