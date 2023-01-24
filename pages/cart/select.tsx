@@ -230,8 +230,7 @@ const SelectMethod: NextPage<Props> = ({ previousRoute }): JSX.Element => {
               handelContinue();
             }}
             disabled={
-              isNull(branch.id) &&
-              isNull(selectedArea.id) &&
+              (isNull(selectedArea.id) ?? isNull(branch.id)) &&
               !selectedLocation?.id
             }
             className={`${submitBtnClass} mt-12`}
