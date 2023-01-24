@@ -32,7 +32,7 @@ const HorProductWidget: FC<Props> = ({ element }): JSX.Element => {
         branchId,
         areaId
       )}`}
-      className={`h-80 lg:h-80 shadow-7xl rounded-lg  mb-5 block border-gray-100 border-2`}
+      className={`h-80 lg:h-80 shadow-7xl rounded-lg  mb-5 block border-gray-100 border-2 capitalize`}
     >
       <div className="relative">
         <div className="h-60 w-full overflow-hidden rounded-lg">

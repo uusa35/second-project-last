@@ -295,7 +295,7 @@ const ProductShow: NextPage<Props> = ({ element }) => {
         mainImage={`${imgUrl(element?.img[0]?.toString())}`}
       />
       <MainContentLayout>
-        <div className="relative w-full">
+        <div className="relative w-full capitalize">
           <div className="relative w-full h-auto overflow-hidden">
             <CustomImage
               src={`${imgUrl(element?.img[0]?.toString())}`}
@@ -314,7 +314,7 @@ const ProductShow: NextPage<Props> = ({ element }) => {
           </div>
         </div>
         <div
-          className={`flex w-full flex-row justify-center items-center my-4`}
+          className={`flex w-full flex-row justify-center items-center my-4 capitalize`}
         >
           <span className="isolate inline-flex rounded-xl shadow-sm">
             <button
@@ -340,7 +340,7 @@ const ProductShow: NextPage<Props> = ({ element }) => {
             </button>
           </span>
         </div>
-        <div className={`px-4 md:px-8`}>
+        <div className={`px-4 md:px-8 capitalize`}>
           {/*   name and desc */}
           <div className="flex flex-row w-full justify-between items-center pb-4 border-b-2 border-stone-200">
             <div className={` flex-1 space-y-3`}>

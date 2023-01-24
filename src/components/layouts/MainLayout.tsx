@@ -61,23 +61,12 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
     if (isSuccess && vendorElement.Data) {
       dispatch(setVendor(vendorElement.Data));
     }
-    // if (isNull(branchId)) {
-    //   triggerGetBranches({ lang: locale.lang }).then((r: any) =>
-    //     dispatch(setBranch(r.data?.Data[0]))
-    //   );
-    // }
 
     if (isNull(userAgent)) {
       triggerCreateTempId().then((r: any) =>
         dispatch(setUserAgent(r.data.Data?.Id))
       );
     }
-    
-    // if (isNull(areaId)) {
-    //   triggerGetLocations({ lang: locale.lang }).then((r: any) =>
-    //     dispatch(setArea(r.data.Data[0]?.Areas[0]))
-    //   );
-    // }
   }, []);
 
   useEffect(() => {

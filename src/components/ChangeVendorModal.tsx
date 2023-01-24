@@ -10,12 +10,13 @@ import { Area, Branch } from '@/types/queries';
 import { setBranch } from '@/redux/slices/branchSlice';
 import { setArea } from '@/redux/slices/areaSlice';
 import { useRouter } from 'next/router';
+import { isNull } from 'lodash';
 
 type Props = {
   SelectedAreaOrBranch: Branch | Area | undefined;
   OnClose: () => void;
   OpenModal: boolean;
-  previousRoute: string;
+  previousRoute: string | null;
 };
 
 const ChangeVendorModal: FC<Props> = ({
@@ -41,11 +42,14 @@ const ChangeVendorModal: FC<Props> = ({
         process_type: method,
         area_branch: SelectedAreaOrBranch.id?.toString() ?? '',
       }).then(() => {
-        router.push(previousRoute).then(() => {
-          method === `pickup`
-            ? dispatch(setBranch(SelectedAreaOrBranch as Branch))
-            : dispatch(dispatch(setArea(SelectedAreaOrBranch as Area)));
-        });
+        method === `pickup`
+          ? dispatch(setBranch(SelectedAreaOrBranch as Branch))
+          : dispatch(dispatch(setArea(SelectedAreaOrBranch as Area)));
+        if (!isNull(previousRoute)) {
+          router.push(previousRoute);
+        } else {
+          router.back();
+        }
       });
     }
   };
@@ -69,15 +73,15 @@ const ChangeVendorModal: FC<Props> = ({
             className="h-auto w-auto"
           />
         </div>
-        <p className="text-center text-lg font-semibold mb-3 mt-5">
+        <p className="text-center text-lg font-semibold mb-3 mt-5 capitalize">
           {t(`${'You_’re_about_to_change_your_location'}`)}
         </p>
-        <p className="text-start text-sm">
+        <p className="text-start text-sm capitalize">
           {t(
             `${'changing_your_location_might_result_in_removing_the_items_from_your_cart'}`
           )}
         </p>
-        <div className="flex justify-between w-full pt-5 gap-x-2 px-0 lg:px-5">
+        <div className="flex justify-between w-full pt-5 gap-x-2 px-0 lg:px-5 capitalize">
           <button
             onClick={() => OnClose()}
             className="text-primary_BG capitalize"

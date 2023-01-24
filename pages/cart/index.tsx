@@ -69,9 +69,10 @@ const CartIndex: NextPage = (): JSX.Element => {
       await triggerCheckPromoCode({
         userAgent,
         PromoCode: coupon,
-      }).then((r) => {
+      }).then((r: any) => {
         if (r.data && r.data.status && r.data.promoCode) {
           // promoCode Success
+          console.log('r=====>', r.data.promoCode);
           dispatch(
             showToastMessage({
               content: lowerCase(kebabCase(r.data.msg)),
@@ -90,7 +91,7 @@ const CartIndex: NextPage = (): JSX.Element => {
     }
   };
 
-  console.log('Cart Now ==+>', cartItems?.data?.Cart);
+  console.log('Cart Now ==+>', cartItems?.data);
   const handleRemove = async (element: ProductCart) => {
     const currentItems = filter(
       cartItems.data.Cart,
@@ -98,8 +99,8 @@ const CartIndex: NextPage = (): JSX.Element => {
     );
     triggerAddToCart({
       process_type: method,
-          area_branch:
-            method === 'delivery' ? areaId : method === 'pickup' && branchId,
+      area_branch:
+        method === 'delivery' ? areaId : method === 'pickup' && branchId,
       body: {
         UserAgent: userAgent,
         Cart:
@@ -110,8 +111,8 @@ const CartIndex: NextPage = (): JSX.Element => {
             ? currentItems
             : cartItems.data.Cart, // empty Cart Case !!!
       },
-    }).then((r) => {
-      if (r.data?.status) {
+    }).then((r: any) => {
+      if (r.data && r.data?.status) {
         dispatch(
           showToastMessage({
             content: `cart_updated_successfully`,
@@ -125,8 +126,8 @@ const CartIndex: NextPage = (): JSX.Element => {
   const handleIncrease = (element: ProductCart) => {
     triggerAddToCart({
       process_type: method,
-          area_branch:
-            method === 'delivery' ? areaId : method === 'pickup' && branchId,
+      area_branch:
+        method === 'delivery' ? areaId : method === 'pickup' && branchId,
       body: {
         UserAgent: userAgent,
         Cart:
@@ -137,8 +138,8 @@ const CartIndex: NextPage = (): JSX.Element => {
               })
             : cartItems.data.Cart,
       },
-    }).then((r) => {
-      if (r.data?.status) {
+    }).then((r: any) => {
+      if (r.data && r.data?.status) {
         dispatch(
           showToastMessage({
             content: `cart_updated_successfully`,
@@ -152,8 +153,8 @@ const CartIndex: NextPage = (): JSX.Element => {
   const handleDecrease = (element: ProductCart) => {
     triggerAddToCart({
       process_type: method,
-          area_branch:
-            method === 'delivery' ? areaId : method === 'pickup' && branchId,
+      area_branch:
+        method === 'delivery' ? areaId : method === 'pickup' && branchId,
       body: {
         UserAgent: userAgent,
         Cart:
@@ -164,8 +165,8 @@ const CartIndex: NextPage = (): JSX.Element => {
               })
             : cartItems.data.Cart,
       },
-    }).then((r) => {
-      if (r.data?.status) {
+    }).then((r: any) => {
+      if (r.data && r.data?.status) {
         dispatch(
           showToastMessage({
             content: `cart_updated_successfully`,
@@ -189,14 +190,14 @@ const CartIndex: NextPage = (): JSX.Element => {
         {isSuccess && isEmpty(cartItems?.data?.Cart) ? (
           <div className={'px-4'}>
             <div className="flex justify-center py-5">
-              <p suppressHydrationWarning={suppressText}>
+              <p suppressHydrationWarning={suppressText} className="capitalize">
                 {t('your_cart_is_empty')}
               </p>
             </div>
           </div>
         ) : (
           <div className={`space-y-8`}>
-            <p className="mx-7 text-lg" suppressHydrationWarning={suppressText}>
+            <p className="mx-7 text-lg capitalize" suppressHydrationWarning={suppressText}>
               {t('items')}
             </p>
             {isSuccess &&
@@ -210,7 +211,7 @@ const CartIndex: NextPage = (): JSX.Element => {
                           href={`${appLinks.productShow(
                             item.ProductID.toString(),
                             branchId,
-                            item.ProductID,
+                            item.ProductID.toString(),
                             item.ProductName,
                             areaId
                           )}`}
@@ -237,7 +238,7 @@ const CartIndex: NextPage = (): JSX.Element => {
                                 href={`${appLinks.productShow(
                                   item.ProductID.toString(),
                                   branchId,
-                                  item.ProductID,
+                                  item.ProductID.toString(),
                                   item.ProductName,
                                   areaId
                                 )}`}
@@ -250,12 +251,12 @@ const CartIndex: NextPage = (): JSX.Element => {
                             href={`${appLinks.productShow(
                               item.ProductID.toString(),
                               branchId,
-                              item.ProductID,
+                              item.ProductID.toString(),
                               item.ProductName,
                               areaId
                             )}`}
                           >
-                            <p className="font-semibold">
+                            <p className="font-semibold capitalize">
                               <TextTrans
                                 ar={item.ProductName}
                                 en={item.ProductName}
@@ -274,7 +275,7 @@ const CartIndex: NextPage = (): JSX.Element => {
                                         {map(q.addons, (addon, i) => (
                                           <TextTrans
                                             key={i}
-                                            className={`ltr:border-r-2 ltr:last:border-r-0 ltr:first:pr-1 rtl:border-l-2 rtl:last:border-l-0 rtl:first:pl-1 px-1 text-xs`}
+                                            className={`ltr:border-r-2 ltr:last:border-r-0 ltr:first:pr-1 rtl:border-l-2 rtl:last:border-l-0 rtl:first:pl-1 px-1 text-xs capitalize`}
                                             ar={addon.name}
                                             en={addon.name}
                                           />
@@ -301,7 +302,7 @@ const CartIndex: NextPage = (): JSX.Element => {
                             </button>
                             <button
                               type="button"
-                              className="relative -ml-px inline-flex items-center  bg-gray-100 px-4 py-2 text-sm font-medium text-primary_BG  focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
+                              className="relative -ml-px inline-flex items-center  bg-gray-100 px-4 py-2 text-sm font-medium text-primary_BG  focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500 capitalize"
                             >
                               {item.Quantity}
                             </button>
@@ -317,7 +318,7 @@ const CartIndex: NextPage = (): JSX.Element => {
                           </span>
                           <div>
                             <p
-                              className="text-primary_BG"
+                              className="text-primary_BG capitalize"
                               suppressHydrationWarning={suppressText}
                             >
                               {item.Price} {t('kwd')}
@@ -338,7 +339,7 @@ const CartIndex: NextPage = (): JSX.Element => {
                   alt={t('promotion')}
                 />
                 <p
-                  className="font-semibold ps-2"
+                  className="font-semibold ps-2 capitalize"
                   suppressHydrationWarning={suppressText}
                 >
                   {t('promotion_code')}
@@ -364,7 +365,7 @@ const CartIndex: NextPage = (): JSX.Element => {
                   alt={`${t('note')}`}
                 />
                 <p
-                  className="font-semibold ps-2"
+                  className="font-semibold ps-2 capitalize"
                   suppressHydrationWarning={suppressText}
                 >
                   {t('extra_notes')}
@@ -376,7 +377,7 @@ const CartIndex: NextPage = (): JSX.Element => {
                 suppressHydrationWarning={suppressText}
                 defaultValue={notes}
                 onChange={debounce((e) => handleSetNotes(e.target.value), 400)}
-                className={`border-0 border-b-2 border-b-gray-200 w-full focus:ring-transparent`}
+                className={`border-0 border-b-2 border-b-gray-200 w-full focus:ring-transparent capitalize`}
               />
             </div>
             {isSuccess && (

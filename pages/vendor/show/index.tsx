@@ -15,13 +15,13 @@ import CashOnDelivery from '@/appImages/cash_on_delivery.jpg';
 import Visa from '@/appImages/visa.png';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
-import { submitBtnClass, suppressText } from '@/constants/*';
+import { imageSizes, submitBtnClass, suppressText } from '@/constants/*';
 import {
   setCurrentModule,
   resetShowFooterElement,
   setShowFooterElement,
 } from '@/redux/slices/appSettingSlice';
-import { useAppDispatch } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import CustomImage from '@/components/CustomImage';
 import Feedback from '@/pages/feedback';
 import FeedbackIcon from '@/appIcons/feedback.svg';
@@ -37,6 +37,9 @@ type DetailsItem = {
   content: any;
 };
 const VendorShow: NextPage<Props> = ({ element }) => {
+  const {
+    locale: { isRTL },
+  } = useAppSelector((state) => state);
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
 
@@ -44,7 +47,7 @@ const VendorShow: NextPage<Props> = ({ element }) => {
     dispatch(setCurrentModule(element.name));
   }, [element]);
   useEffect(() => {
-    dispatch(setCurrentModule(t('vendor_show')));
+    dispatch(setCurrentModule(isRTL ? element.name_ar : element.name_en));
     dispatch(setShowFooterElement(`vendor_show`));
     return () => {
       dispatch(resetShowFooterElement());
@@ -59,7 +62,7 @@ const VendorShow: NextPage<Props> = ({ element }) => {
   const [showModal, SetShowModal] = useState(false);
   const VendorDetailsItem = ({ icon, text, content }: DetailsItem) => {
     return (
-      <div className="flex justify-between px-4 py-6 m-3 shadow-md">
+      <div className="flex justify-between px-4 py-6 m-3 shadow-md capitalize">
         <div className="flex items-center">
           {icon}
           <p
@@ -87,8 +90,8 @@ const VendorShow: NextPage<Props> = ({ element }) => {
           icon={
             <CustomImage
               src={Clock.src}
-              width={20}
-              height={20}
+              width={imageSizes.xs}
+              height={imageSizes.xs}
               alt={t('work_hours')}
               className={`w-6 h-6`}
             />
@@ -100,8 +103,8 @@ const VendorShow: NextPage<Props> = ({ element }) => {
           icon={
             <CustomImage
               src={DeliveryIcon.src}
-              width={22}
-              height={22}
+              width={imageSizes.xs}
+              height={imageSizes.xs}
               alt={t('delivery_time')}
               className={`w-6 h-6`}
             />
@@ -113,8 +116,8 @@ const VendorShow: NextPage<Props> = ({ element }) => {
           icon={
             <CustomImage
               src={PreOrderAvailabilityIcon.src}
-              width={25}
-              height={25}
+              width={imageSizes.xs}
+              height={imageSizes.xs}
               alt={t('preorder_availability')}
               className={`w-6 h-6`}
             />
@@ -127,8 +130,8 @@ const VendorShow: NextPage<Props> = ({ element }) => {
             <div className="flex items-center">
               <CustomImage
                 src={PaymentIcon.src}
-                width={25}
-                height={25}
+                width={imageSizes.xs}
+                height={imageSizes.xs}
                 alt={t('payment_methods')}
                 className={`w-6 h-6`}
               />
@@ -205,13 +208,12 @@ const VendorShow: NextPage<Props> = ({ element }) => {
               <CustomImage
                 className="w-5 h-5"
                 src={Twitter.src}
-                alt={t('twiiter')}
+                alt={t('twitter')}
               />
             </Link>
           </div>
         </div>
         <Feedback
-          right={true}
           isOpen={showModal}
           ariaHideApp={false}
           onRequestClose={handleClosePopup}

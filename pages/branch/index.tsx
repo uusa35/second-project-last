@@ -29,14 +29,12 @@ const BranchIndex: NextPage<Props> = ({ elements }) => {
   }, []);
 
   return (
-    <div className={`px-4`}>
-          <h4 className="text-center text-primary_BG font-semibold pt-2">
-            {t('our_branches')}
-          </h4>
+   <MainContentLayout>
+     <div className={`px-4`}>
           {map(elements, (b, i) => (
             <Link href={`#`} onClick={() => dispatch(setBranch(b))} key={i}>
               <p
-                className="font-semibold pb-3"
+                className="font-semibold pb-3 capitalize"
                 suppressHydrationWarning={suppressText}
               >
                 {t(b.name)}
@@ -57,7 +55,7 @@ const BranchIndex: NextPage<Props> = ({ elements }) => {
               </div>
               <div className="flex justify-between my-5 items-center">
                 <p
-                  className="text-primary_BG text-lg font-semibold"
+                  className="text-primary_BG text-lg font-semibold capitalize"
                   suppressHydrationWarning={suppressText}
                 >
                   {t(b.location)}
@@ -68,7 +66,7 @@ const BranchIndex: NextPage<Props> = ({ elements }) => {
                     alt="phone"
                     className="ltr:mr-2 rtl:ml-2 h-5 items-center"
                   />
-                  <p className="whitespace-nowrap">{b.mobile}</p>
+                  <p className="whitespace-nowrap capitalize">{b.mobile}</p>
                 </div>
               </div>
             </Link>
@@ -77,7 +75,7 @@ const BranchIndex: NextPage<Props> = ({ elements }) => {
             <button className={`${submitBtnClass}`}>
               <div className="flex justify-center items-center">
                 <p
-                  className="text-white px-2"
+                  className="text-white px-2 capitalize"
                   suppressHydrationWarning={suppressText}
                 >
                   {t('send_feedback')}
@@ -85,7 +83,8 @@ const BranchIndex: NextPage<Props> = ({ elements }) => {
               </div>
             </button>
           </div>
-        </div>
+    </div>
+   </MainContentLayout>
   );
 };
 

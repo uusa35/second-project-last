@@ -20,7 +20,7 @@ const NoDataFound: FC<Props> = ({ title }) => {
             width={imageSizes.xs}
             height={imageSizes.xs}
           />
-          <p suppressHydrationWarning={suppressText}>{t(title)}</p>
+          <p className='capitalize' suppressHydrationWarning={suppressText}>{t(title)}</p>
         </div>
       </div>
     </div>

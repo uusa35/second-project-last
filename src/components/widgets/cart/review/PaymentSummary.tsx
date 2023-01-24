@@ -8,7 +8,7 @@ import { isNull } from 'lodash';
 type Props = {
   total: number;
   subTotal: number;
-  delivery: number | null;
+  delivery: number | string | null;
   isLoading: boolean;
 };
 const PaymentSummary: FC<Props> = ({
@@ -19,7 +19,7 @@ const PaymentSummary: FC<Props> = ({
 }) => {
   const { t } = useTranslation();
   return (
-    <div className={`px-4 py-4`}>
+    <div className={`px-4 py-4 capitalize`}>
       {isLoading ? (
         <LoadingSpinner fullWidth={false} />
       ) : (

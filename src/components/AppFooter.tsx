@@ -50,8 +50,10 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
     UserAgent: userAgent,
   });
 
+  console.log('branch', branchId);
+  console.log('area', area.id);
   const handleAddToCart = async () => {
-    if (isNull(area.id) || isNull(branchId)) {
+    if (isNull(area.id) ?? isNull(branchId)) {
       router
         .push(appLinks.cartSelectMethod.path)
         .then(() =>
@@ -68,7 +70,7 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
         })
       );
     } else {
-      if (branchId && !isNull(branchId) && !isEmpty(productCart) && userAgent) {
+      if ((branchId || area.id) && !isEmpty(productCart) && userAgent) {
         triggerAddToCart({
           process_type: method,
           area_branch:
@@ -113,7 +115,7 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
       <footer
         className={`${!isRTL ? `left-0` : `right-0`} ${
           showFooterElement === `home` ? `bottom-0` : `bottom-0`
-        } fixed w-full lg:w-2/4 xl:w-1/3 h-auto flex flex-col justify-center items-center text-center bg-white bg-opacity-60`}
+        } fixed w-full lg:w-2/4 xl:w-1/3 h-auto flex flex-col justify-center items-center text-center bg-white bg-opacity-60 capitalize`}
       >
         {showFooterElement === 'product_show' && (
           <div
@@ -124,7 +126,7 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
               onClick={() => handleAddToCart()}
               className={`${footerBtnClass}`}
             >
-              {isNull(branchId) && isNull(area.id)
+              {isNull(area.id) ?? isNull(branchId)
                 ? t(`start_ordering`)
                 : t('add_to_cart')}
             </button>

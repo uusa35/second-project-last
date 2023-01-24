@@ -31,7 +31,7 @@ const OrderSuccess: NextPage<Props> = ({ element }) => {
   return (
     <Suspense>
       <MainContentLayout>
-        <div>
+        <div className='capitalize'>
           <div className="flex flex-col items-center">
             <CustomImage
               className=""
