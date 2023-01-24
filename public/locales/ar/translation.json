@@ -470,6 +470,7 @@
   "start_ordering" : "ابدأ طلبك الآن",
   "name_is_required": "الاسم مطلوب",
   "phone_is_required": "رقم الهاتف مطلوب",
-  "email_is_required": "الإيميل مطلوب"
+  "email_is_required": "الإيميل مطلوب",
+  "all_fields_r_required" : "جميع الحقول مطلوبة."
 }
 }

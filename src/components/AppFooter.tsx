@@ -106,8 +106,6 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
     }
   };
 
-  const [showModal, SetShowModal] = useState(false);
-
   return (
     <Suspense>
       <footer
@@ -124,7 +122,7 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
               onClick={() => handleAddToCart()}
               className={`${footerBtnClass}`}
             >
-              {isNull(branchId) || isNull(area.id)
+              {isNull(branchId) && isNull(area.id)
                 ? t(`start_ordering`)
                 : t('add_to_cart')}
             </button>
