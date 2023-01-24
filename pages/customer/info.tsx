@@ -38,7 +38,7 @@ const CustomerInformation: NextPage = (): JSX.Element => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { customer } = useAppSelector((state) => state);
-  const [saveCustomerInfo] = useSaveCustomerInfoMutation();
+  const [triggerSaveCustomerInfo] = useSaveCustomerInfoMutation();
   const {
     register,
     handleSubmit,
@@ -61,7 +61,7 @@ const CustomerInformation: NextPage = (): JSX.Element => {
   }, []);
 
   const onSubmit = async (body: any) => {
-    await saveCustomerInfo({
+    await triggerSaveCustomerInfo({
       body,
     }).then((r: any) => {
       if (r.data && r.data.Data && r.data.status) {
