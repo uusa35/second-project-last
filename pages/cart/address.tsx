@@ -40,7 +40,6 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-
 const CartAddress: NextPage = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -65,27 +64,39 @@ const CartAddress: NextPage = (): JSX.Element => {
     date: new Date(),
     time: new Date(),
   });
-  yup.addMethod(yup.object, 'atLeastOneOf', function(list) {
+  yup.addMethod(yup.object, 'atLeastOneOf', function (list) {
     return this.test({
       name: 'atLeastOneOf',
       message: 'select_atleast_one_address_field',
       exclusive: true,
       params: { keys: list.join(', ') },
-      test: value => value == null || list.some(f => value[f] != null)
-    })
+      test: (value) => value == null || list.some((f) => value[f] != null),
+    });
   });
-  
-  const schema = yup.object().shape({
-    block: yup.string(),
-    street: yup.string(),
-    house_no: yup.string(),
-    avenue: yup.string(),
-    paci: yup.string(),
-    floor_no: yup.string(),
-    office_no: yup.string(),
-    additional: yup.string()
-  }).atLeastOneOf(['block', 'street', 'house_no', 'avenue', 'paci', 'floor_no', 'office_no', 'additional'])
-  
+
+  const schema = yup
+    .object()
+    .shape({
+      block: yup.string(),
+      street: yup.string(),
+      house_no: yup.string(),
+      avenue: yup.string(),
+      paci: yup.string(),
+      floor_no: yup.string(),
+      office_no: yup.string(),
+      additional: yup.string(),
+    })
+    .atLeastOneOf([
+      'block',
+      'street',
+      'house_no',
+      'avenue',
+      'paci',
+      'floor_no',
+      'office_no',
+      'additional',
+    ]);
+
   const {
     register,
     handleSubmit,
@@ -107,10 +118,10 @@ const CartAddress: NextPage = (): JSX.Element => {
         paci: ``,
         floor_no: ``,
         office_no: ``,
-        additional: ``
+        additional: ``,
+      },
     },
-  }
-});
+  });
   const CustomTimeInput = forwardRef(({ value, onClick }, ref) => (
     <div
       className="flex w-full items-center justify-between px-2"
@@ -145,18 +156,19 @@ const CartAddress: NextPage = (): JSX.Element => {
       },
     }).then((r: any) => {
       if (r.data?.status) {
-        switch(r.data.Data.toLowerCase()){
-          case 'open':{
-            dispatch(
-              showToastMessage({
-                content: `time_and_date_saved_successfully`,
-                type: `success`,
-              })
-            );
-            dispatch(setprefrences({ ...prefrences }));
-            router.push(appLinks.orderReview.path);
-          }
-          break;
+        switch (r.data.Data.toLowerCase()) {
+          case 'open':
+            {
+              dispatch(
+                showToastMessage({
+                  content: `time_and_date_saved_successfully`,
+                  type: `success`,
+                })
+              );
+              dispatch(setprefrences({ ...prefrences }));
+              router.push(appLinks.orderReview.path);
+            }
+            break;
 
           case 'busy':
           case 'close':
@@ -166,7 +178,7 @@ const CartAddress: NextPage = (): JSX.Element => {
                 type: `error`,
               })
             );
-          break;
+            break;
 
           default:
             dispatch(
@@ -175,11 +187,10 @@ const CartAddress: NextPage = (): JSX.Element => {
                 type: `error`,
               })
             );
-
         }
-        // if (r.data.Data.toLowerCase() === 'open') {         
+        // if (r.data.Data.toLowerCase() === 'open') {
         // }
-        // else if (r.data.Data.toLowerCase() === 'close') {          
+        // else if (r.data.Data.toLowerCase() === 'close') {
         // }
       } else {
         // dispatch(
@@ -217,7 +228,7 @@ const CartAddress: NextPage = (): JSX.Element => {
       },
     }).then((r: any) => {
       console.log('add address res', r);
-      if (r.data.status) {
+      if (r.data && r.data.status) {
         dispatch(
           showToastMessage({
             content: `address_saved_successfully`,
@@ -236,7 +247,7 @@ const CartAddress: NextPage = (): JSX.Element => {
       }
     });
   };
-console.log({errors})
+  console.log({ errors });
   const onSubmit = async () => {
     if (method === 'pickup') {
       checkTimeAvilability();
@@ -250,10 +261,9 @@ console.log({errors})
       //     })
       //   );
       // } else {
-        
+
       // }
       handelSaveAddress();
-      
 
       // console.log({
       //   type: prefrences.type,
@@ -274,9 +284,9 @@ console.log({errors})
   useEffect(() => {
     dispatch(setCurrentModule(t('cart_address')));
     dispatch(setShowFooterElement('cart_address'));
-    return ()=>{
-      dispatch(resetShowFooterElement())
-    }
+    return () => {
+      dispatch(resetShowFooterElement());
+    };
   }, []);
 
   useEffect(() => {
@@ -331,7 +341,7 @@ console.log({errors})
                           ? parseInt(address.longitude)
                           : 47.4979476,
                       }}
-                      onChange={()=>{}}
+                      onChange={() => {}}
                       defaultZoom={11}
                     ></GoogleMapReact>
                   </div>
@@ -439,7 +449,9 @@ console.log({errors})
                         >
                           <div className="flex items-center justify-center">
                             <Image
-                              src={openTab === 3 ? OfficeAcitveIcon : OfficeIcon}
+                              src={
+                                openTab === 3 ? OfficeAcitveIcon : OfficeIcon
+                              }
                               alt="icon"
                               width={20}
                               height={20}
@@ -460,7 +472,7 @@ console.log({errors})
                       suppressHydrationWarning={suppressText}
                       {...register('block')}
                       aria-invalid={errors.block ? 'true' : 'false'}
-                      onChange={(e)=>setValue('block', e.target.value)}
+                      onChange={(e) => setValue('block', e.target.value)}
                     />
 
                     <input
@@ -469,7 +481,7 @@ console.log({errors})
                       suppressHydrationWarning={suppressText}
                       {...register('street')}
                       aria-invalid={errors.street ? 'true' : 'false'}
-                      onChange={(e)=>setValue('street', e.target.value)}
+                      onChange={(e) => setValue('street', e.target.value)}
                     />
 
                     <div className="relative flex flex-col">
@@ -485,7 +497,9 @@ console.log({errors})
                               suppressHydrationWarning={suppressText}
                               {...register('house_no')}
                               aria-invalid={errors.house_no ? 'true' : 'false'}
-                              onChange={(e)=>setValue('house-no', e.target.value)}
+                              onChange={(e) =>
+                                setValue('house-no', e.target.value)
+                              }
                             />
                           </div>
                           <div
@@ -498,7 +512,9 @@ console.log({errors})
                               placeholder={`${t(`floor#`)}`}
                               {...register('floor_no')}
                               aria-invalid={errors.floor_no ? 'true' : 'false'}
-                              onChange={(e)=>setValue('floor_no', e.target.value)}
+                              onChange={(e) =>
+                                setValue('floor_no', e.target.value)
+                              }
                             />
                           </div>
                           <div
@@ -512,7 +528,9 @@ console.log({errors})
                               suppressHydrationWarning={suppressText}
                               {...register('office_no')}
                               aria-invalid={errors.office_no ? 'true' : 'false'}
-                              onChange={(e)=>setValue('office_no', e.target.value)}
+                              onChange={(e) =>
+                                setValue('office_no', e.target.value)
+                              }
                             />
                           </div>
                         </div>
@@ -524,7 +542,7 @@ console.log({errors})
                       suppressHydrationWarning={suppressText}
                       {...register('avenue')}
                       aria-invalid={errors.avenue ? 'true' : 'false'}
-                      onChange={(e)=>setValue('avenue', e.target.value)}
+                      onChange={(e) => setValue('avenue', e.target.value)}
                     />
 
                     <input
@@ -533,7 +551,7 @@ console.log({errors})
                       suppressHydrationWarning={suppressText}
                       {...register('paci')}
                       aria-invalid={errors.paci ? 'true' : 'false'}
-                      onChange={(e)=>setValue('paci', e.target.value)}
+                      onChange={(e) => setValue('paci', e.target.value)}
                     />
 
                     <input
@@ -542,7 +560,7 @@ console.log({errors})
                       suppressHydrationWarning={suppressText}
                       {...register('additional')}
                       aria-invalid={errors.additional ? 'true' : 'false'}
-                      onChange={(e)=>setValue('additional', e.target.value)}
+                      onChange={(e) => setValue('additional', e.target.value)}
                     />
                   </div>
                 </div>
@@ -623,7 +641,10 @@ console.log({errors})
                         <DatePicker
                           selected={prefrences.time as Date}
                           onChange={(date) => {
-                            setPrefrences({ ...prefrences, time: date as Date });
+                            setPrefrences({
+                              ...prefrences,
+                              time: date as Date,
+                            });
                           }}
                           customInput={<CustomTimeInput />}
                           startDate={new Date()}
@@ -735,7 +756,7 @@ console.log({errors})
               </div>
             )}
           </div>
-          <input type='submit'/>
+          <input type="submit" />
         </form>
       </MainContentLayout>
     </Suspense>
