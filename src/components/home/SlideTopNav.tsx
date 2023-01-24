@@ -14,12 +14,14 @@ import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
 import { FC } from 'react';
 import { useGetCartProductsQuery } from '@/redux/api/cartApi';
+import CustomImage from '@/components/CustomImage';
 
 type Props = {
   offset: number;
+  isHome: boolean;
 };
 
-const SlideTopNav: FC<Props> = ({ offset }): JSX.Element => {
+const SlideTopNav: FC<Props> = ({ offset, isHome = false }): JSX.Element => {
   const { t } = useTranslation();
   const {
     vendor,
@@ -55,10 +57,13 @@ const SlideTopNav: FC<Props> = ({ offset }): JSX.Element => {
   return (
     <div
       className={`${
-        offset <= 80 ? `hidden` : `flex`
-      } flex flex-row  justify-start items-center w-full pb-4 pt-8 px-4 h-22 top-0  relative bg-white 
+        offset <= (isHome ? -1 : 80)
+          ? `hidden `
+          : `flex transition-opacity duration-3000 ${
+              offset <= 80 ? `bg-transparent text-white` : `bg-white text-black`
+            }`
+      } flex flex-row  justify-start items-center w-full pb-4 pt-8 px-4 h-28 top-0  relative lg:text-black lg:bg-white
       `}
-      // bg-gradient-to-tr from-gray-50 to-gray-100 lg:from-white lg:to-white
     >
       <button
         onClick={() =>
@@ -66,7 +71,7 @@ const SlideTopNav: FC<Props> = ({ offset }): JSX.Element => {
         }
         className={`z-50`}
       >
-        <Bars3Icon className={`w-8 h-8 text-black`} />
+        <Bars3Icon className={`w-8 h-8 `} />
       </button>
 
       {/* logo */}
@@ -76,11 +81,11 @@ const SlideTopNav: FC<Props> = ({ offset }): JSX.Element => {
             scroll={false}
             href={appLinks.home.path}
             locale={lang}
-            className="flex justify-center space-x-3  cursor-pointer px-4 py-2 text-white lg:text-black z-50"
+            className="flex justify-center space-x-3  cursor-pointer px-4 py-2 "
           >
-            <div className="flex sm:hidden  grow justify-center ">
+            <div className="flex xl:hidden  grow justify-center ">
               <Image
-                className="h-10 w-auto"
+                className="h-auto w-12 xl:w-auto"
                 src={imgUrl(vendor.logo)}
                 alt={`logo`}
                 width={imageSizes.xs}
@@ -96,7 +101,7 @@ const SlideTopNav: FC<Props> = ({ offset }): JSX.Element => {
             href={appLinks.cartIndex.path}
             className={`relative`}
           >
-            <ShoppingBagOutlined className={`w-8 h-8 text-black`} />
+            <ShoppingBagOutlined className={`w-8 h-8 `} />
             {isSuccess &&
               cartItems.data.subTotal > 0 &&
               cartItems.data?.Cart?.length > 0 && (
@@ -109,19 +114,12 @@ const SlideTopNav: FC<Props> = ({ offset }): JSX.Element => {
           </Link>
           <button
             onClick={() => handleChangeLang(otherLang)}
-            className={`w-8 h-8 text-black text-2xl font-bold capitalize`}
+            className={`w-8 h-8  text-2xl font-bold capitalize`}
           >
             {t(`${otherLang}`)}
           </button>
         </div>
       </div>
-      {/*<Image*/}
-      {/*  src={`${imgUrl(vendor.cover)}`}*/}
-      {/*  alt={vendor.name}*/}
-      {/*  className={`block lg:hidden  object-stretch w-full h-22  fixed left-0 right-0 top-0 mix-blend-overlay shadow-xl z-0 overflow-hidden`}*/}
-      {/*  width={imageSizes.lg}*/}
-      {/*  height={imageSizes.lg}*/}
-      {/*/>*/}
     </div>
   );
 };

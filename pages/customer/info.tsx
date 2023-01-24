@@ -1,6 +1,6 @@
 import { NextPage } from 'next';
 import MainContentLayout from '@/layouts/MainContentLayout';
-import { appLinks } from '@/constants/*';
+import { appLinks, imageSizes, suppressText } from '@/constants/*';
 import { BadgeOutlined, EmailOutlined, Phone } from '@mui/icons-material';
 import GreyLine from '@/components/GreyLine';
 import { useTranslation } from 'react-i18next';
@@ -19,125 +19,163 @@ import { useSaveCustomerInfoMutation } from '@/redux/api/CustomerApi';
 import { useRouter } from 'next/router';
 import { setCustomer } from '@/redux/slices/customerSlice';
 import { useAppSelector } from '@/redux/hooks';
+import { Controller, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import CustomImage from '@/components/CustomImage';
+import ContactImage from '@/appImages/contact_info.png';
 
+const schema = yup
+  .object({
+    id: yup.number(),
+    name: yup.string().required().min(2).max(50),
+    email: yup.string().email().required(),
+    phone: yup.number().min(100000).max(999999999999).required(),
+  })
+  .required();
 const CustomerInformation: NextPage = (): JSX.Element => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const router = useRouter();
   const { customer } = useAppSelector((state) => state);
-  const [userData, setUserData] = useState<CustomerInfo>({
-    id: customer.id ?? 0,
-    name: customer.name ?? ``,
-    email: customer.email ?? ``,
-    phone: customer.phone ?? ``,
+  const [saveCustomerInfo] = useSaveCustomerInfoMutation();
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    control,
+    formState: { errors },
+  } = useForm<any>({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      id: customer?.id ?? 0,
+      name: customer?.name ?? ``,
+      email: customer?.email ?? ``,
+      phone: customer?.phone ?? ``,
+    },
   });
-  const [
-    saveCustomerInfo,
-    { isLoading: SaveCustomerLoading, error: customerInfoError },
-  ] = useSaveCustomerInfoMutation();
 
   useEffect(() => {
     dispatch(setCurrentModule(t('customer_info')));
     dispatch(setShowFooterElement(`customerInfo`));
-    return () => {
-      dispatch(resetShowFooterElement());
-    };
   }, []);
 
-  const handelSaveCustomerInfo = async () => {
-    // console.log(userData);
-    if (
-      userData.name.length < 2 ||
-      userData.phone.length < 2 ||
-      userData.email.length < 2
-    ) {
-      dispatch(
-        showToastMessage({
-          content: `some_fields_r_missing`,
-          type: `info`,
-        })
-      );
-    } else {
-      await saveCustomerInfo({ body: userData })
-        .then((r: any) => {
-          if (r.data.Data && r.data.status) {
-            dispatch(setCustomer(r.data.Data));
-          } else {
-            dispatch(
-              showToastMessage({ content: `address_error`, type: `error` })
-            );
-          }
-        })
-        .then(() => {
-          router.push(appLinks.address.path);
-        });
-    }
+  const onSubmit = async (body: any) => {
+    await saveCustomerInfo({
+      body,
+    }).then((r: any) => {
+      if (r.data && r.data.Data && r.data.status) {
+        router
+          .push(appLinks.address.path)
+          .then(() => dispatch(setCustomer(r.data.Data)));
+      } else {
+        dispatch(
+          showToastMessage({
+            content: `all_fields_r_required`,
+            type: 'error',
+          })
+        );
+      }
+    });
   };
-
-  useEffect(() => {
-    dispatch(setCurrentModule(t('customer_info')));
-    dispatch(setShowFooterElement('customerInfo'));
-  }, []);
 
   return (
     <Suspense>
-      <MainContentLayout handleSubmit={handelSaveCustomerInfo}>
+      <MainContentLayout handleSubmit={handleSubmit(onSubmit)}>
         <div className="flex-col justify-center h-full px-5">
-          {/* <div className="flex justify-center py-10 lg:my-5 lg:pb-5">
+          <div className="flex justify-center py-10 lg:my-5 lg:pb-5">
             <CustomImage
-              src={ContactInfo.src}
+              src={ContactImage.src}
               alt="customer"
-              width={imageSizes.xl}
-              height={imageSizes.xl}
+              width={imageSizes.md}
+              height={imageSizes.md}
               className={`my-10 lg:my-0 w-auto h-auto`}
             />
-          </div> */}
-
-          <div className="lg:mt-10">
-            <div className="flex gap-x-2 px-2 border-b-4 border-b-gray-200 w-full focus:ring-transparent py-4">
-              <BadgeOutlined className="text-primary_BG" />
-              <input
-                onChange={(e) =>
-                  setUserData((prev) => ({ ...prev, name: e.target.value }))
-                }
-                defaultValue={userData.name}
-                className={`border-0 focus:ring-transparent outline-none`}
-                type="string"
-                required
-                placeholder={`${t('enter_your_name')}`}
-              ></input>
-            </div>
-
-            <div className="flex items-center gap-x-2 px-2 border-b-4 border-b-gray-200 w-full focus:ring-transparent py-4">
-              <EmailOutlined className="text-primary_BG" />
-              <input
-                onChange={(e) =>
-                  setUserData((prev) => ({ ...prev, email: e.target.value }))
-                }
-                defaultValue={userData.email}
-                className={`border-0 focus:ring-transparent px-0`}
-                type="email"
-                required
-                pattern='/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/'
-                placeholder={`${t('enter_your_email')}`}
-              ></input>
-            </div>
-
-            <div className="flex items-center gap-x-2 px-2 border-b-4 border-b-gray-200 w-full focus:ring-transparent py-4">
-              <Phone className="text-primary_BG" />
-              <PhoneInput
-                international
-                defaultCountry="KW"
-                className="text-lg outline-none w-4/6 focus:border-none p-0 focus:ring-0"
-                placeholder={`${t('enter_your_phone')}`}
-                value={userData.phone}
-                onChange={(value) =>
-                  setUserData((prev) => ({ ...prev, phone: value?.toString() }))
-                }
-              />
-            </div>
-            <GreyLine />
           </div>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="lg:mt-10">
+              <div className="flex gap-x-2 px-2 border-b-4 border-b-gray-200 w-full focus:ring-transparent py-4">
+                <BadgeOutlined className="text-primary_BG" />
+                <input
+                  {...register('name')}
+                  className={`border-0 w-full focus:ring-transparent outline-0`}
+                  placeholder={`${t('enter_your_name')}`}
+                  onChange={(e) => setValue('name', e.target.value)}
+                  aria-invalid={errors.name ? 'true' : 'false'}
+                />
+              </div>
+              <div>
+                {errors?.name?.message && (
+                  <p
+                    className={`text-base text-red-800 font-semibold py-2`}
+                    suppressHydrationWarning={suppressText}
+                  >
+                    {t('name_is_required')}
+                  </p>
+                )}
+              </div>
+              <div className="flex items-center gap-x-2 px-2 border-b-4 border-b-gray-200 w-full focus:ring-transparent py-4">
+                <EmailOutlined className="text-primary_BG" />
+                <input
+                  {...register('email')}
+                  aria-invalid={errors.email ? 'true' : 'false'}
+                  className={`border-0 w-full focus:ring-transparent outline-0`}
+                  onChange={(e) => setValue('email', e.target.value)}
+                  placeholder={`${t('enter_your_email')}`}
+                />
+              </div>
+              <div>
+                {errors?.email?.message && (
+                  <p
+                    className={`text-base text-red-800 font-semibold py-2`}
+                    suppressHydrationWarning={suppressText}
+                  >
+                    {t('email_is_required')}
+                  </p>
+                )}
+              </div>
+              <div className="flex items-center gap-x-2 px-2 border-b-4 border-b-gray-200 w-full focus:ring-transparent py-4">
+                <Phone className="text-primary_BG" />
+                <Controller
+                  render={(props) => (
+                    <PhoneInput
+                      international
+                      defaultCountry="KW"
+                      placeholder={`${t('enter_your_phone')}`}
+                      inputRef={register}
+                      inputProps={{
+                        name: 'phone',
+                        required: true,
+                        autoFocus: true,
+                      }}
+                      id="phone"
+                      name="phone"
+                      autoComplete="phone"
+                      onChange={(value) => setValue('phone', value)}
+                      error={!!errors.phone}
+                      helperText={t(`${errors?.phone?.message}`)}
+                    />
+                  )}
+                  defaultValue=""
+                  name="phone"
+                  control={control}
+                  rules={{ required: true }}
+                />
+              </div>
+              <div>
+                {errors?.phone?.message && (
+                  <p
+                    className={`text-base text-red-800 font-semibold py-2`}
+                    suppressHydrationWarning={suppressText}
+                  >
+                    {t('phone_is_required')}
+                  </p>
+                )}
+              </div>
+              <GreyLine />
+              <input type="submit" />
+            </div>
+          </form>
         </div>
       </MainContentLayout>
     </Suspense>

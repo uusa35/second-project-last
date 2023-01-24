@@ -467,5 +467,10 @@
   "select_location":"حدد موقع",
   "say_something_about_us": "قل شيئًا عنا",
   "choose_area_or_branch" : "يجب عليك أولا اختيار منطقتك أو الفرع القريب لك",
-  "start_ordering" : "ابدأ طلبك الآن"
+  "start_ordering" : "ابدأ طلبك الآن",
+  "name_is_required": "الاسم مطلوب",
+  "phone_is_required": "رقم الهاتف مطلوب",
+  "email_is_required": "الإيميل مطلوب",
+  "all_fields_r_required" : "جميع الحقول مطلوبة."
+}
 }

@@ -11,7 +11,14 @@ import { Vendor } from '@/types/index';
 import { categoryApi } from '@/redux/api/categoryApi';
 import { isEmpty, map } from 'lodash';
 import CategoryWidget from '@/widgets/category/CategoryWidget';
-import { apiUrl, appLinks, baseUrl, imgUrl, suppressText } from '@/constants/*';
+import {
+  apiUrl,
+  appLinks,
+  baseUrl,
+  imageSizes,
+  imgUrl,
+  suppressText,
+} from '@/constants/*';
 import { useTranslation } from 'react-i18next';
 import { setLocale } from '@/redux/slices/localeSlice';
 import { setCurrentModule } from '@/redux/slices/appSettingSlice';
@@ -46,16 +53,17 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
       {/* SEO Head DEV*/}
       <MainHead title={element.name} mainImage={`${baseUrl}${element.logo}`} />
       <MainContentLayout>
-        <div className='absolute top-0 lg:hidden w-full h-52"'>
-          <CustomImage
-            src={`${imgUrl(element.cover)}`}
-            alt="vendor panner"
-            className="w-full h-52"
-          />
-        </div>
-        <div className="bg-white rounded-3xl lg:rounded-none relative -top-10 lg:top-auto  pt-1 lg:pt-0 ">
+        {/*  ImageBackGround Header */}
+        <CustomImage
+          src={`${imgUrl(element.cover)}`}
+          alt={element.name}
+          className={`block lg:hidden object-stretch w-full h-1/5 absolute left-0 right-0 -top-40 mix-blend-overlay shadow-xl z-0 overflow-hidden`}
+          width={imageSizes.lg}
+          height={imageSizes.lg}
+        />
+        <div className="bg-white mt-40 lg:mt-0 border-t-4 border-stone-100 lg:border-none rounded-t-3xl lg:rounded-none relative -top-10 lg:top-auto  pt-1 lg:pt-0 ">
           {/*  HomePage Header */}
-          <div className={`px-10 mt-4`}>
+          <div className={`px-10 mt-12 lg:mt-4`}>
             <HomeVendorMainInfo element={element} />
           </div>
           <HomeSelectMethod element={element} />

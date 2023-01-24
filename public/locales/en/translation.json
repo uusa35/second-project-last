@@ -456,5 +456,9 @@
   "select_location":"select location",
   "say_something_about_us": "say something about us",
   "choose_area_or_branch" : "please choose your area or the nearest branch.",
-  "start_ordering" : "start ordering"
+  "start_ordering" : "start ordering",
+  "name_is_required": "name is required",
+  "phone_is_required": "phone is required",
+  "email_is_required": "email is required",
+  "all_fields_r_required" : "all fields are required."
 }

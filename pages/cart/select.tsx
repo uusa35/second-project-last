@@ -27,8 +27,12 @@ import DeliveryBtns from '@/components/widgets/cart/DeliveryBtns';
 import TextTrans from '@/components/TextTrans';
 import ChangeVendorModal from '@/components/ChangeVendorModal';
 import { useGetCartProductsQuery } from '@/redux/api/cartApi';
+import { wrapper } from '@/redux/store';
 
-const SelectMethod: NextPage = (): JSX.Element => {
+type Props = {
+  previousRoute: string;
+};
+const SelectMethod: NextPage<Props> = ({ previousRoute }): JSX.Element => {
   const { t } = useTranslation();
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -98,36 +102,7 @@ const SelectMethod: NextPage = (): JSX.Element => {
       </svg>
     );
   };
-
-  // const handleSelectArea = (a: Area) => {
-  //   if (
-  //     a.id !== selectedArea.id &&
-  //     isSuccess &&
-  //     cartItems.data &&
-  //     cartItems.data.Cart &&
-  //     !isEmpty(cartItems.data.Cart)
-  //   ) {
-  //     setShowChangeLocModal(true);
-  //   } else {
-  //     dispatch(setArea(a));
-  //   }
-  // };
-
-  // const handleSelectBranch = (b: Branch) => {
-  //   if (
-  //     b.id !== selectedArea.id &&
-  //     isSuccess &&
-  //     cartItems.data &&
-  //     cartItems.data.Cart &&
-  //     !isEmpty(cartItems.data.Cart)
-  //   ) {
-  //     setShowChangeLocModal(true);
-  //   } else {
-  //     dispatch(setBranch(b));
-  //   }
-  // };
-
-  const handelContinue = () => {
+  const handelContinue = async () => {
     if (
       (selectedArea.id || branch.id) &&
       (selectedLocation?.id !== selectedArea.id ||
@@ -139,17 +114,12 @@ const SelectMethod: NextPage = (): JSX.Element => {
     ) {
       setShowChangeLocModal(true);
     } else {
-      if (selectedLocation) {
-        if (method === 'pickup') {
-          dispatch(setBranch(selectedLocation as Branch));
-          dispatch(removeArea());
-        }
-
-        if (method === 'delivery') {
-          dispatch(dispatch(setArea(selectedLocation as Area)));
-          dispatch(removeBranch());
-        }
-        router.back();
+      if (selectedLocation && !showChangeLocModal) {
+        router.push(previousRoute).then(() => {
+          method === `pickup`
+            ? dispatch(setBranch(selectedLocation as Branch))
+            : dispatch(dispatch(setArea(selectedLocation as Area)));
+        });
       }
     }
   };
@@ -279,6 +249,7 @@ const SelectMethod: NextPage = (): JSX.Element => {
         <ChangeVendorModal
           SelectedAreaOrBranch={selectedLocation}
           OpenModal={showChangeLocModal}
+          previousRoute={previousRoute}
           OnClose={() => setShowChangeLocModal(false)}
         />
       </MainContentLayout>
@@ -287,3 +258,14 @@ const SelectMethod: NextPage = (): JSX.Element => {
 };
 
 export default SelectMethod;
+
+export const getServerSideProps = wrapper.getServerSideProps(
+  (store) =>
+    async ({ req }) => {
+      return {
+        props: {
+          previousRoute: req.headers.referer,
+        },
+      };
+    }
+);

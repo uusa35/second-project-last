@@ -55,7 +55,7 @@ const VendorShow: NextPage<Props> = ({ element }) => {
   }
   const handleOpenPopup = () => {
     SetShowModal(true);
-  }
+  };
   const [showModal, SetShowModal] = useState(false);
   const VendorDetailsItem = ({ icon, text, content }: DetailsItem) => {
     return (
@@ -86,7 +86,7 @@ const VendorShow: NextPage<Props> = ({ element }) => {
         <VendorDetailsItem
           icon={
             <CustomImage
-              src={Clock}
+              src={Clock.src}
               width={20}
               height={20}
               alt={t('work_hours')}
@@ -99,7 +99,7 @@ const VendorShow: NextPage<Props> = ({ element }) => {
         <VendorDetailsItem
           icon={
             <CustomImage
-              src={DeliveryIcon}
+              src={DeliveryIcon.src}
               width={22}
               height={22}
               alt={t('delivery_time')}
@@ -112,7 +112,7 @@ const VendorShow: NextPage<Props> = ({ element }) => {
         <VendorDetailsItem
           icon={
             <CustomImage
-              src={PreOrderAvailabilityIcon}
+              src={PreOrderAvailabilityIcon.src}
               width={25}
               height={25}
               alt={t('preorder_availability')}
@@ -126,7 +126,7 @@ const VendorShow: NextPage<Props> = ({ element }) => {
           <div className="flex justify-between pb-20 ps-3">
             <div className="flex items-center">
               <CustomImage
-                src={PaymentIcon}
+                src={PaymentIcon.src}
                 width={25}
                 height={25}
                 alt={t('payment_methods')}
@@ -166,54 +166,56 @@ const VendorShow: NextPage<Props> = ({ element }) => {
             </div>
           </div>
         </div>
-        
+
         <div className="w-full py-8 px-4">
-            <div className="py-5">
-              <button className={`${submitBtnClass}`}>
-                <div className="flex justify-center items-center">
-                  <CustomImage
-                    className="w-5 h-5"
-                    src={FeedbackIcon}
-                    alt={t('feedback')}
-                  />
-                  <p
-                    className="text-white px-2"
-                    suppressHydrationWarning={suppressText}
-                    onClick={handleOpenPopup}
-                  >
-                    {t('leave_feedback')}
-                  </p>
-                </div>
-              </button>
-            </div>
-            <div className="flex justify-evenly items-center w-[80%] m-auto">
-              <Link href={'/'}>
+          <div className="py-5">
+            <button className={`${submitBtnClass}`}>
+              <div className="flex justify-center items-center">
                 <CustomImage
                   className="w-5 h-5"
-                  src={Facebook}
-                  alt={t('facebook')}
+                  src={FeedbackIcon.src}
+                  alt={t('feedback')}
                 />
-              </Link>
-              <Link href={'/'}>
-                <CustomImage
-                  className="w-5 h-5"
-                  src={Instagram}
-                  alt={t('instagram')}
-                />
-              </Link>
-              <Link href={'/'}>
-                <CustomImage
-                  className="w-5 h-5"
-                  src={Twitter}
-                  alt={t('twiiter')}
-                />
-              </Link>
-            </div>
+                <p
+                  className="text-white px-2"
+                  suppressHydrationWarning={suppressText}
+                  onClick={handleOpenPopup}
+                >
+                  {t('leave_feedback')}
+                </p>
+              </div>
+            </button>
           </div>
-        <Feedback right
+          <div className="flex justify-evenly items-center w-[80%] m-auto">
+            <Link href={'/'}>
+              <CustomImage
+                className="w-5 h-5"
+                src={Facebook.src}
+                alt={t('facebook')}
+              />
+            </Link>
+            <Link href={'/'}>
+              <CustomImage
+                className="w-5 h-5"
+                src={Instagram.src}
+                alt={t('instagram')}
+              />
+            </Link>
+            <Link href={'/'}>
+              <CustomImage
+                className="w-5 h-5"
+                src={Twitter.src}
+                alt={t('twiiter')}
+              />
+            </Link>
+          </div>
+        </div>
+        <Feedback
+          right={true}
           isOpen={showModal}
           ariaHideApp={false}
-          onRequestClose={handleClosePopup}  />
+          onRequestClose={handleClosePopup}
+        />
       </MainContentLayout>
     </Suspense>
   );
