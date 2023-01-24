@@ -105,11 +105,11 @@ const CartReview: NextPage = () => {
             </div>
           </div>
           <div className="bg-gray-200 w-full mt-5 p-0 h-2 px-4"></div>
-          {/* location */}
-          <div className="py-5 px-4">
+          <div className={`px-4 py-5 space-y-6`}>
+            {/* location */}
             <div className="flex justify-between">
-              <div className="flex">
-                <LocationOnOutlined className="text-primary_BG" />
+              <div className="flex items-center justify-center">
+                <LocationOnOutlined className="text-primary_BG w-8 h-8" />
                 <h5
                   className="px-2 text-base font-semibold capitalize"
                   suppressHydrationWarning={suppressText}
@@ -119,12 +119,13 @@ const CartReview: NextPage = () => {
               </div>
               <Link
                 href={appLinks.address.path}
-                className="text-primary_BG text-base font-semibold pb-4 capitalize"
+                className="text-primary_BG text-base font-semibold capitalize"
                 suppressHydrationWarning={suppressText}
               >
                 {t('change')}
               </Link>
             </div>
+            {/* map */}
             {customer.address.longitude && customer.address.latitude && (
               <div className="w-full h-36 rounded-md">
                 <GoogleMapReact
@@ -141,8 +142,8 @@ const CartReview: NextPage = () => {
                 ></GoogleMapReact>
               </div>
             )}
-
-            <div className="flex justify-between pt-4">
+            {/* address */}
+            <div className="flex justify-between">
               <div className="flex items-center">
                 <CustomImage
                   src={Home.src}
@@ -152,8 +153,8 @@ const CartReview: NextPage = () => {
                   className={`w-8 h-8`}
                 />
                 {customer.address.address &&
-                  map(customer.address.address, (address, idx) => (
-                    <div key={idx} className="flex">
+                  map(customer.address.address, (address, i) => (
+                    <div key={i} className="flex">
                       <p className="text-md ps-5 capitalize">{address}</p>
                     </div>
                   ))}
@@ -166,31 +167,34 @@ const CartReview: NextPage = () => {
                 {t('edit')}
               </Link>
             </div>
-          </div>
-          <div className="flex justify-between items-center py-3 px-4">
-            <div className="flex items-center">
-              <CustomImage
-                src={IDCard.src}
-                alt="id"
-                width={imageSizes.xs}
-                height={imageSizes.xs}
-                className={`w-8 h-8`}
-              />
-              <div className="ps-5 capitalize">
-                <h4 className="font-semibold text-base">{customer.name}</h4>
-                <p>{customer.phone}</p>
+            {/* information */}
+            <div className="flex justify-between items-center">
+              <div className="flex items-center">
+                <CustomImage
+                  src={IDCard.src}
+                  alt="id"
+                  width={imageSizes.xs}
+                  height={imageSizes.xs}
+                  className={`w-8 h-8`}
+                />
+                <div className="ps-5 capitalize">
+                  <h4 className="font-semibold text-base">{customer.name}</h4>
+                  <p>{customer.phone}</p>
+                </div>
               </div>
+              <Link
+                href={appLinks.customerInfo.path}
+                className="text-primary_BG text-base font-semibold capitalize"
+                suppressHydrationWarning={suppressText}
+              >
+                {t('edit')}
+              </Link>
             </div>
-            <Link
-              href={appLinks.customerInfo.path}
-              className="text-primary_BG text-base font-semibold capitalize"
-              suppressHydrationWarning={suppressText}
-            >
-              {t('edit')}
-            </Link>
           </div>
+          {/* order summary */}
+          <div className="bg-gray-200 w-full my-5 p-0 h-2"></div>
           <div className="px-4">
-            <div className="flex items-center py-3">
+            <div className="flex items-center pb-4">
               <CustomImage
                 src={OrderSummary.src}
                 alt="id"
@@ -208,7 +212,6 @@ const CartReview: NextPage = () => {
               </div>
             </div>
           </div>
-          <div className="bg-gray-200 w-full my-5 p-0 h-2"></div>
           {isSuccess &&
             cartItems.data &&
             cartItems.data.Cart &&
@@ -329,7 +332,7 @@ const CartReview: NextPage = () => {
               </div>
             ))}
           <div className="bg-gray-200 w-full mt-5 p-0 h-2"></div>
-          <div className="px-4">
+          <div className="px-4 py-4">
             <div className="flex items-center py-3">
               <CustomImage
                 src={OrderSummary.src}
@@ -367,7 +370,8 @@ const CartReview: NextPage = () => {
             </div>
           </div>
 
-          <div className="px-4">
+          <div className="bg-gray-200 w-full mt-5 p-0 h-2"></div>
+          <div className="px-4 py-4">
             <div className="flex items-center py-3">
               <ReceiptIcon className="text-primary_BG" />
               <div className="ps-5">
