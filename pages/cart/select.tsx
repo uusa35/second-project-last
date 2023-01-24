@@ -18,9 +18,9 @@ import { appSetting, ServerCart } from '@/types/index';
 import { setCartMethod } from '@/redux/slices/appSettingSlice';
 import { Location } from '@/types/queries';
 import { isEmpty, isNull, map } from 'lodash';
-import { setArea } from '@/redux/slices/areaSlice';
+import { removeArea, setArea } from '@/redux/slices/areaSlice';
 import { useRouter } from 'next/router';
-import { setBranch } from '@/redux/slices/branchSlice';
+import { removeBranch, setBranch } from '@/redux/slices/branchSlice';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { useGetBranchesQuery } from '@/redux/api/branchApi';
 import DeliveryBtns from '@/components/widgets/cart/DeliveryBtns';
@@ -102,15 +102,15 @@ const SelectMethod: NextPage<Props> = ({ previousRoute }): JSX.Element => {
       </svg>
     );
   };
-
   const handelContinue = async () => {
     if (
-      selectedLocation?.id !== selectedArea.id ||
-      (selectedLocation?.id !== branch.id &&
-        isSuccess &&
-        cartItems.data &&
-        cartItems.data.Cart &&
-        !isEmpty(cartItems.data.Cart))
+      (selectedArea.id || branch.id) &&
+      (selectedLocation?.id !== selectedArea.id ||
+        selectedLocation?.id !== branch.id) &&
+      isSuccess &&
+      cartItems.data &&
+      cartItems.data.Cart &&
+      !isEmpty(cartItems.data.Cart)
     ) {
       setShowChangeLocModal(true);
     } else {
@@ -129,6 +129,11 @@ const SelectMethod: NextPage<Props> = ({ previousRoute }): JSX.Element => {
 
   const handleSelectMethod = (m: appSetting['method']) => {
     dispatch(setCartMethod(m));
+    if (m === 'delivery') {
+      dispatch(removeBranch());
+    } else {
+      dispatch(removeArea());
+    }
   };
 
   return (
@@ -245,7 +250,7 @@ const SelectMethod: NextPage<Props> = ({ previousRoute }): JSX.Element => {
         <ChangeVendorModal
           SelectedAreaOrBranch={selectedLocation}
           OpenModal={showChangeLocModal}
-          previousRoute={previousRoute}
+          previousRoute={previousRoute ?? null}
           OnClose={() => setShowChangeLocModal(false)}
         />
       </MainContentLayout>
