@@ -11,11 +11,13 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useCreateFeedbackMutation } from '@/redux/api/feedbackApi';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { submitBtnClass, suppressText } from '@/constants/*';
+import { convertColor, submitBtnClass, suppressText } from '@/constants/*';
 import { useForm } from 'react-hook-form';
 import { debounce, map } from 'lodash';
 import { useState } from 'react';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
+import { themeColor } from '@/redux/slices/vendorSlice';
+
 type Props = {
   isOpen: boolean;
   ariaHideApp: boolean;
@@ -30,6 +32,7 @@ const Feedback: NextPage<Props> = ({
   const {
     locale: { isRTL },
   } = useAppSelector((state) => state);
+  const color = useAppSelector(themeColor);
 
   const schema = yup
     .object()
@@ -112,7 +115,8 @@ const Feedback: NextPage<Props> = ({
               alt={t('feedback')}
             />
             <p
-              className="ps-4 capitalize text-primary_BG fontsemibold"
+              className="ps-4 capitalize fontsemibold"
+              style={{ color }}
               suppressHydrationWarning={suppressText}
             >
               {t('leave_feedback')}
@@ -121,7 +125,7 @@ const Feedback: NextPage<Props> = ({
 
           <button
             className="text-black text-base font-bold"
-            onClick={() => onRequestClose}
+            onClick={() => onRequestClose()}
           >
             X
           </button>
@@ -142,6 +146,7 @@ const Feedback: NextPage<Props> = ({
                     setValue('rate', button.rate);
                     setRateVal(button.rate);
                   }}
+                  style={{backgroundColor: (rateVal === button.rate) ? convertColor(color, 100): '' }}
                 >
                 {t(`${button.text}`)}
               </button>
@@ -209,7 +214,7 @@ const Feedback: NextPage<Props> = ({
                   suppressHydrationWarning={suppressText}
                 />
               </div>
-              <p className="text-primary_BG text-base capitalize">
+              <p className="text-base capitalize" style={{ color }}>
                 {t('(optional)')}
               </p>
             </div>

@@ -7,7 +7,7 @@ import MainHead from '@/components/MainHead';
 import { Branch } from '@/types/queries';
 import { map } from 'lodash';
 import Link from 'next/link';
-import { useAppDispatch } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setBranch } from '@/redux/slices/branchSlice';
 import GoogleMapReact from 'google-map-react';
 import Phone from '@/appIcons/phone.svg';
@@ -16,6 +16,7 @@ import { suppressText, submitBtnClass } from '@/constants/*';
 import { useEffect, Suspense } from 'react';
 import { setCurrentModule } from '@/redux/slices/appSettingSlice';
 import CustomImage from '@/components/CustomImage';
+import { themeColor } from '@/redux/slices/vendorSlice';
 
 type Props = {
   elements: Branch[];
@@ -23,7 +24,7 @@ type Props = {
 const BranchIndex: NextPage<Props> = ({ elements }) => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
-
+  const color = useAppSelector(themeColor);
   useEffect(() => {
     dispatch(setCurrentModule(t('our_branches')));
   }, []);
@@ -55,7 +56,8 @@ const BranchIndex: NextPage<Props> = ({ elements }) => {
               </div>
               <div className="flex justify-between my-5 items-center">
                 <p
-                  className="text-primary_BG text-lg font-semibold capitalize"
+                  className={`text-lg font-semibold capitalize`}
+                  style={{ color }}
                   suppressHydrationWarning={suppressText}
                 >
                   {t(b.location)}

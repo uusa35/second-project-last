@@ -320,7 +320,8 @@ const ProductShow: NextPage<Props> = ({ element }) => {
             </button>
             <button
               type="button"
-              className="relative -ml-px inline-flex items-center  bg-gray-100 px-4 py-2 text-sm font-medium text-primary_BG  focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
+              className="relative -ml-px inline-flex items-center  bg-gray-100 px-4 py-2 text-sm font-medium focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
+              style={{ color }}
             >
               {currentQty}
             </button>
@@ -328,7 +329,7 @@ const ProductShow: NextPage<Props> = ({ element }) => {
               disabled={currentQty === 0}
               onClick={() => handleDecrease()}
               type="button"
-              className="relative -ml-px inline-flex items-center ltr:rounded-r-xl rtl:rounded-l-xl  bg-gray-100 px-4 py-2 text-sm font-medium text-black  focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
+              className="relative -ml-px inline-flex items-center ltr:rounded-r-xl rtl:rounded-l-xl bg-gray-100 px-4 py-2 text-sm font-medium text-black  focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
             >
               -
             </button>
@@ -419,7 +420,8 @@ const ProductShow: NextPage<Props> = ({ element }) => {
                             <button
                               disabled={currentQty === 0}
                               type="button"
-                              className="relative -ml-px inline-flex items-center  bg-gray-100 px-4 py-2 text-sm font-medium text-primary_BG  focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
+                              className="relative -ml-px inline-flex items-center  bg-gray-100 px-4 py-2 text-sm font-medium focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
+                              style={{ color }}
                             >
                               {filter(
                                 productCart.QuantityMeters,

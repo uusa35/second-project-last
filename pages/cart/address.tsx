@@ -115,7 +115,7 @@ const CartAddress: NextPage = (): JSX.Element => {
         ref={ref}
         value={value}
       ></input>
-      <AccessTime onClick={onClick} className="text-primary_BG" />
+      <AccessTime onClick={onClick} style={{ color }} />
     </div>
   ));
 
@@ -240,7 +240,7 @@ const CartAddress: NextPage = (): JSX.Element => {
                 <div className="py-5">
                   <div className="flex justify-between">
                     <div className="flex">
-                      <LocationOnOutlined className="text-primary_BG" />
+                      <LocationOnOutlined style={{color}} />
                       <h5
                         className="px-2 text-base font-semibold"
                         suppressHydrationWarning={suppressText}
@@ -251,7 +251,8 @@ const CartAddress: NextPage = (): JSX.Element => {
                     <Link
                       href={appLinks.cartSelectMethod.path}
                       scroll={false}
-                      className="text-primary_BG text-base font-semibold"
+                      className="text-base font-semibold" 
+                      style={{ color }}
                       suppressHydrationWarning={suppressText}
                     >
                       {t('change')}
@@ -283,7 +284,8 @@ const CartAddress: NextPage = (): JSX.Element => {
                     <Link
                       href={appLinks.cartSelectMethod.path}
                       scroll={false}
-                      className="text-primary_BG text-base font-semibold"
+                      className="text-base font-semibold"
+                      style={{ color }}
                       suppressHydrationWarning={suppressText}
                     >
                       {t('edit')}

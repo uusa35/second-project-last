@@ -60,7 +60,7 @@ const VerProductWidget: FC<Props> = ({ element }): JSX.Element => {
             </p>
             <div>
               <div>
-                <p className="text-md text-primary_BG text-end uppercase pb-2">
+                <p className="text-md text-end uppercase pb-2" style={{ color }}>
                   {element.price} {t(`kwd`)}
                 </p>
                 <div className="text-end">

@@ -4,7 +4,7 @@ import MainContentLayout from '@/layouts/MainContentLayout';
 import { useTranslation } from 'react-i18next';
 import { suppressText, submitBtnClass } from '@/constants/*';
 import { setCurrentModule } from '@/redux/slices/appSettingSlice';
-import { useAppDispatch } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import {
   useLazyCheckOrderStatusQuery,
@@ -13,18 +13,21 @@ import {
 import { debounce, isEmpty, lowerCase, snakeCase } from 'lodash';
 import { useRouter } from 'next/router';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import { themeColor } from '@/redux/slices/vendorSlice';
 
 const TrackOrder: NextPage = (): JSX.Element => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const router = useRouter();
   const [trigger, { data, isSuccess, isLoading }] = useLazyTrackOrderQuery();
+  const color = useAppSelector(themeColor);
 
   const handleChange = (order_code: string) => {
     if (order_code && order_code.length >= 3) {
       trigger({ order_code: `${order_code}` });
     }
   };
+  console.log({data})
 
   useEffect(() => {
     if (router.isReady && router.query.order_code) {
@@ -40,11 +43,25 @@ const TrackOrder: NextPage = (): JSX.Element => {
     return <LoadingSpinner />;
   }
 
+  const handelDisplayAddress = () => {
+    let address=Object.values(data.data.address.address)
+    let concatAdd=''
+
+    address.map(a=>{
+        if(a!== null){
+            concatAdd+=a+', '
+        }
+    })
+
+    return concatAdd
+}
+
   return (
     <Suspense fallback={<LoadingSpinner fullWidth={false} />}>
       <MainContentLayout>
         <h4
-          className="text-center text-primary_BG font-semibold pt-2 capitalize"
+          className="text-center font-semibold pt-2 capitalize"
+          style={{ color }}
           suppressHydrationWarning={suppressText}
         >
           {t('track_order')}
@@ -86,7 +103,8 @@ const TrackOrder: NextPage = (): JSX.Element => {
             <div className="p-7 border-b-[12px] border-stone-100 capitalize">
               <div className="flex justify-between mt-4">
                 <p
-                  className="text-primary_BG font-semibold"
+                  className="font-semibold"
+                  style={{ color }}
                   suppressHydrationWarning={suppressText}
                 >
                   {t('order_id')}
@@ -96,7 +114,8 @@ const TrackOrder: NextPage = (): JSX.Element => {
 
               <div className="flex justify-between mt-5">
                 <p
-                  className="text-primary_BG font-semibold"
+                  className="font-semibold"
+                  style={{ color }}
                   suppressHydrationWarning={suppressText}
                 >
                   {t('estimated_time')}
@@ -132,7 +151,7 @@ const TrackOrder: NextPage = (): JSX.Element => {
               >
                 {t('delivering_to_your_address')}
               </p>
-              <p className="text-lg text-center text-primary_BG">{}</p>
+              <p className="text-lg text-center" style={{ color }}>{handelDisplayAddress()}</p>
             </div>
             <div className="pt-5 px-4 mt-[40%] capitalize">
               <button className={`${submitBtnClass} px-4`}>
