@@ -43,10 +43,8 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
   });
   const [triggerCheckPromoCode] = useLazyCheckPromoCodeQuery();
 
-  console.log('branch', branchId);
-  console.log('area', area.id);
   const handleAddToCart = async () => {
-    if (isNull(area.id) ?? isNull(branchId)) {
+    if (isNull(area.id) && isNull(branchId)) {
       router
         .push(appLinks.cartSelectMethod.path)
         .then(() =>
@@ -64,9 +62,8 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
         );
       } else {
         if (
-          (isNull(branchId) ?? isNull(area.id)) &&
-          !isEmpty(productCart) &&
-          userAgent
+          (!isNull(branchId) && !isNull(area.id)) ||
+          (!isEmpty(productCart) && userAgent)
         ) {
           await triggerAddToCart({
             process_type: method,
@@ -92,7 +89,6 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
               r.data.data.Cart.length > 0
             ) {
               triggerGetCartProducts({ UserAgent: userAgent }).then((r) => {
-                console.log('getCart', r); /// case here to change
                 if (r.data && r.data.data && r.data.data.Cart) {
                 }
                 dispatch(
@@ -102,6 +98,15 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
                   })
                 );
               });
+            } else {
+              if (r.error && r.error.data) {
+                dispatch(
+                  showToastMessage({
+                    content: lowerCase(kebabCase(r.error.data.msg)),
+                    type: `error`,
+                  })
+                );
+              }
             }
           });
         }
@@ -173,7 +178,6 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
             r.data.data.Cart.length > 0
           ) {
             triggerGetCartProducts({ UserAgent: userAgent }).then((r) => {
-              console.log('getCart', r);
               if (r.data && r.data.data && r.data.data.Cart) {
               }
               dispatch(
@@ -205,7 +209,7 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
               onClick={() => handleAddToCart()}
               className={`${footerBtnClass}`}
             >
-              {isNull(area.id) ?? isNull(branchId)
+              {isNull(area.id) && isNull(branchId)
                 ? t(`start_ordering`)
                 : t('add_to_cart')}
             </button>

@@ -480,5 +480,6 @@
   "amazing": "مذهل!",
   "note_is_required": "الملاحظات مطلوبة",
   "optional": "اختياري",
-  "confirm" : "تأكيد"
+  "confirm" : "تأكيد",
+  "sorry_!_some_product_not_available_in_this_area" : "هذا المنتج غير متاح في المنطقة أو الفرع الذي تم اختيار. يرجى تغير المنطقة او الفرع"
 }

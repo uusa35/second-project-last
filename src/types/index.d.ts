@@ -265,7 +265,7 @@ export interface OrderTrack {
 }
 
 export interface OrderUser {
-  user_id: string;
+  user_id: number;
   order_type: string;
   UserAgent: string;
   Date?: string;
