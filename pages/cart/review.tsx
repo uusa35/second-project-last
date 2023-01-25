@@ -18,6 +18,7 @@ import GoogleMapReact from 'google-map-react';
 import {
   setCurrentModule,
   setShowFooterElement,
+  showToastMessage,
 } from '@/redux/slices/appSettingSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useGetCartProductsQuery } from '@/redux/api/cartApi';
@@ -29,11 +30,17 @@ import PaymentSummary from '@/components/widgets/cart/review/PaymentSummary';
 import { AppQueryResult } from '@/types/queries';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { useLazyCreateOrderQuery } from '@/redux/api/orderApi';
+<<<<<<< HEAD
 import { themeColor } from '@/redux/slices/vendorSlice';
+=======
+import { useRouter } from 'next/router';
+import { setOrder, setPaymentMethod } from '@/redux/slices/orderSlice';
+>>>>>>> eren
 
 const CartReview: NextPage = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
+  const router=useRouter()
   const [selectedPaymentMethod, setSelectedPaymentMethod] =
     useState<OrderUser['PaymentMethod']>(`knet`);
   useEffect(() => {
@@ -47,14 +54,19 @@ const CartReview: NextPage = () => {
     customer: { userAgent },
     appSetting: { method: process_type },
   } = useAppSelector((state) => state);
+<<<<<<< HEAD
   const color = useAppSelector(themeColor);
+=======
+
+>>>>>>> eren
   const { data: cartItems, isSuccess } = useGetCartProductsQuery<{
     data: AppQueryResult<ServerCart>;
     isSuccess: boolean;
     refetch: () => void;
   }>({
     UserAgent: userAgent,
-  });
+  },{refetchOnMountOrArgChange:true});
+
   const [triggerCreateOrder, { isLoading }] = useLazyCreateOrderQuery();
 
   const paymentMethods: { id: OrderUser['PaymentMethod']; src: any }[] = [
@@ -68,6 +80,12 @@ const CartReview: NextPage = () => {
   }
 
   const handleCreateOrder = async () => {
+    if(isNull(customer.id)){
+      router.push(appLinks.customerInfo.path)
+    }
+    else if(!customer.address.id){
+      router.push(appLinks.address.path)
+    }
     if (
       !isNull(customer.id) &&
       !isEmpty(selectedPaymentMethod) &&
@@ -82,21 +100,55 @@ const CartReview: NextPage = () => {
           UserAgent: userAgent,
           Messg: customer.notes,
           PaymentMethod: selectedPaymentMethod,
+
           Date: `${new Date(customer.prefrences.date as Date).getFullYear()}-${
             new Date(customer.prefrences.date as Date).getMonth() + 1
           }-${new Date(customer.prefrences.date as Date).getDate()}`,
-          Time: `${new Date(
-            customer.prefrences.time as Date
-          ).getHours()}:${new Date(
-            customer.prefrences.time as Date
-          ).getMinutes()}:${new Date(
-            customer.prefrences.time as Date
-          ).getSeconds()}`,
+
+          Time: `${(
+            '0' + new Date(customer.prefrences.time as Date).getHours()
+          ).slice(-2)}:${(
+            '0' + new Date(customer.prefrences.time as Date).getMinutes()
+          ).slice(-2)}:${(
+            '0' + new Date(customer.prefrences.time as Date).getSeconds()
+          ).slice(-2)}`,
         },
         process_type,
         area_branch: process_type === `delivery` ? areaId : branchId,
       }).then((r: any) => {
-        console.log('the rr rr =>> order', r.data);
+        console.log('rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr',r)
+        if(r.data){
+         if(r.data.status){
+          dispatch(setPaymentMethod(selectedPaymentMethod))
+          if(selectedPaymentMethod === 'cash_on_delivery'){
+            dispatch(setOrder(r.data.data))
+            router.replace(`/order/status/${r.data.data.order_id}/success`)
+          }
+          else{
+            window.open(r.data.Data, "_self");
+          }
+          dispatch(
+            showToastMessage({
+              content: `order_created_successfully`,
+              type: `success`,
+            })
+          );
+         }
+         else{
+          router.replace(`order/status/failure`)
+         }
+        }
+        else{
+          dispatch(
+            showToastMessage({
+              content: r.error.data.msg,
+              type: `success`,
+            })
+          );
+          // error
+          console.log(r.data)
+        }
+        
       });
     }
   };

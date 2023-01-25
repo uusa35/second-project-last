@@ -16,6 +16,7 @@ const nextConfig = {
         source: '/home',
         destination: '/',
       },
+      
       {
         source: '/about',
         destination: '/vendor/show',
