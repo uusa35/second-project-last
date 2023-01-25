@@ -31,7 +31,7 @@ const SlideTopNav: FC<Props> = ({ offset, isHome = false }): JSX.Element => {
   } = useAppSelector((state) => state);
   const { data: cartItems, isSuccess } = useGetCartProductsQuery({
     UserAgent: userAgent,
-  });
+  },{refetchOnMountOrArgChange:true});
   const dispatch = useAppDispatch();
   const router = useRouter();
 

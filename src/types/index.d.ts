@@ -187,12 +187,15 @@ export interface SearchParams {
 }
 
 export interface Order {
+  payment_method: string;
   orderId: string | null;
   vendor_name: string;
   vendor_logo: string;
   vendor_description: string[];
   branch_phone: string;
   branch_address: string;
+  orderCode: string | number,
+  order_id: string | number,
 }
 
 export interface OrderInvoice {
