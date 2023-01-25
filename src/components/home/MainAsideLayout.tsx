@@ -2,7 +2,6 @@ import React, { FC, Suspense } from 'react';
 import { appLinks, imageSizes, imgUrl, suppressText } from '@/constants/*';
 import Link from 'next/link';
 import CustomImage from '@/components/CustomImage';
-import { useRouter } from 'next/router';
 import { Vendor } from '@/types/index';
 import { useTranslation } from 'react-i18next';
 import LoadingSpinner from '@/components/LoadingSpinner';
@@ -17,7 +16,6 @@ type Props = {
 };
 const MainAsideLayout: FC<Props> = ({ element }): JSX.Element => {
   const { t } = useTranslation();
-  const router = useRouter();
 
   return (
     <Suspense fallback={<LoadingSpinner fullWidth={false} />}>
@@ -25,7 +23,7 @@ const MainAsideLayout: FC<Props> = ({ element }): JSX.Element => {
         <CustomImage
           src={`${imgUrl(element.cover)}`}
           alt={element.name}
-          className={`absolute top-0 object-cover w-full h-screen mix-blend-overlay`}
+          className={`absolute top-0 object-cover w-full aspect-1 h-screen mix-blend-hard-light z-0`}
           width={imageSizes.lg}
           height={imageSizes.lg}
         />
@@ -35,7 +33,7 @@ const MainAsideLayout: FC<Props> = ({ element }): JSX.Element => {
         >
           <div className="flex items-center gap-x-5"></div>
           <div
-            className={`flex flex-col justify-start items-start w-1/3 xl:w-1/4 gap-3 mt-8`}
+            className={`flex flex-col justify-start items-start w-1/3 xl:w-1/4 gap-3 mt-8 z-50`}
           >
             <Link
               scroll={false}
@@ -69,11 +67,11 @@ const MainAsideLayout: FC<Props> = ({ element }): JSX.Element => {
             </Link>
           </div>
         </div>
-        <div className={`text-center space-y-3 text-white`}>
+        <div className={`text-center text-white z-50`}>
           <CustomImage
             src={`${imgUrl(element.logo)}`}
             alt={element.name}
-            className={`relative object-contain w-32 h-auto shadow-xl rounded-md`}
+            className={`relative object-contain w-32 h-auto shadow-2xl rounded-md mb-4`}
             width={imageSizes.lg}
             height={imageSizes.lg}
           />

@@ -35,12 +35,7 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    domains: [
-      'testbedbynd.com',
-      'mybusiness.letsform.app',
-      'pages-dash.testbedbynd.com',
-      'form.testbedbynd.com',
-    ],
+    domains: ['testbedbynd.com', 'pages-dash.testbedbynd.com'],
     minimumCacheTTL: 60 * 60 * 24,
     dangerouslyAllowSVG: true,
     // contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
