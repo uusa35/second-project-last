@@ -6,7 +6,6 @@ import Link from 'next/link';
 import { useAppSelector } from '@/redux/hooks';
 import { kebabCase, lowerCase } from 'lodash';
 import { suppressText } from '@/constants/*';
-import { useTranslation } from 'react-i18next';
 import TextTrans from '@/components/TextTrans';
 
 type Props = {
@@ -20,7 +19,8 @@ const CategoryWidget: FC<Props> = ({ element }) => {
       href={appLinks.productIndex(
         element.id.toString(),
         kebabCase(lowerCase(element.name)),
-        branch.id
+        branch.id,
+        area.id
       )}
       className={`h-60 lg:h-72 shadow-lg rounded-lg capitalize`}
       suppressHydrationWarning={suppressText}
