@@ -12,45 +12,33 @@ import {
 } from '@/redux/api/orderApi';
 import { debounce, isEmpty, lowerCase, snakeCase } from 'lodash';
 import { useRouter } from 'next/router';
-import Loading from 'react-loading';
 import LoadingSpinner from '@/components/LoadingSpinner';
 
 const TrackOrder: NextPage = (): JSX.Element => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-  const [trigger, { data, isSuccess }] = useLazyTrackOrderQuery();
-  const [checkOrderStatus, { data: orderSuccess, isSuccess: isSuccessOrder }] =
-    useLazyCheckOrderStatusQuery();
-  const [orderCode, setOrderCode] = useState<string | null>(null);
-  const [renderedorderCode, setRenderedOrderCode] = useState<string | null>(null);
-
   const router = useRouter();
-  const { order_code } = router.query;
+  const [trigger, { data, isSuccess ,isLoading}] = useLazyTrackOrderQuery();
+
+  const handleChange = (order_code: string) => {
+    if (order_code && order_code.length >= 3) {
+      trigger({ order_code: `${order_code}` });
+    }
+  };
+
+  useEffect(() => {
+    if (router.isReady && router.query.order_code){
+      handleChange(`${router.query.order_code}`);
+    };
+  }, [router.isReady, router.query.order_code]);
+
   useEffect(() => {
     dispatch(setCurrentModule(t('track_order')));
   }, []);
 
-  // const handleChange = useCallback(
-  //   (order_code: string) => {
-  //     setOrderCode(order_code);
-  //     if (orderCode && orderCode.length > 2) {
-  //       trigger({ order_code: `${orderCode}` });
-  //     }
-  //   },
-  //   [orderCode]
-  // );
-  const handleChange = (order_code: string) => {
-    setOrderCode(order_code);
-    if (orderCode && orderCode.length > 2) {
-      trigger({ order_code: `${orderCode}` });
-    }
+  if(router.query.order_code && isLoading){
+    return <LoadingSpinner/>
   }
-  
-  useEffect(() => {
-    if(!router.isReady || !router.query.order_code) return;
-    setRenderedOrderCode(`${order_code}`);
-    handleChange(`${router.query.order_code}`);
-    }, [router.isReady, router.query.order_code, renderedorderCode]);
 
   return (
     <Suspense fallback={<LoadingSpinner fullWidth={false} />}>
@@ -85,9 +73,7 @@ const TrackOrder: NextPage = (): JSX.Element => {
             </div>
             {isSuccess &&
               !isEmpty(data) &&
-              !data?.status &&
-              orderCode &&
-              orderCode?.length > 2 && (
+              !data?.status &&(
                 <p
                   className=" text-sm font-semibold text-red-700 text-center pt-6"
                   suppressHydrationWarning={suppressText}
@@ -99,9 +85,7 @@ const TrackOrder: NextPage = (): JSX.Element => {
         </div>
         {isSuccess &&
           data &&
-          data?.status &&
-          orderCode &&
-          orderCode?.length > 2 && (
+          data?.status && (
             <div>
               <div className="p-7 border-b-[12px] border-stone-100 capitalize">
                 <div className="flex justify-between mt-4">
@@ -111,7 +95,7 @@ const TrackOrder: NextPage = (): JSX.Element => {
                   >
                     {t('order_id')}
                   </p>
-                  <p>{router.query.order_id}</p>
+                  <p>{router.query.order_code}</p>
                 </div>
 
                 <div className="flex justify-between mt-5">
