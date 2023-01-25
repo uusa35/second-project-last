@@ -268,8 +268,8 @@ export interface OrderUser {
   user_id: string;
   order_type: string;
   UserAgent: string;
-  Date: string;
-  Time: string;
+  Date?: string;
+  Time?: string;
   Messg: string;
   address_id: number;
   PaymentMethod: `cash_on_delivery` | `knet` | `visa`;

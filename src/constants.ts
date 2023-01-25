@@ -13,21 +13,21 @@ export const appLinks = {
     categoryId: string,
     slug: string,
     branchId?: string,
-    areaId?: string,   
+    areaId?: string,
     page?: string,
-    limit?: string,   
+    limit?: string
   ) =>
     `/product/${categoryId}?&slug=${slug}&branch_id=${branchId ?? ''}&areaId=${
       areaId ?? ``
     }&page=${page ?? `1`}&limit=${limit ?? `10`}`,
 
-  productSearchIndex: (query?: string,branchId?: string, areaId?: string) =>
+  productSearchIndex: (query?: string, branchId?: string, areaId?: string) =>
     `/product/?key=${query ?? ``}&branch_id=${branchId ?? ''}&areaId=${
       areaId ?? ``
     }`,
 
   productShow: (
-    id: string,   
+    id: string,
     product_id?: number,
     slug?: string,
     branchId?: string,
@@ -63,7 +63,7 @@ export const subCategoryBtnClass = `flex w-full flex-row items-center justify-be
                   `;
 export const grayBtnClass = `rounded-lg bg-SearchGrey text-xs px-[6px] border border-SearchGrey shadow-sm py-1 capitalize drop-shadow-md`;
 export const addressInputField = `border-0 outline-none border-b-4 border-b-gray-100 w-full py-4 focus:ring-0`;
-export const footerBtnClass = `p-2 px-6 rounded-lg w-fit bg-primary_BG disabled:bg-stone-600 disabled:text-stone-700 disabled:bg-opacity-40 disabled:opacity-60 hover:bg-opacity-90 bg-opacity-60  border border-primary_BG shadow-xl capitalize ring-1 hover:ring-sky-600`;
+export const footerBtnClass = `p-2 px-6 rounded-lg w-fit bg-primary_BG disabled:bg-stone-600 disabled:text-stone-200 disabled:bg-opacity-40 disabled:opacity-60 hover:bg-opacity-90 bg-opacity-60  border border-primary_BG shadow-xl capitalize ring-1 hover:ring-sky-600`;
 export const tajwalFont = `font-tajwal-medium`;
 export const futureFont = `font-future-bold`;
 export const langOptions = [
@@ -159,37 +159,3 @@ export function classNames(...classes: any) {
 }
 
 export const imgUrl = (img: string) => `${baseUrl}${img}`;
-
-export const cartInitialState: ClientCart = {
-  grossTotal: 0,
-  subTotal: 0,
-  total: 0,
-  delivery_fees: `0`,
-  items: [
-    {
-      ProductID: 0,
-      ProductName: ``,
-      ProductDesc: ``,
-      name_ar: ``,
-      name_en: ``,
-      totalQty: 0,
-      totalPrice: 0,
-      grossTotalPrice: 0,
-      Quantity: 0,
-      Price: 0,
-      RadioBtnsAddons: [],
-      CheckBoxes: [],
-      QuantityMeters: [],
-      enabled: false,
-      image: ``,
-    },
-  ],
-  PromoCode: null,
-  promoEnabled: false,
-  notes: ``,
-  promoCode: {
-    total_cart_before_tax: 0,
-    total_cart_after_tax: 0,
-    free_delivery: `false`,
-  },
-};
