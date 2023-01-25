@@ -189,7 +189,7 @@ const CartReview: NextPage = () => {
             {/* location */}
             <div className="flex justify-between">
               <div className="flex items-center justify-center">
-                <LocationOnOutlined className="text-primary_BG w-8 h-8" />
+                <LocationOnOutlined className="w-8 h-8" style={{ color }} />
                 <h5
                   className="px-2 text-base font-semibold capitalize"
                   suppressHydrationWarning={suppressText}
@@ -395,7 +395,8 @@ const CartReview: NextPage = () => {
                       <span className="flex rounded-xl shadow-sm">
                         <button
                           type="button"
-                          className="relative -ml-px inline-flex items-center  bg-gray-100 px-4 py-2 text-sm font-medium text-primary_BG  focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500 capitalize"
+                          className="relative -ml-px inline-flex items-center  bg-gray-100 px-4 py-2 text-sm font-medium focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500 capitalize"
+                          style={{ color }}
                         >
                           {`${t(`qty`)} : `}
                           <span className={`ltr:pl-2 rtl:pr-2`}>
@@ -463,7 +464,7 @@ const CartReview: NextPage = () => {
           <div className="bg-gray-200 w-full mt-5 p-0 h-2"></div>
           <div className="px-4 py-4">
             <div className="flex items-center py-3">
-              <ReceiptIcon className="text-primary_BG" />
+              <ReceiptIcon style={{ color }} />
               <div className="ps-5">
                 <h4
                   className="font-semibold text-lg"

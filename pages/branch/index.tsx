@@ -26,7 +26,6 @@ const BranchIndex: NextPage<Props> = ({ elements }) => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const color = useAppSelector(themeColor);
-
   useEffect(() => {
     dispatch(setCurrentModule(t('our_branches')));
   }, []);

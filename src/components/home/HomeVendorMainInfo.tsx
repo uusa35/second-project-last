@@ -52,7 +52,7 @@ const HomeVendorMainInfo: FC<Props> = ({ element }) => {
           className={`flex-none`}
         >
           <InfoOutlined
-            className="text-primary_BG w-6 h-6 lg:w-8 lg:h-8"
+            className="w-6 h-6 lg:w-8 lg:h-8"
             style={{ color }}
           />
         </Link>

@@ -12,6 +12,7 @@ import { OrderInvoice } from '@/types/index';
 import { apiSlice } from '@/redux/api';
 import { useEffect, Suspense } from 'react';
 import { setCurrentModule } from '@/redux/slices/appSettingSlice';
+import { themeColor } from '@/redux/slices/vendorSlice';
 
 type Props = {
   element: OrderInvoice;
@@ -20,6 +21,7 @@ const OrderInvoice: NextPage<Props> = ({ element }): JSX.Element => {
   const { vendor } = useAppSelector((state) => state);
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
+  const color = useAppSelector(themeColor);
   const handleMapLocation = (lat: string, long: string) => {
     window.open(`https://maps.google.com?q=${lat},${long}`);
   };
@@ -80,7 +82,8 @@ const OrderInvoice: NextPage<Props> = ({ element }): JSX.Element => {
               </p>
               <button
                 suppressHydrationWarning={suppressText}
-                className="capitalize text-primary_BG py-1"
+                className="capitalize py-1"
+                style={{ color }}
                 onClick={() =>
                   handleMapLocation(
                     element.pickup_details.latitude,
@@ -236,7 +239,7 @@ const OrderInvoice: NextPage<Props> = ({ element }): JSX.Element => {
                 {t('total')}
               </p>
               <p
-                className="text-primary_BG"
+                style={{ color }}
                 suppressHydrationWarning={suppressText}
               >
                 {element.order_summary.total} {t('kwd')}

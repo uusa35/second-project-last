@@ -27,6 +27,7 @@ const TrackOrder: NextPage = (): JSX.Element => {
       trigger({ order_code: `${order_code}` });
     }
   };
+  console.log({data})
 
   useEffect(() => {
     if (router.isReady && router.query.order_code) {
@@ -42,13 +43,26 @@ const TrackOrder: NextPage = (): JSX.Element => {
     return <LoadingSpinner />;
   }
 
+  const handelDisplayAddress = () => {
+    let address=Object.values(data.data.address.address)
+    let concatAdd=''
+
+    address.map(a=>{
+        if(a!== null){
+            concatAdd+=a+', '
+        }
+    })
+
+    return concatAdd
+}
+
   return (
     <Suspense fallback={<LoadingSpinner fullWidth={false} />}>
       <MainContentLayout>
         <h4
           className="text-center font-semibold pt-2 capitalize"
-          suppressHydrationWarning={suppressText}
           style={{ color }}
+          suppressHydrationWarning={suppressText}
         >
           {t('track_order')}
         </h4>
@@ -89,7 +103,7 @@ const TrackOrder: NextPage = (): JSX.Element => {
             <div className="p-7 border-b-[12px] border-stone-100 capitalize">
               <div className="flex justify-between mt-4">
                 <p
-                  className=" font-semibold"
+                  className="font-semibold"
                   style={{ color }}
                   suppressHydrationWarning={suppressText}
                 >
@@ -100,7 +114,7 @@ const TrackOrder: NextPage = (): JSX.Element => {
 
               <div className="flex justify-between mt-5">
                 <p
-                  className=" font-semibold"
+                  className="font-semibold"
                   style={{ color }}
                   suppressHydrationWarning={suppressText}
                 >
@@ -137,9 +151,7 @@ const TrackOrder: NextPage = (): JSX.Element => {
               >
                 {t('delivering_to_your_address')}
               </p>
-              <p className="text-lg text-center" style={{ color }}>
-                {}
-              </p>
+              <p className="text-lg text-center" style={{ color }}>{handelDisplayAddress()}</p>
             </div>
             <div className="pt-5 px-4 mt-[40%] capitalize">
               <button
