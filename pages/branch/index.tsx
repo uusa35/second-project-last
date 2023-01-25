@@ -71,18 +71,6 @@ const BranchIndex: NextPage<Props> = ({ elements }) => {
               </div>
             </Link>
           ))}
-          <div className="py-2">
-            <button className={`${submitBtnClass}`}>
-              <div className="flex justify-center items-center">
-                <p
-                  className="text-white px-2 capitalize"
-                  suppressHydrationWarning={suppressText}
-                >
-                  {t('send_feedback')}
-                </p>
-              </div>
-            </button>
-          </div>
     </div>
    </MainContentLayout>
   );
