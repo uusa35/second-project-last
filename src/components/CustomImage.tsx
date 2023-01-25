@@ -36,7 +36,6 @@ const CustomImage: FC<Props> = ({
       height={height}
       fill={fill}
       onError={(e) => {
-        console.log('e image', e);
         setImageSrc(NoFoundImage.src);
       }}
       className={className}
