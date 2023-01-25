@@ -76,7 +76,7 @@ const SelectMethod: NextPage<Props> = ({ previousRoute }): JSX.Element => {
     data: AppQueryResult<Branch[]>;
     isLoading: boolean;
   }>({ lang });
-
+  
   const [open, setOpen] = useState(0);
   const handleOpen = (value: any) => {
     setOpen(open === value ? 0 : value);
@@ -209,7 +209,7 @@ const SelectMethod: NextPage<Props> = ({ previousRoute }): JSX.Element => {
                 {t('select_branch')}
               </p>
               <div className={`bg-LightGray p-3`}>
-                {map(branches.Data, (b: Branch, i) => (
+                {map(branches?.Data, (b: Branch, i) => (
                   <button
                     key={i}
                     onClick={() => setSelectedLocation(b)}

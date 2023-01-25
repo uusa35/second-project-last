@@ -180,7 +180,7 @@ const CartAddress: NextPage = (): JSX.Element => {
   // address
   const handleSelectMethod = (m: appSetting['method']) => {
     dispatch(setCartMethod(m));
-    router.push('/cart/select');
+    router.push(appLinks.cartSelectMethod);
   };
 
   // address
