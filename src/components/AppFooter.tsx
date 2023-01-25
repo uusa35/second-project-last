@@ -23,7 +23,7 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
   const { t } = useTranslation();
   const {
     appSetting: { showFooterElement, method },
-    customer: { userAgent },
+    customer: { userAgent, id: customerId },
     locale: { isRTL },
     productCart,
     branch: { id: branchId },
@@ -235,7 +235,7 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
             className={` bg-primary_BG text-white w-full h-24 flex justify-center items-center rounded-t-xl`}
           >
             <button
-              className={`${footerBtnClass} rounded-full bg-blue-400 py-1`}
+              className={`${footerBtnClass}`}
               suppressHydrationWarning={suppressText}
               onClick={() => (handleSubmit ? handleSubmit() : null)}
             >
@@ -261,13 +261,14 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
           <div
             className={`${mainBg} bg-sky-600 w-full h-20 flex justify-center items-center rounded-t-xl`}
           >
-            <Link
+            <button
+              disabled={!customerId || !userAgent}
               className={`${footerBtnClass}`}
               suppressHydrationWarning={suppressText}
-              href={`/order/success`}
+              onClick={() => (handleSubmit ? handleSubmit() : null)}
             >
               {t('checkout')}
-            </Link>
+            </button>
           </div>
         )}
         {/* {showFooterElement === 'vendor_show' && (

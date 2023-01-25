@@ -268,11 +268,11 @@ export interface OrderUser {
   user_id: string;
   order_type: string;
   UserAgent: string;
-  Date: string;
-  Time: string;
+  Date?: string;
+  Time?: string;
   Messg: string;
   address_id: number;
-  PaymentMethod: string;
+  PaymentMethod: `cash_on_delivery` | `knet` | `visa`;
 }
 
 export interface OrderAddress {
@@ -292,7 +292,7 @@ export interface UserAddressFields {
 }
 
 export interface CustomerInfo {
-  id: number;
+  id: number | null;
   userAgent?: null | string;
   name: string;
   email: string;
