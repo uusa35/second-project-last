@@ -65,8 +65,6 @@ const CartReview: NextPage = () => {
     return <LoadingSpinner fullWidth={false} />;
   }
 
-  console.log('sele', selectedPaymentMethod);
-
   const handleCreateOrder = async () => {
     if (
       !isNull(customer.id) &&
@@ -82,14 +80,16 @@ const CartReview: NextPage = () => {
           UserAgent: userAgent,
           Messg: customer.notes,
           PaymentMethod: selectedPaymentMethod,
-          ...(customer.prefrences.date &&
-          customer.prefrences.type === `delivery_now`
-            ? { Date: customer.prefrences.date }
-            : ``),
-          ...(customer.prefrences.time &&
-          customer.prefrences.type === `delivery_now`
-            ? { Date: customer.prefrences.time }
-            : ``),
+          Date: `${new Date(customer.prefrences.date as Date).getFullYear()}-${
+            new Date(customer.prefrences.date as Date).getMonth() + 1
+          }-${new Date(customer.prefrences.date as Date).getDate()}`,
+          Time: `${new Date(
+            customer.prefrences.time as Date
+          ).getHours()}:${new Date(
+            customer.prefrences.time as Date
+          ).getMinutes()}:${new Date(
+            customer.prefrences.time as Date
+          ).getSeconds()}`,
         },
         process_type,
         area_branch: process_type === `delivery` ? areaId : branchId,

@@ -86,7 +86,6 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
     };
 
     const handleRouteChangeError = (err: any) => {
-      console.log('the error', err);
       // return router.replace(router.asPath);
     };
 
