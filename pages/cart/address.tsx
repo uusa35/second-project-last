@@ -104,11 +104,9 @@ const CartAddress: NextPage = (): JSX.Element => {
       },
     },
   });
+
   const CustomTimeInput = forwardRef(({ value, onClick }, ref) => (
-    <div
-      className="flex w-full items-center justify-between px-2"
-      // dir={i18n.language === "en" ? "ltr" : "rtl"}
-    >
+    <div className="flex w-full items-center justify-between px-2">
       <input
         className="text-lg outline-none border-none"
         type="text"
@@ -122,7 +120,7 @@ const CartAddress: NextPage = (): JSX.Element => {
   const [checkTime, { isLoading: checkTimeLoading }] =
     useCheckTimeAvilabilityMutation();
 
-  const checkTimeAvilability = async () => {
+  const checkTimeAvailability = async () => {
     await checkTime({
       process_type: method,
       area_branch:
@@ -141,14 +139,19 @@ const CartAddress: NextPage = (): JSX.Element => {
         switch (r.data.Data.toLowerCase()) {
           case 'open':
             {
-              dispatch(
-                showToastMessage({
-                  content: `time_and_date_saved_successfully`,
-                  type: `success`,
+              router
+                .push(appLinks.orderReview.path)
+                .then(() => {
+                  dispatch(setprefrences({ ...prefrences }));
                 })
-              );
-              dispatch(setprefrences({ ...prefrences }));
-              router.push(appLinks.orderReview.path);
+                .then(() => {
+                  dispatch(
+                    showToastMessage({
+                      content: `time_and_date_saved_successfully`,
+                      type: `success`,
+                    })
+                  );
+                });
             }
             break;
           case 'busy':
@@ -162,11 +165,10 @@ const CartAddress: NextPage = (): JSX.Element => {
               })
             );
             break;
-
           default:
             dispatch(
               showToastMessage({
-                content: `something went wrong`,
+                content: `unknown_error`,
                 type: `error`,
               })
             );
@@ -201,15 +203,14 @@ const CartAddress: NextPage = (): JSX.Element => {
           })
         );
         dispatch(setCustomerAddress(r.data.Data));
-        checkTimeAvilability();
+        checkTimeAvailability();
       }
     });
   };
   const onSubmit = async (body: any) => {
     if (method === 'pickup') {
-      await checkTimeAvilability();
-    }
-    if (method === 'delivery') {
+      await checkTimeAvailability();
+    } else {
       await handelSaveAddress(body);
     }
   };
@@ -222,18 +223,12 @@ const CartAddress: NextPage = (): JSX.Element => {
     };
   }, []);
 
-  useEffect(() => {
-    console.log(prefrences);
-  }, [prefrences]);
-
   return (
     <Suspense>
-      <MainContentLayout>
+      <MainContentLayout handleSubmit={handleSubmit(onSubmit)}>
         {/* delivery method buttons */}
         <DeliveryBtns handleSelectMethod={handleSelectMethod} />
-        <form
-          onSubmit={method === 'delivery' ? handleSubmit(onSubmit) : onSubmit}
-        >
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className={'px-4'}>
             <div className="bg-gray-200 w-full mt-5 p-0 h-2"></div>
 
@@ -700,7 +695,6 @@ const CartAddress: NextPage = (): JSX.Element => {
               </div>
             )}
           </div>
-          <input type="submit" />
         </form>
       </MainContentLayout>
     </Suspense>

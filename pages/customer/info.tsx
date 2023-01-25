@@ -65,9 +65,7 @@ const CustomerInformation: NextPage = (): JSX.Element => {
       body,
     }).then((r: any) => {
       if (r.data && r.data.Data && r.data.status) {
-        router
-          .push(appLinks.address.path)
-          .then(() => dispatch(setCustomer(r.data.Data)));
+        return handleNext(r.data.Data);
       } else {
         dispatch(
           showToastMessage({
@@ -79,9 +77,13 @@ const CustomerInformation: NextPage = (): JSX.Element => {
     });
   };
 
+  const handleNext = (data: any) => {
+    router.push(appLinks.address.path).then(() => dispatch(setCustomer(data)));
+  };
+
   return (
     <Suspense>
-      <MainContentLayout handleSubmit={handleSubmit(onSubmit)}>
+      <MainContentLayout handleSubmit={handleNext}>
         <div className="flex-col justify-center h-full px-5">
           <div className="flex justify-center py-10 lg:my-5 lg:pb-5">
             <CustomImage

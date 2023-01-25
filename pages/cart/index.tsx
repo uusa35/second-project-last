@@ -249,15 +249,33 @@ const CartIndex: NextPage = (): JSX.Element => {
                           className="ltr:pr-3 rtl:pl-3 w-1/5"
                         >
                           <CustomImage
-                            className="w-full rounded-lg border-[1px] border-gray-200 shadow-md"
+                            className="w-full rounded-lg border-[1px] aspect-1 border-gray-200 shadow-md"
                             alt={`${t('item')}`}
                             src={item.image}
                           />
                         </Link>
 
                         <div className="w-full">
-                          <div>
-                            <div className="text-end">
+                          <div className="flex flex-1 justify-between items-center">
+                            <div className={`flex grow`}>
+                              <Link
+                                href={`${appLinks.productShow(
+                                  item.ProductID.toString(),
+                                  branchId,
+                                  item.ProductID.toString(),
+                                  item.ProductName,
+                                  areaId
+                                )}`}
+                                className={`flex grow mb-2`}
+                              >
+                                <TextTrans
+                                  className={`font-semibold capitalize`}
+                                  ar={item.ProductName}
+                                  en={item.ProductName}
+                                />
+                              </Link>
+                            </div>
+                            <div>
                               <button
                                 className="text-red-700 pe-5 capitalize"
                                 suppressHydrationWarning={suppressText}
@@ -278,30 +296,16 @@ const CartIndex: NextPage = (): JSX.Element => {
                               </Link>
                             </div>
                           </div>
-                          <Link
-                            href={`${appLinks.productShow(
-                              item.ProductID.toString(),
-                              branchId,
-                              item.ProductID.toString(),
-                              item.ProductName,
-                              areaId
-                            )}`}
-                          >
-                            <p className="font-semibold capitalize">
-                              <TextTrans
-                                ar={item.ProductName}
-                                en={item.ProductName}
-                              />
-                            </p>
-                          </Link>
+                          {/* addons items */}
                           <div className="flex">
-                            {isSuccess && (
-                              <div className="w-fit pb-2">
-                                <div
-                                  className={`flex text-gray-400 w-auto flex-wrap justify-between`}
-                                >
-                                  {!isEmpty(item.QuantityMeters) &&
-                                    map(item.QuantityMeters, (q, i) => (
+                            <div className="w-fit pb-2">
+                              <div
+                                className={`flex text-gray-400 w-auto flex-wrap justify-between`}
+                              >
+                                {!isEmpty(item.QuantityMeters) &&
+                                  map(
+                                    item.QuantityMeters,
+                                    (q: QuantityMeters, i) => (
                                       <Fragment key={i}>
                                         {map(q.addons, (addon, i) => (
                                           <TextTrans
@@ -312,51 +316,50 @@ const CartIndex: NextPage = (): JSX.Element => {
                                           />
                                         ))}
                                       </Fragment>
-                                    ))}
-                                </div>
+                                    )
+                                  )}
                               </div>
-                            )}
+                            </div>
                           </div>
                         </div>
                       </div>
-                      {isSuccess && (
-                        <div className="px-3 flex justify-between items-center mt-3">
-                          <span className="flex rounded-xl shadow-sm">
-                            <button
-                              type="button"
-                              className="relative -ml-px inline-flex items-center ltr:rounded-l-xl rtl:rounded-r-xl  bg-gray-100 px-4 py-2 text-sm font-medium text-black  focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
-                              onClick={() => {
-                                handleIncrease(item);
-                              }}
-                            >
-                              +
-                            </button>
-                            <button
-                              type="button"
-                              className="relative -ml-px inline-flex items-center  bg-gray-100 px-4 py-2 text-sm font-medium text-primary_BG  focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500 capitalize"
-                            >
-                              {item.Quantity}
-                            </button>
-                            <button
-                              type="button"
-                              className="relative inline-flex items-center ltr:rounded-r-xl rtl:rounded-l-xl bg-gray-100 px-4 py-2 text-sm font-medium text-black  focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
-                              onClick={() => {
-                                handleDecrease(item);
-                              }}
-                            >
-                              -
-                            </button>
-                          </span>
-                          <div>
-                            <p
-                              className="text-primary_BG capitalize"
-                              suppressHydrationWarning={suppressText}
-                            >
-                              {item.Price} {t('kwd')}
-                            </p>
-                          </div>
+                      {/* meters + / - */}
+                      <div className="px-3 flex justify-between items-center mt-3">
+                        <span className="flex rounded-xl shadow-sm">
+                          <button
+                            type="button"
+                            className="relative -ml-px inline-flex items-center ltr:rounded-l-xl rtl:rounded-r-xl  bg-gray-100 px-4 py-2 text-sm font-medium text-black  focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
+                            onClick={() => {
+                              handleIncrease(item);
+                            }}
+                          >
+                            +
+                          </button>
+                          <button
+                            type="button"
+                            className="relative -ml-px inline-flex items-center  bg-gray-100 px-4 py-2 text-sm font-medium text-primary_BG  focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500 capitalize"
+                          >
+                            {item.Quantity}
+                          </button>
+                          <button
+                            type="button"
+                            className="relative inline-flex items-center ltr:rounded-r-xl rtl:rounded-l-xl bg-gray-100 px-4 py-2 text-sm font-medium text-black  focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
+                            onClick={() => {
+                              handleDecrease(item);
+                            }}
+                          >
+                            -
+                          </button>
+                        </span>
+                        <div>
+                          <p
+                            className="text-primary_BG capitalize"
+                            suppressHydrationWarning={suppressText}
+                          >
+                            {item.Price} {t('kwd')}
+                          </p>
                         </div>
-                      )}
+                      </div>
                     </div>
                   </div>
                   <div className="mt-10 px-5 py-1 bg-gray-100"></div>

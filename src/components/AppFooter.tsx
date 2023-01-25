@@ -1,22 +1,11 @@
 import { useTranslation } from 'react-i18next';
-import { FC, Suspense, useState } from 'react';
-import {
-  appLinks,
-  footerBtnClass,
-  mainBg,
-  submitBtnClass,
-  suppressText,
-} from '@/constants/*';
+import { FC, Suspense } from 'react';
+import { appLinks, footerBtnClass, mainBg, suppressText } from '@/constants/*';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import PoweredByQ from '@/components/PoweredByQ';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import FeedbackIcon from '@/appIcons/feedback.svg';
-import Facebook from '@/appIcons/facebook.svg';
-import Twitter from '@/appIcons/twitter.svg';
-import Instagram from '@/appIcons/instagram.svg';
-import CustomImage from '@/components/CustomImage';
 import {
   useAddToCartMutation,
   useGetCartProductsQuery,
@@ -27,7 +16,7 @@ import { filter, isEmpty, isNull, kebabCase, lowerCase } from 'lodash';
 import { setCartPromoSuccess } from '@/redux/slices/cartSlice';
 
 type Props = {
-  handleSubmit?: () => void;
+  handleSubmit?: (element?: any) => void;
 };
 
 const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {

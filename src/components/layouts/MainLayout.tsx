@@ -13,11 +13,7 @@ import { AppQueryResult } from '@/types/queries';
 import { Vendor } from '@/types/index';
 import { setVendor } from '@/redux/slices/vendorSlice';
 import { isNull } from 'lodash';
-import { useLazyGetBranchesQuery } from '@/redux/api/branchApi';
-import { setBranch } from '@/redux/slices/branchSlice';
 import { useLazyCreateTempIdQuery } from '@/redux/api/cartApi';
-import { useLazyGetLocationsQuery } from '@/redux/api/locationApi';
-import { setArea } from '@/redux/slices/areaSlice';
 const MainAsideLayout = dynamic(
   async () => await import(`@/components/home/MainAsideLayout`),
   {
@@ -53,8 +49,6 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
     data: AppQueryResult<Vendor>;
     isSuccess: boolean;
   }>({ lang: locale.lang });
-  const [triggerGetBranches] = useLazyGetBranchesQuery();
-  const [triggerGetLocations] = useLazyGetLocationsQuery();
   const [triggerCreateTempId] = useLazyCreateTempIdQuery();
 
   useEffect(() => {

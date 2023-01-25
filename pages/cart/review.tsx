@@ -9,7 +9,7 @@ import Home from '@/appIcons/home.svg';
 import IDCard from '@/appIcons/id_card.svg';
 import OrderSummary from '@/appIcons/summary.svg';
 import CustomImage from '@/components/CustomImage';
-import NotFound from '@/appImages/not_found.png';
+import ListOrderIcon from '@/appIcons/list.svg';
 import Knet from '@/appImages/knet.png';
 import Cash from '@/appImages/cash_on_delivery.jpg';
 import Visa from '@/appImages/visa.png';
@@ -18,7 +18,6 @@ import GoogleMapReact from 'google-map-react';
 import {
   setCurrentModule,
   setShowFooterElement,
-  showToastMessage,
 } from '@/redux/slices/appSettingSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useGetCartProductsQuery } from '@/redux/api/cartApi';
@@ -28,6 +27,7 @@ import Link from 'next/link';
 import { ProductCart, ServerCart } from '@/types/index';
 import PaymentSummary from '@/components/widgets/cart/review/PaymentSummary';
 import { AppQueryResult } from '@/types/queries';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 const CartReview: NextPage = () => {
   const { t } = useTranslation();
@@ -37,10 +37,7 @@ const CartReview: NextPage = () => {
     dispatch(setShowFooterElement('order_review'));
   }, []);
   const {
-    cart,
-    branch,
     customer,
-    area,
     branch: { id: branchId },
     area: { id: areaId },
     customer: { userAgent },
@@ -65,6 +62,10 @@ const CartReview: NextPage = () => {
     { id: 'knet', src: Knet.src },
     { id: 'cash', src: Cash.src },
   ];
+
+  if (isLoading) {
+    return <LoadingSpinner fullWidth={false} />;
+  }
 
   return (
     <Suspense>
@@ -189,7 +190,7 @@ const CartReview: NextPage = () => {
           <div className="px-4">
             <div className="flex items-center pb-4">
               <CustomImage
-                src={OrderSummary.src}
+                src={ListOrderIcon.src}
                 alt="id"
                 width={imageSizes.xs}
                 height={imageSizes.xs}
@@ -305,7 +306,7 @@ const CartReview: NextPage = () => {
                           type="button"
                           className="relative -ml-px inline-flex items-center  bg-gray-100 px-4 py-2 text-sm font-medium text-primary_BG  focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500 capitalize"
                         >
-                          {t(`qty`)}
+                          {`${t(`qty`)} : `}
                           <span className={`ltr:pl-2 rtl:pr-2`}>
                             {item.Quantity}
                           </span>
