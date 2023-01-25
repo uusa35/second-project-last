@@ -54,7 +54,7 @@ const CartIndex: NextPage = (): JSX.Element => {
     refetch: () => void;
   }>({
     UserAgent: userAgent,
-  });
+  },{refetchOnMountOrArgChange:true});
   const [triggerCheckPromoCode] = useLazyCheckPromoCodeQuery();
 
   useEffect(() => {
