@@ -272,7 +272,7 @@ export interface OrderUser {
   Time: string;
   Messg: string;
   address_id: number;
-  PaymentMethod: string;
+  PaymentMethod: `cash_on_delivery` | `knet` | `visa`;
 }
 
 export interface OrderAddress {
@@ -292,7 +292,7 @@ export interface UserAddressFields {
 }
 
 export interface CustomerInfo {
-  id: number;
+  id: number | null;
   userAgent?: null | string;
   name: string;
   email: string;

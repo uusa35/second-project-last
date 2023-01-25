@@ -24,6 +24,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import CustomImage from '@/components/CustomImage';
 import ContactImage from '@/appImages/contact_info.png';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 const schema = yup
   .object({
@@ -38,7 +39,8 @@ const CustomerInformation: NextPage = (): JSX.Element => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { customer } = useAppSelector((state) => state);
-  const [triggerSaveCustomerInfo] = useSaveCustomerInfoMutation();
+  const [triggerSaveCustomerInfo, { isLoading }] =
+    useSaveCustomerInfoMutation();
   const {
     register,
     handleSubmit,
@@ -65,7 +67,9 @@ const CustomerInformation: NextPage = (): JSX.Element => {
       body,
     }).then((r: any) => {
       if (r.data && r.data.Data && r.data.status) {
-        return handleNext(r.data.Data);
+        router
+          .push(appLinks.address.path)
+          .then(() => dispatch(setCustomer(r.data.Data)));
       } else {
         dispatch(
           showToastMessage({
@@ -77,13 +81,13 @@ const CustomerInformation: NextPage = (): JSX.Element => {
     });
   };
 
-  const handleNext = (data: any) => {
-    router.push(appLinks.address.path).then(() => dispatch(setCustomer(data)));
-  };
+  if (isLoading) {
+    return <LoadingSpinner fullWidth={true} />;
+  }
 
   return (
     <Suspense>
-      <MainContentLayout handleSubmit={handleNext}>
+      <MainContentLayout handleSubmit={handleSubmit(onSubmit)}>
         <div className="flex-col justify-center h-full px-5">
           <div className="flex justify-center py-10 lg:my-5 lg:pb-5">
             <CustomImage

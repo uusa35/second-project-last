@@ -1,4 +1,4 @@
-import { Suspense, useEffect, Fragment } from 'react';
+import { Suspense, useEffect, Fragment, useState } from 'react';
 import { NextPage } from 'next';
 import MainContentLayout from '@/layouts/MainContentLayout';
 import { useTranslation } from 'react-i18next';
@@ -22,16 +22,20 @@ import {
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 import TextTrans from '@/components/TextTrans';
-import { isEmpty, map } from 'lodash';
+import { isEmpty, isNull, map } from 'lodash';
 import Link from 'next/link';
 import { ProductCart, ServerCart } from '@/types/index';
 import PaymentSummary from '@/components/widgets/cart/review/PaymentSummary';
 import { AppQueryResult } from '@/types/queries';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import { useLazyCreateOrderQuery } from '@/redux/api/orderApi';
 
 const CartReview: NextPage = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
+    null | string
+  >(null);
   useEffect(() => {
     dispatch(setCurrentModule(t('order_review')));
     dispatch(setShowFooterElement('order_review'));
@@ -42,12 +46,10 @@ const CartReview: NextPage = () => {
     area: { id: areaId },
     customer: { userAgent },
   } = useAppSelector((state) => state);
-
   const {
     data: cartItems,
     isSuccess,
     isLoading,
-    refetch: refetcCart,
   } = useGetCartProductsQuery<{
     data: AppQueryResult<ServerCart>;
     isSuccess: boolean;
@@ -56,16 +58,34 @@ const CartReview: NextPage = () => {
   }>({
     UserAgent: userAgent,
   });
+  const [triggerCreateOrder] = useLazyCreateOrderQuery();
 
   const paymentMethods = [
     { id: 'visa', src: Visa.src },
     { id: 'knet', src: Knet.src },
-    { id: 'cash', src: Cash.src },
+    { id: 'cash_on_delivery', src: Cash.src },
   ];
 
   if (isLoading) {
     return <LoadingSpinner fullWidth={false} />;
   }
+
+  const handleCreateOrder = async () => {
+    if (
+      !isNull(customer.id) &&
+      !isNull(selectedPaymentMethod) &&
+      !isNull(userAgent)
+    ) {
+      // await triggerCreateOrder({
+      //   user_id: customer.id,
+      //   address_id: customer.address.id,
+      //   order_type: customer.prefrences.type,
+      //   UserAgent: userAgent,
+      //   Messg: customer.notes,
+      //   PaymentMethod: selectedPaymentMethod,
+      // });
+    }
+  };
 
   return (
     <Suspense>

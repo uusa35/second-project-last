@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { CustomerInfo } from '@/types/index';
 
 const initialState: CustomerInfo = {
-  id: 0,
+  id: null,
   userAgent: null, /// ==== tempId for the cart
   name: ``,
   email: ``,
