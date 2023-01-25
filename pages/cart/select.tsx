@@ -119,9 +119,11 @@ const SelectMethod: NextPage<Props> = ({ previousRoute }): JSX.Element => {
       setShowChangeLocModal(true);
     } else {
       if (selectedLocation && !showChangeLocModal) {
-        method === `pickup`
-          ? dispatch(setBranch(selectedLocation as Branch))
-          : dispatch(dispatch(setArea(selectedLocation as Area)));
+        if (method === `pickup`) {
+          dispatch(setBranch(selectedLocation as Branch));
+        } else {
+          dispatch(dispatch(setArea(selectedLocation as Area)));
+        }
         if (!isNull(previousRoute)) {
           router.push(previousRoute);
         } else {

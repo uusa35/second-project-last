@@ -82,12 +82,14 @@ const CartReview: NextPage = () => {
           UserAgent: userAgent,
           Messg: customer.notes,
           PaymentMethod: selectedPaymentMethod,
-          ...(customer.prefrences.date
+          ...(customer.prefrences.date &&
+          customer.prefrences.type === `delivery_now`
             ? { Date: customer.prefrences.date }
-            : null),
-          ...(customer.prefrences.time
+            : ``),
+          ...(customer.prefrences.time &&
+          customer.prefrences.type === `delivery_now`
             ? { Date: customer.prefrences.time }
-            : null),
+            : ``),
         },
         process_type,
         area_branch: process_type === `delivery` ? areaId : branchId,

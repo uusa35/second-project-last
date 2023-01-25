@@ -469,5 +469,6 @@
   "amazing": "amazing!",
   "note_is_required": "note is required",
   "optional": "optional",
-  "confirm" : "confirm"
+  "confirm" : "confirm",
+  "sorry_!_some_product_not_available_in_this_area" : "sorry ! some product not available in this area."
 }
