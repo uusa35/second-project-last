@@ -48,9 +48,9 @@ const SelectMethod: NextPage<Props> = ({ previousRoute }): JSX.Element => {
     Branch | Area | undefined
   >(method === 'delivery' ? selectedArea : branch);
 
-  useEffect(()=>{
-    setSelectedLocation(method === 'delivery' ? selectedArea : branch)
-  },[method])
+  useEffect(() => {
+    setSelectedLocation(method === 'delivery' ? selectedArea : branch);
+  }, [method]);
 
   const {
     data: cartItems,
@@ -133,12 +133,7 @@ const SelectMethod: NextPage<Props> = ({ previousRoute }): JSX.Element => {
 
   const handleSelectMethod = (m: appSetting['method']) => {
     dispatch(setCartMethod(m));
-    
   };
-
-  
-
- 
 
   return (
     <Suspense>
@@ -220,7 +215,10 @@ const SelectMethod: NextPage<Props> = ({ previousRoute }): JSX.Element => {
                     onClick={() => setSelectedLocation(b)}
                     className={`flex flex-row  w-full justify-between items-center p-1`}
                   >
-                    <label htmlFor={b.name} className="py-1 form-check-label capitalize">
+                    <label
+                      htmlFor={b.name}
+                      className="py-1 form-check-label capitalize"
+                    >
                       <p>
                         <TextTrans ar={b.name_ar} en={b.name_en} />
                       </p>
@@ -248,7 +246,7 @@ const SelectMethod: NextPage<Props> = ({ previousRoute }): JSX.Element => {
             className={`${submitBtnClass} mt-12 capitalize`}
             suppressHydrationWarning={suppressText}
           >
-            {t('done')}
+            {t('confirm')}
           </button>
         </div>
         <ChangeVendorModal

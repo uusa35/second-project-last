@@ -211,22 +211,8 @@ const CartAddress: NextPage = (): JSX.Element => {
     }
     if (method === 'delivery') {
       await handelSaveAddress(body);
-
-      // console.log({
-      //   type: prefrences.type,
-      //   date: `${new Date(prefrences.date as Date).getFullYear()}-${
-      //     new Date(prefrences.date as Date).getMonth() + 1
-      //   }-${new Date(prefrences.date as Date).getDate()}`,
-      //   time: `${new Date(prefrences.time as Date).getHours()}:${new Date(
-      //     prefrences.time as Date
-      //   ).getMinutes()}:${new Date(prefrences.time as Date).getSeconds()}`,
-      // });
     }
   };
-
-  // console.log('branches', area);
-  // console.log('locations', branch);
-  // console.log('method', method);
 
   useEffect(() => {
     dispatch(setCurrentModule(t('cart_address')));

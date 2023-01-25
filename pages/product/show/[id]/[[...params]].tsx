@@ -60,12 +60,7 @@ type Props = {
 };
 const ProductShow: NextPage<Props> = ({ element }) => {
   const { t } = useTranslation();
-  const {
-    productCart,
-    cart,
-    branch: { id: branchId },
-    customer: { userAgent },
-  } = useAppSelector((state) => state);
+  const { productCart } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const [currentQty, setCurrentyQty] = useState<number>(1);
   const [open, setOpen] = useState(1);

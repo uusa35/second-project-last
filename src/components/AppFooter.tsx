@@ -221,8 +221,8 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
                 : t('add_to_cart')}
             </button>
             <span className={`flex flex-row items-center gap-2`}>
-              <p className={`text-xl`}>{productCart.grossTotalPrice}</p>{' '}
-              {t('kd')}
+              <p className={`text-xl`}>{productCart.grossTotalPrice}</p>
+              {t('kwd')}
             </span>
           </div>
         )}

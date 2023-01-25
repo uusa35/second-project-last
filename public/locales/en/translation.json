@@ -468,5 +468,6 @@
   "it_was_okay": "it_was_okay",
   "amazing": "amazing!",
   "note_is_required": "note is required",
-  "optional": "optional"
+  "optional": "optional",
+  "confirm" : "confirm"
 }
