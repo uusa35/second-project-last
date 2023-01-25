@@ -24,7 +24,7 @@ import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 import TextTrans from '@/components/TextTrans';
 import { isEmpty, isNull, map } from 'lodash';
 import Link from 'next/link';
-import { ProductCart, ServerCart } from '@/types/index';
+import { OrderUser, ProductCart, ServerCart } from '@/types/index';
 import PaymentSummary from '@/components/widgets/cart/review/PaymentSummary';
 import { AppQueryResult } from '@/types/queries';
 import LoadingSpinner from '@/components/LoadingSpinner';
@@ -33,9 +33,8 @@ import { useLazyCreateOrderQuery } from '@/redux/api/orderApi';
 const CartReview: NextPage = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
-    null | string
-  >(null);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] =
+    useState<OrderUser['PaymentMethod']>(`knet`);
   useEffect(() => {
     dispatch(setCurrentModule(t('order_review')));
     dispatch(setShowFooterElement('order_review'));
@@ -45,22 +44,18 @@ const CartReview: NextPage = () => {
     branch: { id: branchId },
     area: { id: areaId },
     customer: { userAgent },
+    appSetting: { method: process_type },
   } = useAppSelector((state) => state);
-  const {
-    data: cartItems,
-    isSuccess,
-    isLoading,
-  } = useGetCartProductsQuery<{
+  const { data: cartItems, isSuccess } = useGetCartProductsQuery<{
     data: AppQueryResult<ServerCart>;
     isSuccess: boolean;
-    isLoading: boolean;
     refetch: () => void;
   }>({
     UserAgent: userAgent,
   });
-  const [triggerCreateOrder] = useLazyCreateOrderQuery();
+  const [triggerCreateOrder, { isLoading }] = useLazyCreateOrderQuery();
 
-  const paymentMethods = [
+  const paymentMethods: { id: OrderUser['PaymentMethod']; src: any }[] = [
     { id: 'visa', src: Visa.src },
     { id: 'knet', src: Knet.src },
     { id: 'cash_on_delivery', src: Cash.src },
@@ -73,23 +68,40 @@ const CartReview: NextPage = () => {
   const handleCreateOrder = async () => {
     if (
       !isNull(customer.id) &&
-      !isNull(selectedPaymentMethod) &&
+      !isEmpty(selectedPaymentMethod) &&
+      selectedPaymentMethod &&
       !isNull(userAgent)
     ) {
-      // await triggerCreateOrder({
-      //   user_id: customer.id,
-      //   address_id: customer.address.id,
-      //   order_type: customer.prefrences.type,
-      //   UserAgent: userAgent,
-      //   Messg: customer.notes,
-      //   PaymentMethod: selectedPaymentMethod,
-      // });
+      await triggerCreateOrder({
+        params: {
+          user_id: customer.id,
+          address_id: customer.address.id,
+          order_type: customer.prefrences.type,
+          UserAgent: userAgent,
+          Messg: customer.notes,
+          PaymentMethod: selectedPaymentMethod,
+          Date: `${new Date(customer.prefrences.date as Date).getFullYear()}-${
+            new Date(customer.prefrences.date as Date).getMonth() + 1
+          }-${new Date(customer.prefrences.date as Date).getDate()}`,
+          Time: `${new Date(
+            customer.prefrences.time as Date
+          ).getHours()}:${new Date(
+            customer.prefrences.time as Date
+          ).getMinutes()}:${new Date(
+            customer.prefrences.time as Date
+          ).getSeconds()}`,
+        },
+        process_type,
+        area_branch: process_type === `delivery` ? areaId : branchId,
+      }).then((r: any) => {
+        console.log('the rr rr =>> order', r.data);
+      });
     }
   };
 
   return (
     <Suspense>
-      <MainContentLayout>
+      <MainContentLayout handleSubmit={handleCreateOrder}>
         <div>
           <div className="flex justify-center items-center p-5">
             <CustomImage
@@ -364,11 +376,15 @@ const CartReview: NextPage = () => {
                 </h4>
               </div>
             </div>
-            <div className="flex justify-between">
-              {map(paymentMethods, (m) => (
+            <div className="flex justify-evenly">
+              {map(paymentMethods, (m, i) => (
                 <button
-                  key={m.id}
-                  className="bg-gray-200 flex justify-center items-center w-24 h-24 rounded-md"
+                  key={i}
+                  onClick={() => setSelectedPaymentMethod(m.id)}
+                  className={`${
+                    selectedPaymentMethod == m.id &&
+                    `ring-2 ring-primary_BG-400 ring-offset-1`
+                  } bg-stone-100 flex justify-center items-center w-24 h-24 rounded-md shadow-lg`}
                 >
                   <div>
                     <CustomImage
@@ -376,7 +392,7 @@ const CartReview: NextPage = () => {
                       alt="payment"
                       width={imageSizes.xs}
                       height={imageSizes.xs}
-                      className={`w-10 h-10`}
+                      className={`w-14 h-14`}
                     />
                   </div>
                 </button>

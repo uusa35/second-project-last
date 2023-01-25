@@ -1,12 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Cart, Order, Product, Vendor } from '@/types/index';
-import { lowerCase } from 'lodash';
-import { HYDRATE } from 'next-redux-wrapper';
+import { Order } from '@/types/index';
 
 const initialState: Order = {
-  isEmpty: true,
-  orderMode: ``,
-  order_id: ``,
+  orderId: null,
+  vendor_name: '',
+  vendor_logo: 'images/store/logos/logo.',
+  vendor_description: [],
+  branch_phone: '',
+  branch_address: '',
 };
 
 export const orderSlice = createSlice({
@@ -15,9 +16,7 @@ export const orderSlice = createSlice({
   reducers: {
     setOrder: (state: typeof initialState, action: PayloadAction<Order>) => {
       return {
-        ...state,
         ...action.payload,
-        isEmpty: false,
       };
     },
     resetOrder: (state: typeof initialState, action: PayloadAction<void>) => {
@@ -25,32 +24,7 @@ export const orderSlice = createSlice({
         ...initialState,
       };
     },
-    toggleIsEmpty: (
-      state: typeof initialState,
-      action: PayloadAction<void>
-    ) => {
-      return {
-        ...state,
-        isEmpty: !state.isEmpty,
-        orderMode: !state.isEmpty ? `` : state.orderMode,
-      };
-    },
-    orderMade: (state: typeof initialState, action: PayloadAction<void>) => {
-      return {
-        ...state,
-      };
-    },
-    setInvoiceId: (
-      state: typeof initialState,
-      action: PayloadAction<number>
-    ) => {
-      return {
-        ...state,
-        invoice_id: action.payload,
-      };
-    },
   },
 });
 
-export const { setOrder, resetOrder, toggleIsEmpty, orderMade } =
-  orderSlice.actions;
+export const { setOrder, resetOrder } = orderSlice.actions;
