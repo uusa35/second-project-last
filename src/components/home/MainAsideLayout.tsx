@@ -78,7 +78,7 @@ const MainAsideLayout: FC<Props> = ({ element }): JSX.Element => {
           <TextTrans
             ar={element.name_ar}
             en={element.name_en}
-            className="capitalize text-xl shadow-stone-300/50 drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]"
+            className="capitalize text-2xl shadow-stone-300/50 drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]"
           />
         </div>
       </div>

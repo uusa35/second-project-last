@@ -12,47 +12,33 @@ import {
 } from '@/redux/api/orderApi';
 import { debounce, isEmpty, lowerCase, snakeCase } from 'lodash';
 import { useRouter } from 'next/router';
-import Loading from 'react-loading';
 import LoadingSpinner from '@/components/LoadingSpinner';
 
 const TrackOrder: NextPage = (): JSX.Element => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-  const [trigger, { data, isSuccess }] = useLazyTrackOrderQuery();
-  const [checkOrderStatus, { data: orderSuccess, isSuccess: isSuccessOrder }] =
-    useLazyCheckOrderStatusQuery();
-  const [orderCode, setOrderCode] = useState<string | null>(null);
-  const [renderedorderCode, setRenderedOrderCode] = useState<string | null>(
-    null
-  );
-
   const router = useRouter();
-  const { order_code } = router.query;
-  useEffect(() => {
-    dispatch(setCurrentModule(t('track_order')));
-  }, []);
+  const [trigger, { data, isSuccess, isLoading }] = useLazyTrackOrderQuery();
 
-  // const handleChange = useCallback(
-  //   (order_code: string) => {
-  //     setOrderCode(order_code);
-  //     if (orderCode && orderCode.length > 2) {
-  //       trigger({ order_code: `${orderCode}` });
-  //     }
-  //   },
-  //   [orderCode]
-  // );
   const handleChange = (order_code: string) => {
-    setOrderCode(order_code);
-    if (orderCode && orderCode.length >= 3) {
-      trigger({ order_code: `${orderCode}` });
+    if (order_code && order_code.length >= 3) {
+      trigger({ order_code: `${order_code}` });
     }
   };
 
   useEffect(() => {
-    if (!router.isReady || !router.query.order_code) return;
-    setRenderedOrderCode(`${order_code}`);
-    handleChange(`${router.query.order_code}`);
-  }, [router.isReady, router.query.order_code, renderedorderCode]);
+    if (router.isReady && router.query.order_code) {
+      handleChange(`${router.query.order_code}`);
+    }
+  }, [router.isReady, router.query.order_code]);
+
+  useEffect(() => {
+    dispatch(setCurrentModule(t('track_order')));
+  }, []);
+
+  if (router.query.order_code && isLoading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <Suspense fallback={<LoadingSpinner fullWidth={false} />}>
@@ -85,99 +71,91 @@ const TrackOrder: NextPage = (): JSX.Element => {
                 placeholder={`${t(`enter_order_id`)}`}
               />
             </div>
-            {isSuccess &&
-              !isEmpty(data) &&
-              !data?.status &&
-              orderCode &&
-              orderCode?.length > 2 && (
-                <p
-                  className=" text-sm font-semibold text-red-700 text-center pt-6"
-                  suppressHydrationWarning={suppressText}
-                >
-                  {data && data.msg && t(lowerCase(snakeCase(data.msg)))}
-                </p>
-              )}
+            {isSuccess && !isEmpty(data) && !data?.status && (
+              <p
+                className=" text-sm font-semibold text-red-700 text-center pt-6"
+                suppressHydrationWarning={suppressText}
+              >
+                {data && data.msg && t(lowerCase(snakeCase(data.msg)))}
+              </p>
+            )}
           </div>
         </div>
-        {isSuccess &&
-          data &&
-          data?.status &&
-          orderCode &&
-          orderCode?.length > 2 && (
-            <div>
-              <div className="p-7 border-b-[12px] border-stone-100 capitalize">
-                <div className="flex justify-between mt-4">
-                  <p
-                    className="text-primary_BG font-semibold"
-                    suppressHydrationWarning={suppressText}
-                  >
-                    {t('order_id')}
-                  </p>
-                  <p>{router.query.order_id}</p>
-                </div>
-
-                <div className="flex justify-between mt-5">
-                  <p
-                    className="text-primary_BG font-semibold"
-                    suppressHydrationWarning={suppressText}
-                  >
-                    {t('estimated_time')}
-                  </p>
-                  <p>{data.data.estimated_time}</p>
-                </div>
-              </div>
-              <div className={`p-7 capitalize`}>
-                <div className="flex justify-between items-end  mb-5 ">
-                  <p
-                    className="font-semibold"
-                    suppressHydrationWarning={suppressText}
-                  >
-                    {t('order_status')}
-                  </p>
-                  <p>{data.data.order_status}</p>
-                </div>
-                <div className="flex justify-between items-end  ">
-                  <p
-                    className="font-semibold"
-                    suppressHydrationWarning={suppressText}
-                  >
-                    {t('order_time')}
-                  </p>
-                  <p className="font-semibold">{data.data.order_time}</p>
-                </div>
-              </div>
-
-              <div className="flex flex-col items-center pt-5 capitalize">
+        {isSuccess && data && data?.status && (
+          <div>
+            <div className="p-7 border-b-[12px] border-stone-100 capitalize">
+              <div className="flex justify-between mt-4">
                 <p
-                  className="mb-4 text-lg"
+                  className="text-primary_BG font-semibold"
                   suppressHydrationWarning={suppressText}
                 >
-                  {t('delivering_to_your_address')}
+                  {t('order_id')}
                 </p>
-                <p className="text-lg text-center text-primary_BG">{}</p>
+                <p>{router.query.order_code}</p>
               </div>
-              <div className="pt-5 px-4 mt-[40%] capitalize">
-                <button className={`${submitBtnClass} px-4`}>
-                  <div className="flex justify-between items-center">
-                    <a
-                      href={`tel:+${data.data.branch_phone}`}
-                      className="text-white px-2"
-                      suppressHydrationWarning={suppressText}
-                    >
-                      {t('call_delivery')}
-                    </a>
-                    <a
-                      href={`tel:+${data.data.branch_phone}`}
-                      className="text-White"
-                      suppressHydrationWarning={suppressText}
-                    >
-                      {data.data.branch_phone}
-                    </a>
-                  </div>
-                </button>
+
+              <div className="flex justify-between mt-5">
+                <p
+                  className="text-primary_BG font-semibold"
+                  suppressHydrationWarning={suppressText}
+                >
+                  {t('estimated_time')}
+                </p>
+                <p>{data.data.estimated_time}</p>
               </div>
             </div>
-          )}
+            <div className={`p-7 capitalize`}>
+              <div className="flex justify-between items-end  mb-5 ">
+                <p
+                  className="font-semibold"
+                  suppressHydrationWarning={suppressText}
+                >
+                  {t('order_status')}
+                </p>
+                <p>{data.data.order_status}</p>
+              </div>
+              <div className="flex justify-between items-end  ">
+                <p
+                  className="font-semibold"
+                  suppressHydrationWarning={suppressText}
+                >
+                  {t('order_time')}
+                </p>
+                <p className="font-semibold">{data.data.order_time}</p>
+              </div>
+            </div>
+
+            <div className="flex flex-col items-center pt-5 capitalize">
+              <p
+                className="mb-4 text-lg"
+                suppressHydrationWarning={suppressText}
+              >
+                {t('delivering_to_your_address')}
+              </p>
+              <p className="text-lg text-center text-primary_BG">{}</p>
+            </div>
+            <div className="pt-5 px-4 mt-[40%] capitalize">
+              <button className={`${submitBtnClass} px-4`}>
+                <div className="flex justify-between items-center">
+                  <a
+                    href={`tel:+${data.data.branch_phone}`}
+                    className="text-white px-2"
+                    suppressHydrationWarning={suppressText}
+                  >
+                    {t('call_delivery')}
+                  </a>
+                  <a
+                    href={`tel:+${data.data.branch_phone}`}
+                    className="text-White"
+                    suppressHydrationWarning={suppressText}
+                  >
+                    {data.data.branch_phone}
+                  </a>
+                </div>
+              </button>
+            </div>
+          </div>
+        )}
       </MainContentLayout>
     </Suspense>
   );
