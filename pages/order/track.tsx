@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next';
 import { suppressText, submitBtnClass } from '@/constants/*';
 import { setCurrentModule } from '@/redux/slices/appSettingSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import {
   useLazyCheckOrderStatusQuery,
@@ -15,7 +14,6 @@ import { debounce, isEmpty, lowerCase, snakeCase } from 'lodash';
 import { useRouter } from 'next/router';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { themeColor } from '@/redux/slices/vendorSlice';
-import { themeColor } from '@/redux/slices/vendorSlice';
 
 const TrackOrder: NextPage = (): JSX.Element => {
   const { t } = useTranslation();
@@ -23,7 +21,6 @@ const TrackOrder: NextPage = (): JSX.Element => {
   const router = useRouter();
   const color = useAppSelector(themeColor);
   const [trigger, { data, isSuccess, isLoading }] = useLazyTrackOrderQuery();
-  const color = useAppSelector(themeColor);
 
   const handleChange = (order_code: string) => {
     if (order_code && order_code.length >= 3) {
@@ -66,7 +63,6 @@ const TrackOrder: NextPage = (): JSX.Element => {
           className="text-center font-semibold pt-2 capitalize"
           style={{ color }}
           suppressHydrationWarning={suppressText}
-          style={{ color }}
         >
           {t('track_order')}
         </h4>
