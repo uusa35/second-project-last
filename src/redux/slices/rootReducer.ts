@@ -14,7 +14,6 @@ import { searchParamsSlice } from '@/redux/slices/searchParamsSlice';
 import { vendorApi } from '@/redux/api/vendorApi';
 import { currentElementSlice } from '@/redux/slices/currentElementSlice';
 import { orderSlice } from '@/redux/slices/orderSlice';
-import { addressSlice } from './addressSlice';
 import { locationApi } from '@/redux/api/locationApi';
 import { branchApi } from '@/redux/api/branchApi';
 import { vendorSlice } from '@/redux/slices/vendorSlice';
@@ -39,7 +38,6 @@ export const rootReducer = combineReducers({
   [productCartSlice.name]: productCartSlice.reducer,
   [orderSlice.name]: orderSlice.reducer,
   [searchParamsSlice.name]: searchParamsSlice.reducer,
-  [addressSlice.name]: addressSlice.reducer,
   [currentElementSlice.name]: currentElementSlice.reducer,
   [apiSlice.reducerPath]: apiSlice.reducer,
   [categoryApi.reducerPath]: categoryApi.reducer,
