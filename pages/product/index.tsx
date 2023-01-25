@@ -9,7 +9,7 @@ import { Product } from '@/types/index';
 import { NextPage } from 'next';
 import { apiSlice } from '@/redux/api';
 import { debounce, isEmpty, map } from 'lodash';
-import { appLinks, imageSizes, suppressText } from '@/constants/*';
+import { appLinks, baseUrl, imageSizes, suppressText } from '@/constants/*';
 import MainHead from '@/components/MainHead';
 import Image from 'next/image';
 import NotFoundImage from '@/appImages/not_found.png';
@@ -31,6 +31,7 @@ const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
     locale: { lang },
     branch: { id: branchId },
     area: { id: areaId },
+    vendor: { logo },
   } = useAppSelector((state) => state);
   const { data: topSearch, isSuccess } = useGetTopSearchQuery({
     lang,
@@ -59,7 +60,11 @@ const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
 
   return (
     <Suspense>
-      <MainHead title={`productIndex`} description={`productIndex`} />
+      <MainHead
+        title={`productIndex`}
+        description={`productIndex`}
+        mainImage={`${baseUrl}${logo}`}
+      />
       <MainContentLayout>
         <div className={`px-4`}>
           {/*   search Input */}
@@ -89,7 +94,7 @@ const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
                   key={i}
                   href={appLinks.productSearchIndex(
                     searchKey,
-                    branchId,                   
+                    branchId,
                     areaId
                   )}
                 >
@@ -98,7 +103,7 @@ const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
               ))}
             <Link
               className={`p-2 rounded-md bg-red-700 text-white`}
-              href={appLinks.productSearchIndex(branchId,areaId)}
+              href={appLinks.productSearchIndex(branchId, areaId)}
             >
               {t(`clear`)}
             </Link>

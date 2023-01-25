@@ -81,10 +81,6 @@ const CustomerInformation: NextPage = (): JSX.Element => {
     });
   };
 
-  if (isLoading) {
-    return <LoadingSpinner fullWidth={true} />;
-  }
-
   return (
     <Suspense>
       <MainContentLayout handleSubmit={handleSubmit(onSubmit)}>

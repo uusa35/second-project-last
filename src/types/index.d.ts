@@ -50,6 +50,7 @@ export interface Vendor {
   name: string;
   name_ar: string;
   name_en: string;
+  theme_color: string;
   status: string;
   phone: string;
   desc: string;
