@@ -8,6 +8,7 @@ import CustomImage from '@/components/CustomImage';
 import { useTranslation } from 'react-i18next';
 import { useAppSelector } from '@/redux/hooks';
 import TextTrans from '@/components/TextTrans';
+import { themeColor } from '@/redux/slices/vendorSlice';
 
 type Props = {
   element: Product;
@@ -18,6 +19,7 @@ const VerProductWidget: FC<Props> = ({ element }): JSX.Element => {
     branch: { id: branchId },
     area: { id: areaId },
   } = useAppSelector((state) => state);
+  const color = useAppSelector(themeColor);
   const firstImage = !isEmpty(element.img)
     ? imgUrl(first(element.img).thumbnail)
     : NoFoundImage.src;
@@ -46,7 +48,11 @@ const VerProductWidget: FC<Props> = ({ element }): JSX.Element => {
           </div>
           <div className="ps-5 w-[100%] pe-5">
             <p className="text-lg truncate pb-5">
-              <TextTrans ar={element.name_ar} en={element.name_en} />
+              <TextTrans
+                style={{ color }}
+                ar={element.name_ar}
+                en={element.name_en}
+              />
               <TextTrans
                 ar={element.description_ar}
                 en={element.description_en}

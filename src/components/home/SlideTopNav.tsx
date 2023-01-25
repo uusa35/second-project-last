@@ -15,6 +15,7 @@ import { useTranslation } from 'react-i18next';
 import { FC } from 'react';
 import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 import CustomImage from '@/components/CustomImage';
+import TextTrans from '@/components/TextTrans';
 
 type Props = {
   offset: number;
@@ -93,7 +94,7 @@ const SlideTopNav: FC<Props> = ({ offset, isHome = false }): JSX.Element => {
               />
             </div>
             <div className="hidden sm:flex flex-1  pt-2 rtl:pr-2 ltr:pl-2 drop-shadow-sm">
-              {vendor.name}
+              <TextTrans ar={vendor.name_ar} en={vendor.name_en} />
             </div>
           </Link>
         </div>

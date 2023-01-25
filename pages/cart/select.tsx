@@ -28,6 +28,7 @@ import TextTrans from '@/components/TextTrans';
 import ChangeVendorModal from '@/components/ChangeVendorModal';
 import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 import { wrapper } from '@/redux/store';
+import { themeColor } from '@/redux/slices/vendorSlice';
 
 type Props = {
   previousRoute: string | null;
@@ -43,6 +44,7 @@ const SelectMethod: NextPage<Props> = ({ previousRoute }): JSX.Element => {
     branch,
     customer: { userAgent },
   } = useAppSelector((state) => state);
+  const color = useAppSelector(themeColor);
   const [showChangeLocModal, setShowChangeLocModal] = useState<boolean>(false);
   const [selectedLocation, setSelectedLocation] = useState<
     Branch | Area | undefined
@@ -52,12 +54,7 @@ const SelectMethod: NextPage<Props> = ({ previousRoute }): JSX.Element => {
     setSelectedLocation(method === 'delivery' ? selectedArea : branch);
   }, [method]);
 
-  const {
-    data: cartItems,
-    isSuccess,
-    isLoading,
-    refetch: refetchCart,
-  } = useGetCartProductsQuery<{
+  const { data: cartItems, isSuccess } = useGetCartProductsQuery<{
     data: AppQueryResult<ServerCart>;
     isSuccess: boolean;
     isLoading: boolean;
@@ -76,7 +73,7 @@ const SelectMethod: NextPage<Props> = ({ previousRoute }): JSX.Element => {
     data: AppQueryResult<Branch[]>;
     isLoading: boolean;
   }>({ lang });
-
+  
   const [open, setOpen] = useState(0);
   const handleOpen = (value: any) => {
     setOpen(open === value ? 0 : value);
@@ -189,7 +186,7 @@ const SelectMethod: NextPage<Props> = ({ previousRoute }): JSX.Element => {
                             </p>
                             {!isEmpty(selectedLocation) &&
                             area.id === selectedLocation?.id ? (
-                              <CheckCircle className="text-lime-400" />
+                              <CheckCircle style={{ color }} />
                             ) : (
                               <CircleOutlined className="text-gray-400" />
                             )}
@@ -211,7 +208,7 @@ const SelectMethod: NextPage<Props> = ({ previousRoute }): JSX.Element => {
                 {t('select_branch')}
               </p>
               <div className={`bg-LightGray p-3`}>
-                {map(branches.Data, (b: Branch, i) => (
+                {map(branches?.Data, (b: Branch, i) => (
                   <button
                     key={i}
                     onClick={() => setSelectedLocation(b)}
@@ -226,7 +223,8 @@ const SelectMethod: NextPage<Props> = ({ previousRoute }): JSX.Element => {
                       </p>
                     </label>
                     <input
-                      className="form-check-input appearance-none rounded-full h-5 w-5 border border-gray-200 focus:ring-lime-400 focus:ring-offset-1 focus:border-2 text-lime-400 focus:border-lime-400 checked:border-lime-400 bg-gray-100 checked:bg-lime-400 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+                      className="form-check-input appearance-none rounded-full h-5 w-5 border border-gray-200 focus:ring-gray-100 focus:ring-offset-1 focus:border-2  focus:border-gray-100 checked:border-gray-400 bg-gray-100 checked:bg-gray-400 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+                      style={{ color }}
                       type="radio"
                       name="branch"
                       readOnly
@@ -246,6 +244,7 @@ const SelectMethod: NextPage<Props> = ({ previousRoute }): JSX.Element => {
               !selectedLocation?.id
             }
             className={`${submitBtnClass} mt-12 capitalize`}
+            style={{ backgroundColor: color }}
             suppressHydrationWarning={suppressText}
           >
             {t('confirm')}

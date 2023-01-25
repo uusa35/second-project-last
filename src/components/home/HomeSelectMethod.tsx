@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { setCartMethod } from '@/redux/slices/appSettingSlice';
 import Link from 'next/link';
 import TextTrans from '@/components/TextTrans';
+import { themeColor } from '@/redux/slices/vendorSlice';
 
 type Props = {
   element: Vendor;
@@ -18,6 +19,7 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
     area,
     branch,
   } = useAppSelector((state) => state);
+  const color = useAppSelector(themeColor);
   const { t } = useTranslation();
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -58,9 +60,7 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
             scroll={false}
             className="flex flex-1 gap-x-3 w-full flex-row justify-between items-center mt-4 mb-2"
           >
-            <div
-              className={`flex flex-grow justify-start items-center`}
-            >
+            <div className={`flex flex-grow justify-start items-center`}>
               <h1 className={`pt-2`}>{t('pickup_from')}</h1>
             </div>
             <div className={`pt-2 text-primary_BG`}>
@@ -75,14 +75,10 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
             scroll={false}
             className="flex gap-x-3 flex-1 w-full flex-row justify-between items-center mt-4 mb-2"
           >
-            <div
-              className={`flex flex-grow justify-start items-center`}
-            >
+            <div className={`flex flex-grow justify-start items-center`}>
               <h1 className={`pt-2`}>{t('deliver_to')}</h1>
             </div>
-            <div className={`pt-2 text-primary_BG`}>
-              {t('select_location')}
-            </div>
+            <div className={`pt-2 text-primary_BG`}>{t('select_location')}</div>
           </Link>
         )}
 
@@ -92,26 +88,26 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
             scroll={false}
             className="flex flex-1 gap-x-3 w-full flex-row justify-between items-center mt-4 mb-2"
           >
-            <div
-              className={`flex flex-grow justify-start items-center `}
-            >
+            <div className={`flex flex-grow justify-start items-center `}>
               <h1 className={`pt-2`}>{t('deliver_to')}</h1>
             </div>
             <div className={`pt-2 text-primary_BG`}>
-              <TextTrans ar={area.name_ar} en={area.name_en} />
+              <TextTrans
+                ar={area.name_ar}
+                en={area.name_en}
+                style={{ color }}
+              />
             </div>
           </Link>
         )}
 
         <div className="flex flex-1 gap-x-3 w-full flex-row justify-between items-center mt-2 mb-4">
-          <div
-            className={`flex flex-grow justify-start items-center`}
-          >
+          <div className={`flex flex-grow justify-start items-center`}>
             <h1 className={`pt-2`} suppressHydrationWarning={suppressText}>
               {t('earliest_delivery')}
             </h1>
           </div>
-          <div className={`pt-2 text-primary_BG`}>
+          <div className={`pt-2 text-primary_BG`} style={{ color }}>
             {element.DeliveryTime}
           </div>
         </div>

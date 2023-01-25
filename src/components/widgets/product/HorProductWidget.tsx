@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { suppressText } from '@/constants/*';
 import { useAppSelector } from '@/redux/hooks';
 import TextTrans from '@/components/TextTrans';
+import { themeColor } from '@/redux/slices/vendorSlice';
 
 type Props = {
   element: Product;
@@ -19,6 +20,7 @@ const HorProductWidget: FC<Props> = ({ element }): JSX.Element => {
     branch: { id: branchId },
     area: { id: areaId },
   } = useAppSelector((state) => state);
+  const color = useAppSelector(themeColor);
   const firstImage: any = !isEmpty(element.img)
     ? imgUrl(first(element.img).thumbnail)
     : NoFoundImage.src;
@@ -26,7 +28,7 @@ const HorProductWidget: FC<Props> = ({ element }): JSX.Element => {
   return (
     <Link
       href={`${appLinks.productShow(
-        element.id.toString(),      
+        element.id.toString(),
         element.id,
         element.name,
         branchId,
@@ -49,7 +51,11 @@ const HorProductWidget: FC<Props> = ({ element }): JSX.Element => {
             className="text-md font-semibold truncate"
             suppressHydrationWarning={suppressText}
           >
-            <TextTrans ar={element.name_ar} en={element.name_en} />
+            <TextTrans
+              style={{ color }}
+              ar={element.name_ar}
+              en={element.name_en}
+            />
             <TextTrans
               ar={element.description_ar}
               en={element.description_en}
@@ -57,13 +63,13 @@ const HorProductWidget: FC<Props> = ({ element }): JSX.Element => {
           </p>
           <div className="flex justify-between items-center">
             <p
-              className="text-md text-primary_BG text-end uppercase pb-2"
+              className="text-md text-end uppercase"
               suppressHydrationWarning={suppressText}
             >
               {element.price} {t(`kwd`)}
             </p>
             <button
-              className="border-[1px] rounded-md border-primary_BG px-4 uppercase text-center text-sm"
+              className="border-[1px] rounded-md px-4 pt-1 uppercase text-center text-sm"
               suppressHydrationWarning={suppressText}
             >
               + {t('add')}

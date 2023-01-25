@@ -190,27 +190,27 @@ const VendorShow: NextPage<Props> = ({ element }) => {
             </button>
           </div>
           <div className="flex justify-evenly items-center w-[80%] m-auto">
-            <Link href={'/'}>
+            <a href={'facebook.com'} target={'_blank'}>
               <CustomImage
                 className="w-5 h-5"
                 src={Facebook.src}
                 alt={t('facebook')}
               />
-            </Link>
-            <Link href={'/'}>
+            </a>
+            <a href={'instagram.com'} target={'_blank'}>
               <CustomImage
                 className="w-5 h-5"
                 src={Instagram.src}
                 alt={t('instagram')}
               />
-            </Link>
-            <Link href={'/'}>
+            </a>
+            <a href={'twitter.com'} target={'_blank'}>
               <CustomImage
                 className="w-5 h-5"
                 src={Twitter.src}
                 alt={t('twitter')}
               />
-            </Link>
+            </a>
           </div>
         </div>
         <Feedback

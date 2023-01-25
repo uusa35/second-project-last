@@ -6,12 +6,15 @@ import { InfoOutlined, Check } from '@mui/icons-material';
 import { Vendor } from '@/types/index';
 import { useTranslation } from 'react-i18next';
 import TextTrans from '@/components/TextTrans';
+import { useAppSelector } from '@/redux/hooks';
+import { themeColor } from '@/redux/slices/vendorSlice';
 
 type Props = {
   element: Vendor;
 };
 const HomeVendorMainInfo: FC<Props> = ({ element }) => {
   const { t } = useTranslation();
+  const color = useAppSelector(themeColor);
 
   return (
     <>
@@ -48,7 +51,10 @@ const HomeVendorMainInfo: FC<Props> = ({ element }) => {
           scroll={false}
           className={`flex-none`}
         >
-          <InfoOutlined className="text-primary_BG w-6 h-6 lg:w-8 lg:h-8" />
+          <InfoOutlined
+            className="text-primary_BG w-6 h-6 lg:w-8 lg:h-8"
+            style={{ color }}
+          />
         </Link>
       </div>
 
