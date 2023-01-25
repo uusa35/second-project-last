@@ -71,14 +71,14 @@ const MainAsideLayout: FC<Props> = ({ element }): JSX.Element => {
           <CustomImage
             src={`${imgUrl(element.logo)}`}
             alt={element.name}
-            className={`relative object-contain w-32 h-auto shadow-2xl rounded-md mb-4`}
+            className={`relative object-contain w-44 h-auto shadow-2xl rounded-lg mb-4 border border-stone-200`}
             width={imageSizes.lg}
             height={imageSizes.lg}
           />
           <TextTrans
             ar={element.name_ar}
             en={element.name_en}
-            className="capitalize"
+            className="capitalize text-xl shadow-stone-300/50 drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]"
           />
         </div>
       </div>

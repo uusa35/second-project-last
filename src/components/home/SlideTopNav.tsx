@@ -71,7 +71,7 @@ const SlideTopNav: FC<Props> = ({ offset, isHome = false }): JSX.Element => {
         }
         className={`z-50`}
       >
-        <Bars3Icon className={`w-8 h-8`} />
+        <Bars3Icon className={`w-8 h-8 drop-shadow-sm`} />
       </button>
 
       {/* logo */}
@@ -92,7 +92,9 @@ const SlideTopNav: FC<Props> = ({ offset, isHome = false }): JSX.Element => {
                 height={imageSizes.xs}
               />
             </div>
-            <div className="flex sm:hidden flex-1  pt-2 ">{vendor.name}</div>
+            <div className="hidden sm:flex flex-1  pt-2 rtl:pr-2 ltr:pl-2 drop-shadow-sm">
+              {vendor.name}
+            </div>
           </Link>
         </div>
         <div className={`flex flex-row justify-between items-center w-20`}>
@@ -101,7 +103,7 @@ const SlideTopNav: FC<Props> = ({ offset, isHome = false }): JSX.Element => {
             href={appLinks.cartIndex.path}
             className={`relative`}
           >
-            <ShoppingBagOutlined className={`w-8 h-8 `} />
+            <ShoppingBagOutlined className={`w-8 h-8 drop-shadow-sm`} />
             {isSuccess &&
               cartItems.data.subTotal > 0 &&
               cartItems.data?.Cart?.length > 0 && (
@@ -114,7 +116,7 @@ const SlideTopNav: FC<Props> = ({ offset, isHome = false }): JSX.Element => {
           </Link>
           <button
             onClick={() => handleChangeLang(otherLang)}
-            className={`w-8 h-8  text-2xl font-bold capitalize`}
+            className={`w-8 h-8  text-2xl font-bold capitalize drop-shadow-sm`}
           >
             {t(`${otherLang}`)}
           </button>
