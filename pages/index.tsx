@@ -37,10 +37,6 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const {
-    branch: { id: branchId },
-    area: { id: areaId },
-  } = useAppSelector((state) => state);
   useEffect(() => {
     dispatch(setCurrentModule(t('home')));
   }, []);
@@ -51,7 +47,11 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
   return (
     <Suspense fallback={<LoadingSpinner fullWidth={false} />}>
       {/* SEO Head DEV*/}
-      <MainHead title={element.name} mainImage={`${baseUrl}${element.logo}`} />
+      <MainHead
+        title={element.name}
+        mainImage={`${baseUrl}${element.logo}`}
+        phone={element.phone}
+      />
       <MainContentLayout>
         {/*  ImageBackGround Header */}
         <CustomImage

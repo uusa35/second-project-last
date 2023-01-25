@@ -54,6 +54,7 @@ import {
   useAddToCartMutation,
   useLazyGetCartProductsQuery,
 } from '@/redux/api/cartApi';
+import { themeColor } from '@/redux/slices/vendorSlice';
 
 type Props = {
   element: Product;
@@ -61,11 +62,10 @@ type Props = {
 const ProductShow: NextPage<Props> = ({ element }) => {
   const { t } = useTranslation();
   const { productCart } = useAppSelector((state) => state);
+  const color = useAppSelector(themeColor);
   const dispatch = useAppDispatch();
   const [currentQty, setCurrentyQty] = useState<number>(1);
   const [open, setOpen] = useState(1);
-  const [triggerAddToCart] = useAddToCartMutation();
-  const [triggerGetCartProducts] = useLazyGetCartProductsQuery();
 
   useEffect(() => {
     dispatch(setCurrentModule(element.name));
@@ -349,7 +349,7 @@ const ProductShow: NextPage<Props> = ({ element }) => {
               </p>
             </div>
             <div className={`shrink-0`}>
-              <p className={`text-primary_BG text-lg `}>
+              <p className={`text-lg `} style={{ color }}>
                 {element.price} {t(`kwd`)}
               </p>
             </div>
@@ -398,7 +398,7 @@ const ProductShow: NextPage<Props> = ({ element }) => {
                       >
                         <div className={`space-y-1`}>
                           <div>
-                            <p className={`text-primary_BG`}>{c.name}</p>
+                            <p style={{ color }}>{c.name}</p>
                           </div>
                           <div>
                             +{c.price} {t(`kwd`)}

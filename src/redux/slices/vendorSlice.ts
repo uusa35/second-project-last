@@ -3,6 +3,7 @@ import { Country } from '@/types/queries';
 import { isLocal } from '@/constants/*';
 import { HYDRATE } from 'next-redux-wrapper';
 import { Vendor } from '@/types/index';
+import { RootState } from '@/redux/store';
 
 const initialState: Vendor = {
   id: ``,
@@ -18,6 +19,7 @@ const initialState: Vendor = {
   location: ``,
   WorkHours: ``,
   DeliveryTime: ``,
+  theme_color: `#8696ea`,
   Preorder_availability: ``,
   Payment_Methods: {
     cash_on_delivery: `no`,
@@ -36,3 +38,5 @@ export const vendorSlice = createSlice({
 });
 
 export const { setVendor } = vendorSlice.actions;
+
+export const themeColor = (state: RootState) => state.vendor.theme_color;

@@ -31,6 +31,7 @@ import {
   setCartPromoSuccess,
   setCartTotalAndSubTotal,
 } from '@/redux/slices/cartSlice';
+import { themeColor } from '@/redux/slices/vendorSlice';
 const CartIndex: NextPage = (): JSX.Element => {
   const { t } = useTranslation();
   const {
@@ -39,12 +40,12 @@ const CartIndex: NextPage = (): JSX.Element => {
     appSetting: { method },
     customer: { userAgent, notes },
   } = useAppSelector((state) => state);
+  const color = useAppSelector(themeColor);
   const dispatch = useAppDispatch();
   const [triggerAddToCart] = useAddToCartMutation();
   const {
     data: cartItems,
     isSuccess,
-    isLoading,
     refetch: refetchCart,
   } = useGetCartProductsQuery<{
     data: AppQueryResult<ServerCart>;
@@ -352,7 +353,8 @@ const CartIndex: NextPage = (): JSX.Element => {
                         </span>
                         <div>
                           <p
-                            className="text-primary_BG capitalize"
+                            className="capitalize"
+                            style={{ color }}
                             suppressHydrationWarning={suppressText}
                           >
                             {item.Price} {t('kwd')}

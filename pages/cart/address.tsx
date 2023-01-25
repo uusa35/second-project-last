@@ -39,6 +39,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { themeColor } from '@/redux/slices/vendorSlice';
 
 const CartAddress: NextPage = (): JSX.Element => {
   const dispatch = useAppDispatch();
@@ -50,6 +51,7 @@ const CartAddress: NextPage = (): JSX.Element => {
     appSetting: { method },
     customer: { address, id },
   } = useAppSelector((state) => state);
+  const color = useAppSelector(themeColor);
 
   const [openTab, setOpenTab] = useState(1);
   const [show, SetShow] = useState(false);
@@ -300,10 +302,11 @@ const CartAddress: NextPage = (): JSX.Element => {
                         <a
                           className={
                             'text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal ' +
-                            (openTab === 1
-                              ? 'text-white bg-primary_BG'
-                              : 'bg-white')
+                            (openTab === 1 && 'text-white')
                           }
+                          style={{
+                            backgroundColor: openTab == 1 ? color : `white`,
+                          }}
                           onClick={(e) => {
                             e.preventDefault();
                             setOpenTab(1);
@@ -329,10 +332,11 @@ const CartAddress: NextPage = (): JSX.Element => {
                         <a
                           className={
                             'text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal ' +
-                            (openTab === 2
-                              ? 'text-white bg-primary_BG'
-                              : 'bg-white')
+                            (openTab === 2 && 'text-white')
                           }
+                          style={{
+                            backgroundColor: openTab == 2 ? color : `white`,
+                          }}
                           onClick={(e) => {
                             e.preventDefault();
                             setOpenTab(2);
@@ -365,10 +369,11 @@ const CartAddress: NextPage = (): JSX.Element => {
                         <a
                           className={
                             'text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal ' +
-                            (openTab === 3
-                              ? 'text-white bg-primary_BG'
-                              : 'bg-white')
+                            (openTab === 3 && 'text-white')
                           }
+                          style={{
+                            backgroundColor: openTab == 3 ? color : `white`,
+                          }}
                           onClick={(e) => {
                             e.preventDefault();
                             setOpenTab(3);

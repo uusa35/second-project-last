@@ -29,6 +29,7 @@ import PaymentSummary from '@/components/widgets/cart/review/PaymentSummary';
 import { AppQueryResult } from '@/types/queries';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { useLazyCreateOrderQuery } from '@/redux/api/orderApi';
+import { themeColor } from '@/redux/slices/vendorSlice';
 
 const CartReview: NextPage = () => {
   const { t } = useTranslation();
@@ -46,6 +47,7 @@ const CartReview: NextPage = () => {
     customer: { userAgent },
     appSetting: { method: process_type },
   } = useAppSelector((state) => state);
+  const color = useAppSelector(themeColor);
   const { data: cartItems, isSuccess } = useGetCartProductsQuery<{
     data: AppQueryResult<ServerCart>;
     isSuccess: boolean;
@@ -145,8 +147,9 @@ const CartReview: NextPage = () => {
               </div>
               <Link
                 href={appLinks.address.path}
-                className="text-primary_BG text-base font-semibold capitalize"
+                className="text-base font-semibold capitalize"
                 suppressHydrationWarning={suppressText}
+                style={{ color }}
               >
                 {t('change')}
               </Link>
@@ -187,8 +190,9 @@ const CartReview: NextPage = () => {
               </div>
               <Link
                 href={appLinks.cartSelectMethod.path}
-                className="text-primary_BG text-base font-semibold capitalize"
+                className="text-base font-semibold capitalize"
                 suppressHydrationWarning={suppressText}
+                style={{ color }}
               >
                 {t('edit')}
               </Link>
@@ -210,8 +214,9 @@ const CartReview: NextPage = () => {
               </div>
               <Link
                 href={appLinks.customerInfo.path}
-                className="text-primary_BG text-base font-semibold capitalize"
+                className="text-base font-semibold capitalize"
                 suppressHydrationWarning={suppressText}
+                style={{ color }}
               >
                 {t('edit')}
               </Link>
@@ -285,9 +290,10 @@ const CartReview: NextPage = () => {
                           </Link>
                           <div className="flex">
                             <Link
-                              className="text-primary_BG px-2 capitalize"
+                              className="px-2 capitalize"
                               suppressHydrationWarning={suppressText}
                               href={appLinks.cartIndex.path}
+                              style={{ color }}
                             >
                               {t('edit')}
                             </Link>
@@ -320,6 +326,7 @@ const CartReview: NextPage = () => {
                                           className={`ltr:border-r-2 ltr:last:border-r-0 ltr:first:pr-1 rtl:border-l-2 rtl:last:border-l-0 rtl:first:pl-1 px-1 text-xs capitalize`}
                                           ar={addon.name}
                                           en={addon.name}
+                                          style={{ color }}
                                         />
                                         {addon.price ?? ``}
                                       </>
@@ -346,8 +353,9 @@ const CartReview: NextPage = () => {
                       </span>
                       <div>
                         <p
-                          className="text-primary_BG capitalize"
+                          className=" capitalize"
                           suppressHydrationWarning={suppressText}
+                          style={{ color }}
                         >
                           {item.Price} {t('kwd')}
                         </p>
