@@ -16,13 +16,28 @@ const nextConfig = {
         source: '/home',
         destination: '/',
       },
-      
       {
         source: '/about',
         destination: '/vendor/show',
       },
     ];
   },
+
+  async redirects() {
+    return [
+      {
+        source: '/OrderConfirmation/failed',
+        destination: '/order/staus/failure',
+        permanent:true
+      },
+      {
+        source: '/OrderConfirmation/success/:orderId',
+        destination: '/order/status/:orderId/success',
+        permanent: true,
+      },
+    ];
+  },
+
   env: {
     SECRET_APP_KEY: '@#8!U.S.A.M.A.!@)8231',
     NEXT_PUBLIC_URL: '/',
