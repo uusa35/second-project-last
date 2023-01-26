@@ -2,6 +2,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { appSetting } from '@/types/index';
 import { searchParamsSlice } from '@/redux/slices/searchParamsSlice';
 import { cartSlice } from '@/redux/slices/cartSlice';
+import { areaSlice } from './areaSlice';
+import { branchSlice } from './branchSlice';
 
 const initialState: appSetting = {
   method: `delivery`,
@@ -208,6 +210,20 @@ export const appSettingSlice = createSlice({
       searchParamsSlice.actions.setSearchArea,
       (state, action) => {
         state.showAreaModal = false;
+      }
+    );
+
+    builder.addCase(
+      branchSlice.actions.setBranch,
+      (state, action) => {
+        state.method = 'pickup';
+      }
+    );
+
+    builder.addCase(
+      areaSlice.actions.setArea,
+      (state, action) => {
+        state.method = 'delivery';
       }
     );
   },

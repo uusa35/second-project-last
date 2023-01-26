@@ -46,15 +46,13 @@ const SelectMethod: NextPage<Props> = ({ previousRoute }): JSX.Element => {
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
   const [showChangeLocModal, setShowChangeLocModal] = useState<boolean>(false);
-  const [selectedLocation, setSelectedLocation] = useState<
-    Branch | Area | undefined
-  >(method === 'delivery' ? selectedArea : branch);
+  const [selectedLocation, setSelectedLocation] = useState({branch:branch,area:selectedArea});
 
   const [selectedMethod,setSelectedMethod]=useState<string>(method)
 
   useEffect(() => {
     setSelectedLocation(method === 'delivery' ? selectedArea : branch);
-  }, [method]);
+  }, [selectedMethod]);
 
   const { data: cartItems, isSuccess } = useGetCartProductsQuery<{
     data: AppQueryResult<ServerCart>;
@@ -105,31 +103,34 @@ const SelectMethod: NextPage<Props> = ({ previousRoute }): JSX.Element => {
       </svg>
     );
   };
+
   const handelContinue = async () => {
-    if (
-      (selectedArea.id || branch.id) &&
-      (selectedLocation?.id !== selectedArea.id ||
-        selectedLocation?.id !== branch.id) &&
-      isSuccess &&
-      cartItems.data &&
-      cartItems.data.Cart &&
-      !isEmpty(cartItems.data.Cart)
-    ) {
-      setShowChangeLocModal(true);
-    } else {
-      if (selectedLocation && !showChangeLocModal) {
-        if (method === `pickup`) {
-          dispatch(setBranch(selectedLocation as Branch));
-        } else {
-          dispatch(dispatch(setArea(selectedLocation as Area)));
-        }
-        if (!isNull(previousRoute)) {
-          router.push(previousRoute);
-        } else {
-          router.back();
-        }
-      }
-    }
+    console.log(selectedLocation, selectedMethod)
+    
+    // if (
+    //   (selectedArea.id || branch.id) &&
+    //   (selectedLocation?.id !== selectedArea.id ||
+    //     selectedLocation?.id !== branch.id) &&
+    //   isSuccess &&
+    //   cartItems.data &&
+    //   cartItems.data.Cart &&
+    //   !isEmpty(cartItems.data.Cart)
+    // ) {
+    //   setShowChangeLocModal(true);
+    // } else {
+    //   if (selectedLocation && !showChangeLocModal) {
+    //     if (method === `pickup`) {
+    //       dispatch(setBranch(selectedLocation as Branch));
+    //     } else {
+    //       dispatch(dispatch(setArea(selectedLocation as Area)));
+    //     }
+    //     if (!isNull(previousRoute)) {
+    //       router.push(previousRoute);
+    //     } else {
+    //       router.back();
+    //     }
+    //   }
+    // }
   };
 
   const handleSelectMethod = (m: appSetting['method']) => {
@@ -178,7 +179,7 @@ const SelectMethod: NextPage<Props> = ({ previousRoute }): JSX.Element => {
                           <button
                             className={'flex justify-between w-full p-4 '}
                             key={i}
-                            onClick={() => setSelectedLocation(area)}
+                            onClick={() => setSelectedLocation({...selectedLocation,area:area})}
                           >
                             <p
                               className="text-base text-black capitalize"
@@ -213,7 +214,7 @@ const SelectMethod: NextPage<Props> = ({ previousRoute }): JSX.Element => {
                 {map(branches?.Data, (b: Branch, i) => (
                   <button
                     key={i}
-                    onClick={() => setSelectedLocation(b)}
+                    onClick={() => setSelectedLocation({...selectedLocation,branch:b})}
                     className={`flex flex-row  w-full justify-between items-center p-1`}
                   >
                     <label
