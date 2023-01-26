@@ -123,7 +123,10 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                   </div>
                 </Link>
 
-                <Link scroll={true} href={appLinks.cartSelectMethod.path}>
+                <Link
+                  scroll={true}
+                  href={appLinks.cartSelectMethod(appSetting.method)}
+                >
                   <div className="flex gap-x-3 pb-7 items-center">
                     <MapPinIcon className={`h-6 w-8`} style={{ color }} />
                     <p

@@ -51,88 +51,66 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
   });
   const [triggerCheckPromoCode] = useLazyCheckPromoCodeQuery();
 
-  useEffect(() => {
-    if (
-      showFooterElement === 'cart_index' &&
-      ((isNull(area.id) && isNull(branchId)) || isEmpty(method))
-    ) {
-      router
-        .push(appLinks.cartSelectMethod.path)
-        .then(() =>
-          dispatch(
-            showToastMessage({ content: `choose_area_or_branch`, type: `info` })
-          )
-        );
-    }
-  }, []);
-
   const handleAddToCart = async () => {
-    if ((isNull(area.id) && isNull(branchId)) || isEmpty(method)) {
-      router
-        .push(appLinks.cartSelectMethod.path)
-        .then(() =>
-          dispatch(
-            showToastMessage({ content: `choose_area_or_branch`, type: `info` })
-          )
-        );
+    if (isNull(branchId) && isNull(area.id)) {
+      router.push(appLinks.cartSelectMethod(`delivery`));
+    }
+    if (!productCart.enabled) {
+      dispatch(
+        showToastMessage({
+          content: `please_review_sections_some_r_required`,
+          type: `info`,
+        })
+      );
     } else {
-      if (!productCart.enabled) {
-        dispatch(
-          showToastMessage({
-            content: `please_review_sections_some_r_required`,
-            type: `info`,
-          })
-        );
-      } else {
-        if (
-          (!isNull(branchId) && !isNull(area.id)) ||
-          (!isEmpty(productCart) && userAgent)
-        ) {
-          await triggerAddToCart({
-            process_type: method,
-            area_branch:
-              method === 'delivery' ? area.id : method === 'pickup' && branchId,
-            body: {
-              UserAgent: userAgent,
-              Cart:
-                cartItems && cartItems.data && cartItems.data.Cart
-                  ? filter(
-                      cartItems.data.Cart,
-                      (i) => i.id !== productCart.id
-                    ).concat(productCart)
-                  : [productCart],
-            },
-          }).then((r: any) => {
-            if (
-              r &&
-              r.data &&
-              r.data.status &&
-              r.data.data &&
-              r.data.data.Cart &&
-              r.data.data.Cart.length > 0
-            ) {
-              triggerGetCartProducts({ UserAgent: userAgent }).then((r) => {
-                if (r.data && r.data.data && r.data.data.Cart) {
-                }
-                dispatch(
-                  showToastMessage({
-                    content: 'item_added_successfully',
-                    type: `success`,
-                  })
-                );
-              });
-            } else {
-              if (r.error && r.error.data) {
-                dispatch(
-                  showToastMessage({
-                    content: lowerCase(kebabCase(r.error.data.msg)),
-                    type: `error`,
-                  })
-                );
+      if (
+        (!isNull(branchId) && !isNull(area.id)) ||
+        (!isEmpty(productCart) && userAgent)
+      ) {
+        await triggerAddToCart({
+          process_type: method,
+          area_branch:
+            method === 'delivery' ? area.id : method === 'pickup' && branchId,
+          body: {
+            UserAgent: userAgent,
+            Cart:
+              cartItems && cartItems.data && cartItems.data.Cart
+                ? filter(
+                    cartItems.data.Cart,
+                    (i) => i.id !== productCart.id
+                  ).concat(productCart)
+                : [productCart],
+          },
+        }).then((r: any) => {
+          if (
+            r &&
+            r.data &&
+            r.data.status &&
+            r.data.data &&
+            r.data.data.Cart &&
+            r.data.data.Cart.length > 0
+          ) {
+            triggerGetCartProducts({ UserAgent: userAgent }).then((r) => {
+              if (r.data && r.data.data && r.data.data.Cart) {
               }
+              dispatch(
+                showToastMessage({
+                  content: 'item_added_successfully',
+                  type: `success`,
+                })
+              );
+            });
+          } else {
+            if (r.error && r.error.data) {
+              dispatch(
+                showToastMessage({
+                  content: lowerCase(kebabCase(r.error.data.msg)),
+                  type: `error`,
+                })
+              );
             }
-          });
-        }
+          }
+        });
       }
     }
   };

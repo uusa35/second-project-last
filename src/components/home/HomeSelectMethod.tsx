@@ -24,7 +24,7 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
   const router = useRouter();
 
   const handleSelectMethod = (m: appSetting['method']) => {
-    router.push(appLinks.cartSelectMethod.path);
+    router.push(appLinks.cartSelectMethod(m));
   };
 
   return (
@@ -51,54 +51,29 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
         </button>
       </div>
       <div className={`px-8 py-2 text-lg capitalize`}>
-        {!isNull(branch.id) && method === 'pickup' && (
-          <Link
-            href={appLinks.cartSelectMethod.path}
-            scroll={true}
-            className="flex flex-1 gap-x-3 w-full flex-row justify-between items-center mt-4 mb-2"
+        <Link
+          href={appLinks.cartSelectMethod(method)}
+          scroll={true}
+          className="flex flex-1 gap-x-3 w-full flex-row justify-between items-center mt-4 mb-2"
+        >
+          <div className={`flex flex-grow justify-start items-center`}>
+            <h1 className={`pt-2`}>
+              {method === `delivery` ? t(`deliver_to`) : t('pickup_from')}
+            </h1>
+          </div>
+          <div
+            className={`pt-2`}
+            style={{ color: `${!branch.id && !area.id ? `red` : color}` }}
           >
-            <div className={`flex flex-grow justify-start items-center`}>
-              <h1 className={`pt-2`}>{t('pickup_from')}</h1>
-            </div>
-            <div className={`pt-2`} style={{ color }}>
+            {branch.id ? (
               <TextTrans ar={branch.name_ar} en={branch.name_en} />
-            </div>
-          </Link>
-        )}
-
-        {isNull(area.id) && method === 'delivery' && (
-          <Link
-            href={appLinks.cartSelectMethod.path}
-            scroll={true}
-            className="flex gap-x-3 flex-1 w-full flex-row justify-between items-center mt-4 mb-2"
-          >
-            <div className={`flex flex-grow justify-start items-center`}>
-              <h1 className={`pt-2`}>{t('deliver_to')}</h1>
-            </div>
-            <div className={`pt-2`} style={{ color }}>
-              {t('select_location')}
-            </div>
-          </Link>
-        )}
-
-        {!isNull(area.id) && method === 'delivery' && (
-          <Link
-            href={appLinks.cartSelectMethod.path}
-            scroll={true}
-            className="flex flex-1 gap-x-3 w-full flex-row justify-between items-center mt-4 mb-2"
-          >
-            <div className={`flex flex-grow justify-start items-center `}>
-              <h1 className={`pt-2`}>{t('deliver_to')}</h1>
-            </div>
-            <div className={`pt-2`} style={{ color }}>
-              <TextTrans
-                ar={area.name_ar}
-                en={area.name_en}
-                style={{ color }}
-              />
-            </div>
-          </Link>
-        )}
+            ) : area.id ? (
+              <TextTrans ar={area.name_ar} en={area.name_en} />
+            ) : (
+              t(`select_location`)
+            )}
+          </div>
+        </Link>
 
         <div className="flex flex-1 gap-x-3 w-full flex-row justify-between items-center mt-2 mb-4">
           <div className={`flex flex-grow justify-start items-center`}>

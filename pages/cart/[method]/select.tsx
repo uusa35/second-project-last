@@ -17,7 +17,7 @@ import { submitBtnClass, suppressText } from '@/constants/*';
 import { appSetting, ServerCart } from '@/types/index';
 import { setCartMethod } from '@/redux/slices/appSettingSlice';
 import { Location } from '@/types/queries';
-import { isEmpty, isNull, map } from 'lodash';
+import { isNull, map } from 'lodash';
 import { removeArea, setArea } from '@/redux/slices/areaSlice';
 import { useRouter } from 'next/router';
 import { removeBranch, setBranch } from '@/redux/slices/branchSlice';
@@ -32,27 +32,23 @@ import { themeColor } from '@/redux/slices/vendorSlice';
 
 type Props = {
   previousRoute: string | null;
+  method: appSetting['method'];
 };
-const SelectMethod: NextPage<Props> = ({ previousRoute }): JSX.Element => {
+const SelectMethod: NextPage<Props> = ({
+  previousRoute,
+  method,
+}): JSX.Element => {
   const { t } = useTranslation();
   const router = useRouter();
   const dispatch = useAppDispatch();
   const {
     locale: { lang },
     area: selectedArea,
-    appSetting: { method },
     branch,
     customer: { userAgent },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
   const [showChangeLocModal, setShowChangeLocModal] = useState<boolean>(false);
-  const [selectedLocation, setSelectedLocation] = useState({branch:branch,area:selectedArea});
-
-  const [selectedMethod,setSelectedMethod]=useState<string>(method)
-
-  useEffect(() => {
-    setSelectedLocation(method === 'delivery' ? selectedArea : branch);
-  }, [selectedMethod]);
 
   const { data: cartItems, isSuccess } = useGetCartProductsQuery<{
     data: AppQueryResult<ServerCart>;
@@ -62,18 +58,16 @@ const SelectMethod: NextPage<Props> = ({ previousRoute }): JSX.Element => {
   }>({
     UserAgent: userAgent,
   });
-
   const { data: locations, isLoading: locationsLoading } =
     useGetLocationsQuery<{
       data: AppQueryResult<Location[]>;
       isLoading: boolean;
     }>({ lang });
-
   const { data: branches, isLoading: branchesLoading } = useGetBranchesQuery<{
     data: AppQueryResult<Branch[]>;
     isLoading: boolean;
   }>({ lang });
-  
+
   const [open, setOpen] = useState(0);
   const handleOpen = (value: any) => {
     setOpen(open === value ? 0 : value);
@@ -81,7 +75,13 @@ const SelectMethod: NextPage<Props> = ({ previousRoute }): JSX.Element => {
 
   useEffect(() => {
     dispatch(setCurrentModule(t('select_method')));
-  }, []);
+    dispatch(setCartMethod(method));
+    if (method === `pickup`) {
+      dispatch(removeArea());
+    } else {
+      dispatch(removeBranch());
+    }
+  }, [method]);
 
   if (branchesLoading || locationsLoading) {
     return <LoadingSpinner />;
@@ -104,44 +104,19 @@ const SelectMethod: NextPage<Props> = ({ previousRoute }): JSX.Element => {
     );
   };
 
-  const handelContinue = async () => {
-    console.log(selectedLocation, selectedMethod)
-    
-    // if (
-    //   (selectedArea.id || branch.id) &&
-    //   (selectedLocation?.id !== selectedArea.id ||
-    //     selectedLocation?.id !== branch.id) &&
-    //   isSuccess &&
-    //   cartItems.data &&
-    //   cartItems.data.Cart &&
-    //   !isEmpty(cartItems.data.Cart)
-    // ) {
-    //   setShowChangeLocModal(true);
-    // } else {
-    //   if (selectedLocation && !showChangeLocModal) {
-    //     if (method === `pickup`) {
-    //       dispatch(setBranch(selectedLocation as Branch));
-    //     } else {
-    //       dispatch(dispatch(setArea(selectedLocation as Area)));
-    //     }
-    //     if (!isNull(previousRoute)) {
-    //       router.push(previousRoute);
-    //     } else {
-    //       router.back();
-    //     }
-    //   }
-    // }
-  };
-
-  const handleSelectMethod = (m: appSetting['method']) => {
-    setSelectedMethod(m)
+  const handleNext = async () => {
+    if (!previousRoute?.includes(`select`)) {
+      router.back();
+    } else {
+      router.push(`/`);
+    }
   };
 
   return (
     <Suspense>
       <MainContentLayout>
         <div className={`px-4`}>
-          <DeliveryBtns handleSelectMethod={handleSelectMethod} />
+          <DeliveryBtns />
           <div className={`w-full mb-4`}>
             <div className="relative mt-1 rounded-md shadow-sm text-gray-400">
               <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center px-6">
@@ -157,7 +132,7 @@ const SelectMethod: NextPage<Props> = ({ previousRoute }): JSX.Element => {
               />
             </div>
           </div>
-          {selectedMethod === 'delivery' && (
+          {method === 'delivery' && (
             <div className={`px-4`}>
               {map(locations.Data, (item: Location, i) => {
                 return (
@@ -175,20 +150,19 @@ const SelectMethod: NextPage<Props> = ({ previousRoute }): JSX.Element => {
                     </AccordionHeader>
                     <AccordionBody>
                       <div className="bg-LightGray">
-                        {map(item.Areas, (area: Area, i) => (
+                        {map(item.Areas, (a: Area, i) => (
                           <button
                             className={'flex justify-between w-full p-4 '}
                             key={i}
-                            onClick={() => setSelectedLocation({...selectedLocation,area:area})}
+                            onClick={() => dispatch(setArea(a))}
                           >
                             <p
                               className="text-base text-black capitalize"
                               suppressHydrationWarning={suppressText}
                             >
-                              <TextTrans ar={area.name_ar} en={area.name_en} />
+                              <TextTrans ar={a.name_ar} en={a.name_en} />
                             </p>
-                            {!isEmpty(selectedLocation) &&
-                            area.id === selectedLocation?.id ? (
+                            {a.id === selectedArea.id ? (
                               <CheckCircle style={{ color }} />
                             ) : (
                               <CircleOutlined className="text-gray-400" />
@@ -202,10 +176,10 @@ const SelectMethod: NextPage<Props> = ({ previousRoute }): JSX.Element => {
               })}
             </div>
           )}
-          {selectedMethod === 'pickup' && (
+          {method === 'pickup' && (
             <div className="px-4">
               <p
-                className="p-3 capitalize" 
+                className="p-3 capitalize"
                 style={{ color }}
                 suppressHydrationWarning={suppressText}
               >
@@ -215,7 +189,7 @@ const SelectMethod: NextPage<Props> = ({ previousRoute }): JSX.Element => {
                 {map(branches?.Data, (b: Branch, i) => (
                   <button
                     key={i}
-                    onClick={() => setSelectedLocation({...selectedLocation,branch:b})}
+                    onClick={() => dispatch(setBranch(b))}
                     className={`flex flex-row  w-full justify-between items-center p-1`}
                   >
                     <label
@@ -232,7 +206,7 @@ const SelectMethod: NextPage<Props> = ({ previousRoute }): JSX.Element => {
                       type="radio"
                       name="branch"
                       readOnly
-                      checked={selectedLocation?.id === b.id}
+                      checked={branch.id === b.id}
                     />
                   </button>
                 ))}
@@ -240,13 +214,8 @@ const SelectMethod: NextPage<Props> = ({ previousRoute }): JSX.Element => {
             </div>
           )}
           <button
-            onClick={() => {
-              handelContinue();
-            }}
-            disabled={
-              (isNull(selectedArea.id) ?? isNull(branch.id)) &&
-              !selectedLocation?.id
-            }
+            onClick={() => handleNext()}
+            disabled={isNull(selectedArea.id) && isNull(branch.id)}
             className={`${submitBtnClass} mt-12 capitalize`}
             style={{ backgroundColor: color }}
             suppressHydrationWarning={suppressText}
@@ -255,7 +224,7 @@ const SelectMethod: NextPage<Props> = ({ previousRoute }): JSX.Element => {
           </button>
         </div>
         <ChangeVendorModal
-          SelectedAreaOrBranch={selectedLocation}
+          SelectedAreaOrBranch={method === `delivery` ? branch : selectedArea}
           OpenModal={showChangeLocModal}
           previousRoute={previousRoute ?? null}
           OnClose={() => setShowChangeLocModal(false)}
@@ -269,10 +238,17 @@ export default SelectMethod;
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
-    async ({ req }) => {
+    async ({ req, query }) => {
+      const { method }: any = query;
+      if (!method) {
+        return {
+          notFound: true,
+        };
+      }
       return {
         props: {
           previousRoute: req.headers.referer ?? null,
+          method,
         },
       };
     }

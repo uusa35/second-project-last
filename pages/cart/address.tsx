@@ -192,7 +192,7 @@ const CartAddress: NextPage = (): JSX.Element => {
 
   // address
   const handleSelectMethod = (m: appSetting['method']) => {
-    router.push(appLinks.cartSelectMethod.path);
+    router.push(appLinks.cartSelectMethod(m));
   };
 
   const handelSaveAddress = async (body: any) => {
@@ -261,7 +261,7 @@ const CartAddress: NextPage = (): JSX.Element => {
                       </h5>
                     </div>
                     <Link
-                      href={appLinks.cartSelectMethod.path}
+                      href={appLinks.cartSelectMethod(method)}
                       scroll={true}
                       className="text-base font-semibold"
                       style={{ color }}
@@ -294,7 +294,7 @@ const CartAddress: NextPage = (): JSX.Element => {
                   <div className="flex justify-between">
                     <p className="text-md">{area.name}</p>
                     <Link
-                      href={appLinks.cartSelectMethod.path}
+                      href={appLinks.cartSelectMethod(method)}
                       scroll={true}
                       className="text-base font-semibold"
                       style={{ color }}

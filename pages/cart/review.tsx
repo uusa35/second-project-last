@@ -232,7 +232,7 @@ const CartReview: NextPage = () => {
                   ))}
               </div>
               <Link
-                href={appLinks.cartSelectMethod.path}
+                href={appLinks.cartSelectMethod(process_type)}
                 className="text-base font-semibold capitalize"
                 suppressHydrationWarning={suppressText}
                 style={{ color }}

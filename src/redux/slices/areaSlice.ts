@@ -19,14 +19,6 @@ export const areaSlice = createSlice({
     removeArea: (state: typeof initialState, action: PayloadAction<void>) =>
       initialState,
   },
-  extraReducers: (builder) => {
-    builder.addCase(
-      branchSlice.actions.setBranch,
-      (state, action) => {
-        return initialState
-      }
-    );
-  },
 });
 
 export const { setArea, removeArea } = areaSlice.actions;

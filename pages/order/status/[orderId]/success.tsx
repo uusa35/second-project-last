@@ -12,8 +12,9 @@ import { Order } from '@/types/index';
 import { apiSlice } from '@/redux/api';
 import TextTrans from '@/components/TextTrans';
 import CustomImage from '@/components/CustomImage';
-import { useEffect, Suspense, useState } from 'react';
+import { useEffect, Suspense } from 'react';
 import { setCurrentModule } from '@/redux/slices/appSettingSlice';
+import { themeColor } from '@/redux/slices/vendorSlice';
 
 type Props = {
   element: Order;
@@ -24,19 +25,20 @@ const OrderSuccess: NextPage<Props> = ({ element }) => {
     branch: { id: branchId },
     area: { id: areaId },
   } = useAppSelector((state) => state);
+  const color = useAppSelector(themeColor);
   const dispatch = useAppDispatch();
-
 
   useEffect(() => {
     dispatch(setCurrentModule(t('order_success')));
   }, []);
+
   return (
     <Suspense>
       <MainContentLayout>
-        <div className='capitalize'>
+        <div className="capitalize">
           <div className="flex flex-col items-center">
             <CustomImage
-              className=""
+              className="shadow-md"
               src={Success.src}
               alt={t('success')}
               width={80}
@@ -54,7 +56,7 @@ const OrderSuccess: NextPage<Props> = ({ element }) => {
             </p>
           </div>
           <div className="mt-10 px-5 py-1 bg-gray-100"></div>
-          <div className="px-4">
+          <div className="px-8">
             <div className="flex justify-between pt-4">
               <h4
                 className="text-base font-semibold"
@@ -80,45 +82,37 @@ const OrderSuccess: NextPage<Props> = ({ element }) => {
             </div>
           </div>
           <div className="mt-5 px-5 py-1 bg-gray-100"></div>
-          <div className="px-2">
+          <div className="w-full flex-col space-y-5 px-8 my-3">
             <p
               className="text-center pt-4 pb-2"
               suppressHydrationWarning={suppressText}
+              style={{ color }}
             >
               {t('track_your_order_and_check_the_status_of_it_live')}
             </p>
             <Link
-              href={{
-                pathname: appLinks.orderInvoice(`${element.order_id}`),
-              }}
+              href={appLinks.orderInvoice(`${element.order_id}`)}
+              className={`flex grow justify-center items-center p-4 rounded-lg text-white mb-3`}
+              style={{ backgroundColor: color }}
             >
-              <p
-                className={`${submitBtnClass} text-center`}
-                suppressHydrationWarning={suppressText}
-              >
-                {t('view_receipt')}
-              </p>
+              {t('view_receipt')}
             </Link>
             <Link
               href={{
                 pathname: `/order/track`,
                 query: { order_code: element.orderCode },
               }}
+              className={`flex grow justify-center items-center p-4 rounded-lg text-white mb-3`}
+              style={{ backgroundColor: color }}
             >
-              <p
-                className={`${submitBtnClass} text-center`}
-                suppressHydrationWarning={suppressText}
-              >
-                {t('track_order')}
-              </p>
+              {t('track_order')}
             </Link>
-            <Link href={appLinks.productSearchIndex(branchId, ``, areaId)}>
-              <p
-                className={`${submitBtnClass} text-center`}
-                suppressHydrationWarning={suppressText}
-              >
-                {t('order_again')}
-              </p>
+            <Link
+              href={appLinks.productSearchIndex(branchId, ``, areaId)}
+              style={{ backgroundColor: color }}
+              className={`flex grow justify-center items-center p-4 rounded-lg text-white mb-3`}
+            >
+              {t('order_again')}
             </Link>
           </div>
         </div>

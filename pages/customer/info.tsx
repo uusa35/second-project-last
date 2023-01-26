@@ -27,7 +27,6 @@ import ContactImage from '@/appImages/contact_info.png';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { themeColor } from '@/redux/slices/vendorSlice';
 
-
 const schema = yup
   .object({
     id: yup.number(),
@@ -70,6 +69,7 @@ const CustomerInformation: NextPage = (): JSX.Element => {
       body,
     }).then((r: any) => {
       if (r.data && r.data.Data && r.data.status) {
+        console.log('data', r.data.Data);
         router
           .push(appLinks.address.path)
           .then(() => dispatch(setCustomer(r.data.Data)));
@@ -83,6 +83,8 @@ const CustomerInformation: NextPage = (): JSX.Element => {
       }
     });
   };
+
+  console.log('customer', customer.phone);
 
   return (
     <Suspense>
@@ -161,7 +163,6 @@ const CustomerInformation: NextPage = (): JSX.Element => {
                       helperText={t(`${errors?.phone?.message}`)}
                     />
                   )}
-                  defaultValue=""
                   name="phone"
                   control={control}
                   rules={{ required: true }}

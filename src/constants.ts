@@ -39,7 +39,7 @@ export const appLinks = {
 
   branchIndex: { path: '/branch' },
   cartIndex: { path: '/cart' },
-  cartSelectMethod: { path: '/cart/select' },
+  cartSelectMethod: (method: string) => `/cart/${method}/select`,
   trackOrder: { path: '/order/track' },
   orderReview: { path: '/cart/review' },
   orderFailure: { path: '/order/status/failure' },
