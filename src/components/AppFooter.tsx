@@ -52,7 +52,7 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
   const [triggerCheckPromoCode] = useLazyCheckPromoCodeQuery();
 
   const handleAddToCart = async () => {
-    if (isNull(area.id) && isNull(branchId)) {
+    if ((isNull(area.id) && isNull(branchId)) || isEmpty(method)) {
       router
         .push(appLinks.cartSelectMethod.path)
         .then(() =>
@@ -126,7 +126,8 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
     if (
       (isNull(branchId) ?? isNull(area.id)) &&
       !isEmpty(productCart) &&
-      userAgent
+      userAgent &&
+      !isEmpty(method)
     ) {
       // coupon case
       if (
