@@ -13,7 +13,15 @@ import Promotion from '@/appIcons/promotion.svg';
 import Notes from '@/appIcons/notes.svg';
 import { appLinks, suppressText } from '@/constants/*';
 import CustomImage from '@/components/CustomImage';
-import { debounce, filter, isEmpty, kebabCase, lowerCase, map } from 'lodash';
+import {
+  debounce,
+  filter,
+  isEmpty,
+  isNull,
+  kebabCase,
+  lowerCase,
+  map,
+} from 'lodash';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
 import { ProductCart, QuantityMeters, ServerCart } from '@/types/index';
 import Link from 'next/link';
@@ -32,6 +40,7 @@ import {
   setCartTotalAndSubTotal,
 } from '@/redux/slices/cartSlice';
 import { themeColor } from '@/redux/slices/vendorSlice';
+import { useRouter } from 'next/router';
 const CartIndex: NextPage = (): JSX.Element => {
   const { t } = useTranslation();
   const {
@@ -42,6 +51,7 @@ const CartIndex: NextPage = (): JSX.Element => {
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
   const dispatch = useAppDispatch();
+  const router = useRouter();
   const [triggerAddToCart] = useAddToCartMutation();
   const {
     data: cartItems,
@@ -52,9 +62,12 @@ const CartIndex: NextPage = (): JSX.Element => {
     isSuccess: boolean;
     isLoading: boolean;
     refetch: () => void;
-  }>({
-    UserAgent: userAgent,
-  },{refetchOnMountOrArgChange:true});
+  }>(
+    {
+      UserAgent: userAgent,
+    },
+    { refetchOnMountOrArgChange: true }
+  );
   const [triggerCheckPromoCode] = useLazyCheckPromoCodeQuery();
 
   useEffect(() => {
@@ -121,7 +134,6 @@ const CartIndex: NextPage = (): JSX.Element => {
   };
 
   const handleRemove = async (element: ProductCart) => {
-   
     const currentItems = filter(
       cartItems.data.Cart,
       (i) => i.id !== element.id
@@ -153,6 +165,15 @@ const CartIndex: NextPage = (): JSX.Element => {
   };
 
   const handleIncrease = (element: ProductCart) => {
+    if ((isNull(areaId) && isNull(branchId)) || isEmpty(method)) {
+      return router
+        .push(appLinks.cartSelectMethod.path)
+        .then(() =>
+          dispatch(
+            showToastMessage({ content: `choose_area_or_branch`, type: `info` })
+          )
+        );
+    }
     triggerAddToCart({
       process_type: method,
       area_branch:
@@ -180,6 +201,15 @@ const CartIndex: NextPage = (): JSX.Element => {
   };
 
   const handleDecrease = (element: ProductCart) => {
+    if ((isNull(areaId) && isNull(branchId)) || isEmpty(method)) {
+      return router
+        .push(appLinks.cartSelectMethod.path)
+        .then(() =>
+          dispatch(
+            showToastMessage({ content: `choose_area_or_branch`, type: `info` })
+          )
+        );
+    }
     triggerAddToCart({
       process_type: method,
       area_branch:

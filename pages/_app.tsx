@@ -11,7 +11,6 @@ import { wrapper } from '@/redux//store';
 import MainLayout from '@/components/layouts/MainLayout';
 import { AppProps } from 'next/app';
 import { FC, Suspense } from 'react';
-import { AnimatePresence } from 'framer-motion';
 import NextNProgress from 'nextjs-progressbar';
 
 const App: FC<AppProps> = ({ Component, ...rest }) => {
@@ -28,11 +27,9 @@ const App: FC<AppProps> = ({ Component, ...rest }) => {
         options={{ showSpinner: false }}
       />
       <Provider store={store}>
-        {/*<AnimatePresence mode={`wait`}>*/}
         <MainLayout>
           <Component {...pageProps} />
         </MainLayout>
-        {/*</AnimatePresence>*/}
       </Provider>
     </Suspense>
   );

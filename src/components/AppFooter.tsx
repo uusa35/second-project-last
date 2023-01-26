@@ -52,7 +52,7 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
   const [triggerCheckPromoCode] = useLazyCheckPromoCodeQuery();
 
   const handleAddToCart = async () => {
-    if (isNull(area.id) && isNull(branchId)) {
+    if ((isNull(area.id) && isNull(branchId)) || isEmpty(method)) {
       router
         .push(appLinks.cartSelectMethod.path)
         .then(() =>
@@ -126,7 +126,8 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
     if (
       (isNull(branchId) ?? isNull(area.id)) &&
       !isEmpty(productCart) &&
-      userAgent
+      userAgent &&
+      !isEmpty(method)
     ) {
       // coupon case
       if (
@@ -210,7 +211,7 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
       >
         {showFooterElement === 'product_show' && (
           <div
-            className={`${mainBg} w-full h-fit flex cursor-auto rounded-none opacity-100 flex justify-between items-center px-8 py-8 rounded-t-2xl
+            className={`w-full h-fit flex cursor-auto rounded-none opacity-100 flex justify-between items-center px-8 py-8 rounded-t-2xl
             `}
             style={{
               background: `-webkit-gradient(linear, left top, right top, from(${color}), color-stop(100%, ${color}), color-stop(50%, ${color}))`,
@@ -219,15 +220,20 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
             <button
               onClick={() => handleAddToCart()}
               className={`${footerBtnClass}`}
-              style={{ backgroundColor: convertColor(color, 100) }}
+              style={{
+                backgroundColor: convertColor(color, 100),
+                color: `white`,
+              }}
             >
               {isNull(area.id) && isNull(branchId)
                 ? t(`start_ordering`)
                 : t('add_to_cart')}
             </button>
             <span className={`flex flex-row items-center gap-2`}>
-              <p className={`text-xl`}>{productCart.grossTotalPrice}</p>
-              {t('kwd')}
+              <p className={`text-xl text-white`}>
+                {productCart.grossTotalPrice}
+              </p>
+              <span className={`text-white`}>{t('kwd')}</span>
             </span>
           </div>
         )}
@@ -235,7 +241,7 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
           isSuccess &&
           cartItems.data?.Cart?.length > 0 && (
             <div
-              className={`${mainBg} w-full h-20 flex justify-center items-center rounded-t-xl`}
+              className={`text-white w-full h-24 flex justify-center items-center rounded-t-xl`}
               style={{
                 background: `-webkit-gradient(linear, left top, right top, from(${color}), color-stop(100%, ${color}), color-stop(50%, ${color}))`,
               }}
@@ -244,6 +250,7 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
                 className={`${footerBtnClass}`}
                 style={{
                   backgroundColor: `${color}`,
+                  color: `white`,
                 }}
                 suppressHydrationWarning={suppressText}
                 onClick={() => handleCartIndex()}
@@ -263,7 +270,7 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
               type="submit"
               form="hook-form"
               className={`${footerBtnClass}`}
-              style={{ backgroundColor: `${color}` }}
+              style={{ backgroundColor: `${color}`, color: `white` }}
               suppressHydrationWarning={suppressText}
             >
               {t('continue')}
@@ -273,14 +280,14 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
 
         {showFooterElement === 'customerInfo' && (
           <div
-            className={`${mainBg} bg-sky-600 w-full h-24 flex justify-center items-center rounded-t-xl`}
+            className={`text-white w-full h-24 flex justify-center items-center rounded-t-xl`}
             style={{
               background: `-webkit-gradient(linear, left top, right top, from(${color}), color-stop(100%, ${color}), color-stop(50%, ${color}))`,
             }}
           >
             <button
               className={`${footerBtnClass}`}
-              style={{ backgroundColor: `${color}` }}
+              style={{ backgroundColor: `${color}`, color: `white` }}
               suppressHydrationWarning={suppressText}
               onClick={() => (handleSubmit ? handleSubmit() : null)}
             >
@@ -290,7 +297,7 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
         )}
         {showFooterElement === 'order_review' && (
           <div
-            className={`${mainBg} bg-sky-600 w-full h-20 flex justify-center items-center rounded-t-xl`}
+            className={`text-white w-full h-24 flex justify-center items-center rounded-t-xl`}
             style={{
               background: `-webkit-gradient(linear, left top, right top, from(${color}), color-stop(100%, ${color}), color-stop(50%, ${color}))`,
             }}
@@ -298,7 +305,7 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
             <button
               disabled={!customerId || !userAgent}
               className={`${footerBtnClass}`}
-              style={{ backgroundColor: `${color}` }}
+              style={{ backgroundColor: `${color}`, color: `white` }}
               suppressHydrationWarning={suppressText}
               onClick={() => (handleSubmit ? handleSubmit() : null)}
             >
