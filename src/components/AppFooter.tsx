@@ -254,16 +254,17 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
           )}
         {showFooterElement === 'cart_address' && (
           <div
-            className={` bg-primary_BG text-white w-full h-24 flex justify-center items-center rounded-t-xl`}
+            className={`text-white w-full h-24 flex justify-center items-center rounded-t-xl`}
             style={{
               background: `-webkit-gradient(linear, left top, right top, from(${color}), color-stop(100%, ${color}), color-stop(50%, ${color}))`,
             }}
           >
             <button
+              type="submit"
+              form="hook-form"
               className={`${footerBtnClass}`}
               style={{ backgroundColor: `${color}` }}
               suppressHydrationWarning={suppressText}
-              onClick={() => (handleSubmit ? handleSubmit() : null)}
             >
               {t('continue')}
             </button>

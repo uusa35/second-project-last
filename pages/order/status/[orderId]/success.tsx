@@ -43,7 +43,8 @@ const OrderSuccess: NextPage<Props> = ({ element }) => {
               height={80}
             />
             <h4
-              className="text-primary_BG font-semibold py-3"
+              className="font-semibold py-3"
+              style={{ color }}
               suppressHydrationWarning={suppressText}
             >
               {t('thank_you')}
@@ -56,7 +57,8 @@ const OrderSuccess: NextPage<Props> = ({ element }) => {
           <div className="px-4">
             <div className="flex justify-between pt-4">
               <h4
-                className="text-base font-semibold text-primary_BG"
+                className="text-base font-semibold"
+                style={{ color }}
                 suppressHydrationWarning={suppressText}
               >
                 {t('order_id')}
@@ -65,7 +67,8 @@ const OrderSuccess: NextPage<Props> = ({ element }) => {
             </div>
             <div className="flex justify-between pt-4">
               <h4
-                className="text-base font-semibold text-primary_BG"
+                className="text-base font-semibold"
+                style={{ color }}
                 suppressHydrationWarning={suppressText}
               >
                 {t('vendor_name')}

@@ -30,16 +30,14 @@ import PaymentSummary from '@/components/widgets/cart/review/PaymentSummary';
 import { AppQueryResult } from '@/types/queries';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { useLazyCreateOrderQuery } from '@/redux/api/orderApi';
-
+import { themeColor } from '@/redux/slices/vendorSlice';
 import { useRouter } from 'next/router';
 import { setOrder, setPaymentMethod } from '@/redux/slices/orderSlice';
-
-import { themeColor } from '@/redux/slices/vendorSlice';
 
 const CartReview: NextPage = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-  const router=useRouter()
+  const router = useRouter();
   const [selectedPaymentMethod, setSelectedPaymentMethod] =
     useState<OrderUser['PaymentMethod']>(`knet`);
   useEffect(() => {
@@ -58,9 +56,12 @@ const CartReview: NextPage = () => {
     data: AppQueryResult<ServerCart>;
     isSuccess: boolean;
     refetch: () => void;
-  }>({
-    UserAgent: userAgent,
-  },{refetchOnMountOrArgChange:true});
+  }>(
+    {
+      UserAgent: userAgent,
+    },
+    { refetchOnMountOrArgChange: true }
+  );
 
   const [triggerCreateOrder, { isLoading }] = useLazyCreateOrderQuery();
 
@@ -75,11 +76,10 @@ const CartReview: NextPage = () => {
   }
 
   const handleCreateOrder = async () => {
-    if(isNull(customer.id)){
-      router.push(appLinks.customerInfo.path)
-    }
-    else if(!customer.address.id){
-      router.push(appLinks.address.path)
+    if (isNull(customer.id)) {
+      router.push(appLinks.customerInfo.path);
+    } else if (!customer.address.id) {
+      router.push(appLinks.address.path);
     }
     if (
       !isNull(customer.id) &&
@@ -111,29 +111,26 @@ const CartReview: NextPage = () => {
         process_type,
         area_branch: process_type === `delivery` ? areaId : branchId,
       }).then((r: any) => {
-        console.log('rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr',r)
-        if(r.data){
-         if(r.data.status){
-          dispatch(setPaymentMethod(selectedPaymentMethod))
-          if(selectedPaymentMethod === 'cash_on_delivery'){
-            dispatch(setOrder(r.data.data))
-            router.replace(`/order/status/${r.data.data.order_id}/success`)
+        console.log('rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr', r);
+        if (r.data) {
+          if (r.data.status) {
+            dispatch(setPaymentMethod(selectedPaymentMethod));
+            if (selectedPaymentMethod === 'cash_on_delivery') {
+              dispatch(setOrder(r.data.data));
+              router.replace(`/order/status/${r.data.data.order_id}/success`);
+            } else {
+              window.open(r.data.Data, '_self');
+            }
+            dispatch(
+              showToastMessage({
+                content: `order_created_successfully`,
+                type: `success`,
+              })
+            );
+          } else {
+            router.replace(`order/status/failure`);
           }
-          else{
-            window.open(r.data.Data, "_self");
-          }
-          dispatch(
-            showToastMessage({
-              content: `order_created_successfully`,
-              type: `success`,
-            })
-          );
-         }
-         else{
-          router.replace(`order/status/failure`)
-         }
-        }
-        else{
+        } else {
           dispatch(
             showToastMessage({
               content: r.error.data.msg,
@@ -141,9 +138,8 @@ const CartReview: NextPage = () => {
             })
           );
           // error
-          console.log(r.data)
+          console.log(r.data);
         }
-        
       });
     }
   };
@@ -184,7 +180,7 @@ const CartReview: NextPage = () => {
             {/* location */}
             <div className="flex justify-between">
               <div className="flex items-center justify-center">
-                <LocationOnOutlined className="text-primary_BG w-8 h-8" />
+                <LocationOnOutlined className="w-8 h-8" style={{ color }} />
                 <h5
                   className="px-2 text-base font-semibold capitalize"
                   suppressHydrationWarning={suppressText}
@@ -390,7 +386,8 @@ const CartReview: NextPage = () => {
                       <span className="flex rounded-xl shadow-sm">
                         <button
                           type="button"
-                          className="relative -ml-px inline-flex items-center  bg-gray-100 px-4 py-2 text-sm font-medium text-primary_BG  focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500 capitalize"
+                          className="relative -ml-px inline-flex items-center  bg-gray-100 px-4 py-2 text-sm font-medium focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500 capitalize"
+                          style={{ color }}
                         >
                           {`${t(`qty`)} : `}
                           <span className={`ltr:pl-2 rtl:pr-2`}>
@@ -458,7 +455,7 @@ const CartReview: NextPage = () => {
           <div className="bg-gray-200 w-full mt-5 p-0 h-2"></div>
           <div className="px-4 py-4">
             <div className="flex items-center py-3">
-              <ReceiptIcon className="text-primary_BG" />
+              <ReceiptIcon style={{ color }} />
               <div className="ps-5">
                 <h4
                   className="font-semibold text-lg"

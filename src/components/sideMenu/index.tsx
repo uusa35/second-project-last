@@ -8,13 +8,14 @@ import SideMenuSkelton from '@/components/sideMenu/SideMenuSkelton';
 import Link from 'next/link';
 import {
   appLinks,
+  convertColor,
   imageSizes,
   imgUrl,
   submitBtnClass,
   suppressText,
 } from '@/constants/*';
 import { hideSideMenu } from '@/redux/slices/appSettingSlice';
-
+import { themeColor } from '@/redux/slices/vendorSlice';
 import {
   ApartmentOutlined,
   PendingActionsOutlined,
@@ -43,7 +44,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
     vendor,
     branch: { id: branchId },
   } = useAppSelector((state) => state);
-
+  const color = useAppSelector(themeColor);
   const handleChangeLang = async (locale: string) => {
     await router
       .replace(router.pathname, router.asPath, {
@@ -97,7 +98,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
               <div className="flex-col  gap-y-2 my-3">
                 <Link scroll={false} href={appLinks.root.path}>
                   <div className="flex gap-x-3 pb-7 items-center ps-1">
-                    <HomeOutlined className={`h-8 w-8 text-primary_BG`} />
+                    <HomeOutlined className={`h-8 w-8`} style={{ color }} />
                     <p suppressHydrationWarning={suppressText} className='capitalize'>{t('home')}</p>
                   </div>
                 </Link>
@@ -105,7 +106,8 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                 <Link scroll={false} href={appLinks.cartIndex.path}>
                   <div className="flex gap-x-3 pb-7 items-center ps-1">
                     <ShoppingBagOutlined
-                      className={`h-8 w-8 text-primary_BG`}
+                      className={`h-8 w-8`}
+                      style={{ color }}
                     />
                     <p suppressHydrationWarning={suppressText} className='capitalize'>
                       {t('my_cart')}
@@ -115,7 +117,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
 
                 <Link scroll={false} href={appLinks.cartSelectMethod.path}>
                   <div className="flex gap-x-3 pb-7 items-center">
-                    <MapPinIcon className={`h-6 w-8 text-primary_BG`} />
+                    <MapPinIcon className={`h-6 w-8`} style={{ color }} />
                     <p suppressHydrationWarning={suppressText} className='capitalize'>
                       {t('change_delivery_area')}
                     </p>
@@ -127,7 +129,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                   href={appLinks.productSearchIndex(branchId)}
                 >
                   <div className="flex gap-x-3 pb-7 items-center ps-1">
-                    <PlagiarismOutlined className={`h-8 w-8 text-primary_BG`} />
+                    <PlagiarismOutlined className={`h-8 w-8`} style={{ color }} />
                     <p suppressHydrationWarning={suppressText} className='capitalize'>{t('search')}</p>
                   </div>
                 </Link>
@@ -135,7 +137,8 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                 <Link scroll={false} href={appLinks.trackOrder.path}>
                   <div className="flex gap-x-3 pb-7 items-center ps-1">
                     <PendingActionsOutlined
-                      className={`h-8 w-8 text-primary_BG`}
+                      className={`h-8 w-8`}
+                      style={{ color }}
                     />
                     <p suppressHydrationWarning={suppressText} className='capitalize'>
                       {t('track_order')}
@@ -146,7 +149,8 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                 <Link scroll={false} href={appLinks.branchIndex.path}>
                   <div className="flex gap-x-3 pb-7 items-center ps-1">
                     <BuildingStorefrontIcon
-                      className={`h-6 w-6 text-primary_BG`}
+                      className={`h-6 w-6`}
+                      style={{ color }}
                     />
                     <p suppressHydrationWarning={suppressText} className='capitalize'>
                       {t('our_branches')}
@@ -156,14 +160,15 @@ const SideMenu: FC<Props> = (): JSX.Element => {
               </div>
             </div>
             <footer className={`w-full`}>
-              <Link href={`tel: ${vendor.phone}`} scroll={false}>
+              <a href={`tel:${vendor.phone}`}>
                 <p
                   className={`${submitBtnClass} text-center capitalize`}
                   suppressHydrationWarning={suppressText}
+                  style={{ backgroundColor: convertColor(color, 100) }}
                 >
                   {t('call')}
                 </p>
-              </Link>
+              </a>
               <div
                 className={`relative bottom-0 flex justify-center items-center mt-1`}
                 suppressHydrationWarning={suppressText}

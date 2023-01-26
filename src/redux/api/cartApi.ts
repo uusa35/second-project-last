@@ -1,6 +1,6 @@
 import { apiSlice } from './index';
 import { AppQueryResult } from '@/types/queries';
-import { ServerCart, Locale, ProductCart } from '@/types/index';
+import { ServerCart } from '@/types/index';
 
 export const cartApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -68,10 +68,10 @@ export const cartApi = apiSlice.injectEndpoints({
         area_branch: string;
       }
     >({
-      query: ({ UserAgent ,process_type, area_branch}) => ({
+      query: ({ UserAgent, process_type, area_branch }) => ({
         url: `changeArea`,
-        params: { UserAgent},
-        headers:{
+        params: { UserAgent },
+        headers: {
           ...(process_type === 'delivery' && { 'x-area-id': area_branch }),
           ...(process_type === 'pickup' && { 'x-branch-id': area_branch }),
         },
@@ -89,5 +89,5 @@ export const {
   useAddToCartMutation,
   useLazyCheckPromoCodeQuery,
   useLazyGetCartProductsQuery,
-  useLazyChangeLocationQuery
+  useLazyChangeLocationQuery,
 } = cartApi;

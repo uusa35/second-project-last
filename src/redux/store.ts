@@ -19,7 +19,6 @@ import { productApi } from './api/productApi';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { HYDRATE, createWrapper } from 'next-redux-wrapper';
 import { apiSlice } from './api';
-import { storeApi } from '@/redux/api/storeApi';
 import { categoryApi } from '@/redux/api/categoryApi';
 import { vendorApi } from '@/redux/api/vendorApi';
 import { isLocal } from '@/constants/*';
@@ -62,7 +61,6 @@ let store: any = configureStore({
           apiSlice.middleware,
           categoryApi.middleware,
           productApi.middleware,
-          storeApi.middleware,
           vendorApi.middleware,
           locationApi.middleware,
           branchApi.middleware,
@@ -86,7 +84,6 @@ let store: any = configureStore({
           apiSlice.middleware,
           categoryApi.middleware,
           productApi.middleware,
-          storeApi.middleware,
           vendorApi.middleware,
           locationApi.middleware,
           branchApi.middleware,

@@ -31,7 +31,7 @@ export const branchSlice = createSlice({
       (state, action) => {
         return initialState
       }
-    );
+    });
   },
 });
 

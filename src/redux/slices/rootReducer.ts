@@ -6,7 +6,6 @@ import { apiSlice } from '../api';
 import { countrySlice } from '@/redux/slices/countrySlice';
 import { appSettingSlice } from '@/redux/slices/appSettingSlice';
 import { authSlice } from '@/redux/slices/authSlice';
-import { storeApi } from '@/redux/api/storeApi';
 import { categoryApi } from '@/redux/api/categoryApi';
 import { cartSlice } from '@/redux/slices/cartSlice';
 import { productCartSlice } from '@/redux/slices/productCartSlice';
@@ -44,6 +43,5 @@ export const rootReducer = combineReducers({
   [locationApi.reducerPath]: locationApi.reducer,
   [branchApi.reducerPath]: branchApi.reducer,
   [productApi.reducerPath]: productApi.reducer,
-  [storeApi.reducerPath]: storeApi.reducer,
   [vendorApi.reducerPath]: vendorApi.reducer,
 });

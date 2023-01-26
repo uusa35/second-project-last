@@ -22,12 +22,9 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
   const color = useAppSelector(themeColor);
   const { t } = useTranslation();
   const router = useRouter();
-  const dispatch = useAppDispatch();
 
   const handleSelectMethod = (m: appSetting['method']) => {
-    router
-      .push(appLinks.cartSelectMethod.path)
-      .then(() => dispatch(setCartMethod(m)));
+    router.push(appLinks.cartSelectMethod.path);
   };
 
   return (
@@ -63,7 +60,7 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
             <div className={`flex flex-grow justify-start items-center`}>
               <h1 className={`pt-2`}>{t('pickup_from')}</h1>
             </div>
-            <div className={`pt-2 text-primary_BG`}>
+            <div className={`pt-2`} style={{ color }}>
               <TextTrans ar={branch.name_ar} en={branch.name_en} />
             </div>
           </Link>
@@ -78,7 +75,9 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
             <div className={`flex flex-grow justify-start items-center`}>
               <h1 className={`pt-2`}>{t('deliver_to')}</h1>
             </div>
-            <div className={`pt-2 text-primary_BG`}>{t('select_location')}</div>
+            <div className={`pt-2`} style={{ color }}>
+              {t('select_location')}
+            </div>
           </Link>
         )}
 
@@ -91,7 +90,7 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
             <div className={`flex flex-grow justify-start items-center `}>
               <h1 className={`pt-2`}>{t('deliver_to')}</h1>
             </div>
-            <div className={`pt-2 text-primary_BG`}>
+            <div className={`pt-2`} style={{ color }}>
               <TextTrans
                 ar={area.name_ar}
                 en={area.name_en}
@@ -107,7 +106,7 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
               {t('earliest_delivery')}
             </h1>
           </div>
-          <div className={`pt-2 text-primary_BG`} style={{ color }}>
+          <div className={`pt-2`} style={{ color }}>
             {element.DeliveryTime}
           </div>
         </div>

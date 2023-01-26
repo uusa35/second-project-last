@@ -11,11 +11,13 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useCreateFeedbackMutation } from '@/redux/api/feedbackApi';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { submitBtnClass, suppressText } from '@/constants/*';
+import { convertColor, submitBtnClass, suppressText } from '@/constants/*';
 import { useForm } from 'react-hook-form';
 import { debounce, map } from 'lodash';
 import { useState } from 'react';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
+import { themeColor } from '@/redux/slices/vendorSlice';
+
 type Props = {
   isOpen: boolean;
   ariaHideApp: boolean;
@@ -30,6 +32,7 @@ const Feedback: NextPage<Props> = ({
   const {
     locale: { isRTL },
   } = useAppSelector((state) => state);
+  const color = useAppSelector(themeColor);
 
   const schema = yup
     .object()
@@ -43,7 +46,9 @@ const Feedback: NextPage<Props> = ({
     register,
     handleSubmit,
     setValue,
+    reset,
     control,
+    clearErrors,
     formState: { errors },
   } = useForm<any>({
     resolver: yupResolver(schema),
@@ -57,7 +62,15 @@ const Feedback: NextPage<Props> = ({
   const [rateVal, setRateVal] = useState<number>();
   const [triggerCreateFeedback] = useCreateFeedbackMutation();
   const dispatch = useAppDispatch();
-
+  const handleChange = ({ target }: any) => {
+    setValue(target.name, target.value);
+    clearErrors(target.name)
+  }
+  const ratingButtons = [
+    {rate: 1, text: 'can_be_better'},
+    {rate: 2, text: 'it_was_okay'},
+    {rate: 3, text: 'amazing'}
+  ]
   const onSubmit = async (body: any) => {
     await triggerCreateFeedback(body).then((r: any) => {
       if (r.data && r.data.status) {
@@ -67,6 +80,13 @@ const Feedback: NextPage<Props> = ({
             type: `success`,
           })
         );
+        setRateVal(0);
+        reset({
+          user_name: ``,
+          rate: ``,
+          note: ``,
+          phone: ``,
+        }, {keepValues: false});
         onRequestClose();
       }
     });
@@ -95,7 +115,8 @@ const Feedback: NextPage<Props> = ({
               alt={t('feedback')}
             />
             <p
-              className="ps-4 capitalize text-primary_BG fontsemibold"
+              className="ps-4 capitalize fontsemibold"
+              style={{ color }}
               suppressHydrationWarning={suppressText}
             >
               {t('leave_feedback')}
@@ -104,7 +125,7 @@ const Feedback: NextPage<Props> = ({
 
           <button
             className="text-black text-base font-bold"
-            onClick={() => onRequestClose}
+            onClick={() => onRequestClose()}
           >
             X
           </button>
@@ -116,39 +137,20 @@ const Feedback: NextPage<Props> = ({
                 isRTL && `flex-row-reverse`
               }`}
             >
-              <button
-                className={`border-zinc-400 border-2 px-2 rounded-full py-1 text-zinc-400 
-              ${rateVal === 1 && 'bg-primary_BG text-white border-zinc-50'}`}
-                suppressHydrationWarning={suppressText}
-                onClick={() => {
-                  setValue('rate', 1);
-                  setRateVal(1);
-                }}
-              >
-                {t('can_be_better')}
+              {map(ratingButtons, (button) => (
+                <button
+                  className={`border-zinc-400 border-2 px-2 rounded-full py-1
+                  ${rateVal === button.rate ? 'bg-primary_BG text-white border-zinc-50': 'text-zinc-400'}`}
+                  suppressHydrationWarning={suppressText}
+                  onClick={() => {
+                    setValue('rate', button.rate);
+                    setRateVal(button.rate);
+                  }}
+                  style={{backgroundColor: (rateVal === button.rate) ? convertColor(color, 100): '' }}
+                >
+                {t(`${button.text}`)}
               </button>
-              <button
-                className={`border-zinc-400 border-2 px-2 rounded-full py-1 text-zinc-400 
-              ${rateVal === 2 && 'bg-primary_BG text-white border-zinc-50'}`}
-                suppressHydrationWarning={suppressText}
-                onClick={() => {
-                  setValue('rate', 2);
-                  setRateVal(2);
-                }}
-              >
-                {t('it_was_okay')}
-              </button>
-              <button
-                className={`border-zinc-400 border-2 px-2 rounded-full py-1 text-zinc-400 
-              ${rateVal === 3 && 'bg-primary_BG text-white border-zinc-50'}`}
-                suppressHydrationWarning={suppressText}
-                onClick={() => {
-                  setValue('rate', 3);
-                  setRateVal(3);
-                }}
-              >
-                {t('amazing')}
-              </button>
+              ))}
             </div>
             <div>
               {errors?.rate?.message && (
@@ -165,12 +167,17 @@ const Feedback: NextPage<Props> = ({
             >
               <Image src={Card} alt="card" width={20} height={20} />
               <input
-                {...register('name')}
+                {...register('user_name')}
                 className={`px-4 border-0 focus:ring-transparent outline-none ${
                   isRTL && 'text-right'
                 }`}
+                name='user_name'
                 placeholder={`${t(`enter_your_name`)}`}
-                onChange={(e) => setValue('user_name', e.target.value)}
+                onChange={(e: any) => {
+                  // setValue('user_name', e.target.value);
+                  // clearErrors('user_name')
+                  handleChange(e);
+                }}
                 aria-invalid={errors.user_name ? 'true' : 'false'}
               />
             </div>
@@ -207,7 +214,7 @@ const Feedback: NextPage<Props> = ({
                   suppressHydrationWarning={suppressText}
                 />
               </div>
-              <p className="text-primary_BG text-base capitalize">
+              <p className="text-base capitalize" style={{ color }}>
                 {t('(optional)')}
               </p>
             </div>
@@ -225,7 +232,11 @@ const Feedback: NextPage<Props> = ({
                 }`}
                 type="text"
                 placeholder={`${t(`say_something_about_us`)}`}
-                onChange={(e) => setValue('note', e.target.value)}
+                onChange={(e: any) => {
+                  // setValue('note', e.target.value);
+                  // clearErrors('note');
+                  handleChange(e);
+                }}
                 suppressHydrationWarning={suppressText}
               />
             </div>

@@ -25,6 +25,8 @@ import * as yup from 'yup';
 import CustomImage from '@/components/CustomImage';
 import ContactImage from '@/appImages/contact_info.png';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import { themeColor } from '@/redux/slices/vendorSlice';
+
 
 const schema = yup
   .object({
@@ -39,6 +41,7 @@ const CustomerInformation: NextPage = (): JSX.Element => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { customer } = useAppSelector((state) => state);
+  const color = useAppSelector(themeColor);
   const [triggerSaveCustomerInfo, { isLoading }] =
     useSaveCustomerInfoMutation();
   const {
@@ -97,7 +100,7 @@ const CustomerInformation: NextPage = (): JSX.Element => {
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="lg:mt-10">
               <div className="flex gap-x-2 px-2 border-b-4 border-b-gray-200 w-full focus:ring-transparent py-4">
-                <BadgeOutlined className="text-primary_BG" />
+                <BadgeOutlined style={{ color }} />
                 <input
                   {...register('name')}
                   className={`border-0 w-full focus:ring-transparent outline-0 capitalize`}
@@ -117,7 +120,7 @@ const CustomerInformation: NextPage = (): JSX.Element => {
                 )}
               </div>
               <div className="flex items-center gap-x-2 px-2 border-b-4 border-b-gray-200 w-full focus:ring-transparent py-4">
-                <EmailOutlined className="text-primary_BG" />
+                <EmailOutlined style={{ color }} />
                 <input
                   {...register('email')}
                   aria-invalid={errors.email ? 'true' : 'false'}
@@ -137,7 +140,7 @@ const CustomerInformation: NextPage = (): JSX.Element => {
                 )}
               </div>
               <div className="flex items-center gap-x-2 px-2 border-b-4 border-b-gray-200 w-full focus:ring-transparent py-4">
-                <Phone className="text-primary_BG" />
+                <Phone style={{ color }} />
                 <Controller
                   render={(props) => (
                     <PhoneInput

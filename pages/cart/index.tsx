@@ -338,7 +338,8 @@ const CartIndex: NextPage = (): JSX.Element => {
                           </button>
                           <button
                             type="button"
-                            className="relative -ml-px inline-flex items-center  bg-gray-100 px-4 py-2 text-sm font-medium text-primary_BG  focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500 capitalize"
+                            className="relative -ml-px inline-flex items-center  bg-gray-100 px-4 py-2 text-sm font-medium focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500 capitalize"
+                            style={{ color }}
                           >
                             {item.Quantity}
                           </button>

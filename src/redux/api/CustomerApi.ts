@@ -1,6 +1,6 @@
 import { apiSlice } from './index';
-import { AppQueryResult, Branch } from '@/types/queries';
-import { CustomerInfo, Locale } from '@/types/index';
+import { AppQueryResult } from '@/types/queries';
+import { CustomerInfo } from '@/types/index';
 
 export const customerApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({

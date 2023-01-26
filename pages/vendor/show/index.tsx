@@ -15,7 +15,7 @@ import CashOnDelivery from '@/appImages/cash_on_delivery.jpg';
 import Visa from '@/appImages/visa.png';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
-import { imageSizes, submitBtnClass, suppressText } from '@/constants/*';
+import { convertColor, imageSizes, submitBtnClass, suppressText } from '@/constants/*';
 import {
   setCurrentModule,
   resetShowFooterElement,
@@ -28,6 +28,8 @@ import FeedbackIcon from '@/appIcons/feedback.svg';
 import Facebook from '@/appIcons/facebook.svg';
 import Twitter from '@/appIcons/twitter.svg';
 import Instagram from '@/appIcons/instagram.svg';
+import { themeColor } from '@/redux/slices/vendorSlice';
+
 type Props = {
   element: Vendor;
 };
@@ -42,6 +44,7 @@ const VendorShow: NextPage<Props> = ({ element }) => {
   } = useAppSelector((state) => state);
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
+  const color = useAppSelector(themeColor);
 
   useEffect(() => {
     dispatch(setCurrentModule(element.name));
@@ -180,9 +183,10 @@ const VendorShow: NextPage<Props> = ({ element }) => {
                   alt={t('feedback')}
                 />
                 <p
-                  className="text-white px-2"
+                  className={`text-white px-2 ${submitBtnClass}`}
                   suppressHydrationWarning={suppressText}
                   onClick={handleOpenPopup}
+                  style={{ backgroundColor: convertColor(color, 100) }}
                 >
                   {t('leave_feedback')}
                 </p>

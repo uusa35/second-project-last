@@ -36,7 +36,7 @@ const MainAsideLayout: FC<Props> = ({ element }): JSX.Element => {
             className={`flex flex-col justify-start items-start w-1/3 xl:w-1/4 gap-3 mt-8 z-50`}
           >
             <Link
-              scroll={false}
+              scroll={true}
               href={appLinks.home.path}
               className={`flex flex-row p-1 px-4 justify-between items-center rounded-lg bg-white bg-opacity-90 text-black capitalize`}
               suppressHydrationWarning={suppressText}
@@ -50,7 +50,7 @@ const MainAsideLayout: FC<Props> = ({ element }): JSX.Element => {
               </p>
             </Link>
             <Link
-              scroll={false}
+              scroll={true}
               href={appLinks.trackOrder.path}
               className={`flex flex-row p-1 px-4 justify-between items-center rounded-lg bg-white bg-opacity-90 text-black capitalize`}
               suppressHydrationWarning={suppressText}
@@ -67,7 +67,11 @@ const MainAsideLayout: FC<Props> = ({ element }): JSX.Element => {
             </Link>
           </div>
         </div>
-        <div className={`text-center text-white z-50`}>
+        <Link
+          scroll={true}
+          href={appLinks.home.path}
+          className={`text-center text-white z-50`}
+        >
           <CustomImage
             src={`${imgUrl(element.logo)}`}
             alt={element.name}
@@ -80,7 +84,7 @@ const MainAsideLayout: FC<Props> = ({ element }): JSX.Element => {
             en={element.name_en}
             className="capitalize text-2xl shadow-stone-300/50 drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]"
           />
-        </div>
+        </Link>
       </div>
     </Suspense>
   );

@@ -11,6 +11,7 @@ import { setBranch } from '@/redux/slices/branchSlice';
 import { setArea } from '@/redux/slices/areaSlice';
 import { useRouter } from 'next/router';
 import { isNull } from 'lodash';
+import { themeColor } from '@/redux/slices/vendorSlice';
 
 type Props = {
   SelectedAreaOrBranch: Branch | Area | undefined;
@@ -32,7 +33,7 @@ const ChangeVendorModal: FC<Props> = ({
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const router = useRouter();
-
+  const color = useAppSelector(themeColor);
   const [triggerChangeLocation] = useLazyChangeLocationQuery();
 
   const handelChangeLocReq = async () => {
@@ -84,7 +85,8 @@ const ChangeVendorModal: FC<Props> = ({
         <div className="flex justify-between w-full pt-5 gap-x-2 px-0 lg:px-5 capitalize">
           <button
             onClick={() => OnClose()}
-            className="text-primary_BG capitalize"
+            className="capitalize"
+            style={{ color }}
           >
             {t('cancel')}
           </button>
@@ -92,7 +94,8 @@ const ChangeVendorModal: FC<Props> = ({
             onClick={() => {
               handelChangeLocReq();
             }}
-            className="text-primary_BG  capitalize"
+            className="capitalize"
+            style={{ color }}
           >
             {t('change')}
           </button>

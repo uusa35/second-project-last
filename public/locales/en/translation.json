@@ -464,12 +464,13 @@
   "block_is_required": "block is required",
   "promo_code_validation" : "promo code activated and applied on your cart.",
   "thanks_for_your_feedback": "thanks for your feedback",
-  "can_be_better": "can_be_better",
-  "it_was_okay": "it_was_okay",
+  "can_be_better": "can be better",
+  "it_was_okay": "it was okay",
   "amazing": "amazing!",
   "note_is_required": "note is required",
   "optional": "optional",
   "confirm" : "confirm",
   "sorry_!_some_product_not_available_in_this_area" : "sorry ! some product not available in this area.",
-  "cart_is_empty_please_add_product_into_cart":"cart is empty please add product into cart"
+  "cart_is_empty_please_add_product_into_cart":"cart is empty please add product into cart",
+  "the_address_field_is_required" : "the address field is required."
 }

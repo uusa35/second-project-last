@@ -205,7 +205,8 @@ const SelectMethod: NextPage<Props> = ({ previousRoute }): JSX.Element => {
           {selectedMethod === 'pickup' && (
             <div className="px-4">
               <p
-                className="text-primary_BG p-3 capitalize"
+                className="p-3 capitalize" 
+                style={{ color }}
                 suppressHydrationWarning={suppressText}
               >
                 {t('select_branch')}
