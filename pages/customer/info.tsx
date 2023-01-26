@@ -6,10 +6,9 @@ import GreyLine from '@/components/GreyLine';
 import { useTranslation } from 'react-i18next';
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
-import { useEffect, useState, Suspense } from 'react';
-import { CustomerInfo, ServerCart } from '@/types/index';
+import { useEffect, Suspense } from 'react';
+import { ServerCart } from '@/types/index';
 import {
-  resetShowFooterElement,
   setCurrentModule,
   setShowFooterElement,
   showToastMessage,
@@ -24,7 +23,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import CustomImage from '@/components/CustomImage';
 import ContactImage from '@/appImages/contact_info.png';
-import LoadingSpinner from '@/components/LoadingSpinner';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { isNull } from 'lodash';
 import { useGetCartProductsQuery } from '@/redux/api/cartApi';
