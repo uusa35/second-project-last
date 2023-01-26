@@ -470,8 +470,9 @@
   "note_is_required": "note is required",
   "optional": "optional",
   "confirm" : "confirm",
-  "sorry_!_some_product_not_available_in_this_area" : "sorry ! some product not available in this area.",
+  "sorry_some_products_not_available_in_this_area" : "sorry ! some product not available in this area.",
   "cart_is_empty_please_add_product_into_cart":"cart is empty please add product into cart",
   "the_address_field_is_required" : "the address field is required.",
-  "order_created_successfully" : "thank you .. your order has been placed. you can follow the status by your order number."
+  "order_created_successfully" : "thank you .. your order has been placed. you can follow the status by your order number.",
+  "select_a_branch_or_area_before_order": "select a branch or area before order"
 }
