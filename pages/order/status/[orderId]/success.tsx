@@ -3,7 +3,7 @@ import MainContentLayout from '@/layouts/MainContentLayout';
 import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import Success from '@/appImages/success.png';
-import { submitBtnClass, suppressText, appLinks } from '@/constants/*';
+import { suppressText, appLinks } from '@/constants/*';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { wrapper } from '@/redux/store';
 import { AppQueryResult } from '@/types/queries';
