@@ -25,9 +25,8 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
   const dispatch = useAppDispatch();
 
   const handleSelectMethod = (m: appSetting['method']) => {
-    router
-      .push(appLinks.cartSelectMethod.path)
-      .then(() => dispatch(setCartMethod(m)));
+    router.push(appLinks.cartSelectMethod.path);
+    // .then(() => dispatch(setCartMethod(m)));
   };
 
   return (
@@ -78,7 +77,9 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
             <div className={`flex flex-grow justify-start items-center`}>
               <h1 className={`pt-2`}>{t('deliver_to')}</h1>
             </div>
-            <div className={`pt-2`} style={{ color }}>{t('select_location')}</div>
+            <div className={`pt-2`} style={{ color }}>
+              {t('select_location')}
+            </div>
           </Link>
         )}
 

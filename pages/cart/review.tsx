@@ -30,17 +30,14 @@ import PaymentSummary from '@/components/widgets/cart/review/PaymentSummary';
 import { AppQueryResult } from '@/types/queries';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { useLazyCreateOrderQuery } from '@/redux/api/orderApi';
-<<<<<<< HEAD
 import { themeColor } from '@/redux/slices/vendorSlice';
-=======
 import { useRouter } from 'next/router';
 import { setOrder, setPaymentMethod } from '@/redux/slices/orderSlice';
->>>>>>> eren
 
 const CartReview: NextPage = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-  const router=useRouter()
+  const router = useRouter();
   const [selectedPaymentMethod, setSelectedPaymentMethod] =
     useState<OrderUser['PaymentMethod']>(`knet`);
   useEffect(() => {
@@ -54,18 +51,17 @@ const CartReview: NextPage = () => {
     customer: { userAgent },
     appSetting: { method: process_type },
   } = useAppSelector((state) => state);
-<<<<<<< HEAD
   const color = useAppSelector(themeColor);
-=======
-
->>>>>>> eren
   const { data: cartItems, isSuccess } = useGetCartProductsQuery<{
     data: AppQueryResult<ServerCart>;
     isSuccess: boolean;
     refetch: () => void;
-  }>({
-    UserAgent: userAgent,
-  },{refetchOnMountOrArgChange:true});
+  }>(
+    {
+      UserAgent: userAgent,
+    },
+    { refetchOnMountOrArgChange: true }
+  );
 
   const [triggerCreateOrder, { isLoading }] = useLazyCreateOrderQuery();
 
@@ -80,11 +76,10 @@ const CartReview: NextPage = () => {
   }
 
   const handleCreateOrder = async () => {
-    if(isNull(customer.id)){
-      router.push(appLinks.customerInfo.path)
-    }
-    else if(!customer.address.id){
-      router.push(appLinks.address.path)
+    if (isNull(customer.id)) {
+      router.push(appLinks.customerInfo.path);
+    } else if (!customer.address.id) {
+      router.push(appLinks.address.path);
     }
     if (
       !isNull(customer.id) &&
@@ -116,29 +111,26 @@ const CartReview: NextPage = () => {
         process_type,
         area_branch: process_type === `delivery` ? areaId : branchId,
       }).then((r: any) => {
-        console.log('rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr',r)
-        if(r.data){
-         if(r.data.status){
-          dispatch(setPaymentMethod(selectedPaymentMethod))
-          if(selectedPaymentMethod === 'cash_on_delivery'){
-            dispatch(setOrder(r.data.data))
-            router.replace(`/order/status/${r.data.data.order_id}/success`)
+        console.log('rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr', r);
+        if (r.data) {
+          if (r.data.status) {
+            dispatch(setPaymentMethod(selectedPaymentMethod));
+            if (selectedPaymentMethod === 'cash_on_delivery') {
+              dispatch(setOrder(r.data.data));
+              router.replace(`/order/status/${r.data.data.order_id}/success`);
+            } else {
+              window.open(r.data.Data, '_self');
+            }
+            dispatch(
+              showToastMessage({
+                content: `order_created_successfully`,
+                type: `success`,
+              })
+            );
+          } else {
+            router.replace(`order/status/failure`);
           }
-          else{
-            window.open(r.data.Data, "_self");
-          }
-          dispatch(
-            showToastMessage({
-              content: `order_created_successfully`,
-              type: `success`,
-            })
-          );
-         }
-         else{
-          router.replace(`order/status/failure`)
-         }
-        }
-        else{
+        } else {
           dispatch(
             showToastMessage({
               content: r.error.data.msg,
@@ -146,9 +138,8 @@ const CartReview: NextPage = () => {
             })
           );
           // error
-          console.log(r.data)
+          console.log(r.data);
         }
-        
       });
     }
   };

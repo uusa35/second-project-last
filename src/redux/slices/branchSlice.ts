@@ -25,14 +25,11 @@ export const branchSlice = createSlice({
       initialState,
   },
   extraReducers: (builder) => {
-    builder.addCase(
-      appSettingSlice.actions.setCartMethod,
-      (state, action) => {
-        if(action.payload === 'delivery'){
-          return initialState
-        }
+    builder.addCase(appSettingSlice.actions.setCartMethod, (state, action) => {
+      if (action.payload === 'delivery') {
+        return initialState;
       }
-    );
+    });
   },
 });
 

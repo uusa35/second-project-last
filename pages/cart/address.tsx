@@ -1,4 +1,4 @@
-import { useState, useEffect, Suspense, forwardRef } from 'react';
+import { useState, useEffect, Suspense, forwardRef, useRef } from 'react';
 import { NextPage } from 'next';
 import Link from 'next/link';
 import MainContentLayout from '@/layouts/MainContentLayout';
@@ -24,7 +24,7 @@ import OfficeAcitveIcon from '@/appIcons/office_active.svg';
 import Image from 'next/image';
 import { Home } from '@mui/icons-material';
 import { addressInputField, appLinks, suppressText } from '@/constants/*';
-import { isEmpty } from 'lodash';
+import { isEmpty, kebabCase, lowerCase } from 'lodash';
 import {
   useCheckTimeAvilabilityMutation,
   useCreateAddressMutation,
@@ -36,10 +36,32 @@ import {
 import { AccessTime } from '@mui/icons-material';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { themeColor } from '@/redux/slices/vendorSlice';
+
+const schema = yup
+  .object()
+  .shape({
+    address: yup
+      .object()
+      .shape({
+        block: yup.string().max(50),
+        street: yup.string().max(100),
+        house_no: yup.string().max(50),
+        avenue: yup.string().max(50),
+        paci: yup.string().max(50),
+        floor_no: yup.string().max(50),
+        office_no: yup.string().max(50),
+        additional: yup.string().max(50),
+      })
+      .required(),
+    longitude: yup.string(),
+    latitude: yup.string(),
+    customer_id: yup.string().required(),
+  })
+  .required();
 
 const CartAddress: NextPage = (): JSX.Element => {
   const dispatch = useAppDispatch();
@@ -52,10 +74,10 @@ const CartAddress: NextPage = (): JSX.Element => {
     customer: { address, id },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
-
   const [openTab, setOpenTab] = useState(1);
   const [show, SetShow] = useState(false);
-  const [selectedAddressFields, setSelectedAddressFields] = useState({});
+  const [AddAddress, { isLoading: AddAddressLoading }] =
+    useCreateAddressMutation();
   const [prefrences, setPrefrences] = useState<Prefrences>({
     type:
       method === 'delivery'
@@ -66,20 +88,6 @@ const CartAddress: NextPage = (): JSX.Element => {
     date: new Date(),
     time: new Date(),
   });
-
-  const schema = yup
-    .object()
-    .shape({
-      block: yup.string().required(),
-      street: yup.string(),
-      house_no: yup.string(),
-      avenue: yup.string(),
-      paci: yup.string(),
-      floor_no: yup.string(),
-      office_no: yup.string(),
-      additional: yup.string(),
-    })
-    .required();
 
   const {
     register,
@@ -93,16 +101,16 @@ const CartAddress: NextPage = (): JSX.Element => {
       address_type: openTab ?? ``,
       longitude: ``,
       latitude: ``,
-      customer_id: id ?? ``,
+      customer_id: id,
       address: {
-        block: ``,
-        street: ``,
-        house_no: ``,
-        avenue: ``,
-        paci: ``,
-        floor_no: ``,
-        office_no: ``,
-        additional: ``,
+        block: address.block,
+        street: address.street,
+        house_no: address.house_no,
+        avenue: address.avenue,
+        paci: address.paci,
+        floor_no: address.floor_no,
+        office_no: address.office_no,
+        additional: address.additional,
       },
     },
   });
@@ -123,6 +131,7 @@ const CartAddress: NextPage = (): JSX.Element => {
     useCheckTimeAvilabilityMutation();
 
   const checkTimeAvailability = async () => {
+    console.log('started');
     await checkTime({
       process_type: method,
       area_branch:
@@ -137,6 +146,7 @@ const CartAddress: NextPage = (): JSX.Element => {
         ).getMinutes()}:${new Date(prefrences.time as Date).getSeconds()}`,
       },
     }).then((r: any) => {
+      console.log('r', r);
       if (r.data?.status) {
         switch (r.data.Data.toLowerCase()) {
           case 'open':
@@ -181,17 +191,8 @@ const CartAddress: NextPage = (): JSX.Element => {
 
   // address
   const handleSelectMethod = (m: appSetting['method']) => {
-    dispatch(setCartMethod(m));
-    router.push(appLinks.cartSelectMethod);
+    router.push(appLinks.cartSelectMethod.path);
   };
-
-  // address
-  const handelOninputChange = (nm: string, value: any) => {
-    setSelectedAddressFields((prev) => ({ ...prev, [nm]: value }));
-  };
-
-  const [AddAddress, { isLoading: AddAddressLoading }] =
-    useCreateAddressMutation();
 
   const handelSaveAddress = async (body: any) => {
     await AddAddress({
@@ -206,10 +207,20 @@ const CartAddress: NextPage = (): JSX.Element => {
         );
         dispatch(setCustomerAddress(r.data.Data));
         checkTimeAvailability();
+      } else {
+        if (r.error) {
+          dispatch(
+            showToastMessage({
+              content: lowerCase(kebabCase(r.error.data.msg[`address`][0])),
+              type: `error`,
+            })
+          );
+        }
       }
     });
   };
   const onSubmit = async (body: any) => {
+    console.log('body', body);
     if (method === 'pickup') {
       await checkTimeAvailability();
     } else {
@@ -227,10 +238,10 @@ const CartAddress: NextPage = (): JSX.Element => {
 
   return (
     <Suspense>
-      <MainContentLayout handleSubmit={handleSubmit(onSubmit)}>
+      <MainContentLayout>
         {/* delivery method buttons */}
         <DeliveryBtns handleSelectMethod={handleSelectMethod} />
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} id="hook-form">
           <div className={'px-4'}>
             <div className="bg-gray-200 w-full mt-5 p-0 h-2"></div>
 
@@ -240,7 +251,7 @@ const CartAddress: NextPage = (): JSX.Element => {
                 <div className="py-5">
                   <div className="flex justify-between">
                     <div className="flex">
-                      <LocationOnOutlined style={{color}} />
+                      <LocationOnOutlined style={{ color }} />
                       <h5
                         className="px-2 text-base font-semibold"
                         suppressHydrationWarning={suppressText}
@@ -251,7 +262,7 @@ const CartAddress: NextPage = (): JSX.Element => {
                     <Link
                       href={appLinks.cartSelectMethod.path}
                       scroll={false}
-                      className="text-base font-semibold" 
+                      className="text-base font-semibold"
                       style={{ color }}
                       suppressHydrationWarning={suppressText}
                     >
@@ -408,16 +419,29 @@ const CartAddress: NextPage = (): JSX.Element => {
                       className={`${addressInputField}`}
                       suppressHydrationWarning={suppressText}
                       {...register('block')}
+                      required={method === `delivery`}
                       aria-invalid={errors.block ? 'true' : 'false'}
-                      onChange={(e) => setValue('block', e.target.value)}
+                      onChange={(e) =>
+                        setValue('address.block', e.target.value)
+                      }
                     />
+
                     <div>
-                      {errors?.block?.message && (
+                      {errors.block?.message.key ? (
                         <p
-                          className={`text-base text-red-800 font-semibold py-2 capitalize`}
+                          className={`text-sm text-red-800`}
                           suppressHydrationWarning={suppressText}
                         >
-                          {t(`block_is_required`)}
+                          {t(`${errors.block?.message.key}`, {
+                            min: errors.block?.message.values,
+                          })}
+                        </p>
+                      ) : (
+                        <p
+                          className={`text-sm text-red-800`}
+                          suppressHydrationWarning={suppressText}
+                        >
+                          {t(errors.block?.message)}
                         </p>
                       )}
                     </div>
@@ -427,8 +451,30 @@ const CartAddress: NextPage = (): JSX.Element => {
                       suppressHydrationWarning={suppressText}
                       {...register('street')}
                       aria-invalid={errors.street ? 'true' : 'false'}
-                      onChange={(e) => setValue('street', e.target.value)}
+                      onChange={(e) =>
+                        setValue('address.street', e.target.value)
+                      }
                     />
+
+                    <div>
+                      {errors.street?.message.key ? (
+                        <p
+                          className={`text-sm text-red-800`}
+                          suppressHydrationWarning={suppressText}
+                        >
+                          {t(`${errors.street?.message.key}`, {
+                            min: errors.street?.message.values,
+                          })}
+                        </p>
+                      ) : (
+                        <p
+                          className={`text-sm text-red-800`}
+                          suppressHydrationWarning={suppressText}
+                        >
+                          {t(errors.street?.message)}
+                        </p>
+                      )}
+                    </div>
 
                     <div className="relative flex flex-col">
                       <div className="flex-auto">
@@ -444,7 +490,7 @@ const CartAddress: NextPage = (): JSX.Element => {
                               {...register('house_no')}
                               aria-invalid={errors.house_no ? 'true' : 'false'}
                               onChange={(e) =>
-                                setValue('house-no', e.target.value)
+                                setValue('address.house_no', e.target.value)
                               }
                             />
                           </div>
@@ -459,7 +505,7 @@ const CartAddress: NextPage = (): JSX.Element => {
                               {...register('floor_no')}
                               aria-invalid={errors.floor_no ? 'true' : 'false'}
                               onChange={(e) =>
-                                setValue('floor_no', e.target.value)
+                                setValue('address.floor_no', e.target.value)
                               }
                             />
                           </div>
@@ -475,7 +521,7 @@ const CartAddress: NextPage = (): JSX.Element => {
                               {...register('office_no')}
                               aria-invalid={errors.office_no ? 'true' : 'false'}
                               onChange={(e) =>
-                                setValue('office_no', e.target.value)
+                                setValue('address.office_no', e.target.value)
                               }
                             />
                           </div>
@@ -488,8 +534,29 @@ const CartAddress: NextPage = (): JSX.Element => {
                       suppressHydrationWarning={suppressText}
                       {...register('avenue')}
                       aria-invalid={errors.avenue ? 'true' : 'false'}
-                      onChange={(e) => setValue('avenue', e.target.value)}
+                      onChange={(e) =>
+                        setValue('address.avenue', e.target.value)
+                      }
                     />
+                    <div>
+                      {errors.avenue?.message.key ? (
+                        <p
+                          className={`text-sm text-red-800`}
+                          suppressHydrationWarning={suppressText}
+                        >
+                          {t(`${errors.avenue?.message.key}`, {
+                            min: errors.avenue?.message.values,
+                          })}
+                        </p>
+                      ) : (
+                        <p
+                          className={`text-sm text-red-800`}
+                          suppressHydrationWarning={suppressText}
+                        >
+                          {t(errors.avenue?.message)}
+                        </p>
+                      )}
+                    </div>
 
                     <input
                       placeholder={`${t(`paci`)}`}
@@ -497,8 +564,28 @@ const CartAddress: NextPage = (): JSX.Element => {
                       suppressHydrationWarning={suppressText}
                       {...register('paci')}
                       aria-invalid={errors.paci ? 'true' : 'false'}
-                      onChange={(e) => setValue('paci', e.target.value)}
+                      onChange={(e) => setValue('address.paci', e.target.value)}
                     />
+
+                    <div>
+                      {errors.paci?.message.key ? (
+                        <p
+                          className={`text-sm text-red-800`}
+                          suppressHydrationWarning={suppressText}
+                        >
+                          {t(`${errors.paci?.message.key}`, {
+                            min: errors.paci?.message.values,
+                          })}
+                        </p>
+                      ) : (
+                        <p
+                          className={`text-sm text-red-800`}
+                          suppressHydrationWarning={suppressText}
+                        >
+                          {t(errors.paci?.message)}
+                        </p>
+                      )}
+                    </div>
 
                     <input
                       placeholder={`${t(`additional`)}`}
@@ -506,8 +593,30 @@ const CartAddress: NextPage = (): JSX.Element => {
                       suppressHydrationWarning={suppressText}
                       {...register('additional')}
                       aria-invalid={errors.additional ? 'true' : 'false'}
-                      onChange={(e) => setValue('additional', e.target.value)}
+                      onChange={(e) =>
+                        setValue('address.additional', e.target.value)
+                      }
                     />
+                  </div>
+
+                  <div>
+                    {errors.additional?.message.key ? (
+                      <p
+                        className={`text-sm text-red-800`}
+                        suppressHydrationWarning={suppressText}
+                      >
+                        {t(`${errors.additional?.message.key}`, {
+                          min: errors.additional?.message.values,
+                        })}
+                      </p>
+                    ) : (
+                      <p
+                        className={`text-sm text-red-800`}
+                        suppressHydrationWarning={suppressText}
+                      >
+                        {t(errors.additional?.message)}
+                      </p>
+                    )}
                   </div>
                 </div>
 
