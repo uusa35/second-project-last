@@ -42,7 +42,7 @@ const OffLineWidget: FC<Props> = ({ message, img = null }): JSX.Element => {
           {message}
         </p>
         <Link
-          scroll={false}
+          scroll={true}
           href={'/'}
           className={`${submitBtnClass} text-center text-md capitalize`}
           suppressHydrationWarning={suppressText}

@@ -73,7 +73,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
               <header className="">
                 <div className="flex gap-x-2 py-5">
                   <div className="flex justify-center w-full my-8">
-                    <Link scroll={false} href={appLinks.root.path}>
+                    <Link scroll={true} href={appLinks.root.path}>
                       <CustomImage
                         alt={`logo`}
                         src={`${imgUrl(vendor.logo)}`}
@@ -96,63 +96,88 @@ const SideMenu: FC<Props> = (): JSX.Element => {
               </header>
 
               <div className="flex-col  gap-y-2 my-3">
-                <Link scroll={false} href={appLinks.root.path}>
+                <Link scroll={true} href={appLinks.root.path}>
                   <div className="flex gap-x-3 pb-7 items-center ps-1">
                     <HomeOutlined className={`h-8 w-8`} style={{ color }} />
-                    <p suppressHydrationWarning={suppressText} className='capitalize'>{t('home')}</p>
+                    <p
+                      suppressHydrationWarning={suppressText}
+                      className="capitalize"
+                    >
+                      {t('home')}
+                    </p>
                   </div>
                 </Link>
 
-                <Link scroll={false} href={appLinks.cartIndex.path}>
+                <Link scroll={true} href={appLinks.cartIndex.path}>
                   <div className="flex gap-x-3 pb-7 items-center ps-1">
                     <ShoppingBagOutlined
                       className={`h-8 w-8`}
                       style={{ color }}
                     />
-                    <p suppressHydrationWarning={suppressText} className='capitalize'>
+                    <p
+                      suppressHydrationWarning={suppressText}
+                      className="capitalize"
+                    >
                       {t('my_cart')}
                     </p>
                   </div>
                 </Link>
 
-                <Link scroll={false} href={appLinks.cartSelectMethod.path}>
+                <Link scroll={true} href={appLinks.cartSelectMethod.path}>
                   <div className="flex gap-x-3 pb-7 items-center">
                     <MapPinIcon className={`h-6 w-8`} style={{ color }} />
-                    <p suppressHydrationWarning={suppressText} className='capitalize'>
+                    <p
+                      suppressHydrationWarning={suppressText}
+                      className="capitalize"
+                    >
                       {t('change_delivery_area')}
                     </p>
                   </div>
                 </Link>
 
                 <Link
-                  scroll={false}
+                  scroll={true}
                   href={appLinks.productSearchIndex(branchId)}
                 >
                   <div className="flex gap-x-3 pb-7 items-center ps-1">
-                    <PlagiarismOutlined className={`h-8 w-8`} style={{ color }} />
-                    <p suppressHydrationWarning={suppressText} className='capitalize'>{t('search')}</p>
+                    <PlagiarismOutlined
+                      className={`h-8 w-8`}
+                      style={{ color }}
+                    />
+                    <p
+                      suppressHydrationWarning={suppressText}
+                      className="capitalize"
+                    >
+                      {t('search')}
+                    </p>
                   </div>
                 </Link>
 
-                <Link scroll={false} href={appLinks.trackOrder.path}>
+                <Link scroll={true} href={appLinks.trackOrder.path}>
                   <div className="flex gap-x-3 pb-7 items-center ps-1">
                     <PendingActionsOutlined
                       className={`h-8 w-8`}
                       style={{ color }}
                     />
-                    <p suppressHydrationWarning={suppressText} className='capitalize'>
+                    <p
+                      suppressHydrationWarning={suppressText}
+                      className="capitalize"
+                    >
                       {t('track_order')}
                     </p>
                   </div>
                 </Link>
 
-                <Link scroll={false} href={appLinks.branchIndex.path}>
+                <Link scroll={true} href={appLinks.branchIndex.path}>
                   <div className="flex gap-x-3 pb-7 items-center ps-1">
                     <BuildingStorefrontIcon
                       className={`h-6 w-6`}
                       style={{ color }}
                     />
-                    <p suppressHydrationWarning={suppressText} className='capitalize'>
+                    <p
+                      suppressHydrationWarning={suppressText}
+                      className="capitalize"
+                    >
                       {t('our_branches')}
                     </p>
                   </div>

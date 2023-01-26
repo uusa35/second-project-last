@@ -30,9 +30,12 @@ const SlideTopNav: FC<Props> = ({ offset, isHome = false }): JSX.Element => {
     customer: { userAgent },
     locale: { lang, otherLang },
   } = useAppSelector((state) => state);
-  const { data: cartItems, isSuccess } = useGetCartProductsQuery({
-    UserAgent: userAgent,
-  },{refetchOnMountOrArgChange:true});
+  const { data: cartItems, isSuccess } = useGetCartProductsQuery(
+    {
+      UserAgent: userAgent,
+    },
+    { refetchOnMountOrArgChange: true }
+  );
   const dispatch = useAppDispatch();
   const router = useRouter();
 
@@ -79,7 +82,7 @@ const SlideTopNav: FC<Props> = ({ offset, isHome = false }): JSX.Element => {
       <div className="flex w-full flex-row justify-between items-center">
         <div className={`flex flex-1`}>
           <Link
-            scroll={false}
+            scroll={true}
             href={appLinks.home.path}
             locale={lang}
             className="flex justify-center space-x-3  cursor-pointer px-4 py-2 "
@@ -100,7 +103,7 @@ const SlideTopNav: FC<Props> = ({ offset, isHome = false }): JSX.Element => {
         </div>
         <div className={`flex flex-row justify-between items-center w-20`}>
           <Link
-            scroll={false}
+            scroll={true}
             href={appLinks.cartIndex.path}
             className={`relative`}
           >

@@ -30,7 +30,7 @@ const BackBtn: FC<Props> = ({
   const { data: cartItems, isSuccess } = useGetCartProductsQuery({
     UserAgent: userAgent,
   });
-  
+
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
@@ -122,7 +122,7 @@ const BackBtn: FC<Props> = ({
         </div>
         <div className={`flex flex-row justify-between items-center w-20 z-50`}>
           <Link
-            scroll={false}
+            scroll={true}
             href={appLinks.cartIndex.path}
             className={`relative`}
           >

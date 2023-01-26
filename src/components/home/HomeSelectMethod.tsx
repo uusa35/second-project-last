@@ -54,7 +54,7 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
         {!isNull(branch.id) && method === 'pickup' && (
           <Link
             href={appLinks.cartSelectMethod.path}
-            scroll={false}
+            scroll={true}
             className="flex flex-1 gap-x-3 w-full flex-row justify-between items-center mt-4 mb-2"
           >
             <div className={`flex flex-grow justify-start items-center`}>
@@ -69,7 +69,7 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
         {isNull(area.id) && method === 'delivery' && (
           <Link
             href={appLinks.cartSelectMethod.path}
-            scroll={false}
+            scroll={true}
             className="flex gap-x-3 flex-1 w-full flex-row justify-between items-center mt-4 mb-2"
           >
             <div className={`flex flex-grow justify-start items-center`}>
@@ -84,7 +84,7 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
         {!isNull(area.id) && method === 'delivery' && (
           <Link
             href={appLinks.cartSelectMethod.path}
-            scroll={false}
+            scroll={true}
             className="flex flex-1 gap-x-3 w-full flex-row justify-between items-center mt-4 mb-2"
           >
             <div className={`flex flex-grow justify-start items-center `}>

@@ -20,7 +20,7 @@ const HomeVendorMainInfo: FC<Props> = ({ element }) => {
     <>
       <div className="flex gap-x-2 justify-between items-center capitalize">
         <div className="flex grow gap-x-2">
-          <Link href={appLinks.home.path} scroll={false} className={`w-1/4`}>
+          <Link href={appLinks.home.path} scroll={true} className={`w-1/4`}>
             <CustomImage
               width={imageSizes.xs}
               height={imageSizes.xs}
@@ -48,13 +48,10 @@ const HomeVendorMainInfo: FC<Props> = ({ element }) => {
 
         <Link
           href={appLinks.vendorShow.path}
-          scroll={false}
+          scroll={true}
           className={`flex-none`}
         >
-          <InfoOutlined
-            className="w-6 h-6 lg:w-8 lg:h-8"
-            style={{ color }}
-          />
+          <InfoOutlined className="w-6 h-6 lg:w-8 lg:h-8" style={{ color }} />
         </Link>
       </div>
 

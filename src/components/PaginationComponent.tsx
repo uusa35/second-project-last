@@ -21,7 +21,7 @@ const PaginationComponent: FC<Props> = ({ pagination }): JSX.Element => {
         >
           {pagination.meta.page.isPrevious && (
             <Link
-              scroll={false}
+              scroll={true}
               href={{
                 pathname: router.asPath.split('?')[0],
                 query: {

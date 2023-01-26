@@ -262,7 +262,7 @@ const CartAddress: NextPage = (): JSX.Element => {
                     </div>
                     <Link
                       href={appLinks.cartSelectMethod.path}
-                      scroll={false}
+                      scroll={true}
                       className="text-base font-semibold"
                       style={{ color }}
                       suppressHydrationWarning={suppressText}
@@ -295,7 +295,7 @@ const CartAddress: NextPage = (): JSX.Element => {
                     <p className="text-md">{area.name}</p>
                     <Link
                       href={appLinks.cartSelectMethod.path}
-                      scroll={false}
+                      scroll={true}
                       className="text-base font-semibold"
                       style={{ color }}
                       suppressHydrationWarning={suppressText}
