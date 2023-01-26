@@ -219,15 +219,20 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
             <button
               onClick={() => handleAddToCart()}
               className={`${footerBtnClass}`}
-              style={{ backgroundColor: convertColor(color, 100) }}
+              style={{
+                backgroundColor: convertColor(color, 100),
+                color: `white`,
+              }}
             >
               {isNull(area.id) && isNull(branchId)
                 ? t(`start_ordering`)
                 : t('add_to_cart')}
             </button>
             <span className={`flex flex-row items-center gap-2`}>
-              <p className={`text-xl`}>{productCart.grossTotalPrice}</p>
-              {t('kwd')}
+              <p className={`text-xl text-white`}>
+                {productCart.grossTotalPrice}
+              </p>
+              <span className={`text-white`}>{t('kwd')}</span>
             </span>
           </div>
         )}
@@ -244,6 +249,7 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
                 className={`${footerBtnClass}`}
                 style={{
                   backgroundColor: `${color}`,
+                  color: `white`,
                 }}
                 suppressHydrationWarning={suppressText}
                 onClick={() => handleCartIndex()}
@@ -263,7 +269,7 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
               type="submit"
               form="hook-form"
               className={`${footerBtnClass}`}
-              style={{ backgroundColor: `${color}` }}
+              style={{ backgroundColor: `${color}`, color: `white` }}
               suppressHydrationWarning={suppressText}
             >
               {t('continue')}
@@ -280,7 +286,7 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
           >
             <button
               className={`${footerBtnClass}`}
-              style={{ backgroundColor: `${color}` }}
+              style={{ backgroundColor: `${color}`, color: `white` }}
               suppressHydrationWarning={suppressText}
               onClick={() => (handleSubmit ? handleSubmit() : null)}
             >
@@ -298,7 +304,7 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
             <button
               disabled={!customerId || !userAgent}
               className={`${footerBtnClass}`}
-              style={{ backgroundColor: `${color}` }}
+              style={{ backgroundColor: `${color}`, color: `white` }}
               suppressHydrationWarning={suppressText}
               onClick={() => (handleSubmit ? handleSubmit() : null)}
             >
