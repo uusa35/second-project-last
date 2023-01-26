@@ -121,6 +121,7 @@ const CartIndex: NextPage = (): JSX.Element => {
   };
 
   const handleRemove = async (element: ProductCart) => {
+   
     const currentItems = filter(
       cartItems.data.Cart,
       (i) => i.id !== element.id
@@ -137,7 +138,7 @@ const CartIndex: NextPage = (): JSX.Element => {
           cartItems.data.Cart &&
           !isEmpty(currentItems)
             ? currentItems
-            : cartItems.data.Cart, // empty Cart Case !!!
+            : [], // empty Cart Case !!!
       },
     }).then((r: any) => {
       if (r.data && r.data?.status) {
