@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { FC, Suspense } from 'react';
+import { FC, Suspense, useEffect } from 'react';
 import {
   appLinks,
   convertColor,
@@ -50,6 +50,21 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
     UserAgent: userAgent,
   });
   const [triggerCheckPromoCode] = useLazyCheckPromoCodeQuery();
+
+  useEffect(() => {
+    if (
+      showFooterElement === 'cartIndex' &&
+      ((isNull(area.id) && isNull(branchId)) || isEmpty(method))
+    ) {
+      router
+        .push(appLinks.cartSelectMethod.path)
+        .then(() =>
+          dispatch(
+            showToastMessage({ content: `choose_area_or_branch`, type: `info` })
+          )
+        );
+    }
+  }, [showFooterElement]);
 
   const handleAddToCart = async () => {
     if ((isNull(area.id) && isNull(branchId)) || isEmpty(method)) {

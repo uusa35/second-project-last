@@ -140,8 +140,7 @@ const CartIndex: NextPage = (): JSX.Element => {
     );
     triggerAddToCart({
       process_type: method,
-      area_branch:
-        method === 'delivery' ? areaId : branchId,
+      area_branch: method === 'delivery' ? areaId : branchId,
       body: {
         UserAgent: userAgent,
         Cart:
@@ -165,19 +164,13 @@ const CartIndex: NextPage = (): JSX.Element => {
   };
 
   const handleIncrease = (element: ProductCart) => {
-    if ((isNull(areaId) && isNull(branchId)) || isEmpty(method)) {
-      return router
-        .push(appLinks.cartSelectMethod.path)
-        .then(() =>
-          dispatch(
-            showToastMessage({ content: `choose_area_or_branch`, type: `info` })
-          )
-        );
-    }
+    console.log('method', method === 'delivery');
+    console.log('branch', branchId);
+    console.log('area', areaId);
+    console.log('else', method === 'delivery' ? areaId : branchId);
     triggerAddToCart({
       process_type: method,
-      area_branch:
-        method === 'delivery' ? areaId : branchId,
+      area_branch: method === 'delivery' ? areaId : branchId,
       body: {
         UserAgent: userAgent,
         Cart:
@@ -201,19 +194,9 @@ const CartIndex: NextPage = (): JSX.Element => {
   };
 
   const handleDecrease = (element: ProductCart) => {
-    if ((isNull(areaId) && isNull(branchId)) || isEmpty(method)) {
-      return router
-        .push(appLinks.cartSelectMethod.path)
-        .then(() =>
-          dispatch(
-            showToastMessage({ content: `choose_area_or_branch`, type: `info` })
-          )
-        );
-    }
     triggerAddToCart({
       process_type: method,
-      area_branch:
-        method === 'delivery' ? areaId : branchId,
+      area_branch: method === 'delivery' ? areaId : branchId,
       body: {
         UserAgent: userAgent,
         Cart:

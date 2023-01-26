@@ -26,11 +26,8 @@ export const branchSlice = createSlice({
       initialState,
   },
   extraReducers: (builder) => {
-    builder.addCase(
-      areaSlice.actions.setArea,
-      (state, action) => {
-        return initialState
-      }
+    builder.addCase(areaSlice.actions.setArea, (state, action) => {
+      return initialState;
     });
   },
 });
