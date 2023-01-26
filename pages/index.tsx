@@ -21,7 +21,10 @@ import {
 } from '@/constants/*';
 import { useTranslation } from 'react-i18next';
 import { setLocale } from '@/redux/slices/localeSlice';
-import { setCurrentModule } from '@/redux/slices/appSettingSlice';
+import {
+  setCurrentModule,
+  setShowFooterElement,
+} from '@/redux/slices/appSettingSlice';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import HomeSelectMethod from '@/components/home/HomeSelectMethod';
 import HomeVendorMainInfo from '@/components/home/HomeVendorMainInfo';
@@ -37,8 +40,10 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const router = useRouter();
+
   useEffect(() => {
     dispatch(setCurrentModule(t('home')));
+    dispatch(setShowFooterElement('home'));
   }, []);
 
   const handleFocus = () =>
