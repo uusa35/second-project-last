@@ -56,7 +56,7 @@ const ChangeVendorModal: FC<Props> = ({
 
   return (
     <Dialog
-      className="w-1/3"
+      className={`w-1/3 ${router.locale === 'ar' ? 'rtl' : 'ltr'}`}
       onClose={OnClose}
       open={OpenModal}
       maxWidth="xs"
