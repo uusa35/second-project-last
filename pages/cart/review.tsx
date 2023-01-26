@@ -144,10 +144,11 @@ const CartReview: NextPage = () => {
             router.replace(appLinks.orderFailure.path);
           }
         } else {
+          console.log({errorrrr: r})
           dispatch(
             showToastMessage({
               content: r.error.data.msg,
-              type: `success`,
+              type: `error`,
             })
           );
         }

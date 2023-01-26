@@ -102,7 +102,8 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
             if (r.error && r.error.data) {
               dispatch(
                 showToastMessage({
-                  content: lowerCase(kebabCase(r.error.data.msg)),
+                  // content: lowerCase(kebabCase(r.error.data.msg)),
+                  content: 'select_a_branch_or_area_before_order',
                   type: `error`,
                 })
               );
