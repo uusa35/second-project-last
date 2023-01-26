@@ -141,7 +141,7 @@ const CartIndex: NextPage = (): JSX.Element => {
     triggerAddToCart({
       process_type: method,
       area_branch:
-        method === 'delivery' ? areaId : method === 'pickup' && branchId,
+        method === 'delivery' ? areaId : branchId,
       body: {
         UserAgent: userAgent,
         Cart:
@@ -177,7 +177,7 @@ const CartIndex: NextPage = (): JSX.Element => {
     triggerAddToCart({
       process_type: method,
       area_branch:
-        method === 'delivery' ? areaId : method === 'pickup' && branchId,
+        method === 'delivery' ? areaId : branchId,
       body: {
         UserAgent: userAgent,
         Cart:
@@ -213,7 +213,7 @@ const CartIndex: NextPage = (): JSX.Element => {
     triggerAddToCart({
       process_type: method,
       area_branch:
-        method === 'delivery' ? areaId : method === 'pickup' && branchId,
+        method === 'delivery' ? areaId : branchId,
       body: {
         UserAgent: userAgent,
         Cart:
