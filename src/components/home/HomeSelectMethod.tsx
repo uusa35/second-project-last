@@ -22,11 +22,9 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
   const color = useAppSelector(themeColor);
   const { t } = useTranslation();
   const router = useRouter();
-  const dispatch = useAppDispatch();
 
   const handleSelectMethod = (m: appSetting['method']) => {
     router.push(appLinks.cartSelectMethod.path);
-    // .then(() => dispatch(setCartMethod(m)));
   };
 
   return (

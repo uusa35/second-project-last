@@ -76,6 +76,7 @@ const CartAddress: NextPage = (): JSX.Element => {
   const color = useAppSelector(themeColor);
   const [openTab, setOpenTab] = useState(1);
   const [show, SetShow] = useState(false);
+  const refForm = useRef();
   const [AddAddress, { isLoading: AddAddressLoading }] =
     useCreateAddressMutation();
   const [prefrences, setPrefrences] = useState<Prefrences>({
@@ -241,7 +242,7 @@ const CartAddress: NextPage = (): JSX.Element => {
       <MainContentLayout>
         {/* delivery method buttons */}
         <DeliveryBtns handleSelectMethod={handleSelectMethod} />
-        <form onSubmit={handleSubmit(onSubmit)} id="hook-form">
+        <form id="hook-form" onSubmit={handleSubmit(onSubmit)} ref={refForm}>
           <div className={'px-4'}>
             <div className="bg-gray-200 w-full mt-5 p-0 h-2"></div>
 
@@ -418,7 +419,7 @@ const CartAddress: NextPage = (): JSX.Element => {
                       placeholder={`${t(`block`)}`}
                       className={`${addressInputField}`}
                       suppressHydrationWarning={suppressText}
-                      {...register('block')}
+                      {...register('address.block')}
                       required={method === `delivery`}
                       aria-invalid={errors.block ? 'true' : 'false'}
                       onChange={(e) =>
@@ -449,7 +450,7 @@ const CartAddress: NextPage = (): JSX.Element => {
                       placeholder={`${t(`street`)}`}
                       className={`${addressInputField}`}
                       suppressHydrationWarning={suppressText}
-                      {...register('street')}
+                      {...register('address.street')}
                       aria-invalid={errors.street ? 'true' : 'false'}
                       onChange={(e) =>
                         setValue('address.street', e.target.value)
@@ -487,7 +488,7 @@ const CartAddress: NextPage = (): JSX.Element => {
                               placeholder={`${t(`house_no`)}`}
                               className={`${addressInputField}`}
                               suppressHydrationWarning={suppressText}
-                              {...register('house_no')}
+                              {...register('address.house_no')}
                               aria-invalid={errors.house_no ? 'true' : 'false'}
                               onChange={(e) =>
                                 setValue('address.house_no', e.target.value)
@@ -502,7 +503,7 @@ const CartAddress: NextPage = (): JSX.Element => {
                               className={`${addressInputField}`}
                               suppressHydrationWarning={suppressText}
                               placeholder={`${t(`floor#`)}`}
-                              {...register('floor_no')}
+                              {...register('address.floor_no')}
                               aria-invalid={errors.floor_no ? 'true' : 'false'}
                               onChange={(e) =>
                                 setValue('address.floor_no', e.target.value)
@@ -518,7 +519,7 @@ const CartAddress: NextPage = (): JSX.Element => {
                               placeholder={`${t(`office_no`)}`}
                               className={`${addressInputField}`}
                               suppressHydrationWarning={suppressText}
-                              {...register('office_no')}
+                              {...register('address.office_no')}
                               aria-invalid={errors.office_no ? 'true' : 'false'}
                               onChange={(e) =>
                                 setValue('address.office_no', e.target.value)
@@ -532,7 +533,7 @@ const CartAddress: NextPage = (): JSX.Element => {
                       placeholder={`${t(`avenue`)}`}
                       className={`${addressInputField}`}
                       suppressHydrationWarning={suppressText}
-                      {...register('avenue')}
+                      {...register('address.avenue')}
                       aria-invalid={errors.avenue ? 'true' : 'false'}
                       onChange={(e) =>
                         setValue('address.avenue', e.target.value)
@@ -562,7 +563,7 @@ const CartAddress: NextPage = (): JSX.Element => {
                       placeholder={`${t(`paci`)}`}
                       className={`${addressInputField}`}
                       suppressHydrationWarning={suppressText}
-                      {...register('paci')}
+                      {...register('address.paci')}
                       aria-invalid={errors.paci ? 'true' : 'false'}
                       onChange={(e) => setValue('address.paci', e.target.value)}
                     />
@@ -591,7 +592,7 @@ const CartAddress: NextPage = (): JSX.Element => {
                       placeholder={`${t(`additional`)}`}
                       className={`${addressInputField}`}
                       suppressHydrationWarning={suppressText}
-                      {...register('additional')}
+                      {...register('address.additional')}
                       aria-invalid={errors.additional ? 'true' : 'false'}
                       onChange={(e) =>
                         setValue('address.additional', e.target.value)
