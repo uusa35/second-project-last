@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { appSetting } from '@/types/index';
 import { searchParamsSlice } from '@/redux/slices/searchParamsSlice';
-import { cartSlice } from '@/redux/slices/cartSlice';
 import { areaSlice } from './areaSlice';
 import { branchSlice } from './branchSlice';
 
@@ -213,19 +212,13 @@ export const appSettingSlice = createSlice({
       }
     );
 
-    builder.addCase(
-      branchSlice.actions.setBranch,
-      (state, action) => {
-        state.method = 'pickup';
-      }
-    );
+    builder.addCase(branchSlice.actions.setBranch, (state, action) => {
+      state.method = 'pickup';
+    });
 
-    builder.addCase(
-      areaSlice.actions.setArea,
-      (state, action) => {
-        state.method = 'delivery';
-      }
-    );
+    builder.addCase(areaSlice.actions.setArea, (state, action) => {
+      state.method = 'delivery';
+    });
   },
 });
 

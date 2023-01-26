@@ -53,7 +53,7 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
 
   useEffect(() => {
     if (
-      showFooterElement === 'cartIndex' &&
+      showFooterElement === 'cart_index' &&
       ((isNull(area.id) && isNull(branchId)) || isEmpty(method))
     ) {
       router
@@ -64,7 +64,7 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
           )
         );
     }
-  }, [showFooterElement]);
+  }, []);
 
   const handleAddToCart = async () => {
     if ((isNull(area.id) && isNull(branchId)) || isEmpty(method)) {
@@ -328,9 +328,6 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
             </button>
           </div>
         )}
-        {/* {showFooterElement === 'vendor_show' && (
-
-        )} */}
         <PoweredByQ />
       </footer>
     </Suspense>
