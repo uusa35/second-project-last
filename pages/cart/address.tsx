@@ -3,7 +3,7 @@ import { NextPage } from 'next';
 import Link from 'next/link';
 import MainContentLayout from '@/layouts/MainContentLayout';
 import DeliveryBtns from '@/components/widgets/cart/DeliveryBtns';
-import { appSetting, Prefrences } from '@/types/index';
+import { appSetting, Prefrences, ServerCart } from '@/types/index';
 import {
   resetShowFooterElement,
   setCartMethod,
@@ -24,7 +24,7 @@ import OfficeAcitveIcon from '@/appIcons/office_active.svg';
 import Image from 'next/image';
 import { Home } from '@mui/icons-material';
 import { addressInputField, appLinks, suppressText } from '@/constants/*';
-import { isEmpty, kebabCase, lowerCase } from 'lodash';
+import { isEmpty, isNull, kebabCase, lowerCase } from 'lodash';
 import {
   useCheckTimeAvilabilityMutation,
   useCreateAddressMutation,
@@ -40,6 +40,8 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { themeColor } from '@/redux/slices/vendorSlice';
+import { useGetCartProductsQuery } from '@/redux/api/cartApi';
+import { AppQueryResult } from '@/types/queries';
 
 const schema = yup
   .object()
@@ -71,7 +73,7 @@ const CartAddress: NextPage = (): JSX.Element => {
     area,
     branch,
     appSetting: { method },
-    customer: { address, id },
+    customer: { userAgent, address, id },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
   const [openTab, setOpenTab] = useState(1);
@@ -79,6 +81,13 @@ const CartAddress: NextPage = (): JSX.Element => {
   const refForm = useRef();
   const [AddAddress, { isLoading: AddAddressLoading }] =
     useCreateAddressMutation();
+  const { data: cartItems, isSuccess } = useGetCartProductsQuery<{
+    data: AppQueryResult<ServerCart>;
+    isSuccess: boolean;
+    refetch: () => void;
+  }>({
+    UserAgent: userAgent,
+  });
   const [prefrences, setPrefrences] = useState<Prefrences>({
     type:
       method === 'delivery'
@@ -132,7 +141,6 @@ const CartAddress: NextPage = (): JSX.Element => {
     useCheckTimeAvilabilityMutation();
 
   const checkTimeAvailability = async () => {
-    console.log('started');
     await checkTime({
       process_type: method,
       area_branch:
@@ -147,7 +155,6 @@ const CartAddress: NextPage = (): JSX.Element => {
         ).getMinutes()}:${new Date(prefrences.time as Date).getSeconds()}`,
       },
     }).then((r: any) => {
-      console.log('r', r);
       if (r.data?.status) {
         switch (r.data.Data.toLowerCase()) {
           case 'open':
@@ -220,8 +227,8 @@ const CartAddress: NextPage = (): JSX.Element => {
       }
     });
   };
+
   const onSubmit = async (body: any) => {
-    console.log('body', body);
     if (method === 'pickup') {
       await checkTimeAvailability();
     } else {
@@ -232,6 +239,20 @@ const CartAddress: NextPage = (): JSX.Element => {
   useEffect(() => {
     dispatch(setCurrentModule(t('cart_address')));
     dispatch(setShowFooterElement('cart_address'));
+    if (
+      (isNull(area.id) && isNull(branch.id)) ||
+      (isSuccess && !cartItems.data?.Cart) ||
+      (isSuccess && cartItems.data?.Cart.length === 0)
+    ) {
+      router.replace(appLinks.cartSelectMethod(method)).then(() =>
+        dispatch(
+          showToastMessage({
+            content: `select_a_branch_or_area_before_order`,
+            type: `warning`,
+          })
+        )
+      );
+    }
     return () => {
       dispatch(resetShowFooterElement());
     };

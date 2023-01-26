@@ -12,8 +12,6 @@ const DeliveryBtns: FC = (): JSX.Element => {
     appSetting: { method },
   } = useAppSelector((state) => state);
 
-  console.log('method', method);
-
   return (
     <div className="flex flex-1 w-full flex-row justify-between items-center px-5 text-lg py-8">
       <Link

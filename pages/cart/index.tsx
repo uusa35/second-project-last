@@ -41,6 +41,7 @@ import {
 } from '@/redux/slices/cartSlice';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { useRouter } from 'next/router';
+
 const CartIndex: NextPage = (): JSX.Element => {
   const { t } = useTranslation();
   const {
@@ -62,12 +63,9 @@ const CartIndex: NextPage = (): JSX.Element => {
     isSuccess: boolean;
     isLoading: boolean;
     refetch: () => void;
-  }>(
-    {
-      UserAgent: userAgent,
-    },
-    { refetchOnMountOrArgChange: true }
-  );
+  }>({
+    UserAgent: userAgent,
+  });
   const [triggerCheckPromoCode] = useLazyCheckPromoCodeQuery();
 
   useEffect(() => {
@@ -164,10 +162,6 @@ const CartIndex: NextPage = (): JSX.Element => {
   };
 
   const handleIncrease = (element: ProductCart) => {
-    console.log('method', method === 'delivery');
-    console.log('branch', branchId);
-    console.log('area', areaId);
-    console.log('else', method === 'delivery' ? areaId : branchId);
     triggerAddToCart({
       process_type: method,
       area_branch: method === 'delivery' ? areaId : branchId,

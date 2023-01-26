@@ -43,7 +43,7 @@ export const appLinks = {
   trackOrder: { path: '/order/track' },
   orderReview: { path: '/cart/review' },
   orderFailure: { path: '/order/status/failure' },
-  orderSuccess: { path: '/order/status/success' },
+  orderSuccess: (orderId: string) => `/order/status/${orderId}/success`,
   orderReceipt: { path: '/order/status/receipt' },
   customerInfo: { path: '/customer/info' },
   vendorShow: { path: '/vendor/show' },

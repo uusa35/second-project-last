@@ -30,12 +30,9 @@ const SlideTopNav: FC<Props> = ({ offset, isHome = false }): JSX.Element => {
     customer: { userAgent },
     locale: { lang, otherLang },
   } = useAppSelector((state) => state);
-  const { data: cartItems, isSuccess } = useGetCartProductsQuery(
-    {
-      UserAgent: userAgent,
-    },
-    { refetchOnMountOrArgChange: true }
-  );
+  const { data: cartItems, isSuccess } = useGetCartProductsQuery({
+    UserAgent: userAgent,
+  });
   const dispatch = useAppDispatch();
   const router = useRouter();
 
@@ -109,6 +106,7 @@ const SlideTopNav: FC<Props> = ({ offset, isHome = false }): JSX.Element => {
           >
             <ShoppingBagOutlined className={`w-8 h-8 drop-shadow-sm`} />
             {isSuccess &&
+              cartItems.data &&
               cartItems.data.subTotal > 0 &&
               cartItems.data?.Cart?.length > 0 && (
                 <div className="absolute -left-2 -top-2 opacity-90  rounded-full bg-red-600 w-6 h-6 top-0 shadow-xl flex items-center justify-center text-white">
