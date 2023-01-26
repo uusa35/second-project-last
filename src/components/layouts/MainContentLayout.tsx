@@ -4,6 +4,8 @@ import dynamic from 'next/dynamic';
 import { useAppSelector } from '@/redux/hooks';
 import OffLineWidget from '@/widgets/OffLineWidget';
 import NoInternet from '@/appImages/no_internet.png';
+import NextNProgress from 'nextjs-progressbar';
+import { themeColor } from '@/redux/slices/vendorSlice';
 const AppHeader = dynamic(() => import(`@/components/AppHeader`), {
   ssr: false,
 });
@@ -35,6 +37,7 @@ const MainContentLayout: FC<Props> = ({
     appSetting: { showHeader, showFooter },
     locale: { isRTL },
   } = useAppSelector((state) => state);
+  const color = useAppSelector(themeColor);
   const [isOnline, setIsOnline] = useState(true);
 
   useEffect(() => {
@@ -56,6 +59,14 @@ const MainContentLayout: FC<Props> = ({
       exit={{ opacity: 0 }}
       className={`flex flex-col justify-start items-start w-full lg:w-2/4 xl:w-1/3 relative`}
     >
+      <NextNProgress
+        color={color}
+        startPosition={0.3}
+        stopDelayMs={200}
+        height={3.5}
+        showOnShallow={true}
+        options={{ showSpinner: false }}
+      />
       <SideMenu />
       {showHeader && <AppHeader />}
       <main

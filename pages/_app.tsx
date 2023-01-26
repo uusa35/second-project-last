@@ -18,14 +18,6 @@ const App: FC<AppProps> = ({ Component, ...rest }) => {
   const { pageProps } = props;
   return (
     <Suspense>
-      <NextNProgress
-        color="#189EC9"
-        startPosition={0.3}
-        stopDelayMs={200}
-        height={2}
-        showOnShallow={true}
-        options={{ showSpinner: false }}
-      />
       <Provider store={store}>
         <MainLayout>
           <Component {...pageProps} />
