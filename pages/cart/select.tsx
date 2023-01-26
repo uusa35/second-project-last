@@ -50,6 +50,8 @@ const SelectMethod: NextPage<Props> = ({ previousRoute }): JSX.Element => {
     Branch | Area | undefined
   >(method === 'delivery' ? selectedArea : branch);
 
+  const [selectedMethod,setSelectedMethod]=useState<string>(method)
+
   useEffect(() => {
     setSelectedLocation(method === 'delivery' ? selectedArea : branch);
   }, [method]);
@@ -131,7 +133,7 @@ const SelectMethod: NextPage<Props> = ({ previousRoute }): JSX.Element => {
   };
 
   const handleSelectMethod = (m: appSetting['method']) => {
-    dispatch(setCartMethod(m));
+    setSelectedMethod(m)
   };
 
   return (
@@ -154,7 +156,7 @@ const SelectMethod: NextPage<Props> = ({ previousRoute }): JSX.Element => {
               />
             </div>
           </div>
-          {method === 'delivery' && (
+          {selectedMethod === 'delivery' && (
             <div className={`px-4`}>
               {map(locations.Data, (item: Location, i) => {
                 return (
@@ -199,7 +201,7 @@ const SelectMethod: NextPage<Props> = ({ previousRoute }): JSX.Element => {
               })}
             </div>
           )}
-          {method === 'pickup' && (
+          {selectedMethod === 'pickup' && (
             <div className="px-4">
               <p
                 className="p-3 capitalize" 

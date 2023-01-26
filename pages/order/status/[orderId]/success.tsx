@@ -12,7 +12,7 @@ import { Order } from '@/types/index';
 import { apiSlice } from '@/redux/api';
 import TextTrans from '@/components/TextTrans';
 import CustomImage from '@/components/CustomImage';
-import { useEffect, Suspense } from 'react';
+import { useEffect, Suspense, useState } from 'react';
 import { setCurrentModule } from '@/redux/slices/appSettingSlice';
 
 type Props = {
@@ -25,6 +25,8 @@ const OrderSuccess: NextPage<Props> = ({ element }) => {
     area: { id: areaId },
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
+
+
   useEffect(() => {
     dispatch(setCurrentModule(t('order_success')));
   }, []);
