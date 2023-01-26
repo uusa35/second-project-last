@@ -210,7 +210,7 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
       >
         {showFooterElement === 'product_show' && (
           <div
-            className={`${mainBg} w-full h-fit flex cursor-auto rounded-none opacity-100 flex justify-between items-center px-8 py-8 rounded-t-2xl
+            className={`w-full h-fit flex cursor-auto rounded-none opacity-100 flex justify-between items-center px-8 py-8 rounded-t-2xl
             `}
             style={{
               background: `-webkit-gradient(linear, left top, right top, from(${color}), color-stop(100%, ${color}), color-stop(50%, ${color}))`,
@@ -235,7 +235,7 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
           isSuccess &&
           cartItems.data?.Cart?.length > 0 && (
             <div
-              className={`${mainBg} w-full h-20 flex justify-center items-center rounded-t-xl`}
+              className={`text-white w-full h-24 flex justify-center items-center rounded-t-xl`}
               style={{
                 background: `-webkit-gradient(linear, left top, right top, from(${color}), color-stop(100%, ${color}), color-stop(50%, ${color}))`,
               }}
@@ -273,7 +273,7 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
 
         {showFooterElement === 'customerInfo' && (
           <div
-            className={`${mainBg} bg-sky-600 w-full h-24 flex justify-center items-center rounded-t-xl`}
+            className={`text-white w-full h-24 flex justify-center items-center rounded-t-xl`}
             style={{
               background: `-webkit-gradient(linear, left top, right top, from(${color}), color-stop(100%, ${color}), color-stop(50%, ${color}))`,
             }}
@@ -290,7 +290,7 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
         )}
         {showFooterElement === 'order_review' && (
           <div
-            className={`${mainBg} bg-sky-600 w-full h-20 flex justify-center items-center rounded-t-xl`}
+            className={`text-white w-full h-24 flex justify-center items-center rounded-t-xl`}
             style={{
               background: `-webkit-gradient(linear, left top, right top, from(${color}), color-stop(100%, ${color}), color-stop(50%, ${color}))`,
             }}

@@ -1,12 +1,18 @@
-import { Suspense } from 'react';
+import React, { Suspense } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { useAppSelector } from '@/redux/hooks';
 import { tajwalFont } from '@/constants/*';
+import { themeColor } from '@/redux/slices/vendorSlice';
+import CloseIcon from '@mui/icons-material/Close';
 
 const ToastAppContainer = () => {
   const {
     locale: { isRTL },
+    appSetting: {
+      toastMessage: { type },
+    },
   } = useAppSelector((state) => state);
+  const color = useAppSelector(themeColor);
   return (
     <Suspense>
       <ToastContainer
@@ -19,7 +25,21 @@ const ToastAppContainer = () => {
         rtl={isRTL}
         pauseOnFocusLoss
         pauseOnHover
-        theme="colored"
+        // theme="light"
+        // bodyStyle={{ backgroundColor: `yellow` }}
+        // style={{ color: `white` }}
+        // toastClassName={`bg-lime-600`}
+        // progressClassName={`bg-red-900`}
+        // bodyClassName={`bg-green-600`}
+        toastStyle={{
+          backgroundColor: type === `error` ? `red` : color,
+          color: `white`,
+        }}
+        closeButton={
+          <div>
+            <CloseIcon color={`white`} />
+          </div>
+        }
       />
     </Suspense>
   );
