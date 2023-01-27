@@ -56,13 +56,9 @@ const CartReview: NextPage = () => {
     data: AppQueryResult<ServerCart>;
     isSuccess: boolean;
     refetch: () => void;
-  }>(
-    {
-      UserAgent: userAgent,
-    },
-    { refetchOnMountOrArgChange: true }
-  );
-
+  }>({
+    UserAgent: userAgent,
+  });
   const [triggerCreateOrder, { isLoading }] = useLazyCreateOrderQuery();
 
   const paymentMethods: { id: OrderUser['PaymentMethod']; src: any }[] = [
@@ -71,8 +67,25 @@ const CartReview: NextPage = () => {
     { id: 'cash_on_delivery', src: Cash.src },
   ];
 
+  useEffect(() => {
+    if (
+      (isNull(areaId) && isNull(branchId)) ||
+      (isSuccess && !cartItems.data?.Cart) ||
+      cartItems.data?.Cart.length === 0
+    ) {
+      router.replace(appLinks.cartSelectMethod(process_type)).then(() =>
+        dispatch(
+          showToastMessage({
+            content: `select_a_branch_or_area_before_order`,
+            type: `warning`,
+          })
+        )
+      );
+    }
+  }, []);
+
   if (isLoading) {
-    return <LoadingSpinner fullWidth={false} />;
+    return <LoadingSpinner fullWidth={true} />;
   }
 
   const handleCreateOrder = async () => {
@@ -111,13 +124,13 @@ const CartReview: NextPage = () => {
         process_type,
         area_branch: process_type === `delivery` ? areaId : branchId,
       }).then((r: any) => {
-        console.log('rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr', r);
         if (r.data) {
           if (r.data.status) {
             dispatch(setPaymentMethod(selectedPaymentMethod));
             if (selectedPaymentMethod === 'cash_on_delivery') {
               dispatch(setOrder(r.data.data));
-              router.replace(`/order/status/${r.data.data.order_id}/success`);
+              // router.replace(`/order/status/${r.data.data.order_id}/success`);
+              router.replace(appLinks.orderSuccess(r.data.data.order_id));
             } else {
               window.open(r.data.Data, '_self');
             }
@@ -128,7 +141,7 @@ const CartReview: NextPage = () => {
               })
             );
           } else {
-            router.replace(`order/status/failure`);
+            router.replace(appLinks.orderFailure.path);
           }
         } else {
           dispatch(
@@ -137,8 +150,6 @@ const CartReview: NextPage = () => {
               type: `success`,
             })
           );
-          // error
-          console.log(r.data);
         }
       });
     }

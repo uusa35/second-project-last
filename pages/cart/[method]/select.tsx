@@ -14,7 +14,7 @@ import {
 } from '@material-tailwind/react';
 import { CircleOutlined, CheckCircle } from '@mui/icons-material';
 import { submitBtnClass, suppressText } from '@/constants/*';
-import { appSetting, ServerCart } from '@/types/index';
+import { appSetting } from '@/types/index';
 import { setCartMethod } from '@/redux/slices/appSettingSlice';
 import { Location } from '@/types/queries';
 import { isEmpty, isNull, map } from 'lodash';
@@ -55,13 +55,7 @@ const SelectMethod: NextPage<Props> = ({
     method: method,
   });
   const [showChangeLocModal, setShowChangeLocModal] = useState<boolean>(false);
-
-  const { data: cartItems, isSuccess } = useGetCartProductsQuery<{
-    data: AppQueryResult<ServerCart>;
-    isSuccess: boolean;
-    isLoading: boolean;
-    refetch: () => void;
-  }>({
+  const { data: cartItems, isSuccess } = useGetCartProductsQuery({
     UserAgent: userAgent,
   });
   const { data: locations, isLoading: locationsLoading } =
@@ -73,7 +67,6 @@ const SelectMethod: NextPage<Props> = ({
     data: AppQueryResult<Branch[]>;
     isLoading: boolean;
   }>({ lang });
-
   const [open, setOpen] = useState(0);
   const handleOpen = (value: any) => {
     setOpen(open === value ? 0 : value);
@@ -82,6 +75,7 @@ const SelectMethod: NextPage<Props> = ({
   useEffect(() => {
     dispatch(setCurrentModule(t('select_method')));
     // dispatch(setCartMethod(method));
+    //
     // if (method === `pickup`) {
     //   dispatch(removeArea());
     // } else {

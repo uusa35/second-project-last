@@ -13,7 +13,10 @@ import { apiSlice } from '@/redux/api';
 import TextTrans from '@/components/TextTrans';
 import CustomImage from '@/components/CustomImage';
 import { useEffect, Suspense } from 'react';
-import { setCurrentModule } from '@/redux/slices/appSettingSlice';
+import {
+  setCurrentModule,
+  setShowFooterElement,
+} from '@/redux/slices/appSettingSlice';
 import { themeColor } from '@/redux/slices/vendorSlice';
 
 type Props = {
@@ -30,6 +33,7 @@ const OrderSuccess: NextPage<Props> = ({ element }) => {
 
   useEffect(() => {
     dispatch(setCurrentModule(t('order_success')));
+    dispatch(setShowFooterElement(t('order_success')));
   }, []);
 
   return (

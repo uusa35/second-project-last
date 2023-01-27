@@ -10,7 +10,6 @@ import { Area, Branch } from '@/types/queries';
 import { setBranch } from '@/redux/slices/branchSlice';
 import { setArea } from '@/redux/slices/areaSlice';
 import { useRouter } from 'next/router';
-import { isNull } from 'lodash';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { appSetting } from '../types';
 
@@ -54,10 +53,8 @@ const ChangeLocationModal: FC<Props> = ({
         SelectedAreaOrBranch.method === `pickup`
           ? dispatch(setBranch(SelectedAreaOrBranch.branch))
           : dispatch(setArea(SelectedAreaOrBranch.area));
-
-          router.push('/');
-
-          // get cart
+        router.push('/');
+        // get cart
         // if (!isNull(previousRoute)) {
         //   router.push(previousRoute);
         // } else {

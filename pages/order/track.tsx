@@ -27,7 +27,6 @@ const TrackOrder: NextPage = (): JSX.Element => {
       trigger({ order_code: `${order_code}` });
     }
   };
-  console.log({data})
 
   useEffect(() => {
     if (router.isReady && router.query.order_code) {
@@ -44,17 +43,17 @@ const TrackOrder: NextPage = (): JSX.Element => {
   }
 
   const handelDisplayAddress = () => {
-    let address=Object.values(data.data.address.address)
-    let concatAdd=''
+    let address = Object.values(data.data.address.address);
+    let concatAdd = '';
 
-    address.map(a=>{
-        if(a!== null){
-            concatAdd+=a+', '
-        }
-    })
+    address.map((a) => {
+      if (a !== null) {
+        concatAdd += a + ', ';
+      }
+    });
 
-    return concatAdd
-}
+    return concatAdd;
+  };
 
   return (
     <Suspense fallback={<LoadingSpinner fullWidth={false} />}>
@@ -151,7 +150,9 @@ const TrackOrder: NextPage = (): JSX.Element => {
               >
                 {t('delivering_to_your_address')}
               </p>
-              <p className="text-lg text-center" style={{ color }}>{handelDisplayAddress()}</p>
+              <p className="text-lg text-center" style={{ color }}>
+                {handelDisplayAddress()}
+              </p>
             </div>
             <div className="pt-5 px-4 mt-[40%] capitalize">
               <button

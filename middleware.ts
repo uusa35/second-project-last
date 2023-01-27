@@ -35,10 +35,7 @@ export async function middleware(req: NextRequest, res: NextResponse) {
     })
       .then((r: any) => r.json())
       .catch((e) => e);
-    // console.log('user========>>>>', user);
   }
-  // console.log('token========', token);
-  // console.log('country========', country);
   const withQuery =
     country !== null
       ? `?country_id=${country.id}&country_name=${country.name}&country_name_ar=${country.name_ar}&country_currency=${country.currency}`

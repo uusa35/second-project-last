@@ -26,8 +26,9 @@ const DeliveryBtns: FC<Props> = ({ method_in_select = '' }): JSX.Element => {
       <Link
         scroll={true}
         className={`${
-          method_in_select ? method_in_select === 'delivery' &&  `text-white`:
-          method === 'delivery' && `text-white`
+          method_in_select
+            ? method_in_select === 'delivery' && `text-white`
+            : method === 'delivery' && `text-white`
         } md:ltr:mr-3 md:rtl:ml-3 py-3 px-16 capitalize border-2 rounded-md`}
         href={appLinks.cartSelectMethod(`delivery`)}
         suppressHydrationWarning={suppressText}
@@ -46,18 +47,21 @@ const DeliveryBtns: FC<Props> = ({ method_in_select = '' }): JSX.Element => {
       <Link
         scroll={true}
         className={`${
-          method_in_select ? method_in_select  === 'pickup' && `text-white`:
-          method === 'pickup' && `text-white`
+          method_in_select
+            ? method_in_select === 'pickup' && `text-white`
+            : method === 'pickup' && `text-white`
         } md:ltr:mr-3 md:rtl:ml-3 capitalize py-3 px-16 border-2 rounded-md`}
         href={appLinks.cartSelectMethod(`pickup`)}
         suppressHydrationWarning={suppressText}
-        style={{  backgroundColor: router.pathname.includes('select')
-        ? method_in_select === `pickup`
-          ? color
-          : `white`
-        : method === `pickup`
-        ? color
-        : `white`, }}
+        style={{
+          backgroundColor: router.pathname.includes('select')
+            ? method_in_select === `pickup`
+              ? color
+              : `white`
+            : method === `pickup`
+            ? color
+            : `white`,
+        }}
       >
         {t('pickup')}
       </Link>

@@ -112,3 +112,5 @@ input[type="time"]::-webkit-calendar-picker-indicator {
     width: 2vh;
     height: 2vh;
 }
+
+#nprogress .bar { left: auto !important; right: 0; }

@@ -6,10 +6,9 @@ import GreyLine from '@/components/GreyLine';
 import { useTranslation } from 'react-i18next';
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
-import { useEffect, useState, Suspense } from 'react';
-import { CustomerInfo } from '@/types/index';
+import { useEffect, Suspense } from 'react';
+import { ServerCart } from '@/types/index';
 import {
-  resetShowFooterElement,
   setCurrentModule,
   setShowFooterElement,
   showToastMessage,
@@ -24,8 +23,10 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import CustomImage from '@/components/CustomImage';
 import ContactImage from '@/appImages/contact_info.png';
-import LoadingSpinner from '@/components/LoadingSpinner';
 import { themeColor } from '@/redux/slices/vendorSlice';
+import { isNull } from 'lodash';
+import { useGetCartProductsQuery } from '@/redux/api/cartApi';
+import { AppQueryResult } from '@/types/queries';
 
 const schema = yup
   .object({
@@ -39,8 +40,20 @@ const CustomerInformation: NextPage = (): JSX.Element => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const router = useRouter();
-  const { customer } = useAppSelector((state) => state);
+  const {
+    customer,
+    appSetting: { method },
+    customer: { userAgent },
+    branch: { id: branchId },
+    area: { id: areaId },
+  } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
+  const { data: cartItems, isSuccess } = useGetCartProductsQuery<{
+    data: AppQueryResult<ServerCart>;
+    isSuccess: boolean;
+  }>({
+    UserAgent: userAgent,
+  });
   const [triggerSaveCustomerInfo, { isLoading }] =
     useSaveCustomerInfoMutation();
   const {
@@ -62,6 +75,20 @@ const CustomerInformation: NextPage = (): JSX.Element => {
   useEffect(() => {
     dispatch(setCurrentModule(t('customer_info')));
     dispatch(setShowFooterElement(`customerInfo`));
+    if (
+      (isNull(areaId) && isNull(branchId)) ||
+      (isSuccess && !cartItems.data?.Cart) ||
+      (isSuccess && cartItems.data?.Cart.length === 0)
+    ) {
+      router.replace(appLinks.cartSelectMethod(method)).then(() =>
+        dispatch(
+          showToastMessage({
+            content: `select_a_branch_or_area_before_order`,
+            type: `warning`,
+          })
+        )
+      );
+    }
   }, []);
 
   const onSubmit = async (body: any) => {
@@ -69,7 +96,6 @@ const CustomerInformation: NextPage = (): JSX.Element => {
       body,
     }).then((r: any) => {
       if (r.data && r.data.Data && r.data.status) {
-        console.log('data', r.data.Data);
         router
           .push(appLinks.address.path)
           .then(() => dispatch(setCustomer(r.data.Data)));
@@ -83,8 +109,6 @@ const CustomerInformation: NextPage = (): JSX.Element => {
       }
     });
   };
-
-  console.log('customer', customer.phone);
 
   return (
     <Suspense>

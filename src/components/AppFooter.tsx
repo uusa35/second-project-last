@@ -1,17 +1,15 @@
 import { useTranslation } from 'react-i18next';
-import { FC, Suspense, useEffect } from 'react';
+import { FC, Suspense } from 'react';
 import {
   appLinks,
   convertColor,
   footerBtnClass,
-  mainBg,
   suppressText,
 } from '@/constants/*';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import PoweredByQ from '@/components/PoweredByQ';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
 import { useRouter } from 'next/router';
-import Link from 'next/link';
 import {
   useAddToCartMutation,
   useGetCartProductsQuery,
