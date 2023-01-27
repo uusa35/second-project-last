@@ -67,8 +67,7 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
       ) {
         await triggerAddToCart({
           process_type: method,
-          area_branch:
-            method === 'delivery' ? area.id : method === 'pickup' && branchId,
+          area_branch: method === 'delivery' ? area.id : branchId,
           body: {
             UserAgent: userAgent,
             Cart:
@@ -155,8 +154,7 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
       }
       triggerAddToCart({
         process_type: method,
-        area_branch:
-          method === 'delivery' ? area.id : method === 'pickup' && branchId,
+        area_branch: method === 'delivery' ? area.id : branchId,
         body: {
           UserAgent: userAgent,
           Cart:
