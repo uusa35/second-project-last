@@ -64,12 +64,7 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
         })
       );
     } else {
-      if (
-        !(method === `pickup` && isNull(branchId)) ||
-        (!(method === `delivery` && isNull(area.id)) &&
-          !isEmpty(productCart) &&
-          userAgent)
-      ) {
+      if (!isEmpty(productCart) && userAgent) {
         await triggerAddToCart({
           process_type: method,
           area_branch: method === 'delivery' ? area.id : branchId,
