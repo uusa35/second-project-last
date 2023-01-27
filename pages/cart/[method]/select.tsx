@@ -149,9 +149,9 @@ const SelectMethod: NextPage<Props> = ({
     }
   };
 
-  useEffect(()=>{  
-    console.log('heeereeeeeeeeeeeeeeeeeeeeeeeeeeeee', selectedData);
-  },[selectedData])
+  // useEffect(()=>{  
+  //   console.log('heeereeeeeeeeeeeeeeeeeeeeeeeeeeeee', selectedData);
+  // },[selectedData])
 
   return (
     <Suspense>

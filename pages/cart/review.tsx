@@ -91,7 +91,7 @@ const CartReview: NextPage = () => {
   const handleCreateOrder = async () => {
     if (isNull(customer.id)) {
       router.push(appLinks.customerInfo.path);
-    } else if (!customer.address.id) {
+    } else if (!customer.address.id && process_type === `delivery`) {
       router.push(appLinks.address.path);
     }
     if (
@@ -103,7 +103,9 @@ const CartReview: NextPage = () => {
       await triggerCreateOrder({
         params: {
           user_id: customer.id,
-          address_id: customer.address.id,
+          ...(process_type === `delivery`
+            ? { address_id: customer.address.id }
+            : {}),
           order_type: customer.prefrences.type,
           UserAgent: userAgent,
           Messg: customer.notes,
@@ -121,8 +123,10 @@ const CartReview: NextPage = () => {
             '0' + new Date(customer.prefrences.time as Date).getSeconds()
           ).slice(-2)}`,
         },
-        process_type,
-        area_branch: process_type === `delivery` ? areaId : branchId,
+        area_branch:
+          process_type === `delivery`
+            ? { 'x-area-id': areaId }
+            : { 'x-branch-id': branchId },
       }).then((r: any) => {
         if (r.data) {
           if (r.data.status) {

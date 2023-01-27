@@ -15,17 +15,15 @@ export const orderApi = apiSlice.injectEndpoints({
         AppQueryResult<Order>,
         {
           params: OrderUser;
-          process_type: string;
-          area_branch: string;
+          area_branch: any;
         }
       >({
-        query: ({ params, process_type, area_branch }) => ({
+        query: ({ params,  area_branch }) => ({
           url: `create-order`,
           method: 'POST',
           params,
           headers: {
-            ...(process_type === 'delivery' && { 'x-area-id': area_branch }),
-            ...(process_type === 'pickup' && { 'x-branch-id': area_branch }),
+            ...area_branch
           },
           validateStatus: (response, result) =>
             response.status == 200 && result.status,
