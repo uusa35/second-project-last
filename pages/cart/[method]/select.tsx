@@ -26,7 +26,10 @@ import { useGetBranchesQuery } from '@/redux/api/branchApi';
 import DeliveryBtns from '@/components/widgets/cart/DeliveryBtns';
 import TextTrans from '@/components/TextTrans';
 import ChangeLocationModal from '@/components/ChangeLocationModal';
-import { useGetCartProductsQuery } from '@/redux/api/cartApi';
+import {
+  useGetCartProductsQuery,
+  useLazyGetCartProductsQuery,
+} from '@/redux/api/cartApi';
 import { wrapper } from '@/redux/store';
 import { themeColor } from '@/redux/slices/vendorSlice';
 
@@ -64,7 +67,11 @@ const SelectMethod: NextPage<Props> = ({
   }, [method]);
 
   const [showChangeLocModal, setShowChangeLocModal] = useState<boolean>(false);
-  const { data: cartItems, isSuccess } = useGetCartProductsQuery({
+  const {
+    data: cartItems,
+    isSuccess,
+    refetch: refetchCart,
+  } = useGetCartProductsQuery({
     UserAgent: userAgent,
   });
   const { data: locations, isLoading: locationsLoading } =
@@ -83,6 +90,7 @@ const SelectMethod: NextPage<Props> = ({
 
   useEffect(() => {
     dispatch(setCurrentModule(t('select_method')));
+    () => refetchCart();
   }, []);
 
   if (branchesLoading || locationsLoading) {
