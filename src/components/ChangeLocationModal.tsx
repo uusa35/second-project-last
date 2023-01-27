@@ -49,17 +49,17 @@ const ChangeLocationModal: FC<Props> = ({
             ? { 'x-branch-id': SelectedAreaOrBranch.branch.id }
             : { 'x-area-id': SelectedAreaOrBranch.area.id },
       }).then(() => {
-        console.log('in modalset area')
+        console.log('in modalset area');
         SelectedAreaOrBranch.method === `pickup`
           ? dispatch(setBranch(SelectedAreaOrBranch.branch))
           : dispatch(setArea(SelectedAreaOrBranch.area));
-        router.push('/');
+
         // get cart
-        // if (!isNull(previousRoute)) {
-        //   router.push(previousRoute);
-        // } else {
-        //   router.back();
-        // }
+        if (!previousRoute?.includes(`select`)) {
+          router.back();
+        } else {
+          router.push(`/`);
+        }
       });
     }
   };
@@ -70,7 +70,11 @@ const ChangeLocationModal: FC<Props> = ({
       onClose={OnClose}
       open={OpenModal}
       maxWidth="xs"
-      classes={{'container':`w-1/3 ${router.locale === 'ar' ? "float-right" :"float-left"}`}}
+      classes={{
+        container: `w-1/3 ${
+          router.locale === 'ar' ? 'float-right' : 'float-left'
+        }`,
+      }}
       // PaperProps={{ classes: { root: 'w-1/2 !rounded-3xl' } }}
       PaperProps={{ classes: { root: 'w-2/3' } }}
     >
