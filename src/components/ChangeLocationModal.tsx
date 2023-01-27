@@ -24,7 +24,7 @@ type Props = {
   previousRoute: string | null;
 };
 
-const ChangeVendorModal: FC<Props> = ({
+const ChangeLocationModal: FC<Props> = ({
   OnClose,
   OpenModal,
   SelectedAreaOrBranch,
@@ -49,6 +49,7 @@ const ChangeVendorModal: FC<Props> = ({
             ? { 'x-branch-id': SelectedAreaOrBranch.branch.id }
             : { 'x-area-id': SelectedAreaOrBranch.area.id },
       }).then(() => {
+        console.log('in modalset area')
         SelectedAreaOrBranch.method === `pickup`
           ? dispatch(setBranch(SelectedAreaOrBranch.branch))
           : dispatch(setArea(SelectedAreaOrBranch.area));
@@ -65,10 +66,11 @@ const ChangeVendorModal: FC<Props> = ({
 
   return (
     <Dialog
-      className={`w-1/3 ${router.locale === 'ar' ? 'rtl' : 'ltr'}`}
+      // className={`${router.locale === 'ar' ? 'rtl' : 'ltr'}`}
       onClose={OnClose}
       open={OpenModal}
       maxWidth="xs"
+      classes={{'container':`w-1/3 ${router.locale === 'ar' ? "float-right" :"float-left"}`}}
       // PaperProps={{ classes: { root: 'w-1/2 !rounded-3xl' } }}
       PaperProps={{ classes: { root: 'w-2/3' } }}
     >
@@ -113,4 +115,4 @@ const ChangeVendorModal: FC<Props> = ({
   );
 };
 
-export default ChangeVendorModal;
+export default ChangeLocationModal;

@@ -25,10 +25,10 @@ import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { useGetBranchesQuery } from '@/redux/api/branchApi';
 import DeliveryBtns from '@/components/widgets/cart/DeliveryBtns';
 import TextTrans from '@/components/TextTrans';
-import ChangeVendorModal from '@/components/ChangeVendorModal';
+import ChangeLocationModal from '@/components/ChangeLocationModal';
+import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 import { wrapper } from '@/redux/store';
 import { themeColor } from '@/redux/slices/vendorSlice';
-import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 
 type Props = {
   previousRoute: string | null;
@@ -118,6 +118,7 @@ const SelectMethod: NextPage<Props> = ({
     ) {
       setShowChangeLocModal(true);
     } else {
+      console.log('in area not changed set')
       if (method === 'delivery') {
         dispatch(setArea(selectedData.area));
         // dispatch(removeBranch());
@@ -255,7 +256,7 @@ const SelectMethod: NextPage<Props> = ({
             {t('confirm')}
           </button>
         </div>
-        <ChangeVendorModal
+        <ChangeLocationModal
           SelectedAreaOrBranch={selectedData}
           OpenModal={showChangeLocModal}
           previousRoute={previousRoute ?? null}
