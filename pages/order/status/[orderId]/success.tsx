@@ -18,6 +18,7 @@ import {
   setShowFooterElement,
 } from '@/redux/slices/appSettingSlice';
 import { themeColor } from '@/redux/slices/vendorSlice';
+import { useLazyGetCartProductsQuery } from '@/redux/api/cartApi';
 
 type Props = {
   element: Order;
@@ -27,13 +28,16 @@ const OrderSuccess: NextPage<Props> = ({ element }) => {
   const {
     branch: { id: branchId },
     area: { id: areaId },
+    customer: { userAgent },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
   const dispatch = useAppDispatch();
+  const [triggerGetCartProducts] = useLazyGetCartProductsQuery();
 
   useEffect(() => {
     dispatch(setCurrentModule(t('order_success')));
     dispatch(setShowFooterElement(t('order_success')));
+    triggerGetCartProducts({ UserAgent: userAgent });
   }, []);
 
   return (
