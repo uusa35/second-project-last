@@ -21,8 +21,8 @@ const VerProductWidget: FC<Props> = ({ element }): JSX.Element => {
     area: { id: areaId },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
-  const firstImage = !isEmpty(element.img)
-    ? imgUrl(first(element.img).thumbnail)
+  const firstImage: any = !isEmpty(element.img)
+    ? imgUrl(element.img[0].thumbnail)
     : NoFoundImage.src;
 
   return (

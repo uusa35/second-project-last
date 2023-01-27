@@ -23,7 +23,7 @@ const HorProductWidget: FC<Props> = ({ element }): JSX.Element => {
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
   const firstImage: any = !isEmpty(element.img)
-    ? imgUrl(first(element.img).thumbnail)
+    ? imgUrl(element.img[0].thumbnail)
     : NoFoundImage.src;
 
   return (
