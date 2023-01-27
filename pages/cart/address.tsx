@@ -265,9 +265,17 @@ const CartAddress: NextPage = (): JSX.Element => {
     };
   }, []);
 
+  const handleNext = () => {
+    console.log('fired', refForm);
+    refForm?.current.dispatchEvent(
+      new Event('submit', { cancelable: true, bubbles: true })
+    );
+    // current.dispatchEvent(new Event('submit', { cancelable: true }))
+  };
+
   return (
     <Suspense>
-      <MainContentLayout>
+      <MainContentLayout handleSubmit={handleNext}>
         {/* delivery method buttons */}
         <DeliveryBtns />
         <form id="hook-form" onSubmit={handleSubmit(onSubmit)} ref={refForm}>
@@ -748,7 +756,7 @@ const CartAddress: NextPage = (): JSX.Element => {
             )}
 
             {/* pickup prefrences */}
-            {method === `pickup` && !isEmpty(branch) && (
+            {method === `pickup` && !isNull(branch.id) && (
               <div className="mx-4">
                 <p
                   className="my-5 font-semibold text-base"

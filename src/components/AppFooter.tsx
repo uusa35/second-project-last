@@ -258,8 +258,9 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
             }}
           >
             <button
-              type="submit"
-              form="hook-form"
+              onClick={() => (handleSubmit ? handleSubmit() : null)}
+              // type="submit"
+              // form="hook-form"
               className={`${footerBtnClass}`}
               style={{ backgroundColor: `${color}`, color: `white` }}
               suppressHydrationWarning={suppressText}
