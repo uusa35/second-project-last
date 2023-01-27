@@ -143,8 +143,7 @@ const CartAddress: NextPage = (): JSX.Element => {
   const checkTimeAvailability = async () => {
     await checkTime({
       process_type: method,
-      area_branch:
-        method === 'delivery' ? area.id : method === 'pickup' && branch.id,
+      area_branch: method === 'delivery' ? area.id : branch.id,
       params: {
         type: prefrences.type,
         date: `${new Date(prefrences.date as Date).getFullYear()}-${
