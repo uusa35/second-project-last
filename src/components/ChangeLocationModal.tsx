@@ -66,7 +66,6 @@ const ChangeLocationModal: FC<Props> = ({
 
   return (
     <Dialog
-      // className={`${router.locale === 'ar' ? 'rtl' : 'ltr'}`}
       onClose={OnClose}
       open={OpenModal}
       maxWidth="xs"

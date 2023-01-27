@@ -266,11 +266,9 @@ const CartAddress: NextPage = (): JSX.Element => {
   }, []);
 
   const handleNext = () => {
-    console.log('fired', refForm);
     refForm?.current.dispatchEvent(
       new Event('submit', { cancelable: true, bubbles: true })
     );
-    // current.dispatchEvent(new Event('submit', { cancelable: true }))
   };
 
   return (
