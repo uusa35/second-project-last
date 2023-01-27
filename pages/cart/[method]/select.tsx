@@ -14,7 +14,7 @@ import {
 } from '@material-tailwind/react';
 import { CircleOutlined, CheckCircle } from '@mui/icons-material';
 import { submitBtnClass, suppressText } from '@/constants/*';
-import { appSetting, ServerCart } from '@/types/index';
+import { appSetting } from '@/types/index';
 import { setCartMethod } from '@/redux/slices/appSettingSlice';
 import { Location } from '@/types/queries';
 import { isNull, map } from 'lodash';
@@ -26,7 +26,6 @@ import { useGetBranchesQuery } from '@/redux/api/branchApi';
 import DeliveryBtns from '@/components/widgets/cart/DeliveryBtns';
 import TextTrans from '@/components/TextTrans';
 import ChangeVendorModal from '@/components/ChangeVendorModal';
-import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 import { wrapper } from '@/redux/store';
 import { themeColor } from '@/redux/slices/vendorSlice';
 
@@ -45,19 +44,9 @@ const SelectMethod: NextPage<Props> = ({
     locale: { lang },
     area: selectedArea,
     branch,
-    customer: { userAgent },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
   const [showChangeLocModal, setShowChangeLocModal] = useState<boolean>(false);
-
-  const { data: cartItems, isSuccess } = useGetCartProductsQuery<{
-    data: AppQueryResult<ServerCart>;
-    isSuccess: boolean;
-    isLoading: boolean;
-    refetch: () => void;
-  }>({
-    UserAgent: userAgent,
-  });
   const { data: locations, isLoading: locationsLoading } =
     useGetLocationsQuery<{
       data: AppQueryResult<Location[]>;
@@ -67,7 +56,6 @@ const SelectMethod: NextPage<Props> = ({
     data: AppQueryResult<Branch[]>;
     isLoading: boolean;
   }>({ lang });
-
   const [open, setOpen] = useState(0);
   const handleOpen = (value: any) => {
     setOpen(open === value ? 0 : value);

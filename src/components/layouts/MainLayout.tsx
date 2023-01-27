@@ -11,9 +11,10 @@ import dynamic from 'next/dynamic';
 import { useGetVendorQuery } from '@/redux/api/vendorApi';
 import { AppQueryResult } from '@/types/queries';
 import { Vendor } from '@/types/index';
-import { setVendor } from '@/redux/slices/vendorSlice';
+import { setVendor, themeColor } from '@/redux/slices/vendorSlice';
 import { isNull } from 'lodash';
 import { useLazyCreateTempIdQuery } from '@/redux/api/cartApi';
+import NextNProgress from 'nextjs-progressbar';
 const MainAsideLayout = dynamic(
   async () => await import(`@/components/home/MainAsideLayout`),
   {
@@ -43,6 +44,7 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
     area: { id: areaId },
     vendor,
   } = useAppSelector((state) => state);
+  const color = useAppSelector(themeColor);
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { data: vendorElement, isSuccess } = useGetVendorQuery<{
