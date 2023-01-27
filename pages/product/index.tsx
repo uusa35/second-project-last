@@ -20,6 +20,7 @@ import { setCurrentModule } from '@/redux/slices/appSettingSlice';
 import VerProductWidget from '@/widgets/product/VerProductWidget';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 type Props = {
   elements: Product[];
@@ -33,30 +34,43 @@ const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
     area: { id: areaId },
     vendor: { logo },
   } = useAppSelector((state) => state);
+  const router = useRouter();
+  const { key } = router.query;
+
   const { data: topSearch, isSuccess } = useGetTopSearchQuery({
     lang,
     branchId,
     areaId,
   });
-  const [trigger] = useLazyGetSearchProductsQuery<{
-    trigger: () => void;
-  }>();
+  const [trigger, { isSuccess: SearchSuccess }] =
+    useLazyGetSearchProductsQuery<{
+      trigger: () => void;
+      isSuccess: boolean;
+    }>();
   const [currentProducts, setCurrentProducts] = useState<any>([]);
+
 
   useEffect(() => {
     dispatch(setCurrentModule(t('product_search_index')));
-    setCurrentProducts(elements);
   }, []);
+
+  useEffect(() => {
+    setCurrentProducts(elements);
+  }, [key]);
 
   const handleChange = (key: string) => {
     if (key.length > 2) {
-      trigger({ key, lang, branch_id: branchId }).then((r: any) =>
-        setCurrentProducts(r.data.Data)
-      );
+      trigger({ key, lang, branch_id: branchId }).then((r: any) => {
+        setCurrentProducts(r.data.Data);
+        console.log('inside hhhhhhhhhhhhhhere');
+      });
     } else {
+      console.log('inside set current with elements');
       setCurrentProducts(elements);
     }
   };
+
+  console.log('topSearch', topSearch, key, currentProducts,elements);
 
   return (
     <Suspense>
@@ -84,33 +98,43 @@ const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
               />
             </div>
           </div>
-          <div className="flex flex-row justify-evenly items-center flex-wrap gap-3 my-3 capitalize">
-            {isSuccess &&
-              topSearch &&
-              topSearch.Data &&
-              map(topSearch.Data.topSearch, (searchKey, i) => (
+
+          {isSuccess && topSearch && topSearch.Data && (
+            <>
+              <div className="flex flex-row justify-evenly items-center flex-wrap gap-3 my-3 capitalize">
+                {map(topSearch.Data.topSearch, (searchKey, i) => (
+                  <Link
+                    className={`p-2 rounded-md bg-stone-100`}
+                    key={i}
+                    href={appLinks.productSearchIndex(
+                      searchKey,
+                      branchId,
+                      areaId
+                    )}
+                  >
+                    {searchKey}
+                  </Link>
+                ))}
                 <Link
-                  className={`p-2 rounded-md bg-stone-100`}
-                  key={i}
-                  href={appLinks.productSearchIndex(
-                    searchKey,
-                    branchId,
-                    areaId
-                  )}
+                  className={`p-2 rounded-md bg-red-700 text-white`}
+                  href={appLinks.productSearchIndex(branchId, areaId)}
                 >
-                  {searchKey}
+                  {t(`clear`)}
                 </Link>
-              ))}
-            <Link
-              className={`p-2 rounded-md bg-red-700 text-white`}
-              href={appLinks.productSearchIndex(branchId, areaId)}
-            >
-              {t(`clear`)}
-            </Link>
-          </div>
+              </div>
+              {key === '' && !SearchSuccess && (
+                <div className='border-t-4 border-stone-100 pt-3 mt-5'>
+                  <p className='mb-3 text-semibold'>{t('trending_items')}</p>
+                  {map(topSearch.Data.trendingItems, (item) => {
+                    return <VerProductWidget element={item} key={item.id} />;
+                  })}
+                </div>
+              )}
+            </>
+          )}
 
           <div className="my-4 capitalize">
-            {isEmpty(elements) && (
+            {isEmpty(elements) && !isSuccess && (
               <Image
                 src={NotFoundImage.src}
                 alt={`not_found`}
@@ -119,6 +143,7 @@ const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
                 className={`w-60 h-auto`}
               />
             )}
+
             {map(currentProducts, (p, i) => (
               <VerProductWidget element={p} key={i} />
             ))}

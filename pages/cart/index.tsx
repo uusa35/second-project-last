@@ -52,7 +52,6 @@ const CartIndex: NextPage = (): JSX.Element => {
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
   const dispatch = useAppDispatch();
-  const router = useRouter();
   const [triggerAddToCart] = useAddToCartMutation();
   const {
     data: cartItems,

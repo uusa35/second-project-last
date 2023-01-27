@@ -17,7 +17,7 @@ import { submitBtnClass, suppressText } from '@/constants/*';
 import { appSetting } from '@/types/index';
 import { setCartMethod } from '@/redux/slices/appSettingSlice';
 import { Location } from '@/types/queries';
-import { isNull, map } from 'lodash';
+import { isEmpty, isNull, map } from 'lodash';
 import { removeArea, setArea } from '@/redux/slices/areaSlice';
 import { useRouter } from 'next/router';
 import { removeBranch, setBranch } from '@/redux/slices/branchSlice';
@@ -28,6 +28,7 @@ import TextTrans from '@/components/TextTrans';
 import ChangeVendorModal from '@/components/ChangeVendorModal';
 import { wrapper } from '@/redux/store';
 import { themeColor } from '@/redux/slices/vendorSlice';
+import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 
 type Props = {
   previousRoute: string | null;
@@ -44,9 +45,19 @@ const SelectMethod: NextPage<Props> = ({
     locale: { lang },
     area: selectedArea,
     branch,
+    customer: { userAgent },
+    appSetting: { method: method_type },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
+  const [selectedData, setSelectedData] = useState({
+    area: selectedArea,
+    branch: branch,
+    method: method,
+  });
   const [showChangeLocModal, setShowChangeLocModal] = useState<boolean>(false);
+  const { data: cartItems, isSuccess } = useGetCartProductsQuery({
+    UserAgent: userAgent,
+  });
   const { data: locations, isLoading: locationsLoading } =
     useGetLocationsQuery<{
       data: AppQueryResult<Location[]>;
@@ -63,13 +74,14 @@ const SelectMethod: NextPage<Props> = ({
 
   useEffect(() => {
     dispatch(setCurrentModule(t('select_method')));
-    dispatch(setCartMethod(method));
-    if (method === `pickup`) {
-      dispatch(removeArea());
-    } else {
-      dispatch(removeBranch());
-    }
-  }, [method]);
+    // dispatch(setCartMethod(method));
+    //
+    // if (method === `pickup`) {
+    //   dispatch(removeArea());
+    // } else {
+    //   dispatch(removeBranch());
+    // }
+  }, []);
 
   if (branchesLoading || locationsLoading) {
     return <LoadingSpinner />;
@@ -92,6 +104,32 @@ const SelectMethod: NextPage<Props> = ({
     );
   };
 
+  const handleContinue = () => {
+    if (
+      isSuccess &&
+      cartItems.data &&
+      cartItems.data.Cart &&
+      !isEmpty(cartItems) &&
+      (method_type !== selectedData.method ||
+        (selectedData.method === 'delivery' &&
+          selectedData.area.id !== selectedArea.id) ||
+        (selectedData.method === 'pickup' &&
+          selectedData.branch.id !== branch.id))
+    ) {
+      setShowChangeLocModal(true);
+    } else {
+      if (method === 'delivery') {
+        dispatch(setArea(selectedData.area));
+        // dispatch(removeBranch());
+        // if u didnot route back branch wont remove
+      } else {
+        dispatch(setBranch(selectedData.branch));
+        // dispatch(removeArea());
+      }
+      router.push('/');
+    }
+  };
+
   const handleNext = async () => {
     if (!previousRoute?.includes(`select`)) {
       router.back();
@@ -100,11 +138,13 @@ const SelectMethod: NextPage<Props> = ({
     }
   };
 
+  // useEffect(()=>{},[selectedData])
+
   return (
     <Suspense>
       <MainContentLayout>
         <div className={`px-4`}>
-          <DeliveryBtns />
+          <DeliveryBtns method_in_select={method} />
           <div className={`w-full mb-4`}>
             <div className="relative mt-1 rounded-md shadow-sm text-gray-400">
               <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center px-6">
@@ -142,7 +182,9 @@ const SelectMethod: NextPage<Props> = ({
                           <button
                             className={'flex justify-between w-full p-4 '}
                             key={i}
-                            onClick={() => dispatch(setArea(a))}
+                            onClick={() =>
+                              setSelectedData({ ...selectedData, area: a })
+                            }
                           >
                             <p
                               className="text-base text-black capitalize"
@@ -150,7 +192,7 @@ const SelectMethod: NextPage<Props> = ({
                             >
                               <TextTrans ar={a.name_ar} en={a.name_en} />
                             </p>
-                            {a.id === selectedArea.id ? (
+                            {a.id === selectedData.area.id ? (
                               <CheckCircle style={{ color }} />
                             ) : (
                               <CircleOutlined className="text-gray-400" />
@@ -177,7 +219,9 @@ const SelectMethod: NextPage<Props> = ({
                 {map(branches?.Data, (b: Branch, i) => (
                   <button
                     key={i}
-                    onClick={() => dispatch(setBranch(b))}
+                    onClick={() =>
+                      setSelectedData({ ...selectedData, branch: b })
+                    }
                     className={`flex flex-row  w-full justify-between items-center p-1`}
                   >
                     <label
@@ -194,7 +238,7 @@ const SelectMethod: NextPage<Props> = ({
                       type="radio"
                       name="branch"
                       readOnly
-                      checked={branch.id === b.id}
+                      checked={selectedData.branch.id === b.id}
                     />
                   </button>
                 ))}
@@ -202,8 +246,8 @@ const SelectMethod: NextPage<Props> = ({
             </div>
           )}
           <button
-            onClick={() => handleNext()}
-            disabled={isNull(selectedArea.id) && isNull(branch.id)}
+            onClick={() => handleContinue()}
+            // disabled={isNull(selectedArea.id) && isNull(branch.id)}
             className={`${submitBtnClass} mt-12 capitalize`}
             style={{ backgroundColor: color }}
             suppressHydrationWarning={suppressText}
@@ -212,7 +256,7 @@ const SelectMethod: NextPage<Props> = ({
           </button>
         </div>
         <ChangeVendorModal
-          SelectedAreaOrBranch={method === `delivery` ? branch : selectedArea}
+          SelectedAreaOrBranch={selectedData}
           OpenModal={showChangeLocModal}
           previousRoute={previousRoute ?? null}
           OnClose={() => setShowChangeLocModal(false)}

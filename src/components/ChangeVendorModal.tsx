@@ -10,11 +10,15 @@ import { Area, Branch } from '@/types/queries';
 import { setBranch } from '@/redux/slices/branchSlice';
 import { setArea } from '@/redux/slices/areaSlice';
 import { useRouter } from 'next/router';
-import { isNull } from 'lodash';
 import { themeColor } from '@/redux/slices/vendorSlice';
+import { appSetting } from '../types';
 
 type Props = {
-  SelectedAreaOrBranch: Branch | Area | undefined;
+  SelectedAreaOrBranch: {
+    area: Area;
+    branch: Branch;
+    method: appSetting['method'];
+  };
   OnClose: () => void;
   OpenModal: boolean;
   previousRoute: string | null;
@@ -37,20 +41,24 @@ const ChangeVendorModal: FC<Props> = ({
   const [triggerChangeLocation] = useLazyChangeLocationQuery();
 
   const handelChangeLocReq = async () => {
-    if (SelectedAreaOrBranch) {
+    if (SelectedAreaOrBranch.method) {
       await triggerChangeLocation({
         UserAgent: userAgent,
-        process_type: method,
-        area_branch: SelectedAreaOrBranch.id?.toString() ?? '',
+        area_branch:
+          SelectedAreaOrBranch.method === `pickup`
+            ? { 'x-branch-id': SelectedAreaOrBranch.branch.id }
+            : { 'x-area-id': SelectedAreaOrBranch.area.id },
       }).then(() => {
-        method === `pickup`
-          ? dispatch(setBranch(SelectedAreaOrBranch as Branch))
-          : dispatch(dispatch(setArea(SelectedAreaOrBranch as Area)));
-        if (!isNull(previousRoute)) {
-          router.push(previousRoute);
-        } else {
-          router.back();
-        }
+        SelectedAreaOrBranch.method === `pickup`
+          ? dispatch(setBranch(SelectedAreaOrBranch.branch))
+          : dispatch(setArea(SelectedAreaOrBranch.area));
+        router.push('/');
+        // get cart
+        // if (!isNull(previousRoute)) {
+        //   router.push(previousRoute);
+        // } else {
+        //   router.back();
+        // }
       });
     }
   };
