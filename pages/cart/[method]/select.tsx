@@ -20,16 +20,13 @@ import { Location } from '@/types/queries';
 import { isEmpty, isNull, map } from 'lodash';
 import { removeArea, setArea } from '@/redux/slices/areaSlice';
 import { useRouter } from 'next/router';
-import { removeBranch, setBranch } from '@/redux/slices/branchSlice';
+import { setBranch } from '@/redux/slices/branchSlice';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { useGetBranchesQuery } from '@/redux/api/branchApi';
 import DeliveryBtns from '@/components/widgets/cart/DeliveryBtns';
 import TextTrans from '@/components/TextTrans';
 import ChangeLocationModal from '@/components/ChangeLocationModal';
-import {
-  useGetCartProductsQuery,
-  useLazyGetCartProductsQuery,
-} from '@/redux/api/cartApi';
+import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 import { wrapper } from '@/redux/store';
 import { themeColor } from '@/redux/slices/vendorSlice';
 
@@ -148,10 +145,6 @@ const SelectMethod: NextPage<Props> = ({
       router.push(`/`);
     }
   };
-
-  useEffect(()=>{  
-    console.log('heeereeeeeeeeeeeeeeeeeeeeeeeeeeeee', selectedData);
-  },[selectedData])
 
   return (
     <Suspense>
