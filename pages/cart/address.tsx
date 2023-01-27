@@ -262,7 +262,7 @@ const CartAddress: NextPage = (): JSX.Element => {
     <Suspense>
       <MainContentLayout>
         {/* delivery method buttons */}
-        <DeliveryBtns handleSelectMethod={handleSelectMethod} />
+        <DeliveryBtns/>
         <form id="hook-form" onSubmit={handleSubmit(onSubmit)} ref={refForm}>
           <div className={'px-4'}>
             <div className="bg-gray-200 w-full mt-5 p-0 h-2"></div>

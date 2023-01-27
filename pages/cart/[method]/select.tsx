@@ -48,12 +48,21 @@ const SelectMethod: NextPage<Props> = ({
     customer: { userAgent },
     appSetting: { method: method_type },
   } = useAppSelector((state) => state);
+
   const color = useAppSelector(themeColor);
   const [selectedData, setSelectedData] = useState({
     area: selectedArea,
     branch: branch,
     method: method,
   });
+  useEffect(() => {
+    setSelectedData({
+      method: method,
+      area: selectedArea,
+      branch: branch,
+    });
+  }, [method]);
+
   const [showChangeLocModal, setShowChangeLocModal] = useState<boolean>(false);
   const { data: cartItems, isSuccess } = useGetCartProductsQuery({
     UserAgent: userAgent,
@@ -74,13 +83,6 @@ const SelectMethod: NextPage<Props> = ({
 
   useEffect(() => {
     dispatch(setCurrentModule(t('select_method')));
-    // dispatch(setCartMethod(method));
-    //
-    // if (method === `pickup`) {
-    //   dispatch(removeArea());
-    // } else {
-    //   dispatch(removeBranch());
-    // }
   }, []);
 
   if (branchesLoading || locationsLoading) {
@@ -118,7 +120,7 @@ const SelectMethod: NextPage<Props> = ({
     ) {
       setShowChangeLocModal(true);
     } else {
-      console.log('in area not changed set')
+      console.log('in area not changed set');
       if (method === 'delivery') {
         dispatch(setArea(selectedData.area));
         // dispatch(removeBranch());
@@ -139,7 +141,9 @@ const SelectMethod: NextPage<Props> = ({
     }
   };
 
-  // useEffect(()=>{},[selectedData])
+  useEffect(()=>{  
+    console.log('heeereeeeeeeeeeeeeeeeeeeeeeeeeeeee', selectedData);
+  },[selectedData])
 
   return (
     <Suspense>
