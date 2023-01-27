@@ -134,7 +134,7 @@ const SelectMethod: NextPage<Props> = ({
         dispatch(setBranch(selectedData.branch));
         // dispatch(removeArea());
       }
-      router.push('/');
+      handleNext();
     }
   };
 

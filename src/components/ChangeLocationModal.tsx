@@ -53,13 +53,13 @@ const ChangeLocationModal: FC<Props> = ({
         SelectedAreaOrBranch.method === `pickup`
           ? dispatch(setBranch(SelectedAreaOrBranch.branch))
           : dispatch(setArea(SelectedAreaOrBranch.area));
-        router.push('/');
+
         // get cart
-        // if (!isNull(previousRoute)) {
-        //   router.push(previousRoute);
-        // } else {
-        //   router.back();
-        // }
+        if (!previousRoute?.includes(`select`)) {
+          router.back();
+        } else {
+          router.push(`/`);
+        }
       });
     }
   };
