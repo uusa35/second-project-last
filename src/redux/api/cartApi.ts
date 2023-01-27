@@ -64,16 +64,14 @@ export const cartApi = apiSlice.injectEndpoints({
       AppQueryResult<any>,
       {
         UserAgent: string;
-        process_type: string;
-        area_branch: string;
+        area_branch: any;
       }
     >({
-      query: ({ UserAgent, process_type, area_branch }) => ({
+      query: ({ UserAgent, area_branch }) => ({
         url: `changeArea`,
         params: { UserAgent },
         headers: {
-          ...(process_type === 'delivery' && { 'x-area-id': area_branch }),
-          ...(process_type === 'pickup' && { 'x-branch-id': area_branch }),
+          ...area_branch
         },
         validateStatus: (response, result) =>
           response.status == 200 && result.status,
