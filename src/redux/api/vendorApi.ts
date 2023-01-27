@@ -15,6 +15,7 @@ export const vendorApi = apiSlice.injectEndpoints({
         },
         validateStatus: (response, result) =>
           response.status == 200 && result.status,
+        keepUnusedDataFor: 0,
       }),
     }),
   }),
