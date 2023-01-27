@@ -14,7 +14,7 @@ import {
   setCurrentModule,
   setShowFooterElement,
 } from '@/redux/slices/appSettingSlice';
-import { imageSizes, imgUrl } from '@/constants/*';
+import { baseUrl, imageSizes, imgUrl } from '@/constants/*';
 import CustomImage from '@/components/CustomImage';
 import {
   concat,
@@ -290,7 +290,7 @@ const ProductShow: NextPage<Props> = ({ element }) => {
       <MainHead
         title={`${element.name_ar} - ${element.name_en}`}
         description={`${element.description_ar} - ${element.description_en}`}
-        mainImage={`${imgUrl(element?.img[0]?.toString())}`}
+        mainImage={`${baseUrl}${element?.img[0]?.thumbnail.toString()}`}
       />
       <MainContentLayout>
         <div className="relative w-full capitalize">
