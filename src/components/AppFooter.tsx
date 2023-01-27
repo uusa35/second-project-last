@@ -50,7 +50,10 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
   const [triggerCheckPromoCode] = useLazyCheckPromoCodeQuery();
 
   const handleAddToCart = async () => {
-    if (isNull(branchId) && isNull(area.id)) {
+    if (
+      (method === `pickup` && isNull(branchId)) ||
+      (method === `delivery` && isNull(area.id))
+    ) {
       router.push(appLinks.cartSelectMethod(`delivery`));
     }
     if (!productCart.enabled) {
@@ -61,7 +64,12 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
         })
       );
     } else {
-      if (!isEmpty(productCart) && userAgent) {
+      if (
+        !(method === `pickup` && isNull(branchId)) ||
+        (!(method === `delivery` && isNull(area.id)) &&
+          !isEmpty(productCart) &&
+          userAgent)
+      ) {
         await triggerAddToCart({
           process_type: method,
           area_branch: method === 'delivery' ? area.id : branchId,
@@ -96,6 +104,7 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
             });
           } else {
             if (r.error && r.error.data) {
+              console.log('error', r.error.data);
               dispatch(
                 showToastMessage({
                   content: lowerCase(kebabCase(r.error.data.msg)),
@@ -110,6 +119,12 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
   };
 
   const handleCartIndex = async () => {
+    if (
+      (method === `pickup` && isNull(branchId)) ||
+      (method === `delivery` && isNull(area.id))
+    ) {
+      router.push(appLinks.cartSelectMethod(`delivery`));
+    }
     if (!isEmpty(productCart) && userAgent && !isEmpty(method)) {
       // coupon case
       if (
