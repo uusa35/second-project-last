@@ -31,9 +31,15 @@ export const vendorSlice = createSlice({
   reducers: {
     setVendor: (state: typeof initialState, action: PayloadAction<Vendor>) =>
       action.payload,
+    setColorTheme: (
+      state: typeof initialState,
+      action: PayloadAction<Vendor>
+    ) => {
+      return { ...state, themeColor: action.payload.theme_color };
+    },
   },
 });
 
-export const { setVendor } = vendorSlice.actions;
+export const { setVendor, setColorTheme } = vendorSlice.actions;
 
 export const themeColor = (state: RootState) => state.vendor.theme_color;

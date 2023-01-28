@@ -60,7 +60,7 @@ const schema = yup
     paci: yup.string().max(50),
     floor_no: yup.string().max(50).nullable(true),
     office_no: yup.string().max(50).nullable(true),
-    additional: yup.string().max(50).nullable(true),
+    additional: yup.string().nullable(true),
     longitude: yup.string(),
     latitude: yup.string(),
     customer_id: yup.string().required(),
@@ -75,7 +75,7 @@ const CartAddress: NextPage = (): JSX.Element => {
     area,
     branch,
     appSetting: { method },
-    customer: { userAgent, address, id },
+    customer: { userAgent, address, id: customer_id },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
   const [openTab, setOpenTab] = useState(1);
@@ -113,7 +113,7 @@ const CartAddress: NextPage = (): JSX.Element => {
       address_type: openTab ?? ``,
       longitude: ``,
       latitude: ``,
-      customer_id: id?.toString(),
+      customer_id: customer_id?.toString(),
       block: address.block,
       street: address.street,
       house_no: address.house_no,
@@ -124,8 +124,6 @@ const CartAddress: NextPage = (): JSX.Element => {
       additional: address.additional,
     },
   });
-
-  console.log('address', address);
 
   const CustomTimeInput = forwardRef(({ value, onClick }, ref) => (
     <div className="flex w-full items-center justify-between px-2">
@@ -272,13 +270,16 @@ const CartAddress: NextPage = (): JSX.Element => {
         )
       );
     }
-    if (id) {
-      setValue('customer_id', id.toString());
-    }
     return () => {
       dispatch(resetShowFooterElement());
     };
   }, []);
+
+  useEffect(() => {
+    if (customer_id) {
+      setValue('customer_id', customer_id);
+    }
+  }, [customer_id]);
 
   const handleNext = () => {
     console.log('fired');
