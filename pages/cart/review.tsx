@@ -156,7 +156,6 @@ const CartReview: NextPage = () => {
             router.replace(appLinks.orderFailure.path);
           }
         } else {
-          console.log({errorrrr: r})
           dispatch(
             showToastMessage({
               content: r.error.data.msg,
@@ -459,7 +458,7 @@ const CartReview: NextPage = () => {
                   onClick={() => setSelectedPaymentMethod(m.id)}
                   className={`${
                     selectedPaymentMethod == m.id &&
-                    `ring-2 ring-${color} ring-offset-1`
+                    `ring-2 ring-lime-500 ring-offset-1`
                   } bg-stone-100 flex justify-center items-center w-24 h-24 rounded-md shadow-lg`}
                 >
                   <div>
@@ -473,8 +472,7 @@ const CartReview: NextPage = () => {
                   </div>
                 </button>
                 <div 
-                  className={`pt-5 flex justify-center items-center space-x-1 ${selectedPaymentMethod == m.id ? 'block': 'hidden'}`}
-                  style={{ color }}
+                  className={`pt-5 flex justify-center items-center space-x-1 text-lime-500 ${selectedPaymentMethod == m.id ? 'block': 'hidden'}`}
                    >
                     <CheckCircle />
                     <p>{t('selected')}</p>
