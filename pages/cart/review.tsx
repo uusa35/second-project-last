@@ -23,7 +23,7 @@ import {
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 import TextTrans from '@/components/TextTrans';
-import { isEmpty, isNull, map } from 'lodash';
+import { isEmpty, isNull, kebabCase, lowerCase, map } from 'lodash';
 import Link from 'next/link';
 import { OrderUser, ProductCart, ServerCart } from '@/types/index';
 import PaymentSummary from '@/components/widgets/cart/review/PaymentSummary';
@@ -148,7 +148,7 @@ const CartReview: NextPage = () => {
             router.replace(appLinks.orderFailure.path);
           }
         } else {
-          console.log({errorrrr: r})
+          console.log({ errorrrr: r });
           dispatch(
             showToastMessage({
               content: r.error.data.msg,
@@ -446,24 +446,39 @@ const CartReview: NextPage = () => {
             </div>
             <div className="flex justify-evenly">
               {map(paymentMethods, (m, i) => (
-                <button
+                <div
+                  className={`flex flex-col justify-center items-center gap-y-4`}
                   key={i}
-                  onClick={() => setSelectedPaymentMethod(m.id)}
-                  className={`${
-                    selectedPaymentMethod == m.id &&
-                    `ring-2 ring-primary_BG-400 ring-offset-1`
-                  } bg-stone-100 flex justify-center items-center w-24 h-24 rounded-md shadow-lg`}
                 >
+                  <button
+                    onClick={() => setSelectedPaymentMethod(m.id)}
+                    className={`${
+                      selectedPaymentMethod == m.id &&
+                      `ring-2 ring-lime-400 ring-offset-4`
+                    } bg-stone-100 flex justify-center items-center w-24 h-24 rounded-md shadow-lg`}
+                  >
+                    <div>
+                      <CustomImage
+                        src={m.src}
+                        alt="payment"
+                        width={imageSizes.xs}
+                        height={imageSizes.xs}
+                        className={`w-14 h-14`}
+                      />
+                    </div>
+                  </button>
                   <div>
-                    <CustomImage
-                      src={m.src}
-                      alt="payment"
-                      width={imageSizes.xs}
-                      height={imageSizes.xs}
-                      className={`w-14 h-14`}
-                    />
+                    <span
+                      className={`text-xs ${
+                        m.id === selectedPaymentMethod
+                          ? `text-lime-500`
+                          : `text-black`
+                      }`}
+                    >
+                      {t(lowerCase(kebabCase(m.id)))}
+                    </span>
                   </div>
-                </button>
+                </div>
               ))}
             </div>
           </div>
