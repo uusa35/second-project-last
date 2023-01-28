@@ -5,7 +5,7 @@ import route from 'next/router';
 import { toast, TypeOptions } from 'react-toastify';
 import { Auth, Guest } from '@/types/queries';
 import { appSettingSlice } from '@/redux/slices/appSettingSlice';
-import { lowerCase, map, multiply, snakeCase, subtract } from 'lodash';
+import { lowerCase, snakeCase } from 'lodash';
 import { orderSlice } from '@/redux/slices/orderSlice';
 import { apiLogin, apiLogout, apiVerified } from '@/constants/*';
 import { searchParamsSlice } from '@/redux/slices/searchParamsSlice';

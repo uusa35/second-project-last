@@ -120,14 +120,14 @@ const CartAddress: NextPage = (): JSX.Element => {
       latitude: ``,
       customer_id: id?.toString(),
       address: {
-        block: address.block,
-        street: address.street,
-        house_no: address.house_no,
-        avenue: address.avenue,
-        paci: address.paci,
-        floor_no: address.floor_no,
-        office_no: address.office_no,
-        additional: address.additional,
+        block: address.address.block,
+        street: address.address.street,
+        house_no: address.address.house_no,
+        avenue: address.address.avenue,
+        paci: address.address.paci,
+        floor_no: address.address.floor_no,
+        office_no: address.address.office_no,
+        additional: address.address.additional,
       },
     },
   });
@@ -238,10 +238,7 @@ const CartAddress: NextPage = (): JSX.Element => {
       }
     });
   };
-
   const onSubmit = async (body: any) => {
-    console.log('body', body);
-    console.log('method', method);
     if (method === 'pickup') {
       await checkTimeAvailability();
     } else {

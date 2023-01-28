@@ -7,7 +7,6 @@ import {
   takeEvery,
   debounce,
 } from 'redux-saga/effects';
-import { persistor } from './../store';
 import {
   startChangeLangScenario,
   startEnableLoadingScenario,
@@ -15,11 +14,9 @@ import {
   startSetLoginScenario,
   startSetLogOutScenario,
   startResetEnireAppSceanrio,
-  startOrderMadeScenario,
   startResetAppScenario,
   startUpdateCartProductScenario,
 } from './appSaga';
-import { orderSlice } from '@/redux/slices/orderSlice';
 import { appSettingSlice } from '@/redux/slices/appSettingSlice';
 import { appLoadingSlice } from '@/redux/slices/appLoadingSlice';
 import { localeSlice } from '@/redux/slices/localeSlice';
@@ -70,10 +67,6 @@ export function* triggerSetLogin() {
 
 export function* triggerSetLogout() {
   yield takeLatest(`${authSlice.actions.logout}`, startSetLogOutScenario);
-}
-
-export function* triggerOrderMade() {
-  yield takeLatest(`${orderSlice.actions.orderMade}`, startOrderMadeScenario);
 }
 
 export function* triggerShowToastMessage() {
