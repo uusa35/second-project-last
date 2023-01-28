@@ -181,7 +181,12 @@ const CartAddress: NextPage = (): JSX.Element => {
             }
             break;
           case 'busy':
-            return null;
+            return dispatch(
+              showToastMessage({
+                content: `shop_is_busy`,
+                type: `error`,
+              })
+            );
             break;
           case 'close':
             return dispatch(
