@@ -30,10 +30,10 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
   return (
     <>
       {/* Delivery / Pickup Btns */}
-      <div className="flex flex-1 w-full flex-row justify-between items-center my-2 border-t-[14px] border-stone-100 px-14 text-lg pt-8 capitalize">
+      <div className="flex flex-1 w-full flex-row justify-between items-center my-2 border-t-[14px] border-stone-100 px-14 text-lg pt-4 capitalize">
         <button
           className={`${
-            method === 'delivery' && `border-b-2 pb-4 border-b-primary_BG`
+            method === 'delivery' && `border-b-2 pb-1 border-b-primary_BG`
           } md:ltr:mr-3 md:rtl:ml-3 capitalize `}
           onClick={() => handleSelectMethod(`delivery`)}
           suppressHydrationWarning={suppressText}
@@ -42,7 +42,7 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
         </button>
         <button
           className={`${
-            method === 'pickup' && `border-b-2 pb-4 border-b-primary_BG`
+            method === 'pickup' && `border-b-2 pb-1 border-b-primary_BG`
           } md:ltr:mr-3 md:rtl:ml-3 capitalize `}
           onClick={() => handleSelectMethod(`pickup`)}
           suppressHydrationWarning={suppressText}
@@ -50,19 +50,19 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
           {t('pickup')}
         </button>
       </div>
-      <div className={`px-8 py-2 text-lg capitalize`}>
+      <div className={`px-8 py-0 text-lg capitalize`}>
         <Link
           href={appLinks.cartSelectMethod(method)}
           scroll={true}
-          className="flex flex-1 gap-x-3 w-full flex-row justify-between items-center mt-4 mb-2"
+          className="flex flex-1 gap-x-3 w-full flex-row justify-between items-center mt-0 mb-0"
         >
           <div className={`flex flex-grow justify-start items-center`}>
-            <h1 className={`pt-2`}>
+            <h1 className={`pt-4`}>
               {method === `delivery` ? t(`deliver_to`) : t('pickup_from')}
             </h1>
           </div>
           <div
-            className={`pt-2`}
+            className={`pt-4`}
             style={{ color: `${!branch.id && !area.id ? `red` : color}` }}
           >
             {branch.id ? (
@@ -75,13 +75,13 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
           </div>
         </Link>
 
-        <div className="flex flex-1 gap-x-3 w-full flex-row justify-between items-center mt-2 mb-4">
+        <div className="flex flex-1 gap-x-2 w-full flex-row justify-between items-center mb-2">
           <div className={`flex flex-grow justify-start items-center`}>
-            <h1 className={`pt-2`} suppressHydrationWarning={suppressText}>
+            <h1 className={`pt-4`} suppressHydrationWarning={suppressText}>
               {t('earliest_delivery')}
             </h1>
           </div>
-          <div className={`pt-2`} style={{ color }}>
+          <div className={`pt-4`} style={{ color }}>
             {element.DeliveryTime}
           </div>
         </div>

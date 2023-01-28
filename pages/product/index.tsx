@@ -36,7 +36,8 @@ const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
   } = useAppSelector((state) => state);
   const router = useRouter();
   const { key } = router.query;
-
+  const [currentKey, setCurrentKey] = useState<string>(``);
+  const [currentProducts, setCurrentProducts] = useState<any>([]);
   const { data: topSearch, isSuccess } = useGetTopSearchQuery({
     lang,
     branchId,
@@ -47,8 +48,6 @@ const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
       trigger: () => void;
       isSuccess: boolean;
     }>();
-  const [currentProducts, setCurrentProducts] = useState<any>([]);
-
 
   useEffect(() => {
     dispatch(setCurrentModule(t('product_search_index')));
@@ -56,6 +55,11 @@ const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
 
   useEffect(() => {
     setCurrentProducts(elements);
+    if (!isEmpty(key) && isSuccess) {
+      setCurrentKey(key);
+    } else {
+      setCurrentKey(``);
+    }
   }, [key]);
 
   const handleChange = (key: string) => {
@@ -70,7 +74,7 @@ const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
     }
   };
 
-  console.log('topSearch', topSearch, key, currentProducts,elements);
+  console.log('key', key);
 
   return (
     <Suspense>
@@ -91,8 +95,9 @@ const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
                 type="search"
                 name="search"
                 id="search"
+                defaultValue={currentKey}
                 onChange={debounce((e) => handleChange(e.target.value), 400)}
-                className="block w-full focus:ring-1 focus:ring-primary_BG rounded-md  pl-20 border-none  bg-gray-100 py-3 h-16  text-lg capitalize"
+                className="block w-full focus:ring-1 focus:ring-primary_BG rounded-md  pl-20 border-none  bg-gray-100 py-3 h-14  text-lg capitalize"
                 suppressHydrationWarning={suppressText}
                 placeholder={`${t(`search_products`)}`}
               />
@@ -123,8 +128,8 @@ const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
                 </Link>
               </div>
               {key === '' && !SearchSuccess && (
-                <div className='border-t-4 border-stone-100 pt-3 mt-5'>
-                  <p className='mb-3 text-semibold'>{t('trending_items')}</p>
+                <div className="border-t-4 border-stone-100 pt-3 mt-5">
+                  <p className="mb-3 text-semibold">{t('trending_items')}</p>
                   {map(topSearch.Data.trendingItems, (item) => {
                     return <VerProductWidget element={item} key={item.id} />;
                   })}

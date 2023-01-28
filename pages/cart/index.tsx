@@ -244,7 +244,7 @@ const CartIndex: NextPage = (): JSX.Element => {
                 <div key={i}>
                   <div className="px-4">
                     <div className="mb-10 ">
-                      <div className="flex px-5 items-center">
+                      <div className="flex  items-center">
                         <Link
                           href={`${appLinks.productShow(
                             item.ProductID.toString(),
@@ -261,7 +261,6 @@ const CartIndex: NextPage = (): JSX.Element => {
                             src={item.image}
                           />
                         </Link>
-
                         <div className="w-full">
                           <div className="flex flex-1 justify-between items-center">
                             <div className={`flex grow`}>
@@ -284,23 +283,12 @@ const CartIndex: NextPage = (): JSX.Element => {
                             </div>
                             <div>
                               <button
-                                className="text-red-700 pe-5 capitalize"
+                                className="text-red-700 capitalize"
                                 suppressHydrationWarning={suppressText}
                                 onClick={() => handleRemove(item)}
                               >
                                 {t('remove')}
                               </button>
-                              <Link
-                                href={`${appLinks.productShow(
-                                  item.ProductID.toString(),
-                                  branchId,
-                                  item.ProductID.toString(),
-                                  item.ProductName,
-                                  areaId
-                                )}`}
-                              >
-                                <EditOutlined />
-                              </Link>
                             </div>
                           </div>
                           {/* addons items */}
@@ -331,7 +319,7 @@ const CartIndex: NextPage = (): JSX.Element => {
                         </div>
                       </div>
                       {/* meters + / - */}
-                      <div className="px-3 flex justify-between items-center mt-3">
+                      <div className="flex justify-between items-center mt-3">
                         <span className="flex rounded-xl shadow-sm">
                           <button
                             type="button"
@@ -371,10 +359,10 @@ const CartIndex: NextPage = (): JSX.Element => {
                       </div>
                     </div>
                   </div>
-                  <div className="mt-10 px-5 py-1 bg-gray-100"></div>
+                  <div className="mt-10 px-0 py-1 bg-gray-100"></div>
                 </div>
               ))}
-            <div className="px-5">
+            <div className="px-4">
               <div className="flex items-center">
                 <CustomImage
                   className="w-8 h-8"
@@ -389,7 +377,7 @@ const CartIndex: NextPage = (): JSX.Element => {
                 </p>
               </div>
 
-              <div className="flex items-center justify-between px-2 pt-3">
+              <div className="flex items-center justify-between pt-3">
                 <input
                   type="text"
                   placeholder={`${t('enter_code_here')}`}
@@ -414,14 +402,19 @@ const CartIndex: NextPage = (): JSX.Element => {
                   {t('extra_notes')}
                 </p>
               </div>
-              <input
-                type="text"
-                placeholder={`${t('enter_notes_here')}`}
-                suppressHydrationWarning={suppressText}
-                defaultValue={notes}
-                onChange={debounce((e) => handleSetNotes(e.target.value), 400)}
-                className={`border-0 border-b-2 border-b-gray-200 w-full focus:ring-transparent capitalize`}
-              />
+              <div className="flex items-center justify-between pt-3">
+                <input
+                  type="text"
+                  placeholder={`${t('enter_notes_here')}`}
+                  suppressHydrationWarning={suppressText}
+                  defaultValue={notes}
+                  onChange={debounce(
+                    (e) => handleSetNotes(e.target.value),
+                    400
+                  )}
+                  className={`border-0 border-b-2 border-b-gray-200 w-full focus:ring-transparent capitalize`}
+                />
+              </div>
             </div>
             {isSuccess && <PaymentSummary />}
           </div>

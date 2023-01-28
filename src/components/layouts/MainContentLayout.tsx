@@ -62,7 +62,7 @@ const MainContentLayout: FC<Props> = ({
       <SideMenu />
       {showHeader && <AppHeader />}
       <main
-        className={`w-full mb-[50%] relative rounded-t-full min-h-screen`}
+        className={`w-full mb-[20%] relative rounded-t-full min-h-screen`}
         style={{ height: '100%' }}
       >
         {isOnline ? (

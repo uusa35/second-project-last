@@ -355,7 +355,7 @@ const ProductShow: NextPage<Props> = ({ element }) => {
             </div>
             <div className={`shrink-0`}>
               <p className={`text-lg `} style={{ color }}>
-                {element.price} {t(`kwd`)}
+                {element.price} <span className={`uppercase`}>{t(`kwd`)}</span>
               </p>
             </div>
           </div>
@@ -406,7 +406,8 @@ const ProductShow: NextPage<Props> = ({ element }) => {
                             <p style={{ color }}>{c.name}</p>
                           </div>
                           <div>
-                            +{c.price} {t(`kwd`)}
+                            +{c.price}{' '}
+                            <span className={`uppercase`}>{t(`kwd`)}</span>
                           </div>
                         </div>
                         <div>
@@ -495,7 +496,8 @@ const ProductShow: NextPage<Props> = ({ element }) => {
                             </label>
                           </div>
                           <div>
-                            {c.price} {t(`kwd`)}
+                            {c.price}{' '}
+                            <span className={`uppercase`}>{t(`kwd`)}</span>
                           </div>
                         </div>
                       </Fragment>

@@ -18,7 +18,7 @@ const HomeVendorMainInfo: FC<Props> = ({ element }) => {
 
   return (
     <>
-      <div className="flex gap-x-2 justify-between items-center capitalize">
+      <div className="flex gap-x-2 justify-between items-start capitalize">
         <div className="flex grow gap-x-2">
           <Link href={appLinks.home.path} scroll={true} className={`w-1/4`}>
             <CustomImage
@@ -29,7 +29,7 @@ const HomeVendorMainInfo: FC<Props> = ({ element }) => {
               src={imgUrl(element.logo)}
             />
           </Link>
-          <div className={`flex flex-col w-full p-2 space-y-2`}>
+          <div className={`flex flex-col w-full p-2`}>
             <h1 className="font-bold text-lg">
               <TextTrans ar={element.name_ar} en={element.name_en} />
             </h1>
@@ -49,7 +49,7 @@ const HomeVendorMainInfo: FC<Props> = ({ element }) => {
         <Link
           href={appLinks.vendorShow.path}
           scroll={true}
-          className={`flex-none`}
+          className={`flex-none pt-4`}
         >
           <InfoOutlined className="w-6 h-6 lg:w-8 lg:h-8" style={{ color }} />
         </Link>

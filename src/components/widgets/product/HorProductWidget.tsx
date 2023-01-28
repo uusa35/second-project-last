@@ -68,7 +68,7 @@ const HorProductWidget: FC<Props> = ({ element }): JSX.Element => {
                 className="text-md text-end uppercase"
                 suppressHydrationWarning={suppressText}
               >
-                {element.price} {t(`kwd`)}
+                {element.price} <span className={`uppercase`}>{t(`kwd`)}</span>
               </p>
               <button
                 className="border-[1px] rounded-md px-4 pt-1 uppercase text-center text-sm"

@@ -63,7 +63,7 @@ const SlideTopNav: FC<Props> = ({ offset, isHome = false }): JSX.Element => {
           : `flex transition-opacity duration-3000 ${
               offset <= 80 ? `bg-transparent text-white` : `bg-white text-black`
             }`
-      } flex flex-row  justify-start items-center w-full pb-4 pt-8 px-4 h-28 top-0  relative lg:text-black lg:bg-white
+      } flex flex-row  justify-center items-center w-full  px-4 h-20 top-0  relative lg:text-black lg:bg-white
       `}
     >
       <button
@@ -77,27 +77,22 @@ const SlideTopNav: FC<Props> = ({ offset, isHome = false }): JSX.Element => {
 
       {/* logo */}
       <div className="flex w-full flex-row justify-between items-center">
-        <div className={`flex flex-1 justify-center`}>
-          <Link
-            scroll={true}
-            href={appLinks.home.path}
-            locale={lang}
-            className="flex justify-center space-x-3  cursor-pointer px-4 py-2 "
-          >
-            <div className="flex xl:hidden  grow justify-center ">
-              <Image
-                className="h-auto w-12 xl:w-auto"
-                src={imgUrl(vendor.logo)}
-                alt={`logo`}
-                width={imageSizes.xs}
-                height={imageSizes.xs}
-              />
-            </div>
-            <div className="hidden sm:flex flex-1  pt-2 rtl:pr-2 ltr:pl-2 drop-shadow-sm">
-              <TextTrans ar={vendor.name_ar} en={vendor.name_en} />
-            </div>
-          </Link>
-        </div>
+        <Link
+          scroll={true}
+          href={appLinks.home.path}
+          locale={lang}
+          className="flex flex-1 w-full justify-center cursor-pointer "
+        >
+          <div className="flex xl:hidden  grow justify-center ltr:ml-10 rtl:mr-10">
+            <Image
+              className="h-auto w-12 xl:w-auto"
+              src={imgUrl(vendor.logo)}
+              alt={`logo`}
+              width={imageSizes.xs}
+              height={imageSizes.xs}
+            />
+          </div>
+        </Link>
         <div className={`flex flex-row justify-between items-center w-20`}>
           <Link
             scroll={true}

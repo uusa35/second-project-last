@@ -15,7 +15,12 @@ import CashOnDelivery from '@/appImages/cash_on_delivery.jpg';
 import Visa from '@/appImages/visa.png';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
-import { convertColor, imageSizes, submitBtnClass, suppressText } from '@/constants/*';
+import {
+  convertColor,
+  imageSizes,
+  submitBtnClass,
+  suppressText,
+} from '@/constants/*';
 import {
   setCurrentModule,
   resetShowFooterElement,
@@ -29,6 +34,7 @@ import Facebook from '@/appIcons/facebook.svg';
 import Twitter from '@/appIcons/twitter.svg';
 import Instagram from '@/appIcons/instagram.svg';
 import { themeColor } from '@/redux/slices/vendorSlice';
+import PoweredByQ from '@/components/PoweredByQ';
 
 type Props = {
   element: Vendor;
@@ -222,6 +228,9 @@ const VendorShow: NextPage<Props> = ({ element }) => {
           ariaHideApp={false}
           onRequestClose={handleClosePopup}
         />
+        <div className={`mt-[10%]`}>
+          <PoweredByQ />
+        </div>
       </MainContentLayout>
     </Suspense>
   );
