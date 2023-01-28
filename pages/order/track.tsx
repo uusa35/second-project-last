@@ -80,7 +80,7 @@ const TrackOrder: NextPage = (): JSX.Element => {
                 onChange={debounce((e) => handleChange(e.target.value), 400)}
                 className="block w-full rounded-md  focus:ring-1 focus:ring-primary_BG pl-10 border-none bg-gray-100 capitalize h-14"
                 suppressHydrationWarning={suppressText}
-                placeholder={`${t(`enter_order_id`)}`}
+                placeholder={`${t(`enter_order_code`)}`}
               />
             </div>
             {isSuccess && !isEmpty(data) && !data?.status && (
@@ -102,7 +102,7 @@ const TrackOrder: NextPage = (): JSX.Element => {
                   style={{ color }}
                   suppressHydrationWarning={suppressText}
                 >
-                  {t('order_id')}
+                  {t('order_code')}
                 </p>
                 <p>{router.query.order_code}</p>
               </div>
