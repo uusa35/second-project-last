@@ -1,4 +1,4 @@
-import { useEffect, useState, Suspense, useCallback } from 'react';
+import { useEffect, Suspense } from 'react';
 import { NextPage } from 'next';
 import MainContentLayout from '@/layouts/MainContentLayout';
 import { useTranslation } from 'react-i18next';
@@ -6,10 +6,7 @@ import { suppressText, submitBtnClass } from '@/constants/*';
 import { setCurrentModule } from '@/redux/slices/appSettingSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-import {
-  useLazyCheckOrderStatusQuery,
-  useLazyTrackOrderQuery,
-} from '@/redux/api/orderApi';
+import { useLazyTrackOrderQuery } from '@/redux/api/orderApi';
 import { debounce, isEmpty, lowerCase, snakeCase } from 'lodash';
 import { useRouter } from 'next/router';
 import LoadingSpinner from '@/components/LoadingSpinner';
@@ -20,11 +17,12 @@ const TrackOrder: NextPage = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const color = useAppSelector(themeColor);
-  const [trigger, { data, isSuccess, isLoading }] = useLazyTrackOrderQuery();
+  const [triggerGetTrackOrder, { data, isSuccess, isLoading }] =
+    useLazyTrackOrderQuery();
 
   const handleChange = (order_code: string) => {
     if (order_code && order_code.length >= 3) {
-      trigger({ order_code: `${order_code}` });
+      triggerGetTrackOrder({ order_code });
     }
   };
 
@@ -45,13 +43,11 @@ const TrackOrder: NextPage = (): JSX.Element => {
   const handelDisplayAddress = () => {
     let address = Object.values(data.data.address.address);
     let concatAdd = '';
-
     address.map((a) => {
       if (a !== null) {
         concatAdd += a + ', ';
       }
     });
-
     return concatAdd;
   };
 
@@ -84,7 +80,7 @@ const TrackOrder: NextPage = (): JSX.Element => {
                 onChange={debounce((e) => handleChange(e.target.value), 400)}
                 className="block w-full rounded-md  focus:ring-1 focus:ring-primary_BG pl-10 border-none bg-gray-100 capitalize h-14"
                 suppressHydrationWarning={suppressText}
-                placeholder={`${t(`enter_order_id`)}`}
+                placeholder={`${t(`enter_order_code`)}`}
               />
             </div>
             {isSuccess && !isEmpty(data) && !data?.status && (
@@ -106,9 +102,9 @@ const TrackOrder: NextPage = (): JSX.Element => {
                   style={{ color }}
                   suppressHydrationWarning={suppressText}
                 >
-                  {t('order_id')}
+                  {t('order_code')}
                 </p>
-                <p>{router.query.order_code}</p>
+                <p>{data.data.order_code}</p>
               </div>
 
               <div className="flex justify-between mt-5">

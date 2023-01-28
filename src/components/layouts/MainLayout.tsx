@@ -11,7 +11,11 @@ import dynamic from 'next/dynamic';
 import { useGetVendorQuery } from '@/redux/api/vendorApi';
 import { AppQueryResult } from '@/types/queries';
 import { Vendor } from '@/types/index';
-import { setVendor } from '@/redux/slices/vendorSlice';
+import {
+  setColorTheme,
+  setVendor,
+  themeColor,
+} from '@/redux/slices/vendorSlice';
 import { isNull } from 'lodash';
 import { useLazyCreateTempIdQuery } from '@/redux/api/cartApi';
 const MainAsideLayout = dynamic(
@@ -43,22 +47,40 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const { data: vendorElement, isSuccess } = useGetVendorQuery<{
+  const {
+    data: vendorElement,
+    isSuccess,
+    refetch: refetcVendor,
+  } = useGetVendorQuery<{
     data: AppQueryResult<Vendor>;
     isSuccess: boolean;
   }>({ lang: locale.lang });
+  const color = useAppSelector(themeColor);
   const [triggerCreateTempId] = useLazyCreateTempIdQuery();
 
   useEffect(() => {
-    if (isSuccess && vendorElement.Data) {
-      dispatch(setVendor(vendorElement.Data));
-    }
     if (isNull(userAgent)) {
       triggerCreateTempId().then((r: any) =>
         dispatch(setUserAgent(r.data.Data?.Id))
       );
     }
+    if (isSuccess && vendorElement.Data) {
+      dispatch(setVendor(vendorElement.Data));
+    }
   }, []);
+
+  useEffect(() => {
+    if (isSuccess) {
+      refetcVendor().then((r) => {
+        if (r.data && r.data.Data && r.data.Data) {
+          dispatch(setColorTheme(r.data?.Data?.theme_color));
+        }
+      });
+    }
+  }, [color]);
+
+  console.log('color', color);
+  console.log('color', color);
 
   useEffect(() => {
     const handleRouteChange: Handler = (url, { shallow }) => {

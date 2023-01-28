@@ -53,19 +53,14 @@ import { AppQueryResult } from '@/types/queries';
 const schema = yup
   .object()
   .shape({
-    address: yup
-      .object()
-      .shape({
-        block: yup.string().max(50),
-        street: yup.string().max(100),
-        house_no: yup.string().max(50),
-        avenue: yup.string().max(50),
-        paci: yup.string().max(50),
-        floor_no: yup.string().max(50),
-        office_no: yup.string().max(50),
-        additional: yup.string().max(50),
-      })
-      .required(),
+    block: yup.string().max(50),
+    street: yup.string().max(100).nullable(true),
+    house_no: yup.string().max(50).nullable(true),
+    avenue: yup.string().max(50).nullable(true),
+    paci: yup.string().max(50),
+    floor_no: yup.string().max(50).nullable(true),
+    office_no: yup.string().max(50).nullable(true),
+    additional: yup.string().nullable(true),
     longitude: yup.string(),
     latitude: yup.string(),
     customer_id: yup.string().required(),
@@ -80,13 +75,13 @@ const CartAddress: NextPage = (): JSX.Element => {
     area,
     branch,
     appSetting: { method },
-    customer: { userAgent, address, id },
+    customer: { userAgent, address, id: customer_id },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
   const [openTab, setOpenTab] = useState(1);
   const [show, SetShow] = useState(false);
   const refForm = useRef<any>();
-  const [AddAddress, { isLoading: AddAddressLoading }] =
+  const [triggerAddAddress, { isLoading: AddAddressLoading }] =
     useCreateAddressMutation();
   const { data: cartItems, isSuccess } = useGetCartProductsQuery<{
     data: AppQueryResult<ServerCart>;
@@ -118,17 +113,15 @@ const CartAddress: NextPage = (): JSX.Element => {
       address_type: openTab ?? ``,
       longitude: ``,
       latitude: ``,
-      customer_id: id?.toString(),
-      address: {
-        block: address.block,
-        street: address.street,
-        house_no: address.house_no,
-        avenue: address.avenue,
-        paci: address.paci,
-        floor_no: address.floor_no,
-        office_no: address.office_no,
-        additional: address.additional,
-      },
+      customer_id: customer_id?.toString(),
+      block: address.block,
+      street: address.street,
+      house_no: address.house_no,
+      avenue: address.avenue,
+      paci: address.paci,
+      floor_no: address.floor_no,
+      office_no: address.office_no,
+      additional: address.additional,
     },
   });
 
@@ -181,7 +174,12 @@ const CartAddress: NextPage = (): JSX.Element => {
             }
             break;
           case 'busy':
-            return null;
+            return dispatch(
+              showToastMessage({
+                content: `shop_is_busy`,
+                type: `error`,
+              })
+            );
             break;
           case 'close':
             return dispatch(
@@ -203,14 +201,24 @@ const CartAddress: NextPage = (): JSX.Element => {
     });
   };
 
-  // address
-  const handleSelectMethod = (m: appSetting['method']) => {
-    router.push(appLinks.cartSelectMethod(m));
-  };
-
   const handelSaveAddress = async (body: any) => {
-    await AddAddress({
-      body,
+    await triggerAddAddress({
+      body: {
+        address_type: body.address_type,
+        longitude: body.longitude,
+        latitude: body.latitude,
+        customer_id: body.customer_id,
+        address: {
+          block: body.block,
+          street: body.street,
+          house_no: body.house_no,
+          avenue: body.avenue,
+          paci: body.paci,
+          floor_no: body.floor_no,
+          office_no: body.office_no,
+          additional: body.additional,
+        },
+      },
     }).then((r: any) => {
       if (r.data && r.data.status) {
         dispatch(
@@ -219,6 +227,7 @@ const CartAddress: NextPage = (): JSX.Element => {
             type: `success`,
           })
         );
+        console.log('rrr', r.data.Data);
         dispatch(setCustomerAddress(r.data.Data));
         checkTimeAvailability();
       } else {
@@ -265,6 +274,12 @@ const CartAddress: NextPage = (): JSX.Element => {
       dispatch(resetShowFooterElement());
     };
   }, []);
+
+  useEffect(() => {
+    if (customer_id) {
+      setValue('customer_id', customer_id);
+    }
+  }, [customer_id]);
 
   const handleNext = () => {
     console.log('fired');
@@ -457,7 +472,7 @@ const CartAddress: NextPage = (): JSX.Element => {
                       placeholder={`${t(`block`)}`}
                       className={`${addressInputField}`}
                       suppressHydrationWarning={suppressText}
-                      {...register('address.block')}
+                      {...register('block')}
                       required={method === `delivery`}
                       aria-invalid={errors.block ? 'true' : 'false'}
                     />
@@ -485,7 +500,7 @@ const CartAddress: NextPage = (): JSX.Element => {
                       placeholder={`${t(`street`)}`}
                       className={`${addressInputField}`}
                       suppressHydrationWarning={suppressText}
-                      {...register('address.street')}
+                      {...register('street')}
                       aria-invalid={errors.street ? 'true' : 'false'}
                     />
 
@@ -520,7 +535,7 @@ const CartAddress: NextPage = (): JSX.Element => {
                               placeholder={`${t(`house_no`)}`}
                               className={`${addressInputField}`}
                               suppressHydrationWarning={suppressText}
-                              {...register('address.house_no')}
+                              {...register('house_no')}
                               aria-invalid={errors.house_no ? 'true' : 'false'}
                             />
                           </div>
@@ -532,7 +547,7 @@ const CartAddress: NextPage = (): JSX.Element => {
                               className={`${addressInputField}`}
                               suppressHydrationWarning={suppressText}
                               placeholder={`${t(`floor#`)}`}
-                              {...register('address.floor_no')}
+                              {...register('floor_no')}
                               aria-invalid={errors.floor_no ? 'true' : 'false'}
                             />
                           </div>
@@ -545,7 +560,7 @@ const CartAddress: NextPage = (): JSX.Element => {
                               placeholder={`${t(`office_no`)}`}
                               className={`${addressInputField}`}
                               suppressHydrationWarning={suppressText}
-                              {...register('address.office_no')}
+                              {...register('office_no')}
                               aria-invalid={errors.office_no ? 'true' : 'false'}
                             />
                           </div>
@@ -556,7 +571,7 @@ const CartAddress: NextPage = (): JSX.Element => {
                       placeholder={`${t(`avenue`)}`}
                       className={`${addressInputField}`}
                       suppressHydrationWarning={suppressText}
-                      {...register('address.avenue')}
+                      {...register('avenue')}
                       aria-invalid={errors.avenue ? 'true' : 'false'}
                     />
                     <div>
@@ -583,7 +598,7 @@ const CartAddress: NextPage = (): JSX.Element => {
                       placeholder={`${t(`paci`)}`}
                       className={`${addressInputField}`}
                       suppressHydrationWarning={suppressText}
-                      {...register('address.paci')}
+                      {...register('paci')}
                       aria-invalid={errors.paci ? 'true' : 'false'}
                     />
 
@@ -611,7 +626,7 @@ const CartAddress: NextPage = (): JSX.Element => {
                       placeholder={`${t(`additional`)}`}
                       className={`${addressInputField}`}
                       suppressHydrationWarning={suppressText}
-                      {...register('address.additional')}
+                      {...register('additional')}
                       aria-invalid={errors.additional ? 'true' : 'false'}
                     />
                   </div>

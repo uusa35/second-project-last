@@ -48,21 +48,16 @@ const SelectMethod: NextPage<Props> = ({
     customer: { userAgent },
     appSetting: { method: method_type },
   } = useAppSelector((state) => state);
-
   const color = useAppSelector(themeColor);
+  const [open, setOpen] = useState(0);
+  const handleOpen = (value: any) => {
+    setOpen(open === value ? 0 : value);
+  };
   const [selectedData, setSelectedData] = useState({
     area: selectedArea,
     branch: branch,
     method: method,
   });
-  useEffect(() => {
-    setSelectedData({
-      method: method,
-      area: selectedArea,
-      branch: branch,
-    });
-  }, [method]);
-
   const [showChangeLocModal, setShowChangeLocModal] = useState<boolean>(false);
   const {
     data: cartItems,
@@ -80,15 +75,19 @@ const SelectMethod: NextPage<Props> = ({
     data: AppQueryResult<Branch[]>;
     isLoading: boolean;
   }>({ lang });
-  const [open, setOpen] = useState(0);
-  const handleOpen = (value: any) => {
-    setOpen(open === value ? 0 : value);
-  };
 
   useEffect(() => {
     dispatch(setCurrentModule(t('select_method')));
     () => refetchCart();
   }, []);
+
+  useEffect(() => {
+    setSelectedData({
+      method: method,
+      area: selectedArea,
+      branch: branch,
+    });
+  }, [method]);
 
   if (branchesLoading || locationsLoading) {
     return <LoadingSpinner />;

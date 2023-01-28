@@ -111,20 +111,18 @@ export interface Location {
   Areas: Area[];
 }
 
-
 export interface Address {
   id: number | string;
   type: number | string;
   longitude: number | string;
   latitude: number | string;
   customer_id: number | string;
-  address: { [key: string]: any };
+  [key: string]: any;
 }
 
 export interface Feedback {
   user_name: string;
   rate: number;
   note: string;
-  phone: number
+  phone: number;
 }
-
