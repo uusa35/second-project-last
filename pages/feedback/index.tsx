@@ -1,6 +1,5 @@
 import { NextPage } from 'next';
 import Modal from 'react-modal';
-import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 import ModalFeedbackIcon from '@/appIcons/modal_feedback.svg';
 import Card from '@/appIcons/card.svg';
@@ -74,6 +73,7 @@ const Feedback: NextPage<Props> = ({
   const onSubmit = async (body: any) => {
     await triggerCreateFeedback(body).then((r: any) => {
       if (r.data && r.data.status) {
+        console.log('feedback response', r.data)
         dispatch(
           showToastMessage({
             content: `${t(`thanks_for_your_feedback`)}`,
@@ -175,8 +175,9 @@ const Feedback: NextPage<Props> = ({
               )}
             </div>
             <div
-              className={`flex text-black py-4 ${isRTL && `flex-row-reverse`}`}
+              className={`flex items-center text-black py-4 ${isRTL && `flex-row-reverse`}`}
             >
+<<<<<<< HEAD
               <CustomImage
                 src={Card.src}
                 alt="card"
@@ -184,6 +185,9 @@ const Feedback: NextPage<Props> = ({
                 height={20}
                 className={`w-6 h-6`}
               />
+=======
+              <CustomImage src={Card} alt="card" className="w-6 h-6" />
+>>>>>>> 62d661675edb489f3c41c750a951aec5df883a77
               <input
                 {...register('user_name')}
                 className={`px-4 border-0 focus:ring-transparent outline-none ${
@@ -216,10 +220,11 @@ const Feedback: NextPage<Props> = ({
               }`}
             >
               <div
-                className={`flex text-black py-4 ${
+                className={`flex items-center text-black py-4 ${
                   isRTL && `flex-row-reverse`
                 }`}
               >
+<<<<<<< HEAD
                 <CustomImage
                   src={Phone.src}
                   alt="phone"
@@ -227,6 +232,9 @@ const Feedback: NextPage<Props> = ({
                   height={20}
                   className={`w-6 h-6`}
                 />
+=======
+                <CustomImage src={Phone} alt="phone" className="w-6 h-6" />
+>>>>>>> 62d661675edb489f3c41c750a951aec5df883a77
                 <input
                   className={`px-4 border-0 focus:ring-transparent outline-none ${
                     isRTL && 'text-right'
@@ -245,8 +253,9 @@ const Feedback: NextPage<Props> = ({
             <div className="my-2 px-5 py-1 bg-gray-100"></div>
 
             <div
-              className={`flex text-black py-4 ${isRTL && `flex-row-reverse`}`}
+              className={`flex items-center text-black py-4 ${isRTL && `flex-row-reverse`}`}
             >
+<<<<<<< HEAD
               <CustomImage
                 src={Comment.src}
                 alt="comment"
@@ -254,6 +263,9 @@ const Feedback: NextPage<Props> = ({
                 height={20}
                 className={`w-6 h-6`}
               />
+=======
+              <CustomImage src={Comment} alt="comment" className="w-6 h-6" />
+>>>>>>> 62d661675edb489f3c41c750a951aec5df883a77
               <input
                 {...register('note')}
                 aria-invalid={errors.note ? 'true' : 'false'}
