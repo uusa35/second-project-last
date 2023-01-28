@@ -177,7 +177,6 @@ const Feedback: NextPage<Props> = ({
             <div
               className={`flex items-center text-black py-4 ${isRTL && `flex-row-reverse`}`}
             >
-<<<<<<< HEAD
               <CustomImage
                 src={Card.src}
                 alt="card"
@@ -185,9 +184,6 @@ const Feedback: NextPage<Props> = ({
                 height={20}
                 className={`w-6 h-6`}
               />
-=======
-              <CustomImage src={Card} alt="card" className="w-6 h-6" />
->>>>>>> 62d661675edb489f3c41c750a951aec5df883a77
               <input
                 {...register('user_name')}
                 className={`px-4 border-0 focus:ring-transparent outline-none ${
@@ -224,7 +220,6 @@ const Feedback: NextPage<Props> = ({
                   isRTL && `flex-row-reverse`
                 }`}
               >
-<<<<<<< HEAD
                 <CustomImage
                   src={Phone.src}
                   alt="phone"
@@ -232,9 +227,6 @@ const Feedback: NextPage<Props> = ({
                   height={20}
                   className={`w-6 h-6`}
                 />
-=======
-                <CustomImage src={Phone} alt="phone" className="w-6 h-6" />
->>>>>>> 62d661675edb489f3c41c750a951aec5df883a77
                 <input
                   className={`px-4 border-0 focus:ring-transparent outline-none ${
                     isRTL && 'text-right'
@@ -255,7 +247,6 @@ const Feedback: NextPage<Props> = ({
             <div
               className={`flex items-center text-black py-4 ${isRTL && `flex-row-reverse`}`}
             >
-<<<<<<< HEAD
               <CustomImage
                 src={Comment.src}
                 alt="comment"
@@ -263,9 +254,6 @@ const Feedback: NextPage<Props> = ({
                 height={20}
                 className={`w-6 h-6`}
               />
-=======
-              <CustomImage src={Comment} alt="comment" className="w-6 h-6" />
->>>>>>> 62d661675edb489f3c41c750a951aec5df883a77
               <input
                 {...register('note')}
                 aria-invalid={errors.note ? 'true' : 'false'}
