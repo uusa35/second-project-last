@@ -67,7 +67,12 @@ export const customerSlice = createSlice({
     ) => {
       return {
         ...state,
-        address: action.payload,
+        address: {
+          id: action.payload?.id,
+          type: action.payload?.type,
+          ...action.payload?.address,
+        },
+        customer_id: action.payload?.customer_id,
       };
     },
     resetCustomerAddress: (
