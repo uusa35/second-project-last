@@ -36,6 +36,7 @@ const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
   } = useAppSelector((state) => state);
   const router = useRouter();
   const { key } = router.query;
+  const [searchIsEmpty, setSearchIsEmpty] = useState(true);
 
   const { data: topSearch, isSuccess } = useGetTopSearchQuery({
     lang,
@@ -49,7 +50,6 @@ const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
     }>();
   const [currentProducts, setCurrentProducts] = useState<any>([]);
 
-
   useEffect(() => {
     dispatch(setCurrentModule(t('product_search_index')));
   }, []);
@@ -59,6 +59,10 @@ const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
   }, [key]);
 
   const handleChange = (key: string) => {
+    if (key.length === 0) {
+      setSearchIsEmpty(true);
+    } else setSearchIsEmpty(false);
+
     if (key.length > 2) {
       trigger({ key, lang, branch_id: branchId }).then((r: any) => {
         setCurrentProducts(r.data.Data);
@@ -70,7 +74,15 @@ const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
     }
   };
 
-  console.log('topSearch', topSearch, key, currentProducts,elements);
+  console.log(
+    'topSearch',
+    topSearch,
+    'key',
+    key,
+    'currentProducts',
+    currentProducts,
+    elements
+  );
 
   return (
     <Suspense>
@@ -122,9 +134,10 @@ const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
                   {t(`clear`)}
                 </Link>
               </div>
-              {key === '' && !SearchSuccess && (
-                <div className='border-t-4 border-stone-100 pt-3 mt-5'>
-                  <p className='mb-3 text-semibold'>{t('trending_items')}</p>
+              {(key === '' || key === 'null') && searchIsEmpty && (
+                <div>
+                  <div className="h-2 bg-stone-100 my-5 -mx-3"></div>
+                  <p className="mb-3 text-semibold">{t('trending_items')}</p>
                   {map(topSearch.Data.trendingItems, (item) => {
                     return <VerProductWidget element={item} key={item.id} />;
                   })}
@@ -144,9 +157,21 @@ const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
               />
             )}
 
-            {map(currentProducts, (p, i) => (
-              <VerProductWidget element={p} key={i} />
-            ))}
+            {!isEmpty(currentProducts) && (
+              <>
+                <div className="flex justify-between items-center">
+                  <p className="text-semibold">{t('top_results')}</p>
+                  <p className="text-stone-300">
+                    {currentProducts.length} {t('product_found')}
+                  </p>
+                </div>
+
+                <div className="h-2 bg-stone-100 my-5 -mx-3"></div>
+                {map(currentProducts, (p, i) => (
+                  <VerProductWidget element={p} key={i} />
+                ))}
+              </>
+            )}
           </div>
         </div>
       </MainContentLayout>
