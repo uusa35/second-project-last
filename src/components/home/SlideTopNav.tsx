@@ -43,15 +43,15 @@ const SlideTopNav: FC<Props> = ({ offset, isHome = false }): JSX.Element => {
           locale,
           scroll: false,
         })
-        .then(() =>
+        .then(() => dispatch(setLocale(locale)))
+        .then(() => {
           dispatch(
             showToastMessage({
               content: `language_changed_successfully`,
               type: `info`,
             })
-          )
-        )
-        .then(() => dispatch(setLocale(locale)));
+          );
+        });
     }
   };
 

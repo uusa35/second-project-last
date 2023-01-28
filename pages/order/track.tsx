@@ -51,8 +51,6 @@ const TrackOrder: NextPage = (): JSX.Element => {
     return concatAdd;
   };
 
-  console.log('data', data);
-
   return (
     <Suspense fallback={<LoadingSpinner fullWidth={false} />}>
       <MainContentLayout>
