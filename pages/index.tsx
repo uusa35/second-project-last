@@ -74,7 +74,7 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
         />
         <div className="bg-white mt-40 lg:mt-0 border-t-4 border-stone-100 lg:border-none rounded-t-3xl lg:rounded-none relative -top-10 lg:top-auto  pt-1 lg:pt-0 ">
           {/*  HomePage Header */}
-          <div className={`px-10 mt-6 lg:mt-12 lg:mt-0`}>
+          <div className={`px-2 mt-6 lg:mt-0`}>
             <HomeVendorMainInfo element={element} />
           </div>
           <HomeSelectMethod element={element} />
@@ -92,7 +92,7 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
                   name="search"
                   id="search"
                   onFocus={() => handleFocus()}
-                  className="block w-full rounded-md  pl-20 focus:ring-1 focus:ring-primary_BG border-none  bg-gray-100 py-3 h-16  text-lg capitalize"
+                  className="block w-full rounded-md  pl-20 focus:ring-1 focus:ring-primary_BG border-none  bg-gray-100 h-14  text-lg capitalize"
                   suppressHydrationWarning={suppressText}
                   placeholder={`${t(`search_products`)}`}
                 />

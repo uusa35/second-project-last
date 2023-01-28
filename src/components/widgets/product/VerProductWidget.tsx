@@ -66,7 +66,8 @@ const VerProductWidget: FC<Props> = ({ element }): JSX.Element => {
                     className="text-md text-end uppercase pb-2"
                     style={{ color }}
                   >
-                    {element.price} {t(`kwd`)}
+                    {element.price}{' '}
+                    <span className={`uppercase`}>{t(`kwd`)}</span>
                   </p>
                   <div className="text-end">
                     <button className="border-[1px] rounded-md border-primary_BG px-7 uppercase text-center text-sm">

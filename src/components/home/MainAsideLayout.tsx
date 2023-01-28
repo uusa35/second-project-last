@@ -70,7 +70,7 @@ const MainAsideLayout: FC<Props> = ({ element }): JSX.Element => {
         <Link
           scroll={true}
           href={appLinks.home.path}
-          className={`text-center text-white z-50`}
+          className={`text-center text-white z-50 hidden`}
         >
           <CustomImage
             src={`${imgUrl(element.logo)}`}
