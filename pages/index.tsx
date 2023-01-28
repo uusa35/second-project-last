@@ -30,6 +30,7 @@ import HomeVendorMainInfo from '@/components/home/HomeVendorMainInfo';
 import { useRouter } from 'next/router';
 import CustomImage from '@/components/CustomImage';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import { setColorTheme } from '@/redux/slices/vendorSlice';
 
 type Props = {
   categories: Category[];
@@ -44,6 +45,12 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
     dispatch(setCurrentModule(t('home')));
     dispatch(setShowFooterElement('home'));
   }, []);
+
+  useEffect(() => {
+    if (element.theme_color) {
+      dispatch(setColorTheme(element.theme_color));
+    }
+  });
 
   const handleFocus = () =>
     router.push(appLinks.productSearchIndex('null', ``, 'null'));
