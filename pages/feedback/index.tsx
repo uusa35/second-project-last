@@ -11,7 +11,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useCreateFeedbackMutation } from '@/redux/api/feedbackApi';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { convertColor, submitBtnClass, suppressText } from '@/constants/*';
+import { convertColor, footerBtnClass, submitBtnClass, suppressText } from '@/constants/*';
 import { useForm } from 'react-hook-form';
 import { debounce, map } from 'lodash';
 import { useState } from 'react';
@@ -253,7 +253,14 @@ const Feedback: NextPage<Props> = ({
           </div>
 
           <div className="px-5 pb-5">
-            <button className={`w-full capitalize ${submitBtnClass}`}>
+            <button 
+              className={`text-white px-2 ${submitBtnClass}`}
+              style={{
+                backgroundColor: convertColor(color, 100),
+                color: `white`,
+              }}
+              suppressHydrationWarning={suppressText}
+            >
               {t('send_feedback')}
             </button>
           </div>
