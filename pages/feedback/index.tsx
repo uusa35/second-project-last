@@ -283,19 +283,9 @@ const Feedback: NextPage<Props> = ({
           </div>
 
           <div className="px-5 pb-5">
-<<<<<<< HEAD
-            <button 
-              className={`text-white px-2 ${submitBtnClass}`}
-              style={{
-                backgroundColor: convertColor(color, 100),
-                color: `white`,
-              }}
-              suppressHydrationWarning={suppressText}
-=======
             <button
               className={`w-full capitalize ${submitBtnClass}`}
               style={{ backgroundColor: color }}
->>>>>>> structure
             >
               {t('send_feedback')}
             </button>
