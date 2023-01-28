@@ -853,7 +853,7 @@ const CartAddress: NextPage = (): JSX.Element => {
               </div>
             )}
           </div>
-          <button type={`submit`} className={``}>
+          <button type={`submit`} className={`hidden`}>
             submit
           </button>
         </form>
