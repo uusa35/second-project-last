@@ -51,6 +51,8 @@ const TrackOrder: NextPage = (): JSX.Element => {
     return concatAdd;
   };
 
+  console.log('data', data);
+
   return (
     <Suspense fallback={<LoadingSpinner fullWidth={false} />}>
       <MainContentLayout>
@@ -104,7 +106,7 @@ const TrackOrder: NextPage = (): JSX.Element => {
                 >
                   {t('order_code')}
                 </p>
-                <p>{router.query.order_code}</p>
+                <p>{data.data.order_code}</p>
               </div>
 
               <div className="flex justify-between mt-5">
