@@ -64,13 +64,13 @@ const Feedback: NextPage<Props> = ({
   const dispatch = useAppDispatch();
   const handleChange = ({ target }: any) => {
     setValue(target.name, target.value);
-    clearErrors(target.name)
-  }
+    clearErrors(target.name);
+  };
   const ratingButtons = [
-    {rate: 1, text: 'can_be_better'},
-    {rate: 2, text: 'it_was_okay'},
-    {rate: 3, text: 'amazing'}
-  ]
+    { rate: 1, text: 'can_be_better' },
+    { rate: 2, text: 'it_was_okay' },
+    { rate: 3, text: 'amazing' },
+  ];
   const onSubmit = async (body: any) => {
     await triggerCreateFeedback(body).then((r: any) => {
       if (r.data && r.data.status) {
@@ -81,12 +81,15 @@ const Feedback: NextPage<Props> = ({
           })
         );
         setRateVal(0);
-        reset({
-          user_name: ``,
-          rate: ``,
-          note: ``,
-          phone: ``,
-        }, {keepValues: false});
+        reset(
+          {
+            user_name: ``,
+            rate: ``,
+            note: ``,
+            phone: ``,
+          },
+          { keepValues: false }
+        );
         onRequestClose();
       }
     });
@@ -95,11 +98,13 @@ const Feedback: NextPage<Props> = ({
     <Modal
       isOpen={isOpen}
       ariaHideApp={ariaHideApp}
-      className={`rounded-t-lg h-1/4 ${isRTL ? 'right-0' : 'left-0'}`}
+      className={`w-full lg:w-2/4 xl:w-1/3 rounded-t-lg h-1/4 ${
+        isRTL ? 'right-0' : 'left-0'
+      }`}
       style={{ overlay: { backgroundColor: 'rgba(0, 0, 0, 0.5)' } }}
     >
       <div
-        className={`bg-white rounded-t-lg bottom-0 absolute w-full lg:w-2/6 ${
+        className={`bg-white rounded-t-lg bottom-0 absolute w-full lg:w-2/4 xl:w-1/3 ${
           isRTL ? ' right-0' : 'left-0'
         }`}
       >
@@ -140,16 +145,23 @@ const Feedback: NextPage<Props> = ({
               {map(ratingButtons, (button) => (
                 <button
                   className={`border-zinc-400 border-2 px-2 rounded-full py-1
-                  ${rateVal === button.rate ? 'bg-primary_BG text-white border-zinc-50': 'text-zinc-400'}`}
+                  ${
+                    rateVal === button.rate
+                      ? 'bg-primary_BG text-white border-zinc-50'
+                      : 'text-zinc-400'
+                  }`}
                   suppressHydrationWarning={suppressText}
                   onClick={() => {
                     setValue('rate', button.rate);
                     setRateVal(button.rate);
                   }}
-                  style={{backgroundColor: (rateVal === button.rate) ? convertColor(color, 100): '' }}
+                  style={{
+                    backgroundColor:
+                      rateVal === button.rate ? convertColor(color, 100) : '',
+                  }}
                 >
-                {t(`${button.text}`)}
-              </button>
+                  {t(`${button.text}`)}
+                </button>
               ))}
             </div>
             <div>
@@ -165,13 +177,19 @@ const Feedback: NextPage<Props> = ({
             <div
               className={`flex text-black py-4 ${isRTL && `flex-row-reverse`}`}
             >
-              <Image src={Card} alt="card" width={20} height={20} />
+              <CustomImage
+                src={Card.src}
+                alt="card"
+                width={20}
+                height={20}
+                className={`w-6 h-6`}
+              />
               <input
                 {...register('user_name')}
                 className={`px-4 border-0 focus:ring-transparent outline-none ${
                   isRTL && 'text-right'
                 }`}
-                name='user_name'
+                name="user_name"
                 placeholder={`${t(`enter_your_name`)}`}
                 onChange={(e: any) => {
                   // setValue('user_name', e.target.value);
@@ -202,7 +220,13 @@ const Feedback: NextPage<Props> = ({
                   isRTL && `flex-row-reverse`
                 }`}
               >
-                <Image src={Phone} alt="phone" width={20} height={20} />
+                <CustomImage
+                  src={Phone.src}
+                  alt="phone"
+                  width={20}
+                  height={20}
+                  className={`w-6 h-6`}
+                />
                 <input
                   className={`px-4 border-0 focus:ring-transparent outline-none ${
                     isRTL && 'text-right'
@@ -223,7 +247,13 @@ const Feedback: NextPage<Props> = ({
             <div
               className={`flex text-black py-4 ${isRTL && `flex-row-reverse`}`}
             >
-              <Image src={Comment} alt="comment" width={20} height={20} />
+              <CustomImage
+                src={Comment.src}
+                alt="comment"
+                width={20}
+                height={20}
+                className={`w-6 h-6`}
+              />
               <input
                 {...register('note')}
                 aria-invalid={errors.note ? 'true' : 'false'}
@@ -253,6 +283,7 @@ const Feedback: NextPage<Props> = ({
           </div>
 
           <div className="px-5 pb-5">
+<<<<<<< HEAD
             <button 
               className={`text-white px-2 ${submitBtnClass}`}
               style={{
@@ -260,6 +291,11 @@ const Feedback: NextPage<Props> = ({
                 color: `white`,
               }}
               suppressHydrationWarning={suppressText}
+=======
+            <button
+              className={`w-full capitalize ${submitBtnClass}`}
+              style={{ backgroundColor: color }}
+>>>>>>> structure
             >
               {t('send_feedback')}
             </button>
