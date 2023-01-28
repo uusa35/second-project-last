@@ -107,8 +107,8 @@ const ProductIndex: NextPage<Props> = ({ elements }): JSX.Element => {
           <div
             className={
               productPreview === 'hor'
-                ? 'mt-4 p-4 grid sm:grid-cols-3 lg:grid-cols-2 gap-6'
-                : 'my-4 p-4'
+                ? ' grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 gap-0 py-4'
+                : ''
             }
           >
             {isEmpty(currentProducts) && (
