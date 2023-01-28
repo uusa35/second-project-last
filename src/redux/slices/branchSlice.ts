@@ -27,6 +27,7 @@ export const branchSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(areaSlice.actions.setArea, (state, action) => initialState);
+    // listen to an action ... changing within the currentSlice
   },
 });
 
