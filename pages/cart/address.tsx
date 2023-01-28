@@ -118,7 +118,7 @@ const CartAddress: NextPage = (): JSX.Element => {
       address_type: openTab ?? ``,
       longitude: ``,
       latitude: ``,
-      customer_id: id,
+      customer_id: id?.toString(),
       address: {
         block: address.block,
         street: address.street,
@@ -235,7 +235,8 @@ const CartAddress: NextPage = (): JSX.Element => {
   };
 
   const onSubmit = async (body: any) => {
-    console.log('fired submit');
+    console.log('body', body);
+    console.log('method', method);
     if (method === 'pickup') {
       await checkTimeAvailability();
     } else {
@@ -266,10 +267,13 @@ const CartAddress: NextPage = (): JSX.Element => {
   }, []);
 
   const handleNext = () => {
+    console.log('fired');
     refForm?.current.dispatchEvent(
       new Event('submit', { cancelable: true, bubbles: true })
     );
   };
+
+  console.log('error', errors);
 
   return (
     <Suspense>
@@ -456,9 +460,6 @@ const CartAddress: NextPage = (): JSX.Element => {
                       {...register('address.block')}
                       required={method === `delivery`}
                       aria-invalid={errors.block ? 'true' : 'false'}
-                      onChange={(e) =>
-                        setValue('address.block', e.target.value)
-                      }
                     />
 
                     <div>
@@ -486,9 +487,6 @@ const CartAddress: NextPage = (): JSX.Element => {
                       suppressHydrationWarning={suppressText}
                       {...register('address.street')}
                       aria-invalid={errors.street ? 'true' : 'false'}
-                      onChange={(e) =>
-                        setValue('address.street', e.target.value)
-                      }
                     />
 
                     <div>
@@ -524,9 +522,6 @@ const CartAddress: NextPage = (): JSX.Element => {
                               suppressHydrationWarning={suppressText}
                               {...register('address.house_no')}
                               aria-invalid={errors.house_no ? 'true' : 'false'}
-                              onChange={(e) =>
-                                setValue('address.house_no', e.target.value)
-                              }
                             />
                           </div>
                           <div
@@ -539,9 +534,6 @@ const CartAddress: NextPage = (): JSX.Element => {
                               placeholder={`${t(`floor#`)}`}
                               {...register('address.floor_no')}
                               aria-invalid={errors.floor_no ? 'true' : 'false'}
-                              onChange={(e) =>
-                                setValue('address.floor_no', e.target.value)
-                              }
                             />
                           </div>
                           <div
@@ -555,9 +547,6 @@ const CartAddress: NextPage = (): JSX.Element => {
                               suppressHydrationWarning={suppressText}
                               {...register('address.office_no')}
                               aria-invalid={errors.office_no ? 'true' : 'false'}
-                              onChange={(e) =>
-                                setValue('address.office_no', e.target.value)
-                              }
                             />
                           </div>
                         </div>
@@ -569,9 +558,6 @@ const CartAddress: NextPage = (): JSX.Element => {
                       suppressHydrationWarning={suppressText}
                       {...register('address.avenue')}
                       aria-invalid={errors.avenue ? 'true' : 'false'}
-                      onChange={(e) =>
-                        setValue('address.avenue', e.target.value)
-                      }
                     />
                     <div>
                       {errors.avenue?.message.key ? (
@@ -599,7 +585,6 @@ const CartAddress: NextPage = (): JSX.Element => {
                       suppressHydrationWarning={suppressText}
                       {...register('address.paci')}
                       aria-invalid={errors.paci ? 'true' : 'false'}
-                      onChange={(e) => setValue('address.paci', e.target.value)}
                     />
 
                     <div>
@@ -628,9 +613,6 @@ const CartAddress: NextPage = (): JSX.Element => {
                       suppressHydrationWarning={suppressText}
                       {...register('address.additional')}
                       aria-invalid={errors.additional ? 'true' : 'false'}
-                      onChange={(e) =>
-                        setValue('address.additional', e.target.value)
-                      }
                     />
                   </div>
 
@@ -657,6 +639,25 @@ const CartAddress: NextPage = (): JSX.Element => {
 
                 {/* delivery prefrences */}
                 <div className="mx-4">
+                  <div>
+                    {errors.customer_id?.message.key ? (
+                      <p
+                        className={`text-sm text-red-800`}
+                        suppressHydrationWarning={suppressText}
+                      >
+                        {t(`${errors.customer_id?.message.key}`, {
+                          min: errors.customer_id?.message.values,
+                        })}
+                      </p>
+                    ) : (
+                      <p
+                        className={`text-sm text-red-800`}
+                        suppressHydrationWarning={suppressText}
+                      >
+                        {t(errors.customer_id?.message)}
+                      </p>
+                    )}
+                  </div>
                   <p
                     className="my-5 font-semibold text-base"
                     suppressHydrationWarning={suppressText}
@@ -846,6 +847,9 @@ const CartAddress: NextPage = (): JSX.Element => {
               </div>
             )}
           </div>
+          <button type={`submit`} className={`hidden`}>
+            submit
+          </button>
         </form>
       </MainContentLayout>
     </Suspense>
