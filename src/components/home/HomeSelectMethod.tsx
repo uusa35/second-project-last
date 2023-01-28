@@ -57,12 +57,12 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
           className="flex flex-1 gap-x-3 w-full flex-row justify-between items-center mt-0 mb-0"
         >
           <div className={`flex flex-grow justify-start items-center`}>
-            <h1 className={`pt-2`}>
+            <h1 className={`pt-4`}>
               {method === `delivery` ? t(`deliver_to`) : t('pickup_from')}
             </h1>
           </div>
           <div
-            className={`pt-2`}
+            className={`pt-4`}
             style={{ color: `${!branch.id && !area.id ? `red` : color}` }}
           >
             {branch.id ? (
@@ -77,11 +77,11 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
 
         <div className="flex flex-1 gap-x-2 w-full flex-row justify-between items-center mb-2">
           <div className={`flex flex-grow justify-start items-center`}>
-            <h1 className={`pt-2`} suppressHydrationWarning={suppressText}>
+            <h1 className={`pt-4`} suppressHydrationWarning={suppressText}>
               {t('earliest_delivery')}
             </h1>
           </div>
-          <div className={`pt-2`} style={{ color }}>
+          <div className={`pt-4`} style={{ color }}>
             {element.DeliveryTime}
           </div>
         </div>

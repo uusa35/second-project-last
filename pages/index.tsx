@@ -31,6 +31,7 @@ import { useRouter } from 'next/router';
 import CustomImage from '@/components/CustomImage';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { setColorTheme } from '@/redux/slices/vendorSlice';
+import PoweredByQ from '@/components/PoweredByQ';
 
 type Props = {
   categories: Category[];
@@ -74,13 +75,13 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
         />
         <div className="bg-white mt-40 lg:mt-0 border-t-4 border-stone-100 lg:border-none rounded-t-3xl lg:rounded-none relative -top-10 lg:top-auto  pt-1 lg:pt-0 ">
           {/*  HomePage Header */}
-          <div className={`px-2 mt-6 lg:mt-0`}>
+          <div className={`px-6 mt-6 lg:mt-0`}>
             <HomeVendorMainInfo element={element} />
           </div>
           <HomeSelectMethod element={element} />
           {/* Search Input */}
           <div
-            className={`flex flex-1 w-auto flex-grow mx-8 pb-8 border-b border-stone-100`}
+            className={`flex flex-1 w-auto flex-grow mx-8 pb-4 border-b border-stone-100`}
           >
             <div className={`w-full`}>
               <div className="relative mt-1 rounded-md shadow-sm text-gray-400">
@@ -100,10 +101,13 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
             </div>
           </div>
           {/* Categories List */}
-          <div className="py-4 px-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-6">
+          <div className="py-4 px-2 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-1">
             {!isEmpty(categories) &&
               map(categories, (c, i) => <CategoryWidget element={c} key={i} />)}
           </div>
+        </div>
+        <div className={`mt-[10%]`}>
+          <PoweredByQ />
         </div>
       </MainContentLayout>
     </Suspense>

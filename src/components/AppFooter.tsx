@@ -306,7 +306,6 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
             </button>
           </div>
         )}
-        <PoweredByQ />
       </footer>
     </Suspense>
   );
