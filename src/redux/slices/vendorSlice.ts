@@ -33,9 +33,9 @@ export const vendorSlice = createSlice({
       action.payload,
     setColorTheme: (
       state: typeof initialState,
-      action: PayloadAction<Vendor>
+      action: PayloadAction<string>
     ) => {
-      return { ...state, themeColor: action.payload.theme_color };
+      return { ...state, themeColor: action.payload };
     },
   },
 });
