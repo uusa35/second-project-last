@@ -153,27 +153,27 @@ const VendorShow: NextPage<Props> = ({ element }) => {
             </div>
             <div className="flex items-center">
               {element.Payment_Methods.visa && (
-                <Link href={'/'} className="px-5">
+                <div className="px-5">
                   <CustomImage
                     src={Visa.src}
                     className="h-10 w-12"
                     alt={t('visa')}
                   />
-                </Link>
+                </div>
               )}
               {element.Payment_Methods.cash_on_delivery && (
-                <Link href={'/'} className="px-5">
+                <div className="px-5">
                   <CustomImage
                     className="h-10 w-12"
                     src={CashOnDelivery.src}
                     alt={t('cash_on_delivery')}
                   />
-                </Link>
+                </div>
               )}
               {element.Payment_Methods.knet && (
-                <Link href={'/'} className="px-5">
+                <div className="px-5">
                   <CustomImage className="h-8 w-12" src={Knet.src} alt="knet" />
-                </Link>
+                </div>
               )}
             </div>
           </div>

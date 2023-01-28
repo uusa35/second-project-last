@@ -421,7 +421,7 @@
   "order_summary": "ملخص الطلب",
   "select_payments": "اختر طريقة الدفع",
   "success": "نجاح",
-  "thank_you": "شكرًا لك",
+  "thank_you": "شكرًا لك !",
   "your_order_is_confirmed_and_on_its_way": "تم تأكيد طلبك وفي طريقه",
   "track_your_order_and_check_the_status_of_it_live": "تتبع طلبك وتحقق من حالته",
   "order_again": "اطلب مرة ثانية",
@@ -489,5 +489,6 @@
   "order_created_successfully" : "شكرا .. تم إتمام طلبك بنجاح. يرجى الاحتفاظ برقم الطلب.",
   "sorry_some_product_not_available_in_this_area" : "بعض المنتجات غير متوفرة في المنطقة المختارة.",
   "select_a_branch_or_area_before_order" : "يجب اختيار فرع أو منطقة قبل البدأ في عملية طلب. في حالة تغير الفرع أو المنطقة يرجى العلم بأن بعض المنتجات سيتم حذفها بناء على توفرها قرب منطقتك أو الفرع القريب منك. شكرا..",
-  "order_code" : "رقم أمر العمل"
+  "order_code" : "رقم أمر العمل",
+  "please_select_payment_method": "من فضلك اختر طريقة الدفع"
 }

@@ -23,7 +23,7 @@ import {
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 import TextTrans from '@/components/TextTrans';
-import { isEmpty, isNull, kebabCase, lowerCase, map } from 'lodash';
+import { isEmpty, isNull, map } from 'lodash';
 import Link from 'next/link';
 import { OrderUser, ProductCart, ServerCart } from '@/types/index';
 import PaymentSummary from '@/components/widgets/cart/review/PaymentSummary';
@@ -33,13 +33,14 @@ import { useLazyCreateOrderQuery } from '@/redux/api/orderApi';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { useRouter } from 'next/router';
 import { setOrder, setPaymentMethod } from '@/redux/slices/orderSlice';
+import { CheckCircle } from '@mui/icons-material';
 
 const CartReview: NextPage = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const router = useRouter();
   const [selectedPaymentMethod, setSelectedPaymentMethod] =
-    useState<OrderUser['PaymentMethod']>(`knet`);
+    useState<OrderUser['PaymentMethod'] | null>(null);
   useEffect(() => {
     dispatch(setCurrentModule(t('order_review')));
     dispatch(setShowFooterElement('order_review'));
@@ -89,10 +90,17 @@ const CartReview: NextPage = () => {
   }
 
   const handleCreateOrder = async () => {
+    console.log({selectedPaymentMethod})
     if (isNull(customer.id)) {
       router.push(appLinks.customerInfo.path);
     } else if (!customer.address.id && process_type === `delivery`) {
       router.push(appLinks.address.path);
+    }
+    if(isNull(selectedPaymentMethod)) {
+      dispatch(showToastMessage( {
+        content: 'please_select_payment_method',
+        'type': 'error'
+      }))
     }
     if (
       !isNull(customer.id) &&
@@ -148,7 +156,6 @@ const CartReview: NextPage = () => {
             router.replace(appLinks.orderFailure.path);
           }
         } else {
-          console.log({ errorrrr: r });
           dispatch(
             showToastMessage({
               content: r.error.data.msg,
@@ -446,39 +453,32 @@ const CartReview: NextPage = () => {
             </div>
             <div className="flex justify-evenly">
               {map(paymentMethods, (m, i) => (
-                <div
-                  className={`flex flex-col justify-center items-center gap-y-4`}
-                  key={i}
-                >
+                <div key={i} >
                   <button
-                    onClick={() => setSelectedPaymentMethod(m.id)}
-                    className={`${
-                      selectedPaymentMethod == m.id &&
-                      `ring-2 ring-lime-400 ring-offset-4`
-                    } bg-stone-100 flex justify-center items-center w-24 h-24 rounded-md shadow-lg`}
-                  >
-                    <div>
-                      <CustomImage
-                        src={m.src}
-                        alt="payment"
-                        width={imageSizes.xs}
-                        height={imageSizes.xs}
-                        className={`w-14 h-14`}
-                      />
-                    </div>
-                  </button>
+                  onClick={() => setSelectedPaymentMethod(m.id)}
+                  className={`${
+                    selectedPaymentMethod == m.id &&
+                    `ring-2 ring-lime-500 ring-offset-1`
+                  } bg-stone-100 flex justify-center items-center w-24 h-24 rounded-md shadow-lg`}
+                >
                   <div>
-                    <span
-                      className={`text-xs ${
-                        m.id === selectedPaymentMethod
-                          ? `text-lime-500`
-                          : `text-black`
-                      }`}
-                    >
-                      {t(lowerCase(kebabCase(m.id)))}
-                    </span>
+                    <CustomImage
+                      src={m.src}
+                      alt="payment"
+                      width={imageSizes.xs}
+                      height={imageSizes.xs}
+                      className={`w-14 h-14`}
+                    />
                   </div>
+                </button>
+                <div 
+                  className={`pt-5 flex justify-center items-center space-x-1 text-lime-500 ${selectedPaymentMethod == m.id ? 'block': 'hidden'}`}
+                   >
+                    <CheckCircle />
+                    <p>{t('selected')}</p>
+                   </div>
                 </div>
+                
               ))}
             </div>
           </div>
