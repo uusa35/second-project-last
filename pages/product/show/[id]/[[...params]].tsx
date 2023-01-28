@@ -14,7 +14,7 @@ import {
   setCurrentModule,
   setShowFooterElement,
 } from '@/redux/slices/appSettingSlice';
-import { imageSizes, imgUrl } from '@/constants/*';
+import { baseUrl, imageSizes, imgUrl } from '@/constants/*';
 import CustomImage from '@/components/CustomImage';
 import {
   concat,
@@ -55,6 +55,7 @@ import {
   useLazyGetCartProductsQuery,
 } from '@/redux/api/cartApi';
 import { themeColor } from '@/redux/slices/vendorSlice';
+import NoFoundImage from '@/appImages/not_found.png';
 
 type Props = {
   element: Product;
@@ -66,6 +67,9 @@ const ProductShow: NextPage<Props> = ({ element }) => {
   const dispatch = useAppDispatch();
   const [currentQty, setCurrentyQty] = useState<number>(1);
   const [open, setOpen] = useState(1);
+  const firstImage: any = !isEmpty(element.img)
+    ? imgUrl(element.img[0].original)
+    : NoFoundImage.src;
 
   useEffect(() => {
     dispatch(setCurrentModule(element.name));
@@ -286,17 +290,17 @@ const ProductShow: NextPage<Props> = ({ element }) => {
       <MainHead
         title={`${element.name_ar} - ${element.name_en}`}
         description={`${element.description_ar} - ${element.description_en}`}
-        mainImage={`${imgUrl(element?.img[0]?.toString())}`}
+        mainImage={`${baseUrl}${element?.img[0]?.thumbnail.toString()}`}
       />
       <MainContentLayout>
         <div className="relative w-full capitalize">
           <div className="relative w-full h-auto overflow-hidden">
             <CustomImage
-              src={`${imgUrl(element?.img[0]?.toString())}`}
+              src={`${firstImage}`}
               alt={element.name}
               width={imageSizes.xl}
               height={imageSizes.lg}
-              className={`w-full h-full`}
+              className={`object-cover w-full h-96`}
             />
           </div>
           <div className="absolute inset-x-0 top-0 flex h-full items-end justify-end overflow-hidden">

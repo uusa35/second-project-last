@@ -52,8 +52,8 @@ export const appLinks = {
 };
 
 export const isClient = typeof window !== undefined;
-// export const isLocal = process.env.NODE_ENV !== 'production';
-export const isLocal = true;
+export const isLocal = process.env.NODE_ENV !== 'production';
+// export const isLocal = true;
 export const inputFieldClass = `rounded-md px-3 py-2.5 mb-2 text-sm bg-gray-100 outline-none border-none capitalize`;
 export const mainBg = `bg-gradient-to-tl mix-blend-multiply rounded-md text-sm text-white shadow-inner drop-shadow-md`;
 export const submitBtnClass = `w-full ${mainBg} rounded-md text-sm text-white py-4 my-2 cursor-pointer shadow-lg capitalize disabled:from-gray-200 disabled:to-gray-400 drop-shadow-md`;

@@ -1,4 +1,11 @@
-import { useState, useEffect, Suspense, forwardRef, useRef } from 'react';
+import {
+  useState,
+  useEffect,
+  Suspense,
+  forwardRef,
+  useRef,
+  LegacyRef,
+} from 'react';
 import { NextPage } from 'next';
 import Link from 'next/link';
 import MainContentLayout from '@/layouts/MainContentLayout';
@@ -78,7 +85,7 @@ const CartAddress: NextPage = (): JSX.Element => {
   const color = useAppSelector(themeColor);
   const [openTab, setOpenTab] = useState(1);
   const [show, SetShow] = useState(false);
-  const refForm = useRef();
+  const refForm = useRef<any>();
   const [AddAddress, { isLoading: AddAddressLoading }] =
     useCreateAddressMutation();
   const { data: cartItems, isSuccess } = useGetCartProductsQuery<{
@@ -143,8 +150,7 @@ const CartAddress: NextPage = (): JSX.Element => {
   const checkTimeAvailability = async () => {
     await checkTime({
       process_type: method,
-      area_branch:
-        method === 'delivery' ? area.id : method === 'pickup' && branch.id,
+      area_branch: method === 'delivery' ? area.id : branch.id,
       params: {
         type: prefrences.type,
         date: `${new Date(prefrences.date as Date).getFullYear()}-${
@@ -229,6 +235,7 @@ const CartAddress: NextPage = (): JSX.Element => {
   };
 
   const onSubmit = async (body: any) => {
+    console.log('fired submit');
     if (method === 'pickup') {
       await checkTimeAvailability();
     } else {
@@ -258,11 +265,17 @@ const CartAddress: NextPage = (): JSX.Element => {
     };
   }, []);
 
+  const handleNext = () => {
+    refForm?.current.dispatchEvent(
+      new Event('submit', { cancelable: true, bubbles: true })
+    );
+  };
+
   return (
     <Suspense>
-      <MainContentLayout>
+      <MainContentLayout handleSubmit={handleNext}>
         {/* delivery method buttons */}
-        <DeliveryBtns handleSelectMethod={handleSelectMethod} />
+        <DeliveryBtns />
         <form id="hook-form" onSubmit={handleSubmit(onSubmit)} ref={refForm}>
           <div className={'px-4'}>
             <div className="bg-gray-200 w-full mt-5 p-0 h-2"></div>
@@ -741,7 +754,7 @@ const CartAddress: NextPage = (): JSX.Element => {
             )}
 
             {/* pickup prefrences */}
-            {method === `pickup` && !isEmpty(branch) && (
+            {method === `pickup` && !isNull(branch.id) && (
               <div className="mx-4">
                 <p
                   className="my-5 font-semibold text-base"

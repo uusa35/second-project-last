@@ -211,7 +211,6 @@ export const appSettingSlice = createSlice({
         state.showAreaModal = false;
       }
     );
-
     builder.addCase(branchSlice.actions.setBranch, (state, action) => {
       state.method = 'pickup';
     });

@@ -274,7 +274,7 @@ export interface OrderUser {
   Date?: string;
   Time?: string;
   Messg: string;
-  address_id: number;
+  address_id?: number;
   PaymentMethod: `cash_on_delivery` | `knet` | `visa`;
 }
 

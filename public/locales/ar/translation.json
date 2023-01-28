@@ -485,5 +485,7 @@
   "cart_is_empty_please_add_product_into_cart":"عربه التسوق فارغة من فضلك قم باضافه بعض المنتجات",
   "the_address_field_is_required" : "العنوان مطلوب",
   "select_a_branch_or_area_before_order" : "يبدو ان عربة التسوق فارغة أو ربما لم يتم اختيار أقرب فرع أو منطقتك. ",
-  "order_created_successfully" : "شكرا .. تم إتمام طلبك بنجاح. يرجى الاحتفاظ برقم الطلب."
+  "order_created_successfully" : "شكرا .. تم إتمام طلبك بنجاح. يرجى الاحتفاظ برقم الطلب.",
+  "sorry_some_product_not_available_in_this_area" : "بعض المنتجات غير متوفرة في المنطقة المختارة.",
+  "select_a_branch_or_area_before_order" : "يجب اختيار فرع أو منطقة قبل البدأ في عملية طلب. في حالة تغير الفرع أو المنطقة يرجى العلم بأن بعض المنتجات سيتم حذفها بناء على توفرها قرب منطقتك أو الفرع القريب منك. شكرا.."
 }

@@ -50,7 +50,10 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
   const [triggerCheckPromoCode] = useLazyCheckPromoCodeQuery();
 
   const handleAddToCart = async () => {
-    if (isNull(branchId) && isNull(area.id)) {
+    if (
+      (method === `pickup` && isNull(branchId)) ||
+      (method === `delivery` && isNull(area.id))
+    ) {
       router.push(appLinks.cartSelectMethod(`delivery`));
     }
     if (!productCart.enabled) {
@@ -61,14 +64,10 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
         })
       );
     } else {
-      if (
-        (!isNull(branchId) && !isNull(area.id)) ||
-        (!isEmpty(productCart) && userAgent)
-      ) {
+      if (!isEmpty(productCart) && userAgent) {
         await triggerAddToCart({
           process_type: method,
-          area_branch:
-            method === 'delivery' ? area.id : method === 'pickup' && branchId,
+          area_branch: method === 'delivery' ? area.id : branchId,
           body: {
             UserAgent: userAgent,
             Cart:
@@ -100,6 +99,7 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
             });
           } else {
             if (r.error && r.error.data) {
+              console.log('error', r.error.data);
               dispatch(
                 showToastMessage({
                   // content: lowerCase(kebabCase(r.error.data.msg)),
@@ -116,11 +116,12 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
 
   const handleCartIndex = async () => {
     if (
-      (isNull(branchId) ?? isNull(area.id)) &&
-      !isEmpty(productCart) &&
-      userAgent &&
-      !isEmpty(method)
+      (method === `pickup` && isNull(branchId)) ||
+      (method === `delivery` && isNull(area.id))
     ) {
+      router.push(appLinks.cartSelectMethod(`delivery`));
+    }
+    if (!isEmpty(productCart) && userAgent && !isEmpty(method)) {
       // coupon case
       if (
         coupon.length > 3 &&
@@ -156,8 +157,7 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
       }
       triggerAddToCart({
         process_type: method,
-        area_branch:
-          method === 'delivery' ? area.id : method === 'pickup' && branchId,
+        area_branch: method === 'delivery' ? area.id : branchId,
         body: {
           UserAgent: userAgent,
           Cart:
@@ -259,8 +259,9 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
             }}
           >
             <button
-              type="submit"
-              form="hook-form"
+              onClick={() => (handleSubmit ? handleSubmit() : null)}
+              // type="submit"
+              // form="hook-form"
               className={`${footerBtnClass}`}
               style={{ backgroundColor: `${color}`, color: `white` }}
               suppressHydrationWarning={suppressText}

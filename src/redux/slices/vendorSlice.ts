@@ -1,7 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Country } from '@/types/queries';
-import { isLocal } from '@/constants/*';
-import { HYDRATE } from 'next-redux-wrapper';
 import { Vendor } from '@/types/index';
 import { RootState } from '@/redux/store';
 
@@ -19,7 +16,7 @@ const initialState: Vendor = {
   location: ``,
   WorkHours: ``,
   DeliveryTime: ``,
-  theme_color: `#8696ea`,
+  theme_color: `#021b4a`,
   Preorder_availability: ``,
   Payment_Methods: {
     cash_on_delivery: `no`,

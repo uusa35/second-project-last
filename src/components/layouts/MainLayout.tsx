@@ -39,8 +39,6 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
     appSetting: { sideMenuOpen },
     customer: { userAgent },
     locale,
-    branch: { id: branchId },
-    area: { id: areaId },
     vendor,
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
@@ -55,7 +53,6 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
     if (isSuccess && vendorElement.Data) {
       dispatch(setVendor(vendorElement.Data));
     }
-
     if (isNull(userAgent)) {
       triggerCreateTempId().then((r: any) =>
         dispatch(setUserAgent(r.data.Data?.Id))
