@@ -71,9 +71,9 @@ const OrderSuccess: NextPage<Props> = ({ element }) => {
                 style={{ color }}
                 suppressHydrationWarning={suppressText}
               >
-                {t('order_id')}
+                {t('order_code')}
               </h4>
-              <p>{element.order_id}</p>
+              <p>{element.orderCode}</p>
             </div>
             <div className="flex justify-between pt-4">
               <h4
