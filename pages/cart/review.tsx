@@ -33,13 +33,14 @@ import { useLazyCreateOrderQuery } from '@/redux/api/orderApi';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { useRouter } from 'next/router';
 import { setOrder, setPaymentMethod } from '@/redux/slices/orderSlice';
+import { CheckCircle } from '@mui/icons-material';
 
 const CartReview: NextPage = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const router = useRouter();
   const [selectedPaymentMethod, setSelectedPaymentMethod] =
-    useState<OrderUser['PaymentMethod']>(`knet`);
+    useState<OrderUser['PaymentMethod'] | null>(null);
   useEffect(() => {
     dispatch(setCurrentModule(t('order_review')));
     dispatch(setShowFooterElement('order_review'));
@@ -89,10 +90,17 @@ const CartReview: NextPage = () => {
   }
 
   const handleCreateOrder = async () => {
+    console.log({selectedPaymentMethod})
     if (isNull(customer.id)) {
       router.push(appLinks.customerInfo.path);
     } else if (!customer.address.id && process_type === `delivery`) {
       router.push(appLinks.address.path);
+    }
+    if(isNull(selectedPaymentMethod)) {
+      dispatch(showToastMessage( {
+        content: 'please_select_payment_method',
+        'type': 'error'
+      }))
     }
     if (
       !isNull(customer.id) &&
@@ -446,12 +454,12 @@ const CartReview: NextPage = () => {
             </div>
             <div className="flex justify-evenly">
               {map(paymentMethods, (m, i) => (
-                <button
-                  key={i}
+                <div key={i} >
+                  <button
                   onClick={() => setSelectedPaymentMethod(m.id)}
                   className={`${
                     selectedPaymentMethod == m.id &&
-                    `ring-2 ring-primary_BG-400 ring-offset-1`
+                    `ring-2 ring-${color} ring-offset-1`
                   } bg-stone-100 flex justify-center items-center w-24 h-24 rounded-md shadow-lg`}
                 >
                   <div>
@@ -464,6 +472,15 @@ const CartReview: NextPage = () => {
                     />
                   </div>
                 </button>
+                <div 
+                  className={`pt-5 flex justify-center items-center space-x-1 ${selectedPaymentMethod == m.id ? 'block': 'hidden'}`}
+                  style={{ color }}
+                   >
+                    <CheckCircle />
+                    <p>{t('selected')}</p>
+                   </div>
+                </div>
+                
               ))}
             </div>
           </div>

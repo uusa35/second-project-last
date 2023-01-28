@@ -21,7 +21,7 @@ import {
 } from '@/redux/slices/appSettingSlice';
 import { useTranslation } from 'react-i18next';
 import VerProductWidget from '@/components/widgets/product/VerProductWidget';
-import Menu from '@/appIcons/menu.svg';
+import Menu from '@/appIcons/menus.svg';
 import List from '@/appIcons/list.svg';
 import { useRouter } from 'next/router';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
@@ -98,9 +98,9 @@ const ProductIndex: NextPage<Props> = ({ elements }): JSX.Element => {
               className="pt-1 ps-2"
             >
               {Icon ? (
-                <CustomImage src={Menu} alt="menu" className={'w-8 h-8'} />
-              ) : (
                 <CustomImage src={List} alt="menu" className={'w-8 h-8'} />
+              ) : (
+                <CustomImage src={Menu} alt="menu" className={'w-8 h-8'} />
               )}
             </button>
           </div>

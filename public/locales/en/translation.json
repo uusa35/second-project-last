@@ -409,7 +409,7 @@
   "order_summary": "order summary",
   "select_payments": "select payments",
   "success": "success",
-  "thank_you": "thank you",
+  "thank_you": "thank you !",
   "your_order_is_confirmed_and_on_its_way": "your order is confirmed and on its way",
   "track_your_order_and_check_the_status_of_it_live": "track your order and check the status of it live",
   "order_again": "order again",
@@ -477,5 +477,5 @@
   "order_created_successfully" : "thank you .. your order has been placed. you can follow the status by your order number.",
   "sorry_some_product_not_available_in_this_area" : "sorry some product not available in this area",
   "select_a_branch_or_area_before_order" : "you have to choose a branch or an area. some products may be deleted from your shopping cart as it may not be available. thank you ...",
-  "order_code" : "order code"
+  "please_select_payment_method": "please select payment method"
 }

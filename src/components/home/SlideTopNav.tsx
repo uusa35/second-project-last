@@ -77,7 +77,7 @@ const SlideTopNav: FC<Props> = ({ offset, isHome = false }): JSX.Element => {
 
       {/* logo */}
       <div className="flex w-full flex-row justify-between items-center">
-        <div className={`flex flex-1`}>
+        <div className={`flex flex-1 justify-center`}>
           <Link
             scroll={true}
             href={appLinks.home.path}
