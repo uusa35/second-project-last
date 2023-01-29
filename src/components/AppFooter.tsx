@@ -232,7 +232,7 @@ const AppFooter: FC<Props> = ({
                     style={{ color }}
                   >
                     <span
-                      className={`p-1 px-3 bg-white rounded-md text-md font-extrabold  w-8 h-8 flex justify-center items-center`}
+                      className={`border border-gray-300 p-1 px-3 bg-white rounded-md text-md font-extrabold  w-8 h-8 flex justify-center items-center`}
                     >
                       +
                     </span>
@@ -256,7 +256,7 @@ const AppFooter: FC<Props> = ({
                     style={{ color }}
                   >
                     <span
-                      className={`p-1 px-3 bg-white rounded-md text-md font-extrabold  w-8 h-8 flex justify-center items-center`}
+                      className={`border border-gray-300 p-1 px-3 bg-white rounded-md text-md font-extrabold  w-8 h-8 flex justify-center items-center`}
                     >
                       -
                     </span>
