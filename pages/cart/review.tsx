@@ -85,6 +85,19 @@ const CartReview: NextPage = () => {
     }
   }, []);
 
+  const handelDisplayAddress = () => {
+    let address = Object.values(customer.address);
+    
+    let concatAdd = '';
+    address.map((a) => {
+      if (a !== null) {
+        concatAdd += a + ', ';
+      }
+    });
+    console.log(concatAdd)
+    return concatAdd;
+  };
+
   if (isLoading) {
     return <LoadingSpinner fullWidth={true} />;
   }
@@ -208,7 +221,7 @@ const CartReview: NextPage = () => {
                   className="px-2 text-base font-semibold capitalize"
                   suppressHydrationWarning={suppressText}
                 >
-                  {t('delivery_to')}
+                  {t('deliver_to')}
                 </h5>
               </div>
               <Link
@@ -247,12 +260,10 @@ const CartReview: NextPage = () => {
                   height={imageSizes.xs}
                   className={`w-6 h-6`}
                 />
-                {customer.address.address &&
-                  map(customer.address.address, (address, i) => (
-                    <div key={i} className="flex">
-                      <p className="text-md ps-5 capitalize">{address}</p>
-                    </div>
-                  ))}
+                {customer.address && (
+                  <p className="text-md ps-5 capitalize">{handelDisplayAddress()}</p>
+                )
+                 }
               </div>
               <Link
                 href={appLinks.cartSelectMethod(process_type)}

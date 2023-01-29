@@ -431,7 +431,7 @@
   "sp_req": "sp req",
   "delivery_fees" : "delivery fees",
   "cart_address" : "address details",
-  "order_review" : "order review",
+  "order_review" : "review order",
   "enter_your_name":"enter your name",
   "enter_your_email":"enter your email",
   "some_fields_r_missing" : "some fields are missing",
@@ -479,5 +479,6 @@
   "select_a_branch_or_area_before_order" : "you have to choose a branch or an area. some products may be deleted from your shopping cart as it may not be available. thank you ...",
   "please_select_payment_method": "please select payment method",
   "selected": "selected",
-  "floor_no" : "floor no"
+  "floor_no" : "floor no",
+  "rate_is_required": "rate is required"
 }

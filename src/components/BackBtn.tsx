@@ -9,6 +9,7 @@ import { setLocale } from '@/redux/slices/localeSlice';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
 import { useTranslation } from 'react-i18next';
 import { useGetCartProductsQuery } from '@/redux/api/cartApi';
+import { themeColor } from '@/redux/slices/vendorSlice';
 
 type Props = {
   backHome: boolean;
@@ -34,6 +35,7 @@ const BackBtn: FC<Props> = ({
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
+  const color = useAppSelector(themeColor);
 
   const handleGoHome = () => {
     router.push(`/`, ``, {
@@ -116,6 +118,7 @@ const BackBtn: FC<Props> = ({
           <span
             className={`text-md capitalize truncate overflow-hidden max-w-md`}
             suppressHydrationWarning={suppressText}
+            style={{ color }}
           >
             {currentModule}
           </span>

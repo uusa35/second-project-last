@@ -135,7 +135,6 @@
   "view_on_map": "عرض على الخريطة",
   "proceed to payment": "تابع الى الدفع",
   "order_id": "رقم التعريف الخاص بالطلب",
-  "order_code": "رقم التعريف الخاص بالطلب",
   "your_purchase_is_successfully_completed": "تم الشراء بنجاح",
   "thank_you_for_placing_an_order_you_can_track_your_order.": "شكرا لك على تقديم الطلب. يمكنك تتبع طلبك.",
   "track_your_order": "أتبع طلبك",
@@ -247,7 +246,7 @@
   "your_booking_was_not_placed": "لم يتم إجراء الحجز الخاص بك",
   "re_try_booking": "أعِد محاولة الحجز",
   "order_failure": "فشل الطلب",
-  "amazing!": "مذهل!",
+  "amazing!": "!مذهل",
   "view_location": "عرض الموقع",
   "share_location": "مشاركة الموقع",
   "order_success": "تم الطلب بنجاح",
@@ -492,5 +491,6 @@
   "order_code" : "رقم أمر العمل",
   "please_select_payment_method": "من فضلك اختر طريقة الدفع",
   "selected": "تم اختيارها",
-  "floor_no" : "رقم الطابق"
+  "floor_no" : "رقم الطابق",
+  "rate_is_required": "التقييم مطلوب"
 }

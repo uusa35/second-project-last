@@ -144,7 +144,8 @@ const Feedback: NextPage<Props> = ({
             >
               {map(ratingButtons, (button) => (
                 <button
-                  className={`border-zinc-400 border-2 px-3 rounded-full py-2
+                  dir={`${isRTL ? 'rtl': 'ltr'}`}
+                  className={`border-zinc-400 border-2 px-3 rounded-full py-2 
                   ${
                     rateVal === button.rate
                       ? 'bg-primary_BG text-white border-zinc-50'
@@ -167,7 +168,7 @@ const Feedback: NextPage<Props> = ({
             <div>
               {errors?.rate?.message && (
                 <p
-                  className={`text-base text-red-800 font-semibold py-2 capitalize`}
+                  className={`text-base text-red-800 font-semibold py-2 capitalize  ${isRTL ? 'text-end': 'text-start'}`}
                   suppressHydrationWarning={suppressText}
                 >
                   {t('rate_is_required')}
