@@ -216,11 +216,11 @@ const AppFooter: FC<Props> = ({
           <div className='w-full bg-gray-100'>
             {/* quantity meter */}
             <div className='flex justify-between items-center w-full px-8 bg-gray-100'>
-              <p>{t('quantity')}</p>
+              <p style={{ color }}>{t('quantity')}</p>
               <div
                 className={`flex flex-row justify-center items-center my-4 capitalize`}
               >
-                <span className="isolate inline-flex rounded-xl shadow-sm">
+                <span className="isolate inline-flex rounded-xl">
                   <button
                     onClick={() =>
                       handleIncreaseProductQty
@@ -228,7 +228,8 @@ const AppFooter: FC<Props> = ({
                         : null
                     }
                     type="button"
-                    className="relative inline-flex items-center ltr:rounded-l-xl rtl:rounded-r-xl bg-gray-100 px-4 py-2 text-sm font-medium text-black  focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
+                    className="relative inline-flex items-center ltr:rounded-l-xl rtl:rounded-r-xl bg-white px-4 py-2 text-sm font-medium  focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
+                    style={{ color }}
                   >
                     +
                   </button>
@@ -247,7 +248,8 @@ const AppFooter: FC<Props> = ({
                         : null
                     }
                     type="button"
-                    className="relative -ml-px inline-flex items-center ltr:rounded-r-xl rtl:rounded-l-xl bg-gray-100 px-4 py-2 text-sm font-medium text-black  focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
+                    className="relative -ml-px inline-flex items-center ltr:rounded-r-xl rtl:rounded-l-xl bg-white px-4 py-2 text-sm font-medium text-black  focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
+                    style={{ color }}
                   >
                     -
                   </button>
