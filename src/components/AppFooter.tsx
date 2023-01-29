@@ -22,9 +22,17 @@ import { themeColor } from '@/redux/slices/vendorSlice';
 
 type Props = {
   handleSubmit?: (element?: any) => void;
+  handleIncreaseProductQty?: () => void;
+  handleDecreaseProductQty?: () => void;
+  productCurrentQty?:number | undefined
 };
 
-const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
+const AppFooter: FC<Props> = ({
+  handleSubmit,
+  handleDecreaseProductQty,
+  handleIncreaseProductQty,
+  productCurrentQty
+}): JSX.Element => {
   const { t } = useTranslation();
   const {
     appSetting: { showFooterElement, method },
@@ -202,31 +210,75 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
         } fixed w-full lg:w-2/4 xl:w-1/3 h-auto flex flex-col justify-center items-center text-center bg-white bg-opacity-60 capitalize`}
       >
         {showFooterElement === 'product_show' && (
-          <div
-            className={`w-full h-fit flex cursor-auto rounded-none opacity-100 flex justify-between items-center px-8 py-4 rounded-t-2xl
+          <div className='w-full bg-gray-100'>
+            {/* quantity meter */}
+            <div className='flex justify-between items-center w-full px-8 bg-gray-100'>
+              <p>{t('quantity')}</p>
+              <div
+                className={`flex flex-row justify-center items-center my-4 capitalize`}
+              >
+                <span className="isolate inline-flex rounded-xl shadow-sm">
+                  <button
+                    onClick={() =>
+                      handleIncreaseProductQty
+                        ? handleIncreaseProductQty()
+                        : null
+                    }
+                    type="button"
+                    className="relative inline-flex items-center ltr:rounded-l-xl rtl:rounded-r-xl bg-gray-100 px-4 py-2 text-sm font-medium text-black  focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
+                  >
+                    +
+                  </button>
+                  <button
+                    type="button"
+                    className="relative -ml-px inline-flex items-center  bg-gray-100 px-4 py-2 text-sm font-medium focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
+                    style={{ color }}
+                  >
+                    {productCurrentQty}
+                  </button>
+                  <button
+                    disabled={productCurrentQty === 0}
+                    onClick={() =>
+                      handleDecreaseProductQty
+                        ? handleDecreaseProductQty()
+                        : null
+                    }
+                    type="button"
+                    className="relative -ml-px inline-flex items-center ltr:rounded-r-xl rtl:rounded-l-xl bg-gray-100 px-4 py-2 text-sm font-medium text-black  focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
+                  >
+                    -
+                  </button>
+                </span>
+              </div>
+            </div>
+
+            {/* add to cart btn */}
+            <div
+              className={`w-full h-fit flex cursor-auto rounded-none opacity-100 flex justify-between items-center px-8 py-4 rounded-t-2xl
             `}
-            style={{
-              background: `-webkit-gradient(linear, left top, right top, from(${color}), color-stop(100%, ${color}), color-stop(50%, ${color}))`,
-            }}
-          >
-            <button
-              onClick={() => handleAddToCart()}
-              className={`${footerBtnClass}`}
               style={{
-                backgroundColor: convertColor(color, 100),
-                color: `white`,
+                background: `-webkit-gradient(linear, left top, right top, from(${color}), color-stop(100%, ${color}), color-stop(50%, ${color}))`,
               }}
             >
-              {isNull(area.id) && isNull(branchId)
-                ? t(`start_ordering`)
-                : t('add_to_cart')}
-            </button>
-            <span className={`flex flex-row items-center gap-2`}>
-              <p className={`text-xl text-white`}>
-                {productCart.grossTotalPrice}
-              </p>
-              <span className={`text-white`}>{t('kwd')}</span>
-            </span>
+              <button
+                onClick={() => handleAddToCart()}
+                className={`${footerBtnClass}`}
+                style={{
+                  backgroundColor: convertColor(color, 100),
+                  color: `white`,
+                }}
+              >
+                {isNull(area.id) && isNull(branchId)
+                  ? t(`start_ordering`)
+                  : t('add_to_cart')}
+              </button>
+              <span className={`flex flex-row items-center gap-2`}>
+                <p className={`text-xl text-white`}>
+                  {productCart.grossTotalPrice}
+                </p>
+                <span className={`text-white`}>{t('kwd')}</span>
+              </span>
+            </div>
           </div>
         )}
         {showFooterElement === 'cart_index' &&

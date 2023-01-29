@@ -285,6 +285,10 @@ const ProductShow: NextPage<Props> = ({ element }) => {
     currentQty,
   ]);
 
+  useEffect(() => {
+    console.log('productCart', productCart);
+  }, [productCart]);
+
   return (
     <Suspense>
       <MainHead
@@ -292,7 +296,11 @@ const ProductShow: NextPage<Props> = ({ element }) => {
         description={`${element.description_ar} - ${element.description_en}`}
         mainImage={`${baseUrl}${element?.img[0]?.thumbnail.toString()}`}
       />
-      <MainContentLayout>
+      <MainContentLayout
+        productCurrentQty={currentQty}
+        handleIncreaseProductQty={handleIncrease}
+        handleDecreaseProductQty={handleDecrease}
+      >
         <div className="relative w-full capitalize">
           <div className="relative w-full h-auto overflow-hidden">
             <CustomImage
@@ -311,39 +319,12 @@ const ProductShow: NextPage<Props> = ({ element }) => {
             <div className="flex flex-row w-full px-2 justify-between items-center py-4"></div>
           </div>
         </div>
-        <div
-          className={`flex w-full flex-row justify-center items-center my-4 capitalize`}
-        >
-          <span className="isolate inline-flex rounded-xl shadow-sm">
-            <button
-              onClick={() => handleIncrease()}
-              type="button"
-              className="relative inline-flex items-center ltr:rounded-l-xl rtl:rounded-r-xl bg-gray-100 px-4 py-2 text-sm font-medium text-black  focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
-            >
-              +
-            </button>
-            <button
-              type="button"
-              className="relative -ml-px inline-flex items-center  bg-gray-100 px-4 py-2 text-sm font-medium focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
-              style={{ color }}
-            >
-              {currentQty}
-            </button>
-            <button
-              disabled={currentQty === 0}
-              onClick={() => handleDecrease()}
-              type="button"
-              className="relative -ml-px inline-flex items-center ltr:rounded-r-xl rtl:rounded-l-xl bg-gray-100 px-4 py-2 text-sm font-medium text-black  focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
-            >
-              -
-            </button>
-          </span>
-        </div>
-        <div className={`px-4 md:px-8 capitalize`}>
+
+        <div className={`px-4 md:px-8 capitalize mt-5`}>
           {/*   name and desc */}
           <div className="flex flex-row w-full justify-between items-center pb-4 border-b-2 border-stone-200">
             <div className={` flex-1 space-y-3`}>
-              <p>
+              <p className="font-bold text-xl">
                 <TextTrans ar={element.name_ar} en={element.name_en} />
               </p>
               <p className={` rtl:pl-1 ltr:pr-1`}>
@@ -353,11 +334,11 @@ const ProductShow: NextPage<Props> = ({ element }) => {
                 />
               </p>
             </div>
-            <div className={`shrink-0`}>
+            {/* <div className={`shrink-0`}>
               <p className={`text-lg `} style={{ color }}>
                 {element.price} <span className={`uppercase`}>{t(`kwd`)}</span>
               </p>
-            </div>
+            </div> */}
           </div>
           {/*     sections  */}
           {map(element.sections, (s: ProductSection, i) => (
@@ -507,6 +488,8 @@ const ProductShow: NextPage<Props> = ({ element }) => {
               </AccordionBody>
             </Accordion>
           ))}
+
+          <div className="h-36"></div>
         </div>
       </MainContentLayout>
     </Suspense>
