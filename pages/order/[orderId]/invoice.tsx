@@ -226,6 +226,15 @@ const OrderInvoice: NextPage<Props> = ({ element }): JSX.Element => {
               </p>
             </div>
             <div className="flex justify-between mb-3 text-lg">
+              <p suppressHydrationWarning={suppressText}>{t('tax')}</p>
+              <p
+                suppressHydrationWarning={suppressText}
+                className={`uppercase`}
+              >
+                {element.order_summary.tax} {t('kwd')}
+              </p>
+            </div>
+            <div className="flex justify-between mb-3 text-lg">
               <p suppressHydrationWarning={suppressText}>
                 {t('delivery_services')}
               </p>
