@@ -62,10 +62,17 @@ type Props = {
 };
 const ProductShow: NextPage<Props> = ({ element }) => {
   const { t } = useTranslation();
-  const { productCart } = useAppSelector((state) => state);
+  const {
+    productCart,
+    appSetting: { method },
+    branch: { branchId },
+    area,
+  } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
   const dispatch = useAppDispatch();
-  const [currentQty, setCurrentyQty] = useState<number>(1);
+  const [currentQty, setCurrentyQty] = useState<number>(
+    productCart.ProductID === element.id ? productCart.Quantity : 1
+  );
   const [open, setOpen] = useState(1);
   const firstImage: any = !isEmpty(element.img)
     ? imgUrl(element.img[0].original)
@@ -73,13 +80,26 @@ const ProductShow: NextPage<Props> = ({ element }) => {
 
   useEffect(() => {
     dispatch(setCurrentModule(element.name));
-    handleResetInitialProductCart();
+    if (productCart.ProductID !== element.id) {
+      console.log('case 1');
+      handleResetInitialProductCart();
+    } else {
+      if (!isNull(area.id) && !isNull(branchId)) {
+        handleResetInitialProductCart();
+      }
+    }
     dispatch(setShowFooterElement(`product_show`));
     return () => {
-      dispatch(resetProductCart());
+      if (productCart.ProductID !== element.id) {
+        console.log('case 3');
+        dispatch(resetProductCart());
+      }
       dispatch(resetShowFooterElement());
     };
   }, [element]);
+
+  console.log('element', element);
+  console.log('productCart', productCart);
 
   const customAnimation = {
     mount: { scale: 1 },
