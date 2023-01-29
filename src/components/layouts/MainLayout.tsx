@@ -4,7 +4,7 @@ import i18n from 'i18next';
 import { useRouter } from 'next/router';
 import { hideSideMenu } from '@/redux/slices/appSettingSlice';
 import { setUserAgent } from '@/redux/slices/customerSlice';
-import { tajwalFont } from '@/constants/*';
+import { arboriaFont, gessFont, tajwalFont } from '@/constants/*';
 import { setLocale } from '@/redux/slices/localeSlice';
 import moment from 'moment';
 import dynamic from 'next/dynamic';
@@ -115,7 +115,9 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
   return (
     <div
       dir={router.locale === 'ar' ? 'rtl' : 'ltr'}
-      className={`${tajwalFont} flex-col justify-start items-start grow  lg:flex lg:flex-row flex flex-row h-screen  capitalize`}
+      className={`${
+        router.locale === 'ar' ? gessFont : arboriaFont
+      } flex-col justify-start items-start grow  lg:flex lg:flex-row flex flex-row h-screen  capitalize`}
     >
       {children}
       {/* Main Image & Logo */}

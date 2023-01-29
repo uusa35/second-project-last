@@ -10,14 +10,29 @@
     font-display: swap;
 }
 
+@font-face {
+    font-family: 'Arboria-Light';
+    src: url('../public/fonts/Arboria-Light.otf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
 
-/*@font-face {*/
-/*    font-family: 'Futura-Bold-font';*/
-/*    src: url('../public/fonts/Futura-Bold-font.ttf') format('truetype');*/
-/*    font-weight: normal;*/
-/*    font-style: normal;*/
-/*    font-display: swap;*/
-/*}*/
+@font-face {
+    font-family: 'GE_SS_Text_Medium';
+    src: url('../public/fonts/GE_SS_Text_Medium.otf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+.font-arboria-light, button, .Toastify__toast-body {
+    font-family: 'Arboria-Light', 'sans-serif' !important;
+}
+
+.font-gess-medium, button, .Toastify__toast-body {
+    font-family: 'GE_SS_Text_Medium', 'sans-serif' !important;
+}
 
 .font-tajwal-medium, button, .Toastify__toast-body {
     font-family: 'Tajawal-Medium', 'sans-serif' !important;
