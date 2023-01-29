@@ -65,7 +65,8 @@ export const grayBtnClass = `rounded-lg bg-SearchGrey text-xs px-[6px] border bo
 export const addressInputField = `border-0 outline-none border-b-2 border-b-gray-100 w-full py-4 focus:ring-0 capitalize`;
 export const footerBtnClass = `p-2 px-6 rounded-lg w-fit disabled:bg-stone-600 disabled:text-stone-200 disabled:bg-opacity-40 disabled:opacity-60  shadow-xl capitalize border border-stone-100/25 hover:shadow-inner hover:border-stone-200/80 `;
 export const tajwalFont = `font-tajwal-medium`;
-export const futureFont = `font-future-bold`;
+export const arboriaFont = `font-arboria-light`;
+export const gessFont = `font-gess-medium`;
 export const langOptions = [
   {
     image: 'en.png',

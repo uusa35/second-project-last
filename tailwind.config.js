@@ -23,7 +23,7 @@ module.exports = {
         TransparentWhite: '#fafafa40',
         customGreen: '#05BA3D',
         CustomRed: '#FF4852',
-        HistoryBG: '#EFEFEF'
+        HistoryBG: '#EFEFEF',
       },
       boxShadow: {
         custome: '2px 2px 16px #00000029',
@@ -36,7 +36,8 @@ module.exports = {
       },
       fontFamily: {
         'Tajawal-Medium': ['Tajawal-Medium', 'sans-serif'],
-        'Futura-Bold-font': ['Futura-Bold-font', 'sans-serif'],
+        'Arboria-Light': ['Arboria-Light', 'sans-serif'],
+        GE_SS_Text_Medium: ['GE_SS_Text_Medium', 'sans-serif'],
       },
       minHeight: {
         5: '5rem',
