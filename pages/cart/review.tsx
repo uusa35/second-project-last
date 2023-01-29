@@ -173,7 +173,7 @@ const CartReview: NextPage = () => {
   return (
     <Suspense>
       <MainContentLayout handleSubmit={handleCreateOrder}>
-        <div className={`mb-[40%]`}>
+        <div className={`mb-[33%]`}>
           <div className="flex justify-center items-center p-5">
             <CustomImage
               src={TrunkClock.src}
