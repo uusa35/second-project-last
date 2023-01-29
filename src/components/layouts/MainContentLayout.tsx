@@ -29,6 +29,9 @@ type Props = {
   showMotion?: boolean;
   backRoute?: string | null;
   handleSubmit?: (element?: any) => void | undefined | Promise<any>;
+  handleIncreaseProductQty?: () => void;
+  handleDecreaseProductQty?: () => void;
+  productCurrentQty?:number | undefined
 };
 
 const MainContentLayout: FC<Props> = ({
@@ -38,6 +41,9 @@ const MainContentLayout: FC<Props> = ({
   backRoute = null,
   showMotion = true,
   handleSubmit,
+  handleIncreaseProductQty,
+  handleDecreaseProductQty,
+  productCurrentQty
 }): JSX.Element => {
   const {
     appSetting: { showHeader, showFooter },
@@ -80,7 +86,12 @@ const MainContentLayout: FC<Props> = ({
           />
         )}
       </main>
-      <AppFooter handleSubmit={handleSubmit} />
+      <AppFooter
+        handleSubmit={handleSubmit}
+        handleIncreaseProductQty={handleIncreaseProductQty}
+        handleDecreaseProductQty={handleDecreaseProductQty}
+        productCurrentQty={productCurrentQty}
+      />
       <NextNProgress
         color={color}
         startPosition={0.3}

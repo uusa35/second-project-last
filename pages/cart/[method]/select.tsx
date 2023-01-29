@@ -252,7 +252,10 @@ const SelectMethod: NextPage<Props> = ({
           )}
           <button
             onClick={() => handleContinue()}
-            // disabled={isNull(selectedArea.id) && isNull(branch.id)}
+            disabled={
+              (method === 'delivery' && isNull(selectedData.area.id)) ||
+              (method === 'pickup' && isNull(selectedData.branch.id))
+            }
             className={`${submitBtnClass} mt-12 capitalize`}
             style={{ backgroundColor: color }}
             suppressHydrationWarning={suppressText}
