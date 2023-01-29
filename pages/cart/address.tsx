@@ -120,14 +120,11 @@ const CartAddress: NextPage = (): JSX.Element => {
             return schema.required(t(`validation.required`));
           return schema;
         }),
-      office_no: yup
-        .string()
-        .max(100)
-        .when('address_type', (address_type, schema) => {
-          if (address_type === 3 && method === `delivery`)
-            return schema.required(t(`validation.required`));
-          return schema;
-        }),
+      office_no: yup.mixed().when('address_type', (address_type, schema) => {
+        if (address_type === 3 && method === `delivery`)
+          return schema.required(t(`validation.required`));
+        return schema;
+      }),
       avenue: yup.string().max(50).nullable(true),
       paci: yup.string().max(50),
       additional: yup.string().nullable(true),
@@ -335,17 +332,21 @@ const CartAddress: NextPage = (): JSX.Element => {
       <MainContentLayout handleSubmit={handleNext}>
         {/* delivery method buttons */}
         <DeliveryBtns />
-        <div className='flex justify-center items-center'>
-          {area && <TextTrans
-            className={`font-semibold capitalize`}
-            ar={area.name_ar}
-            en={area.name_en}
-          />}
-          {branch && <TextTrans
-            className={`font-semibold capitalize`}
-            ar={branch.name_ar}
-            en={branch.name_en}
-          />}
+        <div className="flex justify-center items-center">
+          {area && (
+            <TextTrans
+              className={`font-semibold capitalize`}
+              ar={area.name_ar}
+              en={area.name_en}
+            />
+          )}
+          {branch && (
+            <TextTrans
+              className={`font-semibold capitalize`}
+              ar={branch.name_ar}
+              en={branch.name_en}
+            />
+          )}
         </div>
         <form id="hook-form" onSubmit={handleSubmit(onSubmit)} ref={refForm}>
           <input type="hidden" {...register('method')} value={method} />
