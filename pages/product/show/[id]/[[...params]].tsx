@@ -329,8 +329,8 @@ const ProductShow: NextPage<Props> = ({ element }) => {
         </div>
 
         <div className={`capitalize mt-5`}>
-         {/*   name and desc */}
-         <div className="flex flex-row w-full justify-between items-center px-4 md:px-8 pb-4 border-b-2 border-stone-200">
+          {/*   name and desc */}
+          <div className="flex flex-row w-full justify-between items-center px-4 md:px-8 pb-4 border-b-2 border-stone-200">
             <div className={` flex-1 space-y-3`}>
               <p className="font-bold text-xl">
                 <TextTrans ar={element.name_ar} en={element.name_en} />
@@ -548,9 +548,7 @@ const ProductShow: NextPage<Props> = ({ element }) => {
 
           {/* notes */}
           <div className="px-8 py-4">
-            <p className="mb-2">
-              {t("extra_notes")}
-            </p>
+            <p className="mb-2">{t('extra_notes')}</p>
             <textarea
               value={productCart.ExtraNotes}
               onChange={(e) => dispatch(setNotes(e.target.value))}
