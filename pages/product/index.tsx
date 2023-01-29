@@ -162,9 +162,21 @@ const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
               />
             )}
 
-            {map(currentProducts, (p, i) => (
-              <VerProductWidget element={p} key={i} />
-            ))}
+            {!isEmpty(currentProducts) && (
+              <>
+                <div className="flex justify-between items-center">
+                  <p className="text-semibold">{t('top_results')}</p>
+                  <p className="text-stone-300">
+                    {currentProducts.length} {t('product_found')}
+                  </p>
+                </div>
+
+                <div className="h-2 bg-stone-100 my-5 -mx-3"></div>
+                {map(currentProducts, (p, i) => (
+                  <VerProductWidget element={p} key={i} />
+                ))}
+              </>
+            )}
           </div>
         </div>
       </MainContentLayout>
