@@ -90,6 +90,9 @@ const ProductShow: NextPage<Props> = ({ element }) => {
     }
     dispatch(setShowFooterElement(`product_show`));
     return () => {
+      console.log('productId', productCart.ProductID);
+      console.log('element', element.id);
+      console.log('result', productCart.ProductID === element.id);
       if (productCart.ProductID !== element.id) {
         console.log('case 3');
         dispatch(resetProductCart());
