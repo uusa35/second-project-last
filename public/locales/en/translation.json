@@ -469,7 +469,7 @@
   "it_was_okay": "it was okay",
   "amazing": "amazing!",
   "note_is_required": "note is required",
-  "optional": "optional",
+  "optional": "(optional)",
   "confirm" : "confirm",
   "sorry_some_products_not_available_in_this_area" : "sorry ! some product not available in this area.",
   "cart_is_empty_please_add_product_into_cart":"cart is empty please add product into cart",
@@ -477,5 +477,6 @@
   "order_created_successfully" : "thank you .. your order has been placed. you can follow the status by your order number.",
   "sorry_some_product_not_available_in_this_area" : "sorry some product not available in this area",
   "select_a_branch_or_area_before_order" : "you have to choose a branch or an area. some products may be deleted from your shopping cart as it may not be available. thank you ...",
-  "please_select_payment_method": "please select payment method"
+  "please_select_payment_method": "please select payment method",
+  "selected": "selected"
 }

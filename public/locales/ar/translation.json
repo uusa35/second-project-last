@@ -480,7 +480,7 @@
   "it_was_okay": "إنه حسنًا",
   "amazing": "مذهل!",
   "note_is_required": "الملاحظات مطلوبة",
-  "optional": "اختياري",
+  "optional": "(اختياري)",
   "confirm" : "تأكيد",
   "sorry_some_products_not_available_in_this_area" : "هذا المنتج غير متاح في المنطقة أو الفرع الذي تم اختيار. يرجى تغير المنطقة او الفرع",
   "cart_is_empty_please_add_product_into_cart":"عربه التسوق فارغة من فضلك قم باضافه بعض المنتجات",
@@ -490,5 +490,6 @@
   "sorry_some_product_not_available_in_this_area" : "بعض المنتجات غير متوفرة في المنطقة المختارة.",
   "select_a_branch_or_area_before_order" : "يجب اختيار فرع أو منطقة قبل البدأ في عملية طلب. في حالة تغير الفرع أو المنطقة يرجى العلم بأن بعض المنتجات سيتم حذفها بناء على توفرها قرب منطقتك أو الفرع القريب منك. شكرا..",
   "order_code" : "رقم أمر العمل",
-  "please_select_payment_method": "من فضلك اختر طريقة الدفع"
+  "please_select_payment_method": "من فضلك اختر طريقة الدفع",
+  "selected": "تم اختيارها"
 }

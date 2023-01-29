@@ -9,7 +9,6 @@ import Home from '@/appIcons/home.svg';
 import IDCard from '@/appIcons/id_card.svg';
 import OrderSummary from '@/appIcons/summary.svg';
 import CustomImage from '@/components/CustomImage';
-import ListOrderIcon from '@/appIcons/list.svg';
 import Knet from '@/appImages/knet.png';
 import Cash from '@/appImages/cash_on_delivery.jpg';
 import Visa from '@/appImages/visa.png';
@@ -171,13 +170,11 @@ const CartReview: NextPage = () => {
     <Suspense>
       <MainContentLayout handleSubmit={handleCreateOrder}>
         <div>
-          <div className="flex justify-center items-center p-5">
+          <div className="flex justify-center items-end p-5">
             <CustomImage
               src={TrunkClock.src}
               alt={`${t('trunk')}`}
-              width={imageSizes.sm}
-              height={imageSizes.sm}
-              className={`w-11 h-11 shadow-lg`}
+              className={`w-16 h-16 shadow-lg`}
             />
             <div className="px-6">
               <h4
@@ -245,7 +242,7 @@ const CartReview: NextPage = () => {
                   alt="home"
                   width={imageSizes.xs}
                   height={imageSizes.xs}
-                  className={`w-8 h-8`}
+                  className={`w-6 h-6`}
                 />
                 {customer.address.address &&
                   map(customer.address.address, (address, i) => (
@@ -271,7 +268,7 @@ const CartReview: NextPage = () => {
                   alt="id"
                   width={imageSizes.xs}
                   height={imageSizes.xs}
-                  className={`w-8 h-8`}
+                  className={`w-6 h-6`}
                 />
                 <div className="ps-5 capitalize">
                   <h4 className="font-semibold text-base">{customer.name}</h4>
@@ -293,11 +290,11 @@ const CartReview: NextPage = () => {
           <div className="px-4">
             <div className="flex items-center pb-4">
               <CustomImage
-                src={ListOrderIcon.src}
+                src={OrderSummary.src}
                 alt="id"
                 width={imageSizes.xs}
                 height={imageSizes.xs}
-                className={`w-8 h-8`}
+                className={`w-6 h-6`}
               />
               <div className="ps-5">
                 <h4
@@ -355,14 +352,6 @@ const CartReview: NextPage = () => {
                             </p>
                           </Link>
                           <div className="flex">
-                            <Link
-                              className="px-2 capitalize"
-                              suppressHydrationWarning={suppressText}
-                              href={appLinks.cartIndex.path}
-                              style={{ color }}
-                            >
-                              {t('edit')}
-                            </Link>
                             <Link
                               href={`${appLinks.productShow(
                                 item.ProductID.toString(),
@@ -451,7 +440,7 @@ const CartReview: NextPage = () => {
                 </h4>
               </div>
             </div>
-            <div className="flex justify-evenly">
+            <div className="flex justify-between">
               {map(paymentMethods, (m, i) => (
                 <div key={i} >
                   <button
@@ -472,10 +461,10 @@ const CartReview: NextPage = () => {
                   </div>
                 </button>
                 <div 
-                  className={`pt-5 flex justify-center items-center space-x-1 text-lime-500 ${selectedPaymentMethod == m.id ? 'block': 'hidden'}`}
+                  className={`pt-5 flex justify-center items-center text-lime-500 ${selectedPaymentMethod == m.id ? 'block': 'hidden'}`}
                    >
                     <CheckCircle />
-                    <p>{t('selected')}</p>
+                    <p className='ps-2'>{t('selected')}</p>
                    </div>
                 </div>
                 

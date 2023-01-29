@@ -120,7 +120,7 @@ const Feedback: NextPage<Props> = ({
               alt={t('feedback')}
             />
             <p
-              className="ps-4 capitalize fontsemibold"
+              className="ps-4 capitalize font-semibold text-base"
               style={{ color }}
               suppressHydrationWarning={suppressText}
             >
@@ -129,7 +129,7 @@ const Feedback: NextPage<Props> = ({
           </div>
 
           <button
-            className="text-black text-base font-bold"
+            className="text-base font-bold"
             onClick={() => onRequestClose()}
           >
             X
@@ -144,7 +144,7 @@ const Feedback: NextPage<Props> = ({
             >
               {map(ratingButtons, (button) => (
                 <button
-                  className={`border-zinc-400 border-2 px-2 rounded-full py-1
+                  className={`border-zinc-400 border-2 px-3 rounded-full py-2
                   ${
                     rateVal === button.rate
                       ? 'bg-primary_BG text-white border-zinc-50'
@@ -175,7 +175,7 @@ const Feedback: NextPage<Props> = ({
               )}
             </div>
             <div
-              className={`flex items-center text-black py-4 ${isRTL && `flex-row-reverse`}`}
+              className={`flex items-center py-1 ${isRTL && `flex-row-reverse`}`}
             >
               <CustomImage
                 src={Card.src}
@@ -186,7 +186,7 @@ const Feedback: NextPage<Props> = ({
               />
               <input
                 {...register('user_name')}
-                className={`px-4 border-0 focus:ring-transparent outline-none ${
+                className={`px-4 border-0 focus:ring-transparent outline-none capitalize ${
                   isRTL && 'text-right'
                 }`}
                 name="user_name"
@@ -202,7 +202,7 @@ const Feedback: NextPage<Props> = ({
             <div>
               {errors?.user_name?.message && (
                 <p
-                  className={`text-base text-red-800 font-semibold py-2 capitalize`}
+                  className={`text-base text-red-800 font-semibold py-2 capitalize ${isRTL ? 'text-end': 'text-start'}`}
                   suppressHydrationWarning={suppressText}
                 >
                   {t('name_is_required')}
@@ -211,12 +211,12 @@ const Feedback: NextPage<Props> = ({
             </div>
             <div className="my-2 px-5 py-1 bg-gray-100"></div>
             <div
-              className={`flex justify-between py-4 ${
+              className={`flex justify-between py-1 ${
                 isRTL && `flex-row-reverse`
               }`}
             >
               <div
-                className={`flex items-center text-black py-4 ${
+                className={`flex items-center ${
                   isRTL && `flex-row-reverse`
                 }`}
               >
@@ -228,7 +228,7 @@ const Feedback: NextPage<Props> = ({
                   className={`w-6 h-6`}
                 />
                 <input
-                  className={`px-4 border-0 focus:ring-transparent outline-none ${
+                  className={`px-4 border-0 focus:ring-transparent outline-none capitalize ${
                     isRTL && 'text-right'
                   }`}
                   {...register('phone')}
@@ -239,13 +239,13 @@ const Feedback: NextPage<Props> = ({
                 />
               </div>
               <p className="text-base capitalize" style={{ color }}>
-                {t('(optional)')}
+                {t('optional')}
               </p>
             </div>
             <div className="my-2 px-5 py-1 bg-gray-100"></div>
 
             <div
-              className={`flex items-center text-black py-4 ${isRTL && `flex-row-reverse`}`}
+              className={`flex items-center ${isRTL && `flex-row-reverse`}`}
             >
               <CustomImage
                 src={Comment.src}
@@ -257,7 +257,7 @@ const Feedback: NextPage<Props> = ({
               <input
                 {...register('note')}
                 aria-invalid={errors.note ? 'true' : 'false'}
-                className={`px-4 border-0 focus:ring-transparent outline-none ${
+                className={`px-4 border-0 focus:ring-transparent outline-none capitalize ${
                   isRTL && 'text-right'
                 }`}
                 type="text"
@@ -273,7 +273,7 @@ const Feedback: NextPage<Props> = ({
             <div>
               {errors?.note?.message && (
                 <p
-                  className={`text-base text-red-800 font-semibold py-2 capitalize`}
+                  className={`text-base text-red-800 font-semibold py-2 capitalize ${isRTL ? 'text-end': 'text-start'}`}
                   suppressHydrationWarning={suppressText}
                 >
                   {t('note_is_required')}

@@ -20,14 +20,14 @@ const DeliveryBtns: FC<Props> = ({ method_in_select = '' }): JSX.Element => {
   } = useAppSelector((state) => state);
 
   return (
-    <div className="flex flex-1 w-full flex-row justify-between items-center px-5 text-lg py-8">
+    <div className="flex flex-1 space-x-5 mx-auto flex-row justify-between items-center px-5 text-lg py-8">
       <Link
         scroll={true}
         className={`${
           method_in_select
             ? method_in_select === 'delivery' && `text-white`
             : method === 'delivery' && `text-white`
-        } md:ltr:mr-3 md:rtl:ml-3 py-3 px-16 capitalize border-2 rounded-md`}
+        }  py-3 capitalize border-2 rounded-md w-[50%] text-center `}
         href={appLinks.cartSelectMethod(`delivery`)}
         suppressHydrationWarning={suppressText}
         style={{
@@ -48,7 +48,7 @@ const DeliveryBtns: FC<Props> = ({ method_in_select = '' }): JSX.Element => {
           method_in_select
             ? method_in_select === 'pickup' && `text-white`
             : method === 'pickup' && `text-white`
-        } md:ltr:mr-3 md:rtl:ml-3 capitalize py-3 px-16 border-2 rounded-md`}
+        } capitalize py-3 border-2 rounded-md md w-[50%] text-center `}
         href={appLinks.cartSelectMethod(`pickup`)}
         suppressHydrationWarning={suppressText}
         style={{

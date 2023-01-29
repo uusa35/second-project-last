@@ -49,6 +49,7 @@ import * as yup from 'yup';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 import { AppQueryResult } from '@/types/queries';
+import TextTrans from '@/components/TextTrans';
 
 const schema = yup
   .object()
@@ -295,6 +296,18 @@ const CartAddress: NextPage = (): JSX.Element => {
       <MainContentLayout handleSubmit={handleNext}>
         {/* delivery method buttons */}
         <DeliveryBtns />
+        <div className='flex justify-center items-center'>
+          {area && <TextTrans
+            className={`font-semibold capitalize`}
+            ar={area.name_ar}
+            en={area.name_en}
+          />}
+          {branch && <TextTrans
+            className={`font-semibold capitalize`}
+            ar={branch.name_ar}
+            en={branch.name_en}
+          />}
+        </div>
         <form id="hook-form" onSubmit={handleSubmit(onSubmit)} ref={refForm}>
           <div className={'px-4'}>
             <div className="bg-gray-200 w-full mt-5 p-0 h-2"></div>

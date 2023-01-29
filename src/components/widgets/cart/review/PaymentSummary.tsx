@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { suppressText } from '@/constants/*';
 import { isNull } from 'lodash';
 import { useAppSelector } from '@/redux/hooks';
+import { themeColor } from '@/redux/slices/vendorSlice';
 
 const PaymentSummary: FC = () => {
   const { t } = useTranslation();
@@ -13,7 +14,7 @@ const PaymentSummary: FC = () => {
     total,
     delivery_fees,
   } = useAppSelector((state) => state.cart);
-
+  const color = useAppSelector(themeColor);
   useEffect(() => {}, [promoEnabled]);
 
   return (
@@ -44,9 +45,9 @@ const PaymentSummary: FC = () => {
             <p>{t('kwd')}</p>
           </div>
         </div>
-        <div className="flex justify-between mb-3 text-lg">
+        <div className="flex justify-between mb-3 text-lg font-semibold">
           <p suppressHydrationWarning={suppressText}>{t('total')}</p>
-          <div className={`flex flex-row`}>
+          <div className={`flex flex-row`} style={{ color }}>
             <p suppressHydrationWarning={suppressText} className={`px-2`}>
               {promoEnabled ? coupon.total_cart_before_tax : total}
             </p>
