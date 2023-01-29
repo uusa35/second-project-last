@@ -131,7 +131,7 @@ const CartAddress: NextPage = (): JSX.Element => {
         return schema.nullable(true);
       }),
       avenue: yup.string().max(50).nullable(true),
-      paci: yup.string().max(50),
+      paci: yup.string().max(50).nullable(true),
       additional: yup.string().nullable(true),
       longitude: yup.string(),
       latitude: yup.string(),

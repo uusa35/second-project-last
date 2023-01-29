@@ -26,8 +26,6 @@ type Props = {
 const OrderSuccess: NextPage<Props> = ({ element }) => {
   const { t } = useTranslation();
   const {
-    branch: { id: branchId },
-    area: { id: areaId },
     customer: { userAgent },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);

@@ -21,7 +21,6 @@ import {
   filter,
   first,
   isEmpty,
-  isNull,
   join,
   map,
   multiply,
@@ -39,22 +38,14 @@ import {
   removeMeter,
   resetCheckBoxes,
   resetProductCart,
+  resetRadioBtns,
   setCartProductQty,
   setInitialProductCart,
   updateId,
   updatePrice,
 } from '@/redux/slices/productCartSlice';
-import {
-  Accordion,
-  AccordionHeader,
-  AccordionBody,
-} from '@material-tailwind/react';
+import { Accordion, AccordionBody } from '@material-tailwind/react';
 import TextTrans from '@/components/TextTrans';
-import { setCartTotalAndSubTotal } from '@/redux/slices/cartSlice';
-import {
-  useAddToCartMutation,
-  useLazyGetCartProductsQuery,
-} from '@/redux/api/cartApi';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import NoFoundImage from '@/appImages/not_found.png';
 
@@ -63,12 +54,7 @@ type Props = {
 };
 const ProductShow: NextPage<Props> = ({ element }) => {
   const { t } = useTranslation();
-  const {
-    productCart,
-    appSetting: { method },
-    branch: { branchId },
-    area,
-  } = useAppSelector((state) => state);
+  const { productCart } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
   const dispatch = useAppDispatch();
   const [currentQty, setCurrentyQty] = useState<number>(
@@ -373,12 +359,17 @@ const ProductShow: NextPage<Props> = ({ element }) => {
                       id={s.title}
                       name={s.title}
                       type="radio"
-                      checked={open === 0}
+                      checked={open === s.id * 10}
                       onClick={() => {
-                        if (s.selection_type === `optional`) {
+                        if (
+                          s.selection_type === `optional` &&
+                          s.must_select === 'multi'
+                        ) {
                           dispatch(resetCheckBoxes());
+                        } else {
+                          dispatch(resetRadioBtns());
                         }
-                        setOpen(0);
+                        setOpen(s.id * 10);
                       }}
                       className="h-4 w-4"
                     />
@@ -490,8 +481,8 @@ const ProductShow: NextPage<Props> = ({ element }) => {
                       ) : (
                         <Fragment key={i}>
                           <input
-                            id={c.id.toString()}
-                            name={s.title}
+                            id={c.name}
+                            name={c.name}
                             required={s.selection_type !== 'optional'}
                             type={
                               s.must_select === 'multi' ? `checkbox` : 'radio'
