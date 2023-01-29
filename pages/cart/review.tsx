@@ -12,7 +12,6 @@ import CustomImage from '@/components/CustomImage';
 import Knet from '@/appImages/knet.png';
 import Cash from '@/appImages/cash_on_delivery.jpg';
 import Visa from '@/appImages/visa.png';
-import ReceiptIcon from '@mui/icons-material/Receipt';
 import GoogleMapReact from 'google-map-react';
 import {
   setCurrentModule,
@@ -25,7 +24,6 @@ import TextTrans from '@/components/TextTrans';
 import { isEmpty, isNull, map } from 'lodash';
 import Link from 'next/link';
 import { OrderUser, ProductCart, ServerCart } from '@/types/index';
-import PaymentSummary from '@/components/widgets/cart/review/PaymentSummary';
 import { AppQueryResult } from '@/types/queries';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { useLazyCreateOrderQuery } from '@/redux/api/orderApi';

@@ -21,7 +21,6 @@ import {
   filter,
   first,
   isEmpty,
-  isNull,
   join,
   map,
   multiply,
@@ -45,17 +44,8 @@ import {
   updateId,
   updatePrice,
 } from '@/redux/slices/productCartSlice';
-import {
-  Accordion,
-  AccordionHeader,
-  AccordionBody,
-} from '@material-tailwind/react';
+import { Accordion, AccordionBody } from '@material-tailwind/react';
 import TextTrans from '@/components/TextTrans';
-import { setCartTotalAndSubTotal } from '@/redux/slices/cartSlice';
-import {
-  useAddToCartMutation,
-  useLazyGetCartProductsQuery,
-} from '@/redux/api/cartApi';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import NoFoundImage from '@/appImages/not_found.png';
 
@@ -64,12 +54,7 @@ type Props = {
 };
 const ProductShow: NextPage<Props> = ({ element }) => {
   const { t } = useTranslation();
-  const {
-    productCart,
-    appSetting: { method },
-    branch: { branchId },
-    area,
-  } = useAppSelector((state) => state);
+  const { productCart } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
   const dispatch = useAppDispatch();
   const [currentQty, setCurrentyQty] = useState<number>(

@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { FC, Suspense, useEffect } from 'react';
+import { FC, Suspense } from 'react';
 import { useRouter } from 'next/router';
 import { isNull } from 'lodash';
 import { appLinks, suppressText } from '../constants';
