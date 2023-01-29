@@ -71,9 +71,13 @@ const OrderSuccess: NextPage<Props> = ({ element }) => {
                 style={{ color }}
                 suppressHydrationWarning={suppressText}
               >
-               {t('order_code')}
+                {t('order_code')}
               </h4>
-              <p> {'#'}{element.orderCode}</p>
+              <p>
+                {' '}
+                {'#'}
+                {element.orderCode}
+              </p>
             </div>
             <div className="flex justify-between pt-4 text-lg">
               <h4
@@ -99,6 +103,7 @@ const OrderSuccess: NextPage<Props> = ({ element }) => {
             </p>
             <Link
               href={appLinks.orderInvoice(`${element.order_id}`)}
+              scroll={true}
               className={`flex grow justify-center items-center p-4 rounded-lg text-white mb-3`}
               style={{ backgroundColor: color }}
             >
@@ -109,6 +114,7 @@ const OrderSuccess: NextPage<Props> = ({ element }) => {
                 pathname: `/order/track`,
                 query: { order_code: element.orderCode },
               }}
+              scroll={true}
               className={`flex grow justify-center items-center p-4 rounded-lg text-white mb-3`}
               style={{ backgroundColor: color }}
             >
@@ -117,6 +123,7 @@ const OrderSuccess: NextPage<Props> = ({ element }) => {
             <Link
               href={appLinks.home.path}
               style={{ backgroundColor: color }}
+              scroll={true}
               className={`flex grow justify-center items-center p-4 rounded-lg text-white mb-3`}
             >
               {t('order_again')}
