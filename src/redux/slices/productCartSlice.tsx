@@ -86,6 +86,15 @@ export const productCartSlice = createSlice({
         CheckBoxes: filter(state.CheckBoxes, (c) => c.uId !== action.payload),
       };
     },
+    resetCheckBoxes: (
+      state: typeof initialState,
+      action: PayloadAction<void>
+    ) => {
+      return {
+        ...state,
+        CheckBoxes: initialState.CheckBoxes,
+      };
+    },
     addRadioBtn: (
       state: typeof initialState,
       action: PayloadAction<RadioBtns>
@@ -161,6 +170,7 @@ export const {
   addToCheckBox,
   setInitialProductCart,
   removeFromCheckBox,
+  resetCheckBoxes,
   setCartProductQty,
   addRadioBtn,
   updatePrice,
