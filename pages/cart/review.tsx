@@ -87,14 +87,14 @@ const CartReview: NextPage = () => {
 
   const handelDisplayAddress = () => {
     let address = Object.values(customer.address);
-    
+
     let concatAdd = '';
     address.map((a) => {
       if (a !== null) {
         concatAdd += a + ', ';
       }
     });
-    console.log(concatAdd)
+    console.log(concatAdd);
     return concatAdd;
   };
 
@@ -261,9 +261,10 @@ const CartReview: NextPage = () => {
                   className={`w-6 h-6`}
                 />
                 {customer.address && (
-                  <p className="text-md ps-5 capitalize">{handelDisplayAddress()}</p>
-                )
-                 }
+                  <p className="text-md ps-5 capitalize">
+                    {handelDisplayAddress()}
+                  </p>
+                )}
               </div>
               <Link
                 href={appLinks.cartSelectMethod(process_type)}
@@ -423,7 +424,7 @@ const CartReview: NextPage = () => {
                       </span>
                       <div>
                         <p
-                          className=" capitalize"
+                          className="uppercase"
                           suppressHydrationWarning={suppressText}
                           style={{ color }}
                         >
@@ -457,40 +458,40 @@ const CartReview: NextPage = () => {
             <div className="flex justify-between">
               {map(paymentMethods, (m, i) => (
                 <div key={i}>
-                <button
-                  onClick={() => setSelectedPaymentMethod(m.id)}
-                  className={`${
-                    selectedPaymentMethod == m.id &&
-                    `ring-2 ring-lime-500 ring-offset-1`
-                  } bg-stone-100 flex justify-center items-center w-24 h-24 rounded-md shadow-lg`}
-                >
-                  <div>
-                    <CustomImage
-                      src={m.src}
-                      alt="payment"
-                      width={imageSizes.xs}
-                      height={imageSizes.xs}
-                      className={`w-14 h-14`}
-                    />
+                  <button
+                    onClick={() => setSelectedPaymentMethod(m.id)}
+                    className={`${
+                      selectedPaymentMethod == m.id &&
+                      `ring-2 ring-lime-500 ring-offset-1`
+                    } bg-stone-100 flex justify-center items-center w-24 h-24 rounded-md shadow-lg`}
+                  >
+                    <div>
+                      <CustomImage
+                        src={m.src}
+                        alt="payment"
+                        width={imageSizes.xs}
+                        height={imageSizes.xs}
+                        className={`w-14 h-14`}
+                      />
+                    </div>
+                  </button>
+                  <div
+                    className={`pt-5 flex justify-center items-center space-x-1 text-lime-500 ${
+                      selectedPaymentMethod == m.id ? 'block' : 'hidden'
+                    }`}
+                  >
+                    <CheckCircle />
+                    <p>{t('selected')}</p>
                   </div>
-                </button>
-                <div
-                  className={`pt-5 flex justify-center items-center space-x-1 text-lime-500 ${
-                    selectedPaymentMethod == m.id ? 'block' : 'hidden'
-                  }`}
-                >
-                  <CheckCircle />
-                  <p>{t('selected')}</p>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
 
-        {/*<div className="bg-gray-200 w-full mt-5 p-0 h-2"></div>*/}
-      </div>
-    </MainContentLayout>
-  </Suspense>
+          {/*<div className="bg-gray-200 w-full mt-5 p-0 h-2"></div>*/}
+        </div>
+      </MainContentLayout>
+    </Suspense>
   );
 };
 

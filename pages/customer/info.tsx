@@ -153,7 +153,7 @@ const CustomerInformation: NextPage = (): JSX.Element => {
                 <input
                   {...register('email')}
                   aria-invalid={errors.email ? 'true' : 'false'}
-                  className={`border-0 w-full focus:ring-transparent outline-0`}
+                  className={`border-0 w-full focus:ring-transparent outline-0 capitalize`}
                   onChange={(e) => setValue('email', e.target.value)}
                   placeholder={`${t('enter_your_email')}`}
                 />

@@ -26,14 +26,14 @@ type Props = {
   handleSubmit?: (element?: any) => void;
   handleIncreaseProductQty?: () => void;
   handleDecreaseProductQty?: () => void;
-  productCurrentQty?:number | undefined
+  productCurrentQty?: number | undefined;
 };
 
 const AppFooter: FC<Props> = ({
   handleSubmit,
   handleDecreaseProductQty,
   handleIncreaseProductQty,
-  productCurrentQty
+  productCurrentQty,
 }): JSX.Element => {
   const { t } = useTranslation();
   const {
@@ -213,9 +213,9 @@ const AppFooter: FC<Props> = ({
         } fixed w-full lg:w-2/4 xl:w-1/3 h-auto flex flex-col justify-center items-center text-center bg-white bg-opacity-60 capitalize`}
       >
         {showFooterElement === 'product_show' && (
-          <div className='w-full bg-gray-100'>
+          <div className="w-full bg-gray-100">
             {/* quantity meter */}
-            <div className='flex justify-between items-center w-full px-8 bg-gray-100'>
+            <div className="flex justify-between items-center w-full px-8 bg-gray-100">
               <p style={{ color }}>{t('quantity')}</p>
               <div
                 className={`flex flex-row justify-center items-center my-4 capitalize`}
@@ -281,7 +281,7 @@ const AppFooter: FC<Props> = ({
                 <p className={`text-xl text-white`}>
                   {productCart.grossTotalPrice}
                 </p>
-                <span className={`text-white`}>{t('kwd')}</span>
+                <span className={`text-white uppercase`}>{t('kwd')}</span>
               </span>
             </div>
           </div>

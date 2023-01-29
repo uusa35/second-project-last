@@ -323,33 +323,41 @@ const CartIndex: NextPage = (): JSX.Element => {
                         <span className="flex rounded-xl shadow-sm">
                           <button
                             type="button"
-                            className="relative -ml-px inline-flex items-center ltr:rounded-l-xl rtl:rounded-r-xl  bg-gray-100 px-4 py-2 text-sm font-medium text-black  focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
+                            className="relative -ml-px inline-flex items-center ltr:rounded-l-sm rtl:rounded-r-sm  bg-gray-100 px-1 py-1 text-sm font-medium text-black  focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
                             onClick={() => {
                               handleIncrease(item);
                             }}
                           >
-                            +
+                            <span
+                              className={`p-1 px-3 bg-white rounded-md text-md font-extrabold`}
+                            >
+                              +
+                            </span>
                           </button>
                           <button
                             type="button"
-                            className="relative -ml-px inline-flex items-center  bg-gray-100 px-4 py-2 text-sm font-medium focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500 capitalize"
+                            className="text-md relative -ml-px inline-flex items-center  bg-gray-100 px-4 py-2 text-sm font-medium focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500 capitalize font-extrabold"
                             style={{ color }}
                           >
                             {item.Quantity}
                           </button>
                           <button
                             type="button"
-                            className="relative inline-flex items-center ltr:rounded-r-xl rtl:rounded-l-xl bg-gray-100 px-4 py-2 text-sm font-medium text-black  focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
+                            className="relative inline-flex items-center ltr:rounded-r-sm rtl:rounded-l-sm bg-gray-100 px-1 py-1 text-sm font-medium text-black  focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
                             onClick={() => {
                               handleDecrease(item);
                             }}
                           >
-                            -
+                            <span
+                              className={`border border-gray-300 p-1 px-3 bg-white rounded-md text-md font-extrabold`}
+                            >
+                              -
+                            </span>
                           </button>
                         </span>
                         <div>
                           <p
-                            className="capitalize"
+                            className=" uppercase"
                             style={{ color }}
                             suppressHydrationWarning={suppressText}
                           >

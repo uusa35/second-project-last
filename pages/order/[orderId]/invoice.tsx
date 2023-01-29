@@ -205,7 +205,7 @@ const OrderInvoice: NextPage<Props> = ({ element }): JSX.Element => {
                       </td>
                       <td className="py-3 px-3"></td>
                       <td className="py-3 px-3">{item.price}</td>
-                      <td className="py-3 px-3">
+                      <td className="py-3 px-3 uppercase">
                         {item.total}
                         {t('kwd')}
                       </td>
@@ -218,7 +218,10 @@ const OrderInvoice: NextPage<Props> = ({ element }): JSX.Element => {
           <div className={`px-4 py-4`}>
             <div className="flex justify-between mb-3 text-lg">
               <p suppressHydrationWarning={suppressText}>{t('subtotal')}</p>
-              <p suppressHydrationWarning={suppressText}>
+              <p
+                suppressHydrationWarning={suppressText}
+                className={`uppercase`}
+              >
                 {element.order_summary.sub_total} {t('kwd')}
               </p>
             </div>
@@ -226,7 +229,10 @@ const OrderInvoice: NextPage<Props> = ({ element }): JSX.Element => {
               <p suppressHydrationWarning={suppressText}>
                 {t('delivery_services')}
               </p>
-              <p suppressHydrationWarning={suppressText}>
+              <p
+                suppressHydrationWarning={suppressText}
+                className={`uppercase`}
+              >
                 {element.order_summary.delivery_fee} {t('kwd')}
               </p>
             </div>
@@ -241,6 +247,7 @@ const OrderInvoice: NextPage<Props> = ({ element }): JSX.Element => {
               <p
                 style={{ color }}
                 suppressHydrationWarning={suppressText}
+                className={`uppercase`}
               >
                 {element.order_summary.total} {t('kwd')}
               </p>

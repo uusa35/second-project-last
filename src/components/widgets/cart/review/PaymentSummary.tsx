@@ -26,7 +26,9 @@ const PaymentSummary: FC = () => {
             <p suppressHydrationWarning={suppressText} className={`px-2`}>
               {promoEnabled ? coupon.total_cart_after_tax : subTotal}
             </p>
-            <p>{t('kwd')}</p>
+            <p className={`uppercase`} suppressHydrationWarning={suppressText}>
+              {t('kwd')}
+            </p>
           </div>
         </div>
         <div className="flex justify-between mb-2 text-lg">
@@ -42,7 +44,9 @@ const PaymentSummary: FC = () => {
                 ? 0
                 : delivery_fees}
             </p>
-            <p>{t('kwd')}</p>
+            <p className={`uppercase`} suppressHydrationWarning={suppressText}>
+              {t('kwd')}
+            </p>
           </div>
         </div>
         <div className="flex justify-between mb-2 text-lg">
@@ -51,7 +55,9 @@ const PaymentSummary: FC = () => {
             <p suppressHydrationWarning={suppressText} className={`px-2`}>
               {promoEnabled ? coupon.total_cart_before_tax : total}
             </p>
-            <p>{t('kwd')}</p>
+            <p className={`uppercase`} suppressHydrationWarning={suppressText}>
+              {t('kwd')}
+            </p>
           </div>
         </div>
       </>
