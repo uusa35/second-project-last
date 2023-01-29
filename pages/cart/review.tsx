@@ -20,9 +20,9 @@ import {
   showToastMessage,
 } from '@/redux/slices/appSettingSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { useGetCartProductsQuery } from '@/redux/api/cartApi';
+import { useAddToCartMutation, useGetCartProductsQuery } from '@/redux/api/cartApi';
 import TextTrans from '@/components/TextTrans';
-import { isEmpty, isNull, map } from 'lodash';
+import { filter, isEmpty, isNull, map } from 'lodash';
 import Link from 'next/link';
 import { OrderUser, ProductCart, ServerCart } from '@/types/index';
 import PaymentSummary from '@/components/widgets/cart/review/PaymentSummary';
@@ -51,6 +51,7 @@ const CartReview: NextPage = () => {
     area: { id: areaId },
     customer: { userAgent },
     appSetting: { method: process_type },
+
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
   const { data: cartItems, isSuccess } = useGetCartProductsQuery<{
@@ -61,7 +62,7 @@ const CartReview: NextPage = () => {
     UserAgent: userAgent,
   });
   const [triggerCreateOrder, { isLoading }] = useLazyCreateOrderQuery();
-
+  const [triggerAddToCart] = useAddToCartMutation();
   const paymentMethods: { id: OrderUser['PaymentMethod']; src: any }[] = [
     { id: 'visa', src: Visa.src },
     { id: 'knet', src: Knet.src },
@@ -94,7 +95,6 @@ const CartReview: NextPage = () => {
         concatAdd += a + ', ';
       }
     });
-    console.log(concatAdd);
     return concatAdd;
   };
 
@@ -182,6 +182,35 @@ const CartReview: NextPage = () => {
     }
   };
 
+  const handleRemove = async (element: ProductCart) => {
+    const currentItems = filter(
+      cartItems.data.Cart,
+      (i) => i.id !== element.id
+    );
+    triggerAddToCart({
+      process_type: process_type,
+      area_branch: process_type === 'delivery' ? areaId : branchId,
+      body: {
+        UserAgent: userAgent,
+        Cart:
+          isSuccess &&
+          cartItems.data &&
+          cartItems.data.Cart &&
+          !isEmpty(currentItems)
+            ? currentItems
+            : [], // empty Cart Case !!!
+      },
+    }).then((r: any) => {
+      if (r.data && r.data?.status) {
+        dispatch(
+          showToastMessage({
+            content: `cart_updated_successfully`,
+            type: `success`,
+          })
+        );
+      }
+    });
+  };
   return (
     <Suspense>
       <MainContentLayout handleSubmit={handleCreateOrder}>
@@ -376,7 +405,6 @@ const CartReview: NextPage = () => {
                                 areaId
                               )}`}
                             >
-                              <EditOutlined />
                             </Link>
                           </div>
                         </div>
@@ -396,7 +424,6 @@ const CartReview: NextPage = () => {
                                           className={`ltr:border-r-2 ltr:last:border-r-0 ltr:first:pr-1 rtl:border-l-2 rtl:last:border-l-0 rtl:first:pl-1 px-1 text-xs capitalize`}
                                           ar={addon.name}
                                           en={addon.name}
-                                          style={{ color }}
                                         />
                                         {addon.price ?? ``}
                                       </>
@@ -406,6 +433,22 @@ const CartReview: NextPage = () => {
                             </div>
                           </div>
                         </div>
+                        <div className="flex justify-between">
+                        <p
+                            className="uppercase"
+                            suppressHydrationWarning={suppressText}
+                            style={{ color }}
+                          >
+                            {item.Price} {t('kwd')}
+                        </p>
+                        <button
+                          className="text-red-700 capitalize"
+                          suppressHydrationWarning={suppressText}
+                          onClick={() => handleRemove(item)}
+                        >
+                          {t('remove')}
+                        </button>
+                    </div>
                       </div>
                     </div>
 
@@ -422,16 +465,8 @@ const CartReview: NextPage = () => {
                           </span>
                         </button>
                       </span>
-                      <div>
-                        <p
-                          className="uppercase"
-                          suppressHydrationWarning={suppressText}
-                          style={{ color }}
-                        >
-                          {item.Price} {t('kwd')}
-                        </p>
-                      </div>
                     </div>
+                    
                   </div>
                 </div>
               </div>
