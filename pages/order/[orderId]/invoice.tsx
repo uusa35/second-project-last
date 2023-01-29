@@ -19,9 +19,9 @@ type Props = {
 };
 const OrderInvoice: NextPage<Props> = ({ element }): JSX.Element => {
   const { vendor } = useAppSelector((state) => state);
-  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const color = useAppSelector(themeColor);
+  const { t } = useTranslation();
   const handleMapLocation = (lat: string, long: string) => {
     window.open(`https://maps.google.com?q=${lat},${long}`);
   };
@@ -139,9 +139,9 @@ const OrderInvoice: NextPage<Props> = ({ element }): JSX.Element => {
               {t('order_summary')}
             </h4>
             <div className="relative overflow-x-auto ">
-              <table className="table-auto w-full text-left mb-5">
+              <table className={`table-auto w-full text-left mb-5`}>
                 <thead>
-                  <tr className="whitespace-nowrap">
+                  <tr className="whitespace-nowrap text-start">
                     <th
                       scope="col"
                       className="py-3 px-3"
@@ -188,7 +188,7 @@ const OrderInvoice: NextPage<Props> = ({ element }): JSX.Element => {
                 </thead>
                 <tbody>
                   {map(element.order_summary.items, (item, idx) => (
-                    <tr key={idx}>
+                    <tr key={idx} className="text-start">
                       <td className="py-3 px-3">{item.quantity}</td>
                       <td className="py-3 px-3">{item.item}</td>
                       <td className="py-3 px-3">
