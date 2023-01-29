@@ -41,6 +41,7 @@ import {
   resetProductCart,
   setCartProductQty,
   setInitialProductCart,
+  setNotes,
   updateId,
   updatePrice,
 } from '@/redux/slices/productCartSlice';
@@ -127,6 +128,7 @@ const ProductShow: NextPage<Props> = ({ element }) => {
         name_en: element.name_en,
         ProductDesc: element.desc,
         Quantity: currentQty,
+        ExtraNotes: productCart.ExtraNotes,
         totalPrice: parseFloat(element.price),
         grossTotalPrice: parseFloat(element.price),
         totalQty: currentQty,
@@ -332,7 +334,7 @@ const ProductShow: NextPage<Props> = ({ element }) => {
 
         <div className={`px-4 md:px-8 capitalize mt-5`}>
           {/*   name and desc */}
-          <div className="flex flex-row w-full justify-between items-center px-4 md:px-8 pb-4 border-b-2 border-stone-200">
+          <div className="flex flex-row w-full justify-between items-center pb-4 border-b-2 border-stone-200">
             <div className={` flex-1 space-y-3`}>
               <p className="font-bold text-xl">
                 <TextTrans ar={element.name_ar} en={element.name_en} />
@@ -352,7 +354,7 @@ const ProductShow: NextPage<Props> = ({ element }) => {
           </div>
           {/*     sections  */}
           {map(element.sections, (s: ProductSection, i) => (
-            <div className={`border-b-8 border-stone-100 px-8 py-4`} key={i}>
+            <div className={`py-4`} key={i}>
               <div>{s.title}</div>
               {s.selection_type === 'optional' ? (
                 <div className={`flex flex-col gap-x-2 gap-y-1  mt-2`}>
@@ -535,11 +537,25 @@ const ProductShow: NextPage<Props> = ({ element }) => {
                   ))}
                 </AccordionBody>
               </Accordion>
+
+              <div className="bg-gray-100"></div>
             </div>
           ))}
 
-          <div className="h-36"></div>
+          {/* notes */}
+          <div className="py-4">
+            <p className="mb-2">
+              <TextTrans ar={element.name_ar} en={element.name_en} />
+            </p>
+            <textarea
+              value={productCart.ExtraNotes}
+              onChange={(e) => dispatch(setNotes(e.target.value))}
+              className="w-full bg-gray-100 rounded-md"
+            ></textarea>
+          </div>
         </div>
+
+        <div className="h-36"></div>
       </MainContentLayout>
     </Suspense>
   );

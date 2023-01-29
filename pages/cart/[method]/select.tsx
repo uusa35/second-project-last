@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useTranslation } from 'react-i18next';
 import { AppQueryResult, Area, Branch } from '@/types/queries';
 import { useEffect, useState, Suspense } from 'react';
-import { setCurrentModule } from '@/redux/slices/appSettingSlice';
+import { setCurrentModule, setShowFooterElement } from '@/redux/slices/appSettingSlice';
 import {
   Accordion,
   AccordionHeader,
@@ -78,6 +78,7 @@ const SelectMethod: NextPage<Props> = ({
 
   useEffect(() => {
     dispatch(setCurrentModule(t('select_method')));
+    dispatch(setShowFooterElement(`select_method`));;
     () => refetchCart();
   }, []);
 
