@@ -295,10 +295,6 @@ const ProductShow: NextPage<Props> = ({ element }) => {
     currentQty,
   ]);
 
-  useEffect(() => {
-    console.log('productCart', productCart);
-  }, [productCart]);
-
   return (
     <Suspense>
       <MainHead
@@ -354,7 +350,7 @@ const ProductShow: NextPage<Props> = ({ element }) => {
           {map(element.sections, (s: ProductSection, i) => (
             <div className={`border-b-8 border-stone-100 px-8 py-4`} key={i}>
               <div>{s.title}</div>
-              {s.selection_type === 'optional' ? (
+              {s.hidden ? (
                 <div className={`flex flex-col gap-x-2 gap-y-1  mt-2`}>
                   <div className={`flex flex-row`}>
                     <input
@@ -397,7 +393,7 @@ const ProductShow: NextPage<Props> = ({ element }) => {
               ) : null}
               <Accordion
                 hidden={true}
-                open={s.selection_type === `mandatory` ? true : s.id === open}
+                open={!s.hidden ? true : s.id === open}
                 animate={customAnimation}
                 className={`w-full`}
               >
