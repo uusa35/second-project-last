@@ -477,14 +477,11 @@
   "the_address_field_is_required" : "the address field is required.",
   "order_created_successfully" : "thank you .. your order has been placed. you can follow the status by your order number.",
   "sorry_some_product_not_available_in_this_area" : "sorry some product not available in this area",
-<<<<<<< HEAD
   "select_a_branch_or_area_before_order" : "some mandatory addons are required in order to continue or you may have to choose a branch or an area. some products may be deleted from your shopping cart as it may not be available. thank you ...",
-=======
   "select_a_branch_or_area_before_order" : "you have to choose a branch or an area. some products may be deleted from your shopping cart as it may not be available. thank you ...",
   "trending_items":"trending items",
   "top_results":"top results",
   "product_found":"product found",
->>>>>>> 9bc81bcddc9bcbc6c20459aec045b81f8b3329f0
   "please_select_payment_method": "please select payment method",
   "selected": "selected",
   "floor_no" : "floor no",
