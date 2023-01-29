@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { FC, Suspense } from 'react';
+import { FC, Suspense, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { isNull } from 'lodash';
 import { appLinks, suppressText } from '../constants';
@@ -22,20 +22,18 @@ const BackBtn: FC<Props> = ({
   backRoute = null,
   offset,
 }): JSX.Element => {
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+  const { t } = useTranslation();
+  const color = useAppSelector(themeColor);
   const {
     appSetting: { currentModule },
     locale: { lang, otherLang },
     customer: { userAgent },
   } = useAppSelector((state) => state);
-
   const { data: cartItems, isSuccess } = useGetCartProductsQuery({
     UserAgent: userAgent,
   });
-
-  const router = useRouter();
-  const dispatch = useAppDispatch();
-  const { t } = useTranslation();
-  const color = useAppSelector(themeColor);
 
   const handleGoHome = () => {
     router.push(`/`, ``, {
