@@ -243,45 +243,45 @@ const CartAddress: NextPage = (): JSX.Element => {
 
   const handelSaveAddress = async (body: any) => {
     console.log('body', body);
-    // await triggerAddAddress({
-    //   body: {
-    //     address_type: body.address_type,
-    //     longitude: body.longitude,
-    //     latitude: body.latitude,
-    //     customer_id: body.customer_id,
-    //     address: {
-    //       block: body.block,
-    //       street: body.street,
-    //       house_no: body.house_no,
-    //       avenue: body.avenue,
-    //       paci: body.paci,
-    //       floor_no: body.floor_no,
-    //       office_no: body.office_no,
-    //       additional: body.additional,
-    //     },
-    //   },
-    // }).then((r: any) => {
-    //   if (r.data && r.data.status) {
-    //     dispatch(
-    //       showToastMessage({
-    //         content: `address_saved_successfully`,
-    //         type: `success`,
-    //       })
-    //     );
-    //     console.log('rrr', r.data.Data);
-    //     dispatch(setCustomerAddress(r.data.Data));
-    //     checkTimeAvailability();
-    //   } else {
-    //     if (r.error) {
-    //       dispatch(
-    //         showToastMessage({
-    //           content: lowerCase(kebabCase(r.error.data.msg[`address`][0])),
-    //           type: `error`,
-    //         })
-    //       );
-    //     }
-    //   }
-    // });
+    await triggerAddAddress({
+      body: {
+        address_type: body.address_type,
+        longitude: body.longitude,
+        latitude: body.latitude,
+        customer_id: body.customer_id,
+        address: {
+          block: body.block,
+          street: body.street,
+          house_no: body.house_no,
+          avenue: body.avenue,
+          paci: body.paci,
+          floor_no: body.floor_no,
+          office_no: body.office_no,
+          additional: body.additional,
+        },
+      },
+    }).then((r: any) => {
+      if (r.data && r.data.status) {
+        dispatch(
+          showToastMessage({
+            content: `address_saved_successfully`,
+            type: `success`,
+          })
+        );
+        console.log('rrr', r.data.Data);
+        dispatch(setCustomerAddress(r.data.Data));
+        checkTimeAvailability();
+      } else {
+        if (r.error) {
+          dispatch(
+            showToastMessage({
+              content: lowerCase(kebabCase(r.error.data.msg[`address`][0])),
+              type: `error`,
+            })
+          );
+        }
+      }
+    });
   };
 
   const onSubmit = async (body: any) => {

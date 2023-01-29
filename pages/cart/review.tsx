@@ -39,8 +39,9 @@ const CartReview: NextPage = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const [selectedPaymentMethod, setSelectedPaymentMethod] =
-    useState<OrderUser['PaymentMethod'] | null>(null);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
+    OrderUser['PaymentMethod'] | null
+  >(null);
   useEffect(() => {
     dispatch(setCurrentModule(t('order_review')));
     dispatch(setShowFooterElement('order_review'));
@@ -90,17 +91,19 @@ const CartReview: NextPage = () => {
   }
 
   const handleCreateOrder = async () => {
-    console.log({selectedPaymentMethod})
+    console.log({ selectedPaymentMethod });
     if (isNull(customer.id)) {
       router.push(appLinks.customerInfo.path);
     } else if (!customer.address.id && process_type === `delivery`) {
       router.push(appLinks.address.path);
     }
-    if(isNull(selectedPaymentMethod)) {
-      dispatch(showToastMessage( {
-        content: 'please_select_payment_method',
-        'type': 'error'
-      }))
+    if (isNull(selectedPaymentMethod)) {
+      dispatch(
+        showToastMessage({
+          content: 'please_select_payment_method',
+          type: 'error',
+        })
+      );
     }
     if (
       !isNull(customer.id) &&
@@ -170,7 +173,7 @@ const CartReview: NextPage = () => {
   return (
     <Suspense>
       <MainContentLayout handleSubmit={handleCreateOrder}>
-        <div>
+        <div className={`mb-[40%]`}>
           <div className="flex justify-center items-center p-5">
             <CustomImage
               src={TrunkClock.src}
@@ -453,55 +456,38 @@ const CartReview: NextPage = () => {
             </div>
             <div className="flex justify-evenly">
               {map(paymentMethods, (m, i) => (
-                <div key={i} >
+                <div key={i}>
                   <button
-                  onClick={() => setSelectedPaymentMethod(m.id)}
-                  className={`${
-                    selectedPaymentMethod == m.id &&
-                    `ring-2 ring-lime-500 ring-offset-1`
-                  } bg-stone-100 flex justify-center items-center w-24 h-24 rounded-md shadow-lg`}
-                >
-                  <div>
-                    <CustomImage
-                      src={m.src}
-                      alt="payment"
-                      width={imageSizes.xs}
-                      height={imageSizes.xs}
-                      className={`w-14 h-14`}
-                    />
-                  </div>
-                </button>
-                <div 
-                  className={`pt-5 flex justify-center items-center space-x-1 text-lime-500 ${selectedPaymentMethod == m.id ? 'block': 'hidden'}`}
-                   >
+                    onClick={() => setSelectedPaymentMethod(m.id)}
+                    className={`${
+                      selectedPaymentMethod == m.id &&
+                      `ring-2 ring-lime-500 ring-offset-1`
+                    } bg-stone-100 flex justify-center items-center w-24 h-24 rounded-md shadow-lg`}
+                  >
+                    <div>
+                      <CustomImage
+                        src={m.src}
+                        alt="payment"
+                        width={imageSizes.xs}
+                        height={imageSizes.xs}
+                        className={`w-14 h-14`}
+                      />
+                    </div>
+                  </button>
+                  <div
+                    className={`pt-5 flex justify-center items-center space-x-1 text-lime-500 ${
+                      selectedPaymentMethod == m.id ? 'block' : 'hidden'
+                    }`}
+                  >
                     <CheckCircle />
                     <p>{t('selected')}</p>
-                   </div>
+                  </div>
                 </div>
-                
               ))}
             </div>
           </div>
 
-          <div className="bg-gray-200 w-full mt-5 p-0 h-2"></div>
-          <div className="px-4 py-4">
-            <div className="flex items-center py-3">
-              <ReceiptIcon style={{ color }} />
-              <div className="ps-5">
-                <h4
-                  className="font-semibold text-lg"
-                  suppressHydrationWarning={suppressText}
-                >
-                  {t('payment_summary')}
-                </h4>
-              </div>
-            </div>
-            {isSuccess &&
-              cartItems &&
-              cartItems.data &&
-              cartItems.data.total &&
-              cartItems.data.subTotal && <PaymentSummary />}
-          </div>
+          {/*<div className="bg-gray-200 w-full mt-5 p-0 h-2"></div>*/}
         </div>
       </MainContentLayout>
     </Suspense>
