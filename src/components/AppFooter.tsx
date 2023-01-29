@@ -228,14 +228,18 @@ const AppFooter: FC<Props> = ({
                         : null
                     }
                     type="button"
-                    className="relative inline-flex items-center ltr:rounded-l-xl rtl:rounded-r-xl bg-white px-4 py-2 text-sm font-medium  focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
+                    className="relative -ml-px inline-flex items-center ltr:rounded-l-sm rtl:rounded-r-sm  bg-gray-100 px-1 py-1 text-sm font-medium text-black  focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
                     style={{ color }}
                   >
-                    +
+                    <span
+                      className={`p-1 px-3 bg-white rounded-md text-md font-extrabold  w-8 h-8 flex justify-center items-center`}
+                    >
+                      +
+                    </span>
                   </button>
                   <button
                     type="button"
-                    className="relative -ml-px inline-flex items-center  bg-gray-100 px-4 py-2 text-sm font-medium focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
+                    className="relative -ml-px inline-flex items-center  bg-gray-100 px-4 py-2 text-sm font-medium focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500 w-10"
                     style={{ color }}
                   >
                     {productCurrentQty}
@@ -248,10 +252,14 @@ const AppFooter: FC<Props> = ({
                         : null
                     }
                     type="button"
-                    className="relative -ml-px inline-flex items-center ltr:rounded-r-xl rtl:rounded-l-xl bg-white px-4 py-2 text-sm font-medium text-black  focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
+                    className="relative inline-flex items-center ltr:rounded-r-sm rtl:rounded-l-sm bg-gray-100 px-1 py-1 text-sm font-medium text-black  focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
                     style={{ color }}
                   >
-                    -
+                    <span
+                      className={`p-1 px-3 bg-white rounded-md text-md font-extrabold  w-8 h-8 flex justify-center items-center`}
+                    >
+                      -
+                    </span>
                   </button>
                 </span>
               </div>

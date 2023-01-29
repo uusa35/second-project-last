@@ -329,14 +329,14 @@ const CartIndex: NextPage = (): JSX.Element => {
                             }}
                           >
                             <span
-                              className={`p-1 px-3 bg-white rounded-md text-md font-extrabold`}
+                              className={`p-1 px-3 bg-white rounded-md text-md font-extrabold  w-8 h-8 flex justify-center items-center`}
                             >
                               +
                             </span>
                           </button>
                           <button
                             type="button"
-                            className="text-md relative -ml-px inline-flex items-center  bg-gray-100 px-4 py-2 text-sm font-medium focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500 capitalize font-extrabold"
+                            className="text-md relative -ml-px inline-flex items-center  bg-gray-100 px-4 py-2 text-sm font-medium focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500 capitalize font-extrabold w-8"
                             style={{ color }}
                           >
                             {item.Quantity}
@@ -349,7 +349,7 @@ const CartIndex: NextPage = (): JSX.Element => {
                             }}
                           >
                             <span
-                              className={`border border-gray-300 p-1 px-3 bg-white rounded-md text-md font-extrabold`}
+                              className={`border border-gray-300 p-1 px-3 bg-white rounded-md text-md font-extrabold  w-8 h-8 flex justify-center items-center`}
                             >
                               -
                             </span>
