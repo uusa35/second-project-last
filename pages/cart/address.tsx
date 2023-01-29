@@ -5,16 +5,14 @@ import {
   Suspense,
   forwardRef,
   useRef,
-  LegacyRef,
 } from 'react';
 import { NextPage } from 'next';
 import Link from 'next/link';
 import MainContentLayout from '@/layouts/MainContentLayout';
 import DeliveryBtns from '@/components/widgets/cart/DeliveryBtns';
-import { appSetting, Prefrences, ServerCart } from '@/types/index';
+import { Prefrences, ServerCart } from '@/types/index';
 import {
   resetShowFooterElement,
-  setCartMethod,
   setCurrentModule,
   setShowFooterElement,
   showToastMessage,
@@ -170,7 +168,7 @@ const CartAddress: NextPage = (): JSX.Element => {
         className="text-lg outline-none border-none"
         type="text"
         ref={ref}
-        value={value}
+        value={`${value}`}
       ></input>
       <AccessTime onClick={onClick} style={{ color }} />
     </div>

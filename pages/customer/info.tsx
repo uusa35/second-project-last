@@ -43,7 +43,10 @@ const CustomerInformation: NextPage = (): JSX.Element => {
   const {
     customer,
     appSetting: { method },
-    customer: { userAgent },
+    customer: {
+      userAgent,
+      address: { phone },
+    },
     branch: { id: branchId },
     area: { id: areaId },
   } = useAppSelector((state) => state);
@@ -189,6 +192,7 @@ const CustomerInformation: NextPage = (): JSX.Element => {
                   )}
                   name="phone"
                   control={control}
+                  defaultValue={phone ?? ``}
                   rules={{ required: true }}
                 />
               </div>

@@ -324,7 +324,7 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
                 suppressHydrationWarning={suppressText}
                 onClick={() => (handleSubmit ? handleSubmit() : null)}
               >
-                {t('checkout')} test
+                {t('checkout')}
               </button>
             </div>
           </div>
