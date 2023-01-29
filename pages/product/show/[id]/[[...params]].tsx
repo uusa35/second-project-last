@@ -350,7 +350,7 @@ const ProductShow: NextPage<Props> = ({ element }) => {
           </div>
           {/*     sections  */}
           {map(element.sections, (s: ProductSection, i) => (
-            <div className={`py-4`} key={i}>
+            <div className={`py-4 px-4 md:px-8`} key={i}>
               <div>{s.title}</div>
               {s.hidden ? (
                 <div className={`flex flex-col gap-x-2 gap-y-1  mt-2`}>
