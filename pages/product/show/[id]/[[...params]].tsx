@@ -297,10 +297,6 @@ const ProductShow: NextPage<Props> = ({ element }) => {
     currentQty,
   ]);
 
-  useEffect(() => {
-    console.log('productCart', productCart);
-  }, [productCart]);
-
   return (
     <Suspense>
       <MainHead
@@ -332,7 +328,7 @@ const ProductShow: NextPage<Props> = ({ element }) => {
           </div>
         </div>
 
-        <div className={`px-4 md:px-8 capitalize mt-5`}>
+        <div className={`capitalize mt-5`}>
           {/*   name and desc */}
           <div className="flex flex-row w-full justify-between items-center pb-4 border-b-2 border-stone-200">
             <div className={` flex-1 space-y-3`}>
@@ -356,7 +352,7 @@ const ProductShow: NextPage<Props> = ({ element }) => {
           {map(element.sections, (s: ProductSection, i) => (
             <div className={`py-4`} key={i}>
               <div>{s.title}</div>
-              {s.selection_type === 'optional' ? (
+              {s.hidden ? (
                 <div className={`flex flex-col gap-x-2 gap-y-1  mt-2`}>
                   <div className={`flex flex-row`}>
                     <input
@@ -399,7 +395,7 @@ const ProductShow: NextPage<Props> = ({ element }) => {
               ) : null}
               <Accordion
                 hidden={true}
-                open={s.selection_type === `mandatory` ? true : s.id === open}
+                open={!s.hidden ? true : s.id === open}
                 animate={customAnimation}
                 className={`w-full`}
               >
@@ -447,14 +443,19 @@ const ProductShow: NextPage<Props> = ({ element }) => {
                                   handleSelectAddOn(s, c, s.must_select, true)
                                 }
                                 type="button"
-                                className="relative inline-flex items-center ltr:rounded-l-xl rtl:rounded-r-xl bg-gray-100 px-4 py-2 text-sm font-medium text-black  focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
+                                className="relative -ml-px inline-flex items-center ltr:rounded-l-sm rtl:rounded-r-sm  bg-gray-100 px-1 py-1 text-sm font-medium text-black  focus:z-10 w-10"
+                                style={{ color }}
                               >
-                                +
+                                <span
+                                  className={`border border-gray-300 p-1 px-3 bg-white rounded-md text-md font-extrabold  w-8 h-8 flex justify-center items-center`}
+                                >
+                                  +
+                                </span>
                               </button>
                               <button
                                 disabled={currentQty === 0}
                                 type="button"
-                                className="relative -ml-px inline-flex items-center  bg-gray-100 px-4 py-2 text-sm font-medium focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
+                                className="relative -ml-px inline-flex items-center  bg-gray-100 px-4 py-2 text-sm font-medium focus:z-10 w-10"
                                 style={{ color }}
                               >
                                 {filter(
@@ -476,9 +477,14 @@ const ProductShow: NextPage<Props> = ({ element }) => {
                                   handleSelectAddOn(s, c, s.must_select, false)
                                 }
                                 type="button"
-                                className="relative -ml-px inline-flex items-center ltr:rounded-r-xl rtl:rounded-l-xl  bg-gray-100 px-4 py-2 text-sm font-medium text-black  focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
+                                className="relative inline-flex items-center ltr:rounded-r-sm rtl:rounded-l-sm bg-gray-100 px-1 py-1 text-sm font-medium text-black  focus:z-10 w-10"
+                                style={{ color }}
                               >
-                                -
+                                <span
+                                  className={`border border-gray-300 p-1 px-3 bg-white rounded-md text-md font-extrabold  w-8 h-8 flex justify-center items-center`}
+                                >
+                                  -
+                                </span>
                               </button>
                             </span>
                           </div>

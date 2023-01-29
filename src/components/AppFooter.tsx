@@ -26,14 +26,14 @@ type Props = {
   handleSubmit?: (element?: any) => void;
   handleIncreaseProductQty?: () => void;
   handleDecreaseProductQty?: () => void;
-  productCurrentQty?:number | undefined
+  productCurrentQty?: number | undefined;
 };
 
 const AppFooter: FC<Props> = ({
   handleSubmit,
   handleDecreaseProductQty,
   handleIncreaseProductQty,
-  productCurrentQty
+  productCurrentQty,
 }): JSX.Element => {
   const { t } = useTranslation();
   const {
@@ -213,9 +213,9 @@ const AppFooter: FC<Props> = ({
         } fixed w-full lg:w-2/4 xl:w-1/3 h-auto flex flex-col justify-center items-center text-center bg-white bg-opacity-60 capitalize`}
       >
         {showFooterElement === 'product_show' && (
-          <div className='w-full bg-gray-100'>
+          <div className="w-full bg-gray-100">
             {/* quantity meter */}
-            <div className='flex justify-between items-center w-full px-8 bg-gray-100'>
+            <div className="flex justify-between items-center w-full px-8 bg-gray-100">
               <p style={{ color }}>{t('quantity')}</p>
               <div
                 className={`flex flex-row justify-center items-center my-4 capitalize`}
@@ -228,14 +228,18 @@ const AppFooter: FC<Props> = ({
                         : null
                     }
                     type="button"
-                    className="relative inline-flex items-center ltr:rounded-l-xl rtl:rounded-r-xl bg-white px-4 py-2 text-sm font-medium  focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
+                    className="relative -ml-px inline-flex items-center ltr:rounded-l-sm rtl:rounded-r-sm  bg-gray-100 px-1 py-1 text-sm font-medium text-black  focus:z-10 w-10"
                     style={{ color }}
                   >
-                    +
+                    <span
+                      className={`border border-gray-300 p-1 px-3 bg-white rounded-md text-md font-extrabold  w-8 h-8 flex justify-center items-center`}
+                    >
+                      +
+                    </span>
                   </button>
                   <button
                     type="button"
-                    className="relative -ml-px inline-flex items-center  bg-gray-100 px-4 py-2 text-sm font-medium focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
+                    className="relative -ml-px inline-flex items-center  bg-gray-100 px-4 py-2 text-sm font-medium focus:z-10 w-10"
                     style={{ color }}
                   >
                     {productCurrentQty}
@@ -248,10 +252,14 @@ const AppFooter: FC<Props> = ({
                         : null
                     }
                     type="button"
-                    className="relative -ml-px inline-flex items-center ltr:rounded-r-xl rtl:rounded-l-xl bg-white px-4 py-2 text-sm font-medium text-black  focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
+                    className="relative inline-flex items-center ltr:rounded-r-sm rtl:rounded-l-sm bg-gray-100 px-1 py-1 text-sm font-medium text-black  focus:z-10 "
                     style={{ color }}
                   >
-                    -
+                    <span
+                      className={`border border-gray-300 p-1 px-3 bg-white rounded-md text-md font-extrabold  w-8 h-8 flex justify-center items-center`}
+                    >
+                      -
+                    </span>
                   </button>
                 </span>
               </div>
@@ -281,7 +289,7 @@ const AppFooter: FC<Props> = ({
                 <p className={`text-xl text-white`}>
                   {productCart.grossTotalPrice}
                 </p>
-                <span className={`text-white`}>{t('kwd')}</span>
+                <span className={`text-white uppercase`}>{t('kwd')}</span>
               </span>
             </div>
           </div>

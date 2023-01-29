@@ -19,9 +19,9 @@ type Props = {
 };
 const OrderInvoice: NextPage<Props> = ({ element }): JSX.Element => {
   const { vendor } = useAppSelector((state) => state);
-  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const color = useAppSelector(themeColor);
+  const { t } = useTranslation();
   const handleMapLocation = (lat: string, long: string) => {
     window.open(`https://maps.google.com?q=${lat},${long}`);
   };
@@ -139,9 +139,9 @@ const OrderInvoice: NextPage<Props> = ({ element }): JSX.Element => {
               {t('order_summary')}
             </h4>
             <div className="relative overflow-x-auto ">
-              <table className="table-auto w-full text-left mb-5">
+              <table className={`table-auto w-full text-left mb-5`}>
                 <thead>
-                  <tr className="whitespace-nowrap">
+                  <tr className="whitespace-nowrap text-start">
                     <th
                       scope="col"
                       className="py-3 px-3"
@@ -188,7 +188,7 @@ const OrderInvoice: NextPage<Props> = ({ element }): JSX.Element => {
                 </thead>
                 <tbody>
                   {map(element.order_summary.items, (item, idx) => (
-                    <tr key={idx}>
+                    <tr key={idx} className="text-start">
                       <td className="py-3 px-3">{item.quantity}</td>
                       <td className="py-3 px-3">{item.item}</td>
                       <td className="py-3 px-3">
@@ -205,7 +205,7 @@ const OrderInvoice: NextPage<Props> = ({ element }): JSX.Element => {
                       </td>
                       <td className="py-3 px-3"></td>
                       <td className="py-3 px-3">{item.price}</td>
-                      <td className="py-3 px-3">
+                      <td className="py-3 px-3 uppercase">
                         {item.total}
                         {t('kwd')}
                       </td>
@@ -218,7 +218,10 @@ const OrderInvoice: NextPage<Props> = ({ element }): JSX.Element => {
           <div className={`px-4 py-4`}>
             <div className="flex justify-between mb-3 text-lg">
               <p suppressHydrationWarning={suppressText}>{t('subtotal')}</p>
-              <p suppressHydrationWarning={suppressText}>
+              <p
+                suppressHydrationWarning={suppressText}
+                className={`uppercase`}
+              >
                 {element.order_summary.sub_total} {t('kwd')}
               </p>
             </div>
@@ -226,7 +229,10 @@ const OrderInvoice: NextPage<Props> = ({ element }): JSX.Element => {
               <p suppressHydrationWarning={suppressText}>
                 {t('delivery_services')}
               </p>
-              <p suppressHydrationWarning={suppressText}>
+              <p
+                suppressHydrationWarning={suppressText}
+                className={`uppercase`}
+              >
                 {element.order_summary.delivery_fee} {t('kwd')}
               </p>
             </div>
@@ -241,6 +247,7 @@ const OrderInvoice: NextPage<Props> = ({ element }): JSX.Element => {
               <p
                 style={{ color }}
                 suppressHydrationWarning={suppressText}
+                className={`uppercase`}
               >
                 {element.order_summary.total} {t('kwd')}
               </p>
