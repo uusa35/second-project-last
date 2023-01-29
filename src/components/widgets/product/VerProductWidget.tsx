@@ -26,7 +26,7 @@ const VerProductWidget: FC<Props> = ({ element }): JSX.Element => {
     : NoFoundImage.src;
 
   return (
-    <motion.div whileTap={{ scale: 1 }} whileHover={{ scale: 1.05 }}>
+    <motion.div whileTap={{ opacity: 1 }} whileHover={{ opacity: 0.8 }}>
       <Link
         href={`${appLinks.productShow(
           element.id.toString(),
@@ -35,7 +35,7 @@ const VerProductWidget: FC<Props> = ({ element }): JSX.Element => {
           branchId,
           areaId
         )}`}
-        className={`h-36 shadow-7xl rounded-lg mb-10 block border-gray-100 border-2 capitalize`}
+        className={`h-auto shadow-7xl mb-2 block capitalize border-b-2 border-gray-100 py-3`}
       >
         <div className="relative">
           <div className="flex items-center">
@@ -66,7 +66,8 @@ const VerProductWidget: FC<Props> = ({ element }): JSX.Element => {
                     className="text-md text-end uppercase pb-2"
                     style={{ color }}
                   >
-                    {element.price} {t(`kwd`)}
+                    {element.price}{' '}
+                    <span className={`uppercase`}>{t(`kwd`)}</span>
                   </p>
                   <div className="text-end">
                     <button className="border-[1px] rounded-md border-primary_BG px-7 uppercase text-center text-sm">

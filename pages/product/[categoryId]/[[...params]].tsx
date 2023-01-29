@@ -21,7 +21,7 @@ import {
 } from '@/redux/slices/appSettingSlice';
 import { useTranslation } from 'react-i18next';
 import VerProductWidget from '@/components/widgets/product/VerProductWidget';
-import Menu from '@/appIcons/menu.svg';
+import Menu from '@/appIcons/menus.svg';
 import List from '@/appIcons/list.svg';
 import { useRouter } from 'next/router';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
@@ -85,7 +85,7 @@ const ProductIndex: NextPage<Props> = ({ elements }): JSX.Element => {
                   name="search"
                   id="search"
                   onChange={debounce((e) => handleChange(e.target.value), 400)}
-                  className="block w-full focus:ring-1 focus:ring-primary_BG rounded-md  pl-20 border-none  bg-gray-100 py-3 h-16  text-lg capitalize"
+                  className="block w-full focus:ring-1 focus:ring-primary_BG rounded-md  pl-20 border-none  bg-gray-100 py-3 h-14  text-lg capitalize"
                   suppressHydrationWarning={suppressText}
                   placeholder={`${t(`search_products`)}`}
                 />
@@ -98,17 +98,17 @@ const ProductIndex: NextPage<Props> = ({ elements }): JSX.Element => {
               className="pt-1 ps-2"
             >
               {Icon ? (
-                <CustomImage src={Menu} alt="menu" className={'w-8 h-8'} />
-              ) : (
                 <CustomImage src={List} alt="menu" className={'w-8 h-8'} />
+              ) : (
+                <CustomImage src={Menu} alt="menu" className={'w-8 h-8'} />
               )}
             </button>
           </div>
           <div
             className={
               productPreview === 'hor'
-                ? 'mt-4 p-4 grid sm:grid-cols-3 lg:grid-cols-2 gap-6'
-                : 'my-4 p-4'
+                ? ' grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 gap-0 py-4'
+                : ''
             }
           >
             {isEmpty(currentProducts) && (

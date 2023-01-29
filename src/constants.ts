@@ -62,7 +62,7 @@ export const subCategoryBtnClass = `flex w-full flex-row items-center justify-be
                   rtl:bg-gradient-to-r ltr:bg-gradient-to-l from-gray-100 via-gray-200 to-gray-300 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-gray-300 drop-shadow-md
                   `;
 export const grayBtnClass = `rounded-lg bg-SearchGrey text-xs px-[6px] border border-SearchGrey shadow-sm py-1 capitalize drop-shadow-md`;
-export const addressInputField = `border-0 outline-none border-b-4 border-b-gray-100 w-full py-4 focus:ring-0`;
+export const addressInputField = `border-0 outline-none border-b-2 border-b-gray-100 w-full py-4 focus:ring-0`;
 export const footerBtnClass = `p-2 px-6 rounded-lg w-fit disabled:bg-stone-600 disabled:text-stone-200 disabled:bg-opacity-40 disabled:opacity-60  shadow-xl capitalize border border-stone-100/25 hover:shadow-inner hover:border-stone-200/80 `;
 export const tajwalFont = `font-tajwal-medium`;
 export const futureFont = `font-future-bold`;

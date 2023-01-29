@@ -394,7 +394,7 @@
   "floor#": "floor#",
   "office_no": "office no",
   "avenue": "avenue",
-  "paci": "civil id",
+  "paci": "paci",
   "additional": "additional",
   "deliver_now": "deliver now",
   "deliver_later": "deliver later",
@@ -409,7 +409,7 @@
   "order_summary": "order summary",
   "select_payments": "select payments",
   "success": "success",
-  "thank_you": "thank you",
+  "thank_you": "thank you !",
   "your_order_is_confirmed_and_on_its_way": "your order is confirmed and on its way",
   "track_your_order_and_check_the_status_of_it_live": "track your order and check the status of it live",
   "order_again": "order again",
@@ -479,5 +479,7 @@
   "select_a_branch_or_area_before_order" : "you have to choose a branch or an area. some products may be deleted from your shopping cart as it may not be available. thank you ...",
   "trending_items":"trending items",
   "top_results":"top results",
-  "product_found":"product found"
+  "product_found":"product found",
+  "please_select_payment_method": "please select payment method",
+  "floor_no" : "floor no"
 }

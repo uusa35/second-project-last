@@ -1,6 +1,5 @@
 import { NextPage } from 'next';
 import Modal from 'react-modal';
-import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 import ModalFeedbackIcon from '@/appIcons/modal_feedback.svg';
 import Card from '@/appIcons/card.svg';
@@ -11,7 +10,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useCreateFeedbackMutation } from '@/redux/api/feedbackApi';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { convertColor, submitBtnClass, suppressText } from '@/constants/*';
+import { convertColor, footerBtnClass, submitBtnClass, suppressText } from '@/constants/*';
 import { useForm } from 'react-hook-form';
 import { debounce, map } from 'lodash';
 import { useState } from 'react';
@@ -74,6 +73,7 @@ const Feedback: NextPage<Props> = ({
   const onSubmit = async (body: any) => {
     await triggerCreateFeedback(body).then((r: any) => {
       if (r.data && r.data.status) {
+        console.log('feedback response', r.data)
         dispatch(
           showToastMessage({
             content: `${t(`thanks_for_your_feedback`)}`,
@@ -175,7 +175,7 @@ const Feedback: NextPage<Props> = ({
               )}
             </div>
             <div
-              className={`flex text-black py-4 ${isRTL && `flex-row-reverse`}`}
+              className={`flex items-center text-black py-4 ${isRTL && `flex-row-reverse`}`}
             >
               <CustomImage
                 src={Card.src}
@@ -216,7 +216,7 @@ const Feedback: NextPage<Props> = ({
               }`}
             >
               <div
-                className={`flex text-black py-4 ${
+                className={`flex items-center text-black py-4 ${
                   isRTL && `flex-row-reverse`
                 }`}
               >
@@ -245,7 +245,7 @@ const Feedback: NextPage<Props> = ({
             <div className="my-2 px-5 py-1 bg-gray-100"></div>
 
             <div
-              className={`flex text-black py-4 ${isRTL && `flex-row-reverse`}`}
+              className={`flex items-center text-black py-4 ${isRTL && `flex-row-reverse`}`}
             >
               <CustomImage
                 src={Comment.src}

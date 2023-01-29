@@ -49,11 +49,11 @@ const OrderSuccess: NextPage<Props> = ({ element }) => {
               className="shadow-md"
               src={Success.src}
               alt={t('success')}
-              width={80}
-              height={80}
+              width={100}
+              height={100}
             />
             <h4
-              className="font-semibold py-3"
+              className="font-semibold pb-3 pt-10"
               style={{ color }}
               suppressHydrationWarning={suppressText}
             >
@@ -65,19 +65,19 @@ const OrderSuccess: NextPage<Props> = ({ element }) => {
           </div>
           <div className="mt-10 px-5 py-1 bg-gray-100"></div>
           <div className="px-8">
-            <div className="flex justify-between pt-4">
+            <div className="flex justify-between pt-4 text-lg">
               <h4
-                className="text-base font-semibold"
+                className="font-semibold"
                 style={{ color }}
                 suppressHydrationWarning={suppressText}
               >
-                {t('order_code')}
+               {t('order_code')}
               </h4>
-              <p>{element.orderCode}</p>
+              <p> {'#'}{element.orderCode}</p>
             </div>
-            <div className="flex justify-between pt-4">
+            <div className="flex justify-between pt-4 text-lg">
               <h4
-                className="text-base font-semibold"
+                className="font-semibold"
                 style={{ color }}
                 suppressHydrationWarning={suppressText}
               >
@@ -94,7 +94,6 @@ const OrderSuccess: NextPage<Props> = ({ element }) => {
             <p
               className="text-center pt-4 pb-2"
               suppressHydrationWarning={suppressText}
-              style={{ color }}
             >
               {t('track_your_order_and_check_the_status_of_it_live')}
             </p>
@@ -116,7 +115,7 @@ const OrderSuccess: NextPage<Props> = ({ element }) => {
               {t('track_order')}
             </Link>
             <Link
-              href={appLinks.productSearchIndex(branchId, ``, areaId)}
+              href={appLinks.home.path}
               style={{ backgroundColor: color }}
               className={`flex grow justify-center items-center p-4 rounded-lg text-white mb-3`}
             >

@@ -16,7 +16,7 @@ const CategoryWidget: FC<Props> = ({ element }) => {
   const { branch, area } = useAppSelector((state) => state);
 
   return (
-    <motion.div whileTap={{ scale: 1 }} whileHover={{ scale: 1.05 }}>
+    <motion.div whileTap={{ opacity: 1 }} whileHover={{ opacity: 0.8 }}>
       <Link
         href={appLinks.productIndex(
           element.id.toString(),

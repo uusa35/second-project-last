@@ -27,7 +27,7 @@ const HorProductWidget: FC<Props> = ({ element }): JSX.Element => {
     : NoFoundImage.src;
 
   return (
-    <motion.div whileTap={{ scale: 1 }} whileHover={{ scale: 1.05 }}>
+    <motion.div whileTap={{ opacity: 1 }} whileHover={{ opacity: 0.8 }}>
       <Link
         href={`${appLinks.productShow(
           element.id.toString(),
@@ -36,7 +36,7 @@ const HorProductWidget: FC<Props> = ({ element }): JSX.Element => {
           branchId,
           areaId
         )}`}
-        className={`h-80 lg:h-80 shadow-7xl rounded-lg  mb-5 block border-gray-100 border-2 capitalize`}
+        className={`h-auto shadow-7xl  block  capitalize mb-2 border-b-2 border-gray-100 py-3`}
       >
         <div className="relative">
           <div className="h-60 w-full overflow-hidden rounded-lg">
@@ -68,7 +68,7 @@ const HorProductWidget: FC<Props> = ({ element }): JSX.Element => {
                 className="text-md text-end uppercase"
                 suppressHydrationWarning={suppressText}
               >
-                {element.price} {t(`kwd`)}
+                {element.price} <span className={`uppercase`}>{t(`kwd`)}</span>
               </p>
               <button
                 className="border-[1px] rounded-md px-4 pt-1 uppercase text-center text-sm"

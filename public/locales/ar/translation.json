@@ -405,8 +405,8 @@
   "house_no": "منزل رقم",
   "floor#": "الطابق",
   "office_no": "مكتب رقم",
-  "avenue": "رئيسي",
-  "paci": "البطاقة المدنية",
+  "avenue": "جادة",
+  "paci": " الرقم السكني",
   "additional": "إضافي",
   "deliver_now": "التوصيل الآن",
   "deliver_later": "التوصيل لاحقًا",
@@ -421,7 +421,7 @@
   "order_summary": "ملخص الطلب",
   "select_payments": "اختر طريقة الدفع",
   "success": "نجاح",
-  "thank_you": "شكرًا لك",
+  "thank_you": "شكرًا لك !",
   "your_order_is_confirmed_and_on_its_way": "تم تأكيد طلبك وفي طريقه",
   "track_your_order_and_check_the_status_of_it_live": "تتبع طلبك وتحقق من حالته",
   "order_again": "اطلب مرة ثانية",
@@ -491,6 +491,7 @@
   "select_a_branch_or_area_before_order" : "يجب اختيار فرع أو منطقة قبل البدأ في عملية طلب. في حالة تغير الفرع أو المنطقة يرجى العلم بأن بعض المنتجات سيتم حذفها بناء على توفرها قرب منطقتك أو الفرع القريب منك. شكرا..",
   "trending_items":"العناصر الشائعة",
   "top_results":"أهم النتائج",
-  "product_found":"عنصر وجد"
-
+  "product_found":"عنصر وجد",
+  "please_select_payment_method": "من فضلك اختر طريقة الدفع",
+  "floor_no" : "رقم الطابق"
 }

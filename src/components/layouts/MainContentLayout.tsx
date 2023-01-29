@@ -6,6 +6,12 @@ import OffLineWidget from '@/widgets/OffLineWidget';
 import NoInternet from '@/appImages/no_internet.png';
 import NextNProgress from 'nextjs-progressbar';
 import { themeColor } from '@/redux/slices/vendorSlice';
+const ToastAppContainer = dynamic(
+  async () => await import(`@/components/ToastAppContainer`),
+  {
+    ssr: false,
+  }
+);
 const AppHeader = dynamic(() => import(`@/components/AppHeader`), {
   ssr: false,
 });
@@ -62,7 +68,7 @@ const MainContentLayout: FC<Props> = ({
       <SideMenu />
       {showHeader && <AppHeader />}
       <main
-        className={`w-full mb-[50%] relative rounded-t-full min-h-screen`}
+        className={`w-full mb-[20%] relative rounded-t-full min-h-screen`}
         style={{ height: '100%' }}
       >
         {isOnline ? (
@@ -78,46 +84,9 @@ const MainContentLayout: FC<Props> = ({
       <NextNProgress
         color={color}
         startPosition={0.3}
-        // transformCSS={() => {
-        //   return (
-        //     <style jsx>
-        //       {isRTL
-        //         ? `#nprogress {
-        //          pointer-events: none;
-        //         transform: scale(-1,-1);
-        //       }
-        //       #nprogress .bar {
-        //        position: fixed;
-        //        z-index: 999;
-        //        top: 0;
-        //        left: auto !important;
-        //        right: 0;
-        //        width: 100%;
-        //        height: 0.3rem;
-        //         box-shadow: 1px 1px 3px gray;
-        //       }
-        //     `
-        //         : `#nprogress {
-        //          pointer-events: none;
-        //         transform: unset;
-        //       }
-        //       #nprogress .bar {
-        //        position: fixed;
-        //        z-index: 999;
-        //        top: 0;
-        //        left: auto !important;
-        //        right: 0;
-        //        width: 100%;
-        //        height: 0.3rem;
-        //         box-shadow: 1px 1px 3px gray;
-        //       }`}
-        //     </style>
-        //   );
-        // }}
         stopDelayMs={200}
         height={5}
         showOnShallow={true}
-        // options={{ showSpinner: false }}
         options={{
           // template: `<div class="bar" role="progressbar" aria-role="Changing page" style="background-color: ${color}"></div>`,
           // barSelector: '[role="progressbar"]',
