@@ -105,7 +105,8 @@ const AppFooter: FC<Props> = ({ handleSubmit }): JSX.Element => {
               dispatch(
                 showToastMessage({
                   // content: lowerCase(kebabCase(r.error.data.msg)),
-                  content: 'select_a_branch_or_area_before_order',
+                  content:
+                    'select_a_branch_or_area_before_order_or_some_fields_are_required_missing',
                   type: `error`,
                 })
               );

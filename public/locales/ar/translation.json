@@ -484,7 +484,7 @@
   "sorry_some_products_not_available_in_this_area" : "هذا المنتج غير متاح في المنطقة أو الفرع الذي تم اختيار. يرجى تغير المنطقة او الفرع",
   "cart_is_empty_please_add_product_into_cart":"عربه التسوق فارغة من فضلك قم باضافه بعض المنتجات",
   "the_address_field_is_required" : "العنوان مطلوب",
-  "select_a_branch_or_area_before_order" : "يبدو ان عربة التسوق فارغة أو ربما لم يتم اختيار أقرب فرع أو منطقتك. ",
+  "select_a_branch_or_area_before_order_or_some_fields_are_required_missing" : "بعض الحقول المطلوبة لم يتم اختيارها أو يبدو ان عربة التسوق فارغة وربما لم يتم اختيار أقرب فرع أو منطقتك. ",
   "order_created_successfully" : "شكرا .. تم إتمام طلبك بنجاح. يرجى الاحتفاظ برقم الطلب.",
   "sorry_some_product_not_available_in_this_area" : "بعض المنتجات غير متوفرة في المنطقة المختارة.",
   "select_a_branch_or_area_before_order" : "يجب اختيار فرع أو منطقة قبل البدأ في عملية طلب. في حالة تغير الفرع أو المنطقة يرجى العلم بأن بعض المنتجات سيتم حذفها بناء على توفرها قرب منطقتك أو الفرع القريب منك. شكرا..",
@@ -492,5 +492,6 @@
   "please_select_payment_method": "من فضلك اختر طريقة الدفع",
   "selected": "تم اختيارها",
   "floor_no" : "رقم الطابق",
-  "rate_is_required": "التقييم مطلوب"
+  "rate_is_required": "التقييم مطلوب",
+  "field_must_select_at_least_one" : "(مطلوب) يجب عليك اختيار حقل واحد فقط على الاقل"
 }

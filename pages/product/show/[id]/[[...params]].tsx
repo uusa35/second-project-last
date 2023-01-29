@@ -427,14 +427,20 @@ const ProductShow: NextPage<Props> = ({ element }) => {
                   }}
                 >
                   {s.must_select === 'q_meter' &&
+                  s.selection_type === 'mandatory' ? (
+                    <p className={`flex -w-full text-red-800 pb-3`}>
+                      {t(`must_select_min_and_max`, {
+                        min: s.min_q,
+                        max: s.max_q,
+                      })}
+                    </p>
+                  ) : (
                     s.selection_type === 'mandatory' && (
                       <p className={`flex -w-full text-red-800 pb-3`}>
-                        {t(`must_select_min_and_max`, {
-                          min: s.min_q,
-                          max: s.max_q,
-                        })}
+                        {t(`field_must_select_at_least_one`)}
                       </p>
-                    )}
+                    )
+                  )}
                   {map(s.choices, (c, i) => (
                     <div className="flex items-center w-full" key={i}>
                       {s.must_select === 'q_meter' ? (
