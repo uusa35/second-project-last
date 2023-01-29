@@ -103,7 +103,6 @@ const CartReview: NextPage = () => {
   }
 
   const handleCreateOrder = async () => {
-    console.log({ selectedPaymentMethod });
     if (isNull(customer.id)) {
       router.push(appLinks.customerInfo.path);
     } else if (!customer.address.id && process_type === `delivery`) {
