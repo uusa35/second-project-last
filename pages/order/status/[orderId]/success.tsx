@@ -3,7 +3,7 @@ import MainContentLayout from '@/layouts/MainContentLayout';
 import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import Success from '@/appImages/success.png';
-import { suppressText, appLinks } from '@/constants/*';
+import { suppressText, appLinks, imageSizes } from '@/constants/*';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { wrapper } from '@/redux/store';
 import { AppQueryResult } from '@/types/queries';
@@ -46,11 +46,11 @@ const OrderSuccess: NextPage<Props> = ({ element }) => {
         <div className="capitalize">
           <div className="flex flex-col items-center">
             <CustomImage
-              className="shadow-md"
+              className="w-22 h-fit"
               src={Success.src}
               alt={t('success')}
-              width={100}
-              height={100}
+              width={imageSizes.xs}
+              height={imageSizes.xs}
             />
             <h4
               className="font-semibold pb-3 pt-10"
