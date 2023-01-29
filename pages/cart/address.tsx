@@ -1,6 +1,7 @@
 import {
   useState,
   useEffect,
+  useMemo,
   Suspense,
   forwardRef,
   useRef,
@@ -51,23 +52,6 @@ import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 import { AppQueryResult } from '@/types/queries';
 import TextTrans from '@/components/TextTrans';
 
-const schema = yup
-  .object()
-  .shape({
-    block: yup.string().max(50),
-    street: yup.string().max(100).nullable(true),
-    house_no: yup.string().max(50).nullable(true),
-    avenue: yup.string().max(50).nullable(true),
-    paci: yup.string().max(50),
-    floor_no: yup.string().max(50).nullable(true),
-    office_no: yup.string().max(50).nullable(true),
-    additional: yup.string().nullable(true),
-    longitude: yup.string(),
-    latitude: yup.string(),
-    customer_id: yup.string().required(),
-  })
-  .required();
-
 const CartAddress: NextPage = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -79,7 +63,7 @@ const CartAddress: NextPage = (): JSX.Element => {
     customer: { userAgent, address, id: customer_id },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
-  const [openTab, setOpenTab] = useState(1);
+  const [addressTabType, setAddressTabType] = useState(1);
   const [show, SetShow] = useState(false);
   const refForm = useRef<any>();
   const [triggerAddAddress, { isLoading: AddAddressLoading }] =
@@ -101,17 +85,71 @@ const CartAddress: NextPage = (): JSX.Element => {
     date: new Date(),
     time: new Date(),
   });
-
+  const schema = yup
+    .object()
+    .shape({
+      method: yup.string().required(),
+      address_type: yup.number().required(),
+      block: yup
+        .string()
+        .max(100)
+        .when('address_type', (address_type, schema) => {
+          if (method === `delivery`)
+            return schema.required(t(`validation.required`));
+          return schema;
+        }),
+      street: yup
+        .string()
+        .max(100)
+        .when('address_type', (address_type, schema) => {
+          if (method === `delivery`)
+            return schema.required(t(`validation.required`));
+          return schema;
+        }),
+      house_no: yup
+        .string()
+        .max(100)
+        .when('address_type', (address_type, schema) => {
+          if (address_type === 1 && method === `delivery`)
+            return schema.required(t(`validation.required`));
+          return schema;
+        }),
+      floor_no: yup
+        .string()
+        .max(100)
+        .when('address_type', (address_type, schema) => {
+          if (address_type === 2 && method === `delivery`)
+            return schema.required(t(`validation.required`));
+          return schema;
+        }),
+      office_no: yup
+        .string()
+        .max(100)
+        .when('address_type', (address_type, schema) => {
+          if (address_type === 3 && method === `delivery`)
+            return schema.required(t(`validation.required`));
+          return schema;
+        }),
+      avenue: yup.string().max(50).nullable(true),
+      paci: yup.string().max(50),
+      additional: yup.string().nullable(true),
+      longitude: yup.string(),
+      latitude: yup.string(),
+      customer_id: yup.string().required(),
+    })
+    .required();
   const {
     register,
     handleSubmit,
     setValue,
     control,
+    reset,
     formState: { errors },
   } = useForm<any>({
     resolver: yupResolver(schema),
     defaultValues: {
-      address_type: openTab ?? ``,
+      method,
+      address_type: addressTabType ?? 1,
       longitude: ``,
       latitude: ``,
       customer_id: customer_id?.toString(),
@@ -202,7 +240,10 @@ const CartAddress: NextPage = (): JSX.Element => {
     });
   };
 
+  useMemo(() => setValue('address_type', addressTabType), [addressTabType]);
+
   const handelSaveAddress = async (body: any) => {
+    console.log('body', body);
     await triggerAddAddress({
       body: {
         address_type: body.address_type,
@@ -309,6 +350,12 @@ const CartAddress: NextPage = (): JSX.Element => {
           />}
         </div>
         <form id="hook-form" onSubmit={handleSubmit(onSubmit)} ref={refForm}>
+          <input type="hidden" {...register('method')} value={method} />
+          <input
+            type="hidden"
+            {...register('address_type')}
+            value={addressTabType}
+          />
           <div className={'px-4'}>
             <div className="bg-gray-200 w-full mt-5 p-0 h-2"></div>
 
@@ -378,57 +425,58 @@ const CartAddress: NextPage = (): JSX.Element => {
                       className="flex mb-0 list-none flex-wrap pt-3 pb-4 flex-row"
                       role="tablist"
                     >
-                      <li className=" ltr:ml-2 rtl:mr-2 flex-auto text-center border border-stone-300 rounded-md">
-                        <a
+                      <li
+                        className={`ltr:ml-2 rtl:mr-2 flex-auto text-center  rounded-md cursor-pointer
+                      ${addressTabType === 1 && 'text-white'}
+                      `}
+                        style={{
+                          backgroundColor:
+                            addressTabType === 1 ? color : `white`,
+                        }}
+                      >
+                        <div
                           className={
-                            'text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal ' +
-                            (openTab === 1 && 'text-white')
+                            'font-bold uppercase px-5 py-3 shadow-lg rounded border border-stone-300'
                           }
-                          style={{
-                            backgroundColor: openTab == 1 ? color : `white`,
-                          }}
-                          onClick={(e) => {
-                            e.preventDefault();
-                            setOpenTab(1);
-                          }}
+                          onClick={() => setAddressTabType(1)}
                           data-toggle="tab"
                           href="#home"
                           role="tablist"
                         >
-                          <div className="flex items-center justify-center">
+                          <div className="flex items-center justify-evenly ">
                             <Home
-                              className={`${openTab === 1 && 'text-white'}`}
+                              className={`${
+                                addressTabType === 1 && 'text-white'
+                              }`}
                             />
-                            <p
-                              className="px-2"
-                              suppressHydrationWarning={suppressText}
-                            >
-                              {t('home')}
+                            <p suppressHydrationWarning={suppressText}>
+                              {t('house')}
                             </p>
                           </div>
-                        </a>
+                        </div>
                       </li>
-                      <li className=" ltr:ml-2 rtl:mr-2 flex-auto text-center border border-stone-300 rounded-md">
-                        <a
+                      <li
+                        className={`ltr:ml-2 rtl:mr-2 flex-auto text-center  rounded-md cursor-pointer
+                        ${addressTabType === 2 && 'text-white'}
+                        `}
+                        style={{
+                          backgroundColor:
+                            addressTabType === 2 ? color : `white`,
+                        }}
+                      >
+                        <div
                           className={
-                            'text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal ' +
-                            (openTab === 2 && 'text-white')
+                            'font-bold uppercase px-5 py-3 shadow-lg rounded border border-stone-300'
                           }
-                          style={{
-                            backgroundColor: openTab == 2 ? color : `white`,
-                          }}
-                          onClick={(e) => {
-                            e.preventDefault();
-                            setOpenTab(2);
-                          }}
+                          onClick={() => setAddressTabType(2)}
                           data-toggle="tab"
                           href="#apartment"
                           role="tablist"
                         >
-                          <div className="flex items-center justify-center">
+                          <div className="flex items-center justify-evenly ">
                             <Image
                               src={
-                                openTab === 2
+                                addressTabType === 2
                                   ? ApartmentAcitveIcon
                                   : ApartmentIcon
                               }
@@ -436,57 +484,53 @@ const CartAddress: NextPage = (): JSX.Element => {
                               width={20}
                               height={20}
                             />
-                            <p
-                              className="px-2"
-                              suppressHydrationWarning={suppressText}
-                            >
+                            <p suppressHydrationWarning={suppressText}>
                               {t('appartment')}
                             </p>
                           </div>
-                        </a>
+                        </div>
                       </li>
-                      <li className=" ltr:ml-2 rtl:mr-2 flex-auto text-center border border-stone-300 rounded-md">
-                        <a
+                      <li
+                        className={`ltr:ml-2 rtl:mr-2 flex-auto text-center  rounded-md cursor-pointer
+                        ${addressTabType === 3 && 'text-white'}
+                        `}
+                        style={{
+                          backgroundColor:
+                            addressTabType === 3 ? color : `white`,
+                        }}
+                      >
+                        <div
                           className={
-                            'text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal ' +
-                            (openTab === 3 && 'text-white')
+                            'font-bold uppercase px-5 py-3 shadow-lg rounded border border-stone-300'
                           }
-                          style={{
-                            backgroundColor: openTab == 3 ? color : `white`,
-                          }}
-                          onClick={(e) => {
-                            e.preventDefault();
-                            setOpenTab(3);
-                          }}
+                          onClick={() => setAddressTabType(3)}
                           data-toggle="tab"
                           href="#office"
                           role="tablist"
                         >
-                          <div className="flex items-center justify-center">
+                          <div className="flex items-center justify-evenly ">
                             <Image
                               src={
-                                openTab === 3 ? OfficeAcitveIcon : OfficeIcon
+                                addressTabType === 3
+                                  ? OfficeAcitveIcon
+                                  : OfficeIcon
                               }
                               alt="icon"
                               width={20}
                               height={20}
                             />
-                            <p
-                              className="px-2"
-                              suppressHydrationWarning={suppressText}
-                            >
+                            <p suppressHydrationWarning={suppressText}>
                               {t('office')}
                             </p>
                           </div>
-                        </a>
+                        </div>
                       </li>
                     </ul>
                     <input
-                      placeholder={`${t(`block`)}`}
+                      placeholder={`${t(`block`)}*`}
                       className={`${addressInputField}`}
                       suppressHydrationWarning={suppressText}
                       {...register('block')}
-                      required={method === `delivery`}
                       aria-invalid={errors.block ? 'true' : 'false'}
                     />
 
@@ -510,7 +554,7 @@ const CartAddress: NextPage = (): JSX.Element => {
                       )}
                     </div>
                     <input
-                      placeholder={`${t(`street`)}`}
+                      placeholder={`${t(`street`)}*`}
                       className={`${addressInputField}`}
                       suppressHydrationWarning={suppressText}
                       {...register('street')}
@@ -540,42 +584,113 @@ const CartAddress: NextPage = (): JSX.Element => {
                     <div className="relative flex flex-col">
                       <div className="flex-auto">
                         <div className="tab-content tab-space">
+                          {/* house_no */}
                           <div
-                            className={openTab === 1 ? 'block' : 'hidden'}
+                            className={
+                              addressTabType === 1 ? 'block' : 'hidden'
+                            }
                             id="home"
                           >
                             <input
-                              placeholder={`${t(`house_no`)}`}
+                              placeholder={`${t(`house_no`)}${
+                                addressTabType === 1 ? `*` : ``
+                              }`}
                               className={`${addressInputField}`}
                               suppressHydrationWarning={suppressText}
                               {...register('house_no')}
                               aria-invalid={errors.house_no ? 'true' : 'false'}
                             />
                           </div>
+                          <div>
+                            {errors.house_no?.message.key ? (
+                              <p
+                                className={`text-sm text-red-800`}
+                                suppressHydrationWarning={suppressText}
+                              >
+                                {t(`${errors.house_no?.message.key}`, {
+                                  min: errors.house_no?.message.values,
+                                })}
+                              </p>
+                            ) : (
+                              <p
+                                className={`text-sm text-red-800`}
+                                suppressHydrationWarning={suppressText}
+                              >
+                                {t(errors.house_no?.message)}
+                              </p>
+                            )}
+                          </div>
+                          {/* floor no */}
                           <div
-                            className={openTab === 2 ? 'block' : 'hidden'}
+                            className={
+                              addressTabType === 2 ? 'block' : 'hidden'
+                            }
                             id="apartment"
                           >
                             <input
+                              placeholder={`${t(`floor_no`)}${
+                                addressTabType === 2 ? `*` : ``
+                              }`}
                               className={`${addressInputField}`}
                               suppressHydrationWarning={suppressText}
-                              placeholder={`${t(`floor#`)}`}
                               {...register('floor_no')}
                               aria-invalid={errors.floor_no ? 'true' : 'false'}
                             />
                           </div>
+                          <div>
+                            {errors.floor_no?.message.key ? (
+                              <p
+                                className={`text-sm text-red-800`}
+                                suppressHydrationWarning={suppressText}
+                              >
+                                {t(`${errors.floor_no?.message.key}`, {
+                                  min: errors.floor_no?.message.values,
+                                })}
+                              </p>
+                            ) : (
+                              <p
+                                className={`text-sm text-red-800`}
+                                suppressHydrationWarning={suppressText}
+                              >
+                                {t(errors.floor_no?.message)}
+                              </p>
+                            )}
+                          </div>
+                          {/* office_no */}
                           <div
-                            className={openTab === 3 ? 'block' : 'hidden'}
+                            className={
+                              addressTabType === 3 ? 'block' : 'hidden'
+                            }
                             id="office"
                           >
                             <input
-                              type="text"
-                              placeholder={`${t(`office_no`)}`}
+                              placeholder={`${t(`office_no`)}${
+                                addressTabType === 3 ? `*` : ``
+                              }`}
                               className={`${addressInputField}`}
                               suppressHydrationWarning={suppressText}
                               {...register('office_no')}
                               aria-invalid={errors.office_no ? 'true' : 'false'}
                             />
+                          </div>
+                          <div>
+                            {errors.office_no?.message.key ? (
+                              <p
+                                className={`text-sm text-red-800`}
+                                suppressHydrationWarning={suppressText}
+                              >
+                                {t(`${errors.office_no?.message.key}`, {
+                                  min: errors.office_no?.message.values,
+                                })}
+                              </p>
+                            ) : (
+                              <p
+                                className={`text-sm text-red-800`}
+                                suppressHydrationWarning={suppressText}
+                              >
+                                {t(errors.office_no?.message)}
+                              </p>
+                            )}
                           </div>
                         </div>
                       </div>

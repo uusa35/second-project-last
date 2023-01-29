@@ -8,7 +8,7 @@ import {
 import { Product } from '@/types/index';
 import { NextPage } from 'next';
 import { apiSlice } from '@/redux/api';
-import { debounce, isEmpty, map } from 'lodash';
+import { debounce, isEmpty, isNull, map } from 'lodash';
 import { appLinks, baseUrl, imageSizes, suppressText } from '@/constants/*';
 import MainHead from '@/components/MainHead';
 import Image from 'next/image';
@@ -21,6 +21,7 @@ import VerProductWidget from '@/widgets/product/VerProductWidget';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { XMarkIcon } from '@heroicons/react/20/solid';
 
 type Props = {
   elements: Product[];
@@ -43,7 +44,7 @@ const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
     branchId,
     areaId,
   });
-  const [trigger, { isSuccess: SearchSuccess }] =
+  const [trigger, { isSuccess: searchSuccess }] =
     useLazyGetSearchProductsQuery<{
       trigger: () => void;
       isSuccess: boolean;
@@ -88,8 +89,17 @@ const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
           {/*   search Input */}
           <div className={`w-full capitalize`}>
             <div className="relative mt-1 rounded-md shadow-sm text-gray-400">
-              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center px-6">
-                <MagnifyingGlassIcon className="h-8 w-8" aria-hidden="true" />
+              <div className="absolute inset-y-0 cursor-pointer ltr:right-0 rtl:left-0 flex items-center px-6">
+                {isEmpty(currentKey) ? (
+                  <MagnifyingGlassIcon className="h-8 w-8" aria-hidden="true" />
+                ) : (
+                  <Link href={appLinks.productSearchIndex(branchId, areaId)}>
+                    <XMarkIcon
+                      className="h-8 w-8 text-stone-400"
+                      aria-hidden="true"
+                    />
+                  </Link>
+                )}
               </div>
               <input
                 type="search"
@@ -97,37 +107,40 @@ const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
                 id="search"
                 defaultValue={currentKey}
                 onChange={debounce((e) => handleChange(e.target.value), 400)}
-                className="block w-full focus:ring-1 focus:ring-primary_BG rounded-md  pl-20 border-none  bg-gray-100 py-3 h-14  text-lg capitalize"
+                className="block w-full focus:ring-1 focus:ring-primary_BG rounded-md  rtl:pl-20 ltr:pr-20 border-none  bg-gray-100 py-3 h-14  text-lg capitalize"
                 suppressHydrationWarning={suppressText}
-                placeholder={`${t(`search_products`)}`}
+                placeholder={`${
+                  currentKey ? currentKey : t(`search_products`)
+                }`}
               />
             </div>
           </div>
 
           {isSuccess && topSearch && topSearch.Data && (
             <>
-              <div className="flex flex-row justify-evenly items-center flex-wrap gap-3 my-3 capitalize">
-                {map(topSearch.Data.topSearch, (searchKey, i) => (
-                  <Link
-                    className={`p-2 rounded-md bg-stone-100`}
-                    key={i}
-                    href={appLinks.productSearchIndex(
-                      searchKey,
-                      branchId,
-                      areaId
-                    )}
-                  >
-                    {searchKey}
-                  </Link>
-                ))}
-                <Link
-                  className={`p-2 rounded-md bg-red-700 text-white`}
-                  href={appLinks.productSearchIndex(branchId, areaId)}
-                >
-                  {t(`clear`)}
-                </Link>
+              <div className="grid grid-cols-4 capitalize gap-x-4 gap-y-2 my-3">
+                {map(
+                  topSearch.Data.topSearch,
+                  (searchKey, i) =>
+                    !isEmpty(searchKey) &&
+                    !isNull(searchKey) && (
+                      <Link
+                        className={`col-span-1 p-2 rounded-md bg-stone-100 text-center ${
+                          currentKey === searchKey && `bg-stone-200 shadow-sm`
+                        }`}
+                        key={i}
+                        href={appLinks.productSearchIndex(
+                          searchKey,
+                          branchId,
+                          areaId
+                        )}
+                      >
+                        {searchKey}
+                      </Link>
+                    )
+                )}
               </div>
-              {key === '' && !SearchSuccess && (
+              {key === '' && !searchSuccess && (
                 <div className="border-t-4 border-stone-100 pt-3 mt-5">
                   <p className="mb-3 text-semibold">{t('trending_items')}</p>
                   {map(topSearch.Data.trendingItems, (item) => {

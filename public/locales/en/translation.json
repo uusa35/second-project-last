@@ -394,7 +394,7 @@
   "floor#": "floor#",
   "office_no": "office no",
   "avenue": "avenue",
-  "paci": "civil id",
+  "paci": "paci",
   "additional": "additional",
   "deliver_now": "deliver now",
   "deliver_later": "deliver later",
@@ -478,5 +478,6 @@
   "sorry_some_product_not_available_in_this_area" : "sorry some product not available in this area",
   "select_a_branch_or_area_before_order" : "you have to choose a branch or an area. some products may be deleted from your shopping cart as it may not be available. thank you ...",
   "please_select_payment_method": "please select payment method",
-  "selected": "selected"
+  "selected": "selected",
+  "floor_no" : "floor no"
 }

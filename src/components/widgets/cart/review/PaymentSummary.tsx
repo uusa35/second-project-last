@@ -18,9 +18,9 @@ const PaymentSummary: FC = () => {
   useEffect(() => {}, [promoEnabled]);
 
   return (
-    <div className={`px-4 py-4 capitalize`}>
+    <div className={`px-4 py-2 capitalize`}>
       <>
-        <div className="flex justify-between mb-3 text-lg">
+        <div className="flex justify-between mb-2 text-lg">
           <p suppressHydrationWarning={suppressText}>{t('subtotal')} </p>
           <div className={`flex flex-row`}>
             <p suppressHydrationWarning={suppressText} className={`px-2`}>
@@ -29,7 +29,7 @@ const PaymentSummary: FC = () => {
             <p>{t('kwd')}</p>
           </div>
         </div>
-        <div className="flex justify-between mb-3 text-lg">
+        <div className="flex justify-between mb-2 text-lg">
           <p suppressHydrationWarning={suppressText}>{t('delivery_fees')}</p>
           <p suppressHydrationWarning={suppressText}></p>
           <div className={`flex flex-row`}>
@@ -45,7 +45,7 @@ const PaymentSummary: FC = () => {
             <p>{t('kwd')}</p>
           </div>
         </div>
-        <div className="flex justify-between mb-3 text-lg font-semibold">
+        <div className="flex justify-between mb-2 text-lg">
           <p suppressHydrationWarning={suppressText}>{t('total')}</p>
           <div className={`flex flex-row`} style={{ color }}>
             <p suppressHydrationWarning={suppressText} className={`px-2`}>
