@@ -27,8 +27,8 @@ const nextConfig = {
     return [
       {
         source: '/OrderConfirmation/failed',
-        destination: '/order/staus/failure',
-        permanent:true
+        destination: '/order/status/failure',
+        permanent: true,
       },
       {
         source: '/OrderConfirmation/success/:orderId',

@@ -326,7 +326,7 @@ const ProductShow: NextPage<Props> = ({ element }) => {
           </div>
         </div>
 
-        <div className={`px-4 md:px-8 capitalize mt-5`}>
+        <div className={`capitalize mt-5`}>
           {/*   name and desc */}
           <div className="flex flex-row w-full justify-between items-center px-4 md:px-8 pb-4 border-b-2 border-stone-200">
             <div className={` flex-1 space-y-3`}>
