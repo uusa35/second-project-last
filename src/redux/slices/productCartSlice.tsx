@@ -104,6 +104,15 @@ export const productCartSlice = createSlice({
         RadioBtnsAddons: [action.payload],
       };
     },
+    resetRadioBtns: (
+      state: typeof initialState,
+      action: PayloadAction<void>
+    ) => {
+      return {
+        ...state,
+        RadioBtnsAddons: initialState.RadioBtnsAddons,
+      };
+    },
     setCartProductQty: (
       state: typeof initialState,
       action: PayloadAction<number>
@@ -173,6 +182,7 @@ export const {
   resetCheckBoxes,
   setCartProductQty,
   addRadioBtn,
+  resetRadioBtns,
   updatePrice,
   addMeter,
   removeMeter,

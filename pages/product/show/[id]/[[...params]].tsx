@@ -39,6 +39,7 @@ import {
   removeMeter,
   resetCheckBoxes,
   resetProductCart,
+  resetRadioBtns,
   setCartProductQty,
   setInitialProductCart,
   updateId,
@@ -373,12 +374,17 @@ const ProductShow: NextPage<Props> = ({ element }) => {
                       id={s.title}
                       name={s.title}
                       type="radio"
-                      checked={open === 0}
+                      checked={open === s.id * 10}
                       onClick={() => {
-                        if (s.selection_type === `optional`) {
+                        if (
+                          s.selection_type === `optional` &&
+                          s.must_select === 'multi'
+                        ) {
                           dispatch(resetCheckBoxes());
+                        } else {
+                          dispatch(resetRadioBtns());
                         }
-                        setOpen(0);
+                        setOpen(s.id * 10);
                       }}
                       className="h-4 w-4"
                     />
@@ -490,8 +496,8 @@ const ProductShow: NextPage<Props> = ({ element }) => {
                       ) : (
                         <Fragment key={i}>
                           <input
-                            id={c.id.toString()}
-                            name={s.title}
+                            id={c.name}
+                            name={c.name}
                             required={s.selection_type !== 'optional'}
                             type={
                               s.must_select === 'multi' ? `checkbox` : 'radio'
