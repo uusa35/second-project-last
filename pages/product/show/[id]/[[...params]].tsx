@@ -441,7 +441,8 @@ const ProductShow: NextPage<Props> = ({ element }) => {
                                   handleSelectAddOn(s, c, s.must_select, true)
                                 }
                                 type="button"
-                                className="relative -ml-px inline-flex items-center ltr:rounded-l-sm rtl:rounded-r-sm  bg-gray-100 px-1 py-1 text-sm font-medium text-black  focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
+                                className="relative -ml-px inline-flex items-center ltr:rounded-l-sm rtl:rounded-r-sm  bg-gray-100 px-1 py-1 text-sm font-medium text-black  focus:z-10 w-10"
+                                style={{ color }}
                               >
                                 <span
                                   className={`border border-gray-300 p-1 px-3 bg-white rounded-md text-md font-extrabold  w-8 h-8 flex justify-center items-center`}
@@ -452,7 +453,7 @@ const ProductShow: NextPage<Props> = ({ element }) => {
                               <button
                                 disabled={currentQty === 0}
                                 type="button"
-                                className="relative -ml-px inline-flex items-center  bg-gray-100 px-4 py-2 text-sm font-medium focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500 w-10"
+                                className="relative -ml-px inline-flex items-center  bg-gray-100 px-4 py-2 text-sm font-medium focus:z-10 w-10"
                                 style={{ color }}
                               >
                                 {filter(
@@ -474,7 +475,8 @@ const ProductShow: NextPage<Props> = ({ element }) => {
                                   handleSelectAddOn(s, c, s.must_select, false)
                                 }
                                 type="button"
-                                className="relative inline-flex items-center ltr:rounded-r-sm rtl:rounded-l-sm bg-gray-100 px-1 py-1 text-sm font-medium text-black  focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
+                                className="relative inline-flex items-center ltr:rounded-r-sm rtl:rounded-l-sm bg-gray-100 px-1 py-1 text-sm font-medium text-black  focus:z-10 w-10"
+                                style={{ color }}
                               >
                                 <span
                                   className={`border border-gray-300 p-1 px-3 bg-white rounded-md text-md font-extrabold  w-8 h-8 flex justify-center items-center`}
