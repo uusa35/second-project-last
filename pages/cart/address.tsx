@@ -92,38 +92,43 @@ const CartAddress: NextPage = (): JSX.Element => {
         .string()
         .max(100)
         .when('address_type', (address_type, schema) => {
-          if (method === `delivery`)
+          if (method === `delivery`) {
             return schema.required(t(`validation.required`));
-          return schema;
+          }
+          return schema.nullable(true);
         }),
       street: yup
         .string()
         .max(100)
         .when('address_type', (address_type, schema) => {
-          if (method === `delivery`)
+          if (method === `delivery`) {
             return schema.required(t(`validation.required`));
-          return schema;
+          }
+          return schema.nullable(true);
         }),
       house_no: yup
         .string()
         .max(100)
         .when('address_type', (address_type, schema) => {
-          if (address_type === 1 && method === `delivery`)
+          if (address_type === 1 && method === `delivery`) {
             return schema.required(t(`validation.required`));
-          return schema;
+          }
+          return schema.nullable(true);
         }),
       floor_no: yup
         .string()
         .max(100)
         .when('address_type', (address_type, schema) => {
-          if (address_type === 2 && method === `delivery`)
+          if (address_type === 2 && method === `delivery`) {
             return schema.required(t(`validation.required`));
-          return schema;
+          }
+          return schema.nullable(true);
         }),
       office_no: yup.mixed().when('address_type', (address_type, schema) => {
-        if (address_type === 3 && method === `delivery`)
+        if (address_type === 3 && method === `delivery`) {
           return schema.required(t(`validation.required`));
-        return schema;
+        }
+        return schema.nullable(true);
       }),
       avenue: yup.string().max(50).nullable(true),
       paci: yup.string().max(50),
@@ -158,6 +163,8 @@ const CartAddress: NextPage = (): JSX.Element => {
       additional: address.additional,
     },
   });
+
+  console.log('address', addressTabType);
 
   const CustomTimeInput = forwardRef(({ value, onClick }, ref) => (
     <div className="flex w-full items-center justify-between px-2">

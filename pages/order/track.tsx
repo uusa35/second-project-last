@@ -54,13 +54,6 @@ const TrackOrder: NextPage = (): JSX.Element => {
   return (
     <Suspense fallback={<LoadingSpinner fullWidth={false} />}>
       <MainContentLayout>
-        <h4
-          className="text-center font-semibold pt-2 capitalize"
-          style={{ color }}
-          suppressHydrationWarning={suppressText}
-        >
-          {t('track_order')}
-        </h4>
         <div className="px-5 pb-7 border-b-[12px] border-stone-100 capitalize">
           <p className="my-3 text-sm font-semibold">
             {t('check_your_order_status')}
