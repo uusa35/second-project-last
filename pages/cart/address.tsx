@@ -153,18 +153,18 @@ const CartAddress: NextPage = (): JSX.Element => {
       longitude: ``,
       latitude: ``,
       customer_id: customer_id?.toString(),
-      block: address.block,
-      street: address.street,
-      house_no: address.house_no,
+      block: address.block ?? ``,
+      street: address.street ?? ``,
+      house_no: address.house_no ?? ``,
+      floor_no: address.floor_no ?? ``,
+      office_no: address.office_no ?? ``,
       avenue: address.avenue,
       paci: address.paci,
-      floor_no: address.floor_no,
-      office_no: address.office_no,
       additional: address.additional,
     },
   });
 
-  console.log('address', addressTabType);
+  console.log('errors', errors);
 
   const CustomTimeInput = forwardRef(({ value, onClick }, ref) => (
     <div className="flex w-full items-center justify-between px-2">
