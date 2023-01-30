@@ -14,7 +14,7 @@ import {
   setCurrentModule,
   setShowFooterElement,
 } from '@/redux/slices/appSettingSlice';
-import { baseUrl, imageSizes, imgUrl } from '@/constants/*';
+import { baseUrl, imageSizes, imgUrl, suppressText } from '@/constants/*';
 import CustomImage from '@/components/CustomImage';
 import {
   concat,
@@ -543,11 +543,14 @@ const ProductShow: NextPage<Props> = ({ element }) => {
           {/* notes */}
           <div className="px-8 py-4">
             <p className="mb-2">{t('extra_notes')}</p>
-            <textarea
+            <input
+              type="text"
+              placeholder={`${t('enter_notes_here')}`}
+              suppressHydrationWarning={suppressText}
               value={productCart.ExtraNotes}
               onChange={(e) => dispatch(setNotes(e.target.value))}
-              className="w-full bg-gray-100 rounded-md"
-            ></textarea>
+              className={`border-0 border-b-2 border-b-gray-200 w-full focus:ring-transparent capitalize`}
+            />
           </div>
         </div>
 
