@@ -85,8 +85,23 @@ const OrderFailure: NextPage = (): JSX.Element => {
             suppressHydrationWarning={suppressText}
             style={{ backgroundColor: color }}
           >
+            <ShoppingBagOutlinedIcon className={`w-8 h-8 drop-shadow-sm`} />
+            {isSuccess &&
+              cartItems.data &&
+              cartItems.data.subTotal > 0 &&
+              cartItems.data?.Cart?.length > 0 && (
+                <div className="absolute -left-2 -top-2 opacity-90  rounded-full bg-red-600 w-6 h-6 top-0 shadow-xl flex items-center justify-center text-white">
+                  <span className={`pt-[3.5px] shadow-md`}>
+                    {cartItems.data?.Cart?.length}
+                  </span>
+                </div>
+              )}
+            <p className="pt-1">{t('my_cart')}</p>
+          </Link>
+          <Link href={appLinks.productSearchIndex(branchId, ``, areaId)}>
             <p
-              className={`text-center text-white`}
+              className={`${submitBtnClass}  text-center`}
+              style={{ backgroundColor: color }}
               suppressHydrationWarning={suppressText}
             >
               {t('retry_order')}
