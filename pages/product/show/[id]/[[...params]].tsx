@@ -72,8 +72,7 @@ const ProductShow: NextPage<Props> = ({ element }) => {
       handleResetInitialProductCart();
     }
     dispatch(setShowFooterElement(`product_show`));
-    () => {
-      // dispatch(resetProductCart());
+    return () => {
       dispatch(resetShowFooterElement());
     };
   }, [element]);
