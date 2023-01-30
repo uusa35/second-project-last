@@ -60,7 +60,6 @@ const ProductShow: NextPage<Props> = ({ element }) => {
   const [currentQty, setCurrentyQty] = useState<number>(
     productCart.ProductID === element.id ? productCart.Quantity : 1
   );
-  const [open, setOpen] = useState(0);
   const [tabsOpen, setTabsOpen] = useState<{ id: number }[]>([]);
   const firstImage: any = !isEmpty(element.img)
     ? imgUrl(element.img[0].original)
@@ -344,9 +343,7 @@ const ProductShow: NextPage<Props> = ({ element }) => {
                       id={s.title}
                       name={s.title}
                       type="radio"
-                      // checked={s.id === open}
                       checked={!isEmpty(filter(tabsOpen, (t) => t.id === s.id))}
-                      // onClick={() => setOpen(s.id)}
                       onClick={() => setTabsOpen([...tabsOpen, { id: s.id }])}
                       className="h-4 w-4"
                     />
@@ -362,7 +359,6 @@ const ProductShow: NextPage<Props> = ({ element }) => {
                       id={s.title}
                       name={s.title}
                       type="radio"
-                      // checked={open === s.id * 10}
                       checked={isEmpty(filter(tabsOpen, (t) => t.id === s.id))}
                       onClick={() => {
                         if (
@@ -373,7 +369,6 @@ const ProductShow: NextPage<Props> = ({ element }) => {
                         } else {
                           dispatch(resetRadioBtns());
                         }
-                        // setOpen(s.id * 10);
                         setTabsOpen(filter(tabsOpen, (t) => t.id !== s.id));
                       }}
                       className="h-4 w-4"
