@@ -68,36 +68,21 @@ const OrderFailure: NextPage = (): JSX.Element => {
           {isSuccess && cartItems.data?.Cart?.length > 0 && (
             <Link
               href={appLinks.cartIndex.path}
-              className={`${submitBtnClass} flex items-center justify-center`}
+              className={`${submitBtnClass} flex items-center justify-center gap-x-3`}
               suppressHydrationWarning={suppressText}
               style={{ backgroundColor: color }}
             >
-              <div className="bg-red-600 rounded-full w-6 h-6 flex items-center justify-center border-2 border-white text-white">
-                <p className={`text-white`}>{cartItems.data?.Cart?.length}</p>
-              </div>
-              <ShoppingBagOutlinedIcon className="w-6 h-6" />
-              <p className="pt-1">{t('my_cart')}</p>
-            </Link>
-          )}
-          <Link
-            href={appLinks.productSearchIndex(branchId, ``, areaId)}
-            className={`${submitBtnClass} flex items-center justify-center`}
-            suppressHydrationWarning={suppressText}
-            style={{ backgroundColor: color }}
-          >
-            <ShoppingBagOutlinedIcon className={`w-8 h-8 drop-shadow-sm`} />
-            {isSuccess &&
-              cartItems.data &&
-              cartItems.data.subTotal > 0 &&
-              cartItems.data?.Cart?.length > 0 && (
+              <div className="relative">
+                <ShoppingBagOutlinedIcon className="w-6 h-6 drop-shadow-sm" />
                 <div className="absolute -left-2 -top-2 opacity-90  rounded-full bg-red-600 w-6 h-6 top-0 shadow-xl flex items-center justify-center text-white">
                   <span className={`pt-[3.5px] shadow-md`}>
                     {cartItems.data?.Cart?.length}
                   </span>
                 </div>
-              )}
-            <p className="pt-1">{t('my_cart')}</p>
-          </Link>
+              </div>
+              <p className="pt-1">{t('my_cart')}</p>
+            </Link>
+          )}
           <Link href={appLinks.productSearchIndex(branchId, ``, areaId)}>
             <p
               className={`${submitBtnClass}  text-center`}
