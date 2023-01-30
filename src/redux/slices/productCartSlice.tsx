@@ -13,6 +13,7 @@ const initialState: ProductCart = {
   name_ar: ``,
   name_en: ``,
   ProductDesc: ``,
+  ExtraNotes:'',
   Quantity: 0,
   Price: 0,
   RadioBtnsAddons: [],
@@ -129,6 +130,15 @@ export const productCartSlice = createSlice({
         id: action.payload,
       };
     },
+    setNotes: (
+      state: typeof initialState,
+      action: PayloadAction<string>
+    ) => {
+      return {
+        ...state,
+        ExtraNotes: action.payload,
+      };
+    },
     updatePrice: (
       state: typeof initialState,
       action: PayloadAction<{
@@ -171,6 +181,7 @@ export const productCartSlice = createSlice({
         ...initialState,
       };
     },
+    
   },
 });
 
@@ -189,4 +200,5 @@ export const {
   enableAddToCart,
   disableAddToCart,
   updateId,
+  setNotes
 } = productCartSlice.actions;

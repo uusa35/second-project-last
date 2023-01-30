@@ -41,6 +41,7 @@ import {
   resetRadioBtns,
   setCartProductQty,
   setInitialProductCart,
+  setNotes,
   updateId,
   updatePrice,
 } from '@/redux/slices/productCartSlice';
@@ -113,6 +114,7 @@ const ProductShow: NextPage<Props> = ({ element }) => {
         name_en: element.name_en,
         ProductDesc: element.desc,
         Quantity: currentQty,
+        ExtraNotes: productCart.ExtraNotes,
         totalPrice: parseFloat(element.price),
         grossTotalPrice: parseFloat(element.price),
         totalQty: currentQty,
@@ -539,8 +541,18 @@ const ProductShow: NextPage<Props> = ({ element }) => {
             </div>
           ))}
 
-          <div className="h-36"></div>
+          {/* notes */}
+          <div className="px-8 py-4">
+            <p className="mb-2">{t('extra_notes')}</p>
+            <textarea
+              value={productCart.ExtraNotes}
+              onChange={(e) => dispatch(setNotes(e.target.value))}
+              className="w-full bg-gray-100 rounded-md"
+            ></textarea>
+          </div>
         </div>
+
+        <div className="h-36"></div>
       </MainContentLayout>
     </Suspense>
   );
