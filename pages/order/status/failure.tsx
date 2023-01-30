@@ -19,7 +19,6 @@ import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 import { themeColor } from '@/redux/slices/vendorSlice';
 const OrderFailure: NextPage = (): JSX.Element => {
   const { t } = useTranslation();
-  const color = useAppSelector(themeColor);
   const {
     branch: { id: branchId },
     area: { id: areaId },
