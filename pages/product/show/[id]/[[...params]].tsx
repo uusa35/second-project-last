@@ -282,8 +282,6 @@ const ProductShow: NextPage<Props> = ({ element }) => {
     currentQty,
   ]);
 
-  console.log('element.sections', element.sections);
-  console.log('tabsOpen', tabsOpen);
   return (
     <Suspense>
       <MainHead
