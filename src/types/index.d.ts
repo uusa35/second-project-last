@@ -239,6 +239,7 @@ export interface OrderInvoice {
     sub_total: string;
     total: string;
     delivery_fee: string;
+    tax: string;
     items: [
       {
         quantity: number;

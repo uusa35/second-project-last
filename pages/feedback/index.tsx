@@ -10,12 +10,20 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useCreateFeedbackMutation } from '@/redux/api/feedbackApi';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { convertColor, footerBtnClass, submitBtnClass, suppressText } from '@/constants/*';
+import {
+  arboriaFont,
+  convertColor,
+  footerBtnClass,
+  gessFont,
+  submitBtnClass,
+  suppressText,
+} from '@/constants/*';
 import { useForm } from 'react-hook-form';
 import { debounce, map } from 'lodash';
 import { useState } from 'react';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
 import { themeColor } from '@/redux/slices/vendorSlice';
+import { useRouter } from 'next/router';
 
 type Props = {
   isOpen: boolean;
@@ -32,7 +40,10 @@ const Feedback: NextPage<Props> = ({
     locale: { isRTL },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
-
+  const [rateVal, setRateVal] = useState<number>();
+  const [triggerCreateFeedback] = useCreateFeedbackMutation();
+  const dispatch = useAppDispatch();
+  const router = useRouter();
   const schema = yup
     .object()
     .shape({
@@ -58,9 +69,6 @@ const Feedback: NextPage<Props> = ({
       phone: ``,
     },
   });
-  const [rateVal, setRateVal] = useState<number>();
-  const [triggerCreateFeedback] = useCreateFeedbackMutation();
-  const dispatch = useAppDispatch();
   const handleChange = ({ target }: any) => {
     setValue(target.name, target.value);
     clearErrors(target.name);
@@ -73,7 +81,7 @@ const Feedback: NextPage<Props> = ({
   const onSubmit = async (body: any) => {
     await triggerCreateFeedback(body).then((r: any) => {
       if (r.data && r.data.status) {
-        console.log('feedback response', r.data)
+        console.log('feedback response', r.data);
         dispatch(
           showToastMessage({
             content: `${t(`thanks_for_your_feedback`)}`,
@@ -99,8 +107,8 @@ const Feedback: NextPage<Props> = ({
       isOpen={isOpen}
       ariaHideApp={ariaHideApp}
       className={`w-full lg:w-2/4 xl:w-1/3 rounded-t-lg h-1/4 ${
-        isRTL ? 'right-0' : 'left-0'
-      }`}
+        router.locale === 'ar' ? gessFont : arboriaFont
+      } ${isRTL ? 'right-0' : 'left-0'}`}
       style={{ overlay: { backgroundColor: 'rgba(0, 0, 0, 0.5)' } }}
     >
       <div
@@ -144,8 +152,9 @@ const Feedback: NextPage<Props> = ({
             >
               {map(ratingButtons, (button) => (
                 <button
-                  dir={`${isRTL ? 'rtl': 'ltr'}`}
+                  dir={`${isRTL ? 'rtl' : 'ltr'}`}
                   className={`border-zinc-400 border-2 px-3 rounded-full py-2 
+                  ${router.locale === 'ar' ? gessFont : arboriaFont}
                   ${
                     rateVal === button.rate
                       ? 'bg-primary_BG text-white border-zinc-50'
@@ -168,7 +177,9 @@ const Feedback: NextPage<Props> = ({
             <div>
               {errors?.rate?.message && (
                 <p
-                  className={`text-base text-red-800 font-semibold py-2 capitalize  ${isRTL ? 'text-end': 'text-start'}`}
+                  className={`text-base text-red-800 font-semibold py-2 capitalize  ${
+                    isRTL ? 'text-end' : 'text-start'
+                  }`}
                   suppressHydrationWarning={suppressText}
                 >
                   {t('rate_is_required')}
@@ -176,7 +187,9 @@ const Feedback: NextPage<Props> = ({
               )}
             </div>
             <div
-              className={`flex items-center py-1 ${isRTL && `flex-row-reverse`}`}
+              className={`flex items-center py-1 ${
+                isRTL && `flex-row-reverse`
+              }`}
             >
               <CustomImage
                 src={Card.src}
@@ -203,7 +216,9 @@ const Feedback: NextPage<Props> = ({
             <div>
               {errors?.user_name?.message && (
                 <p
-                  className={`text-base text-red-800 font-semibold py-2 capitalize ${isRTL ? 'text-end': 'text-start'}`}
+                  className={`text-base text-red-800 font-semibold py-2 capitalize ${
+                    isRTL ? 'text-end' : 'text-start'
+                  }`}
                   suppressHydrationWarning={suppressText}
                 >
                   {t('name_is_required')}
@@ -217,9 +232,7 @@ const Feedback: NextPage<Props> = ({
               }`}
             >
               <div
-                className={`flex items-center ${
-                  isRTL && `flex-row-reverse`
-                }`}
+                className={`flex items-center ${isRTL && `flex-row-reverse`}`}
               >
                 <CustomImage
                   src={Phone.src}
@@ -245,9 +258,7 @@ const Feedback: NextPage<Props> = ({
             </div>
             <div className="my-2 px-5 py-1 bg-gray-100"></div>
 
-            <div
-              className={`flex items-center ${isRTL && `flex-row-reverse`}`}
-            >
+            <div className={`flex items-center ${isRTL && `flex-row-reverse`}`}>
               <CustomImage
                 src={Comment.src}
                 alt="comment"
@@ -274,7 +285,9 @@ const Feedback: NextPage<Props> = ({
             <div>
               {errors?.note?.message && (
                 <p
-                  className={`text-base text-red-800 font-semibold py-2 capitalize ${isRTL ? 'text-end': 'text-start'}`}
+                  className={`text-base text-red-800 font-semibold py-2 capitalize ${
+                    isRTL ? 'text-end' : 'text-start'
+                  }`}
                   suppressHydrationWarning={suppressText}
                 >
                   {t('note_is_required')}

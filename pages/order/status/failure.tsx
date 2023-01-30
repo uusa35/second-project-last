@@ -17,7 +17,6 @@ import { useEffect } from 'react';
 import { setCurrentModule } from '@/redux/slices/appSettingSlice';
 import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 import { themeColor } from '@/redux/slices/vendorSlice';
-
 const OrderFailure: NextPage = (): JSX.Element => {
   const { t } = useTranslation();
   const color = useAppSelector(themeColor);
@@ -26,6 +25,7 @@ const OrderFailure: NextPage = (): JSX.Element => {
     area: { id: areaId },
     customer: { userAgent },
   } = useAppSelector((state) => state);
+  const color = useAppSelector(themeColor);
   const { data: cartItems, isSuccess } = useGetCartProductsQuery({
     UserAgent: userAgent,
   });
@@ -40,6 +40,7 @@ const OrderFailure: NextPage = (): JSX.Element => {
           <CustomImage
             src={Failure.src}
             alt={`${t('failure')}`}
+            className={`w-22 h-auto`}
             width={imageSizes.sm}
             height={imageSizes.sm}
           />
@@ -47,7 +48,7 @@ const OrderFailure: NextPage = (): JSX.Element => {
             className="text-red-700 font-semibold py-3"
             suppressHydrationWarning={suppressText}
           >
-            {t('we_re_sorry')}
+            {t('we_r_sorry')}
           </h4>
           <p suppressHydrationWarning={suppressText}>
             {t('your_order_placement_is_failed')}
@@ -65,8 +66,22 @@ const OrderFailure: NextPage = (): JSX.Element => {
               )}
             </p>
           </div>
+          {isSuccess && cartItems.data?.Cart?.length > 0 && (
+            <Link
+              href={appLinks.cartIndex.path}
+              className={`${submitBtnClass} flex items-center justify-center`}
+              suppressHydrationWarning={suppressText}
+              style={{ backgroundColor: color }}
+            >
+              <div className="bg-red-600 rounded-full w-6 h-6 flex items-center justify-center border-2 border-white text-white">
+                <p className={`text-white`}>{cartItems.data?.Cart?.length}</p>
+              </div>
+              <ShoppingBagOutlinedIcon className="w-6 h-6" />
+              <p className="pt-1">{t('my_cart')}</p>
+            </Link>
+          )}
           <Link
-            href={appLinks.cartIndex.path}
+            href={appLinks.productSearchIndex(branchId, ``, areaId)}
             className={`${submitBtnClass} flex items-center justify-center`}
             suppressHydrationWarning={suppressText}
             style={{ backgroundColor: color }}

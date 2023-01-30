@@ -13,7 +13,6 @@ import PaymentIcon from '@/appIcons/payment.svg';
 import Knet from '@/appImages/knet.png';
 import CashOnDelivery from '@/appImages/cash_on_delivery.jpg';
 import Visa from '@/appImages/visa.png';
-import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import {
   convertColor,

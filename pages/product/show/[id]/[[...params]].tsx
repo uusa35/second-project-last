@@ -21,7 +21,6 @@ import {
   filter,
   first,
   isEmpty,
-  isNull,
   join,
   map,
   multiply,
@@ -39,23 +38,15 @@ import {
   removeMeter,
   resetCheckBoxes,
   resetProductCart,
+  resetRadioBtns,
   setCartProductQty,
   setInitialProductCart,
   setNotes,
   updateId,
   updatePrice,
 } from '@/redux/slices/productCartSlice';
-import {
-  Accordion,
-  AccordionHeader,
-  AccordionBody,
-} from '@material-tailwind/react';
+import { Accordion, AccordionBody } from '@material-tailwind/react';
 import TextTrans from '@/components/TextTrans';
-import { setCartTotalAndSubTotal } from '@/redux/slices/cartSlice';
-import {
-  useAddToCartMutation,
-  useLazyGetCartProductsQuery,
-} from '@/redux/api/cartApi';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import NoFoundImage from '@/appImages/not_found.png';
 
@@ -64,18 +55,13 @@ type Props = {
 };
 const ProductShow: NextPage<Props> = ({ element }) => {
   const { t } = useTranslation();
-  const {
-    productCart,
-    appSetting: { method },
-    branch: { branchId },
-    area,
-  } = useAppSelector((state) => state);
+  const { productCart } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
   const dispatch = useAppDispatch();
   const [currentQty, setCurrentyQty] = useState<number>(
     productCart.ProductID === element.id ? productCart.Quantity : 1
   );
-  const [open, setOpen] = useState(0);
+  const [tabsOpen, setTabsOpen] = useState<{ id: number }[]>([]);
   const firstImage: any = !isEmpty(element.img)
     ? imgUrl(element.img[0].original)
     : NoFoundImage.src;
@@ -359,8 +345,8 @@ const ProductShow: NextPage<Props> = ({ element }) => {
                       id={s.title}
                       name={s.title}
                       type="radio"
-                      checked={s.id === open}
-                      onClick={() => setOpen(s.id)}
+                      checked={!isEmpty(filter(tabsOpen, (t) => t.id === s.id))}
+                      onClick={() => setTabsOpen([...tabsOpen, { id: s.id }])}
                       className="h-4 w-4"
                     />
                     <label
@@ -375,12 +361,17 @@ const ProductShow: NextPage<Props> = ({ element }) => {
                       id={s.title}
                       name={s.title}
                       type="radio"
-                      checked={open === 0}
+                      checked={isEmpty(filter(tabsOpen, (t) => t.id === s.id))}
                       onClick={() => {
-                        if (s.selection_type === `optional`) {
+                        if (
+                          s.selection_type === `optional` &&
+                          s.must_select === 'multi'
+                        ) {
                           dispatch(resetCheckBoxes());
+                        } else {
+                          dispatch(resetRadioBtns());
                         }
-                        setOpen(0);
+                        setTabsOpen(filter(tabsOpen, (t) => t.id !== s.id));
                       }}
                       className="h-4 w-4"
                     />
@@ -395,7 +386,11 @@ const ProductShow: NextPage<Props> = ({ element }) => {
               ) : null}
               <Accordion
                 hidden={true}
-                open={!s.hidden ? true : s.id === open}
+                open={
+                  !s.hidden
+                    ? true
+                    : !isEmpty(filter(tabsOpen, (t) => t.id === s.id))
+                }
                 animate={customAnimation}
                 className={`w-full`}
               >
@@ -492,8 +487,8 @@ const ProductShow: NextPage<Props> = ({ element }) => {
                       ) : (
                         <Fragment key={i}>
                           <input
-                            id={c.id.toString()}
-                            name={s.title}
+                            id={c.name}
+                            name={c.name}
                             required={s.selection_type !== 'optional'}
                             type={
                               s.must_select === 'multi' ? `checkbox` : 'radio'

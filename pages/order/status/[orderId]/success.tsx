@@ -26,8 +26,6 @@ type Props = {
 const OrderSuccess: NextPage<Props> = ({ element }) => {
   const { t } = useTranslation();
   const {
-    branch: { id: branchId },
-    area: { id: areaId },
     customer: { userAgent },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
@@ -104,7 +102,7 @@ const OrderSuccess: NextPage<Props> = ({ element }) => {
             <Link
               href={appLinks.orderInvoice(`${element.order_id}`)}
               scroll={true}
-              className={`flex grow justify-center items-center p-4 rounded-lg text-white mb-3`}
+              className={`flex grow justify-center items-center p-4 rounded-lg text-white mb-3 shadow-lg`}
               style={{ backgroundColor: color }}
             >
               {t('view_receipt')}
@@ -115,7 +113,7 @@ const OrderSuccess: NextPage<Props> = ({ element }) => {
                 query: { order_code: element.orderCode },
               }}
               scroll={true}
-              className={`flex grow justify-center items-center p-4 rounded-lg text-white mb-3`}
+              className={`flex grow justify-center items-center p-4 rounded-lg text-white mb-3 shadow-lg`}
               style={{ backgroundColor: color }}
             >
               {t('track_order')}
@@ -124,7 +122,7 @@ const OrderSuccess: NextPage<Props> = ({ element }) => {
               href={appLinks.home.path}
               style={{ backgroundColor: color }}
               scroll={true}
-              className={`flex grow justify-center items-center p-4 rounded-lg text-white mb-3`}
+              className={`flex grow justify-center items-center p-4 rounded-lg text-white mb-3 shadow-lg`}
             >
               {t('order_again')}
             </Link>
