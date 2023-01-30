@@ -19,8 +19,8 @@
 }
 
 @font-face {
-    font-family: 'GE_SS_Text_Medium';
-    src: url('../public/fonts/GE_SS_Text_Medium.otf') format('truetype');
+    font-family: 'GE_SS_Text_Light';
+    src: url('../public/fonts/GE_SS_Text_Light.otf') format('truetype');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -31,7 +31,7 @@
 }
 
 .font-gess-medium, button, .Toastify__toast-body {
-    font-family: 'GE_SS_Text_Medium', 'sans-serif' !important;
+    font-family: 'GE_SS_Text_Light', 'sans-serif' !important;
 }
 
 .font-tajwal-medium, button, .Toastify__toast-body {

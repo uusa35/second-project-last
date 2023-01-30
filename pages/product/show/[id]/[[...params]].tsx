@@ -61,6 +61,7 @@ const ProductShow: NextPage<Props> = ({ element }) => {
     productCart.ProductID === element.id ? productCart.Quantity : 1
   );
   const [open, setOpen] = useState(0);
+  const [tabsOpen, setTabsOpen] = useState<{ id: number }[]>([]);
   const firstImage: any = !isEmpty(element.img)
     ? imgUrl(element.img[0].original)
     : NoFoundImage.src;
@@ -281,6 +282,8 @@ const ProductShow: NextPage<Props> = ({ element }) => {
     currentQty,
   ]);
 
+  console.log('element.sections', element.sections);
+  console.log('tabsOpen', tabsOpen);
   return (
     <Suspense>
       <MainHead
@@ -343,8 +346,10 @@ const ProductShow: NextPage<Props> = ({ element }) => {
                       id={s.title}
                       name={s.title}
                       type="radio"
-                      checked={s.id === open}
-                      onClick={() => setOpen(s.id)}
+                      // checked={s.id === open}
+                      checked={!isEmpty(filter(tabsOpen, (t) => t.id === s.id))}
+                      // onClick={() => setOpen(s.id)}
+                      onClick={() => setTabsOpen([...tabsOpen, { id: s.id }])}
                       className="h-4 w-4"
                     />
                     <label
@@ -359,7 +364,8 @@ const ProductShow: NextPage<Props> = ({ element }) => {
                       id={s.title}
                       name={s.title}
                       type="radio"
-                      checked={open === s.id * 10}
+                      // checked={open === s.id * 10}
+                      checked={isEmpty(filter(tabsOpen, (t) => t.id === s.id))}
                       onClick={() => {
                         if (
                           s.selection_type === `optional` &&
@@ -369,7 +375,8 @@ const ProductShow: NextPage<Props> = ({ element }) => {
                         } else {
                           dispatch(resetRadioBtns());
                         }
-                        setOpen(s.id * 10);
+                        // setOpen(s.id * 10);
+                        setTabsOpen(filter(tabsOpen, (t) => t.id !== s.id));
                       }}
                       className="h-4 w-4"
                     />
@@ -384,7 +391,11 @@ const ProductShow: NextPage<Props> = ({ element }) => {
               ) : null}
               <Accordion
                 hidden={true}
-                open={!s.hidden ? true : s.id === open}
+                open={
+                  !s.hidden
+                    ? true
+                    : !isEmpty(filter(tabsOpen, (t) => t.id === s.id))
+                }
                 animate={customAnimation}
                 className={`w-full`}
               >
