@@ -164,8 +164,6 @@ const CartAddress: NextPage = (): JSX.Element => {
     },
   });
 
-  console.log('errors', errors);
-
   const CustomTimeInput = forwardRef(({ value, onClick }, ref) => (
     <div className="flex w-full items-center justify-between px-2">
       <input
