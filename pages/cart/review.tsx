@@ -222,7 +222,7 @@ const CartReview: NextPage = () => {
             <CustomImage
               src={TrunkClock.src}
               alt={`${t('trunk')}`}
-              className={`w-16 h-16 shadow-lg`}
+              className={`w-16 h-16`}
             />
             <div className="px-6">
               <h4
