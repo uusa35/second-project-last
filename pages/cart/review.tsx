@@ -3,7 +3,7 @@ import { NextPage } from 'next';
 import MainContentLayout from '@/layouts/MainContentLayout';
 import { useTranslation } from 'react-i18next';
 import TrunkClock from '@/appIcons/trunk_clock.svg';
-import { suppressText, imageSizes, appLinks } from '@/constants/*';
+import { suppressText, imageSizes, appLinks, imgUrl } from '@/constants/*';
 import { EditOutlined, LocationOnOutlined } from '@mui/icons-material';
 import Home from '@/appIcons/home.svg';
 import IDCard from '@/appIcons/id_card.svg';
@@ -211,9 +211,6 @@ const CartReview: NextPage = () => {
     });
   };
 
-  if (isSuccess) {
-    console.log('car', cartItems.data.Cart);
-  }
   return (
     <Suspense>
       <MainContentLayout handleSubmit={handleCreateOrder}>
@@ -222,7 +219,7 @@ const CartReview: NextPage = () => {
             <CustomImage
               src={TrunkClock.src}
               alt={`${t('trunk')}`}
-              className={`w-16 h-16 shadow-lg`}
+              className={`w-16 h-16`}
             />
             <div className="px-6">
               <h4
@@ -401,9 +398,11 @@ const CartReview: NextPage = () => {
                         className="ltr:pr-3 rtl:pl-3 w-2/6"
                       >
                         <CustomImage
-                          className="w-full rounded-lg border-[1px] border-gray-200 shadow-md"
+                          className="w-24 h-24 rounded-lg border-[1px] border-gray-200 shadow-md object-cover"
                           alt={`${t('item')}`}
-                          src={item.image}
+                          src={imgUrl(item.ProductImage)}
+                          width={imageSizes.xs}
+                          height={imageSizes.xs}
                         />
                       </Link>
                       <div className="w-full">

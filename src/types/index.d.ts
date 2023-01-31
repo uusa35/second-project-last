@@ -128,6 +128,7 @@ export interface ClientCart {
 export interface ProductCart {
   ProductID: number;
   ProductName: string;
+  ProductImage: string;
   name_ar: string;
   name_en: string;
   ProductDesc: string;
