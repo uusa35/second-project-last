@@ -22,7 +22,6 @@ import { useRouter } from 'next/router';
 import { LocationOnOutlined } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import GoogleMapReact from 'google-map-react';
-
 import ApartmentIcon from '@/appIcons/apartment.svg';
 import ApartmentAcitveIcon from '@/appIcons/apartment_active.svg';
 import OfficeIcon from '@/appIcons/office.svg';
@@ -163,8 +162,6 @@ const CartAddress: NextPage = (): JSX.Element => {
       additional: address.additional,
     },
   });
-
-  console.log('errors', errors);
 
   const CustomTimeInput = forwardRef(({ value, onClick }, ref) => (
     <div className="flex w-full items-center justify-between px-2">
