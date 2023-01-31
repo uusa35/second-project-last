@@ -211,9 +211,6 @@ const CartReview: NextPage = () => {
     });
   };
 
-  if (isSuccess) {
-    console.log('car', cartItems.data.Cart);
-  }
   return (
     <Suspense>
       <MainContentLayout handleSubmit={handleCreateOrder}>
