@@ -75,8 +75,8 @@ const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
   return (
     <Suspense>
       <MainHead
-        title={`productIndex`}
-        description={`productIndex`}
+        title={`search products`}
+        description={`searching products`}
         mainImage={`${baseUrl}${logo}`}
       />
       <MainContentLayout>
