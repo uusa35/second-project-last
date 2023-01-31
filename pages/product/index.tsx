@@ -38,7 +38,7 @@ const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
   const router = useRouter();
   const { key } = router.query;
   const [searchIsEmpty, setSearchIsEmpty] = useState(true);
-
+  const [currentProducts, setCurrentProducts] = useState<any>([]);
   const { data: topSearch, isSuccess } = useGetTopSearchQuery({
     lang,
     branchId,
@@ -49,7 +49,6 @@ const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
       trigger: () => void;
       isSuccess: boolean;
     }>();
-  const [currentProducts, setCurrentProducts] = useState<any>([]);
 
   useEffect(() => {
     dispatch(setCurrentModule(t('product_search_index')));
@@ -67,23 +66,11 @@ const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
     if (key.length > 2) {
       trigger({ key, lang, branch_id: branchId }).then((r: any) => {
         setCurrentProducts(r.data.Data);
-        console.log('inside hhhhhhhhhhhhhhere');
       });
     } else {
-      console.log('inside set current with elements');
       setCurrentProducts(elements);
     }
   };
-
-  console.log(
-    'topSearch',
-    topSearch,
-    'key',
-    key,
-    'currentProducts',
-    currentProducts,
-    elements
-  );
 
   return (
     <Suspense>
@@ -126,25 +113,27 @@ const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
           {isSuccess && topSearch && topSearch.Data && (
             <>
               <div className="grid grid-cols-4 capitalize gap-x-4 gap-y-2 my-3">
-                {map(topSearch.Data.topSearch, (searchKey, i) => 
-                !isEmpty(searchKey) &&
-                !isNull(searchKey) &&
-                searchKey !== 'null' &&
-                (
-                  <Link
-                    className={`col-span-1 p-2 rounded-md bg-stone-100 text-center ${
-                      key === searchKey && `bg-stone-200 shadow-sm`
-                    }`}
-                    key={i}
-                    href={appLinks.productSearchIndex(
-                      searchKey,
-                      branchId,
-                      areaId
-                    )}
-                  >
-                    {searchKey}
-                  </Link>
-                ))}
+                {map(
+                  topSearch.Data.topSearch,
+                  (searchKey, i) =>
+                    !isEmpty(searchKey) &&
+                    !isNull(searchKey) &&
+                    searchKey !== 'null' && (
+                      <Link
+                        className={`col-span-1 p-2 rounded-md bg-stone-100 text-center ${
+                          key === searchKey && `bg-stone-200 shadow-sm`
+                        }`}
+                        key={i}
+                        href={appLinks.productSearchIndex(
+                          searchKey,
+                          branchId,
+                          areaId
+                        )}
+                      >
+                        {searchKey}
+                      </Link>
+                    )
+                )}
                 {/* <Link
                   className={`p-2 rounded-md bg-red-700 text-white`}
                   href={appLinks.productSearchIndex(branchId, areaId)}
