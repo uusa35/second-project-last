@@ -8,20 +8,11 @@ import {
   resetShowFooterElement,
   setShowFooterElement,
 } from '@/redux/slices/appSettingSlice';
-import { EditOutlined } from '@mui/icons-material';
 import Promotion from '@/appIcons/promotion.svg';
 import Notes from '@/appIcons/notes.svg';
-import { appLinks, suppressText } from '@/constants/*';
+import { appLinks, imageSizes, imgUrl, suppressText } from '@/constants/*';
 import CustomImage from '@/components/CustomImage';
-import {
-  debounce,
-  filter,
-  isEmpty,
-  isNull,
-  kebabCase,
-  lowerCase,
-  map,
-} from 'lodash';
+import { debounce, filter, isEmpty, kebabCase, lowerCase, map } from 'lodash';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
 import { ProductCart, QuantityMeters, ServerCart } from '@/types/index';
 import Link from 'next/link';
@@ -40,7 +31,6 @@ import {
   setCartTotalAndSubTotal,
 } from '@/redux/slices/cartSlice';
 import { themeColor } from '@/redux/slices/vendorSlice';
-import { useRouter } from 'next/router';
 import EmptyCart from '@/appImages/empty_cart.png';
 
 const CartIndex: NextPage = (): JSX.Element => {
@@ -266,7 +256,9 @@ const CartIndex: NextPage = (): JSX.Element => {
                           <CustomImage
                             className="w-full rounded-lg border-[1px] aspect-1 border-gray-200 shadow-md"
                             alt={`${t('item')}`}
-                            src={item.image}
+                            src={imgUrl(item.ProductImage)}
+                            width={imageSizes.xs}
+                            height={imageSizes.xs}
                           />
                         </Link>
                         <div className="w-full">
