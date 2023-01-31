@@ -4,7 +4,12 @@ import MainContentLayout from '@/layouts/MainContentLayout';
 import { useTranslation } from 'react-i18next';
 import TrunkClock from '@/appIcons/trunk_clock.svg';
 import { suppressText, imageSizes, appLinks, imgUrl } from '@/constants/*';
-import { EditOutlined, LocationOnOutlined } from '@mui/icons-material';
+import {
+  CreditCardOutlined,
+  EditOutlined,
+  LocationOnOutlined,
+  ReceiptOutlined,
+} from '@mui/icons-material';
 import Home from '@/appIcons/home.svg';
 import IDCard from '@/appIcons/id_card.svg';
 import OrderSummary from '@/appIcons/summary.svg';
@@ -33,7 +38,7 @@ import { useLazyCreateOrderQuery } from '@/redux/api/orderApi';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { useRouter } from 'next/router';
 import { setOrder, setPaymentMethod } from '@/redux/slices/orderSlice';
-import { CheckCircle } from '@mui/icons-material';
+import { CheckCircle, BadgeOutlined } from '@mui/icons-material';
 
 const CartReview: NextPage = () => {
   const { t } = useTranslation();
@@ -48,7 +53,7 @@ const CartReview: NextPage = () => {
   }, []);
   const {
     customer,
-    branch: { id: branchId },
+    branch: { id: branchId, name_ar: branchAR, name_en: branchEN },
     area: { id: areaId },
     customer: { userAgent },
     appSetting: { method: process_type },
@@ -221,12 +226,19 @@ const CartReview: NextPage = () => {
               alt={`${t('trunk')}`}
               className={`w-16 h-16`}
             />
+
             <div className="px-6">
               <h4
                 className="font-semibold text-lg capitalize"
                 suppressHydrationWarning={suppressText}
               >
-                {t('expected_delivery_time')}
+                {process_type === 'pickup' &&
+                  branchId &&
+                  t('pickup_time_and_date')}
+
+                {process_type === 'delivery' &&
+                  areaId &&
+                  t('delivery_time_and_date')}
               </h4>
               <div className="flex">
                 <p className="pe-5">
@@ -244,10 +256,10 @@ const CartReview: NextPage = () => {
           <div className={`px-4 py-5 space-y-6`}>
             {process_type === 'pickup' && branchId && (
               <>
-              {/* location */}
-              <div className="flex justify-between">
+                {/* location */}
+                <div className="flex justify-between">
                   <div className="flex items-center justify-center">
-                    <LocationOnOutlined className="w-8 h-8" style={{ color }} />
+                    <LocationOnOutlined style={{ color }} />
                     <h5
                       className="px-2 text-base font-semibold capitalize"
                       suppressHydrationWarning={suppressText}
@@ -261,7 +273,7 @@ const CartReview: NextPage = () => {
                     suppressHydrationWarning={suppressText}
                     style={{ color }}
                   >
-                    {t('change')}
+                    <TextTrans ar={branchAR} en={branchEN} />
                   </Link>
                 </div>
               </>
@@ -271,7 +283,7 @@ const CartReview: NextPage = () => {
                 {/* location */}
                 <div className="flex justify-between">
                   <div className="flex items-center justify-center">
-                    <LocationOnOutlined className="w-8 h-8" style={{ color }} />
+                    <LocationOnOutlined style={{ color }} />
                     <h5
                       className="px-2 text-base font-semibold capitalize"
                       suppressHydrationWarning={suppressText}
@@ -335,14 +347,8 @@ const CartReview: NextPage = () => {
             {/* information */}
             <div className="flex justify-between items-center">
               <div className="flex">
-                <CustomImage
-                  src={IDCard.src}
-                  alt="id"
-                  width={imageSizes.xs}
-                  height={imageSizes.xs}
-                  className={`w-6 h-6`}
-                />
-                <div className="ps-5 capitalize">
+                <BadgeOutlined sx={{ color: color }} />
+                <div className="ps-2 capitalize">
                   <h4 className="font-semibold text-base">{customer.name}</h4>
                   <p>{customer.phone}</p>
                 </div>
@@ -361,13 +367,7 @@ const CartReview: NextPage = () => {
           <div className="bg-gray-200 w-full my-5 p-0 h-2"></div>
           <div className="px-4">
             <div className="flex items-center pb-4">
-              <CustomImage
-                src={OrderSummary.src}
-                alt="id"
-                width={imageSizes.xs}
-                height={imageSizes.xs}
-                className={`w-6 h-6`}
-              />
+              <ReceiptOutlined style={{ color }} />
               <div className="ps-5">
                 <h4
                   className="font-semibold text-base capitalize"
@@ -498,13 +498,7 @@ const CartReview: NextPage = () => {
           <div className="bg-gray-200 w-full mt-5 p-0 h-2"></div>
           <div className="px-4 py-4">
             <div className="flex items-center py-3">
-              <CustomImage
-                src={OrderSummary.src}
-                alt="payment"
-                width={imageSizes.xs}
-                height={imageSizes.xs}
-                className={`w-8 h-8`}
-              />
+              <CreditCardOutlined style={{ color: color }} />
               <div className="ps-5 py-2">
                 <h4
                   className="font-semibold text-lg"
