@@ -245,6 +245,30 @@ const CartReview: NextPage = () => {
           </div>
           <div className="bg-gray-200 w-full mt-5 p-0 h-2 px-4"></div>
           <div className={`px-4 py-5 space-y-6`}>
+            {process_type === 'pickup' && branchId && (
+              <>
+              {/* location */}
+              <div className="flex justify-between">
+                  <div className="flex items-center justify-center">
+                    <LocationOnOutlined className="w-8 h-8" style={{ color }} />
+                    <h5
+                      className="px-2 text-base font-semibold capitalize"
+                      suppressHydrationWarning={suppressText}
+                    >
+                      {t('pickup_from')}
+                    </h5>
+                  </div>
+                  <Link
+                    href={appLinks.address.path}
+                    className="text-base font-semibold capitalize"
+                    suppressHydrationWarning={suppressText}
+                    style={{ color }}
+                  >
+                    {t('change')}
+                  </Link>
+                </div>
+              </>
+            )}
             {process_type === 'delivery' && areaId && (
               <>
                 {/* location */}
@@ -313,7 +337,7 @@ const CartReview: NextPage = () => {
             )}
             {/* information */}
             <div className="flex justify-between items-center">
-              <div className="flex items-center">
+              <div className="flex">
                 <CustomImage
                   src={IDCard.src}
                   alt="id"
