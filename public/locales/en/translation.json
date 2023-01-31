@@ -487,5 +487,8 @@
   "floor_no" : "floor no",
   "rate_is_required": "rate is required",
   "field_must_select_at_least_one" : "you must select at least one choice.",
-"enter_extra_notes_for_product":"enter extra notes for product"
+"enter_extra_notes_for_product":"enter extra notes for product",
+"delivery_time_and_date":"delivery time & date",
+"pickup_time_and_date":"pickup time & date"
+
 }

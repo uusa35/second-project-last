@@ -220,7 +220,7 @@ const AppFooter: FC<Props> = ({
               <div
                 className={`flex flex-row justify-center items-center my-4 capitalize`}
               >
-                <span className="isolate inline-flex rounded-xl">
+                <span className="isolate inline-flex rounded-xl flex-row-reverse">
                   <button
                     onClick={() =>
                       handleIncreaseProductQty

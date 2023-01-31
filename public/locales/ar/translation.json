@@ -499,5 +499,7 @@
   "field_must_select_at_least_one" : "يجب عليك اختيار حقل واحد فقط على الاقل",
   "we_re_sorry": "نحن اسفون",
   "sp_req" : "طلب خاص",
-  "enter_extra_notes_for_product":"ادخل الملاحظات الاضافية للمنتج"
+  "enter_extra_notes_for_product":"ادخل الملاحظات الاضافية للمنتج",
+  "delivery_time_and_date":"وقت و تاريخ التوصيل",
+  "pickup_time_and_date":"وقت و تاريخ الاستلام"
 }
