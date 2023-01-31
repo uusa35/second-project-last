@@ -68,6 +68,7 @@ const ProductShow: NextPage<Props> = ({ element }) => {
 
   useEffect(() => {
     dispatch(setCurrentModule(element.name));
+    console.log(productCart.ProductID,element.id)
     if (productCart.ProductID !== element.id) {
       handleResetInitialProductCart();
     }
@@ -545,7 +546,7 @@ const ProductShow: NextPage<Props> = ({ element }) => {
             <p className="mb-2">{t('extra_notes')}</p>
             <input
               type="text"
-              placeholder={`${t('enter_notes_here')}`}
+              placeholder={`${t('enter_extra_notes_for_product')}`}
               suppressHydrationWarning={suppressText}
               value={productCart.ExtraNotes}
               onChange={(e) => dispatch(setNotes(e.target.value))}
