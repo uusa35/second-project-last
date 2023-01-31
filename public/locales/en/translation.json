@@ -486,5 +486,6 @@
   "selected": "selected",
   "floor_no" : "floor no",
   "rate_is_required": "rate is required",
-  "field_must_select_at_least_one" : "you must select at least one choice."
+  "field_must_select_at_least_one" : "you must select at least one choice.",
+"enter_extra_notes_for_product":"enter extra notes for product"
 }
