@@ -41,6 +41,7 @@ import {
 } from '@/redux/slices/cartSlice';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { useRouter } from 'next/router';
+import EmptyCart from '@/appImages/empty_cart.png';
 
 const CartIndex: NextPage = (): JSX.Element => {
   const { t } = useTranslation();
@@ -224,7 +225,14 @@ const CartIndex: NextPage = (): JSX.Element => {
         {/* if cart is empty */}
         {isSuccess && isEmpty(cartItems?.data?.Cart) ? (
           <div className={'px-4'}>
-            <div className="flex justify-center py-5">
+            <div className="flex flex-col items-center justify-center py-5">
+              <CustomImage
+                src={EmptyCart.src}
+                alt="empty_cart"
+                className="w-2/3 h-auto my-5 px-3"
+                width={100}
+                height={100}
+              />
               <p suppressHydrationWarning={suppressText} className="capitalize">
                 {t('your_cart_is_empty')}
               </p>
