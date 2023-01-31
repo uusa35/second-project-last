@@ -63,7 +63,6 @@ export const cartApi = apiSlice.injectEndpoints({
         keepUnusedDataFor: 0,
       }),
     }),
-
     changeLocation: builder.query<
       AppQueryResult<any>,
       {
@@ -75,7 +74,7 @@ export const cartApi = apiSlice.injectEndpoints({
         url: `changeArea`,
         params: { UserAgent },
         headers: {
-          ...area_branch
+          ...area_branch,
         },
         validateStatus: (response, result) =>
           response.status == 200 && result.status,
