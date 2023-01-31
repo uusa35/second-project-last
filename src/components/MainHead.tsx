@@ -34,6 +34,7 @@ const MainHead: FC<Props> = ({
         <meta property="og:description" content={`${description}`} />
         <meta property="og:image" content={`${mainImage}`} />
         <meta name="logo" content={`${mainImage}`} />
+        <link href={`${mainImage}`} rel="shortcut icon" type="image/png" />
         <meta property="og:image:alt" content={`${title}`} />
         <meta property="og:mobile" content={phone} />
         <meta property="og:whatsapp" content={phone} />
