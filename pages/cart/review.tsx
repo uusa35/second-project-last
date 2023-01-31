@@ -245,68 +245,72 @@ const CartReview: NextPage = () => {
           </div>
           <div className="bg-gray-200 w-full mt-5 p-0 h-2 px-4"></div>
           <div className={`px-4 py-5 space-y-6`}>
-            {/* location */}
-            <div className="flex justify-between">
-              <div className="flex items-center justify-center">
-                <LocationOnOutlined className="w-8 h-8" style={{ color }} />
-                <h5
-                  className="px-2 text-base font-semibold capitalize"
-                  suppressHydrationWarning={suppressText}
-                >
-                  {t('deliver_to')}
-                </h5>
-              </div>
-              <Link
-                href={appLinks.address.path}
-                className="text-base font-semibold capitalize"
-                suppressHydrationWarning={suppressText}
-                style={{ color }}
-              >
-                {t('change')}
-              </Link>
-            </div>
-            {/* map */}
-            {customer.address.longitude && customer.address.latitude && (
-              <div className="w-full h-36 rounded-md">
-                <GoogleMapReact
-                  bootstrapURLKeys={{
-                    key: 'AIzaSyChibV0_W_OlSRJg2GjL8TWVU8CzpRHRAE',
-                    language: 'en',
-                    region: 'US',
-                  }}
-                  defaultCenter={{
-                    lat: parseInt(customer.address.latitude),
-                    lng: parseInt(customer.address.longitude),
-                  }}
-                  defaultZoom={11}
-                ></GoogleMapReact>
-              </div>
-            )}
-            {/* address */}
-            <div className="flex justify-between">
-              <div className="flex items-center">
-                <CustomImage
-                  src={Home.src}
-                  alt="home"
-                  width={imageSizes.xs}
-                  height={imageSizes.xs}
-                  className={`w-6 h-6`}
-                />
-                {customer.address && (
-                  <p className="text-md ps-5 capitalize">
-                    {handelDisplayAddress()}
-                  </p>
+            {process_type === 'delivery' && areaId && (
+              <>
+                {/* location */}
+                <div className="flex justify-between">
+                  <div className="flex items-center justify-center">
+                    <LocationOnOutlined className="w-8 h-8" style={{ color }} />
+                    <h5
+                      className="px-2 text-base font-semibold capitalize"
+                      suppressHydrationWarning={suppressText}
+                    >
+                      {t('deliver_to')}
+                    </h5>
+                  </div>
+                  <Link
+                    href={appLinks.address.path}
+                    className="text-base font-semibold capitalize"
+                    suppressHydrationWarning={suppressText}
+                    style={{ color }}
+                  >
+                    {t('change')}
+                  </Link>
+                </div>
+                {/* map */}
+                {customer.address.longitude && customer.address.latitude && (
+                  <div className="w-full h-36 rounded-md">
+                    <GoogleMapReact
+                      bootstrapURLKeys={{
+                        key: 'AIzaSyChibV0_W_OlSRJg2GjL8TWVU8CzpRHRAE',
+                        language: 'en',
+                        region: 'US',
+                      }}
+                      defaultCenter={{
+                        lat: parseInt(customer.address.latitude),
+                        lng: parseInt(customer.address.longitude),
+                      }}
+                      defaultZoom={11}
+                    ></GoogleMapReact>
+                  </div>
                 )}
-              </div>
-              <Link
-                href={appLinks.cartSelectMethod(process_type)}
-                className="text-base font-semibold capitalize"
-                suppressHydrationWarning={suppressText}
-                style={{ color }}
-              >
-                {t('edit')}
-              </Link>
-            </div>
+                {/* address */}
+                <div className="flex justify-between">
+                  <div className="flex items-center">
+                    <CustomImage
+                      src={Home.src}
+                      alt="home"
+                      width={imageSizes.xs}
+                      height={imageSizes.xs}
+                      className={`w-6 h-6`}
+                    />
+                    {customer.address && (
+                      <p className="text-md ps-5 capitalize">
+                        {handelDisplayAddress()}
+                      </p>
+                    )}
+                  </div>
+                  <Link
+                    href={appLinks.cartSelectMethod(process_type)}
+                    className="text-base font-semibold capitalize"
+                    suppressHydrationWarning={suppressText}
+                    style={{ color }}
+                  >
+                    {t('edit')}
+                  </Link>
+                </div>
+              </>
+            )}
             {/* information */}
             <div className="flex justify-between items-center">
               <div className="flex items-center">
