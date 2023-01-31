@@ -431,7 +431,7 @@ const ProductShow: NextPage<Props> = ({ element }) => {
                             </div>
                           </div>
                           <div>
-                            <span className="isolate inline-flex rounded-xl shadow-sm">
+                            <span className="isolate inline-flex rounded-xl shadow-sm flex-row-reverse">
                               <button
                                 disabled={currentQty < 1}
                                 onClick={() =>
