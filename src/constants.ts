@@ -1,7 +1,11 @@
 import * as yup from 'yup';
 import { kebabCase, lowerCase, split } from 'lodash';
-export const baseUrl = `http://pages-dash.testbedbynd.com/`;
+export const baseUrl = `${process.env.NEXT_PUBLIC_BASE_URL}`;
+export const xDomain = `${process.env.NEXT_PUBLIC_X_DOMAIN}`;
+// export const baseUrl = `https://pages-dash.testbedbynd.com/`;
+// export const xDomain = `pages.testbedbynd.com`;
 //https://pages.testbedbynd.com/
+//https://pages-dash.testbedbynd.com/
 export const apiUrl = `${baseUrl}api/`;
 export const appLinks = {
   root: { path: '/home' },
