@@ -1,9 +1,6 @@
 import * as yup from 'yup';
 import { kebabCase, lowerCase, split } from 'lodash';
-import { Country } from '@/types/queries';
-import { ClientCart } from '@/types/index';
-// export const baseUrl = `https://mybusiness.letsform.src/`;
-export const baseUrl = `${window.location.origin}`;
+export const baseUrl = `http://pages-dash.testbedbynd.com/`;
 //https://pages.testbedbynd.com/
 export const apiUrl = `${baseUrl}api/`;
 export const appLinks = {
