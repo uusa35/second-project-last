@@ -3,7 +3,7 @@ import { kebabCase, lowerCase, split } from 'lodash';
 import { Country } from '@/types/queries';
 import { ClientCart } from '@/types/index';
 // export const baseUrl = `https://mybusiness.letsform.src/`;
-export const baseUrl = `https://pages-dash.testbedbynd.com/`;
+export const baseUrl = `${window.location.origin}`;
 //https://pages.testbedbynd.com/
 export const apiUrl = `${baseUrl}api/`;
 export const appLinks = {

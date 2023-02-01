@@ -6,7 +6,10 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useTranslation } from 'react-i18next';
 import { AppQueryResult, Area, Branch } from '@/types/queries';
 import { useEffect, useState, Suspense } from 'react';
-import { setCurrentModule, setShowFooterElement } from '@/redux/slices/appSettingSlice';
+import {
+  setCurrentModule,
+  setShowFooterElement,
+} from '@/redux/slices/appSettingSlice';
 import {
   Accordion,
   AccordionHeader,
@@ -15,10 +18,9 @@ import {
 import { CircleOutlined, CheckCircle } from '@mui/icons-material';
 import { submitBtnClass, suppressText } from '@/constants/*';
 import { appSetting } from '@/types/index';
-import { setCartMethod } from '@/redux/slices/appSettingSlice';
 import { Location } from '@/types/queries';
 import { isEmpty, isNull, map } from 'lodash';
-import { removeArea, setArea } from '@/redux/slices/areaSlice';
+import { setArea } from '@/redux/slices/areaSlice';
 import { useRouter } from 'next/router';
 import { setBranch } from '@/redux/slices/branchSlice';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
@@ -78,7 +80,7 @@ const SelectMethod: NextPage<Props> = ({
 
   useEffect(() => {
     dispatch(setCurrentModule(t('select_method')));
-    dispatch(setShowFooterElement(`select_method`));;
+    dispatch(setShowFooterElement(`select_method`));
     () => refetchCart();
   }, []);
 
