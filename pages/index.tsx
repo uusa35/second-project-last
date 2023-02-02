@@ -117,7 +117,7 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
 export default HomePage;
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
-    async ({ locale }) => {
+    async ({ req, locale }) => {
       if (store.getState().locale.lang !== locale) {
         store.dispatch(setLocale(locale));
       }
