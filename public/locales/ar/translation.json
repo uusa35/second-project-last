@@ -501,5 +501,6 @@
   "sp_req" : "طلب خاص",
   "enter_extra_notes_for_product":"ادخل الملاحظات الاضافية للمنتج",
   "delivery_time_and_date":"وقت و تاريخ التوصيل",
-  "pickup_time_and_date":"وقت و تاريخ الاستلام"
+  "pickup_time_and_date":"وقت و تاريخ الاستلام",
+  "quantity_of_out_of_stock" : "هذا المنتج غير متاح"
 }

@@ -28,7 +28,6 @@ import { branchApi } from '@/redux/api/branchApi';
 const persistConfig = {
   key: 'root',
   storage,
-  // blacklist: ['appSetting'],
   whitelist: [
     'appLoading',
     'appSetting',

@@ -113,9 +113,9 @@ const AppFooter: FC<Props> = ({
               dispatch(
                 showToastMessage({
                   // content: lowerCase(kebabCase(r.error.data.msg)),
-                  content:
-                    lowerCase(kebabCase(r.error.data.msg)) ??
-                    'select_a_branch_or_area_before_order_or_some_fields_are_required_missing',
+                  content: r.error.data.msg
+                    ? lowerCase(kebabCase(r.error.data.msg))
+                    : 'select_a_branch_or_area_before_order_or_some_fields_are_required_missing',
                   type: `error`,
                 })
               );

@@ -49,7 +49,6 @@ import { Accordion, AccordionBody } from '@material-tailwind/react';
 import TextTrans from '@/components/TextTrans';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import NoFoundImage from '@/appImages/not_found.png';
-import { parseString } from 'set-cookie-parser';
 
 type Props = {
   element: Product;
@@ -111,7 +110,7 @@ const ProductShow: NextPage<Props> = ({ element }) => {
       setInitialProductCart({
         ProductID: element.id,
         ProductName: element.name,
-        ProductImage: element.img[0].thumbnail,
+        ProductImage: element.img[0]?.thumbnail ?? ``,
         name_ar: element.name_ar,
         name_en: element.name_en,
         ProductDesc: element.desc,
