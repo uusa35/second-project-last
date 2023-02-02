@@ -6,15 +6,9 @@ import { toast, TypeOptions } from 'react-toastify';
 import { Auth, Guest } from '@/types/queries';
 import { appSettingSlice } from '@/redux/slices/appSettingSlice';
 import { lowerCase, snakeCase } from 'lodash';
-import { orderSlice } from '@/redux/slices/orderSlice';
 import { apiLogin, apiLogout, apiVerified } from '@/constants/*';
-import { searchParamsSlice } from '@/redux/slices/searchParamsSlice';
-import { persistor } from '@/redux/store';
 
-export function* startResetAppScenario() {
-  yield all([put({ type: `${searchParamsSlice.actions.resetSearchParams}` })]);
-  // persistor.purge();
-}
+import { persistor } from '@/redux/store';
 
 export function* startResetEnireAppSceanrio() {
   persistor.purge();
@@ -114,79 +108,6 @@ export function* startEnableGuestModeScenario(action: PayloadAction<Guest>) {
     ]);
     yield delay(1000);
     route.router?.back();
-  } catch (e: any) {
-    yield put({
-      type: `${appSettingSlice.actions.showToastMessage}`,
-      payload: {
-        content: e.message,
-        type: 'error',
-      },
-    });
-  }
-}
-
-export function* startOrderMadeScenario(action: PayloadAction<any>) {
-  const { data } = action.payload;
-  const {
-    cart: { currentMode },
-  } = yield select();
-  if (data.success) {
-    yield all([
-      put({
-        type: `${appSettingSlice.actions.showToastMessage}`,
-        payload: {
-          content: `redirecting_ur_order_please_wait`,
-          type: 'warning',
-        },
-      }),
-      put({
-        type: `${orderSlice.actions.setOrder}`,
-        payload: { orderMode: currentMode },
-      }),
-    ]);
-    // K-net / Visa Case
-    if (data.data.url && data.data.invoice_id) {
-      yield put({
-        type: `${orderSlice.actions.setInvoiceId}`,
-        payload: data.data.invoice_id,
-      });
-      route.router?.replace({
-        // pathname: `${appLinks.orderRedirect.path}`,
-        query: { url: data.data.url },
-      });
-      // COD case
-    } else if (data.success && data.data.order_id) {
-      yield all([
-        delay(2000),
-        put({ type: `${appSettingSlice.actions.hideToastMessage}` }),
-      ]);
-      yield all([
-        put({
-          type: `${appSettingSlice.actions.showToastMessage}`,
-          payload: {
-            content: data.message,
-            type: 'success',
-          },
-        }),
-        put({
-          type: `${orderSlice.actions.setOrder}`,
-          payload: data.data,
-        }),
-      ]);
-      route.router?.replace({
-        // pathname: appLinks.orderSuccess.path,
-      });
-    }
-  } else {
-    yield put({
-      type: `${appSettingSlice.actions.showToastMessage}`,
-      payload: {
-        content: data.message,
-        type: 'error',
-      },
-    });
-  }
-  try {
   } catch (e: any) {
     yield put({
       type: `${appSettingSlice.actions.showToastMessage}`,

@@ -151,7 +151,7 @@ export const getApiCountry = async () =>
 
 export const getHost = async () =>
   await fetch(`/api/get/host`, {
-    method: 'GET',
+    method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },

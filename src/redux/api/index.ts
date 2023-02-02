@@ -3,11 +3,13 @@ import { HYDRATE } from 'next-redux-wrapper';
 import { apiUrl, getHost, xDomain } from '../../constants';
 import { RootState } from '@/redux/store';
 
+const host = async () =>
+  await getHost().then((req) => req.url.split('//')[1].split('/')[0]);
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
     baseUrl: `${apiUrl}`,
-    prepareHeaders: async (
+    prepareHeaders: (
       headers,
       { getState, type, endpoint, extra }: RootState
     ) => {
@@ -15,13 +17,13 @@ export const apiSlice = createApi({
         'Access-Control-Allow-Headers',
         'X-Requested-With,Accept,Authentication,Content-Type'
       );
-      const host = await getHost().then(
-        (r: any) => r.url.split('//')[1].split('/')[0]
-      );
+      // const testHost = await getHost();
       // const otherHost = await getHost().then((r: any) => r.data);
+      // console.log('the host ============>', testHost);
       // console.log('the host ============>', host);
-      // console.log('the xdomain ============>', xDomain);
-      await headers.set('url', host);
+      console.log('the xdomain ============>', xDomain);
+      headers.set('url', xDomain);
+      // headers.set('url', host);
       headers.set(
         'Access-Control-Allow-Methods',
         'GET,PUT,POST,DELETE,PATCH,OPTIONS'

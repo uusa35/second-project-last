@@ -5,6 +5,8 @@ const initialState: Order = {
   payment_method: '',
   orderId: null,
   vendor_name: '',
+  vendor_name_ar: '',
+  vendor_name_en: '',
   vendor_logo: 'images/store/logos/logo.',
   vendor_description: [],
   branch_phone: '',

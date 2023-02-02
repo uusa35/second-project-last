@@ -29,6 +29,17 @@ const persistConfig = {
   key: 'root',
   storage,
   // blacklist: ['appSetting'],
+  whitelist: [
+    'appLoading',
+    'appSetting',
+    'area',
+    'branch',
+    'cart',
+    'customer',
+    'order',
+    'productCart',
+    'vendor',
+  ],
   // stateReconciler: hardSet,
   debug: isLocal,
 };

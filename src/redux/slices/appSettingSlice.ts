@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { appSetting } from '@/types/index';
-import { searchParamsSlice } from '@/redux/slices/searchParamsSlice';
 import { areaSlice } from './areaSlice';
 import { branchSlice } from './branchSlice';
 
@@ -199,18 +198,6 @@ export const appSettingSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(
-      searchParamsSlice.actions.setSearchDateSelected,
-      (state, action) => {
-        state.showPickDateModal = false;
-      }
-    );
-    builder.addCase(
-      searchParamsSlice.actions.setSearchArea,
-      (state, action) => {
-        state.showAreaModal = false;
-      }
-    );
     builder.addCase(branchSlice.actions.setBranch, (state, action) => {
       state.method = 'pickup';
     });

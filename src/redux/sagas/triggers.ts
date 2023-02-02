@@ -14,18 +14,12 @@ import {
   startSetLoginScenario,
   startSetLogOutScenario,
   startResetEnireAppSceanrio,
-  startResetAppScenario,
   startUpdateCartProductScenario,
 } from './appSaga';
 import { appSettingSlice } from '@/redux/slices/appSettingSlice';
 import { appLoadingSlice } from '@/redux/slices/appLoadingSlice';
 import { localeSlice } from '@/redux/slices/localeSlice';
-import { authSlice } from '@/redux/slices/authSlice';
 import { productCartSlice } from '@/redux/slices/productCartSlice';
-
-export function* triggerResetApp() {
-  yield takeLatest(`resetApp`, startResetAppScenario);
-}
 
 export function* triggerResetEntireApp() {
   yield takeLatest(`resetEntireApp`, startResetEnireAppSceanrio);
@@ -59,14 +53,6 @@ export function* triggerEnableLoading() {
 
 export function* triggerChangeLang() {
   yield takeLatest(`${localeSlice.actions.setLocale}`, startChangeLangScenario);
-}
-
-export function* triggerSetLogin() {
-  yield takeLatest(`${authSlice.actions.setLogin}`, startSetLoginScenario);
-}
-
-export function* triggerSetLogout() {
-  yield takeLatest(`${authSlice.actions.logout}`, startSetLogOutScenario);
 }
 
 export function* triggerShowToastMessage() {
