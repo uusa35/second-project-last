@@ -15,10 +15,13 @@ export const apiSlice = createApi({
         'Access-Control-Allow-Headers',
         'X-Requested-With,Accept,Authentication,Content-Type'
       );
-      const host = await getHost().then((r: any) => JSON.parse(r.data.data));
+      const host = await getHost().then(
+        (r: any) => r.url.split('//')[1].split('/')[0]
+      );
       // const otherHost = await getHost().then((r: any) => r.data);
-      console.log('the host ============>', host);
-      await headers.set('url', host.data);
+      // console.log('the host ============>', host);
+      // console.log('the xdomain ============>', xDomain);
+      await headers.set('url', host);
       headers.set(
         'Access-Control-Allow-Methods',
         'GET,PUT,POST,DELETE,PATCH,OPTIONS'
