@@ -15,8 +15,9 @@ export const apiSlice = createApi({
         'Access-Control-Allow-Headers',
         'X-Requested-With,Accept,Authentication,Content-Type'
       );
-      const host = await getHost().then((r: any) => r.data);
-      headers.set('url', host);
+      const host = await getHost().then((r: any) => JSON.parse(r.data));
+      console.log('the host ============>', host);
+      headers.set('url', host.data);
       headers.set(
         'Access-Control-Allow-Methods',
         'GET,PUT,POST,DELETE,PATCH,OPTIONS'
