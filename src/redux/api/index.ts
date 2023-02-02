@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { HYDRATE } from 'next-redux-wrapper';
-import { apiUrl, xDomain } from '../../constants';
+import { apiUrl, getHost, xDomain } from '../../constants';
 import { RootState } from '@/redux/store';
 
 export const apiSlice = createApi({
@@ -15,7 +15,8 @@ export const apiSlice = createApi({
         'Access-Control-Allow-Headers',
         'X-Requested-With,Accept,Authentication,Content-Type'
       );
-      headers.set('url', headers.get(`host`) ?? xDomain);
+      const host = await getHost().then((r: any) => r.data);
+      headers.set('url', host);
       headers.set(
         'Access-Control-Allow-Methods',
         'GET,PUT,POST,DELETE,PATCH,OPTIONS'

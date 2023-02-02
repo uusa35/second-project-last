@@ -3,8 +3,6 @@ import type { NextRequest } from 'next/server';
 
 export async function middleware(req: NextRequest, res: NextResponse) {
   const isLocal = process.env.NODE_ENV !== 'production';
-  const host = req.headers.get('Host');
-  req.headers.set('url', host);
   const { cookies } = req;
   const token: string | null | undefined = cookies.has('access_token')
     ? cookies.get('access_token')?.value
