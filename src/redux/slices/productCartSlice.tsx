@@ -10,10 +10,11 @@ import { filter, multiply, random } from 'lodash';
 const initialState: ProductCart = {
   ProductID: 0,
   ProductName: ``,
+  ProductImage: ``,
   name_ar: ``,
   name_en: ``,
   ProductDesc: ``,
-  ExtraNotes:'',
+  ExtraNotes: '',
   Quantity: 0,
   Price: 0,
   RadioBtnsAddons: [],
@@ -130,10 +131,7 @@ export const productCartSlice = createSlice({
         id: action.payload,
       };
     },
-    setNotes: (
-      state: typeof initialState,
-      action: PayloadAction<string>
-    ) => {
+    setNotes: (state: typeof initialState, action: PayloadAction<string>) => {
       return {
         ...state,
         ExtraNotes: action.payload,
@@ -181,7 +179,6 @@ export const productCartSlice = createSlice({
         ...initialState,
       };
     },
-    
   },
 });
 
@@ -200,5 +197,5 @@ export const {
   enableAddToCart,
   disableAddToCart,
   updateId,
-  setNotes
+  setNotes,
 } = productCartSlice.actions;
