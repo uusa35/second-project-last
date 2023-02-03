@@ -5,7 +5,6 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  console.log('the req', req.headers.origin);
-  const origin = await res.status(200).json({ data: req.headers.origin });
+  const origin = await res.status(200).json({ data: req.headers.host });
   return origin;
 }

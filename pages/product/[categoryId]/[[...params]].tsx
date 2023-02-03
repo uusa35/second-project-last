@@ -40,8 +40,8 @@ const ProductIndex: NextPage<Props> = ({ elements }): JSX.Element => {
   const [Icon, SetIcon] = useState(true);
   const { query }: any = useRouter();
   const [currentProducts, setCurrentProducts] = useState<any>([]);
-  const [trigger] = useLazyGetSearchProductsQuery<{
-    trigger: () => void;
+  const [triggerSearchProducts] = useLazyGetSearchProductsQuery<{
+    triggerSearchProducts: () => void;
   }>();
   // change menue view to list view
   const changeStyle = (preview: appSetting['productPreview']) => {
@@ -60,7 +60,7 @@ const ProductIndex: NextPage<Props> = ({ elements }): JSX.Element => {
 
   const handleChange = (key: string) => {
     if (key.length > 2) {
-      trigger({ key, lang, branch_id }).then((r: any) =>
+      triggerSearchProducts({ key, lang, branch_id }).then((r: any) =>
         setCurrentProducts(r.data.Data)
       );
     } else {

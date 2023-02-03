@@ -7,8 +7,8 @@ class MyDocument extends Document {
   static async getInitialProps(
     ctx: DocumentContext
   ): Promise<DocumentInitialProps> {
+    console.log('heree =======> the document', ctx.req?.headers.host);
     const initialProps = await Document.getInitialProps(ctx);
-
     return initialProps;
   }
 }

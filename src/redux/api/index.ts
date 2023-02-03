@@ -3,13 +3,11 @@ import { HYDRATE } from 'next-redux-wrapper';
 import { apiUrl, getHost, xDomain } from '../../constants';
 import { RootState } from '@/redux/store';
 
-// const host = async () =>
-//   await getHost().then((req) => req.url.split('//')[1].split('/')[0]);
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
     baseUrl: `${apiUrl}`,
-    prepareHeaders: (
+    prepareHeaders: async (
       headers,
       { getState, type, endpoint, extra }: RootState
     ) => {
@@ -20,6 +18,8 @@ export const apiSlice = createApi({
       // const fetchOrigin = await getHost().then(
       //     (req) => req.url.split('//')[1].split('/')[0]
       // );
+      // const host = await getHost().then((r: Response) => r.headers.get('Host'));
+      // console.log('the xdomain ============>', host);
       // console.log('the xdomain ============>', xDomain);
       // console.log('the fetchOrigin ============>', fetchOrigin);
       headers.set('url', xDomain);

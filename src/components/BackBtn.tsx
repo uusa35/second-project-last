@@ -1,15 +1,12 @@
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { FC, Suspense, useEffect } from 'react';
+import { FC, Suspense } from 'react';
 import { useRouter } from 'next/router';
 import { isNull } from 'lodash';
 import { appLinks, suppressText } from '../constants';
 import Link from 'next/link';
 import { ShoppingBagOutlined } from '@mui/icons-material';
 import { setLocale } from '@/redux/slices/localeSlice';
-import {
-  setCurrentModule,
-  showToastMessage,
-} from '@/redux/slices/appSettingSlice';
+import { showToastMessage } from '@/redux/slices/appSettingSlice';
 import { useTranslation } from 'react-i18next';
 import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 import { themeColor } from '@/redux/slices/vendorSlice';
