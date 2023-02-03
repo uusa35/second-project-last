@@ -19,8 +19,6 @@ export const apiSlice = createApi({
       //     (req) => req.url.split('//')[1].split('/')[0]
       // );
       // const host = await getHost().then((r: Response) => r.headers.get('Host'));
-      // console.log('the xdomain ============>', host);
-      // console.log('the xdomain ============>', xDomain);
       // console.log('the fetchOrigin ============>', fetchOrigin);
       headers.set('url', xDomain);
       headers.set(
