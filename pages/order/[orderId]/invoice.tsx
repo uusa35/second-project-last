@@ -27,7 +27,7 @@ const OrderInvoice: NextPage<Props> = ({ element }): JSX.Element => {
   };
 
   useEffect(() => {
-    dispatch(setCurrentModule(t('invoice')));
+    dispatch(setCurrentModule('invoice'));
   }, []);
 
   return (

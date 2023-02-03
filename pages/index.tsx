@@ -43,7 +43,7 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
   const router = useRouter();
 
   useEffect(() => {
-    dispatch(setCurrentModule(t('home')));
+    dispatch(setCurrentModule('home'));
     dispatch(setShowFooterElement('home'));
   }, []);
 

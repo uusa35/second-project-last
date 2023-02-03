@@ -11,7 +11,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setBranch } from '@/redux/slices/branchSlice';
 import GoogleMapReact from 'google-map-react';
 import Phone from '@/appIcons/phone.svg';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { suppressText, submitBtnClass } from '@/constants/*';
 import { useEffect, Suspense } from 'react';
 import { setCurrentModule } from '@/redux/slices/appSettingSlice';
@@ -27,7 +27,7 @@ const BranchIndex: NextPage<Props> = ({ elements }) => {
   const { t } = useTranslation();
   const color = useAppSelector(themeColor);
   useEffect(() => {
-    dispatch(setCurrentModule(t('our_branches')));
+    dispatch(setCurrentModule('our_branches'));
   }, []);
 
   return (

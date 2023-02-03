@@ -51,7 +51,7 @@ const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
     }>();
 
   useEffect(() => {
-    dispatch(setCurrentModule(t('product_search_index')));
+    dispatch(setCurrentModule('product_search_index'));
   }, []);
 
   useEffect(() => {

@@ -79,7 +79,7 @@ const SelectMethod: NextPage<Props> = ({
   }>({ lang });
 
   useEffect(() => {
-    dispatch(setCurrentModule(t('select_method')));
+    dispatch(setCurrentModule('select_method'));
     dispatch(setShowFooterElement(`select_method`));
     () => refetchCart();
   }, []);

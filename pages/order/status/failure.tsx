@@ -30,7 +30,7 @@ const OrderFailure: NextPage = (): JSX.Element => {
   });
   const dispatch = useAppDispatch();
   useEffect(() => {
-    dispatch(setCurrentModule(t('order_failure')));
+    dispatch(setCurrentModule('order_failure'));
   }, []);
   return (
     <MainContentLayout>

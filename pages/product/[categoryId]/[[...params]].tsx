@@ -38,6 +38,8 @@ const ProductIndex: NextPage<Props> = ({ elements }): JSX.Element => {
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const [Icon, SetIcon] = useState(true);
+  const { query }: any = useRouter();
+  const [currentProducts, setCurrentProducts] = useState<any>([]);
   const [trigger] = useLazyGetSearchProductsQuery<{
     trigger: () => void;
   }>();
@@ -46,8 +48,6 @@ const ProductIndex: NextPage<Props> = ({ elements }): JSX.Element => {
     dispatch(setProductPreview(preview));
     SetIcon(!Icon);
   };
-  const { query }: any = useRouter();
-  const [currentProducts, setCurrentProducts] = useState<any>([]);
 
   useEffect(() => {
     if (query && query.slug) {

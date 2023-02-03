@@ -295,7 +295,7 @@ const CartAddress: NextPage = (): JSX.Element => {
   };
 
   useEffect(() => {
-    dispatch(setCurrentModule(t('cart_address')));
+    dispatch(setCurrentModule('cart_address'));
     dispatch(setShowFooterElement('cart_address'));
     if (
       (isNull(area.id) && isNull(branch.id)) ||

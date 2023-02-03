@@ -33,7 +33,7 @@ const TrackOrder: NextPage = (): JSX.Element => {
   }, [router.isReady, router.query.order_code]);
 
   useEffect(() => {
-    dispatch(setCurrentModule(t('track_order')));
+    dispatch(setCurrentModule('track_order'));
   }, []);
 
   if (isLoading) {

@@ -33,7 +33,7 @@ const OrderSuccess: NextPage<Props> = ({ element }) => {
   const [triggerGetCartProducts] = useLazyGetCartProductsQuery();
 
   useEffect(() => {
-    dispatch(setCurrentModule(t('order_success')));
+    dispatch(setCurrentModule('order_success'));
     dispatch(setShowFooterElement(t('order_success')));
     triggerGetCartProducts({ UserAgent: userAgent });
   }, []);

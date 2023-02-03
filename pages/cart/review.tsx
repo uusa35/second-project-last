@@ -48,7 +48,7 @@ const CartReview: NextPage = () => {
     OrderUser['PaymentMethod'] | null
   >(null);
   useEffect(() => {
-    dispatch(setCurrentModule(t('order_review')));
+    dispatch(setCurrentModule('order_review'));
     dispatch(setShowFooterElement('order_review'));
   }, []);
   const {

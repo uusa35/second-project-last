@@ -71,7 +71,7 @@ const CartIndex: NextPage = (): JSX.Element => {
   }, [cartItems]);
 
   useEffect(() => {
-    dispatch(setCurrentModule(t('cart')));
+    dispatch(setCurrentModule('cart'));
     dispatch(setShowFooterElement(`cart_index`));
     return () => {
       dispatch(resetShowFooterElement());

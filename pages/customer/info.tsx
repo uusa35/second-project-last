@@ -76,7 +76,7 @@ const CustomerInformation: NextPage = (): JSX.Element => {
   });
 
   useEffect(() => {
-    dispatch(setCurrentModule(t('customer_info')));
+    dispatch(setCurrentModule('customer_info'));
     dispatch(setShowFooterElement(`customerInfo`));
     if (
       (isNull(areaId) && isNull(branchId)) ||
