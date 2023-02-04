@@ -33,7 +33,7 @@ const ChangeLocationModal: FC<Props> = ({
   const { t } = useTranslation();
   const {
     customer: { userAgent },
-    appSetting: { method },
+    appSetting: { method, url },
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -48,8 +48,8 @@ const ChangeLocationModal: FC<Props> = ({
           SelectedAreaOrBranch.method === `pickup`
             ? { 'x-branch-id': SelectedAreaOrBranch.branch.id }
             : { 'x-area-id': SelectedAreaOrBranch.area.id },
+        url,
       }).then(() => {
-        console.log('in modalset area');
         SelectedAreaOrBranch.method === `pickup`
           ? dispatch(setBranch(SelectedAreaOrBranch.branch))
           : dispatch(setArea(SelectedAreaOrBranch.area));

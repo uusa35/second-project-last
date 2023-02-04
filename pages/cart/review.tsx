@@ -142,11 +142,9 @@ const CartReview: NextPage<Props> = ({ url }) => {
           UserAgent: userAgent,
           Messg: customer.notes,
           PaymentMethod: selectedPaymentMethod,
-
           Date: `${new Date(customer.prefrences.date as Date).getFullYear()}-${
             new Date(customer.prefrences.date as Date).getMonth() + 1
           }-${new Date(customer.prefrences.date as Date).getDate()}`,
-
           Time: `${(
             '0' + new Date(customer.prefrences.time as Date).getHours()
           ).slice(-2)}:${(
