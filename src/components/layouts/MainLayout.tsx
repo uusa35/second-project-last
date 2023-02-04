@@ -49,6 +49,7 @@ const MainLayout: FC<Props> = ({ children, url }): JSX.Element => {
     isSuccess: boolean;
   }>({ lang: locale.lang, url });
   const [triggerCreateTempId] = useLazyCreateTempIdQuery();
+  console.log('url', url);
 
   useEffect(() => {
     if (isNull(userAgent)) {
@@ -56,13 +57,16 @@ const MainLayout: FC<Props> = ({ children, url }): JSX.Element => {
         dispatch(setUserAgent(r.data.Data?.Id))
       );
     }
-    if (isSuccess && vendorElement.Data) {
-      dispatch(setVendor(vendorElement.Data));
-    }
     if (url) {
       dispatch(setUrl(url));
     }
   }, []);
+
+  useEffect(() => {
+    if (isSuccess && vendorElement.Data) {
+      dispatch(setVendor(vendorElement.Data));
+    }
+  }, [isSuccess]);
 
   useEffect(() => {
     const handleRouteChange: Handler = (url, { shallow }) => {
