@@ -22,8 +22,9 @@ import { useLazyGetCartProductsQuery } from '@/redux/api/cartApi';
 
 type Props = {
   element: Order;
+  url: string;
 };
-const OrderSuccess: NextPage<Props> = ({ element }) => {
+const OrderSuccess: NextPage<Props> = ({ element, url }) => {
   const { t } = useTranslation();
   const {
     customer: { userAgent },
@@ -35,7 +36,7 @@ const OrderSuccess: NextPage<Props> = ({ element }) => {
   useEffect(() => {
     dispatch(setCurrentModule('order_success'));
     dispatch(setShowFooterElement(t('order_success')));
-    triggerGetCartProducts({ UserAgent: userAgent });
+    triggerGetCartProducts({ UserAgent: userAgent, url });
   }, []);
 
   return (
@@ -136,7 +137,13 @@ const OrderSuccess: NextPage<Props> = ({ element }) => {
 export default OrderSuccess;
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
-    async ({ query }) => {
+    async ({ req, query }) => {
+      if (!req.headers.host) {
+        return {
+          notFound: true,
+        };
+      }
+      const url = req.headers.host;
       const { orderId }: any = query;
       if (!orderId) {
         return {
@@ -151,6 +158,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
           orderApi.endpoints.checkOrderStatus.initiate({
             status: 'success',
             order_id: orderId,
+            url,
           })
         );
       await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
@@ -162,6 +170,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
       return {
         props: {
           element: element.data,
+          url,
         },
       };
     }

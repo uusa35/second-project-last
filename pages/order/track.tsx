@@ -3,7 +3,7 @@ import { NextPage } from 'next';
 import MainContentLayout from '@/layouts/MainContentLayout';
 import { useTranslation } from 'react-i18next';
 import { suppressText, submitBtnClass } from '@/constants/*';
-import { setCurrentModule } from '@/redux/slices/appSettingSlice';
+import { setCurrentModule, setUrl } from '@/redux/slices/appSettingSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { useLazyTrackOrderQuery } from '@/redux/api/orderApi';
@@ -11,8 +11,12 @@ import { debounce, isEmpty, lowerCase, snakeCase } from 'lodash';
 import { useRouter } from 'next/router';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { themeColor } from '@/redux/slices/vendorSlice';
+import { wrapper } from '@/redux/store';
 
-const TrackOrder: NextPage = (): JSX.Element => {
+type Props = {
+  url: string;
+};
+const TrackOrder: NextPage<Props> = ({ url }): JSX.Element => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -20,9 +24,15 @@ const TrackOrder: NextPage = (): JSX.Element => {
   const [triggerGetTrackOrder, { data, isSuccess, isLoading }] =
     useLazyTrackOrderQuery();
 
+  useEffect(() => {
+    if (url) {
+      dispatch(setUrl(url));
+    }
+  });
+
   const handleChange = (order_code: string) => {
     if (order_code && order_code.length >= 3) {
-      triggerGetTrackOrder({ order_code });
+      triggerGetTrackOrder({ order_code, url });
     }
   };
 
@@ -41,14 +51,16 @@ const TrackOrder: NextPage = (): JSX.Element => {
   }
 
   const handelDisplayAddress = () => {
-    let address = Object.values(data.data.address.address);
-    let concatAdd = '';
-    address.map((a) => {
-      if (a !== null) {
-        concatAdd += a + ', ';
-      }
-    });
-    return concatAdd;
+    if (data) {
+      let address = Object.values(data.data.address.address);
+      let concatAdd = '';
+      address.map((a) => {
+        if (a !== null) {
+          concatAdd += a + ', ';
+        }
+      });
+      return concatAdd;
+    }
   };
 
   return (
@@ -179,3 +191,19 @@ const TrackOrder: NextPage = (): JSX.Element => {
 };
 
 export default TrackOrder;
+
+export const getServerSideProps = wrapper.getServerSideProps(
+  (store) =>
+    async ({ req }) => {
+      if (!req.headers.host) {
+        return {
+          notFound: true,
+        };
+      }
+      return {
+        props: {
+          url: req.headers.host,
+        },
+      };
+    }
+);

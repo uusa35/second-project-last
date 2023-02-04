@@ -14,8 +14,6 @@ import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
 import { FC } from 'react';
 import { useGetCartProductsQuery } from '@/redux/api/cartApi';
-import CustomImage from '@/components/CustomImage';
-import TextTrans from '@/components/TextTrans';
 
 type Props = {
   offset: number;
@@ -26,12 +24,13 @@ const SlideTopNav: FC<Props> = ({ offset, isHome = false }): JSX.Element => {
   const { t } = useTranslation();
   const {
     vendor,
-    appSetting: { sideMenuOpen },
+    appSetting: { sideMenuOpen, url },
     customer: { userAgent },
     locale: { lang, otherLang },
   } = useAppSelector((state) => state);
   const { data: cartItems, isSuccess } = useGetCartProductsQuery({
     UserAgent: userAgent,
+    url,
   });
   const dispatch = useAppDispatch();
   const router = useRouter();

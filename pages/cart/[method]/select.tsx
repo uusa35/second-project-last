@@ -9,6 +9,7 @@ import { useEffect, useState, Suspense } from 'react';
 import {
   setCurrentModule,
   setShowFooterElement,
+  setUrl,
 } from '@/redux/slices/appSettingSlice';
 import {
   Accordion,
@@ -30,15 +31,17 @@ import TextTrans from '@/components/TextTrans';
 import ChangeLocationModal from '@/components/ChangeLocationModal';
 import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 import { wrapper } from '@/redux/store';
-import { themeColor } from '@/redux/slices/vendorSlice';
+import { setColorTheme, themeColor } from '@/redux/slices/vendorSlice';
 
 type Props = {
   previousRoute: string | null;
   method: appSetting['method'];
+  url: string;
 };
 const SelectMethod: NextPage<Props> = ({
   previousRoute,
   method,
+  url,
 }): JSX.Element => {
   const { t } = useTranslation();
   const router = useRouter();
@@ -67,16 +70,23 @@ const SelectMethod: NextPage<Props> = ({
     refetch: refetchCart,
   } = useGetCartProductsQuery({
     UserAgent: userAgent,
+    url,
   });
   const { data: locations, isLoading: locationsLoading } =
     useGetLocationsQuery<{
       data: AppQueryResult<Location[]>;
       isLoading: boolean;
-    }>({ lang });
+    }>({ lang, url });
   const { data: branches, isLoading: branchesLoading } = useGetBranchesQuery<{
     data: AppQueryResult<Branch[]>;
     isLoading: boolean;
-  }>({ lang });
+  }>({ lang, url });
+
+  useEffect(() => {
+    if (url) {
+      dispatch(setUrl(url));
+    }
+  });
 
   useEffect(() => {
     dispatch(setCurrentModule('select_method'));
@@ -282,6 +292,11 @@ export default SelectMethod;
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ req, query }) => {
+      if (!req.headers.host) {
+        return {
+          notFound: true,
+        };
+      }
       const { method }: any = query;
       if (!method) {
         return {
@@ -292,6 +307,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
         props: {
           previousRoute: req.headers.referer ?? null,
           method,
+          url: req.headers.host,
         },
       };
     }

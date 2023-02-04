@@ -21,6 +21,7 @@ import GoogleMapReact from 'google-map-react';
 import {
   setCurrentModule,
   setShowFooterElement,
+  setUrl,
   showToastMessage,
 } from '@/redux/slices/appSettingSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -39,8 +40,12 @@ import { themeColor } from '@/redux/slices/vendorSlice';
 import { useRouter } from 'next/router';
 import { setOrder, setPaymentMethod } from '@/redux/slices/orderSlice';
 import { CheckCircle, BadgeOutlined } from '@mui/icons-material';
+import { wrapper } from '@/redux/store';
 
-const CartReview: NextPage = () => {
+type Props = {
+  url: string;
+};
+const CartReview: NextPage<Props> = ({ url }) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -65,6 +70,7 @@ const CartReview: NextPage = () => {
     refetch: () => void;
   }>({
     UserAgent: userAgent,
+    url,
   });
   const [triggerCreateOrder, { isLoading }] = useLazyCreateOrderQuery();
   const [triggerAddToCart] = useAddToCartMutation();
@@ -73,6 +79,12 @@ const CartReview: NextPage = () => {
     { id: 'knet', src: Knet.src },
     { id: 'cash_on_delivery', src: Cash.src },
   ];
+
+  useEffect(() => {
+    if (url) {
+      dispatch(setUrl(url));
+    }
+  });
 
   useEffect(() => {
     if (
@@ -154,6 +166,7 @@ const CartReview: NextPage = () => {
           process_type === `delivery`
             ? { 'x-area-id': areaId }
             : { 'x-branch-id': branchId },
+        url,
       }).then((r: any) => {
         if (r.data) {
           if (r.data.status) {
@@ -204,6 +217,7 @@ const CartReview: NextPage = () => {
             ? currentItems
             : [], // empty Cart Case !!!
       },
+      url,
     }).then((r: any) => {
       if (r.data && r.data?.status) {
         dispatch(
@@ -549,3 +563,19 @@ const CartReview: NextPage = () => {
 };
 
 export default CartReview;
+
+export const getServerSideProps = wrapper.getServerSideProps(
+  (store) =>
+    async ({ req }) => {
+      if (!req.headers.host) {
+        return {
+          notFound: true,
+        };
+      }
+      return {
+        props: {
+          url: req.headers.host,
+        },
+      };
+    }
+);

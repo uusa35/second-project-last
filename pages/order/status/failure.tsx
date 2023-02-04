@@ -17,7 +17,12 @@ import { useEffect } from 'react';
 import { setCurrentModule } from '@/redux/slices/appSettingSlice';
 import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 import { themeColor } from '@/redux/slices/vendorSlice';
-const OrderFailure: NextPage = (): JSX.Element => {
+import { wrapper } from '@/redux/store';
+
+type Props = {
+  url: string;
+};
+const OrderFailure: NextPage<Props> = ({ url }): JSX.Element => {
   const { t } = useTranslation();
   const {
     branch: { id: branchId },
@@ -27,6 +32,7 @@ const OrderFailure: NextPage = (): JSX.Element => {
   const color = useAppSelector(themeColor);
   const { data: cartItems, isSuccess } = useGetCartProductsQuery({
     UserAgent: userAgent,
+    url,
   });
   const dispatch = useAppDispatch();
   useEffect(() => {
@@ -98,3 +104,19 @@ const OrderFailure: NextPage = (): JSX.Element => {
   );
 };
 export default OrderFailure;
+
+export const getServerSideProps = wrapper.getServerSideProps(
+  (store) =>
+    async ({ req }) => {
+      if (!req.headers.host) {
+        return {
+          notFound: true,
+        };
+      }
+      return {
+        props: {
+          url: req.headers.host,
+        },
+      };
+    }
+);
