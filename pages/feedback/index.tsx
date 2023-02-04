@@ -13,13 +13,12 @@ import * as yup from 'yup';
 import {
   arboriaFont,
   convertColor,
-  footerBtnClass,
   gessFont,
   submitBtnClass,
   suppressText,
 } from '@/constants/*';
 import { useForm } from 'react-hook-form';
-import { debounce, map } from 'lodash';
+import { map } from 'lodash';
 import { useState } from 'react';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
 import { themeColor } from '@/redux/slices/vendorSlice';
@@ -29,11 +28,14 @@ type Props = {
   isOpen: boolean;
   ariaHideApp: boolean;
   onRequestClose: () => void;
+  url: string;
 };
+
 const Feedback: NextPage<Props> = ({
   isOpen,
   onRequestClose,
   ariaHideApp,
+  url,
 }): JSX.Element => {
   const { t } = useTranslation();
   const {
@@ -69,19 +71,21 @@ const Feedback: NextPage<Props> = ({
       phone: ``,
     },
   });
+
   const handleChange = ({ target }: any) => {
     setValue(target.name, target.value);
     clearErrors(target.name);
   };
+
   const ratingButtons = [
     { rate: 1, text: 'can_be_better' },
     { rate: 2, text: 'it_was_okay' },
     { rate: 3, text: 'amazing' },
   ];
+
   const onSubmit = async (body: any) => {
-    await triggerCreateFeedback(body).then((r: any) => {
+    await triggerCreateFeedback({ body, url }).then((r: any) => {
       if (r.data && r.data.status) {
-        console.log('feedback response', r.data);
         dispatch(
           showToastMessage({
             content: `${t(`thanks_for_your_feedback`)}`,
@@ -102,6 +106,7 @@ const Feedback: NextPage<Props> = ({
       }
     });
   };
+
   return (
     <Modal
       isOpen={isOpen}
