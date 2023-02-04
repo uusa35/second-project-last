@@ -27,12 +27,13 @@ const BackBtn: FC<Props> = ({
   const { t } = useTranslation();
   const color = useAppSelector(themeColor);
   const {
-    appSetting: { currentModule },
+    appSetting: { currentModule, url },
     locale: { lang, otherLang },
     customer: { userAgent },
   } = useAppSelector((state) => state);
   const { data: cartItems, isSuccess } = useGetCartProductsQuery({
     UserAgent: userAgent,
+    url,
   });
 
   const handleGoHome = () => {
@@ -127,9 +128,12 @@ const BackBtn: FC<Props> = ({
             href={appLinks.cartIndex.path}
             className={`relative`}
           >
-            <ShoppingBagOutlined className={`w-8 h-8 text-black`} />
+            <ShoppingBagOutlined
+              className={`w-8 h-8 text-black drop-shadow-sm`}
+            />
             {isSuccess &&
-              cartItems.data?.total > 0 &&
+              cartItems.data &&
+              cartItems.data.subTotal > 0 &&
               cartItems.data?.Cart?.length > 0 && (
                 <div className="absolute -left-2 -top-2 opacity-90  rounded-full bg-red-600 w-6 h-6 top-0 shadow-xl flex items-center justify-center text-white">
                   <span className={`pt-[3.5px] shadow-md`}>
