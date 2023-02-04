@@ -292,6 +292,7 @@ const ProductShow: NextPage<Props> = ({ element, url }) => {
         mainImage={`${baseUrl}${element?.img[0]?.thumbnail.toString()}`}
       />
       <MainContentLayout
+        url={url}
         productCurrentQty={currentQty}
         handleIncreaseProductQty={handleIncrease}
         handleDecreaseProductQty={handleDecrease}

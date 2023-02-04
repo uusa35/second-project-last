@@ -23,7 +23,6 @@ import { setLocale } from '@/redux/slices/localeSlice';
 import {
   setCurrentModule,
   setShowFooterElement,
-  setUrl,
 } from '@/redux/slices/appSettingSlice';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import HomeSelectMethod from '@/components/home/HomeSelectMethod';
@@ -31,14 +30,18 @@ import HomeVendorMainInfo from '@/components/home/HomeVendorMainInfo';
 import { useRouter } from 'next/router';
 import CustomImage from '@/components/CustomImage';
 import LoadingSpinner from '@/components/LoadingSpinner';
-import { setColorTheme } from '@/redux/slices/vendorSlice';
 import PoweredByQ from '@/components/PoweredByQ';
 
 type Props = {
   categories: Category[];
   element: Vendor;
+  url: string;
 };
-const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
+const HomePage: NextPage<Props> = ({
+  element,
+  categories,
+  url,
+}): JSX.Element => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -46,9 +49,6 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
   useEffect(() => {
     dispatch(setCurrentModule('home'));
     dispatch(setShowFooterElement('home'));
-    if (element.theme_color) {
-      dispatch(setColorTheme(element.theme_color));
-    }
   }, []);
 
   const handleFocus = () =>
@@ -62,7 +62,7 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
         mainImage={`${baseUrl}${element.logo}`}
         phone={element.phone}
       />
-      <MainContentLayout>
+      <MainContentLayout url={url}>
         {/*  ImageBackGround Header */}
         <CustomImage
           src={`${imgUrl(element.cover)}`}
@@ -159,6 +159,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
         props: {
           element: element.Data,
           categories: categories.Data,
+          url,
         },
       };
     }

@@ -16,8 +16,9 @@ import { themeColor } from '@/redux/slices/vendorSlice';
 
 type Props = {
   element: OrderInvoice;
+  url: string;
 };
-const OrderInvoice: NextPage<Props> = ({ element }): JSX.Element => {
+const OrderInvoice: NextPage<Props> = ({ element, url }): JSX.Element => {
   const { vendor } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const color = useAppSelector(themeColor);
@@ -32,7 +33,7 @@ const OrderInvoice: NextPage<Props> = ({ element }): JSX.Element => {
 
   return (
     <Suspense>
-      <MainContentLayout>
+      <MainContentLayout url={url}>
         <div>
           <div className="flex px-4  pt-5 justify-between items-center">
             <div className="flex items-center">
@@ -303,6 +304,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
       return {
         props: {
           element: element.data,
+          url,
         },
       };
     }

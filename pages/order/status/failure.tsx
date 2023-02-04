@@ -19,13 +19,15 @@ import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { wrapper } from '@/redux/store';
 
-const OrderFailure: NextPage = (): JSX.Element => {
+type Props = {
+  url: string;
+};
+const OrderFailure: NextPage<Props> = ({ url }): JSX.Element => {
   const { t } = useTranslation();
   const {
     branch: { id: branchId },
     area: { id: areaId },
     customer: { userAgent },
-    appSetting: { url },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
   const { data: cartItems, isSuccess } = useGetCartProductsQuery({
@@ -37,7 +39,7 @@ const OrderFailure: NextPage = (): JSX.Element => {
     dispatch(setCurrentModule('order_failure'));
   }, []);
   return (
-    <MainContentLayout>
+    <MainContentLayout url={url}>
       <div>
         <div className="flex flex-col items-center capitalize">
           <CustomImage
@@ -102,3 +104,19 @@ const OrderFailure: NextPage = (): JSX.Element => {
   );
 };
 export default OrderFailure;
+
+export const getServerSideProps = wrapper.getServerSideProps(
+  (store) =>
+    async ({ req }) => {
+      if (!req.headers.host) {
+        return {
+          notFound: true,
+        };
+      }
+      return {
+        props: {
+          url: req.headers.host,
+        },
+      };
+    }
+);

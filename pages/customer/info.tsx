@@ -27,6 +27,7 @@ import { themeColor } from '@/redux/slices/vendorSlice';
 import { isNull } from 'lodash';
 import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 import { AppQueryResult } from '@/types/queries';
+import { wrapper } from '@/redux/store';
 
 const schema = yup
   .object({
@@ -37,13 +38,17 @@ const schema = yup
   })
   .required();
 
-const CustomerInformation: NextPage = (): JSX.Element => {
+type Props = {
+  url: string;
+};
+
+const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const router = useRouter();
   const {
     customer,
-    appSetting: { method, url },
+    appSetting: { method },
     customer: {
       userAgent,
       address: { phone },
@@ -117,7 +122,7 @@ const CustomerInformation: NextPage = (): JSX.Element => {
 
   return (
     <Suspense>
-      <MainContentLayout handleSubmit={handleSubmit(onSubmit)}>
+      <MainContentLayout handleSubmit={handleSubmit(onSubmit)} url={url}>
         <div className="flex-col justify-center h-full px-5">
           <div className="flex justify-center py-10 lg:my-5 lg:pb-5">
             <CustomImage
@@ -218,3 +223,19 @@ const CustomerInformation: NextPage = (): JSX.Element => {
 };
 
 export default CustomerInformation;
+
+export const getServerSideProps = wrapper.getServerSideProps(
+  (store) =>
+    async ({ req }) => {
+      if (!req.headers.host) {
+        return {
+          notFound: true,
+        };
+      }
+      return {
+        props: {
+          url: req.headers.host,
+        },
+      };
+    }
+);

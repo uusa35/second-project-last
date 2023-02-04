@@ -86,7 +86,7 @@ const ProductSearchIndex: NextPage<Props> = ({
         description={`searching products`}
         mainImage={`${baseUrl}${logo}`}
       />
-      <MainContentLayout>
+      <MainContentLayout url={url}>
         <div className={`px-4`}>
           {/*   search Input */}
           <div className={`w-full capitalize`}>

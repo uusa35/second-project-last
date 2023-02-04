@@ -11,7 +11,6 @@ import { wrapper } from '@/redux//store';
 import MainLayout from '@/components/layouts/MainLayout';
 import { AppProps } from 'next/app';
 import { FC, Suspense } from 'react';
-import { isLocal, xDomain } from '@/constants/*';
 
 const App: FC<AppProps> = ({ Component, ...rest }) => {
   const { store, props } = wrapper.useWrappedStore(rest);
@@ -19,7 +18,7 @@ const App: FC<AppProps> = ({ Component, ...rest }) => {
   return (
     <Suspense>
       <Provider store={store}>
-        <MainLayout url={isLocal ? xDomain : props.pageProps.url}>
+        <MainLayout>
           <Component {...pageProps} />
         </MainLayout>
       </Provider>

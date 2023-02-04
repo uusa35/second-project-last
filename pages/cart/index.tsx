@@ -34,12 +34,15 @@ import {
 import { themeColor } from '@/redux/slices/vendorSlice';
 import EmptyCart from '@/appImages/empty_cart.png';
 
-const CartIndex: NextPage = (): JSX.Element => {
+type Props = {
+  url: string;
+};
+const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
   const { t } = useTranslation();
   const {
     branch: { id: branchId },
     area: { id: areaId },
-    appSetting: { method, url },
+    appSetting: { method },
     customer: { userAgent, notes },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
@@ -218,7 +221,7 @@ const CartIndex: NextPage = (): JSX.Element => {
 
   return (
     <Suspense>
-      <MainContentLayout>
+      <MainContentLayout url={url}>
         {/* if cart is empty */}
         {isSuccess && isEmpty(cartItems?.data?.Cart) ? (
           <div className={'px-4'}>

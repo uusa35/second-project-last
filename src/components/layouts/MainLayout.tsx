@@ -30,14 +30,13 @@ const ToastAppContainer = dynamic(
 type Props = {
   children: ReactNode | undefined;
   showCart?: boolean;
-  url: string;
 };
 
 type Handler = (...evts: any[]) => void;
 
-const MainLayout: FC<Props> = ({ children, url }): JSX.Element => {
+const MainLayout: FC<Props> = ({ children }): JSX.Element => {
   const {
-    appSetting: { sideMenuOpen },
+    appSetting: { sideMenuOpen, url },
     customer: { userAgent },
     locale,
     vendor,
@@ -49,7 +48,6 @@ const MainLayout: FC<Props> = ({ children, url }): JSX.Element => {
     isSuccess: boolean;
   }>({ lang: locale.lang, url });
   const [triggerCreateTempId] = useLazyCreateTempIdQuery();
-  console.log('url', url);
 
   useEffect(() => {
     if (isNull(userAgent)) {
@@ -57,16 +55,10 @@ const MainLayout: FC<Props> = ({ children, url }): JSX.Element => {
         dispatch(setUserAgent(r.data.Data?.Id))
       );
     }
-    if (url) {
-      dispatch(setUrl(url));
-    }
-  }, []);
-
-  useEffect(() => {
     if (isSuccess && vendorElement.Data) {
       dispatch(setVendor(vendorElement.Data));
     }
-  }, [isSuccess]);
+  }, []);
 
   useEffect(() => {
     const handleRouteChange: Handler = (url, { shallow }) => {

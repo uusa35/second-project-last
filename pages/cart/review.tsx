@@ -6,13 +6,10 @@ import TrunkClock from '@/appIcons/trunk_clock.svg';
 import { suppressText, imageSizes, appLinks, imgUrl } from '@/constants/*';
 import {
   CreditCardOutlined,
-  EditOutlined,
   LocationOnOutlined,
   ReceiptOutlined,
 } from '@mui/icons-material';
 import Home from '@/appIcons/home.svg';
-import IDCard from '@/appIcons/id_card.svg';
-import OrderSummary from '@/appIcons/summary.svg';
 import CustomImage from '@/components/CustomImage';
 import Knet from '@/appImages/knet.png';
 import Cash from '@/appImages/cash_on_delivery.jpg';
@@ -40,8 +37,12 @@ import { themeColor } from '@/redux/slices/vendorSlice';
 import { useRouter } from 'next/router';
 import { setOrder, setPaymentMethod } from '@/redux/slices/orderSlice';
 import { CheckCircle, BadgeOutlined } from '@mui/icons-material';
+import { wrapper } from '@/redux/store';
 
-const CartReview: NextPage = () => {
+type Props = {
+  url: string;
+};
+const CartReview: NextPage<Props> = ({ url }) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -54,7 +55,7 @@ const CartReview: NextPage = () => {
     branch: { id: branchId, name_ar: branchAR, name_en: branchEN },
     area: { id: areaId },
     customer: { userAgent },
-    appSetting: { method: process_type, url },
+    appSetting: { method: process_type },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
   const { data: cartItems, isSuccess } = useGetCartProductsQuery<{
@@ -224,7 +225,7 @@ const CartReview: NextPage = () => {
 
   return (
     <Suspense>
-      <MainContentLayout handleSubmit={handleCreateOrder}>
+      <MainContentLayout handleSubmit={handleCreateOrder} url={url}>
         <div className={`mb-[40%]`}>
           <div className="flex justify-center items-end p-5">
             <CustomImage
@@ -555,3 +556,19 @@ const CartReview: NextPage = () => {
 };
 
 export default CartReview;
+
+export const getServerSideProps = wrapper.getServerSideProps(
+  (store) =>
+    async ({ req }) => {
+      if (!req.headers.host) {
+        return {
+          notFound: true,
+        };
+      }
+      return {
+        props: {
+          url: req.headers.host,
+        },
+      };
+    }
+);

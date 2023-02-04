@@ -37,15 +37,15 @@ import PoweredByQ from '@/components/PoweredByQ';
 
 type Props = {
   element: Vendor;
+  url: string;
 };
 type DetailsItem = {
   icon: any;
   text: string;
   content: any;
 };
-const VendorShow: NextPage<Props> = ({ element }) => {
+const VendorShow: NextPage<Props> = ({ element, url }) => {
   const {
-    appSetting: { url },
     locale: { isRTL },
   } = useAppSelector((state) => state);
   const { t } = useTranslation();
@@ -96,7 +96,7 @@ const VendorShow: NextPage<Props> = ({ element }) => {
         description={element.desc}
         mainImage={element.logo}
       />
-      <MainContentLayout>
+      <MainContentLayout url={url}>
         <VendorDetailsItem
           icon={
             <CustomImage
@@ -256,6 +256,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
       return {
         props: {
           element: element.Data,
+          url,
         },
       };
     }

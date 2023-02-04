@@ -17,7 +17,6 @@ type Props = {
 const MainAsideLayout: FC<Props> = ({ element }): JSX.Element => {
   const { t } = useTranslation();
 
-  console.log('element', element);
   return (
     <Suspense fallback={<LoadingSpinner fullWidth={false} />}>
       <div className="flex relative justify-center items-center top-0  w-full h-screen bg-gradient-to-tr from-gray-400 to-gray-800">

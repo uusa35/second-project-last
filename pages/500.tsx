@@ -3,7 +3,7 @@ import MainContentLayout from '@/layouts/MainContentLayout';
 
 export default function Custom500() {
   return (
-    <MainContentLayout backHome={true} url={``}>
+    <MainContentLayout backHome={true}>
       <OffLineWidget message={`500 - Server-side error occurred`} />
     </MainContentLayout>
   );

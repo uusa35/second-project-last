@@ -29,7 +29,7 @@ const BranchIndex: NextPage<Props> = ({ elements, url }) => {
   }, []);
 
   return (
-    <MainContentLayout>
+    <MainContentLayout url={url}>
       <div className={`px-4`}>
         {map(elements, (b, i) => (
           <Link href={`#`} onClick={() => dispatch(setBranch(b))} key={i}>

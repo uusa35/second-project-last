@@ -48,15 +48,19 @@ import { themeColor } from '@/redux/slices/vendorSlice';
 import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 import { AppQueryResult } from '@/types/queries';
 import TextTrans from '@/components/TextTrans';
+import { wrapper } from '@/redux/store';
 
-const CartAddress: NextPage = (): JSX.Element => {
+type Props = {
+  url: string;
+};
+const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { t } = useTranslation();
   const {
     area,
     branch,
-    appSetting: { method, url },
+    appSetting: { method },
     customer: { userAgent, address, id: customer_id },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
@@ -330,7 +334,7 @@ const CartAddress: NextPage = (): JSX.Element => {
 
   return (
     <Suspense>
-      <MainContentLayout handleSubmit={handleNext}>
+      <MainContentLayout handleSubmit={handleNext} url={url}>
         {/* delivery method buttons */}
         <DeliveryBtns />
         <div className="flex justify-center items-center">
@@ -999,3 +1003,19 @@ const CartAddress: NextPage = (): JSX.Element => {
   );
 };
 export default CartAddress;
+
+export const getServerSideProps = wrapper.getServerSideProps(
+  (store) =>
+    async ({ req }) => {
+      if (!req.headers.host) {
+        return {
+          notFound: true,
+        };
+      }
+      return {
+        props: {
+          url: req.headers.host,
+        },
+      };
+    }
+);

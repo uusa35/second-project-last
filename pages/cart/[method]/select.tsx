@@ -153,7 +153,7 @@ const SelectMethod: NextPage<Props> = ({
 
   return (
     <Suspense>
-      <MainContentLayout>
+      <MainContentLayout url={url}>
         <div className={`px-4`}>
           <DeliveryBtns method_in_select={method} />
           <div className={`w-full mb-4`}>

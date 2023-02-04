@@ -72,7 +72,7 @@ const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
   return (
     <Suspense>
       <MainHead title={`productIndex`} description={`productIndex`} />
-      <MainContentLayout>
+      <MainContentLayout url={url}>
         <h1 className="capitalize" suppressHydrationWarning={suppressText}></h1>
         <div className={`px-4 capitalize`}>
           <div className="flex justify-center items-center">

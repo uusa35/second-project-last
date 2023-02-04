@@ -19,6 +19,7 @@ const SideMenu = dynamic(() => import(`@/components/sideMenu`), {
 
 type Props = {
   children: ReactNode | undefined;
+  url?: string;
   backHome?: boolean;
   hideBack?: boolean;
   showMotion?: boolean;
@@ -39,6 +40,7 @@ const MainContentLayout: FC<Props> = ({
   handleIncreaseProductQty,
   handleDecreaseProductQty,
   productCurrentQty,
+  url,
 }): JSX.Element => {
   const {
     appSetting: { showHeader },
@@ -57,6 +59,12 @@ const MainContentLayout: FC<Props> = ({
       window.removeEventListener('offline', handleStatusChange);
     };
   }, [isOnline]);
+
+  useEffect(() => {
+    if (url) {
+      setUrl(url);
+    }
+  }, []);
 
   return (
     <motion.div

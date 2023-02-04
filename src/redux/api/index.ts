@@ -19,9 +19,9 @@ export const apiSlice = createApi({
         'Access-Control-Allow-Methods',
         'GET,PUT,POST,DELETE,PATCH,OPTIONS'
       );
-      if (isLocal) {
-        headers.set('url', xDomain);
-      }
+      // if (isLocal) {
+      //   headers.set('url', xDomain);
+      // }
       return headers;
     },
     credentials: 'include',
