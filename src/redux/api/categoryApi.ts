@@ -6,12 +6,13 @@ export const categoryApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getCategories: builder.query<
       AppQueryResult<Category[]>,
-      { lang: Locale['lang'] | string | undefined }
+      { lang: Locale['lang'] | string | undefined; xDomain?: string }
     >({
-      query: ({ lang }) => ({
+      query: ({ lang, xDomain }) => ({
         url: `categories`,
         headers: {
           lang,
+          ...(xDomain ? { 'x-domain': xDomain } : {}),
         },
         validateStatus: (response, result) =>
           response.status == 200 && result.status,

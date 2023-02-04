@@ -23,6 +23,7 @@ import { setLocale } from '@/redux/slices/localeSlice';
 import {
   setCurrentModule,
   setShowFooterElement,
+  setXDomain,
 } from '@/redux/slices/appSettingSlice';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import HomeSelectMethod from '@/components/home/HomeSelectMethod';
@@ -36,8 +37,13 @@ import PoweredByQ from '@/components/PoweredByQ';
 type Props = {
   categories: Category[];
   element: Vendor;
+  xDomain: string;
 };
-const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
+const HomePage: NextPage<Props> = ({
+  element,
+  categories,
+  xDomain,
+}): JSX.Element => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -45,6 +51,7 @@ const HomePage: NextPage<Props> = ({ element, categories }): JSX.Element => {
   useEffect(() => {
     dispatch(setCurrentModule('home'));
     dispatch(setShowFooterElement('home'));
+    dispatch(setXDomain(xDomain));
   }, []);
 
   useEffect(() => {
@@ -118,6 +125,9 @@ export default HomePage;
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ req, locale }) => {
+      if (req.headers.origin) {
+        store.dispatch(setXDomain(req.headers.origin));
+      }
       if (store.getState().locale.lang !== locale) {
         store.dispatch(setLocale(locale));
       }
@@ -128,6 +138,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
         await store.dispatch(
           vendorApi.endpoints.getVendor.initiate({
             lang: locale,
+            xDomain: req.headers.origin,
           })
         );
       const {
@@ -139,6 +150,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
       } = await store.dispatch(
         categoryApi.endpoints.getCategories.initiate({
           lang: locale,
+          xDomain: req.headers.origin,
         })
       );
       await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
@@ -158,6 +170,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
         props: {
           element: element.Data,
           categories: categories.Data,
+          xDomain: req.headers.origin,
         },
       };
     }

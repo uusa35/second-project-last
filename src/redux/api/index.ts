@@ -20,7 +20,9 @@ export const apiSlice = createApi({
       // );
       // const host = await getHost().then((r: Response) => r.headers.get('Host'));
       // console.log('the fetchOrigin ============>', fetchOrigin);
-      headers.set('url', xDomain);
+      const { appSetting } = getState() as RootState;
+      console.log('url =======>', appSetting.xDomain);
+      headers.set('url', appSetting.xDomain);
       headers.set(
         'Access-Control-Allow-Methods',
         'GET,PUT,POST,DELETE,PATCH,OPTIONS'

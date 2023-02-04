@@ -84,6 +84,7 @@ export type position = {
 
 export type appSetting = {
   method: `delivery` | `pickup`;
+  xDomain: string;
   productPreview: `hor` | `ver`;
   showFooterElement: string;
   showHeader: boolean;
