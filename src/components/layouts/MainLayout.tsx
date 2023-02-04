@@ -52,7 +52,6 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
     isSuccess: boolean;
   }>({ lang: locale.lang, url });
   const [triggerCreateTempId] = useLazyCreateTempIdQuery();
-  console.log('url from MainLayout', url);
 
   useEffect(() => {
     if (isNull(userAgent) && url) {

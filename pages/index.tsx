@@ -38,13 +38,11 @@ type Props = {
   categories: Category[];
   element: Vendor;
   url: string;
-  headers: any;
 };
 const HomePage: NextPage<Props> = ({
   element,
   categories,
   url,
-  headers,
 }): JSX.Element => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
@@ -56,7 +54,6 @@ const HomePage: NextPage<Props> = ({
   }, []);
 
   console.log('url from homepage  =====>', url);
-  console.log('the whole headers', headers);
 
   useEffect(() => {
     if (element.theme_color) {
@@ -132,7 +129,6 @@ export default HomePage;
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ req, locale }) => {
-      console.log('the origin =====>', req.headers.host);
       if (req.headers.host) {
         store.dispatch(setUrl(req.headers.host));
       } else {
@@ -183,7 +179,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
           element: element.Data,
           categories: categories.Data,
           url: req.headers.host,
-          headers: req.headers,
         },
       };
     }
