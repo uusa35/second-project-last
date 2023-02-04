@@ -11,13 +11,14 @@ import { AppQueryResult } from '@/types/queries';
 import { OrderInvoice } from '@/types/index';
 import { apiSlice } from '@/redux/api';
 import { useEffect, Suspense } from 'react';
-import { setCurrentModule } from '@/redux/slices/appSettingSlice';
+import { setCurrentModule, setUrl } from '@/redux/slices/appSettingSlice';
 import { themeColor } from '@/redux/slices/vendorSlice';
 
 type Props = {
   element: OrderInvoice;
+  url: string;
 };
-const OrderInvoice: NextPage<Props> = ({ element }): JSX.Element => {
+const OrderInvoice: NextPage<Props> = ({ element, url }): JSX.Element => {
   const { vendor } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const color = useAppSelector(themeColor);
@@ -25,6 +26,12 @@ const OrderInvoice: NextPage<Props> = ({ element }): JSX.Element => {
   const handleMapLocation = (lat: string, long: string) => {
     window.open(`https://maps.google.com?q=${lat},${long}`);
   };
+
+  useEffect(() => {
+    if (url) {
+      dispatch(setUrl(url));
+    }
+  });
 
   useEffect(() => {
     dispatch(setCurrentModule('invoice'));
@@ -271,7 +278,13 @@ export default OrderInvoice;
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
-    async ({ query }) => {
+    async ({ req, query }) => {
+      if (!req.headers.host) {
+        return {
+          notFound: true,
+        };
+      }
+      const url = req.headers.host;
       const { orderId }: any = query;
       if (!orderId) {
         return {
@@ -285,6 +298,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
         await store.dispatch(
           orderApi.endpoints.getInvoice.initiate({
             order_id: orderId,
+            url,
           })
         );
       await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
@@ -296,6 +310,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
       return {
         props: {
           element: element.data,
+          url,
         },
       };
     }

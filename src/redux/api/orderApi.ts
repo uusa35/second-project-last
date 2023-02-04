@@ -16,14 +16,16 @@ export const orderApi = apiSlice.injectEndpoints({
         {
           params: OrderUser;
           area_branch: any;
+          url: string;
         }
       >({
-        query: ({ params,  area_branch }) => ({
+        query: ({ params, area_branch, url }) => ({
           url: `create-order`,
           method: 'POST',
           params,
           headers: {
-            ...area_branch
+            ...area_branch,
+            url,
           },
           validateStatus: (response, result) =>
             response.status == 200 && result.status,
@@ -37,11 +39,15 @@ export const orderApi = apiSlice.injectEndpoints({
           latitude: string;
           customer_id: number;
           address: string[];
+          url: string;
         }
       >({
         query: (params) => ({
           url: `add-address`,
           params,
+          headers: {
+            url: params.url,
+          },
           method: 'POST',
         }),
       }),
@@ -49,10 +55,12 @@ export const orderApi = apiSlice.injectEndpoints({
         AppQueryResult<OrderTrack>,
         {
           order_code: string;
+          url: string;
         }
       >({
-        query: ({ order_code }) => ({
+        query: ({ order_code, url }) => ({
           url: `track-order`,
+          headers: { url },
           params: { order_code },
         }),
       }),
@@ -61,10 +69,12 @@ export const orderApi = apiSlice.injectEndpoints({
         {
           status: string;
           order_id: string;
+          url: string;
         }
       >({
-        query: ({ status, order_id }) => ({
+        query: ({ status, order_id, url }) => ({
           url: `order/payment/status`,
+          headers: { url },
           params: { status, order_id },
         }),
       }),
@@ -72,30 +82,42 @@ export const orderApi = apiSlice.injectEndpoints({
         AppQueryResult<OrderInvoice>,
         {
           order_id: string;
+          url: string;
         }
       >({
-        query: ({ order_id }) => ({
+        query: ({ order_id, url }) => ({
           url: `order/invoice`,
+          headers: { url },
           params: { order_id },
         }),
       }),
       addFeedBack: builder.query<
         AppQueryResult<any>,
-        { username: string; rate: number; note: string; phone: string | number }
+        {
+          username: string;
+          rate: number;
+          note: string;
+          phone: string | number;
+          url: string;
+        }
       >({
-        query: ({ username, rate, note, phone }) => ({
+        query: ({ username, rate, note, phone, url }) => ({
           url: `feedbacks/create`,
           params: { username, rate, note, phone },
           method: 'POST',
+          headers: {
+            url,
+          },
         }),
       }),
       getCustomerInfo: builder.query<
         AppQueryResult<any>,
-        { name: string; email: string; phone: string | number }
+        { name: string; email: string; phone: string | number; url: string }
       >({
-        query: ({ name, email, phone }) => ({
+        query: ({ name, email, phone, url }) => ({
           url: `customer-info`,
           params: { name, email, phone },
+          headers: { url },
           method: 'POST',
         }),
       }),

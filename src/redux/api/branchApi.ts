@@ -8,14 +8,14 @@ export const branchApi = apiSlice.injectEndpoints({
       AppQueryResult<Branch[]>,
       {
         lang: Locale['lang'] | string | undefined;
-        url: string | undefined
+        url: string;
       }
     >({
-      query: ({ lang ,url}) => ({
+      query: ({ lang, url }) => ({
         url: `branches`,
         headers: {
           lang,
-          url
+          url,
         },
         validateStatus: (response, result) =>
           response.status == 200 && result.status,

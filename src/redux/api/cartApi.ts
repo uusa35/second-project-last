@@ -24,15 +24,17 @@ export const cartApi = apiSlice.injectEndpoints({
         body: { UserAgent: string; Cart: any };
         process_type: string;
         area_branch: string;
+        url: string;
       }
     >({
-      query: ({ body, process_type, area_branch }) => ({
+      query: ({ body, process_type, area_branch, url }) => ({
         url: `addToCart`,
         method: `POST`,
         body,
         headers: {
           ...(process_type === 'delivery' && { 'x-area-id': area_branch }),
           ...(process_type === 'pickup' && { 'x-branch-id': area_branch }),
+          url,
         },
         validateStatus: (response, result) => result.status,
         keepUnusedDataFor: 0,
@@ -43,11 +45,15 @@ export const cartApi = apiSlice.injectEndpoints({
       AppQueryResult<ServerCart>,
       {
         UserAgent: string;
+        url: string;
       }
     >({
-      query: ({ UserAgent }) => ({
+      query: ({ UserAgent, url }) => ({
         url: `shoppingCart`,
         params: { UserAgent },
+        headers: {
+          url,
+        },
         validateStatus: (response, result) =>
           response.status == 200 && result.status,
         keepUnusedDataFor: 0,
@@ -59,10 +65,12 @@ export const cartApi = apiSlice.injectEndpoints({
       {
         userAgent: string;
         PromoCode: string;
+        url: string;
       }
     >({
-      query: ({ userAgent, PromoCode }) => ({
+      query: ({ userAgent, PromoCode, url }) => ({
         url: `checkPromoCode`,
+        headers: { url },
         params: { userAgent, PromoCode },
         validateStatus: (response, result) =>
           response.status == 200 && result.status,
@@ -74,12 +82,14 @@ export const cartApi = apiSlice.injectEndpoints({
       {
         UserAgent: string;
         area_branch: any;
+        url: string;
       }
     >({
-      query: ({ UserAgent, area_branch }) => ({
+      query: ({ UserAgent, area_branch, url }) => ({
         url: `changeArea`,
         params: { UserAgent },
         headers: {
+          url,
           ...area_branch,
         },
         validateStatus: (response, result) =>

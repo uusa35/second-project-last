@@ -15,6 +15,7 @@ import {
   resetShowFooterElement,
   setCurrentModule,
   setShowFooterElement,
+  setUrl,
   showToastMessage,
 } from '@/redux/slices/appSettingSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -48,8 +49,12 @@ import { themeColor } from '@/redux/slices/vendorSlice';
 import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 import { AppQueryResult } from '@/types/queries';
 import TextTrans from '@/components/TextTrans';
+import { wrapper } from '@/redux/store';
 
-const CartAddress: NextPage = (): JSX.Element => {
+type Props = {
+  url: string;
+};
+const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { t } = useTranslation();
@@ -71,6 +76,7 @@ const CartAddress: NextPage = (): JSX.Element => {
     refetch: () => void;
   }>({
     UserAgent: userAgent,
+    url,
   });
   const [prefrences, setPrefrences] = useState<Prefrences>({
     type:
@@ -163,6 +169,12 @@ const CartAddress: NextPage = (): JSX.Element => {
     },
   });
 
+  useEffect(() => {
+    if (url) {
+      dispatch(setUrl(url));
+    }
+  });
+
   const CustomTimeInput = forwardRef(({ value, onClick }, ref) => (
     <div className="flex w-full items-center justify-between px-2">
       <input
@@ -175,11 +187,11 @@ const CartAddress: NextPage = (): JSX.Element => {
     </div>
   ));
 
-  const [checkTime, { isLoading: checkTimeLoading }] =
+  const [triggerCheckTime, { isLoading: checkTimeLoading }] =
     useCheckTimeAvilabilityMutation();
 
   const checkTimeAvailability = async () => {
-    await checkTime({
+    await triggerCheckTime({
       process_type: method,
       area_branch: method === 'delivery' ? area.id : branch.id,
       params: {
@@ -191,6 +203,7 @@ const CartAddress: NextPage = (): JSX.Element => {
           prefrences.time as Date
         ).getMinutes()}:${new Date(prefrences.time as Date).getSeconds()}`,
       },
+      url,
     }).then((r: any) => {
       if (r.data?.status) {
         switch (r.data.Data.toLowerCase()) {
@@ -242,7 +255,6 @@ const CartAddress: NextPage = (): JSX.Element => {
   useMemo(() => setValue('address_type', addressTabType), [addressTabType]);
 
   const handelSaveAddress = async (body: any) => {
-    console.log('body', body);
     await triggerAddAddress({
       body: {
         address_type: body.address_type,
@@ -260,6 +272,7 @@ const CartAddress: NextPage = (): JSX.Element => {
           additional: body.additional,
         },
       },
+      url,
     }).then((r: any) => {
       if (r.data && r.data.status) {
         dispatch(
@@ -1002,3 +1015,19 @@ const CartAddress: NextPage = (): JSX.Element => {
   );
 };
 export default CartAddress;
+
+export const getServerSideProps = wrapper.getServerSideProps(
+  (store) =>
+    async ({ req }) => {
+      if (!req.headers.host) {
+        return {
+          notFound: true,
+        };
+      }
+      return {
+        props: {
+          url: req.headers.host,
+        },
+      };
+    }
+);

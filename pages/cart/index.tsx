@@ -7,6 +7,7 @@ import {
   setCurrentModule,
   resetShowFooterElement,
   setShowFooterElement,
+  setUrl,
 } from '@/redux/slices/appSettingSlice';
 import Promotion from '@/appIcons/promotion.svg';
 import Notes from '@/appIcons/notes.svg';
@@ -32,8 +33,12 @@ import {
 } from '@/redux/slices/cartSlice';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import EmptyCart from '@/appImages/empty_cart.png';
+import { wrapper } from '@/redux/store';
 
-const CartIndex: NextPage = (): JSX.Element => {
+type Props = {
+  url: string;
+};
+const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
   const { t } = useTranslation();
   const {
     branch: { id: branchId },
@@ -55,8 +60,15 @@ const CartIndex: NextPage = (): JSX.Element => {
     refetch: () => void;
   }>({
     UserAgent: userAgent,
+    url,
   });
   const [triggerCheckPromoCode] = useLazyCheckPromoCodeQuery();
+
+  useEffect(() => {
+    if (url) {
+      dispatch(setUrl(url));
+    }
+  });
 
   useEffect(() => {
     if (
@@ -97,6 +109,7 @@ const CartIndex: NextPage = (): JSX.Element => {
         await triggerCheckPromoCode({
           userAgent,
           PromoCode: coupon,
+          url,
         }).then((r: any) => {
           if (r.data && r.data.status && r.data.promoCode) {
             // promoCode Success case
@@ -139,6 +152,7 @@ const CartIndex: NextPage = (): JSX.Element => {
             ? currentItems
             : [], // empty Cart Case !!!
       },
+      url,
     }).then((r: any) => {
       if (r.data && r.data?.status) {
         dispatch(
@@ -165,6 +179,7 @@ const CartIndex: NextPage = (): JSX.Element => {
               })
             : cartItems.data.Cart,
       },
+      url,
     }).then((r: any) => {
       if (r.data && r.data?.status) {
         dispatch(
@@ -191,6 +206,7 @@ const CartIndex: NextPage = (): JSX.Element => {
               })
             : cartItems.data.Cart,
       },
+      url,
     }).then((r: any) => {
       if (r.data && r.data?.status) {
         dispatch(
@@ -435,3 +451,19 @@ const CartIndex: NextPage = (): JSX.Element => {
 };
 
 export default CartIndex;
+
+export const getServerSideProps = wrapper.getServerSideProps(
+  (store) =>
+    async ({ req }) => {
+      if (!req.headers.host) {
+        return {
+          notFound: true,
+        };
+      }
+      return {
+        props: {
+          url: req.headers.host,
+        },
+      };
+    }
+);

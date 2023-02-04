@@ -6,12 +6,13 @@ export const locationApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getLocations: builder.query<
       AppQueryResult<Location[]>,
-      { lang: Locale['lang'] | string | undefined }
+      { lang: Locale['lang'] | string | undefined; url: string }
     >({
-      query: ({ lang }) => ({
+      query: ({ lang, url }) => ({
         url: `locations`,
         headers: {
           lang,
+          url,
         },
       }),
     }),

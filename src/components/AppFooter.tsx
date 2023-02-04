@@ -7,7 +7,6 @@ import {
   suppressText,
 } from '@/constants/*';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import PoweredByQ from '@/components/PoweredByQ';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
 import { useRouter } from 'next/router';
 import {
@@ -37,7 +36,7 @@ const AppFooter: FC<Props> = ({
 }): JSX.Element => {
   const { t } = useTranslation();
   const {
-    appSetting: { showFooterElement, method },
+    appSetting: { showFooterElement, method, url },
     customer: { userAgent, id: customerId },
     locale: { isRTL },
     productCart,
@@ -56,6 +55,7 @@ const AppFooter: FC<Props> = ({
     refetch: refetchCart,
   } = useGetCartProductsQuery({
     UserAgent: userAgent,
+    url,
   });
   const [triggerCheckPromoCode] = useLazyCheckPromoCodeQuery();
 
@@ -88,6 +88,7 @@ const AppFooter: FC<Props> = ({
                   ).concat(productCart)
                 : [productCart],
           },
+          url,
         }).then((r: any) => {
           if (
             r &&
@@ -97,7 +98,7 @@ const AppFooter: FC<Props> = ({
             r.data.data.Cart &&
             r.data.data.Cart.length > 0
           ) {
-            triggerGetCartProducts({ UserAgent: userAgent }).then((r) => {
+            triggerGetCartProducts({ UserAgent: userAgent, url }).then((r) => {
               if (r.data && r.data.data && r.data.data.Cart) {
               }
               dispatch(
@@ -146,6 +147,7 @@ const AppFooter: FC<Props> = ({
         await triggerCheckPromoCode({
           userAgent,
           PromoCode: coupon,
+          url,
         }).then((r: any) => {
           if (r.data && r.data.status && r.data.promoCode) {
             // promoCode Success case
@@ -180,6 +182,7 @@ const AppFooter: FC<Props> = ({
                 ).concat(productCart)
               : [productCart],
         },
+        url,
       })
         .then((r: any) => {
           if (
@@ -190,7 +193,7 @@ const AppFooter: FC<Props> = ({
             r.data.data.Cart &&
             r.data.data.Cart.length > 0
           ) {
-            triggerGetCartProducts({ UserAgent: userAgent }).then((r) => {
+            triggerGetCartProducts({ UserAgent: userAgent, url }).then((r) => {
               if (r.data && r.data.data && r.data.data.Cart) {
               }
               dispatch(
