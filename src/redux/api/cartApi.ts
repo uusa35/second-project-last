@@ -4,9 +4,15 @@ import { ServerCart } from '@/types/index';
 
 export const cartApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    createTempId: builder.query<AppQueryResult<{ Id: string }>, void>({
-      query: () => ({
+    createTempId: builder.query<
+      AppQueryResult<{ Id: string }>,
+      { url: string }
+    >({
+      query: ({ url }) => ({
         url: `tempId`,
+        headers: {
+          url,
+        },
         validateStatus: (response, result) =>
           response.status == 200 && result.status,
       }),

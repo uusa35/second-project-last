@@ -7,13 +7,13 @@ export const vendorApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getVendor: builder.query<
       AppQueryResult<Vendor>,
-      { lang: Locale['lang'] | string | undefined; xDomain?: string }
+      { lang: Locale['lang'] | string | undefined; url: string | undefined }
     >({
-      query: ({ lang, xDomain }) => ({
+      query: ({ lang, url }) => ({
         url: `vendorDetails`,
         headers: {
           lang,
-          ...(xDomain ? { url: xDomain } : {}),
+          url,
         },
         validateStatus: (response, result) =>
           response.status == 200 && result.status,

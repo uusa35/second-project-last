@@ -5,7 +5,7 @@ import { branchSlice } from './branchSlice';
 
 const initialState: appSetting = {
   method: `delivery`,
-  xDomain: ``,
+  url: ``,
   productPreview: `hor`,
   showHeader: true,
   showFooter: true,
@@ -28,10 +28,10 @@ export const appSettingSlice = createSlice({
   name: 'appSetting',
   initialState,
   reducers: {
-    setXDomain: (state: typeof initialState, action: PayloadAction<string>) => {
+    setUrl: (state: typeof initialState, action: PayloadAction<string>) => {
       return {
         ...state,
-        xDomain: action.payload,
+        url: action.payload,
       };
     },
     showHeader: (state: typeof initialState, action: PayloadAction) => {
@@ -217,7 +217,7 @@ export const appSettingSlice = createSlice({
 
 export const {
   showHeader,
-  setXDomain,
+  setUrl,
   hideHeader,
   showFooter,
   hideFooter,

@@ -36,7 +36,7 @@ type Handler = (...evts: any[]) => void;
 
 const MainLayout: FC<Props> = ({ children }): JSX.Element => {
   const {
-    appSetting: { sideMenuOpen },
+    appSetting: { sideMenuOpen, url },
     customer: { userAgent },
     locale,
     vendor,
@@ -50,12 +50,13 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
   } = useGetVendorQuery<{
     data: AppQueryResult<Vendor>;
     isSuccess: boolean;
-  }>({ lang: locale.lang });
+  }>({ lang: locale.lang, url });
   const [triggerCreateTempId] = useLazyCreateTempIdQuery();
+  console.log('url from MainLayout', url);
 
   useEffect(() => {
-    if (isNull(userAgent)) {
-      triggerCreateTempId().then((r: any) =>
+    if (isNull(userAgent) && url) {
+      triggerCreateTempId({ url }).then((r: any) =>
         dispatch(setUserAgent(r.data.Data?.Id))
       );
     }
