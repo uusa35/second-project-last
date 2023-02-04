@@ -24,6 +24,7 @@ import {
   setCurrentModule,
   resetShowFooterElement,
   setShowFooterElement,
+  setUrl,
 } from '@/redux/slices/appSettingSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import CustomImage from '@/components/CustomImage';
@@ -37,13 +38,14 @@ import PoweredByQ from '@/components/PoweredByQ';
 
 type Props = {
   element: Vendor;
+  url: string
 };
 type DetailsItem = {
   icon: any;
   text: string;
   content: any;
 };
-const VendorShow: NextPage<Props> = ({ element }) => {
+const VendorShow: NextPage<Props> = ({ element ,url}) => {
   const {
     locale: { isRTL },
   } = useAppSelector((state) => state);
@@ -61,6 +63,11 @@ const VendorShow: NextPage<Props> = ({ element }) => {
       dispatch(resetShowFooterElement());
     };
   }, []);
+  useEffect(() => {
+    if (url) {
+      dispatch(setUrl(url));
+    }
+  });
   function handleClosePopup() {
     SetShowModal(false);
   }
@@ -239,9 +246,14 @@ export default VendorShow;
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
-    async ({ locale }) => {
+    async ({ locale ,req}) => {
+      if (!req.headers.host) {
+        return {
+          notFound: true,
+        };
+      }
       const { data: element, isError } = await store.dispatch(
-        vendorApi.endpoints.getVendor.initiate({ lang: locale })
+        vendorApi.endpoints.getVendor.initiate({ lang: locale ,url: req.headers.host})
       );
       await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
       if (isError || !element.Data) {
@@ -252,6 +264,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
       return {
         props: {
           element: element.Data,
+          url: req.headers.host
         },
       };
     }
