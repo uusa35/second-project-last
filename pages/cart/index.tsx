@@ -82,6 +82,7 @@ const CartIndex: NextPage = (): JSX.Element => {
 
   const handleCoupon = async (coupon: string) => {
     if (
+      coupon &&
       coupon.length > 3 &&
       userAgent &&
       isSuccess &&

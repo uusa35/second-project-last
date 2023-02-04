@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { HYDRATE } from 'next-redux-wrapper';
-import { apiUrl } from '../../constants';
+import { apiUrl, isLocal, xDomain } from '../../constants';
 import { RootState } from '@/redux/store';
 
 export const apiSlice = createApi({
@@ -19,6 +19,9 @@ export const apiSlice = createApi({
         'Access-Control-Allow-Methods',
         'GET,PUT,POST,DELETE,PATCH,OPTIONS'
       );
+      if (isLocal) {
+        headers.set('url', xDomain);
+      }
       return headers;
     },
     credentials: 'include',
