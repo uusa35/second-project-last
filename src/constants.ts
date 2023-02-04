@@ -146,14 +146,6 @@ export const getApiCountry = async () =>
     },
   });
 
-export const getHost = async () =>
-  await fetch(`/api/get/host`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-
 export const imageSizes = {
   xs: 100,
   sm: 150,
