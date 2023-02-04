@@ -37,70 +37,11 @@ export type Branch = {
   delivery_type: string;
 };
 
-export interface Country {
-  id: string | number;
-  name: string;
-  name_ar: string;
-  name_en: string;
-  code: string;
-  currency: string;
-  image: string;
-  tax_status?: string | number;
-  inclusive?: string | number;
-  tax?: string;
-  address_field?: [any];
-}
-
-export interface Auth {
-  access_token: string | null;
-  user: {
-    id: string | number;
-    name: string;
-    phone: string;
-    email: string;
-    date_of_birth: string;
-    gender: string;
-    status: number | boolean;
-    phone_verified: number;
-    country_code: string;
-    country_id?: string | number;
-    avatar: string;
-  };
-}
-
 export interface Area {
   id: string | number | null;
   name: string;
   name_ar: string;
   name_en: string;
-}
-
-export interface StaticPage {
-  id: string | number;
-  body: string;
-  title: string;
-}
-
-export interface PreviousOrder {
-  code: string;
-  address: {
-    street: string;
-  };
-  total: string;
-  orderedOn: string;
-}
-
-export interface Guest {
-  name: string;
-  phone: string | number;
-  gender: string;
-  guestMode: boolean;
-}
-
-export interface PaymentProcess {
-  url: string;
-  invoice_id: number;
-  category: string;
 }
 
 export interface Location {

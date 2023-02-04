@@ -11,8 +11,6 @@ import {
   startChangeLangScenario,
   startEnableLoadingScenario,
   startShowToastMessageScenario,
-  startSetLoginScenario,
-  startSetLogOutScenario,
   startResetEnireAppSceanrio,
   startUpdateCartProductScenario,
 } from './appSaga';

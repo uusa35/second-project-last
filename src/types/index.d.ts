@@ -1,5 +1,4 @@
-import { Address, Area, Category, Country } from '@/types/queries';
-import { floated } from '@material-tailwind/react/types/components/card';
+import { Address } from '@/types/queries';
 
 export interface Product {
   id: number;
@@ -172,22 +171,6 @@ export interface CartAddons {
   name_en: string;
   Value?: number; // qty
   price?: number;
-}
-
-export interface PaymentMethod {
-  id: string | number;
-  name: string;
-  image: string;
-}
-
-export interface SearchParams {
-  searchArea: Area | object;
-  searchCountry: Country;
-  searchMainCategory: Category | null;
-  searchSubCategory: Category | null;
-  searchDateSelected: string | Date;
-  searchTimeSelected: string;
-  searchGendersSelected: string[];
 }
 
 export interface Order {
