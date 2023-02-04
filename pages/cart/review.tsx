@@ -6,13 +6,10 @@ import TrunkClock from '@/appIcons/trunk_clock.svg';
 import { suppressText, imageSizes, appLinks, imgUrl } from '@/constants/*';
 import {
   CreditCardOutlined,
-  EditOutlined,
   LocationOnOutlined,
   ReceiptOutlined,
 } from '@mui/icons-material';
 import Home from '@/appIcons/home.svg';
-import IDCard from '@/appIcons/id_card.svg';
-import OrderSummary from '@/appIcons/summary.svg';
 import CustomImage from '@/components/CustomImage';
 import Knet from '@/appImages/knet.png';
 import Cash from '@/appImages/cash_on_delivery.jpg';
@@ -49,13 +46,10 @@ const CartReview: NextPage<Props> = ({ url }) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const router = useRouter();
+
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
     OrderUser['PaymentMethod'] | null
   >(null);
-  useEffect(() => {
-    dispatch(setCurrentModule('order_review'));
-    dispatch(setShowFooterElement('order_review'));
-  }, []);
   const {
     customer,
     branch: { id: branchId, name_ar: branchAR, name_en: branchEN },
@@ -81,6 +75,11 @@ const CartReview: NextPage<Props> = ({ url }) => {
   ];
 
   useEffect(() => {
+    dispatch(setCurrentModule('order_review'));
+    dispatch(setShowFooterElement('order_review'));
+  }, []);
+
+  useEffect(() => {
     if (
       (isNull(areaId) && isNull(branchId)) ||
       (isSuccess && !cartItems.data?.Cart) ||
@@ -94,9 +93,6 @@ const CartReview: NextPage<Props> = ({ url }) => {
           })
         )
       );
-    }
-    if (url) {
-      dispatch(setUrl(url));
     }
   }, []);
 
@@ -146,11 +142,9 @@ const CartReview: NextPage<Props> = ({ url }) => {
           UserAgent: userAgent,
           Messg: customer.notes,
           PaymentMethod: selectedPaymentMethod,
-
           Date: `${new Date(customer.prefrences.date as Date).getFullYear()}-${
             new Date(customer.prefrences.date as Date).getMonth() + 1
           }-${new Date(customer.prefrences.date as Date).getDate()}`,
-
           Time: `${(
             '0' + new Date(customer.prefrences.time as Date).getHours()
           ).slice(-2)}:${(
@@ -229,7 +223,7 @@ const CartReview: NextPage<Props> = ({ url }) => {
 
   return (
     <Suspense>
-      <MainContentLayout handleSubmit={handleCreateOrder}>
+      <MainContentLayout handleSubmit={handleCreateOrder} url={url}>
         <div className={`mb-[40%]`}>
           <div className="flex justify-center items-end p-5">
             <CustomImage

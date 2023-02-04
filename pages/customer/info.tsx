@@ -11,7 +11,6 @@ import { ServerCart } from '@/types/index';
 import {
   setCurrentModule,
   setShowFooterElement,
-  setUrl,
   showToastMessage,
 } from '@/redux/slices/appSettingSlice';
 import { useDispatch } from 'react-redux';
@@ -42,6 +41,7 @@ const schema = yup
 type Props = {
   url: string;
 };
+
 const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -64,8 +64,7 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
     UserAgent: userAgent,
     url,
   });
-  const [triggerSaveCustomerInfo, { isLoading }] =
-    useSaveCustomerInfoMutation();
+  const [triggerSaveCustomerInfo] = useSaveCustomerInfoMutation();
   const {
     register,
     handleSubmit,
@@ -99,9 +98,6 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
         )
       );
     }
-    if (url) {
-      dispatch(setUrl(url));
-    }
   }, []);
 
   const onSubmit = async (body: any) => {
@@ -126,7 +122,7 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
 
   return (
     <Suspense>
-      <MainContentLayout handleSubmit={handleSubmit(onSubmit)}>
+      <MainContentLayout handleSubmit={handleSubmit(onSubmit)} url={url}>
         <div className="flex-col justify-center h-full px-5">
           <div className="flex justify-center py-10 lg:my-5 lg:pb-5">
             <CustomImage

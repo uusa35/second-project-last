@@ -1,7 +1,6 @@
 import OffLineWidget from '@/widgets/OffLineWidget';
 import { useTranslation } from 'react-i18next';
 import MainContentLayout from '@/layouts/MainContentLayout';
-import NotFoundImage from '@/appImages/not_found.png';
 
 export default function Custom401() {
   const { t } = useTranslation();

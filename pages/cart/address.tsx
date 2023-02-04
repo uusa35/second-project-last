@@ -15,7 +15,6 @@ import {
   resetShowFooterElement,
   setCurrentModule,
   setShowFooterElement,
-  setUrl,
   showToastMessage,
 } from '@/redux/slices/appSettingSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -169,12 +168,6 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
     },
   });
 
-  useEffect(() => {
-    if (url) {
-      dispatch(setUrl(url));
-    }
-  }, []);
-
   const CustomTimeInput = forwardRef(({ value, onClick }, ref) => (
     <div className="flex w-full items-center justify-between px-2">
       <input
@@ -281,7 +274,6 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
             type: `success`,
           })
         );
-        console.log('rrr', r.data.Data);
         dispatch(setCustomerAddress(r.data.Data));
         checkTimeAvailability();
       } else {
@@ -298,8 +290,6 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
   };
 
   const onSubmit = async (body: any) => {
-    console.log('body', body);
-    console.log('method', method);
     if (method === 'pickup') {
       await checkTimeAvailability();
     } else {
@@ -344,7 +334,7 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
 
   return (
     <Suspense>
-      <MainContentLayout handleSubmit={handleNext}>
+      <MainContentLayout handleSubmit={handleNext} url={url}>
         {/* delivery method buttons */}
         <DeliveryBtns />
         <div className="flex justify-center items-center">

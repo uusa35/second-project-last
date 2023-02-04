@@ -90,27 +90,19 @@ const AppFooter: FC<Props> = ({
           },
           url,
         }).then((r: any) => {
-          if (
-            r &&
-            r.data &&
-            r.data.status &&
-            r.data.data &&
-            r.data.data.Cart &&
-            r.data.data.Cart.length > 0
-          ) {
+          if (r && r.data && r.data.status && r.data.data && r.data.data.Cart) {
             triggerGetCartProducts({ UserAgent: userAgent, url }).then((r) => {
               if (r.data && r.data.data && r.data.data.Cart) {
+                dispatch(
+                  showToastMessage({
+                    content: 'item_added_successfully',
+                    type: `success`,
+                  })
+                );
               }
-              dispatch(
-                showToastMessage({
-                  content: 'item_added_successfully',
-                  type: `success`,
-                })
-              );
             });
           } else {
             if (r.error && r.error.data) {
-              console.log('error', r.error.data);
               dispatch(
                 showToastMessage({
                   // content: lowerCase(kebabCase(r.error.data.msg)),
@@ -137,6 +129,7 @@ const AppFooter: FC<Props> = ({
     if (!isEmpty(productCart) && userAgent && !isEmpty(method)) {
       // coupon case
       if (
+        coupon &&
         coupon.length > 3 &&
         userAgent &&
         isSuccess &&

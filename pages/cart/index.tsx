@@ -33,7 +33,6 @@ import {
 } from '@/redux/slices/cartSlice';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import EmptyCart from '@/appImages/empty_cart.png';
-import { wrapper } from '@/redux/store';
 
 type Props = {
   url: string;
@@ -79,9 +78,6 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
   useEffect(() => {
     dispatch(setCurrentModule('cart'));
     dispatch(setShowFooterElement(`cart_index`));
-    if (url) {
-      dispatch(setUrl(url));
-    }
     return () => {
       dispatch(resetShowFooterElement());
     };
@@ -89,6 +85,7 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
 
   const handleCoupon = async (coupon: string) => {
     if (
+      coupon &&
       coupon.length > 3 &&
       userAgent &&
       isSuccess &&
@@ -224,7 +221,7 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
 
   return (
     <Suspense>
-      <MainContentLayout>
+      <MainContentLayout url={url}>
         {/* if cart is empty */}
         {isSuccess && isEmpty(cartItems?.data?.Cart) ? (
           <div className={'px-4'}>
@@ -448,19 +445,3 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
 };
 
 export default CartIndex;
-
-export const getServerSideProps = wrapper.getServerSideProps(
-  (store) =>
-    async ({ req }) => {
-      if (!req.headers.host) {
-        return {
-          notFound: true,
-        };
-      }
-      return {
-        props: {
-          url: req.headers.host,
-        },
-      };
-    }
-);

@@ -3,19 +3,16 @@ import { NextPage } from 'next';
 import { wrapper } from '@/redux/store';
 import { apiSlice } from '@/redux/api';
 import { branchApi } from '@/redux/api/branchApi';
-import MainHead from '@/components/MainHead';
 import { Branch } from '@/types/queries';
 import { map } from 'lodash';
 import Link from 'next/link';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setBranch } from '@/redux/slices/branchSlice';
 import GoogleMapReact from 'google-map-react';
-import Phone from '@/appIcons/phone.svg';
-import { Trans, useTranslation } from 'react-i18next';
-import { suppressText, submitBtnClass } from '@/constants/*';
-import { useEffect, Suspense } from 'react';
-import { setCurrentModule, setUrl } from '@/redux/slices/appSettingSlice';
-import CustomImage from '@/components/CustomImage';
+import { useTranslation } from 'react-i18next';
+import { suppressText } from '@/constants/*';
+import { useEffect } from 'react';
+import { setCurrentModule } from '@/redux/slices/appSettingSlice';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { PhoneCallback } from '@mui/icons-material';
 
@@ -29,13 +26,10 @@ const BranchIndex: NextPage<Props> = ({ elements, url }) => {
   const color = useAppSelector(themeColor);
   useEffect(() => {
     dispatch(setCurrentModule('our_branches'));
-    if (url) {
-      dispatch(setUrl(url));
-    }
   }, []);
 
   return (
-    <MainContentLayout>
+    <MainContentLayout url={url}>
       <div className={`px-4`}>
         {map(elements, (b, i) => (
           <Link href={`#`} onClick={() => dispatch(setBranch(b))} key={i}>
@@ -87,13 +81,6 @@ export default BranchIndex;
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ locale, req }) => {
-      // if (req.headers.host) {
-      //   store.dispatch(setUrl(req.headers.host));
-      // } else {
-      //   return {
-      //     notFound: true,
-      //   };
-      // }
       if (!req.headers.host) {
         return {
           notFound: true,

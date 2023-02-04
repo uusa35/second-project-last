@@ -2,7 +2,7 @@ import { FC, ReactNode, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import i18n from 'i18next';
 import { useRouter } from 'next/router';
-import { hideSideMenu } from '@/redux/slices/appSettingSlice';
+import { hideSideMenu, setUrl } from '@/redux/slices/appSettingSlice';
 import { setUserAgent } from '@/redux/slices/customerSlice';
 import { arboriaFont, gessFont, tajwalFont } from '@/constants/*';
 import { setLocale } from '@/redux/slices/localeSlice';
@@ -43,18 +43,14 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const {
-    data: vendorElement,
-    isSuccess,
-    refetch: refetcVendor,
-  } = useGetVendorQuery<{
+  const { data: vendorElement, isSuccess } = useGetVendorQuery<{
     data: AppQueryResult<Vendor>;
     isSuccess: boolean;
   }>({ lang: locale.lang, url });
   const [triggerCreateTempId] = useLazyCreateTempIdQuery();
 
   useEffect(() => {
-    if (isNull(userAgent) && url) {
+    if (isNull(userAgent)) {
       triggerCreateTempId({ url }).then((r: any) =>
         dispatch(setUserAgent(r.data.Data?.Id))
       );

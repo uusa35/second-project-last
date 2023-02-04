@@ -44,9 +44,6 @@ const TrackOrder: NextPage<Props> = ({ url }): JSX.Element => {
 
   useEffect(() => {
     dispatch(setCurrentModule('track_order'));
-    if (url) {
-      dispatch(setUrl(url));
-    }
   }, []);
 
   if (isLoading) {
@@ -68,7 +65,7 @@ const TrackOrder: NextPage<Props> = ({ url }): JSX.Element => {
 
   return (
     <Suspense fallback={<LoadingSpinner fullWidth={false} />}>
-      <MainContentLayout>
+      <MainContentLayout url={url}>
         <div className="px-5 pb-7 border-b-[12px] border-stone-100 capitalize">
           <p className="my-3 text-sm font-semibold">
             {t('check_your_order_status')}

@@ -50,16 +50,12 @@ const ProductSearchIndex: NextPage<Props> = ({
     areaId,
     url,
   });
-  const [trigger, { isSuccess: SearchSuccess }] =
-    useLazyGetSearchProductsQuery<{
-      trigger: () => void;
-      isSuccess: boolean;
-    }>();
+  const [triggerGetProducts] = useLazyGetSearchProductsQuery<{
+    triggerGetProducts: () => void;
+    isSuccess: boolean;
+  }>();
 
   useEffect(() => {
-    if (url) {
-      dispatch(setUrl(url));
-    }
     dispatch(setCurrentModule('product_search_index'));
   }, []);
 
@@ -73,9 +69,11 @@ const ProductSearchIndex: NextPage<Props> = ({
     } else setSearchIsEmpty(false);
 
     if (key.length > 2) {
-      trigger({ key, lang, branch_id: branchId, url }).then((r: any) => {
-        setCurrentProducts(r.data.Data);
-      });
+      triggerGetProducts({ key, lang, branch_id: branchId, url }).then(
+        (r: any) => {
+          setCurrentProducts(r.data.Data);
+        }
+      );
     } else {
       setCurrentProducts(elements);
     }
@@ -88,7 +86,7 @@ const ProductSearchIndex: NextPage<Props> = ({
         description={`searching products`}
         mainImage={`${baseUrl}${logo}`}
       />
-      <MainContentLayout>
+      <MainContentLayout url={url}>
         <div className={`px-4`}>
           {/*   search Input */}
           <div className={`w-full capitalize`}>

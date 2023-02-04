@@ -3,7 +3,7 @@ import { wrapper } from '@/redux/store';
 import { apiSlice } from '@/redux/api';
 import { NextPage } from 'next';
 import { AppQueryResult, Category } from '@/types/queries';
-import { useAppDispatch } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import MainContentLayout from '@/layouts/MainContentLayout';
 import MainHead from '@/components/MainHead';
 import { vendorApi } from '@/redux/api/vendorApi';
@@ -23,7 +23,6 @@ import { setLocale } from '@/redux/slices/localeSlice';
 import {
   setCurrentModule,
   setShowFooterElement,
-  setUrl,
 } from '@/redux/slices/appSettingSlice';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import HomeSelectMethod from '@/components/home/HomeSelectMethod';
@@ -31,7 +30,6 @@ import HomeVendorMainInfo from '@/components/home/HomeVendorMainInfo';
 import { useRouter } from 'next/router';
 import CustomImage from '@/components/CustomImage';
 import LoadingSpinner from '@/components/LoadingSpinner';
-import { setColorTheme } from '@/redux/slices/vendorSlice';
 import PoweredByQ from '@/components/PoweredByQ';
 
 type Props = {
@@ -51,12 +49,6 @@ const HomePage: NextPage<Props> = ({
   useEffect(() => {
     dispatch(setCurrentModule('home'));
     dispatch(setShowFooterElement('home'));
-    if (url) {
-      dispatch(setUrl(url));
-    }
-    if (element.theme_color) {
-      dispatch(setColorTheme(element.theme_color));
-    }
   }, []);
 
   const handleFocus = () =>
@@ -70,7 +62,7 @@ const HomePage: NextPage<Props> = ({
         mainImage={`${baseUrl}${element.logo}`}
         phone={element.phone}
       />
-      <MainContentLayout>
+      <MainContentLayout url={url}>
         {/*  ImageBackGround Header */}
         <CustomImage
           src={`${imgUrl(element.cover)}`}
@@ -124,13 +116,7 @@ export default HomePage;
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ req, locale }) => {
-      if (req.headers.host) {
-        store.dispatch(setUrl(req.headers.host));
-      } else {
-        return {
-          notFound: true,
-        };
-      }
+      const url = req.headers.host;
       if (store.getState().locale.lang !== locale) {
         store.dispatch(setLocale(locale));
       }
@@ -141,7 +127,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
         await store.dispatch(
           vendorApi.endpoints.getVendor.initiate({
             lang: locale,
-            url: req.headers.host,
+            url,
           })
         );
       const {
@@ -153,7 +139,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
       } = await store.dispatch(
         categoryApi.endpoints.getCategories.initiate({
           lang: locale,
-          url: req.headers.host,
+          url,
         })
       );
       await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
@@ -173,7 +159,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
         props: {
           element: element.Data,
           categories: categories.Data,
-          url: req.headers.host,
+          url,
         },
       };
     }

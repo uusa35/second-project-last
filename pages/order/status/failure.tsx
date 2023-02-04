@@ -37,12 +37,9 @@ const OrderFailure: NextPage<Props> = ({ url }): JSX.Element => {
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(setCurrentModule('order_failure'));
-    if (url) {
-      dispatch(setUrl(url));
-    }
   }, []);
   return (
-    <MainContentLayout>
+    <MainContentLayout url={url}>
       <div>
         <div className="flex flex-col items-center capitalize">
           <CustomImage

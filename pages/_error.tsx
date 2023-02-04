@@ -4,7 +4,7 @@ import MainContentLayout from '@/layouts/MainContentLayout';
 
 const Error: NextPage = ({ statusCode, message = `` }: any) => {
   return (
-    <MainContentLayout>
+    <MainContentLayout url={url}>
       <OffLineWidget
         message={
           statusCode

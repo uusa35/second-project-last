@@ -1,6 +1,7 @@
 import * as yup from 'yup';
 import { kebabCase, lowerCase, split } from 'lodash';
 export const baseUrl = `${process.env.NEXT_PUBLIC_BASE_URL}`;
+export const xDomain = `next-q.testbedbynd.com`;
 //https://pages.testbedbynd.com/
 //https://pages-dash.testbedbynd.com/
 export const apiUrl = `${baseUrl}api/`;

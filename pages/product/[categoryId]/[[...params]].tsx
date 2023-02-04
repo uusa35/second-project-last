@@ -18,7 +18,6 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import {
   setCurrentModule,
   setProductPreview,
-  setUrl,
 } from '@/redux/slices/appSettingSlice';
 import { useTranslation } from 'react-i18next';
 import VerProductWidget from '@/components/widgets/product/VerProductWidget';
@@ -58,9 +57,6 @@ const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
       dispatch(setCurrentModule(`product_index`));
     }
     setCurrentProducts(elements.products);
-    if (url) {
-      dispatch(setUrl(url));
-    }
   }, []);
 
   const handleChange = (key: string) => {
@@ -76,7 +72,7 @@ const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
   return (
     <Suspense>
       <MainHead title={`productIndex`} description={`productIndex`} />
-      <MainContentLayout>
+      <MainContentLayout url={url}>
         <h1 className="capitalize" suppressHydrationWarning={suppressText}></h1>
         <div className={`px-4 capitalize`}>
           <div className="flex justify-center items-center">

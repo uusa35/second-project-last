@@ -13,7 +13,6 @@ import {
   resetShowFooterElement,
   setCurrentModule,
   setShowFooterElement,
-  setUrl,
 } from '@/redux/slices/appSettingSlice';
 import { baseUrl, imageSizes, imgUrl, suppressText } from '@/constants/*';
 import CustomImage from '@/components/CustomImage';
@@ -38,7 +37,6 @@ import {
   removeFromCheckBox,
   removeMeter,
   resetCheckBoxes,
-  resetProductCart,
   resetRadioBtns,
   setCartProductQty,
   setInitialProductCart,
@@ -75,9 +73,6 @@ const ProductShow: NextPage<Props> = ({ element, url }) => {
       handleResetInitialProductCart();
     }
     dispatch(setShowFooterElement(`product_show`));
-    if (url) {
-      dispatch(setUrl(url));
-    }
     return () => {
       dispatch(resetShowFooterElement());
     };
@@ -297,6 +292,7 @@ const ProductShow: NextPage<Props> = ({ element, url }) => {
         mainImage={`${baseUrl}${element?.img[0]?.thumbnail.toString()}`}
       />
       <MainContentLayout
+        url={url}
         productCurrentQty={currentQty}
         handleIncreaseProductQty={handleIncrease}
         handleDecreaseProductQty={handleDecrease}
@@ -573,12 +569,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ query, locale, req }) => {
       const { id, branchId, areaId }: any = query;
-      if (!id) {
-        return {
-          notFound: true,
-        };
-      }
-      if (!req.headers.host) {
+      if (!id || !req.headers.host) {
         return {
           notFound: true,
         };

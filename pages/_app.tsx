@@ -11,7 +11,6 @@ import { wrapper } from '@/redux//store';
 import MainLayout from '@/components/layouts/MainLayout';
 import { AppProps } from 'next/app';
 import { FC, Suspense } from 'react';
-import NextNProgress from 'nextjs-progressbar';
 
 const App: FC<AppProps> = ({ Component, ...rest }) => {
   const { store, props } = wrapper.useWrappedStore(rest);
