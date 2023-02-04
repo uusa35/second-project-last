@@ -14,21 +14,28 @@ import Phone from '@/appIcons/phone.svg';
 import { Trans, useTranslation } from 'react-i18next';
 import { suppressText, submitBtnClass } from '@/constants/*';
 import { useEffect, Suspense } from 'react';
-import { setCurrentModule } from '@/redux/slices/appSettingSlice';
+import { setCurrentModule, setUrl } from '@/redux/slices/appSettingSlice';
 import CustomImage from '@/components/CustomImage';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { PhoneCallback } from '@mui/icons-material';
 
 type Props = {
   elements: Branch[];
+  url: string;
 };
-const BranchIndex: NextPage<Props> = ({ elements }) => {
+const BranchIndex: NextPage<Props> = ({ elements ,url}) => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const color = useAppSelector(themeColor);
   useEffect(() => {
     dispatch(setCurrentModule('our_branches'));
   }, []);
+
+  useEffect(() => {
+    if (url) {
+      dispatch(setUrl(url));
+    }
+  });
 
   return (
     <MainContentLayout>
@@ -82,9 +89,24 @@ export default BranchIndex;
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
-    async ({ locale }) => {
+    async ({ locale, req }) => {
+      // if (req.headers.host) {
+      //   store.dispatch(setUrl(req.headers.host));
+      // } else {
+      //   return {
+      //     notFound: true,
+      //   };
+      // }
+      if (!req.headers.host) {
+        return {
+          notFound: true,
+        };
+      } 
       const { data: elements, isError } = await store.dispatch(
-        branchApi.endpoints.getBranches.initiate({ lang: locale })
+        branchApi.endpoints.getBranches.initiate({
+          lang: locale,
+          url: req.headers.host,
+        })
       );
       await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
       if (isError || !elements.Data) {
@@ -95,6 +117,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
       return {
         props: {
           elements: elements.Data,
+          url: req.headers.host,
         },
       };
     }
