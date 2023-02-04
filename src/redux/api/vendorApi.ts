@@ -1,7 +1,6 @@
 import { apiSlice } from './index';
 import { AppQueryResult } from '@/types/queries';
 import { Locale, Vendor } from '@/types/index';
-import { xDomain } from '@/constants/*';
 
 export const vendorApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
