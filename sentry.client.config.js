@@ -1,6 +1,9 @@
 import * as Sentry from '@sentry/nextjs';
+import { isLocal } from './src/constants';
 Sentry.init({
-  dsn: 'https://26325383873847f0aa8f6b6fb837eace@o461386.ingest.sentry.io/4504610850537472',
+  dsn: isLocal
+    ? process.env.NEXT_PUBLIC_SENTRY_DEV
+    : process.env.NEXT_PUBLIC_SENTRY_DEV,
 
   // Set tracesSampleRate to 1.0 to capture 100%
   // of transactions for performance monitoring.
