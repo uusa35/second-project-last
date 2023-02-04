@@ -16,7 +16,7 @@ import NotFoundImage from '@/appImages/not_found.png';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useEffect, useState, Suspense } from 'react';
-import { setCurrentModule } from '@/redux/slices/appSettingSlice';
+import { setCurrentModule, setUrl } from '@/redux/slices/appSettingSlice';
 import VerProductWidget from '@/widgets/product/VerProductWidget';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
@@ -25,8 +25,12 @@ import { XMarkIcon } from '@heroicons/react/20/solid';
 
 type Props = {
   elements: Product[];
+  url: string;
 };
-const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
+const ProductSearchIndex: NextPage<Props> = ({
+  elements,
+  url,
+}): JSX.Element => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const {
@@ -39,10 +43,12 @@ const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
   const { key } = router.query;
   const [searchIsEmpty, setSearchIsEmpty] = useState(true);
   const [currentProducts, setCurrentProducts] = useState<any>([]);
+
   const { data: topSearch, isSuccess } = useGetTopSearchQuery({
     lang,
     branchId,
     areaId,
+    url,
   });
   const [trigger, { isSuccess: SearchSuccess }] =
     useLazyGetSearchProductsQuery<{
@@ -51,6 +57,9 @@ const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
     }>();
 
   useEffect(() => {
+    if (url) {
+      dispatch(setUrl(url));
+    }
     dispatch(setCurrentModule('product_search_index'));
   }, []);
 
@@ -64,7 +73,7 @@ const ProductSearchIndex: NextPage<Props> = ({ elements }): JSX.Element => {
     } else setSearchIsEmpty(false);
 
     if (key.length > 2) {
-      trigger({ key, lang, branch_id: branchId }).then((r: any) => {
+      trigger({ key, lang, branch_id: branchId, url }).then((r: any) => {
         setCurrentProducts(r.data.Data);
       });
     } else {
@@ -190,14 +199,20 @@ export default ProductSearchIndex;
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
-    async ({ query, locale }) => {
+    async ({ query, locale, req }) => {
       const { key, branchId, area_id }: any = query;
+      if (!req.headers.host) {
+        return {
+          notFound: true,
+        };
+      }
       const { data: elements, isError } = await store.dispatch(
         productApi.endpoints.getSearchProducts.initiate({
           key: key ?? ``,
           ...(branchId ? { branch_id: branchId } : {}),
           ...(area_id ? { areaId: area_id } : {}),
           lang: locale,
+          url: req.headers.host,
         })
       );
       await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
@@ -209,6 +224,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
       return {
         props: {
           elements: elements.Data,
+          url: req.headers.host,
         },
       };
     }

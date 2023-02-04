@@ -28,13 +28,10 @@ const OrderInvoice: NextPage<Props> = ({ element, url }): JSX.Element => {
   };
 
   useEffect(() => {
+    dispatch(setCurrentModule('invoice'));
     if (url) {
       dispatch(setUrl(url));
     }
-  });
-
-  useEffect(() => {
-    dispatch(setCurrentModule('invoice'));
   }, []);
 
   return (

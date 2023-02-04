@@ -51,18 +51,13 @@ const HomePage: NextPage<Props> = ({
   useEffect(() => {
     dispatch(setCurrentModule('home'));
     dispatch(setShowFooterElement('home'));
-  }, []);
-
-  console.log('url from homepage  =====>', url);
-
-  useEffect(() => {
-    if (element.theme_color) {
-      dispatch(setColorTheme(element.theme_color));
-    }
     if (url) {
       dispatch(setUrl(url));
     }
-  });
+    if (element.theme_color) {
+      dispatch(setColorTheme(element.theme_color));
+    }
+  }, []);
 
   const handleFocus = () =>
     router.push(appLinks.productSearchIndex('null', ``, 'null'));

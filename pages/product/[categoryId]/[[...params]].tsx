@@ -18,6 +18,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import {
   setCurrentModule,
   setProductPreview,
+  setUrl,
 } from '@/redux/slices/appSettingSlice';
 import { useTranslation } from 'react-i18next';
 import VerProductWidget from '@/components/widgets/product/VerProductWidget';
@@ -28,8 +29,9 @@ import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import CustomImage from '@/components/CustomImage';
 type Props = {
   elements: ProductPagination<Product[]>;
+  url: string;
 };
-const ProductIndex: NextPage<Props> = ({ elements }): JSX.Element => {
+const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
   const { t } = useTranslation();
   const {
     locale: { lang },
@@ -56,11 +58,14 @@ const ProductIndex: NextPage<Props> = ({ elements }): JSX.Element => {
       dispatch(setCurrentModule(`product_index`));
     }
     setCurrentProducts(elements.products);
+    if (url) {
+      dispatch(setUrl(url));
+    }
   }, []);
 
   const handleChange = (key: string) => {
     if (key.length > 2) {
-      triggerSearchProducts({ key, lang, branch_id }).then((r: any) =>
+      triggerSearchProducts({ key, lang, branch_id, url }).then((r: any) =>
         setCurrentProducts(r.data.Data)
       );
     } else {
@@ -139,9 +144,14 @@ export default ProductIndex;
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
-    async ({ query, locale }) => {
+    async ({ query, locale, req }) => {
       const { categoryId, branchId, page, limit, areaId }: any = query;
       if (!categoryId) {
+        return {
+          notFound: true,
+        };
+      }
+      if (!req.headers.host) {
         return {
           notFound: true,
         };
@@ -160,6 +170,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
           ...(branchId ? { branch_id: branchId } : {}),
           ...(areaId ? { area_id: areaId } : {}),
           lang: locale,
+          url: req.headers.host,
         })
       );
       await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
@@ -171,6 +182,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
       return {
         props: {
           elements: elements.Data,
+          url: req.headers.host,
         },
       };
     }

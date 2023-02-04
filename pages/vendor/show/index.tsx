@@ -24,6 +24,7 @@ import {
   setCurrentModule,
   resetShowFooterElement,
   setShowFooterElement,
+  setUrl,
 } from '@/redux/slices/appSettingSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import CustomImage from '@/components/CustomImage';
@@ -55,13 +56,18 @@ const VendorShow: NextPage<Props> = ({ element, url }) => {
   useEffect(() => {
     dispatch(setCurrentModule(element.name));
   }, [element]);
+
   useEffect(() => {
     dispatch(setCurrentModule(isRTL ? element.name_ar : element.name_en));
     dispatch(setShowFooterElement(`vendor_show`));
+    if (url) {
+      dispatch(setUrl(url));
+    }
     return () => {
       dispatch(resetShowFooterElement());
     };
   }, []);
+
   function handleClosePopup() {
     SetShowModal(false);
   }

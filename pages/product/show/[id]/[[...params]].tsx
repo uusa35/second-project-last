@@ -13,6 +13,7 @@ import {
   resetShowFooterElement,
   setCurrentModule,
   setShowFooterElement,
+  setUrl,
 } from '@/redux/slices/appSettingSlice';
 import { baseUrl, imageSizes, imgUrl, suppressText } from '@/constants/*';
 import CustomImage from '@/components/CustomImage';
@@ -52,8 +53,9 @@ import NoFoundImage from '@/appImages/not_found.png';
 
 type Props = {
   element: Product;
+  url: string;
 };
-const ProductShow: NextPage<Props> = ({ element }) => {
+const ProductShow: NextPage<Props> = ({ element, url }) => {
   const { t } = useTranslation();
   const { productCart } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
@@ -73,6 +75,9 @@ const ProductShow: NextPage<Props> = ({ element }) => {
       handleResetInitialProductCart();
     }
     dispatch(setShowFooterElement(`product_show`));
+    if (url) {
+      dispatch(setUrl(url));
+    }
     return () => {
       dispatch(resetShowFooterElement());
     };
@@ -566,9 +571,14 @@ export default ProductShow;
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
-    async ({ query, locale }) => {
+    async ({ query, locale, req }) => {
       const { id, branchId, areaId }: any = query;
       if (!id) {
+        return {
+          notFound: true,
+        };
+      }
+      if (!req.headers.host) {
         return {
           notFound: true,
         };
@@ -585,6 +595,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
           lang: locale,
           ...(branchId ? { branch_id: branchId } : {}),
           ...(areaId ? { area_id: areaId } : {}),
+          url: req.headers.host,
         })
       );
       await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
@@ -596,6 +607,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
       return {
         props: {
           element: element.Data,
+          url: req.headers.host,
         },
       };
     }

@@ -81,12 +81,6 @@ const CartReview: NextPage<Props> = ({ url }) => {
   ];
 
   useEffect(() => {
-    if (url) {
-      dispatch(setUrl(url));
-    }
-  });
-
-  useEffect(() => {
     if (
       (isNull(areaId) && isNull(branchId)) ||
       (isSuccess && !cartItems.data?.Cart) ||
@@ -100,6 +94,9 @@ const CartReview: NextPage<Props> = ({ url }) => {
           })
         )
       );
+    }
+    if (url) {
+      dispatch(setUrl(url));
     }
   }, []);
 

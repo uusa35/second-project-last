@@ -65,12 +65,6 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
   const [triggerCheckPromoCode] = useLazyCheckPromoCodeQuery();
 
   useEffect(() => {
-    if (url) {
-      dispatch(setUrl(url));
-    }
-  });
-
-  useEffect(() => {
     if (
       isSuccess &&
       cartItems.data &&
@@ -85,6 +79,9 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
   useEffect(() => {
     dispatch(setCurrentModule('cart'));
     dispatch(setShowFooterElement(`cart_index`));
+    if (url) {
+      dispatch(setUrl(url));
+    }
     return () => {
       dispatch(resetShowFooterElement());
     };
