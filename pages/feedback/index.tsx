@@ -28,17 +28,16 @@ type Props = {
   isOpen: boolean;
   ariaHideApp: boolean;
   onRequestClose: () => void;
-  url: string;
 };
 
 const Feedback: NextPage<Props> = ({
   isOpen,
   onRequestClose,
   ariaHideApp,
-  url,
 }): JSX.Element => {
   const { t } = useTranslation();
   const {
+    appSetting: { url },
     locale: { isRTL },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
@@ -155,8 +154,9 @@ const Feedback: NextPage<Props> = ({
                 isRTL && `flex-row-reverse`
               }`}
             >
-              {map(ratingButtons, (button) => (
+              {map(ratingButtons, (button, i) => (
                 <button
+                  key={i}
                   dir={`${isRTL ? 'rtl' : 'ltr'}`}
                   className={`border-zinc-400 border-2 px-3 rounded-full py-2 
                   ${router.locale === 'ar' ? gessFont : arboriaFont}

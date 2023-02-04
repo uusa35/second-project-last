@@ -11,7 +11,6 @@ import { ServerCart } from '@/types/index';
 import {
   setCurrentModule,
   setShowFooterElement,
-  setUrl,
   showToastMessage,
 } from '@/redux/slices/appSettingSlice';
 import { useDispatch } from 'react-redux';
@@ -28,7 +27,6 @@ import { themeColor } from '@/redux/slices/vendorSlice';
 import { isNull } from 'lodash';
 import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 import { AppQueryResult } from '@/types/queries';
-import { wrapper } from '@/redux/store';
 
 const schema = yup
   .object({
@@ -39,16 +37,13 @@ const schema = yup
   })
   .required();
 
-type Props = {
-  url: string;
-};
-const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
+const CustomerInformation: NextPage = (): JSX.Element => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const router = useRouter();
   const {
     customer,
-    appSetting: { method },
+    appSetting: { method, url },
     customer: {
       userAgent,
       address: { phone },
@@ -64,8 +59,7 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
     UserAgent: userAgent,
     url,
   });
-  const [triggerSaveCustomerInfo, { isLoading }] =
-    useSaveCustomerInfoMutation();
+  const [triggerSaveCustomerInfo] = useSaveCustomerInfoMutation();
   const {
     register,
     handleSubmit,
@@ -98,9 +92,6 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
           })
         )
       );
-    }
-    if (url) {
-      dispatch(setUrl(url));
     }
   }, []);
 
@@ -227,19 +218,3 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
 };
 
 export default CustomerInformation;
-
-export const getServerSideProps = wrapper.getServerSideProps(
-  (store) =>
-    async ({ req }) => {
-      if (!req.headers.host) {
-        return {
-          notFound: true,
-        };
-      }
-      return {
-        props: {
-          url: req.headers.host,
-        },
-      };
-    }
-);

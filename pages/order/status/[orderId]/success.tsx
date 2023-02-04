@@ -16,7 +16,6 @@ import { useEffect, Suspense } from 'react';
 import {
   setCurrentModule,
   setShowFooterElement,
-  setUrl,
 } from '@/redux/slices/appSettingSlice';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { useLazyGetCartProductsQuery } from '@/redux/api/cartApi';
@@ -38,9 +37,6 @@ const OrderSuccess: NextPage<Props> = ({ element, url }) => {
     dispatch(setCurrentModule('order_success'));
     dispatch(setShowFooterElement(t('order_success')));
     triggerGetCartProducts({ UserAgent: userAgent, url });
-    if (url) {
-      dispatch(setUrl(url));
-    }
   }, []);
 
   return (

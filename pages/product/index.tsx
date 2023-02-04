@@ -57,9 +57,6 @@ const ProductSearchIndex: NextPage<Props> = ({
     }>();
 
   useEffect(() => {
-    if (url) {
-      dispatch(setUrl(url));
-    }
     dispatch(setCurrentModule('product_search_index'));
   }, []);
 

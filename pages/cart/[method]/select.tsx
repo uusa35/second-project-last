@@ -9,7 +9,6 @@ import { useEffect, useState, Suspense } from 'react';
 import {
   setCurrentModule,
   setShowFooterElement,
-  setUrl,
 } from '@/redux/slices/appSettingSlice';
 import {
   Accordion,
@@ -31,7 +30,7 @@ import TextTrans from '@/components/TextTrans';
 import ChangeLocationModal from '@/components/ChangeLocationModal';
 import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 import { wrapper } from '@/redux/store';
-import { setColorTheme, themeColor } from '@/redux/slices/vendorSlice';
+import { themeColor } from '@/redux/slices/vendorSlice';
 
 type Props = {
   previousRoute: string | null;
@@ -85,9 +84,6 @@ const SelectMethod: NextPage<Props> = ({
   useEffect(() => {
     dispatch(setCurrentModule('select_method'));
     dispatch(setShowFooterElement(`select_method`));
-    if (url) {
-      dispatch(setUrl(url));
-    }
     () => refetchCart();
   }, []);
 

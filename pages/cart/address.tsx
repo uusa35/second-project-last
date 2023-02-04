@@ -15,7 +15,6 @@ import {
   resetShowFooterElement,
   setCurrentModule,
   setShowFooterElement,
-  setUrl,
   showToastMessage,
 } from '@/redux/slices/appSettingSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -49,19 +48,15 @@ import { themeColor } from '@/redux/slices/vendorSlice';
 import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 import { AppQueryResult } from '@/types/queries';
 import TextTrans from '@/components/TextTrans';
-import { wrapper } from '@/redux/store';
 
-type Props = {
-  url: string;
-};
-const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
+const CartAddress: NextPage = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { t } = useTranslation();
   const {
     area,
     branch,
-    appSetting: { method },
+    appSetting: { method, url },
     customer: { userAgent, address, id: customer_id },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
@@ -169,12 +164,6 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
     },
   });
 
-  useEffect(() => {
-    if (url) {
-      dispatch(setUrl(url));
-    }
-  }, []);
-
   const CustomTimeInput = forwardRef(({ value, onClick }, ref) => (
     <div className="flex w-full items-center justify-between px-2">
       <input
@@ -281,7 +270,6 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
             type: `success`,
           })
         );
-        console.log('rrr', r.data.Data);
         dispatch(setCustomerAddress(r.data.Data));
         checkTimeAvailability();
       } else {
@@ -298,8 +286,6 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
   };
 
   const onSubmit = async (body: any) => {
-    console.log('body', body);
-    console.log('method', method);
     if (method === 'pickup') {
       await checkTimeAvailability();
     } else {
@@ -1013,19 +999,3 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
   );
 };
 export default CartAddress;
-
-export const getServerSideProps = wrapper.getServerSideProps(
-  (store) =>
-    async ({ req }) => {
-      if (!req.headers.host) {
-        return {
-          notFound: true,
-        };
-      }
-      return {
-        props: {
-          url: req.headers.host,
-        },
-      };
-    }
-);

@@ -1,17 +1,12 @@
 import { FC, ReactNode, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
-import { useAppSelector } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import OffLineWidget from '@/widgets/OffLineWidget';
 import NoInternet from '@/appImages/no_internet.png';
 import NextNProgress from 'nextjs-progressbar';
 import { themeColor } from '@/redux/slices/vendorSlice';
-const ToastAppContainer = dynamic(
-  async () => await import(`@/components/ToastAppContainer`),
-  {
-    ssr: false,
-  }
-);
+import { setUrl } from '@/redux/slices/appSettingSlice';
 const AppHeader = dynamic(() => import(`@/components/AppHeader`), {
   ssr: false,
 });
@@ -31,7 +26,7 @@ type Props = {
   handleSubmit?: (element?: any) => void | undefined | Promise<any>;
   handleIncreaseProductQty?: () => void;
   handleDecreaseProductQty?: () => void;
-  productCurrentQty?:number | undefined
+  productCurrentQty?: number | undefined;
 };
 
 const MainContentLayout: FC<Props> = ({
@@ -43,11 +38,10 @@ const MainContentLayout: FC<Props> = ({
   handleSubmit,
   handleIncreaseProductQty,
   handleDecreaseProductQty,
-  productCurrentQty
+  productCurrentQty,
 }): JSX.Element => {
   const {
-    appSetting: { showHeader, showFooter },
-    locale: { isRTL },
+    appSetting: { showHeader },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
   const [isOnline, setIsOnline] = useState(true);

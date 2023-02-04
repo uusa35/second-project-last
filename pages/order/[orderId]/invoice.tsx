@@ -11,14 +11,13 @@ import { AppQueryResult } from '@/types/queries';
 import { OrderInvoice } from '@/types/index';
 import { apiSlice } from '@/redux/api';
 import { useEffect, Suspense } from 'react';
-import { setCurrentModule, setUrl } from '@/redux/slices/appSettingSlice';
+import { setCurrentModule } from '@/redux/slices/appSettingSlice';
 import { themeColor } from '@/redux/slices/vendorSlice';
 
 type Props = {
   element: OrderInvoice;
-  url: string;
 };
-const OrderInvoice: NextPage<Props> = ({ element, url }): JSX.Element => {
+const OrderInvoice: NextPage<Props> = ({ element }): JSX.Element => {
   const { vendor } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const color = useAppSelector(themeColor);
@@ -29,9 +28,6 @@ const OrderInvoice: NextPage<Props> = ({ element, url }): JSX.Element => {
 
   useEffect(() => {
     dispatch(setCurrentModule('invoice'));
-    if (url) {
-      dispatch(setUrl(url));
-    }
   }, []);
 
   return (
@@ -307,7 +303,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
       return {
         props: {
           element: element.data,
-          url,
         },
       };
     }

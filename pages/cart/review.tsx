@@ -40,28 +40,21 @@ import { themeColor } from '@/redux/slices/vendorSlice';
 import { useRouter } from 'next/router';
 import { setOrder, setPaymentMethod } from '@/redux/slices/orderSlice';
 import { CheckCircle, BadgeOutlined } from '@mui/icons-material';
-import { wrapper } from '@/redux/store';
 
-type Props = {
-  url: string;
-};
-const CartReview: NextPage<Props> = ({ url }) => {
+const CartReview: NextPage = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const router = useRouter();
+
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
     OrderUser['PaymentMethod'] | null
   >(null);
-  useEffect(() => {
-    dispatch(setCurrentModule('order_review'));
-    dispatch(setShowFooterElement('order_review'));
-  }, []);
   const {
     customer,
     branch: { id: branchId, name_ar: branchAR, name_en: branchEN },
     area: { id: areaId },
     customer: { userAgent },
-    appSetting: { method: process_type },
+    appSetting: { method: process_type, url },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
   const { data: cartItems, isSuccess } = useGetCartProductsQuery<{
@@ -81,6 +74,11 @@ const CartReview: NextPage<Props> = ({ url }) => {
   ];
 
   useEffect(() => {
+    dispatch(setCurrentModule('order_review'));
+    dispatch(setShowFooterElement('order_review'));
+  }, []);
+
+  useEffect(() => {
     if (
       (isNull(areaId) && isNull(branchId)) ||
       (isSuccess && !cartItems.data?.Cart) ||
@@ -94,9 +92,6 @@ const CartReview: NextPage<Props> = ({ url }) => {
           })
         )
       );
-    }
-    if (url) {
-      dispatch(setUrl(url));
     }
   }, []);
 
@@ -560,19 +555,3 @@ const CartReview: NextPage<Props> = ({ url }) => {
 };
 
 export default CartReview;
-
-export const getServerSideProps = wrapper.getServerSideProps(
-  (store) =>
-    async ({ req }) => {
-      if (!req.headers.host) {
-        return {
-          notFound: true,
-        };
-      }
-      return {
-        props: {
-          url: req.headers.host,
-        },
-      };
-    }
-);

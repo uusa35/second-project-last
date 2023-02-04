@@ -24,7 +24,6 @@ import {
   setCurrentModule,
   resetShowFooterElement,
   setShowFooterElement,
-  setUrl,
 } from '@/redux/slices/appSettingSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import CustomImage from '@/components/CustomImage';
@@ -38,15 +37,15 @@ import PoweredByQ from '@/components/PoweredByQ';
 
 type Props = {
   element: Vendor;
-  url: string;
 };
 type DetailsItem = {
   icon: any;
   text: string;
   content: any;
 };
-const VendorShow: NextPage<Props> = ({ element, url }) => {
+const VendorShow: NextPage<Props> = ({ element }) => {
   const {
+    appSetting: { url },
     locale: { isRTL },
   } = useAppSelector((state) => state);
   const { t } = useTranslation();
@@ -60,9 +59,6 @@ const VendorShow: NextPage<Props> = ({ element, url }) => {
   useEffect(() => {
     dispatch(setCurrentModule(isRTL ? element.name_ar : element.name_en));
     dispatch(setShowFooterElement(`vendor_show`));
-    if (url) {
-      dispatch(setUrl(url));
-    }
     return () => {
       dispatch(resetShowFooterElement());
     };
@@ -233,7 +229,6 @@ const VendorShow: NextPage<Props> = ({ element, url }) => {
           isOpen={showModal}
           ariaHideApp={false}
           onRequestClose={handleClosePopup}
-          url={url}
         />
         <div className={`mt-[10%]`}>
           <PoweredByQ />
@@ -248,17 +243,12 @@ export default VendorShow;
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ req, locale }) => {
-      if (!req.headers.host) {
-        return {
-          notFound: true,
-        };
-      }
       const url = req.headers.host;
       const { data: element, isError } = await store.dispatch(
         vendorApi.endpoints.getVendor.initiate({ lang: locale, url })
       );
       await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
-      if (isError || !element.Data) {
+      if (isError || !element.Data || !url) {
         return {
           notFound: true,
         };
@@ -266,7 +256,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
       return {
         props: {
           element: element.Data,
-          url,
         },
       };
     }

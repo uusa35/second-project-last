@@ -2,7 +2,7 @@ import { FC, ReactNode, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import i18n from 'i18next';
 import { useRouter } from 'next/router';
-import { hideSideMenu } from '@/redux/slices/appSettingSlice';
+import { hideSideMenu, setUrl } from '@/redux/slices/appSettingSlice';
 import { setUserAgent } from '@/redux/slices/customerSlice';
 import { arboriaFont, gessFont, tajwalFont } from '@/constants/*';
 import { setLocale } from '@/redux/slices/localeSlice';
@@ -30,13 +30,14 @@ const ToastAppContainer = dynamic(
 type Props = {
   children: ReactNode | undefined;
   showCart?: boolean;
+  url: string;
 };
 
 type Handler = (...evts: any[]) => void;
 
-const MainLayout: FC<Props> = ({ children }): JSX.Element => {
+const MainLayout: FC<Props> = ({ children, url }): JSX.Element => {
   const {
-    appSetting: { sideMenuOpen, url },
+    appSetting: { sideMenuOpen },
     customer: { userAgent },
     locale,
     vendor,
@@ -61,6 +62,9 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
     }
     if (isSuccess && vendorElement.Data) {
       dispatch(setVendor(vendorElement.Data));
+    }
+    if (url) {
+      dispatch(setUrl(url));
     }
   }, []);
 
