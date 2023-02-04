@@ -13,12 +13,22 @@ export const productApi = apiSlice.injectEndpoints({
         limit: string;
         area_id?: string;
         lang: Locale['lang'] | string | undefined;
+        url: string;
       }
     >({
-      query: ({ category_id, page, limit, branch_id, area_id, lang }: any) => ({
+      query: ({
+        category_id,
+        page,
+        limit,
+        branch_id,
+        area_id,
+        lang,
+        url,
+      }: any) => ({
         url: `items`,
-        params: { category_id, page, limit},
+        params: { category_id, page, limit },
         headers: {
+          url,
           lang,
           ...(area_id && { 'x-area-id': area_id }),
           ...(branch_id && { 'x-branch-id': branch_id }),
@@ -34,12 +44,14 @@ export const productApi = apiSlice.injectEndpoints({
         branch_id?: string;
         key?: string;
         areaId?: string;
+        url: string;
       }
     >({
-      query: ({ lang, key = ``, branch_id='', areaId = `` }: any) => ({
+      query: ({ lang, key = ``, branch_id = '', areaId = ``, url }: any) => ({
         url: `search`,
         params: { key },
         headers: {
+          url,
           ...(areaId && { 'x-area-id': areaId }),
           ...(branch_id && { 'x-branch-id': branch_id }),
           lang,
@@ -55,12 +67,14 @@ export const productApi = apiSlice.injectEndpoints({
         lang: Locale['lang'] | string | undefined;
         branchId?: string | null;
         areaId?: string | null;
+        url: string;
       }
     >({
-      query: ({ id, lang, branchId = null, areaId = `` }: any) => ({
+      query: ({ id, lang, branchId = null, areaId = ``, url }: any) => ({
         url: `itemDetails`,
         params: { product_id: id },
         headers: {
+          url,
           lang,
           ...(areaId && { 'x-area-id': areaId }),
           ...(branchId && { 'x-branch-id': branchId }),
@@ -75,11 +89,13 @@ export const productApi = apiSlice.injectEndpoints({
         lang: Locale['lang'] | string | undefined;
         branchId?: string;
         areaId?: string;
+        url: string;
       }
     >({
-      query: ({ lang, branchId = ``, areaId = `` }) => ({
+      query: ({ lang, branchId = ``, areaId = `` ,url}) => ({
         url: `topSearches`,
         headers: {
+          url,
           ...(areaId && { 'x-area-id': areaId }),
           ...(branchId && { 'x-branch-id': branchId }),
           lang,
