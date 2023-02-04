@@ -28,7 +28,7 @@ const TrackOrder: NextPage<Props> = ({ url }): JSX.Element => {
     if (url) {
       dispatch(setUrl(url));
     }
-  });
+  }, []);
 
   const handleChange = (order_code: string) => {
     if (order_code && order_code.length >= 3) {
@@ -44,6 +44,9 @@ const TrackOrder: NextPage<Props> = ({ url }): JSX.Element => {
 
   useEffect(() => {
     dispatch(setCurrentModule('track_order'));
+    if (url) {
+      dispatch(setUrl(url));
+    }
   }, []);
 
   if (isLoading) {

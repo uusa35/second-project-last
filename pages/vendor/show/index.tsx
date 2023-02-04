@@ -56,18 +56,18 @@ const VendorShow: NextPage<Props> = ({ element, url }) => {
   useEffect(() => {
     dispatch(setCurrentModule(element.name));
   }, [element]);
+
   useEffect(() => {
     dispatch(setCurrentModule(isRTL ? element.name_ar : element.name_en));
     dispatch(setShowFooterElement(`vendor_show`));
+    if (url) {
+      dispatch(setUrl(url));
+    }
     return () => {
       dispatch(resetShowFooterElement());
     };
   }, []);
-  useEffect(() => {
-    if (url) {
-      dispatch(setUrl(url));
-    }
-  });
+
   function handleClosePopup() {
     SetShowModal(false);
   }

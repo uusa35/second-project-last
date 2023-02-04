@@ -25,9 +25,12 @@ import { XMarkIcon } from '@heroicons/react/20/solid';
 
 type Props = {
   elements: Product[];
-  url: string,
+  url: string;
 };
-const ProductSearchIndex: NextPage<Props> = ({ elements ,url}): JSX.Element => {
+const ProductSearchIndex: NextPage<Props> = ({
+  elements,
+  url,
+}): JSX.Element => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const {
@@ -40,17 +43,12 @@ const ProductSearchIndex: NextPage<Props> = ({ elements ,url}): JSX.Element => {
   const { key } = router.query;
   const [searchIsEmpty, setSearchIsEmpty] = useState(true);
   const [currentProducts, setCurrentProducts] = useState<any>([]);
-  useEffect(() => {
-    if (url) {
-      dispatch(setUrl(url));
-    }
-  });
 
   const { data: topSearch, isSuccess } = useGetTopSearchQuery({
     lang,
     branchId,
     areaId,
-    url
+    url,
   });
   const [trigger, { isSuccess: SearchSuccess }] =
     useLazyGetSearchProductsQuery<{
@@ -59,6 +57,9 @@ const ProductSearchIndex: NextPage<Props> = ({ elements ,url}): JSX.Element => {
     }>();
 
   useEffect(() => {
+    if (url) {
+      dispatch(setUrl(url));
+    }
     dispatch(setCurrentModule('product_search_index'));
   }, []);
 
@@ -72,7 +73,7 @@ const ProductSearchIndex: NextPage<Props> = ({ elements ,url}): JSX.Element => {
     } else setSearchIsEmpty(false);
 
     if (key.length > 2) {
-      trigger({ key, lang, branch_id: branchId ,url}).then((r: any) => {
+      trigger({ key, lang, branch_id: branchId, url }).then((r: any) => {
         setCurrentProducts(r.data.Data);
       });
     } else {
@@ -198,7 +199,7 @@ export default ProductSearchIndex;
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
-    async ({ query, locale,req }) => {
+    async ({ query, locale, req }) => {
       const { key, branchId, area_id }: any = query;
       if (!req.headers.host) {
         return {

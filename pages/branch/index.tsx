@@ -23,19 +23,16 @@ type Props = {
   elements: Branch[];
   url: string;
 };
-const BranchIndex: NextPage<Props> = ({ elements ,url}) => {
+const BranchIndex: NextPage<Props> = ({ elements, url }) => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const color = useAppSelector(themeColor);
   useEffect(() => {
     dispatch(setCurrentModule('our_branches'));
-  }, []);
-
-  useEffect(() => {
     if (url) {
       dispatch(setUrl(url));
     }
-  });
+  }, []);
 
   return (
     <MainContentLayout>
@@ -101,7 +98,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
         return {
           notFound: true,
         };
-      } 
+      }
       const { data: elements, isError } = await store.dispatch(
         branchApi.endpoints.getBranches.initiate({
           lang: locale,

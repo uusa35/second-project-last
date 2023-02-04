@@ -31,7 +31,7 @@ type Props = {
   elements: ProductPagination<Product[]>;
   url: string;
 };
-const ProductIndex: NextPage<Props> = ({ elements ,url}): JSX.Element => {
+const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
   const { t } = useTranslation();
   const {
     locale: { lang },
@@ -58,17 +58,14 @@ const ProductIndex: NextPage<Props> = ({ elements ,url}): JSX.Element => {
       dispatch(setCurrentModule(`product_index`));
     }
     setCurrentProducts(elements.products);
-  }, []);
-
-  useEffect(() => {
     if (url) {
       dispatch(setUrl(url));
     }
-  });
+  }, []);
 
   const handleChange = (key: string) => {
     if (key.length > 2) {
-      triggerSearchProducts({ key, lang, branch_id ,url}).then((r: any) =>
+      triggerSearchProducts({ key, lang, branch_id, url }).then((r: any) =>
         setCurrentProducts(r.data.Data)
       );
     } else {
@@ -173,7 +170,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
           ...(branchId ? { branch_id: branchId } : {}),
           ...(areaId ? { area_id: areaId } : {}),
           lang: locale,
-          url:req.headers.host
+          url: req.headers.host,
         })
       );
       await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
@@ -185,7 +182,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
       return {
         props: {
           elements: elements.Data,
-          url:req.headers.host
+          url: req.headers.host,
         },
       };
     }

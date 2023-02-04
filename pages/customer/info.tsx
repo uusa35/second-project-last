@@ -11,6 +11,7 @@ import { ServerCart } from '@/types/index';
 import {
   setCurrentModule,
   setShowFooterElement,
+  setUrl,
   showToastMessage,
 } from '@/redux/slices/appSettingSlice';
 import { useDispatch } from 'react-redux';
@@ -97,6 +98,9 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
           })
         )
       );
+    }
+    if (url) {
+      dispatch(setUrl(url));
     }
   }, []);
 

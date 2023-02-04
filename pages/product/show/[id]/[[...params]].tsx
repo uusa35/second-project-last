@@ -55,7 +55,7 @@ type Props = {
   element: Product;
   url: string;
 };
-const ProductShow: NextPage<Props> = ({ element ,url}) => {
+const ProductShow: NextPage<Props> = ({ element, url }) => {
   const { t } = useTranslation();
   const { productCart } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
@@ -68,12 +68,6 @@ const ProductShow: NextPage<Props> = ({ element ,url}) => {
     ? imgUrl(element.img[0].original)
     : NoFoundImage.src;
 
-    useEffect(() => {
-      if (url) {
-        dispatch(setUrl(url));
-      }
-    });
-
   useEffect(() => {
     dispatch(setCurrentModule(element.name));
     console.log(productCart.ProductID, element.id);
@@ -81,6 +75,9 @@ const ProductShow: NextPage<Props> = ({ element ,url}) => {
       handleResetInitialProductCart();
     }
     dispatch(setShowFooterElement(`product_show`));
+    if (url) {
+      dispatch(setUrl(url));
+    }
     return () => {
       dispatch(resetShowFooterElement());
     };
@@ -574,7 +571,7 @@ export default ProductShow;
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
-    async ({ query, locale ,req}) => {
+    async ({ query, locale, req }) => {
       const { id, branchId, areaId }: any = query;
       if (!id) {
         return {
@@ -598,7 +595,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
           lang: locale,
           ...(branchId ? { branch_id: branchId } : {}),
           ...(areaId ? { area_id: areaId } : {}),
-          url:req.headers.host
+          url: req.headers.host,
         })
       );
       await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
@@ -610,7 +607,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
       return {
         props: {
           element: element.Data,
-          url:req.headers.host
+          url: req.headers.host,
         },
       };
     }

@@ -173,7 +173,7 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
     if (url) {
       dispatch(setUrl(url));
     }
-  });
+  }, []);
 
   const CustomTimeInput = forwardRef(({ value, onClick }, ref) => (
     <div className="flex w-full items-center justify-between px-2">
@@ -341,8 +341,6 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
       new Event('submit', { cancelable: true, bubbles: true })
     );
   };
-
-  console.log('error', errors);
 
   return (
     <Suspense>

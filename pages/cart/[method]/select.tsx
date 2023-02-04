@@ -83,14 +83,11 @@ const SelectMethod: NextPage<Props> = ({
   }>({ lang, url });
 
   useEffect(() => {
+    dispatch(setCurrentModule('select_method'));
+    dispatch(setShowFooterElement(`select_method`));
     if (url) {
       dispatch(setUrl(url));
     }
-  });
-
-  useEffect(() => {
-    dispatch(setCurrentModule('select_method'));
-    dispatch(setShowFooterElement(`select_method`));
     () => refetchCart();
   }, []);
 
