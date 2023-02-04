@@ -27,6 +27,7 @@ import { themeColor } from '@/redux/slices/vendorSlice';
 import { isNull } from 'lodash';
 import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 import { AppQueryResult } from '@/types/queries';
+import { wrapper } from '@/redux/store';
 
 const schema = yup
   .object({
@@ -36,7 +37,11 @@ const schema = yup
     phone: yup.number().min(100000).max(999999999999).required(),
   })
   .required();
-const CustomerInformation: NextPage = (): JSX.Element => {
+
+type Props = {
+  url: string;
+};
+const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const router = useRouter();
@@ -56,6 +61,7 @@ const CustomerInformation: NextPage = (): JSX.Element => {
     isSuccess: boolean;
   }>({
     UserAgent: userAgent,
+    url,
   });
   const [triggerSaveCustomerInfo, { isLoading }] =
     useSaveCustomerInfoMutation();
@@ -97,6 +103,7 @@ const CustomerInformation: NextPage = (): JSX.Element => {
   const onSubmit = async (body: any) => {
     await triggerSaveCustomerInfo({
       body,
+      url,
     }).then((r: any) => {
       if (r.data && r.data.Data && r.data.status) {
         router
@@ -216,3 +223,19 @@ const CustomerInformation: NextPage = (): JSX.Element => {
 };
 
 export default CustomerInformation;
+
+export const getServerSideProps = wrapper.getServerSideProps(
+  (store) =>
+    async ({ req }) => {
+      if (!req.headers.host) {
+        return {
+          notFound: true,
+        };
+      }
+      return {
+        props: {
+          url: req.headers.host,
+        },
+      };
+    }
+);

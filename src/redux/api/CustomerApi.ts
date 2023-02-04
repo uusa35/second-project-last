@@ -8,11 +8,13 @@ export const customerApi = apiSlice.injectEndpoints({
       AppQueryResult<any>,
       {
         body: CustomerInfo;
+        url: string;
       }
     >({
-      query: ({ body }) => ({
+      query: ({ body, url }) => ({
         url: `customer-info`,
         method: `POST`,
+        headers: { url },
         body,
         validateStatus: (response, result) =>
           response.status === 200 && result.status,

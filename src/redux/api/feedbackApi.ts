@@ -4,24 +4,25 @@ import { AppQueryResult, Feedback } from '@/types/queries';
 export const feedbackApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     createFeedback: builder.mutation<
-    AppQueryResult<Feedback>,
-    {
-      body: {
-        user_name: string;
-        rate: number;
-        note: string;
-        phone: string
+      AppQueryResult<Feedback>,
+      {
+        body: {
+          user_name: string;
+          rate: number;
+          note: string;
+          phone: string;
+        };
+        url: string;
       }
-    }
-  >({
-    query: (body) => ({
-      url: `feedbacks/create`,
-      method: `POST`,
-      body,
-      validateStatus: (response, result) =>
-       result.status,
+    >({
+      query: ({ body, url }) => ({
+        url: `feedbacks/create`,
+        method: `POST`,
+        headers: { url },
+        body,
+        validateStatus: (response, result) => result.status,
+      }),
     }),
-  }),
   }),
 });
 

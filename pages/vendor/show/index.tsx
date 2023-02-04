@@ -37,13 +37,14 @@ import PoweredByQ from '@/components/PoweredByQ';
 
 type Props = {
   element: Vendor;
+  url: string;
 };
 type DetailsItem = {
   icon: any;
   text: string;
   content: any;
 };
-const VendorShow: NextPage<Props> = ({ element }) => {
+const VendorShow: NextPage<Props> = ({ element, url }) => {
   const {
     locale: { isRTL },
   } = useAppSelector((state) => state);
@@ -226,6 +227,7 @@ const VendorShow: NextPage<Props> = ({ element }) => {
           isOpen={showModal}
           ariaHideApp={false}
           onRequestClose={handleClosePopup}
+          url={url}
         />
         <div className={`mt-[10%]`}>
           <PoweredByQ />
@@ -239,9 +241,15 @@ export default VendorShow;
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
-    async ({ locale }) => {
+    async ({ req, locale }) => {
+      if (!req.headers.host) {
+        return {
+          notFound: true,
+        };
+      }
+      const url = req.headers.host;
       const { data: element, isError } = await store.dispatch(
-        vendorApi.endpoints.getVendor.initiate({ lang: locale })
+        vendorApi.endpoints.getVendor.initiate({ lang: locale, url })
       );
       await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
       if (isError || !element.Data) {
@@ -252,6 +260,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
       return {
         props: {
           element: element.Data,
+          url,
         },
       };
     }

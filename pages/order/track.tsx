@@ -86,6 +86,8 @@ const TrackOrder: NextPage<Props> = ({ url }): JSX.Element => {
                   router.isReady &&
                   router.query.order_code &&
                   router.query?.order_code
+                    ? router.query.order_code
+                    : ``
                 }
                 onChange={debounce((e) => handleChange(e.target.value), 400)}
                 className="block w-full rounded-md  focus:ring-1 focus:ring-primary_BG pl-10 border-none bg-gray-100 capitalize h-14"
