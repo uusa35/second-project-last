@@ -13,7 +13,7 @@ export const vendorApi = apiSlice.injectEndpoints({
         url: `vendorDetails`,
         headers: {
           lang,
-          ...(xDomain ? { 'x-domain': xDomain } : {}),
+          ...(xDomain ? { url: xDomain } : {}),
         },
         validateStatus: (response, result) =>
           response.status == 200 && result.status,

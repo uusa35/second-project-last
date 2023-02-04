@@ -12,7 +12,7 @@ export const categoryApi = apiSlice.injectEndpoints({
         url: `categories`,
         headers: {
           lang,
-          ...(xDomain ? { 'x-domain': xDomain } : {}),
+          ...(xDomain ? { url: xDomain } : {}),
         },
         validateStatus: (response, result) =>
           response.status == 200 && result.status,
