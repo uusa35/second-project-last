@@ -174,8 +174,8 @@ export const getServerSideProps = wrapper.getServerSideProps(
           category_id: categoryId.toString(),
           page: page ?? `1`,
           limit: limit ?? `10`,
-          ...(branchId ? { branch_id: branchId.toString() } : {}),
-          ...(areaId ? { area_id: areaId.toString() } : {}),
+          ...(branchId && { branch_id: branchId }),
+          ...(areaId && { area_id: areaId }),
           lang: locale,
           url: req.headers.host,
         })

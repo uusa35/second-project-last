@@ -52,8 +52,8 @@ export const productApi = apiSlice.injectEndpoints({
         params: { key },
         headers: {
           url,
-          ...(areaId ? { 'x-area-id': areaId } : {}),
-          ...(branch_id ? { 'x-branch-id': branch_id } : {}),
+          ...(areaId && { 'x-area-id': areaId }),
+          ...(branch_id && { 'x-branch-id': branch_id }),
           lang,
         },
         validateStatus: (response, result) =>
@@ -76,8 +76,8 @@ export const productApi = apiSlice.injectEndpoints({
         headers: {
           url,
           lang,
-          ...(areaId ? { 'x-area-id': areaId } : {}),
-          ...(branchId ? { 'x-branch-id': branchId } : {}),
+          ...(areaId && { 'x-area-id': areaId }),
+          ...(branchId && { 'x-branch-id': branchId }),
         },
         validateStatus: (response, result) =>
           response.status == 200 && result.status,
@@ -96,8 +96,8 @@ export const productApi = apiSlice.injectEndpoints({
         url: `topSearches`,
         headers: {
           url,
-          ...(areaId ? { 'x-area-id': areaId } : {}),
-          ...(branchId ? { 'x-branch-id': branchId } : {}),
+          ...(areaId && { 'x-area-id': areaId }),
+          ...(branchId && { 'x-branch-id': branchId }),
           lang,
         },
         validateStatus: (response, result) =>
