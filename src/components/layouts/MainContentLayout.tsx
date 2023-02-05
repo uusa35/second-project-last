@@ -47,6 +47,7 @@ const MainContentLayout: FC<Props> = ({
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
   const [isOnline, setIsOnline] = useState(true);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const handleStatusChange = () => {
@@ -62,9 +63,9 @@ const MainContentLayout: FC<Props> = ({
 
   useEffect(() => {
     if (url) {
-      setUrl(url);
+      dispatch(setUrl(url));
     }
-  }, []);
+  }, [url]);
 
   return (
     <motion.div

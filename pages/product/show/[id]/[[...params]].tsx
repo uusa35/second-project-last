@@ -284,6 +284,7 @@ const ProductShow: NextPage<Props> = ({ element, url }) => {
     currentQty,
   ]);
 
+  console.log('url from ProductShow', url);
   return (
     <Suspense>
       <MainHead
