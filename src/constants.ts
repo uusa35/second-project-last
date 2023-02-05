@@ -1,5 +1,3 @@
-import * as yup from 'yup';
-import { kebabCase, lowerCase, split } from 'lodash';
 export const baseUrl = `${process.env.NEXT_PUBLIC_BASE_URL}`;
 export const xDomain = `next-q.testbedbynd.com`;
 //https://pages.testbedbynd.com/
@@ -32,9 +30,9 @@ export const appLinks = {
     branchId?: string,
     areaId?: string
   ) =>
-    `/product/show/${id}?product_id=${product_id}&slug=${kebabCase(
-      lowerCase(slug)
-    )}&branchId=${branchId ?? ``}&areaId=${areaId ?? ``}`,
+    `/product/show/${id}?product_id=${product_id}&slug=${slug}&branchId=${
+      branchId ?? ``
+    }&areaId=${areaId ?? ``}`,
 
   branchIndex: { path: '/branch' },
   cartIndex: { path: '/cart' },
@@ -60,29 +58,7 @@ export const tajwalFont = `font-tajwal-medium`;
 export const arboriaFont = `font-arboria-light`;
 export const gessFont = `font-gess-medium`;
 
-yup.setLocale({
-  mixed: {
-    required: 'validation.required',
-  },
-  number: {
-    min: ({ min }) => ({ key: 'validation.min', values: { min } }),
-    max: ({ max }) => ({ key: 'validation.max', values: { max } }),
-  },
-  string: {
-    email: 'validation.email',
-    min: ({ min }) => ({ key: `validation.min`, values: min }),
-    max: ({ max }) => ({ key: 'validation.max', values: max }),
-    matches: 'validation.matches',
-  },
-});
-
 export const suppressText = true;
-export const splitPrice = (
-  price: string
-): { price: string; currency: string } => {
-  const element = split(price, ' ', 2);
-  return { price: element[0], currency: element[1] };
-};
 
 export const imageSizes = {
   xs: 100,
@@ -99,6 +75,5 @@ export const convertColor = (hex: string, opacity: number) => {
   const r = parseInt(tempHex.substring(0, 2), 16);
   const g = parseInt(tempHex.substring(2, 4), 16);
   const b = parseInt(tempHex.substring(4, 6), 16);
-
   return `rgba(${r},${g},${b},${opacity / 100})`;
 };

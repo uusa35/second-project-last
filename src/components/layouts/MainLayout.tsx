@@ -14,6 +14,7 @@ import { Vendor } from '@/types/index';
 import { setVendor } from '@/redux/slices/vendorSlice';
 import { isEmpty, isNull } from 'lodash';
 import { useLazyCreateTempIdQuery } from '@/redux/api/cartApi';
+import * as yup from 'yup';
 const MainAsideLayout = dynamic(
   async () => await import(`@/components/home/MainAsideLayout`),
   {
@@ -113,6 +114,21 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
       i18n.changeLanguage(router.locale);
     }
     moment.locale(router.locale);
+    yup.setLocale({
+      mixed: {
+        required: 'validation.required',
+      },
+      number: {
+        min: ({ min }) => ({ key: 'validation.min', values: { min } }),
+        max: ({ max }) => ({ key: 'validation.max', values: { max } }),
+      },
+      string: {
+        email: 'validation.email',
+        min: ({ min }) => ({ key: `validation.min`, values: min }),
+        max: ({ max }) => ({ key: 'validation.max', values: max }),
+        matches: 'validation.matches',
+      },
+    });
   }, [router.locale]);
 
   return (

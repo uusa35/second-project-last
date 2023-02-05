@@ -27,7 +27,7 @@ import {
   useGetCartProductsQuery,
 } from '@/redux/api/cartApi';
 import TextTrans from '@/components/TextTrans';
-import { filter, isEmpty, isNull, map } from 'lodash';
+import { filter, isEmpty, isNull, kebabCase, lowerCase, map } from 'lodash';
 import Link from 'next/link';
 import { OrderUser, ProductCart, ServerCart } from '@/types/index';
 import { AppQueryResult } from '@/types/queries';
@@ -399,7 +399,7 @@ const CartReview: NextPage<Props> = ({ url }) => {
                           item.ProductID.toString(),
                           branchId,
                           item.ProductID.toString(),
-                          item.ProductName,
+                          lowerCase(kebabCase(item.ProductName)),
                           areaId
                         )}`}
                         className="ltr:pr-3 rtl:pl-3 w-2/6"
@@ -420,7 +420,7 @@ const CartReview: NextPage<Props> = ({ url }) => {
                               item.ProductID.toString(),
                               branchId,
                               item.ProductID.toString(),
-                              item.ProductName,
+                              lowerCase(kebabCase(item.ProductName)),
                               areaId
                             )}`}
                           >
@@ -437,7 +437,7 @@ const CartReview: NextPage<Props> = ({ url }) => {
                                 item.ProductID.toString(),
                                 branchId,
                                 item.ProductID.toString(),
-                                item.ProductName,
+                                lowerCase(kebabCase(item.ProductName)),
                                 areaId
                               )}`}
                             >
