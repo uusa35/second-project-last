@@ -25,7 +25,7 @@ export const appLinks = {
     page?: string,
     limit?: string
   ) =>
-    `/product/${categoryId}/${method}/${elementId}?&slug=${slug}&page=${
+    `/product/${categoryId}/${method}/${elementId}?slug=${slug}&page=${
       page ?? `1`
     }&limit=${limit ?? `10`}`,
 
