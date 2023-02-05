@@ -20,8 +20,8 @@ export const appLinks = {
   productIndexTest: (
     categoryId: string,
     slug: string,
-    elementId: string,
     method: string,
+    elementId: string,
     page?: string,
     limit?: string
   ) =>
