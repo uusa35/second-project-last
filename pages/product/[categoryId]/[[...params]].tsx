@@ -164,11 +164,11 @@ export const getServerSideProps = wrapper.getServerSideProps(
         isError: boolean;
       } = await store.dispatch(
         productApi.endpoints.getProducts.initiate({
-          category_id: categoryId,
+          category_id: categoryId.toString(),
           page: page ?? `1`,
           limit: limit ?? `10`,
-          ...(branchId ? { branch_id: branchId } : {}),
-          ...(areaId ? { area_id: areaId } : {}),
+          ...(branchId ? { branch_id: branchId.toString() } : {}),
+          ...(areaId ? { area_id: areaId.toString() } : {}),
           lang: locale,
           url: req.headers.host,
         })
