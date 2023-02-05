@@ -19,6 +19,7 @@ export const apiSlice = createApi({
         'Access-Control-Allow-Methods',
         'GET,PUT,POST,DELETE,PATCH,OPTIONS'
       );
+      headers.set('Cache-Control', 'no-store');
       // if (isLocal) {
       //   headers.set('url', xDomain);
       // }
