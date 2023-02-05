@@ -130,7 +130,6 @@ const SelectMethod: NextPage<Props> = ({
     ) {
       setShowChangeLocModal(true);
     } else {
-      console.log('in area not changed set');
       if (method === 'delivery') {
         dispatch(setArea(selectedData.area));
         // dispatch(removeBranch());

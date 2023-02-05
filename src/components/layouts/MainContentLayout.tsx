@@ -7,6 +7,7 @@ import NoInternet from '@/appImages/no_internet.png';
 import NextNProgress from 'nextjs-progressbar';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { setUrl } from '@/redux/slices/appSettingSlice';
+import { xDomain } from '@/constants/*';
 const AppHeader = dynamic(() => import(`@/components/AppHeader`), {
   ssr: false,
 });

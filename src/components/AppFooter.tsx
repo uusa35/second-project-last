@@ -162,43 +162,20 @@ const AppFooter: FC<Props> = ({
           }
         });
       }
-      triggerAddToCart({
-        process_type: method,
-        area_branch: method === 'delivery' ? area.id : branchId,
-        body: {
-          UserAgent: userAgent,
-          Cart:
-            cartItems && cartItems.data && cartItems.data.Cart
-              ? filter(
-                  cartItems.data.Cart,
-                  (i) => i.id !== productCart.id
-                ).concat(productCart)
-              : [productCart],
-        },
-        url,
-      })
-        .then((r: any) => {
-          if (
-            r &&
-            r.data &&
-            r.data.status &&
-            r.data.data &&
-            r.data.data.Cart &&
-            r.data.data.Cart.length > 0
-          ) {
-            triggerGetCartProducts({ UserAgent: userAgent, url }).then((r) => {
-              if (r.data && r.data.data && r.data.data.Cart) {
-              }
-              dispatch(
-                showToastMessage({
-                  content: 'item_added_successfully',
-                  type: `success`,
-                })
-              );
-            });
+      triggerGetCartProducts({ UserAgent: userAgent, url })
+        .then((r) => {
+          if (r.data && r.data.data && r.data.data.Cart) {
+            router.push(appLinks.customerInfo.path);
           }
         })
-        .then(() => router.push(appLinks.customerInfo.path));
+        .then(() =>
+          dispatch(
+            showToastMessage({
+              content: 'item_added_successfully',
+              type: `success`,
+            })
+          )
+        );
     }
   };
 
