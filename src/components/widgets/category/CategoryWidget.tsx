@@ -13,16 +13,26 @@ type Props = {
   element: Category;
 };
 const CategoryWidget: FC<Props> = ({ element }) => {
-  const { branch, area } = useAppSelector((state) => state);
+  const {
+    branch,
+    area,
+    appSetting: { method },
+  } = useAppSelector((state) => state);
 
   return (
     <motion.div whileTap={{ opacity: 1 }} whileHover={{ opacity: 0.8 }}>
       <Link
-        href={appLinks.productIndex(
+        // href={appLinks.productIndex(
+        //   element.id.toString(),
+        //   kebabCase(lowerCase(element.name)),
+        //   branch.id,
+        //   area.id
+        // )}
+        href={appLinks.productIndexTest(
           element.id.toString(),
           kebabCase(lowerCase(element.name)),
-          branch.id,
-          area.id
+          method,
+          method === `delivery` ? area.id : branch.id
         )}
         className={`h-60 lg:h-72 shadow-lg rounded-lg capitalize`}
         suppressHydrationWarning={suppressText}
