@@ -8,6 +8,7 @@ import NextNProgress from 'nextjs-progressbar';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { setUrl } from '@/redux/slices/appSettingSlice';
 import { xDomain } from '@/constants/*';
+import { isEmpty, isUndefined } from 'lodash';
 const AppHeader = dynamic(() => import(`@/components/AppHeader`), {
   ssr: false,
 });
@@ -44,7 +45,7 @@ const MainContentLayout: FC<Props> = ({
   url,
 }): JSX.Element => {
   const {
-    appSetting: { showHeader },
+    appSetting: { showHeader, url: appUrl },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
   const [isOnline, setIsOnline] = useState(true);
@@ -63,7 +64,7 @@ const MainContentLayout: FC<Props> = ({
   }, [isOnline]);
 
   useEffect(() => {
-    if (url) {
+    if (appUrl !== url && !isUndefined(url)) {
       dispatch(setUrl(url));
     }
   }, []);
