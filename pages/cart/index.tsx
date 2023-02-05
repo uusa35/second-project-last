@@ -33,6 +33,7 @@ import {
 } from '@/redux/slices/cartSlice';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import EmptyCart from '@/appImages/empty_cart.png';
+import { wrapper } from '@/redux/store';
 
 type Props = {
   url: string;
@@ -445,3 +446,19 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
 };
 
 export default CartIndex;
+
+export const getServerSideProps = wrapper.getServerSideProps(
+  (store) =>
+    async ({ req }) => {
+      if (!req.headers.host) {
+        return {
+          notFound: true,
+        };
+      }
+      return {
+        props: {
+          url: req.headers.host,
+        },
+      };
+    }
+);

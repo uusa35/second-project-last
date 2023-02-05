@@ -46,7 +46,6 @@ const CartReview: NextPage<Props> = ({ url }) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const router = useRouter();
-
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
     OrderUser['PaymentMethod'] | null
   >(null);
