@@ -47,9 +47,12 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
     data: AppQueryResult<Vendor>;
     isSuccess: boolean;
   }>({ lang: locale.lang, url });
-  const [triggerCreateTempId] = useLazyCreateTempIdQuery();
+  const [triggerCreateTempId, { isSuccess: tempIdSuccess }] =
+    useLazyCreateTempIdQuery();
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    setAppDefaults();
+  }, [isSuccess, tempIdSuccess]);
 
   const setAppDefaults = () => {
     if (isNull(userAgent)) {

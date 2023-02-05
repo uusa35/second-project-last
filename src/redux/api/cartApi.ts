@@ -16,7 +16,6 @@ export const cartApi = apiSlice.injectEndpoints({
         validateStatus: (response, result) =>
           response.status == 200 && result.status,
       }),
-      keepUnusedDataFor: 0,
     }),
     addToCart: builder.mutation<
       AppQueryResult<ServerCart>,
@@ -37,7 +36,6 @@ export const cartApi = apiSlice.injectEndpoints({
           url,
         },
         validateStatus: (response, result) => result.status,
-        keepUnusedDataFor: 0,
       }),
       invalidatesTags: ['Cart'],
     }),
@@ -56,7 +54,6 @@ export const cartApi = apiSlice.injectEndpoints({
         },
         validateStatus: (response, result) =>
           response.status == 200 && result.status,
-        keepUnusedDataFor: 0,
       }),
       providesTags: ['Cart'],
     }),
@@ -74,7 +71,6 @@ export const cartApi = apiSlice.injectEndpoints({
         params: { userAgent, PromoCode },
         validateStatus: (response, result) =>
           response.status == 200 && result.status,
-        keepUnusedDataFor: 0,
       }),
     }),
     changeLocation: builder.query<
