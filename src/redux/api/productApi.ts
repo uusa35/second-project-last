@@ -30,8 +30,8 @@ export const productApi = apiSlice.injectEndpoints({
         headers: {
           url,
           lang,
-          ...(area_id ? { 'x-area-id': area_id } : {}),
-          ...(branch_id ? { 'x-branch-id': branch_id } : {}),
+          ...(area_id && { 'x-area-id': area_id }),
+          ...(branch_id && { 'x-branch-id': branch_id }),
         },
         validateStatus: (response, result) =>
           response.status == 200 && result.status,
