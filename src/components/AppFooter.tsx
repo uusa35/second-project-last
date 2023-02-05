@@ -64,9 +64,11 @@ const AppFooter: FC<Props> = ({
       (method === `pickup` && isNull(branchId)) ||
       (method === `delivery` && isNull(area.id))
     ) {
+      console.log('case 1');
       router.push(appLinks.cartSelectMethod(`delivery`));
     }
     if (!productCart.enabled) {
+      console.log('case 2');
       dispatch(
         showToastMessage({
           content: `please_review_sections_some_r_required`,
@@ -75,6 +77,7 @@ const AppFooter: FC<Props> = ({
       );
     } else {
       if (!isEmpty(productCart) && userAgent) {
+        console.log('case 3');
         await triggerAddToCart({
           process_type: method,
           area_branch: method === 'delivery' ? area.id : branchId,
@@ -93,16 +96,20 @@ const AppFooter: FC<Props> = ({
           if (r && r.data && r.data.status && r.data.data && r.data.data.Cart) {
             triggerGetCartProducts({ UserAgent: userAgent, url }).then((r) => {
               if (r.data && r.data.data && r.data.data.Cart) {
+                console.log('case 4');
                 dispatch(
                   showToastMessage({
                     content: 'item_added_successfully',
                     type: `success`,
                   })
                 );
+              } else {
+                console.log('case 5');
               }
             });
           } else {
             if (r.error && r.error.data) {
+              console.log('case 6');
               dispatch(
                 showToastMessage({
                   // content: lowerCase(kebabCase(r.error.data.msg)),
@@ -112,6 +119,8 @@ const AppFooter: FC<Props> = ({
                   type: `error`,
                 })
               );
+            } else {
+              console.log('case 7');
             }
           }
         });
