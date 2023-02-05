@@ -29,14 +29,14 @@ const nextConfig = {
       headers: [
         {
           key: 'Cache-Control',
-          value: 'no-store',
+          value: 'no-store, no-cache, must-revalidate',
         },
       ],
       source: '/product',
       headers: [
         {
           key: 'Cache-Control',
-          value: 'no-store',
+          value: 'no-store, no-cache, must-revalidate',
         },
       ],
     },
