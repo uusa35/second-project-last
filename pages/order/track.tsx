@@ -24,12 +24,6 @@ const TrackOrder: NextPage<Props> = ({ url }): JSX.Element => {
   const [triggerGetTrackOrder, { data, isSuccess, isLoading }] =
     useLazyTrackOrderQuery();
 
-  useEffect(() => {
-    if (url) {
-      dispatch(setUrl(url));
-    }
-  }, []);
-
   const handleChange = (order_code: string) => {
     if (order_code && order_code.length >= 3) {
       triggerGetTrackOrder({ order_code, url });
