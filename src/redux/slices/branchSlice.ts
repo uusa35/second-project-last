@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Branch } from '@/types/queries';
-import { appSettingSlice } from './appSettingSlice';
 import { areaSlice } from './areaSlice';
 
 const initialState: Branch = {

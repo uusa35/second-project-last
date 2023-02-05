@@ -17,7 +17,7 @@ export const appLinks = {
     `/product/${categoryId}?&slug=${slug}&branch_id=${branchId ?? ''}&areaId=${
       areaId ?? ``
     }&page=${page ?? `1`}&limit=${limit ?? `10`}`,
-  productIndexTest: (
+  productIndexDefined: (
     categoryId: string,
     slug: string,
     method: string,
