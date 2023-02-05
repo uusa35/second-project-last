@@ -41,14 +41,14 @@ const persistConfig = {
     'vendor',
   ],
   // stateReconciler: hardSet,
-  debug: isLocal,
+  debug: true,
 };
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 const sagaMiddleware = createSagaMiddleware();
 const appLogger = createLogger({
-  collapsed: isLocal,
-  duration: isLocal,
-  diff: isLocal,
+  collapsed: true,
+  duration: true,
+  diff: true,
 });
 let store: any = configureStore({
   reducer: persistedReducer,
@@ -123,7 +123,7 @@ export const initializeStore = (preloadedState: RootState) => {
 setupListeners(store.dispatch);
 const makeStore = () => store;
 const persistor = persistStore(store);
-export const wrapper = createWrapper<AppStore>(makeStore, { debug: isLocal });
+export const wrapper = createWrapper<AppStore>(makeStore, { debug: true });
 export const useStore = (initialState: RootState) =>
   useMemo(() => initializeStore(initialState), [initialState]);
 export type RootState = ReturnType<typeof store.getState>;
