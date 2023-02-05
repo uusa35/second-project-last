@@ -151,7 +151,8 @@ export default ProductIndex;
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
-    async ({ query, locale, req }) => {
+    async ({ query, locale, req, res }) => {
+      res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
       const { categoryId, branchId, page, limit, areaId }: any = query;
       if (!categoryId) {
         return {
