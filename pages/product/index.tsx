@@ -22,6 +22,7 @@ import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { XMarkIcon } from '@heroicons/react/20/solid';
+import CustomImage from '@/components/CustomImage';
 
 type Props = {
   elements: Product[];
@@ -165,13 +166,20 @@ const ProductSearchIndex: NextPage<Props> = ({
 
           <div className="my-4 capitalize">
             {isEmpty(elements) && !isSuccess && (
-              <Image
-                src={NotFoundImage.src}
-                alt={`not_found`}
-                width={imageSizes.sm}
-                height={imageSizes.sm}
-                className={`w-60 h-auto`}
-              />
+              <div
+                className={`w-full flex flex-1 flex-col justify-center items-center space-y-4 my-12`}
+              >
+                <CustomImage
+                  src={NotFoundImage.src}
+                  alt={`not_found`}
+                  width={imageSizes.sm}
+                  height={imageSizes.sm}
+                  className={`w-60 h-auto`}
+                />
+                <span className={`text-black text-xl text-center`}>
+                  {t('no_results_found')}
+                </span>
+              </div>
             )}
 
             {!isEmpty(currentProducts) && (

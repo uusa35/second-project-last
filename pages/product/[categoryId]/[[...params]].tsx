@@ -117,13 +117,20 @@ const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
             }
           >
             {isEmpty(currentProducts) && (
-              <CustomImage
-                src={NotFoundImage.src}
-                alt={`not_found`}
-                width={imageSizes.sm}
-                height={imageSizes.sm}
-                className={`w-60 h-auto`}
-              />
+              <div
+                className={`w-full flex flex-1 flex-col justify-center items-center space-y-4 my-12`}
+              >
+                <CustomImage
+                  src={NotFoundImage.src}
+                  alt={`not_found`}
+                  width={imageSizes.sm}
+                  height={imageSizes.sm}
+                  className={`w-60 h-auto`}
+                />
+                <span className={`text-black text-xl text-center`}>
+                  {t('no_results_found')}
+                </span>
+              </div>
             )}
             {!isEmpty(currentProducts) &&
               map(currentProducts, (p: Product, i) =>

@@ -23,7 +23,24 @@ const nextConfig = {
       },
     ];
   },
-
+  headers: () => [
+    {
+      source: '/product/:categoryId/:path*',
+      headers: [
+        {
+          key: 'Cache-Control',
+          value: 'no-store',
+        },
+      ],
+      source: '/product',
+      headers: [
+        {
+          key: 'Cache-Control',
+          value: 'no-store',
+        },
+      ],
+    },
+  ],
   async redirects() {
     return [
       {
