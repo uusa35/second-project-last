@@ -27,7 +27,7 @@ export const apiSlice = createApi({
     credentials: 'include',
   }),
   tagTypes: ['Cart', 'Branch', 'Area'],
-  keepUnusedDataFor: 60 * 60,
+  keepUnusedDataFor: 0,
   refetchOnReconnect: false,
   extractRehydrationInfo(action, { reducerPath }) {
     if (action.type === HYDRATE) {
