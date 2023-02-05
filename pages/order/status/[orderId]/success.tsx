@@ -110,7 +110,7 @@ const OrderSuccess: NextPage<Props> = ({ element, url }) => {
             </Link>
             <Link
               href={{
-                pathname: `/order/track`,
+                pathname: appLinks.trackOrder.path,
                 query: { order_code: element.orderCode },
               }}
               scroll={true}

@@ -365,6 +365,7 @@
   "track_order": "تتبع الطلب",
   "check_your_order_status": "تابع حالة طلبك",
   "enter_order_code": "أدخِل كود الطلب",
+  "order_code" : "كود الطلب",
   "estimated_time": "الوقت المتوقع",
   "order_pending": "في انتظار الطلب",
   "delivering_to_your_address": "سيصل إلى عنوانك",
