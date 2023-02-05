@@ -3,7 +3,7 @@ import { Vendor } from '@/types/index';
 import { RootState } from '@/redux/store';
 
 const initialState: Vendor = {
-  id: ``,
+  id: null,
   name: ``,
   name_ar: ``,
   name_en: ``,

@@ -45,7 +45,7 @@ export interface img {
 }
 
 export interface Vendor {
-  id: string | number;
+  id: string | number | null;
   name: string;
   name_ar: string;
   name_en: string;

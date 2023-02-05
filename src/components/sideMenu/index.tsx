@@ -45,14 +45,6 @@ const SideMenu: FC<Props> = (): JSX.Element => {
     branch: { id: branchId },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
-  const handleChangeLang = async (locale: string) => {
-    await router
-      .replace(router.pathname, router.asPath, {
-        locale,
-        scroll: false,
-      })
-      .then(() => dispatch(setLocale(locale)));
-  };
 
   return (
     <Suspense fallback={<LoadingSpinner fullWidth={false} />}>

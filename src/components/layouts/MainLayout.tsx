@@ -12,7 +12,7 @@ import { useGetVendorQuery } from '@/redux/api/vendorApi';
 import { AppQueryResult } from '@/types/queries';
 import { Vendor } from '@/types/index';
 import { setVendor } from '@/redux/slices/vendorSlice';
-import { isNull } from 'lodash';
+import { isEmpty, isNull } from 'lodash';
 import { useLazyCreateTempIdQuery } from '@/redux/api/cartApi';
 const MainAsideLayout = dynamic(
   async () => await import(`@/components/home/MainAsideLayout`),
@@ -49,22 +49,26 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
   }>({ lang: locale.lang, url });
   const [triggerCreateTempId] = useLazyCreateTempIdQuery();
 
-  useEffect(() => {
+  useEffect(() => {}, []);
+
+  const setAppDefaults = () => {
     if (isNull(userAgent)) {
       triggerCreateTempId({ url }).then((r: any) =>
         dispatch(setUserAgent(r.data.Data?.Id))
       );
     }
-    if (isSuccess && vendorElement.Data) {
+    if (isSuccess && vendorElement.Data && isNull(vendor.id)) {
       dispatch(setVendor(vendorElement.Data));
     }
-  }, []);
+  };
 
   useEffect(() => {
     const handleRouteChange: Handler = (url, { shallow }) => {
+      setAppDefaults();
       dispatch(hideSideMenu());
     };
     const handleChangeComplete: Handler = (url, { shallow }) => {
+      setAppDefaults();
       if (sideMenuOpen) {
         dispatch(hideSideMenu());
       }
