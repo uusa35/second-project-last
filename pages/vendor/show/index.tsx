@@ -14,6 +14,7 @@ import Knet from '@/appImages/knet.png';
 import CashOnDelivery from '@/appImages/cash_on_delivery.jpg';
 import Visa from '@/appImages/visa.png';
 import { useTranslation } from 'react-i18next';
+
 import {
   convertColor,
   imageSizes,
