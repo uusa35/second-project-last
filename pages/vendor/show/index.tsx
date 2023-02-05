@@ -27,7 +27,7 @@ import {
 } from '@/redux/slices/appSettingSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import CustomImage from '@/components/CustomImage';
-import Feedback from '@/pages/feedback';
+import Feedback from '@/components/Feedback';
 import FeedbackIcon from '@/appIcons/feedback.svg';
 import Facebook from '@/appIcons/facebook.svg';
 import Twitter from '@/appIcons/twitter.svg';

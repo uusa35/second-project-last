@@ -1,4 +1,3 @@
-import { NextPage } from 'next';
 import Modal from 'react-modal';
 import { useTranslation } from 'react-i18next';
 import ModalFeedbackIcon from '@/appIcons/modal_feedback.svg';
@@ -19,7 +18,7 @@ import {
 } from '@/constants/*';
 import { useForm } from 'react-hook-form';
 import { map } from 'lodash';
-import { useState } from 'react';
+import { FC, useState } from 'react';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { useRouter } from 'next/router';
@@ -30,7 +29,7 @@ type Props = {
   onRequestClose: () => void;
 };
 
-const Feedback: NextPage<Props> = ({
+const Feedback: FC<Props> = ({
   isOpen,
   onRequestClose,
   ariaHideApp,
