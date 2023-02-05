@@ -79,6 +79,9 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
   useEffect(() => {
     dispatch(setCurrentModule('cart'));
     dispatch(setShowFooterElement(`cart_index`));
+    if (url) {
+      dispatch(setUrl(url));
+    }
     return () => {
       dispatch(resetShowFooterElement());
     };

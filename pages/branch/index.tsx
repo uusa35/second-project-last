@@ -12,7 +12,7 @@ import GoogleMapReact from 'google-map-react';
 import { useTranslation } from 'react-i18next';
 import { suppressText } from '@/constants/*';
 import { useEffect } from 'react';
-import { setCurrentModule } from '@/redux/slices/appSettingSlice';
+import { setCurrentModule, setUrl } from '@/redux/slices/appSettingSlice';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { PhoneCallback } from '@mui/icons-material';
 
@@ -26,6 +26,9 @@ const BranchIndex: NextPage<Props> = ({ elements, url }) => {
   const color = useAppSelector(themeColor);
   useEffect(() => {
     dispatch(setCurrentModule('our_branches'));
+    if (url) {
+      dispatch(setUrl(url));
+    }
   }, []);
 
   return (

@@ -13,6 +13,7 @@ import {
   resetShowFooterElement,
   setCurrentModule,
   setShowFooterElement,
+  setUrl,
 } from '@/redux/slices/appSettingSlice';
 import { baseUrl, imageSizes, imgUrl, suppressText } from '@/constants/*';
 import CustomImage from '@/components/CustomImage';
@@ -71,6 +72,9 @@ const ProductShow: NextPage<Props> = ({ element, url }) => {
     console.log(productCart.ProductID, element.id);
     if (productCart.ProductID !== element.id) {
       handleResetInitialProductCart();
+    }
+    if (url) {
+      dispatch(setUrl(url));
     }
     dispatch(setShowFooterElement(`product_show`));
     return () => {

@@ -11,6 +11,7 @@ import { ServerCart } from '@/types/index';
 import {
   setCurrentModule,
   setShowFooterElement,
+  setUrl,
   showToastMessage,
 } from '@/redux/slices/appSettingSlice';
 import { useDispatch } from 'react-redux';
@@ -84,6 +85,9 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
   useEffect(() => {
     dispatch(setCurrentModule('customer_info'));
     dispatch(setShowFooterElement(`customerInfo`));
+    if (url) {
+      dispatch(setUrl(url));
+    }
     if (
       (isNull(areaId) && isNull(branchId)) ||
       (isSuccess && !cartItems.data?.Cart) ||

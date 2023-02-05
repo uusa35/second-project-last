@@ -66,7 +66,7 @@ const MainContentLayout: FC<Props> = ({
     if (url) {
       dispatch(setUrl(url));
     }
-  }, [url]);
+  }, []);
 
   return (
     <motion.div

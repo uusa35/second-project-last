@@ -76,6 +76,9 @@ const CartReview: NextPage<Props> = ({ url }) => {
   useEffect(() => {
     dispatch(setCurrentModule('order_review'));
     dispatch(setShowFooterElement('order_review'));
+    if (url) {
+      dispatch(setUrl(url));
+    }
   }, []);
 
   useEffect(() => {

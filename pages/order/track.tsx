@@ -38,6 +38,9 @@ const TrackOrder: NextPage<Props> = ({ url }): JSX.Element => {
 
   useEffect(() => {
     dispatch(setCurrentModule('track_order'));
+    if (url) {
+      dispatch(setUrl(url));
+    }
   }, []);
 
   if (isLoading) {

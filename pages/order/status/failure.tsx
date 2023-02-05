@@ -37,6 +37,9 @@ const OrderFailure: NextPage<Props> = ({ url }): JSX.Element => {
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(setCurrentModule('order_failure'));
+    if (url) {
+      dispatch(setUrl(url));
+    }
   }, []);
   return (
     <MainContentLayout url={url}>

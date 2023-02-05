@@ -15,6 +15,7 @@ import {
   resetShowFooterElement,
   setCurrentModule,
   setShowFooterElement,
+  setUrl,
   showToastMessage,
 } from '@/redux/slices/appSettingSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -300,6 +301,9 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
   useEffect(() => {
     dispatch(setCurrentModule('cart_address'));
     dispatch(setShowFooterElement('cart_address'));
+    if (url) {
+      dispatch(setUrl(url));
+    }
     if (
       (isNull(area.id) && isNull(branch.id)) ||
       (isSuccess && !cartItems.data?.Cart) ||

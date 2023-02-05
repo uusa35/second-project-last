@@ -18,6 +18,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import {
   setCurrentModule,
   setProductPreview,
+  setUrl,
 } from '@/redux/slices/appSettingSlice';
 import { useTranslation } from 'react-i18next';
 import VerProductWidget from '@/components/widgets/product/VerProductWidget';
@@ -55,6 +56,9 @@ const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
       dispatch(setCurrentModule(replace(query?.slug, '-', ' ')));
     } else {
       dispatch(setCurrentModule(`product_index`));
+    }
+    if (url) {
+      dispatch(setUrl(url));
     }
     setCurrentProducts(elements.products);
   }, []);

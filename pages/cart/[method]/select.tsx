@@ -9,6 +9,7 @@ import { useEffect, useState, Suspense } from 'react';
 import {
   setCurrentModule,
   setShowFooterElement,
+  setUrl,
 } from '@/redux/slices/appSettingSlice';
 import {
   Accordion,
@@ -84,6 +85,9 @@ const SelectMethod: NextPage<Props> = ({
   useEffect(() => {
     dispatch(setCurrentModule('select_method'));
     dispatch(setShowFooterElement(`select_method`));
+    if (url) {
+      dispatch(setUrl(url));
+    }
     () => refetchCart();
   }, []);
 
