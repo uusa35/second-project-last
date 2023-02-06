@@ -42,7 +42,7 @@ const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const [Icon, SetIcon] = useState(true);
+  const [icon, setIcon] = useState(true);
   const { query }: any = useRouter();
   const [currentProducts, setCurrentProducts] = useState<any>([]);
   const { categoryId, method, elementId } = router.query;
@@ -61,7 +61,7 @@ const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
   // change menue view to list view
   const changeStyle = (preview: appSetting['productPreview']) => {
     dispatch(setProductPreview(preview));
-    SetIcon(!Icon);
+    setIcon(!icon);
   };
 
   useEffect(() => {
@@ -121,7 +121,7 @@ const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
               }
               className="pt-1 ps-2"
             >
-              {Icon ? (
+              {icon ? (
                 <CustomImage src={List} alt="menu" className={'w-8 h-8'} />
               ) : (
                 <CustomImage src={Menu} alt="menu" className={'w-8 h-8'} />
@@ -183,15 +183,21 @@ export const getServerSideProps = wrapper.getServerSideProps(
         data: AppQueryResult<Product[]>;
         isError: boolean;
       } = await store.dispatch(
-        productApi.endpoints.getProducts.initiate({
-          category_id: categoryId.toString(),
-          page: page ?? `1`,
-          limit: limit ?? `10`,
-          ...(method === `pickup` && { branch_id: elementId }),
-          ...(method === `delivery` && { area_id: elementId }),
-          lang: locale,
-          url: req.headers.host,
-        })
+        productApi.endpoints.getProducts.initiate(
+          {
+            category_id: categoryId.toString(),
+            page: page ?? `1`,
+            limit: limit ?? `10`,
+            ...(method === `pickup` && { branch_id: elementId }),
+            ...(method === `delivery` && { area_id: elementId }),
+            lang: locale,
+            url: req.headers.host,
+          },
+          {
+            keepUnusedDataFor: 0,
+            refetchOnMountOrArgChange: true,
+          }
+        )
       );
       await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
       if (isError || !elements.Data) {
