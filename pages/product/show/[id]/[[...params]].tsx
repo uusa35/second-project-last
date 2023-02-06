@@ -234,16 +234,20 @@ const ProductShow: NextPage<Props> = ({ element, url }) => {
   };
 
   useEffect(() => {
-    if (isEmpty(productCart.QuantityMeters)) {
-      dispatch(disableAddToCart());
+    if (isEmpty(element.sections)) {
+      dispatch(enableAddToCart());
     } else {
-      const allAddons = map(productCart.QuantityMeters, (q) => q.addons[0]);
-      const currentValue = sumBy(allAddons, (a) => a.Value);
-      if (currentValue > 0 && currentQty > 0) {
-        dispatch(enableAddToCart());
-      } else {
-        // handleResetInitialProductCart();
+      if (isEmpty(productCart.QuantityMeters)) {
         dispatch(disableAddToCart());
+      } else {
+        const allAddons = map(productCart.QuantityMeters, (q) => q.addons[0]);
+        const currentValue = sumBy(allAddons, (a) => a.Value);
+        if (currentValue > 0 && currentQty > 0) {
+          dispatch(enableAddToCart());
+        } else {
+          // handleResetInitialProductCart();
+          dispatch(disableAddToCart());
+        }
       }
     }
   }, [productCart.QuantityMeters]);

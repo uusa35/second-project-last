@@ -85,8 +85,7 @@ const CartReview: NextPage<Props> = ({ url }) => {
     if (
       (isNull(areaId) && isNull(branchId)) ||
       (isSuccess && !cartItems.data?.Cart) ||
-      cartItems.data?.Cart.length === 0 ||
-      !url
+      cartItems.data?.Cart.length === 0
     ) {
       router.replace(appLinks.cartSelectMethod(process_type)).then(() =>
         dispatch(
