@@ -29,14 +29,38 @@ const nextConfig = {
       headers: [
         {
           key: 'Cache-Control',
-          value: 'public, s-maxage=0, stale-while-revalidate=0',
+          value: 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        },
+        {
+          key: 'Pragma',
+          value: 'no-cache',
+        },
+        {
+          key: 'Expires',
+          value: '0',
+        },
+        {
+          key: 'Surrogate-Control',
+          value: 'no-store',
         },
       ],
       source: '/product',
       headers: [
         {
           key: 'Cache-Control',
-          value: 'public, s-maxage=0, stale-while-revalidate=0',
+          value: 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        },
+        {
+          key: 'Pragma',
+          value: 'no-cache',
+        },
+        {
+          key: 'Expires',
+          value: '0',
+        },
+        {
+          key: 'Surrogate-Control',
+          value: 'no-store',
         },
       ],
     },
