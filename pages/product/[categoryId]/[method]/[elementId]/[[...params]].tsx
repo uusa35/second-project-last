@@ -46,7 +46,11 @@ const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
   const { query }: any = useRouter();
   const [currentProducts, setCurrentProducts] = useState<any>([]);
   const { categoryId, method, elementId } = router.query;
-  const { data: getSearchResults, isSuccess } = useGetProductsQuery({
+  const {
+    data: getSearchResults,
+    isSuccess,
+    refetch: refetchGetProducts,
+  } = useGetProductsQuery({
     category_id: categoryId?.toString(),
     ...(method === `pickup` && { branch_id: elementId }),
     ...(method === `delivery` && { area_id: elementId }),
@@ -74,16 +78,20 @@ const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
     if (url) {
       dispatch(setUrl(url));
     }
-    setCurrentProducts(elements.products);
+    if (isSuccess) {
+      setCurrentProducts(getSearchResults.Data.products);
+    }
   }, []);
 
   const handleChange = (key: string) => {
-    if (key.length > 2) {
-      triggerSearchProducts({ key, lang, branch_id, url }).then((r: any) =>
-        setCurrentProducts(r.data.Data)
-      );
-    } else {
-      setCurrentProducts(elements.products);
+    if (isSuccess) {
+      if (key.length > 2) {
+        triggerSearchProducts({ key, lang, branch_id, url }).then((r: any) =>
+          setCurrentProducts(r.data.Data)
+        );
+      } else {
+        setCurrentProducts(elements.products);
+      }
     }
   };
 
