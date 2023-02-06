@@ -31,9 +31,14 @@ import CustomImage from '@/components/CustomImage';
 import LoadingSpinner from '@/components/LoadingSpinner';
 type Props = {
   elements: ProductPagination<Product[]>;
+  slug: string;
   url: string;
 };
-const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
+const ProductIndex: NextPage<Props> = ({
+  elements,
+  slug,
+  url,
+}): JSX.Element => {
   const { t } = useTranslation();
   const {
     locale: { lang },
@@ -97,13 +102,9 @@ const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
     }
   };
 
-  if (!isSuccess) {
-    return <LoadingSpinner fullWidth={true} />;
-  }
-
   return (
     <Suspense>
-      <MainHead title={`productIndex`} description={`productIndex`} />
+      <MainHead title={slug} description={slug} />
       <MainContentLayout url={url}>
         <h1 className="capitalize" suppressHydrationWarning={suppressText}></h1>
         <div className={`px-4 capitalize`}>
@@ -137,6 +138,11 @@ const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
               )}
             </button>
           </div>
+          {!isSuccess && (
+            <div className={`flex w-auto h-[30vh] justify-center items-center`}>
+              <LoadingSpinner fullWidth={false} />
+            </div>
+          )}
           {isSuccess && isEmpty(currentProducts) && (
             <div
               className={`w-full flex flex-1 flex-col justify-center items-center space-y-4 my-12`}
@@ -180,7 +186,7 @@ export default ProductIndex;
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ query, locale, req }) => {
-      const { categoryId, method, elementId, limit, page }: any = query;
+      const { categoryId, method, elementId, limit, page, slug }: any = query;
       if (!categoryId || !method || !elementId || !req.headers.host) {
         return {
           notFound: true,
@@ -212,6 +218,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
       return {
         props: {
           elements: elements.Data,
+          slug: slug ?? ``,
           url: req.headers.host,
         },
       };
