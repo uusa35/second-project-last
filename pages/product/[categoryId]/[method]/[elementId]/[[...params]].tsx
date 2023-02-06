@@ -46,12 +46,13 @@ const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
   const [currentProducts, setCurrentProducts] = useState<any>([]);
   const { categoryId, method, elementId } = router.query;
   const { data: getSearchResults, isSuccess } = useGetProductsQuery({
-    category_id: categoryId,
+    category_id: categoryId?.toString(),
     ...(method === `pickup` && { branch_id: elementId }),
     ...(method === `delivery` && { area_id: elementId }),
     page: '1',
     limit: '10',
     url,
+    lang,
   });
   console.log('getSearchResults', getSearchResults);
   const [triggerSearchProducts] = useLazyGetSearchProductsQuery<{
