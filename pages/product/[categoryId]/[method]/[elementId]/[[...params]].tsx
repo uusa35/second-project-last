@@ -78,10 +78,13 @@ const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
     if (url) {
       dispatch(setUrl(url));
     }
+  }, []);
+
+  useEffect(() => {
     if (isSuccess && getSearchResults.Data && getSearchResults.Data.products) {
       setCurrentProducts(getSearchResults.Data.products);
     }
-  }, []);
+  }, [isSuccess]);
 
   const handleChange = (key: string) => {
     if (isSuccess) {
@@ -145,7 +148,7 @@ const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
                 : ''
             }
           >
-            {isEmpty(currentProducts) && (
+            {!isSuccess && isEmpty(currentProducts) ? (
               <div
                 className={`w-full flex flex-1 flex-col justify-center items-center space-y-4 my-12`}
               >
@@ -160,12 +163,13 @@ const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
                   {t('no_results_found')}
                 </span>
               </div>
-            )}
-            {map(currentProducts, (p: Product, i) =>
-              productPreview === 'hor' ? (
-                <HorProductWidget element={p} key={i} />
-              ) : (
-                <VerProductWidget element={p} key={i} />
+            ) : (
+              map(currentProducts, (p: Product, i) =>
+                productPreview === 'hor' ? (
+                  <HorProductWidget element={p} key={i} />
+                ) : (
+                  <VerProductWidget element={p} key={i} />
+                )
               )
             )}
           </div>
