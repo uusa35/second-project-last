@@ -86,9 +86,10 @@ const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
   const handleChange = (key: string) => {
     if (isSuccess) {
       if (key.length > 2) {
-        triggerSearchProducts({ key, lang, branch_id, url }).then((r: any) =>
-          setCurrentProducts(r.data.Data)
-        );
+        triggerSearchProducts({ key, lang, branch_id, url }).then((r: any) => {
+          console.log('the r from serarch', r);
+          setCurrentProducts(r.data.Data);
+        });
       } else {
         setCurrentProducts(getSearchResults.Data.products);
       }
