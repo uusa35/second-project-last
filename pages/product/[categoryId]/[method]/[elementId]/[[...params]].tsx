@@ -3,6 +3,7 @@ import MainContentLayout from '@/layouts/MainContentLayout';
 import { wrapper } from '@/redux/store';
 import {
   productApi,
+  useGetProductsQuery,
   useLazyGetSearchProductsQuery,
 } from '@/redux/api/productApi';
 import { appSetting, Product } from '@/types/index';
@@ -39,9 +40,20 @@ const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
     appSetting: { productPreview },
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
+  const router = useRouter();
   const [Icon, SetIcon] = useState(true);
   const { query }: any = useRouter();
   const [currentProducts, setCurrentProducts] = useState<any>([]);
+  const { categoryId, method, elementId } = router.query;
+  const { data: getSearchResults, isSuccess } = useGetProductsQuery({
+    category_id: categoryId,
+    ...(method === `pickup` && { branch_id: elementId }),
+    ...(method === `delivery` && { area_id: elementId }),
+    page: '1',
+    limit: '10',
+    url,
+  });
+  console.log('getSearchResults', getSearchResults);
   const [triggerSearchProducts] = useLazyGetSearchProductsQuery<{
     triggerSearchProducts: () => void;
   }>();
@@ -116,7 +128,7 @@ const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
                 : ''
             }
           >
-            {isEmpty(currentProducts) && (
+            {isSuccess && isEmpty(getSearchResults.data) && (
               <div
                 className={`w-full flex flex-1 flex-col justify-center items-center space-y-4 my-12`}
               >
@@ -132,8 +144,8 @@ const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
                 </span>
               </div>
             )}
-            {!isEmpty(currentProducts) &&
-              map(currentProducts, (p: Product, i) =>
+            {isSuccess &&
+              map(getSearchResults.data, (p: Product, i) =>
                 productPreview === 'hor' ? (
                   <HorProductWidget element={p} key={i} />
                 ) : (
