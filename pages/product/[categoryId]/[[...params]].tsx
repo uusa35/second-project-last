@@ -29,9 +29,14 @@ import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import CustomImage from '@/components/CustomImage';
 type Props = {
   elements: ProductPagination<Product[]>;
+  slug: string;
   url: string;
 };
-const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
+const ProductIndex: NextPage<Props> = ({
+  elements,
+  slug,
+  url,
+}): JSX.Element => {
   const { t } = useTranslation();
   const {
     locale: { lang },
@@ -75,7 +80,7 @@ const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
 
   return (
     <Suspense>
-      <MainHead title={`productIndex`} description={`productIndex`} />
+      <MainHead title={slug} description={slug} />
       <MainContentLayout url={url}>
         <h1 className="capitalize" suppressHydrationWarning={suppressText}></h1>
         <div className={`px-4 capitalize`}>
@@ -152,7 +157,7 @@ export default ProductIndex;
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ query, locale, req }) => {
-      const { categoryId, branchId, page, limit, areaId }: any = query;
+      const { categoryId, branchId, page, limit, areaId, slug }: any = query;
       if (!categoryId) {
         return {
           notFound: true,
@@ -189,6 +194,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
       return {
         props: {
           elements: elements.Data,
+          slug: slug ?? ``,
           url: req.headers.host,
         },
       };
