@@ -46,11 +46,10 @@ const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
   const { query }: any = useRouter();
   const [currentProducts, setCurrentProducts] = useState<any>([]);
   const { categoryId, method, elementId } = router.query;
-  const {
-    data: getSearchResults,
-    isSuccess,
-    refetch: refetchGetProducts,
-  } = useGetProductsQuery({
+  const { data: getSearchResults, isSuccess } = useGetProductsQuery<{
+    data: AppQueryResult<ProductPagination<Product>>;
+    isSuccess: boolean;
+  }>({
     category_id: categoryId?.toString(),
     ...(method === `pickup` && { branch_id: elementId }),
     ...(method === `delivery` && { area_id: elementId }),
@@ -94,7 +93,7 @@ const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
           setCurrentProducts(r.data.Data);
         });
       } else {
-        setCurrentProducts(getSearchResults.Data.products);
+        setCurrentProducts(getSearchResults?.Data?.products);
       }
     }
   };
@@ -102,8 +101,6 @@ const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
   if (!isSuccess) {
     return <LoadingSpinner fullWidth={true} />;
   }
-  console.log('getSearchResults', getSearchResults.Data.products);
-  console.log('currentProducts', currentProducts);
 
   return (
     <Suspense>
