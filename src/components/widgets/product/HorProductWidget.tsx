@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { appLinks, imageSizes, imgUrl } from '@/constants/*';
 import { Product } from '@/types/index';
 import NoFoundImage from '@/appImages/not_found.png';
-import { first, isEmpty } from 'lodash';
+import { first, isEmpty, kebabCase, lowerCase } from 'lodash';
 import Link from 'next/link';
 import CustomImage from '@/components/CustomImage';
 import { useTranslation } from 'react-i18next';
@@ -32,7 +32,7 @@ const HorProductWidget: FC<Props> = ({ element }): JSX.Element => {
         href={`${appLinks.productShow(
           element.id.toString(),
           element.id,
-          element.name,
+          lowerCase(kebabCase(element.name)),
           branchId,
           areaId
         )}`}

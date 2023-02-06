@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Area } from '@/types/queries';
-import { appSettingSlice } from './appSettingSlice';
 import { branchSlice } from './branchSlice';
 
 const initialState: Area = {
@@ -20,7 +19,10 @@ export const areaSlice = createSlice({
       initialState,
   },
   extraReducers: (builder) => {
-    builder.addCase(branchSlice.actions.setBranch, (state, action) => initialState);
+    builder.addCase(
+      branchSlice.actions.setBranch,
+      (state, action) => initialState
+    );
   },
 });
 

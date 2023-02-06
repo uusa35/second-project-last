@@ -490,5 +490,6 @@
   "enter_extra_notes_for_product": "enter extra notes for product",
   "delivery_time_and_date": "delivery time & date",
   "pickup_time_and_date": "pickup time & date",
-  "quantity_of_out_of_stock": "quantity of out of stock"
+  "quantity_of_out_of_stock": "quantity of out of stock",
+  "no_results_found" : "no results found"
 }

@@ -92,7 +92,7 @@ export const productApi = apiSlice.injectEndpoints({
         url: string;
       }
     >({
-      query: ({ lang, branchId = ``, areaId = `` ,url}) => ({
+      query: ({ lang, branchId = ``, areaId = ``, url }) => ({
         url: `topSearches`,
         headers: {
           url,

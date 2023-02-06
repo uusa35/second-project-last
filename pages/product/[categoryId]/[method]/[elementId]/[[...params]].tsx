@@ -3,6 +3,7 @@ import MainContentLayout from '@/layouts/MainContentLayout';
 import { wrapper } from '@/redux/store';
 import {
   productApi,
+  useGetProductsQuery,
   useLazyGetSearchProductsQuery,
 } from '@/redux/api/productApi';
 import { appSetting, Product } from '@/types/index';
@@ -27,6 +28,7 @@ import List from '@/appIcons/list.svg';
 import { useRouter } from 'next/router';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import CustomImage from '@/components/CustomImage';
+import LoadingSpinner from '@/components/LoadingSpinner';
 type Props = {
   elements: ProductPagination<Product[]>;
   url: string;
@@ -39,16 +41,31 @@ const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
     appSetting: { productPreview },
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
-  const [Icon, SetIcon] = useState(true);
+  const router = useRouter();
+  const [icon, setIcon] = useState(true);
   const { query }: any = useRouter();
   const [currentProducts, setCurrentProducts] = useState<any>([]);
+  const { categoryId, method, elementId } = router.query;
+  const { data: getSearchResults, isSuccess } = useGetProductsQuery<{
+    data: AppQueryResult<ProductPagination<Product>>;
+    isSuccess: boolean;
+  }>({
+    category_id: categoryId?.toString(),
+    ...(method === `pickup` && { branch_id: elementId }),
+    ...(method === `delivery` && { area_id: elementId }),
+    page: '1',
+    limit: '10',
+    url,
+    lang,
+  });
+
   const [triggerSearchProducts] = useLazyGetSearchProductsQuery<{
     triggerSearchProducts: () => void;
   }>();
   // change menue view to list view
   const changeStyle = (preview: appSetting['productPreview']) => {
     dispatch(setProductPreview(preview));
-    SetIcon(!Icon);
+    setIcon(!icon);
   };
 
   useEffect(() => {
@@ -60,18 +77,30 @@ const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
     if (url) {
       dispatch(setUrl(url));
     }
-    setCurrentProducts(elements.products);
   }, []);
 
+  useEffect(() => {
+    if (isSuccess && getSearchResults.Data && getSearchResults.Data.products) {
+      setCurrentProducts(getSearchResults.Data.products);
+    }
+  }, [isSuccess]);
+
   const handleChange = (key: string) => {
-    if (key.length > 2) {
-      triggerSearchProducts({ key, lang, branch_id, url }).then((r: any) =>
-        setCurrentProducts(r.data.Data)
-      );
-    } else {
-      setCurrentProducts(elements.products);
+    if (isSuccess) {
+      if (key.length > 2) {
+        triggerSearchProducts({ key, lang, branch_id, url }).then((r: any) => {
+          console.log('the r from serarch', r);
+          setCurrentProducts(r.data.Data);
+        });
+      } else {
+        setCurrentProducts(getSearchResults?.Data?.products);
+      }
     }
   };
+
+  if (!isSuccess) {
+    return <LoadingSpinner fullWidth={true} />;
+  }
 
   return (
     <Suspense>
@@ -102,7 +131,7 @@ const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
               }
               className="pt-1 ps-2"
             >
-              {Icon ? (
+              {icon ? (
                 <CustomImage src={List} alt="menu" className={'w-8 h-8'} />
               ) : (
                 <CustomImage src={Menu} alt="menu" className={'w-8 h-8'} />
@@ -116,7 +145,7 @@ const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
                 : ''
             }
           >
-            {isEmpty(currentProducts) && (
+            {!isSuccess && isEmpty(currentProducts) ? (
               <div
                 className={`w-full flex flex-1 flex-col justify-center items-center space-y-4 my-12`}
               >
@@ -131,15 +160,15 @@ const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
                   {t('no_results_found')}
                 </span>
               </div>
-            )}
-            {!isEmpty(currentProducts) &&
+            ) : (
               map(currentProducts, (p: Product, i) =>
                 productPreview === 'hor' ? (
                   <HorProductWidget element={p} key={i} />
                 ) : (
                   <VerProductWidget element={p} key={i} />
                 )
-              )}
+              )
+            )}
           </div>
         </div>
       </MainContentLayout>
@@ -152,13 +181,8 @@ export default ProductIndex;
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ query, locale, req }) => {
-      const { categoryId, branchId, page, limit, areaId }: any = query;
-      if (!categoryId) {
-        return {
-          notFound: true,
-        };
-      }
-      if (!req.headers.host) {
+      const { categoryId, method, elementId, limit, page }: any = query;
+      if (!categoryId || !method || !elementId || !req.headers.host) {
         return {
           notFound: true,
         };
@@ -172,10 +196,10 @@ export const getServerSideProps = wrapper.getServerSideProps(
       } = await store.dispatch(
         productApi.endpoints.getProducts.initiate({
           category_id: categoryId.toString(),
+          ...(method === `pickup` && { branch_id: elementId }),
+          ...(method === `delivery` && { area_id: elementId }),
           page: page ?? `1`,
           limit: limit ?? `10`,
-          ...(branchId && { branch_id: branchId }),
-          ...(areaId && { area_id: areaId }),
           lang: locale,
           url: req.headers.host,
         })
