@@ -225,8 +225,8 @@ export const getServerSideProps = wrapper.getServerSideProps(
       const { data: elements, isError } = await store.dispatch(
         productApi.endpoints.getSearchProducts.initiate({
           key: key ?? ``,
-          ...(branchId ? { branch_id: branchId } : {}),
-          ...(area_id ? { areaId: area_id } : {}),
+          ...(branchId && { branch_id: branchId }),
+          ...(area_id && { areaId: area_id }),
           lang: locale,
           url: req.headers.host,
         })
