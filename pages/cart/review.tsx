@@ -110,7 +110,7 @@ const CartReview: NextPage<Props> = ({ url }) => {
     return concatAdd;
   };
 
-  if (isLoading) {
+  if (isLoading || !url) {
     return <LoadingSpinner fullWidth={true} />;
   }
 

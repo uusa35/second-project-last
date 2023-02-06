@@ -102,6 +102,11 @@ const HomePage: NextPage<Props> = ({ element, url }): JSX.Element => {
             </div>
           </div>
           {/* Categories List */}
+          {isEmpty(categories) && (
+            <div className={`flex w-auto h-[30vh] justify-center items-center`}>
+              <LoadingSpinner fullWidth={false} />
+            </div>
+          )}
           <div className="py-4 px-2 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-1">
             {categoriesSuccess &&
               !isEmpty(categories) &&

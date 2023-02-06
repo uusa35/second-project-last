@@ -89,7 +89,6 @@ const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
     if (isSuccess) {
       if (key.length > 2) {
         triggerSearchProducts({ key, lang, branch_id, url }).then((r: any) => {
-          console.log('the r from serarch', r);
           setCurrentProducts(r.data.Data);
         });
       } else {
@@ -138,6 +137,22 @@ const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
               )}
             </button>
           </div>
+          {isSuccess && isEmpty(currentProducts) && (
+            <div
+              className={`w-full flex flex-1 flex-col justify-center items-center space-y-4 my-12`}
+            >
+              <CustomImage
+                src={NotFoundImage.src}
+                alt={`not_found`}
+                width={imageSizes.sm}
+                height={imageSizes.sm}
+                className={`w-60 h-auto`}
+              />
+              <span className={`text-black text-xl text-center`}>
+                {t('no_results_found')}
+              </span>
+            </div>
+          )}
           <div
             className={
               productPreview === 'hor'
@@ -145,30 +160,14 @@ const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
                 : ''
             }
           >
-            {!isSuccess && isEmpty(currentProducts) ? (
-              <div
-                className={`w-full flex flex-1 flex-col justify-center items-center space-y-4 my-12`}
-              >
-                <CustomImage
-                  src={NotFoundImage.src}
-                  alt={`not_found`}
-                  width={imageSizes.sm}
-                  height={imageSizes.sm}
-                  className={`w-60 h-auto`}
-                />
-                <span className={`text-black text-xl text-center`}>
-                  {t('no_results_found')}
-                </span>
-              </div>
-            ) : (
+            {isSuccess &&
               map(currentProducts, (p: Product, i) =>
                 productPreview === 'hor' ? (
                   <HorProductWidget element={p} key={i} />
                 ) : (
                   <VerProductWidget element={p} key={i} />
                 )
-              )
-            )}
+              )}
           </div>
         </div>
       </MainContentLayout>
