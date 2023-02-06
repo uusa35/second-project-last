@@ -28,6 +28,7 @@ import List from '@/appIcons/list.svg';
 import { useRouter } from 'next/router';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import CustomImage from '@/components/CustomImage';
+import LoadingSpinner from '@/components/LoadingSpinner';
 type Props = {
   elements: ProductPagination<Product[]>;
   url: string;
@@ -85,7 +86,10 @@ const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
     }
   };
 
-  console.log('getSearchResults', getSearchResults);
+  if (!isSuccess) {
+    return <LoadingSpinner fullWidth={true} />;
+  }
+  console.log('getSearchResults', getSearchResults.Data.products);
   console.log('currentProducts', currentProducts);
 
   return (
@@ -131,7 +135,7 @@ const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
                 : ''
             }
           >
-            {isSuccess && isEmpty(getSearchResults.data) && (
+            {isEmpty(currentProducts) && (
               <div
                 className={`w-full flex flex-1 flex-col justify-center items-center space-y-4 my-12`}
               >
@@ -147,14 +151,13 @@ const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
                 </span>
               </div>
             )}
-            {isSuccess &&
-              map(getSearchResults.data?.products, (p: Product, i) =>
-                productPreview === 'hor' ? (
-                  <HorProductWidget element={p} key={i} />
-                ) : (
-                  <VerProductWidget element={p} key={i} />
-                )
-              )}
+            {map(currentProducts, (p: Product, i) =>
+              productPreview === 'hor' ? (
+                <HorProductWidget element={p} key={i} />
+              ) : (
+                <VerProductWidget element={p} key={i} />
+              )
+            )}
           </div>
         </div>
       </MainContentLayout>
