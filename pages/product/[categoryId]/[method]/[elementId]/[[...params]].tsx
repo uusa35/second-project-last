@@ -54,7 +54,6 @@ const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
     url,
     lang,
   });
-  console.log('getSearchResults', getSearchResults);
   const [triggerSearchProducts] = useLazyGetSearchProductsQuery<{
     triggerSearchProducts: () => void;
   }>();
@@ -85,6 +84,9 @@ const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
       setCurrentProducts(elements.products);
     }
   };
+
+  console.log('getSearchResults', getSearchResults);
+  console.log('currentProducts', currentProducts);
 
   return (
     <Suspense>
@@ -146,7 +148,7 @@ const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
               </div>
             )}
             {isSuccess &&
-              map(getSearchResults.data, (p: Product, i) =>
+              map(getSearchResults.data?.products, (p: Product, i) =>
                 productPreview === 'hor' ? (
                   <HorProductWidget element={p} key={i} />
                 ) : (
