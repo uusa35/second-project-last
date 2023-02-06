@@ -78,7 +78,7 @@ const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
     if (url) {
       dispatch(setUrl(url));
     }
-    if (isSuccess) {
+    if (isSuccess && getSearchResults.Data && getSearchResults.Data.products) {
       setCurrentProducts(getSearchResults.Data.products);
     }
   }, []);
@@ -90,7 +90,7 @@ const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
           setCurrentProducts(r.data.Data)
         );
       } else {
-        setCurrentProducts(elements.products);
+        setCurrentProducts(getSearchResults.Data.products);
       }
     }
   };
