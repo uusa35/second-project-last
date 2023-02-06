@@ -85,7 +85,8 @@ const CartReview: NextPage<Props> = ({ url }) => {
     if (
       (isNull(areaId) && isNull(branchId)) ||
       (isSuccess && !cartItems.data?.Cart) ||
-      cartItems.data?.Cart.length === 0
+      cartItems.data?.Cart.length === 0 ||
+      !url
     ) {
       router.replace(appLinks.cartSelectMethod(process_type)).then(() =>
         dispatch(
@@ -110,7 +111,7 @@ const CartReview: NextPage<Props> = ({ url }) => {
     return concatAdd;
   };
 
-  if (isLoading) {
+  if (isLoading || !url) {
     return <LoadingSpinner fullWidth={true} />;
   }
 
