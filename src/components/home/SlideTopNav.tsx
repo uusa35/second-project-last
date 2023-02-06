@@ -84,7 +84,7 @@ const SlideTopNav: FC<Props> = ({ offset, isHome = false }): JSX.Element => {
         >
           <div className="flex grow justify-center ltr:ml-10 rtl:mr-10">
             <Image
-              className="h-auto w-12 xl:w-auto"
+              className="h-auto w-12 xl:w-auto xl:h-16"
               src={`${imgUrl(vendor.logo)}`}
               alt={`logo`}
               width={imageSizes.xs}
