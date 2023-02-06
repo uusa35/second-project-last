@@ -51,6 +51,7 @@ import TextTrans from '@/components/TextTrans';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import NoFoundImage from '@/appImages/not_found.png';
 import { useRouter } from 'next/router';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 type Props = {
   product: Product;
@@ -337,6 +338,11 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
         handleIncreaseProductQty={handleIncrease}
         handleDecreaseProductQty={handleDecrease}
       >
+        {!isSuccess && (
+          <div className={`w-full flex h-screen justify-center items-center`}>
+            <LoadingSpinner fullWidth={true} />
+          </div>
+        )}
         {isSuccess && !isNull(element) && (
           <div className="relative w-full capitalize">
             <div className="relative w-full h-auto overflow-hidden">
