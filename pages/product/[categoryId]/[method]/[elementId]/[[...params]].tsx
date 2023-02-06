@@ -197,21 +197,15 @@ export const getServerSideProps = wrapper.getServerSideProps(
         data: AppQueryResult<Product[]>;
         isError: boolean;
       } = await store.dispatch(
-        productApi.endpoints.getProducts.initiate(
-          {
-            category_id: categoryId.toString(),
-            ...(method === `pickup` && { branch_id: elementId }),
-            ...(method === `delivery` && { area_id: elementId }),
-            page: page ?? `1`,
-            limit: limit ?? `10`,
-            lang: locale,
-            url: req.headers.host,
-          },
-          {
-            keepUnusedDataFor: 0,
-            refetchOnMountOrArgChange: true,
-          }
-        )
+        productApi.endpoints.getProducts.initiate({
+          category_id: categoryId.toString(),
+          ...(method === `pickup` && { branch_id: elementId }),
+          ...(method === `delivery` && { area_id: elementId }),
+          page: page ?? `1`,
+          limit: limit ?? `10`,
+          lang: locale,
+          url: req.headers.host,
+        })
       );
       await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
       if (isError || !elements.Data) {
