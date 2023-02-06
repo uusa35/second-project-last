@@ -170,7 +170,7 @@ export default ProductIndex;
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
-    async ({ query, locale, req, res }) => {
+    async ({ query, locale, req }) => {
       const { categoryId, method, elementId, limit, page }: any = query;
       if (!categoryId || !method || !elementId || !req.headers.host) {
         return {
