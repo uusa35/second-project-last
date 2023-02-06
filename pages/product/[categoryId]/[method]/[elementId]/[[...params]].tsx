@@ -55,6 +55,7 @@ const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
     url,
     lang,
   });
+
   const [triggerSearchProducts] = useLazyGetSearchProductsQuery<{
     triggerSearchProducts: () => void;
   }>();
@@ -186,10 +187,10 @@ export const getServerSideProps = wrapper.getServerSideProps(
         productApi.endpoints.getProducts.initiate(
           {
             category_id: categoryId.toString(),
-            page: page ?? `1`,
-            limit: limit ?? `10`,
             ...(method === `pickup` && { branch_id: elementId }),
             ...(method === `delivery` && { area_id: elementId }),
+            page: page ?? `1`,
+            limit: limit ?? `10`,
             lang: locale,
             url: req.headers.host,
           },
