@@ -100,6 +100,7 @@ const nextConfig = {
     // disableStaticImages: false,
   },
   staticPageGenerationTimeout: 60,
+  generateEtags: false,
   // Optional build-time configuration options
   sentry: {
     disableServerWebpackPlugin: true,
