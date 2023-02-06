@@ -20,9 +20,9 @@ export const apiSlice = createApi({
         'GET,PUT,POST,DELETE,PATCH,OPTIONS'
       );
       headers.set('Cache-Control', 'no-store');
-      // if (isLocal) {
-      //   headers.set('url', xDomain);
-      // }
+      if (isLocal) {
+        headers.set('url', xDomain);
+      }
       return headers;
     },
     credentials: 'include',

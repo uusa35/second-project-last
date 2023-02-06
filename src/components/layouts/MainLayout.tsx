@@ -61,18 +61,16 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
         dispatch(setUserAgent(r.data.Data?.Id))
       );
     }
-    if (isSuccess && vendorElement.Data && isNull(vendor.id)) {
+    if (isSuccess && vendorElement.Data) {
       dispatch(setVendor(vendorElement.Data));
     }
   };
 
   useEffect(() => {
     const handleRouteChange: Handler = (url, { shallow }) => {
-      setAppDefaults();
       dispatch(hideSideMenu());
     };
     const handleChangeComplete: Handler = (url, { shallow }) => {
-      setAppDefaults();
       if (sideMenuOpen) {
         dispatch(hideSideMenu());
       }

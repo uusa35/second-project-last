@@ -23,29 +23,6 @@ const nextConfig = {
       },
     ];
   },
-  headers: () => [
-    {
-      source: '/:path*',
-      headers: [
-        {
-          key: 'Cache-Control',
-          value: 'no-store, no-cache, must-revalidate, proxy-revalidate',
-        },
-        {
-          key: 'Pragma',
-          value: 'no-cache',
-        },
-        {
-          key: 'Expires',
-          value: '0',
-        },
-        {
-          key: 'Surrogate-Control',
-          value: 'no-store',
-        },
-      ],
-    },
-  ],
   async redirects() {
     return [
       {
@@ -82,7 +59,6 @@ const nextConfig = {
     // disableStaticImages: false,
   },
   staticPageGenerationTimeout: 60,
-  generateEtags: false, // used for cache issues
   // Optional build-time configuration options
   sentry: {
     disableServerWebpackPlugin: true,

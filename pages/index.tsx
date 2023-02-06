@@ -8,7 +8,7 @@ import MainContentLayout from '@/layouts/MainContentLayout';
 import MainHead from '@/components/MainHead';
 import { vendorApi } from '@/redux/api/vendorApi';
 import { Vendor } from '@/types/index';
-import { categoryApi } from '@/redux/api/categoryApi';
+import { categoryApi, useGetCategoriesQuery } from '@/redux/api/categoryApi';
 import { isEmpty, map } from 'lodash';
 import CategoryWidget from '@/widgets/category/CategoryWidget';
 import {
@@ -33,18 +33,21 @@ import LoadingSpinner from '@/components/LoadingSpinner';
 import PoweredByQ from '@/components/PoweredByQ';
 
 type Props = {
-  categories: Category[];
   element: Vendor;
   url: string;
 };
-const HomePage: NextPage<Props> = ({
-  element,
-  categories,
-  url,
-}): JSX.Element => {
+const HomePage: NextPage<Props> = ({ element, url }): JSX.Element => {
   const { t } = useTranslation();
+  const {
+    locale: { lang },
+  } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const { data: categories, isSuccess: categoriesSuccess } =
+    useGetCategoriesQuery({
+      lang,
+      url,
+    });
 
   useEffect(() => {
     dispatch(setCurrentModule('home'));
@@ -100,8 +103,11 @@ const HomePage: NextPage<Props> = ({
           </div>
           {/* Categories List */}
           <div className="py-4 px-2 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-1">
-            {!isEmpty(categories) &&
-              map(categories, (c, i) => <CategoryWidget element={c} key={i} />)}
+            {categoriesSuccess &&
+              !isEmpty(categories) &&
+              map(categories.Data, (c, i) => (
+                <CategoryWidget element={c} key={i} />
+              ))}
           </div>
         </div>
         <div className={`mt-[10%]`}>
@@ -130,27 +136,8 @@ export const getServerSideProps = wrapper.getServerSideProps(
             url,
           })
         );
-      const {
-        data: categories,
-        isError: categoriesError,
-      }: {
-        data: AppQueryResult<Category[]>;
-        isError: boolean;
-      } = await store.dispatch(
-        categoryApi.endpoints.getCategories.initiate({
-          lang: locale,
-          url,
-        })
-      );
       await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
-      if (
-        isError ||
-        !element.status ||
-        !element.Data ||
-        !categories.status ||
-        !categories.Data ||
-        categoriesError
-      ) {
+      if (isError || !element.status || !element.Data) {
         return {
           notFound: true,
         };
@@ -158,7 +145,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
       return {
         props: {
           element: element.Data,
-          categories: categories.Data,
           url,
         },
       };
