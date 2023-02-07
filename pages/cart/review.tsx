@@ -111,7 +111,6 @@ const CartReview: NextPage<Props> = ({ url }) => {
   if (isLoading || !isSuccess || !url) {
     return <LoadingSpinner fullWidth={true} />;
   }
-  console.log('isLoading', isLoading);
 
   const handleCreateOrder = async () => {
     if (isNull(customer.id)) {
