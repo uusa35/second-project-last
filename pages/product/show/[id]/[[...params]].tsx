@@ -65,6 +65,7 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
     branch: { id: branch_id },
     area: { id: area_id },
   } = useAppSelector((state) => state);
+  const router = useRouter();
   const color = useAppSelector(themeColor);
   const dispatch = useAppDispatch();
   const [currentQty, setCurrentyQty] = useState<number>(
@@ -72,7 +73,11 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
   );
   const [element, setElement] = useState<Product | null>(null);
   const [tabsOpen, setTabsOpen] = useState<{ id: number }[]>([]);
-  const { data, isSuccess, error } = useGetProductQuery({
+  const {
+    data,
+    isSuccess,
+    refetch: refetchGetProduct,
+  } = useGetProductQuery({
     id: product.id,
     lang,
     ...(branch_id && { branch_id }),
@@ -387,7 +392,9 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
                   className={`border-b-8 border-stone-100 px-8 py-4`}
                   key={i}
                 >
-                  <div>{s.title}</div>
+                  <div>
+                    <TextTrans ar={s.title_ar} en={s.title_en} />
+                  </div>
                   {s.hidden ? (
                     <div className={`flex flex-col gap-x-2 gap-y-1  mt-2`}>
                       <div className={`flex flex-row`}>
@@ -479,7 +486,9 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
                             >
                               <div className={`space-y-1`}>
                                 <div>
-                                  <p style={{ color }}>{c.name}</p>
+                                  <p style={{ color }}>
+                                    <TextTrans ar={c.name_ar} en={c.name_en} />
+                                  </p>
                                 </div>
                                 <div>
                                   +{c.price}{' '}
@@ -594,7 +603,7 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
                                     htmlFor={c.name}
                                     className="ltr:ml-3 rtl:mr-3 block text-sm font-medium text-gray-700"
                                   >
-                                    {c.name}
+                                    <TextTrans ar={c.name_ar} en={c.name_en} />
                                   </label>
                                 </div>
                                 <div>
