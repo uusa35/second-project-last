@@ -78,23 +78,22 @@ const CartReview: NextPage<Props> = ({ url }) => {
     dispatch(setShowFooterElement('order_review'));
     if (url) {
       dispatch(setUrl(url));
-    }
-  }, []);
-
-  useEffect(() => {
-    if (
-      (isNull(areaId) && isNull(branchId)) ||
-      (isSuccess && !cartItems.data?.Cart) ||
-      cartItems.data?.Cart.length === 0
-    ) {
-      router.replace(appLinks.cartSelectMethod(process_type)).then(() =>
-        dispatch(
-          showToastMessage({
-            content: `select_a_branch_or_area_before_order`,
-            type: `warning`,
-          })
-        )
-      );
+      if (
+        (isNull(areaId) && isNull(branchId)) ||
+        (isSuccess && !cartItems.data?.Cart) ||
+        cartItems.data?.Cart.length === 0
+      ) {
+        if (router.isReady) {
+          router.replace(appLinks.cartSelectMethod(process_type)).then(() =>
+            dispatch(
+              showToastMessage({
+                content: `select_a_branch_or_area_before_order`,
+                type: `warning`,
+              })
+            )
+          );
+        }
+      }
     }
   }, []);
 
