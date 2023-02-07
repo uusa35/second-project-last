@@ -81,7 +81,7 @@ const CartReview: NextPage<Props> = ({ url }) => {
       if (
         (isNull(areaId) && isNull(branchId)) ||
         (isSuccess && !cartItems.data?.Cart) ||
-        cartItems.data?.Cart.length === 0
+        (isSuccess && cartItems.data?.Cart.length === 0)
       ) {
         if (router.isReady) {
           router.replace(appLinks.cartSelectMethod(process_type)).then(() =>
@@ -99,7 +99,6 @@ const CartReview: NextPage<Props> = ({ url }) => {
 
   const handelDisplayAddress = () => {
     let address = Object.values(customer.address);
-
     let concatAdd = '';
     address.map((a) => {
       if (a !== null) {
@@ -109,9 +108,10 @@ const CartReview: NextPage<Props> = ({ url }) => {
     return concatAdd;
   };
 
-  if (isLoading || !url) {
+  if (isLoading || !isSuccess || !url) {
     return <LoadingSpinner fullWidth={true} />;
   }
+  console.log('isLoading', isLoading);
 
   const handleCreateOrder = async () => {
     if (isNull(customer.id)) {
