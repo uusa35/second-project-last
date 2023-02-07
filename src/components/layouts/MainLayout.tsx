@@ -14,6 +14,7 @@ import { Vendor } from '@/types/index';
 import { setVendor } from '@/redux/slices/vendorSlice';
 import { isEmpty, isNull } from 'lodash';
 import { useLazyCreateTempIdQuery } from '@/redux/api/cartApi';
+import * as yup from 'yup';
 const MainAsideLayout = dynamic(
   async () => await import(`@/components/home/MainAsideLayout`),
   {
@@ -47,9 +48,12 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
     data: AppQueryResult<Vendor>;
     isSuccess: boolean;
   }>({ lang: locale.lang, url });
-  const [triggerCreateTempId] = useLazyCreateTempIdQuery();
+  const [triggerCreateTempId, { isSuccess: tempIdSuccess }] =
+    useLazyCreateTempIdQuery();
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    setAppDefaults();
+  }, [isSuccess, tempIdSuccess]);
 
   const setAppDefaults = () => {
     if (isNull(userAgent)) {
@@ -57,18 +61,16 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
         dispatch(setUserAgent(r.data.Data?.Id))
       );
     }
-    if (isSuccess && vendorElement.Data && isNull(vendor.id)) {
+    if (isSuccess && vendorElement.Data) {
       dispatch(setVendor(vendorElement.Data));
     }
   };
 
   useEffect(() => {
     const handleRouteChange: Handler = (url, { shallow }) => {
-      setAppDefaults();
       dispatch(hideSideMenu());
     };
     const handleChangeComplete: Handler = (url, { shallow }) => {
-      setAppDefaults();
       if (sideMenuOpen) {
         dispatch(hideSideMenu());
       }
@@ -110,6 +112,21 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
       i18n.changeLanguage(router.locale);
     }
     moment.locale(router.locale);
+    yup.setLocale({
+      mixed: {
+        required: 'validation.required',
+      },
+      number: {
+        min: ({ min }) => ({ key: 'validation.min', values: { min } }),
+        max: ({ max }) => ({ key: 'validation.max', values: { max } }),
+      },
+      string: {
+        email: 'validation.email',
+        min: ({ min }) => ({ key: `validation.min`, values: min }),
+        max: ({ max }) => ({ key: 'validation.max', values: max }),
+        matches: 'validation.matches',
+      },
+    });
   }, [router.locale]);
 
   return (

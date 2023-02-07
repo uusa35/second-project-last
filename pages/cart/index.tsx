@@ -262,7 +262,7 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
                             item.ProductID.toString(),
                             branchId,
                             item.ProductID.toString(),
-                            item.ProductName,
+                            lowerCase(kebabCase(item.ProductName)),
                             areaId
                           )}`}
                           className="ltr:pr-3 rtl:pl-3 w-1/5"
@@ -283,7 +283,7 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
                                   item.ProductID.toString(),
                                   branchId,
                                   item.ProductID.toString(),
-                                  item.ProductName,
+                                  lowerCase(kebabCase(item.ProductName)),
                                   areaId
                                 )}`}
                                 className={`flex grow mb-2`}

@@ -23,7 +23,6 @@ const nextConfig = {
       },
     ];
   },
-
   async redirects() {
     return [
       {
@@ -53,7 +52,8 @@ const nextConfig = {
   },
   images: {
     domains: ['testbedbynd.com', 'pages-dash.testbedbynd.com'],
-    minimumCacheTTL: 60 * 60 * 24,
+    // minimumCacheTTL: 60 * 60 * 24,
+    minimumCacheTTL: 0,
     dangerouslyAllowSVG: true,
     // contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     // disableStaticImages: false,

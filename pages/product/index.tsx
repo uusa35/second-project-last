@@ -22,6 +22,8 @@ import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { XMarkIcon } from '@heroicons/react/20/solid';
+import CustomImage from '@/components/CustomImage';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 type Props = {
   elements: Product[];
@@ -43,17 +45,19 @@ const ProductSearchIndex: NextPage<Props> = ({
   const { key } = router.query;
   const [searchIsEmpty, setSearchIsEmpty] = useState(true);
   const [currentProducts, setCurrentProducts] = useState<any>([]);
-
-  const { data: topSearch, isSuccess } = useGetTopSearchQuery({
-    lang,
-    branchId,
-    areaId,
-    url,
-  });
-  const [triggerGetProducts] = useLazyGetSearchProductsQuery<{
-    triggerGetProducts: () => void;
-    isSuccess: boolean;
-  }>();
+  const { data: topSearch, isSuccess: topSearchSuccess } = useGetTopSearchQuery(
+    {
+      lang,
+      branchId,
+      areaId,
+      url,
+    }
+  );
+  const [triggerGetProducts, { isSuccess: getProductsSuccess }] =
+    useLazyGetSearchProductsQuery<{
+      triggerGetProducts: () => void;
+      isSuccess: boolean;
+    }>();
 
   useEffect(() => {
     dispatch(setCurrentModule('product_search_index'));
@@ -81,6 +85,10 @@ const ProductSearchIndex: NextPage<Props> = ({
       setCurrentProducts(elements);
     }
   };
+
+  if (!topSearchSuccess && !getProductsSuccess) {
+    return <LoadingSpinner fullWidth={true} />;
+  }
 
   return (
     <Suspense>
@@ -120,7 +128,7 @@ const ProductSearchIndex: NextPage<Props> = ({
             </div>
           </div>
 
-          {isSuccess && topSearch && topSearch.Data && (
+          {topSearchSuccess && topSearch.Data && (
             <>
               <div className="grid grid-cols-4 capitalize gap-x-4 gap-y-2 my-3">
                 {map(
@@ -164,14 +172,21 @@ const ProductSearchIndex: NextPage<Props> = ({
           )}
 
           <div className="my-4 capitalize">
-            {isEmpty(elements) && !isSuccess && (
-              <Image
-                src={NotFoundImage.src}
-                alt={`not_found`}
-                width={imageSizes.sm}
-                height={imageSizes.sm}
-                className={`w-60 h-auto`}
-              />
+            {isEmpty(elements) && (
+              <div
+                className={`w-full flex flex-1 flex-col justify-center items-center space-y-4 my-12`}
+              >
+                <CustomImage
+                  src={NotFoundImage.src}
+                  alt={`not_found`}
+                  width={imageSizes.sm}
+                  height={imageSizes.sm}
+                  className={`w-60 h-auto`}
+                />
+                <span className={`text-black text-xl text-center`}>
+                  {t('no_results_found')}
+                </span>
+              </div>
             )}
 
             {!isEmpty(currentProducts) && (
@@ -210,8 +225,8 @@ export const getServerSideProps = wrapper.getServerSideProps(
       const { data: elements, isError } = await store.dispatch(
         productApi.endpoints.getSearchProducts.initiate({
           key: key ?? ``,
-          ...(branchId ? { branch_id: branchId } : {}),
-          ...(area_id ? { areaId: area_id } : {}),
+          ...(branchId && { branch_id: branchId }),
+          ...(area_id && { areaId: area_id }),
           lang: locale,
           url: req.headers.host,
         })

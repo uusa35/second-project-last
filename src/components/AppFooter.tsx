@@ -97,6 +97,7 @@ const AppFooter: FC<Props> = ({
           console.log('the r', r);
           if (r && r.data && r.data.status && r.data.data && r.data.data.Cart) {
             triggerGetCartProducts({ UserAgent: userAgent, url }).then((r) => {
+              console.log('another r', r);
               if (r.data && r.data.data && r.data.data.Cart) {
                 console.log('case 4');
               } else {
@@ -114,7 +115,6 @@ const AppFooter: FC<Props> = ({
               console.log('case 6');
               dispatch(
                 showToastMessage({
-                  // content: lowerCase(kebabCase(r.error.data.msg)),
                   content: r.error.data.msg
                     ? lowerCase(kebabCase(r.error.data.msg))
                     : 'select_a_branch_or_area_before_order_or_some_fields_are_required_missing',

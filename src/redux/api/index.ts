@@ -19,16 +19,17 @@ export const apiSlice = createApi({
         'Access-Control-Allow-Methods',
         'GET,PUT,POST,DELETE,PATCH,OPTIONS'
       );
-      // if (isLocal) {
-      //   headers.set('url', xDomain);
-      // }
+      headers.set('Cache-Control', 'no-store');
+      if (isLocal) {
+        headers.set('url', xDomain);
+      }
       return headers;
     },
     credentials: 'include',
   }),
   tagTypes: ['Cart', 'Branch', 'Area'],
-  keepUnusedDataFor: 60 * 60,
-  refetchOnReconnect: false,
+  keepUnusedDataFor: 0,
+  refetchOnReconnect: true,
   extractRehydrationInfo(action, { reducerPath }) {
     if (action.type === HYDRATE) {
       return action.payload[reducerPath];
