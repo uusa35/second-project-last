@@ -93,7 +93,6 @@ const AppFooter: FC<Props> = ({
           },
           url,
         }).then((r: any) => {
-          console.log('the url', url);
           console.log('the r', r);
           if (r && r.data && r.data.status && r.data.data && r.data.data.Cart) {
             triggerGetCartProducts({ UserAgent: userAgent, url }).then((r) => {
