@@ -178,14 +178,14 @@ const AppFooter: FC<Props> = ({
             router.push(appLinks.customerInfo.path);
           }
         })
-        .then(() =>
-          dispatch(
-            showToastMessage({
-              content: 'item_added_successfully',
-              type: `success`,
-            })
-          )
-        );
+        // .then(() =>
+        //   dispatch(
+        //     showToastMessage({
+        //       content: 'item_added_successfully',
+        //       type: `success`,
+        //     })
+        //   )
+        // );
     }
   };
 
