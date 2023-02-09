@@ -26,7 +26,7 @@ const nextConfig = {
   async redirects() {
     return [
       {
-        source: '/OrderConfirmation/failure',
+        source: '/OrderConfirmation/failure/:slug',
         destination: '/order/status/failure',
         permanent: true,
       },
