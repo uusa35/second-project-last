@@ -133,7 +133,7 @@ const ProductIndex: NextPage<Props> = ({
           <div
             className={
               productPreview === 'hor'
-                ? ' grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 gap-0 py-4'
+                ? ' grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 gap-0 gap-x-2 py-4'
                 : ''
             }
           >
