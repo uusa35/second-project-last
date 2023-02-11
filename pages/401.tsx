@@ -7,7 +7,7 @@ export default function Custom401() {
   return (
     <MainContentLayout backHome={true}>
       <OffLineWidget
-        message={t('network_is_not_available_please_check_your_internet')}
+        message={'network_is_not_available_please_check_your_internet'}
       />
     </MainContentLayout>
   );

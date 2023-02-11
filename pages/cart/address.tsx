@@ -429,11 +429,11 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                 <div className="flex flex-wrap">
                   <div className="w-full">
                     <ul
-                      className="flex mb-0 list-none flex-wrap pt-3 pb-4 flex-row"
+                      className="grid grid-cols-3 gap-x-2 mb-0 list-none pt-3 pb-4 !text-sm lg:text-base"
                       role="tablist"
                     >
                       <li
-                        className={`ltr:ml-2 rtl:mr-2 flex-auto text-center  rounded-md cursor-pointer
+                        className={`flex-auto text-center  rounded-md cursor-pointer
                       ${addressTabType === 1 && 'text-white'}
                       `}
                         style={{
@@ -450,7 +450,7 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                           href="#home"
                           role="tablist"
                         >
-                          <div className="flex items-center justify-evenly ">
+                          <div className="flex items-center justify-evenly flex-wrap">
                             <Home
                               className={`${
                                 addressTabType === 1 && 'text-white'
@@ -463,7 +463,7 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                         </div>
                       </li>
                       <li
-                        className={`ltr:ml-2 rtl:mr-2 flex-auto text-center  rounded-md cursor-pointer
+                        className={`flex-auto text-center  rounded-md cursor-pointer
                         ${addressTabType === 2 && 'text-white'}
                         `}
                         style={{
@@ -480,7 +480,7 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                           href="#apartment"
                           role="tablist"
                         >
-                          <div className="flex items-center justify-evenly ">
+                          <div className="flex items-center justify-evenly flex-wrap">
                             <Image
                               src={
                                 addressTabType === 2
@@ -498,7 +498,7 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                         </div>
                       </li>
                       <li
-                        className={`ltr:ml-2 rtl:mr-2 flex-auto text-center  rounded-md cursor-pointer
+                        className={` flex-auto text-center  rounded-md cursor-pointer
                         ${addressTabType === 3 && 'text-white'}
                         `}
                         style={{
@@ -515,7 +515,7 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                           href="#office"
                           role="tablist"
                         >
-                          <div className="flex items-center justify-evenly ">
+                          <div className="flex items-center justify-evenly flex-wrap">
                             <Image
                               src={
                                 addressTabType === 3

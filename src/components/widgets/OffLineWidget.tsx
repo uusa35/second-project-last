@@ -39,10 +39,11 @@ const OffLineWidget: FC<Props> = ({ message, img = null }): JSX.Element => {
           />
         )}
         <p
-          className={`text-lg text-center`}
+          className={`text-lg text-center whitespace-wrap break-words w-full`}
           suppressHydrationWarning={suppressText}
         >
-          {message}
+          {/* {message} */}
+          {t(message)}
         </p>
         <Link
           scroll={true}
