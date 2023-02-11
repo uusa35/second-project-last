@@ -70,7 +70,7 @@ const HomePage: NextPage<Props> = ({ element, url }): JSX.Element => {
         <CustomImage
           src={`${imgUrl(element.cover)}`}
           alt={element.name}
-          className={`block lg:hidden object-cover w-full h-1/5 absolute left-0 right-0 -top-40 mix-blend-color-burn shadow-xl z-0 overflow-hidden`}
+          className={`block lg:hidden object-cover w-full h-1/5 absolute left-0 right-0 -top-40  shadow-xl z-0 overflow-hidden`}
           width={imageSizes.lg}
           height={imageSizes.lg}
         />
