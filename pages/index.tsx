@@ -2,13 +2,13 @@ import { useEffect, Suspense } from 'react';
 import { wrapper } from '@/redux/store';
 import { apiSlice } from '@/redux/api';
 import { NextPage } from 'next';
-import { AppQueryResult, Category } from '@/types/queries';
+import { AppQueryResult } from '@/types/queries';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import MainContentLayout from '@/layouts/MainContentLayout';
 import MainHead from '@/components/MainHead';
 import { vendorApi } from '@/redux/api/vendorApi';
 import { Vendor } from '@/types/index';
-import { categoryApi, useGetCategoriesQuery } from '@/redux/api/categoryApi';
+import { useGetCategoriesQuery } from '@/redux/api/categoryApi';
 import { isEmpty, map } from 'lodash';
 import CategoryWidget from '@/widgets/category/CategoryWidget';
 import {
