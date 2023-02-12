@@ -82,7 +82,7 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
       phone: customer?.phone ?? ``,
     },
   });
-
+console.log({customer})
   useEffect(() => {
     dispatch(setCurrentModule('customer_info'));
     dispatch(setShowFooterElement(`customerInfo`));
@@ -202,6 +202,7 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
                       autoComplete="phone"
                       onChange={(value) => setValue('phone', value)}
                       error={!!errors.phone}
+                      value={customer.phone}
                       helperText={t(`${errors?.phone?.message}`)}
                     />
                   )}
