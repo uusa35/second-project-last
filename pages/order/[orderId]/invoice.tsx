@@ -11,7 +11,11 @@ import { AppQueryResult } from '@/types/queries';
 import { OrderInvoice } from '@/types/index';
 import { apiSlice } from '@/redux/api';
 import { useEffect, Suspense } from 'react';
-import { setCurrentModule, setUrl } from '@/redux/slices/appSettingSlice';
+import {
+  setCurrentModule,
+  setShowFooterElement,
+  setUrl,
+} from '@/redux/slices/appSettingSlice';
 import { themeColor } from '@/redux/slices/vendorSlice';
 
 type Props = {
@@ -29,6 +33,7 @@ const OrderInvoice: NextPage<Props> = ({ element, url }): JSX.Element => {
 
   useEffect(() => {
     dispatch(setCurrentModule('invoice'));
+    dispatch(setShowFooterElement(`home`));
     if (url) {
       dispatch(setUrl(url));
     }
