@@ -65,7 +65,7 @@ const OrderInvoice: NextPage<Props> = ({ element, url }): JSX.Element => {
           <div className="flex justify-between px-4 py-2 capitalize">
             <div>
               <h4
-                className="font-semibold"
+                className="font-semibold "
                 suppressHydrationWarning={suppressText}
               >
                 {t('customer_info')}
@@ -76,7 +76,7 @@ const OrderInvoice: NextPage<Props> = ({ element, url }): JSX.Element => {
             </div>
             <div>
               <h4
-                className="font-semibold"
+                className="font-semibold "
                 suppressHydrationWarning={suppressText}
               >
                 {t('pick_up_details')}
@@ -99,9 +99,9 @@ const OrderInvoice: NextPage<Props> = ({ element, url }): JSX.Element => {
               </button>
             </div>
           </div>
-          <div className="px-4">
+          <div className="px-4 border-t border-gray-300 pt-4">
             <h4
-              className="font-semibold pb-2"
+              className="font-extrabold pb-2"
               suppressHydrationWarning={suppressText}
             >
               {t('payment_details')}
@@ -114,23 +114,28 @@ const OrderInvoice: NextPage<Props> = ({ element, url }): JSX.Element => {
           </div>
           <div className="px-4 pt-4">
             <h4
-              className="font-semibold pb-2"
+              className="font-extrabold pb-2"
               suppressHydrationWarning={suppressText}
             >
               {t('order_details')}
             </h4>
             <div className="flex items-center py-1">
-              <p className="pe-2" suppressHydrationWarning={suppressText}>
-                {t('store_branch')}
+              <p
+                className="pe-2 font-extrabold"
+                suppressHydrationWarning={suppressText}
+              >
+                {t('store_branch')} :
               </p>
               <p>
-                {element.order_details.branch}{' '}
-                {element.order_details.branch_address}
+                {`${element.order_details.branch}  - ${element.order_details.branch_address}`}
               </p>
             </div>
             <div className="flex items-center py-1">
-              <p className="pe-2" suppressHydrationWarning={suppressText}>
-                {t('time_date')}
+              <p
+                className="pe-2 font-extrabold"
+                suppressHydrationWarning={suppressText}
+              >
+                {t('time_date')} :
               </p>
               <p>
                 {element.order_details.order_time}{' '}
