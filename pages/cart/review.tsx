@@ -229,7 +229,7 @@ const CartReview: NextPage<Props> = ({ url }) => {
             <CustomImage
               src={TrunkClock.src}
               alt={`${t('trunk')}`}
-              className={`w-16 h-16`}
+              className={`w-16 h-16 grayscale`}
             />
 
             <div className="px-6">
@@ -330,7 +330,7 @@ const CartReview: NextPage<Props> = ({ url }) => {
                       alt="home"
                       width={imageSizes.xs}
                       height={imageSizes.xs}
-                      className={`w-6 h-6`}
+                      className={`w-6 h-6 grayscale`}
                     />
                     {customer.address && (
                       <p className="text-md ps-5 capitalize">
@@ -538,7 +538,7 @@ const CartReview: NextPage<Props> = ({ url }) => {
                       selectedPaymentMethod == m.id ? 'block' : 'hidden'
                     }`}
                   >
-                    <CheckCircle />
+                    <CheckCircle className="checkCircle" />
                     <p>{t('selected')}</p>
                   </div>
                 </div>

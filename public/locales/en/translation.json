@@ -491,5 +491,7 @@
   "delivery_time_and_date": "delivery time & date",
   "pickup_time_and_date": "pickup time & date",
   "quantity_of_out_of_stock": "quantity of out of stock",
-  "no_results_found" : "no results found"
+  "no_results_found" : "no results found",
+  "your_order_has_been_recorded": "your order has been recorded.",
+  "store_name": "store name"
 }

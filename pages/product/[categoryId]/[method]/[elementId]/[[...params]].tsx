@@ -132,9 +132,9 @@ const ProductIndex: NextPage<Props> = ({
               className="pt-1 ps-2"
             >
               {icon ? (
-                <CustomImage src={List} alt="menu" className={'w-8 h-8'} />
+                <CustomImage src={List} alt="menu" className={'w-8 h-8 grayscale'} />
               ) : (
-                <CustomImage src={Menu} alt="menu" className={'w-8 h-8'} />
+                <CustomImage src={Menu} alt="menu" className={'w-8 h-8 grayscale'} />
               )}
             </button>
           </div>

@@ -5,6 +5,7 @@ import { BadgeOutlined, EmailOutlined, Phone } from '@mui/icons-material';
 import GreyLine from '@/components/GreyLine';
 import { useTranslation } from 'react-i18next';
 import PhoneInput from 'react-phone-number-input';
+import { isSupportedCountry } from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
 import { useEffect, Suspense } from 'react';
 import { ServerCart } from '@/types/index';
@@ -34,7 +35,7 @@ const schema = yup
   .object({
     id: yup.number(),
     name: yup.string().required().min(2).max(50),
-    email: yup.string().email().required(),
+    email: yup.string().email(),
     phone: yup.number().min(100000).max(999999999999).required(),
   })
   .required();
@@ -104,6 +105,9 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
     }
   }, []);
 
+  useEffect(() => {
+    
+  }, [])
   const onSubmit = async (body: any) => {
     await triggerSaveCustomerInfo({
       body,
@@ -168,16 +172,6 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
                   onChange={(e) => setValue('email', e.target.value)}
                   placeholder={`${t('enter_your_email')}`}
                 />
-              </div>
-              <div>
-                {errors?.email?.message && (
-                  <p
-                    className={`text-base text-red-800 font-semibold py-2 capitalize`}
-                    suppressHydrationWarning={suppressText}
-                  >
-                    {t('email_is_required')}
-                  </p>
-                )}
               </div>
               <div className="flex items-center gap-x-2 px-2 border-b-4 border-b-gray-200 w-full focus:ring-transparent py-4">
                 <Phone style={{ color }} />

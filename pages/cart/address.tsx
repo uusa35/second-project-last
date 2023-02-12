@@ -490,6 +490,7 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                               alt="icon"
                               width={20}
                               height={20}
+                              className="grayscale"
                             />
                             <p suppressHydrationWarning={suppressText}>
                               {t('appartment')}
@@ -515,7 +516,7 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                           href="#office"
                           role="tablist"
                         >
-                          <div className="flex items-center justify-evenly ">
+                          <div className="flex items-center justify-evenly">
                             <Image
                               src={
                                 addressTabType === 3
@@ -525,6 +526,7 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                               alt="icon"
                               width={20}
                               height={20}
+                              className="grayscale"
                             />
                             <p suppressHydrationWarning={suppressText}>
                               {t('office')}

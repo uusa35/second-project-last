@@ -49,6 +49,7 @@ const TrackOrder: NextPage<Props> = ({ url }): JSX.Element => {
 
   const handelDisplayAddress = () => {
     if (data) {
+      console.log({data})
       let address = Object.values(data.data.address.address);
       let concatAdd = '';
       address.map((a) => {
