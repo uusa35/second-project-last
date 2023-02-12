@@ -2,7 +2,12 @@ import { FC, ReactNode, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import i18n from 'i18next';
 import { useRouter } from 'next/router';
-import { hideSideMenu, setUrl } from '@/redux/slices/appSettingSlice';
+import {
+  changePreviousUrlLocale,
+  hideSideMenu,
+  setPreviousUrl,
+  setUrl,
+} from '@/redux/slices/appSettingSlice';
 import { setUserAgent } from '@/redux/slices/customerSlice';
 import { arboriaFont, gessFont, tajwalFont } from '@/constants/*';
 import { setLocale } from '@/redux/slices/localeSlice';
@@ -37,7 +42,7 @@ type Handler = (...evts: any[]) => void;
 
 const MainLayout: FC<Props> = ({ children }): JSX.Element => {
   const {
-    appSetting: { sideMenuOpen, url },
+    appSetting: { sideMenuOpen, url, previousUrl },
     customer: { userAgent },
     locale,
     vendor,

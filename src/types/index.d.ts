@@ -94,6 +94,11 @@ export type appSetting = {
   showAreaModal: boolean;
   showPickDateModal: boolean;
   showChangePasswordModal: boolean;
+  previousUrl: {
+    asPath: string;
+    pathName: string;
+    prevRouterLocale: string;
+  };
   toastMessage: {
     content: string;
     type: string;

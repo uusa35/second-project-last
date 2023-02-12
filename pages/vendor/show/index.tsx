@@ -109,7 +109,7 @@ const VendorShow: NextPage<Props> = ({ element, url }) => {
               width={imageSizes.xs}
               height={imageSizes.xs}
               alt={t('work_hours')}
-              className={`w-6 h-6`}
+              className={`w-6 h-6 `}
             />
           }
           text="work_hours"
