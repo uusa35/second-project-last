@@ -27,7 +27,15 @@ import {
   useGetCartProductsQuery,
 } from '@/redux/api/cartApi';
 import TextTrans from '@/components/TextTrans';
-import { filter, isEmpty, isNull, kebabCase, lowerCase, map } from 'lodash';
+import {
+  filter,
+  isEmpty,
+  isNull,
+  kebabCase,
+  lowerCase,
+  map,
+  toString,
+} from 'lodash';
 import Link from 'next/link';
 import { OrderUser, ProductCart, ServerCart } from '@/types/index';
 import { AppQueryResult } from '@/types/queries';
@@ -98,14 +106,18 @@ const CartReview: NextPage<Props> = ({ url }) => {
   }, []);
 
   const handelDisplayAddress = () => {
-    let address = Object.values(customer.address);
-    let concatAdd = '';
-    address.map((a) => {
-      if (a !== null) {
-        concatAdd += a + ', ';
-      }
-    });
-    return concatAdd;
+    if (customer && !isEmpty(customer.address)) {
+      const address = filter(
+        map(
+          customer.address,
+          (value, key) =>
+            value !== null && key !== `id` && `${key} : ${value}  `
+        ),
+        (a) => a
+      );
+      const allAddress = toString(address).replaceAll(',', ' / ');
+      return allAddress;
+    }
   };
 
   if (isLoading || !isSuccess || !url) {
@@ -221,44 +233,53 @@ const CartReview: NextPage<Props> = ({ url }) => {
     });
   };
 
+  console.log('customer', customer);
   return (
     <Suspense>
       <MainContentLayout handleSubmit={handleCreateOrder} url={url}>
         <div className={`mb-[40%]`}>
-          <div className="flex justify-center items-end p-5">
-            <CustomImage
-              src={TrunkClock.src}
-              alt={`${t('trunk')}`}
-              className={`w-16 h-16 grayscale`}
-            />
+          {customer.prefrences.type === `delivery_later` ? (
+            <div className="flex justify-center items-end p-5">
+              <TrunkClock className={`w-16 h-16 grayscale`} />
+              <div className="px-6">
+                <h4
+                  className="font-semibold text-lg capitalize"
+                  suppressHydrationWarning={suppressText}
+                >
+                  {process_type === 'pickup' &&
+                    branchId &&
+                    t('pickup_time_and_date')}
 
-            <div className="px-6">
-              <h4
-                className="font-semibold text-lg capitalize"
-                suppressHydrationWarning={suppressText}
-              >
-                {process_type === 'pickup' &&
-                  branchId &&
-                  t('pickup_time_and_date')}
-
-                {process_type === 'delivery' &&
-                  areaId &&
-                  t('delivery_time_and_date')}
-              </h4>
-              <div className="flex">
-                <p className="pe-5">
-                  {customer.prefrences.date &&
-                    new Date(customer.prefrences.date).toLocaleDateString()}
-                </p>
-                {customer.prefrences.type !== "delivery_now" && (
+                  {process_type === 'delivery' &&
+                    areaId &&
+                    t('delivery_time_and_date')}
+                </h4>
+                <div className="flex">
+                  <p className="pe-5">
+                    {customer.prefrences.date &&
+                      new Date(customer.prefrences.date).toLocaleDateString()}
+                  </p>
                   <p>
                     {customer.prefrences.time &&
                       new Date(customer.prefrences.time).toLocaleTimeString()}
                   </p>
-                )}
+                </div>
               </div>
             </div>
-          </div>
+          ) : (
+            <div className="flex justify-center items-center p-5">
+              <TrunkClock className={`w-16 h-16 grayscale`} />
+              <div className="px-6">
+                <h4
+                  className="font-semibold text-lg capitalize"
+                  suppressHydrationWarning={suppressText}
+                >
+                  {t('delivery_now')}
+                </h4>
+              </div>
+            </div>
+          )}
+
           <div className="bg-gray-200 w-full mt-5 p-0 h-2 px-4"></div>
           <div className={`px-4 py-5 space-y-6`}>
             {process_type === 'pickup' && branchId && (
@@ -327,15 +348,9 @@ const CartReview: NextPage<Props> = ({ url }) => {
                 {/* address */}
                 <div className="flex justify-between">
                   <div className="flex items-center">
-                    <CustomImage
-                      src={Home.src}
-                      alt="home"
-                      width={imageSizes.xs}
-                      height={imageSizes.xs}
-                      className={`w-6 h-6 grayscale`}
-                    />
+                    <Home className={`w-12 h-12 grayscale`} />
                     {customer.address && (
-                      <p className="text-md ps-5 capitalize">
+                      <p className="text-xs ps-5 capitalize text-ellipsis overflow-hidden">
                         {handelDisplayAddress()}
                       </p>
                     )}
@@ -464,7 +479,7 @@ const CartReview: NextPage<Props> = ({ url }) => {
                                       <>
                                         <TextTrans
                                           key={i}
-                                          className={`ltr:border-r-2 ltr:last:border-r-0 ltr:first:pr-1 rtl:border-l-2 rtl:last:border-l-0 rtl:first:pl-1 px-1 text-xs capitalize`}
+                                          className={`ltr:border-r-2 ltr:last:border-r-0 ltr:first:pr-1 rtl:border-l-2 rtl:last:border-l-0 rtl:first:pl-1  text-xs capitalize`}
                                           ar={addon.name}
                                           en={addon.name}
                                         />
@@ -476,6 +491,15 @@ const CartReview: NextPage<Props> = ({ url }) => {
                             </div>
                           </div>
                         </div>
+                        {item.ExtraNotes && (
+                          <div
+                            className={`w-full border-t border-gray-200 py-1 mb-1`}
+                          >
+                            <p className={`text-xs`}>
+                              {t('notes')} : {item.ExtraNotes}
+                            </p>
+                          </div>
+                        )}
                         <div className="flex justify-between items-end">
                           <div>
                             <div
