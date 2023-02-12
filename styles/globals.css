@@ -145,4 +145,7 @@ input[value="+972"],
 img[alt="Israel"] {
     display: none
 }
+input[type="tel"] {
+    text-transform: capitalize;
+}
 
