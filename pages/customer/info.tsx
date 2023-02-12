@@ -35,7 +35,7 @@ const schema = yup
   .object({
     id: yup.number(),
     name: yup.string().required().min(2).max(50),
-    email: yup.string().email(),
+    email: yup.string(),
     phone: yup.number().min(100000).max(999999999999).required(),
   })
   .required();
@@ -105,9 +105,7 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
     }
   }, []);
 
-  useEffect(() => {
-    
-  }, [])
+  useEffect(() => {}, []);
   const onSubmit = async (body: any) => {
     await triggerSaveCustomerInfo({
       body,
@@ -197,7 +195,7 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
                   )}
                   name="phone"
                   control={control}
-                  defaultValue={phone ?? ``}
+                  defaultValue={phone}
                   rules={{ required: true }}
                 />
               </div>

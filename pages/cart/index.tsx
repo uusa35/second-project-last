@@ -412,7 +412,7 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
               </div>
             </div>
 
-            <div className="px-5 mt-5">
+            <div className="px-5 mt-5 hidden">
               <div className="flex items-center">
                 <CustomImage
                   className="w-6 h-6 grayscale"
