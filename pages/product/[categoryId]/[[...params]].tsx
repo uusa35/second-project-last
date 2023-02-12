@@ -95,7 +95,7 @@ const ProductIndex: NextPage<Props> = ({
                   name="search"
                   id="search"
                   onChange={debounce((e) => handleChange(e.target.value), 400)}
-                  className="block w-full focus:ring-1 focus:ring-primary_BG rounded-md  pl-20 border-none  bg-gray-100 py-3 h-14  text-lg capitalize"
+                  className="block w-full focus:ring-1 focus:ring-primary_BG rounded-md  pl-20 border-none  bg-gray-100 py-3 h-12  text-lg capitalize"
                   suppressHydrationWarning={suppressText}
                   placeholder={`${t(`search_products`)}`}
                 />
@@ -108,9 +108,17 @@ const ProductIndex: NextPage<Props> = ({
               className="pt-1 ps-2"
             >
               {Icon ? (
-                <CustomImage src={List} alt="menu" className={'w-8 h-8 grayscale'} />
+                <CustomImage
+                  src={List}
+                  alt="menu"
+                  className={'w-8 h-8 grayscale'}
+                />
               ) : (
-                <CustomImage src={Menu} alt="menu" className={'w-8 h-8 grayscale'} />
+                <CustomImage
+                  src={Menu}
+                  alt="menu"
+                  className={'w-8 h-8 grayscale'}
+                />
               )}
             </button>
           </div>

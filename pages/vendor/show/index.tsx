@@ -14,9 +14,9 @@ import Knet from '@/appImages/knet.png';
 import CashOnDelivery from '@/appImages/cash_on_delivery.jpg';
 import Visa from '@/appImages/visa.png';
 import { useTranslation } from 'react-i18next';
-
 import {
   convertColor,
+  iconColor,
   imageSizes,
   submitBtnClass,
   suppressText,
@@ -79,7 +79,7 @@ const VendorShow: NextPage<Props> = ({ element, url }) => {
   const VendorDetailsItem = ({ icon, text, content }: DetailsItem) => {
     return (
       <div className="flex justify-between px-4 py-6 m-3 shadow-md capitalize">
-        <div className="flex items-center">
+        <div className="flex justify-center items-center">
           {icon}
           <p
             className="px-2 font-semibold"
@@ -104,12 +104,11 @@ const VendorShow: NextPage<Props> = ({ element, url }) => {
       <MainContentLayout url={url}>
         <VendorDetailsItem
           icon={
-            <CustomImage
-              src={Clock.src}
+            <Clock
               width={imageSizes.xs}
               height={imageSizes.xs}
               alt={t('work_hours')}
-              className={`w-6 h-6`}
+              className={`w-5 h-5 ${iconColor}`}
             />
           }
           text="work_hours"
@@ -117,12 +116,11 @@ const VendorShow: NextPage<Props> = ({ element, url }) => {
         />
         <VendorDetailsItem
           icon={
-            <CustomImage
-              src={DeliveryIcon.src}
+            <DeliveryIcon
               width={imageSizes.xs}
               height={imageSizes.xs}
               alt={t('delivery_time')}
-              className={`w-6 h-6`}
+              className={`w-5 h-5 pt-1 ${iconColor}`}
             />
           }
           text="delivery_time"
@@ -130,12 +128,11 @@ const VendorShow: NextPage<Props> = ({ element, url }) => {
         />
         <VendorDetailsItem
           icon={
-            <CustomImage
-              src={PreOrderAvailabilityIcon.src}
+            <PreOrderAvailabilityIcon
               width={imageSizes.xs}
               height={imageSizes.xs}
               alt={t('preorder_availability')}
-              className={`w-6 h-6`}
+              className={`w-6 h-6 ${iconColor}`}
             />
           }
           text="preorder_availability"
@@ -144,12 +141,11 @@ const VendorShow: NextPage<Props> = ({ element, url }) => {
         <div className="px-4 py-6 shadow-md">
           <div className="flex justify-between pb-20 ps-3">
             <div className="flex items-center">
-              <CustomImage
-                src={PaymentIcon.src}
+              <PaymentIcon
                 width={imageSizes.xs}
                 height={imageSizes.xs}
                 alt={t('payment_methods')}
-                className={`w-6 h-6`}
+                className={`w-6 h-6 ${iconColor}`}
               />
               <p
                 className="px-2 font-semibold"
@@ -190,9 +186,8 @@ const VendorShow: NextPage<Props> = ({ element, url }) => {
           <div className="py-5">
             <button className={`${submitBtnClass}`}>
               <div className="flex justify-center items-center">
-                <CustomImage
-                  className="w-5 h-5 grayscale"
-                  src={FeedbackIcon.src}
+                <FeedbackIcon
+                  className={`w-5 h-5 ${iconColor}`}
                   alt={t('feedback')}
                 />
                 <p
@@ -206,27 +201,21 @@ const VendorShow: NextPage<Props> = ({ element, url }) => {
               </div>
             </button>
           </div>
-          <div className="flex justify-evenly items-center w-[80%] m-auto">
+          <div className="flex justify-evenly items-center w-[90%] m-auto">
             <a href={'facebook.com'} target={'_blank'}>
-              <CustomImage
-                className="w-5 h-5 grayscale"
-                src={Facebook.src}
+              <Facebook
+                className={`w-5 h-5 ${iconColor}`}
                 alt={t('facebook')}
               />
             </a>
             <a href={'instagram.com'} target={'_blank'}>
-              <CustomImage
-                className="w-5 h-5 grayscale"
-                src={Instagram.src}
+              <Instagram
+                className={`w-5 h-5 ${iconColor}`}
                 alt={t('instagram')}
               />
             </a>
             <a href={'twitter.com'} target={'_blank'}>
-              <CustomImage
-                className="w-5 h-5 grayscale"
-                src={Twitter.src}
-                alt={t('twitter')}
-              />
+              <Twitter className={`w-5 h-5 ${iconColor}`} alt={t('twitter')} />
             </a>
           </div>
         </div>

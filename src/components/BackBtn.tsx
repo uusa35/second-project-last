@@ -27,7 +27,7 @@ const BackBtn: FC<Props> = ({
   const { t } = useTranslation();
   const color = useAppSelector(themeColor);
   const {
-    appSetting: { currentModule, url },
+    appSetting: { currentModule, url, previousUrl },
     locale: { lang, otherLang },
     customer: { userAgent },
   } = useAppSelector((state) => state);
@@ -42,10 +42,12 @@ const BackBtn: FC<Props> = ({
     });
   };
 
+  console.log('router', previousUrl);
+
   const handleChangeLang = async (locale: string) => {
     if (locale !== router.locale) {
       await router
-        .push(router.pathname, router.asPath, {
+        .replace(router.pathname, router.asPath, {
           locale,
           scroll: false,
         })
@@ -61,6 +63,22 @@ const BackBtn: FC<Props> = ({
     }
   };
 
+  const handleBack = () => {
+    if (backHome) {
+      handleGoHome();
+    } else if (!isNull(backRoute)) {
+      router.push(`${backRoute}`, undefined, {
+        locale: router.locale,
+        scroll: false,
+      });
+    } else {
+      router.back();
+      // router.replace(previousUrl.pathName, previousUrl.asPath, {
+      //   locale: router.locale,
+      // });
+    }
+  };
+
   return (
     <Suspense>
       <div
@@ -69,16 +87,7 @@ const BackBtn: FC<Props> = ({
         } flex w-full my-3 justify-center items-center rounded-md py-4 px-4`}
       >
         <button
-          onClick={() =>
-            backHome
-              ? handleGoHome()
-              : !isNull(backRoute)
-              ? router.push(`${backRoute}`, undefined, {
-                  locale: lang,
-                  scroll: false,
-                })
-              : router.back()
-          }
+          onClick={() => handleBack()}
           className={`flex justify-start items-center pt-1 w-20`}
         >
           {router.locale === 'en' ? (

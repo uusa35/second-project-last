@@ -74,7 +74,7 @@ const HomePage: NextPage<Props> = ({ element, url }): JSX.Element => {
           width={imageSizes.lg}
           height={imageSizes.lg}
         />
-        <div className="bg-white mt-40 lg:mt-0 border-t-4 border-stone-100 lg:border-none rounded-t-3xl lg:rounded-none relative -top-10 lg:top-auto  pt-1 lg:pt-0 ">
+        <div className="bg-white mt-40 lg:mt-0 border-t-4 border-stone-100 lg:border-none rounded-none relative -top-10 lg:top-auto  pt-1 lg:pt-0 ">
           {/*  HomePage Header */}
           <div className={`px-6 mt-3 lg:mt-0`}>
             <HomeVendorMainInfo element={element} />
@@ -82,7 +82,7 @@ const HomePage: NextPage<Props> = ({ element, url }): JSX.Element => {
           <HomeSelectMethod element={element} />
           {/* Search Input */}
           <div
-            className={`flex flex-1 w-auto flex-grow mx-8 pb-4 border-b border-stone-100`}
+            className={`flex flex-1 w-auto flex-grow mx-2 pb-4 border-b border-stone-300`}
           >
             <div className={`w-full`}>
               <div className="relative mt-1 rounded-md shadow-sm text-gray-400">
@@ -94,7 +94,7 @@ const HomePage: NextPage<Props> = ({ element, url }): JSX.Element => {
                   name="search"
                   id="search"
                   onFocus={() => handleFocus()}
-                  className="block w-full rounded-md  pl-20 focus:ring-1 focus:ring-primary_BG border-none  bg-gray-100 h-14  text-lg capitalize"
+                  className="block w-full rounded-md  pl-20 focus:ring-1 focus:ring-primary_BG border-none  bg-gray-100 h-12  text-lg capitalize"
                   suppressHydrationWarning={suppressText}
                   placeholder={`${t(`search_products`)}`}
                 />

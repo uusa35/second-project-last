@@ -15,6 +15,11 @@ const initialState: appSetting = {
   showPickDateModal: false,
   sideMenuOpen: false,
   showChangePasswordModal: false,
+  previousUrl: {
+    asPath: `/`,
+    pathName: '/',
+    prevRouterLocale: ``,
+  },
   toastMessage: {
     title: ``,
     content: ``,
@@ -203,6 +208,28 @@ export const appSettingSlice = createSlice({
         ...initialState,
       };
     },
+    setPreviousUrl: (
+      state: typeof initialState,
+      action: PayloadAction<{
+        asPath: string;
+        pathName: string;
+        prevRouterLocale: string;
+      }>
+    ) => {
+      return {
+        ...initialState,
+        previousUrl: action.payload,
+      };
+    },
+    changePreviousUrlLocale: (
+      state: typeof initialState,
+      action: PayloadAction<string>
+    ) => {
+      return {
+        ...state,
+        previousUrl: { ...state.previousUrl, prevRouterLocale: action.payload },
+      };
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(branchSlice.actions.setBranch, (state, action) => {
@@ -239,4 +266,6 @@ export const {
   setShowFooterElement,
   setProductPreview,
   resetShowFooterElement,
+  setPreviousUrl,
+  changePreviousUrlLocale,
 } = appSettingSlice.actions;
