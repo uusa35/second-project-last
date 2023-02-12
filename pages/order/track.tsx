@@ -49,7 +49,7 @@ const TrackOrder: NextPage<Props> = ({ url }): JSX.Element => {
 
   const handelDisplayAddress = () => {
     if (data) {
-      console.log({data})
+      console.log({ data });
       let address = Object.values(data.data.address.address);
       let concatAdd = '';
       address.map((a) => {
@@ -88,7 +88,7 @@ const TrackOrder: NextPage<Props> = ({ url }): JSX.Element => {
                     : ``
                 }
                 onChange={debounce((e) => handleChange(e.target.value), 400)}
-                className="block w-full rounded-md  focus:ring-1 focus:ring-primary_BG pl-10 border-none bg-gray-100 capitalize h-14"
+                className="block w-full rounded-md  focus:ring-1 focus:ring-primary_BG pl-10 border-none bg-gray-100 capitalize h-12"
                 suppressHydrationWarning={suppressText}
                 placeholder={`${t(`enter_order_code`)}`}
               />

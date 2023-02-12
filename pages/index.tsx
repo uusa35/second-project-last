@@ -82,7 +82,7 @@ const HomePage: NextPage<Props> = ({ element, url }): JSX.Element => {
           <HomeSelectMethod element={element} />
           {/* Search Input */}
           <div
-            className={`flex flex-1 w-auto flex-grow mx-8 pb-4 border-b border-stone-100`}
+            className={`flex flex-1 w-auto flex-grow mx-2 pb-4 border-b border-stone-300`}
           >
             <div className={`w-full`}>
               <div className="relative mt-1 rounded-md shadow-sm text-gray-400">
@@ -94,7 +94,7 @@ const HomePage: NextPage<Props> = ({ element, url }): JSX.Element => {
                   name="search"
                   id="search"
                   onFocus={() => handleFocus()}
-                  className="block w-full rounded-md  pl-20 focus:ring-1 focus:ring-primary_BG border-none  bg-gray-100 h-14  text-lg capitalize"
+                  className="block w-full rounded-md  pl-20 focus:ring-1 focus:ring-primary_BG border-none  bg-gray-100 h-12  text-lg capitalize"
                   suppressHydrationWarning={suppressText}
                   placeholder={`${t(`search_products`)}`}
                 />

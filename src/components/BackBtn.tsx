@@ -72,14 +72,10 @@ const BackBtn: FC<Props> = ({
         scroll: false,
       });
     } else {
-      // const { locale } = router;
-      // console.log('else', locale);
-      // console.log('url', window.history);
-      console.log('previous', previousUrl);
-      router.replace(previousUrl.pathName, previousUrl.asPath, {
-        locale: router.locale,
-      });
-      // router.replace(previousUrl, 'undefined', { locale: router.locale });
+      router.back();
+      // router.replace(previousUrl.pathName, previousUrl.asPath, {
+      //   locale: router.locale,
+      // });
     }
   };
 

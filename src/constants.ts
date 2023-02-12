@@ -88,3 +88,5 @@ export const convertColor = (hex: string, opacity: number) => {
   const b = parseInt(tempHex.substring(4, 6), 16);
   return `rgba(${r},${g},${b},${opacity / 100})`;
 };
+
+export const iconColor = `grayscale`;
