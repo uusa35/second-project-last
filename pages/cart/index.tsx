@@ -363,6 +363,15 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
                               </div>
                             </div>
                           </div>
+                          {item.ExtraNotes && (
+                            <div
+                              className={`w-full border-t border-gray-200 pt-2`}
+                            >
+                              <p className={`text-xs`}>
+                                {t('notes')} : {item.ExtraNotes}
+                              </p>
+                            </div>
+                          )}
                         </div>
                       </div>
                       {/* meters + / - */}
