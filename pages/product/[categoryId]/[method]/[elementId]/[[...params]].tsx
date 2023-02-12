@@ -11,7 +11,7 @@ import { NextPage } from 'next';
 import { apiSlice } from '@/redux/api';
 import MainHead from '@/components/MainHead';
 import { imageSizes, suppressText } from '@/constants/*';
-import { debounce, isEmpty, map, replace } from 'lodash';
+import { capitalize, debounce, isEmpty, map, replace } from 'lodash';
 import NotFoundImage from '@/appImages/not_found.png';
 import HorProductWidget from '@/widgets/product/HorProductWidget';
 import { AppQueryResult, ProductPagination } from '@/types/queries';
@@ -75,7 +75,7 @@ const ProductIndex: NextPage<Props> = ({
 
   useEffect(() => {
     if (query && query.slug) {
-      dispatch(setCurrentModule(replace(query?.slug, '-', ' ')));
+      dispatch(setCurrentModule(capitalize(query.slug.replaceAll('-', ' '))));
     } else {
       dispatch(setCurrentModule(`product_index`));
     }
