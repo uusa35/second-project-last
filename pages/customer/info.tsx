@@ -186,21 +186,21 @@ console.log({customer})
                   render={(props) => (
                     <PhoneInput
                       international
-                      defaultCountry="KW"
+                      defaultCountry='KW'
                       placeholder={`${t('enter_your_phone')}`}
                       inputRef={register}
                       inputProps={{
                         name: 'phone',
                         required: true,
-                        autoFocus: true,
+                        autoFocus: true
                       }}
                       id="phone"
                       name="phone"
                       autoComplete="phone"
                       onChange={(value) => setValue('phone', value)}
                       error={!!errors.phone}
-                      value={customer.phone}
                       helperText={t(`${errors?.phone?.message}`)}
+                      value={`${customer.phone && `${customer.phone}`}`}
                     />
                   )}
                   name="phone"

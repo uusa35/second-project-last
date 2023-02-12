@@ -250,10 +250,12 @@ const CartReview: NextPage<Props> = ({ url }) => {
                   {customer.prefrences.date &&
                     new Date(customer.prefrences.date).toLocaleDateString()}
                 </p>
-                <p>
-                  {customer.prefrences.time &&
-                    new Date(customer.prefrences.time).toLocaleTimeString()}
-                </p>
+                {customer.prefrences.type !== "delivery_now" && (
+                  <p>
+                    {customer.prefrences.time &&
+                      new Date(customer.prefrences.time).toLocaleTimeString()}
+                  </p>
+                )}
               </div>
             </div>
           </div>
