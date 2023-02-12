@@ -208,7 +208,7 @@ const Feedback: FC<Props> = ({
                   isRTL && 'text-right'
                 }`}
                 name="user_name"
-                placeholder={`${t(`enter_your_name`)}`}
+                placeholder={`${t(`let_us_know_more`)}`}
                 onChange={(e: any) => {
                   // setValue('user_name', e.target.value);
                   // clearErrors('user_name')
@@ -252,7 +252,7 @@ const Feedback: FC<Props> = ({
                   {...register('phone')}
                   onChange={(e) => setValue('phone', e.target.value)}
                   aria-invalid={errors.phone ? 'true' : 'false'}
-                  placeholder={`${t(`enter_your_phone`)}`}
+                  placeholder={`${t(`let_us_know_more`)}`}
                   suppressHydrationWarning={suppressText}
                 />
               </div>

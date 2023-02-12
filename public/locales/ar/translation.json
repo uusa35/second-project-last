@@ -506,5 +506,6 @@
   "quantity_of_out_of_stock" : "هذا المنتج غير متاح",
   "no_results_found" : "لا توجد نتائج للبحث ..",
   "your_order_has_been_recorded": "تم تسجيل طلبك",
-  "store_name": "اسم المخزن"
+  "store_name": "اسم المخزن",
+  "let_us_know_more": "اجعلنا نعرف المزيد"
 }
