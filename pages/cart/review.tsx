@@ -233,38 +233,53 @@ const CartReview: NextPage<Props> = ({ url }) => {
     });
   };
 
+  console.log('customer', customer);
   return (
     <Suspense>
       <MainContentLayout handleSubmit={handleCreateOrder} url={url}>
         <div className={`mb-[40%]`}>
-          <div className="flex justify-center items-end p-5">
-            <TrunkClock className={`w-16 h-16 grayscale`} />
+          {customer.prefrences.type === `delivery_later` ? (
+            <div className="flex justify-center items-end p-5">
+              <TrunkClock className={`w-16 h-16 grayscale`} />
+              <div className="px-6">
+                <h4
+                  className="font-semibold text-lg capitalize"
+                  suppressHydrationWarning={suppressText}
+                >
+                  {process_type === 'pickup' &&
+                    branchId &&
+                    t('pickup_time_and_date')}
 
-            <div className="px-6">
-              <h4
-                className="font-semibold text-lg capitalize"
-                suppressHydrationWarning={suppressText}
-              >
-                {process_type === 'pickup' &&
-                  branchId &&
-                  t('pickup_time_and_date')}
-
-                {process_type === 'delivery' &&
-                  areaId &&
-                  t('delivery_time_and_date')}
-              </h4>
-              <div className="flex">
-                <p className="pe-5">
-                  {customer.prefrences.date &&
-                    new Date(customer.prefrences.date).toLocaleDateString()}
-                </p>
-                <p>
-                  {customer.prefrences.time &&
-                    new Date(customer.prefrences.time).toLocaleTimeString()}
-                </p>
+                  {process_type === 'delivery' &&
+                    areaId &&
+                    t('delivery_time_and_date')}
+                </h4>
+                <div className="flex">
+                  <p className="pe-5">
+                    {customer.prefrences.date &&
+                      new Date(customer.prefrences.date).toLocaleDateString()}
+                  </p>
+                  <p>
+                    {customer.prefrences.time &&
+                      new Date(customer.prefrences.time).toLocaleTimeString()}
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
+          ) : (
+            <div className="flex justify-center items-center p-5">
+              <TrunkClock className={`w-16 h-16 grayscale`} />
+              <div className="px-6">
+                <h4
+                  className="font-semibold text-lg capitalize"
+                  suppressHydrationWarning={suppressText}
+                >
+                  {t('delivery_now')}
+                </h4>
+              </div>
+            </div>
+          )}
+
           <div className="bg-gray-200 w-full mt-5 p-0 h-2 px-4"></div>
           <div className={`px-4 py-5 space-y-6`}>
             {process_type === 'pickup' && branchId && (
