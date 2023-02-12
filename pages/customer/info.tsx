@@ -105,7 +105,6 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
     }
   }, []);
 
-  useEffect(() => {}, []);
   const onSubmit = async (body: any) => {
     await triggerSaveCustomerInfo({
       body,

@@ -165,6 +165,15 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
             type: `success`,
           })
         );
+      } else {
+        if (r.error && r.error.data && r.error.data.msg) {
+          dispatch(
+            showToastMessage({
+              content: lowerCase(kebabCase(r.error.data.msg)),
+              type: `error`,
+            })
+          );
+        }
       }
     });
   };
@@ -192,6 +201,15 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
             type: `success`,
           })
         );
+      } else {
+        if (r.error && r.error.data && r.error.data.msg) {
+          dispatch(
+            showToastMessage({
+              content: lowerCase(kebabCase(r.error.data.msg)),
+              type: `error`,
+            })
+          );
+        }
       }
     });
   };
@@ -219,6 +237,15 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
             type: `success`,
           })
         );
+      } else {
+        if (r.error && r.error.data && r.error.data.msg) {
+          dispatch(
+            showToastMessage({
+              content: lowerCase(kebabCase(r.error.data.msg)),
+              type: `error`,
+            })
+          );
+        }
       }
     });
   };
@@ -394,11 +421,7 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
               ))}
             <div className="px-4">
               <div className="flex items-center">
-                <CustomImage
-                  className="w-8 h-8 grayscale"
-                  src={Promotion.src}
-                  alt={t('promotion')}
-                />
+                <Promotion className="grayscale" />
                 <p
                   className="font-semibold ps-2 capitalize"
                   suppressHydrationWarning={suppressText}
@@ -410,7 +433,7 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
               <div className="flex items-center justify-between pt-3">
                 <input
                   type="text"
-                  placeholder={`${startCase(t('enter_code_here'))}`}
+                  placeholder={`${startCase(t('enter_code_here').toString())}`}
                   onChange={debounce((e) => handleCoupon(e.target.value), 400)}
                   suppressHydrationWarning={suppressText}
                   className={`border-0 border-b-2 border-b-gray-200 w-full focus:ring-transparent`}
