@@ -196,6 +196,15 @@ const OrderInvoice: NextPage<Props> = ({ element, url }): JSX.Element => {
                       {t('total')}
                     </th>
                   </tr>
+                  <tr>
+                  <th
+                      scope="col"
+                      className="py-3 px-3"
+                      suppressHydrationWarning={suppressText}
+                    >
+                      {t('add_on')}
+                    </th>
+                  </tr>
                 </thead>
                 <tbody>
                   {map(element.order_summary.items, (item, idx) => (

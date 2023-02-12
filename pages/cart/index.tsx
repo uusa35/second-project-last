@@ -436,7 +436,7 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
                   placeholder={`${startCase(t('enter_code_here').toString())}`}
                   onChange={debounce((e) => handleCoupon(e.target.value), 400)}
                   suppressHydrationWarning={suppressText}
-                  className={`border-0 border-b-2 border-b-gray-200 w-full focus:ring-transparent`}
+                  className={`border-0 border-b-2 border-b-gray-200 w-full focus:ring-transparent capitalize`}
                 />
               </div>
             </div>

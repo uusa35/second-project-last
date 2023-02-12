@@ -35,7 +35,7 @@ const schema = yup
   .object({
     id: yup.number(),
     name: yup.string().required().min(2).max(50),
-    email: yup.string(),
+    email: yup.string().email().required(),
     phone: yup.number().min(100000).max(999999999999).required(),
   })
   .required();
@@ -82,7 +82,7 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
       phone: customer?.phone ?? ``,
     },
   });
-
+console.log({customer})
   useEffect(() => {
     dispatch(setCurrentModule('customer_info'));
     dispatch(setShowFooterElement(`customerInfo`));
@@ -170,7 +170,17 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
                   placeholder={`${t('enter_your_email')}`}
                 />
               </div>
-              <div className="flex items-center gap-x-2 px-2 border-b-4 border-b-gray-200 w-full focus:ring-transparent py-4">
+              <div>
+                {errors?.email?.message && (
+                  <p
+                    className={`text-base text-red-800 font-semibold py-2 capitalize`}
+                    suppressHydrationWarning={suppressText}
+                  >
+                    {t('email_is_required')}
+                  </p>
+                )}
+              </div>
+              <div className="flex items-center gap-x-2 px-2 border-b-4 border-b-gray-200 w-full focus:ring-transparent py-4 capitalize">
                 <Phone style={{ color }} />
                 <Controller
                   render={(props) => (
@@ -189,6 +199,7 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
                       autoComplete="phone"
                       onChange={(value) => setValue('phone', value)}
                       error={!!errors.phone}
+                      value={customer.phone}
                       helperText={t(`${errors?.phone?.message}`)}
                     />
                   )}

@@ -35,11 +35,11 @@ const HomeVendorMainInfo: FC<Props> = ({ element }) => {
             </h1>
             <div className="text-sm text-neutral-400 space-y-1">
               <p suppressHydrationWarning={suppressText}>
-                <Check className="text-lime-400 text-base" />
+                <Check className="text-lime-400 text-base checkCircle" />
                 {t('payment_by_cards')}
               </p>
               <p suppressHydrationWarning={suppressText}>
-                <Check className="text-lime-400 text-base" />
+                <Check className="text-lime-400 text-base checkCircle" />
                 {t('cash_on_delivery')}
               </p>
             </div>
