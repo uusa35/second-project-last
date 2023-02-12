@@ -165,13 +165,6 @@ const OrderInvoice: NextPage<Props> = ({ element, url }): JSX.Element => {
                       className="py-3 px-3"
                       suppressHydrationWarning={suppressText}
                     >
-                      {t('add_on')}
-                    </th>
-                    <th
-                      scope="col"
-                      className="py-3 px-3"
-                      suppressHydrationWarning={suppressText}
-                    >
                       {t('sp_req')}
                     </th>
                     <th
@@ -189,24 +182,22 @@ const OrderInvoice: NextPage<Props> = ({ element, url }): JSX.Element => {
                       {t('total')}
                     </th>
                   </tr>
+                  <tr>
+                  <th
+                      scope="col"
+                      className="py-3 px-3"
+                      suppressHydrationWarning={suppressText}
+                    >
+                      {t('add_on')}
+                    </th>
+                  </tr>
                 </thead>
                 <tbody>
                   {map(element.order_summary.items, (item, idx) => (
+                    <>
                     <tr key={idx} className="text-start">
                       <td className="py-3 px-3">{item.quantity}</td>
                       <td className="py-3 px-3">{item.item}</td>
-                      <td className="py-3 px-3">
-                        {map(item.addon, (a) => (
-                          <span
-                            className={`${
-                              item.addon.length > 1 &&
-                              'border-e-2 border-gray-400 pe-1'
-                            }`}
-                          >
-                            {a}
-                          </span>
-                        ))}
-                      </td>
                       <td className="py-3 px-3"></td>
                       <td className="py-3 px-3">{item.price}</td>
                       <td className="py-3 px-3 uppercase">
@@ -214,6 +205,21 @@ const OrderInvoice: NextPage<Props> = ({ element, url }): JSX.Element => {
                         {t('kwd')}
                       </td>
                     </tr>
+                    <tr>
+                      <td className="py-3 px-3">
+                      {map(item.addon, (a) => (
+                        <span
+                          className={`${
+                            item.addon.length > 1 &&
+                            'border-e-2 border-gray-400 pe-1'
+                          }`}
+                        >
+                          {a}
+                        </span>
+                      ))}
+                      </td>
+                    </tr>
+                  </>
                   ))}
                 </tbody>
               </table>
