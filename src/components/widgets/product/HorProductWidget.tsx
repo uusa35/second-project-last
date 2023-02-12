@@ -54,7 +54,7 @@ const HorProductWidget: FC<Props> = ({ element }): JSX.Element => {
               suppressHydrationWarning={suppressText}
             >
               <TextTrans
-                style={{ color }}
+                style={{ color: `black` }}
                 ar={element.name_ar}
                 en={element.name_en}
               />
@@ -67,6 +67,7 @@ const HorProductWidget: FC<Props> = ({ element }): JSX.Element => {
               <p
                 className="text-md text-end uppercase"
                 suppressHydrationWarning={suppressText}
+                style={{ color: `black` }}
               >
                 {element.price} <span className={`uppercase`}>{t(`kwd`)}</span>
               </p>

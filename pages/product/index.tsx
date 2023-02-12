@@ -11,7 +11,6 @@ import { apiSlice } from '@/redux/api';
 import { debounce, isEmpty, map, isNull } from 'lodash';
 import { appLinks, baseUrl, imageSizes, suppressText } from '@/constants/*';
 import MainHead from '@/components/MainHead';
-import Image from 'next/image';
 import NotFoundImage from '@/appImages/not_found.png';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';

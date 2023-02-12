@@ -494,5 +494,6 @@
   "no_results_found" : "no results found",
   "your_order_has_been_recorded": "your order has been recorded.",
   "store_name": "store name",
-  "let_us_know_more": "let us know more"
+  "let_us_know_more": "let us know more",
+  "select_a_branch_or_area_before_order_or_some_fields_are_required_missing" : "select a branch or area before order or some fields are required missing"
 }
