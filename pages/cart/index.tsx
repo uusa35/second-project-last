@@ -13,7 +13,18 @@ import Promotion from '@/appIcons/promotion.svg';
 import Notes from '@/appIcons/notes.svg';
 import { appLinks, imageSizes, imgUrl, suppressText } from '@/constants/*';
 import CustomImage from '@/components/CustomImage';
-import { debounce, filter, isEmpty, kebabCase, lowerCase, map } from 'lodash';
+import {
+  capitalize,
+  debounce,
+  filter,
+  isEmpty,
+  kebabCase,
+  lowerCase,
+  map,
+  snakeCase,
+  upperCase,
+  startCase,
+} from 'lodash';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
 import { ProductCart, QuantityMeters, ServerCart } from '@/types/index';
 import Link from 'next/link';
@@ -21,6 +32,7 @@ import {
   useAddToCartMutation,
   useGetCartProductsQuery,
   useLazyCheckPromoCodeQuery,
+  useLazyGetCartProductsQuery,
 } from '@/redux/api/cartApi';
 import PaymentSummary from '@/widgets/cart/review/PaymentSummary';
 import TextTrans from '@/components/TextTrans';
@@ -63,6 +75,7 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
     url,
   });
   const [triggerCheckPromoCode] = useLazyCheckPromoCodeQuery();
+  const [triggerGetCartProducts] = useLazyGetCartProductsQuery();
 
   useEffect(() => {
     if (
@@ -88,16 +101,9 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
   }, []);
 
   const handleCoupon = async (coupon: string) => {
-    if (
-      coupon &&
-      coupon.length > 3 &&
-      userAgent &&
-      isSuccess &&
-      !isEmpty(cartItems.data?.Cart)
-    ) {
+    if (userAgent && isSuccess && !isEmpty(cartItems.data?.Cart)) {
       dispatch(setCartPromoCode(coupon));
       if (
-        coupon.length > 3 &&
         userAgent &&
         isSuccess &&
         cartItems &&
@@ -159,6 +165,15 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
             type: `success`,
           })
         );
+      } else {
+        if (r.error && r.error.data && r.error.data.msg) {
+          dispatch(
+            showToastMessage({
+              content: lowerCase(kebabCase(r.error.data.msg)),
+              type: `error`,
+            })
+          );
+        }
       }
     });
   };
@@ -186,6 +201,15 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
             type: `success`,
           })
         );
+      } else {
+        if (r.error && r.error.data && r.error.data.msg) {
+          dispatch(
+            showToastMessage({
+              content: lowerCase(kebabCase(r.error.data.msg)),
+              type: `error`,
+            })
+          );
+        }
       }
     });
   };
@@ -213,6 +237,15 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
             type: `success`,
           })
         );
+      } else {
+        if (r.error && r.error.data && r.error.data.msg) {
+          dispatch(
+            showToastMessage({
+              content: lowerCase(kebabCase(r.error.data.msg)),
+              type: `error`,
+            })
+          );
+        }
       }
     });
   };
@@ -388,11 +421,7 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
               ))}
             <div className="px-4">
               <div className="flex items-center">
-                <CustomImage
-                  className="w-8 h-8 grayscale"
-                  src={Promotion.src}
-                  alt={t('promotion')}
-                />
+                <Promotion className="grayscale" />
                 <p
                   className="font-semibold ps-2 capitalize"
                   suppressHydrationWarning={suppressText}
@@ -404,7 +433,7 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
               <div className="flex items-center justify-between pt-3">
                 <input
                   type="text"
-                  placeholder={`${t('enter_code_here')}`}
+                  placeholder={`${startCase(t('enter_code_here').toString())}`}
                   onChange={debounce((e) => handleCoupon(e.target.value), 400)}
                   suppressHydrationWarning={suppressText}
                   className={`border-0 border-b-2 border-b-gray-200 w-full focus:ring-transparent capitalize`}
@@ -412,7 +441,7 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
               </div>
             </div>
 
-            <div className="px-5 mt-5">
+            <div className="px-5 mt-5 hidden">
               <div className="flex items-center">
                 <CustomImage
                   className="w-6 h-6 grayscale"

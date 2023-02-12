@@ -105,9 +105,6 @@ console.log({customer})
     }
   }, []);
 
-  useEffect(() => {
-    
-  }, [])
   const onSubmit = async (body: any) => {
     await triggerSaveCustomerInfo({
       body,
@@ -208,7 +205,7 @@ console.log({customer})
                   )}
                   name="phone"
                   control={control}
-                  defaultValue={phone ?? ``}
+                  defaultValue={phone}
                   rules={{ required: true }}
                 />
               </div>

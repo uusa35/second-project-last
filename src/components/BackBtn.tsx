@@ -42,8 +42,6 @@ const BackBtn: FC<Props> = ({
     });
   };
 
-  console.log('router', previousUrl);
-
   const handleChangeLang = async (locale: string) => {
     if (locale !== router.locale) {
       await router

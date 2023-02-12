@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { imgUrl, suppressText } from '@/constants/*';
 import { useTranslation } from 'react-i18next';
 import { orderApi } from '@/redux/api/orderApi';
-import { map } from 'lodash';
+import { isEmpty, map } from 'lodash';
 import { wrapper } from '@/redux/store';
 import { AppQueryResult } from '@/types/queries';
 import { OrderInvoice } from '@/types/index';
@@ -65,7 +65,7 @@ const OrderInvoice: NextPage<Props> = ({ element, url }): JSX.Element => {
           <div className="flex justify-between px-4 py-2 capitalize">
             <div>
               <h4
-                className="font-semibold"
+                className="font-semibold "
                 suppressHydrationWarning={suppressText}
               >
                 {t('customer_info')}
@@ -76,13 +76,13 @@ const OrderInvoice: NextPage<Props> = ({ element, url }): JSX.Element => {
             </div>
             <div>
               <h4
-                className="font-semibold"
+                className="font-semibold "
                 suppressHydrationWarning={suppressText}
               >
                 {t('pick_up_details')}
               </h4>
               <p className="py-1" suppressHydrationWarning={suppressText}>
-                {t('branch')} {element.pickup_details.branch}
+                {t('branch')} : {element.pickup_details.branch}
               </p>
               <button
                 suppressHydrationWarning={suppressText}
@@ -99,34 +99,43 @@ const OrderInvoice: NextPage<Props> = ({ element, url }): JSX.Element => {
               </button>
             </div>
           </div>
-          <div className="px-4">
+          <div className="px-4 border-t border-gray-300 pt-4">
             <h4
-              className="font-semibold pb-2"
+              className="font-extrabold pb-2"
               suppressHydrationWarning={suppressText}
             >
               {t('payment_details')}
             </h4>
-            <p suppressHydrationWarning={suppressText}>{element.payment_type === "C.O.D" ? t('cash_on_delivery'): element.payment_type}</p>
+            <p suppressHydrationWarning={suppressText}>
+              {element.payment_type === 'C.O.D'
+                ? t('cash_on_delivery')
+                : element.payment_type}
+            </p>
           </div>
           <div className="px-4 pt-4">
             <h4
-              className="font-semibold pb-2"
+              className="font-extrabold pb-2"
               suppressHydrationWarning={suppressText}
             >
               {t('order_details')}
             </h4>
             <div className="flex items-center py-1">
-              <p className="pe-2" suppressHydrationWarning={suppressText}>
-                {t('store_branch')}
+              <p
+                className="pe-2 font-extrabold"
+                suppressHydrationWarning={suppressText}
+              >
+                {t('store_branch')} :
               </p>
               <p>
-                {element.order_details.branch}{' '}
-                {element.order_details.branch_address}
+                {`${element.order_details.branch}  - ${element.order_details.branch_address}`}
               </p>
             </div>
             <div className="flex items-center py-1">
-              <p className="pe-2" suppressHydrationWarning={suppressText}>
-                {t('time_date')}
+              <p
+                className="pe-2 font-extrabold"
+                suppressHydrationWarning={suppressText}
+              >
+                {t('time_date')} :
               </p>
               <p>
                 {element.order_details.order_time}{' '}
@@ -195,31 +204,34 @@ const OrderInvoice: NextPage<Props> = ({ element, url }): JSX.Element => {
                 <tbody>
                   {map(element.order_summary.items, (item, idx) => (
                     <>
-                    <tr key={idx} className="text-start">
-                      <td className="py-3 px-3">{item.quantity}</td>
-                      <td className="py-3 px-3">{item.item}</td>
-                      <td className="py-3 px-3"></td>
-                      <td className="py-3 px-3">{item.price}</td>
-                      <td className="py-3 px-3 uppercase">
-                        {item.total}
-                        {t('kwd')}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="py-3 px-3">
-                      {map(item.addon, (a) => (
-                        <span
-                          className={`${
-                            item.addon.length > 1 &&
-                            'border-e-2 border-gray-400 pe-1'
-                          }`}
-                        >
-                          {a}
-                        </span>
-                      ))}
-                      </td>
-                    </tr>
-                  </>
+                      <tr key={idx} className="text-start">
+                        <td className="py-3 px-3">{item.quantity}</td>
+                        <td className="py-3 px-3">{item.item}</td>
+                        <td className="py-3 px-3"></td>
+                        <td className="py-3 px-3">{item.price}</td>
+                        <td className="py-3 px-3 uppercase">
+                          {item.total}
+                          {t('kwd')}
+                        </td>
+                      </tr>
+                      {!isEmpty(item.addon) && (
+                        <tr className="py-3 px-3 w-full border-b border-gray-200">
+                          <td>{t('add_on')} : </td>
+                          <td>
+                            {map(item.addon, (a) => (
+                              <span
+                                className={`${
+                                  item.addon.length > 1 &&
+                                  'border-e-2 border-gray-400 pe-1'
+                                }`}
+                              >
+                                {`${a} `}
+                              </span>
+                            ))}
+                          </td>
+                        </tr>
+                      )}
+                    </>
                   ))}
                 </tbody>
               </table>

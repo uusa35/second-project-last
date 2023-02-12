@@ -151,7 +151,7 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
           name_en: element.name_en,
           ProductDesc: element.desc,
           Quantity: currentQty,
-          ExtraNotes: productCart.ExtraNotes,
+          ExtraNotes: ``,
           totalPrice: parseFloat(element.price),
           grossTotalPrice: parseFloat(element.price),
           totalQty: currentQty,
