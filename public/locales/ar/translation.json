@@ -504,5 +504,7 @@
   "delivery_time_and_date":"وقت و تاريخ التوصيل",
   "pickup_time_and_date":"وقت و تاريخ الاستلام",
   "quantity_of_out_of_stock" : "هذا المنتج غير متاح",
-  "no_results_found" : "لا توجد نتائج للبحث .."
+  "no_results_found" : "لا توجد نتائج للبحث ..",
+  "your_order_has_been_recorded": "تم تسجيل طلبك",
+  "store_name": "اسم المخزن"
 }

@@ -389,7 +389,7 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
             <div className="px-4">
               <div className="flex items-center">
                 <CustomImage
-                  className="w-8 h-8"
+                  className="w-8 h-8 grayscale"
                   src={Promotion.src}
                   alt={t('promotion')}
                 />
@@ -415,7 +415,7 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
             <div className="px-5 mt-5">
               <div className="flex items-center">
                 <CustomImage
-                  className="w-6 h-6"
+                  className="w-6 h-6 grayscale"
                   src={Notes.src}
                   alt={`${t('note')}`}
                 />

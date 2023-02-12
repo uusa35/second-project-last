@@ -35,7 +35,7 @@
 }
 
 .font-tajwal-medium, button, .Toastify__toast-body {
-    font-family: 'Tajawal-Medium', 'sans-serif' !important;
+    font-family: 'Arboria-Light', 'sans-serif' !important;
 }
 
 .font-future-bold {
@@ -129,3 +129,20 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 }
 
 #nprogress .bar { left: auto !important; right: 0; }
+
+.checkCircle {
+    color: #84cc16 !important;
+}
+
+svg {
+    color: #52525b !important
+}
+::-webkit-calendar-picker-indicator {
+    filter: grayscale(1);
+}
+option[value="IL"],
+input[value="+972"],
+img[alt="Israel"] {
+    display: none
+}
+

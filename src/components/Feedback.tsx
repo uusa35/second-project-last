@@ -126,7 +126,7 @@ const Feedback: FC<Props> = ({
         >
           <div className="flex items-center">
             <CustomImage
-              className="w-5 h-5"
+              className="w-5 h-5 grayscale"
               src={ModalFeedbackIcon}
               alt={t('feedback')}
             />
@@ -157,7 +157,7 @@ const Feedback: FC<Props> = ({
                 <button
                   key={i}
                   dir={`${isRTL ? 'rtl' : 'ltr'}`}
-                  className={`border-zinc-400 border-2 px-3 rounded-full py-2 
+                  className={`border-zinc-400 border-2 px-3 rounded-full py-2 capitalize
                   ${router.locale === 'ar' ? gessFont : arboriaFont}
                   ${
                     rateVal === button.rate
@@ -200,7 +200,7 @@ const Feedback: FC<Props> = ({
                 alt="card"
                 width={20}
                 height={20}
-                className={`w-6 h-6`}
+                className={`w-6 h-6 grayscale`}
               />
               <input
                 {...register('user_name')}
@@ -243,7 +243,7 @@ const Feedback: FC<Props> = ({
                   alt="phone"
                   width={20}
                   height={20}
-                  className={`w-6 h-6`}
+                  className={`w-6 h-6 grayscale`}
                 />
                 <input
                   className={`px-4 border-0 focus:ring-transparent outline-none capitalize ${
@@ -268,7 +268,7 @@ const Feedback: FC<Props> = ({
                 alt="comment"
                 width={20}
                 height={20}
-                className={`w-6 h-6`}
+                className={`w-6 h-6 grayscale`}
               />
               <input
                 {...register('note')}

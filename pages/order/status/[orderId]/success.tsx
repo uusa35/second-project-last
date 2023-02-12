@@ -33,7 +33,7 @@ const OrderSuccess: NextPage<Props> = ({ element, url }) => {
   const color = useAppSelector(themeColor);
   const dispatch = useAppDispatch();
   const [triggerGetCartProducts] = useLazyGetCartProductsQuery();
-
+console.log({element})
   useEffect(() => {
     dispatch(setCurrentModule('order_success'));
     dispatch(setShowFooterElement(t('order_success')));
@@ -63,7 +63,7 @@ const OrderSuccess: NextPage<Props> = ({ element, url }) => {
               {t('thank_you')}
             </h4>
             <p suppressHydrationWarning={suppressText}>
-              {t('your_order_is_confirmed_and_on_its_way')}
+              {t('your_order_has_been_recorded')}
             </p>
           </div>
           <div className="mt-10 px-5 py-1 bg-gray-100"></div>
@@ -88,7 +88,7 @@ const OrderSuccess: NextPage<Props> = ({ element, url }) => {
                 style={{ color }}
                 suppressHydrationWarning={suppressText}
               >
-                {t('vendor_name')}
+                {t('store_name')}
               </h4>
               <TextTrans
                 ar={element.vendor_name_ar}

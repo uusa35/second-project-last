@@ -106,7 +106,7 @@ const OrderInvoice: NextPage<Props> = ({ element, url }): JSX.Element => {
             >
               {t('payment_details')}
             </h4>
-            <p>{element.payment_type}</p>
+            <p suppressHydrationWarning={suppressText}>{element.payment_type === "C.O.D" ? t('cash_on_delivery'): element.payment_type}</p>
           </div>
           <div className="px-4 pt-4">
             <h4

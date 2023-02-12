@@ -180,7 +180,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
               </div>
             </div>
             <footer className={`w-full`}>
-              <a href={`tel:${vendor.phone}`}>
+              <a href={`tel:+${vendor.phone}`}>
                 <p
                   className={`${submitBtnClass} text-center capitalize`}
                   suppressHydrationWarning={suppressText}

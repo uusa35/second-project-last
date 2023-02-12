@@ -14,7 +14,6 @@ import Knet from '@/appImages/knet.png';
 import CashOnDelivery from '@/appImages/cash_on_delivery.jpg';
 import Visa from '@/appImages/visa.png';
 import { useTranslation } from 'react-i18next';
-
 import {
   convertColor,
   imageSizes,
@@ -191,7 +190,7 @@ const VendorShow: NextPage<Props> = ({ element, url }) => {
             <button className={`${submitBtnClass}`}>
               <div className="flex justify-center items-center">
                 <CustomImage
-                  className="w-5 h-5"
+                  className="w-5 h-5 grayscale"
                   src={FeedbackIcon.src}
                   alt={t('feedback')}
                 />
@@ -209,21 +208,21 @@ const VendorShow: NextPage<Props> = ({ element, url }) => {
           <div className="flex justify-evenly items-center w-[80%] m-auto">
             <a href={'facebook.com'} target={'_blank'}>
               <CustomImage
-                className="w-5 h-5"
+                className="w-5 h-5 grayscale"
                 src={Facebook.src}
                 alt={t('facebook')}
               />
             </a>
             <a href={'instagram.com'} target={'_blank'}>
               <CustomImage
-                className="w-5 h-5"
+                className="w-5 h-5 grayscale"
                 src={Instagram.src}
                 alt={t('instagram')}
               />
             </a>
             <a href={'twitter.com'} target={'_blank'}>
               <CustomImage
-                className="w-5 h-5"
+                className="w-5 h-5 grayscale"
                 src={Twitter.src}
                 alt={t('twitter')}
               />

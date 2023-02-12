@@ -109,7 +109,7 @@ const SelectMethod: NextPage<Props> = ({
         xmlns="http://www.w3.org/2000/svg"
         className={`${
           id === open ? 'rotate-180' : ''
-        } h-5 w-5 transition-transform`}
+        } h-5 w-5 transition-transform grayscale`}
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
