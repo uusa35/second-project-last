@@ -89,6 +89,8 @@ const ProductSearchIndex: NextPage<Props> = ({
     return <LoadingSpinner fullWidth={true} />;
   }
 
+  console.log("elements",elements)
+
   return (
     <Suspense>
       <MainHead
@@ -171,7 +173,7 @@ const ProductSearchIndex: NextPage<Props> = ({
           )}
 
           <div className="my-4 capitalize">
-            {isEmpty(elements) && (
+            {isEmpty(currentProducts) && !topSearchSuccess && (
               <div
                 className={`w-full flex flex-1 flex-col justify-center items-center space-y-4 my-12`}
               >
