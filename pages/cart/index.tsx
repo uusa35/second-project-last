@@ -46,6 +46,7 @@ import {
 import { themeColor } from '@/redux/slices/vendorSlice';
 import EmptyCart from '@/appImages/empty_cart.png';
 import { wrapper } from '@/redux/store';
+import { Done } from '@mui/icons-material';
 
 type Props = {
   url: string;
@@ -57,6 +58,7 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
     area: { id: areaId },
     appSetting: { method },
     customer: { userAgent, notes },
+    cart: { promoEnabled },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
   const dispatch = useAppDispatch();
@@ -90,6 +92,7 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
   }, [cartItems]);
 
   useEffect(() => {
+    dispatch(setCartPromoCode(''))
     dispatch(setCurrentModule('cart'));
     dispatch(setShowFooterElement(`cart_index`));
     if (url) {
@@ -439,14 +442,17 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
                 </p>
               </div>
 
-              <div className="flex items-center justify-between pt-3">
+              <div className="relative flex items-center justify-between gap-x-2 pt-3">
                 <input
                   type="text"
                   placeholder={`${startCase(t('enter_code_here').toString())}`}
                   onChange={debounce((e) => handleCoupon(e.target.value), 400)}
                   suppressHydrationWarning={suppressText}
-                  className={`border-0 border-b-2 border-b-gray-200 w-full focus:ring-transparent capitalize`}
+                  className={`border-0 border-b-2 ${
+                    promoEnabled ? 'border-b-lime-500 focus:border-b-lime-500' : 'border-b-gray-200 focus:border-b-gray-200'
+                  } w-full focus:ring-transparent capitalize`}
                 />
+                {promoEnabled ? <Done className="!text-lime-500 absolute end-0" /> : <></>}
               </div>
             </div>
 
