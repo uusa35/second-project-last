@@ -508,5 +508,6 @@
   "your_order_has_been_recorded": "تم تسجيل طلبك",
   "store_name": "اسم المخزن",
   "let_us_know_more": "اجعلنا نعرف المزيد",
-  "select_a_branch_or_area_before_order_or_some_fields_are_required_missing" : "يجب اختيار فرع / منطقة قبل البدأ في طلبك .. أو ان بعض الحقول مطلوبة"
+  "select_a_branch_or_area_before_order_or_some_fields_are_required_missing" : "يجب اختيار فرع / منطقة قبل البدأ في طلبك .. أو ان بعض الحقول مطلوبة",
+  "building_no":"رقم المبنى"
 }

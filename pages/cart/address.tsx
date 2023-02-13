@@ -27,8 +27,7 @@ import ApartmentIcon from '@/appIcons/apartment.svg';
 import ApartmentAcitveIcon from '@/appIcons/apartment_active.svg';
 import OfficeIcon from '@/appIcons/office.svg';
 import OfficeAcitveIcon from '@/appIcons/office_active.svg';
-import Image from 'next/image';
-import { Home } from '@mui/icons-material';
+import { HomeOutlined } from '@mui/icons-material';
 import { addressInputField, appLinks, suppressText } from '@/constants/*';
 import { isEmpty, isNull, kebabCase, lowerCase } from 'lodash';
 import {
@@ -129,6 +128,13 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
           }
           return schema.nullable(true);
         }),
+      building_no: yup.string()
+      .max(100).when('address_type', (address_type, schema) => {
+        if (address_type === 2 && method === `delivery`) {
+          return schema.required(t(`validation.required`));
+        }
+        return schema.nullable(true);
+      }),
       office_no: yup.mixed().when('address_type', (address_type, schema) => {
         if (address_type === 3 && method === `delivery`) {
           return schema.required(t(`validation.required`));
@@ -143,6 +149,7 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
       customer_id: yup.string().required(),
     })
     .required();
+
   const {
     register,
     handleSubmit,
@@ -162,6 +169,7 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
       street: address.street ?? ``,
       house_no: address.house_no ?? ``,
       floor_no: address.floor_no ?? ``,
+      building_no:address.building_no??``,
       office_no: address.office_no ?? ``,
       avenue: address.avenue,
       paci: address.paci,
@@ -262,6 +270,7 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
           avenue: body.avenue,
           paci: body.paci,
           floor_no: body.floor_no,
+          building_no:body.building_no,
           office_no: body.office_no,
           additional: body.additional,
         },
@@ -335,6 +344,8 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
     );
   };
 
+  console.log('dfghjkl;hgfdfghjkl', ApartmentAcitveIcon, ApartmentIcon);
+
   return (
     <Suspense>
       <MainContentLayout handleSubmit={handleNext} url={url}>
@@ -387,10 +398,10 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                       style={{ color }}
                       suppressHydrationWarning={suppressText}
                     >
-                      {t('change')}
+                      <p className="text-md">{area.name}</p>
                     </Link>
                   </div>
-                  <div className="w-full h-36 rounded-md my-3">
+                  {/* <div className="w-full h-36 rounded-md my-3">
                     <GoogleMapReact
                       bootstrapURLKeys={{
                         // remove the key if you want to fork
@@ -409,9 +420,9 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                       onChange={() => {}}
                       defaultZoom={11}
                     ></GoogleMapReact>
-                  </div>
+                  </div> */}
 
-                  <div className="flex justify-between">
+                  {/* <div className="flex justify-between">
                     <p className="text-md">{area.name}</p>
                     <Link
                       href={appLinks.cartSelectMethod(method)}
@@ -422,18 +433,18 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                     >
                       {t('edit')}
                     </Link>
-                  </div>
+                  </div> */}
                 </div>
 
                 {/* address */}
                 <div className="flex flex-wrap">
                   <div className="w-full">
                     <ul
-                      className="grid grid-cols-3 gap-x-2 mb-0 list-none pt-3 pb-4 !text-sm lg:text-base"
+                      className="grid grid-rows-3 gap-y-3 md:grid-rows-1 md:grid-cols-3 md:gap-x-2 mb-0 list-none pt-3 pb-4 !text-sm lg:text-base"
                       role="tablist"
                     >
                       <li
-                        className={`flex-auto text-center  rounded-md cursor-pointer
+                        className={`flex-auto text-center  rounded-md cursor-pointer h-fit
                       ${addressTabType === 1 && 'text-white'}
                       `}
                         style={{
@@ -450,10 +461,10 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                           href="#home"
                           role="tablist"
                         >
-                          <div className="flex items-center justify-evenly flex-wrap">
-                            <Home
+                          <div className="flex items-center justify-center gap-x-2">
+                            <HomeOutlined
                               className={`${
-                                addressTabType === 1 && 'text-white'
+                                addressTabType === 1 && '!text-white'
                               }`}
                             />
                             <p suppressHydrationWarning={suppressText}>
@@ -463,7 +474,7 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                         </div>
                       </li>
                       <li
-                        className={`flex-auto text-center  rounded-md cursor-pointer
+                        className={`flex-auto text-center  rounded-md cursor-pointer h-fit
                         ${addressTabType === 2 && 'text-white'}
                         `}
                         style={{
@@ -480,8 +491,8 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                           href="#apartment"
                           role="tablist"
                         >
-                          <div className="flex items-center justify-evenly flex-wrap">
-                            <Image
+                          <div className="flex items-center justify-center gap-x-2">
+                            {/* <Image
                               src={
                                 addressTabType === 2
                                   ? ApartmentAcitveIcon
@@ -491,7 +502,16 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                               width={20}
                               height={20}
                               className="grayscale"
-                            />
+                            /> */}
+
+                            <div className="">
+                              {addressTabType === 2 ? (
+                                <ApartmentAcitveIcon />
+                              ) : (
+                                <ApartmentIcon />
+                              )}
+                            </div>
+
                             <p suppressHydrationWarning={suppressText}>
                               {t('appartment')}
                             </p>
@@ -499,7 +519,7 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                         </div>
                       </li>
                       <li
-                        className={` flex-auto text-center  rounded-md cursor-pointer
+                        className={` flex-auto text-center  rounded-md cursor-pointer h-fit
                         ${addressTabType === 3 && 'text-white'}
                         `}
                         style={{
@@ -516,8 +536,8 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                           href="#office"
                           role="tablist"
                         >
-                          <div className="flex items-center justify-evenly">
-                            <Image
+                          <div className="flex items-center justify-center gap-x-2">
+                            {/* <Image
                               src={
                                 addressTabType === 3
                                   ? OfficeAcitveIcon
@@ -527,7 +547,12 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                               width={20}
                               height={20}
                               className="grayscale"
-                            />
+                            /> */}
+                            {addressTabType === 3 ? (
+                              <OfficeAcitveIcon />
+                            ) : (
+                              <OfficeIcon />
+                            )}
                             <p suppressHydrationWarning={suppressText}>
                               {t('office')}
                             </p>
@@ -662,6 +687,42 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                                 suppressHydrationWarning={suppressText}
                               >
                                 {t(errors.floor_no?.message)}
+                              </p>
+                            )}
+                          </div>
+                          {/* building_no */}
+                          <div
+                            className={
+                              addressTabType === 2 ? 'block' : 'hidden'
+                            }
+                            id="apartment"
+                          >
+                            <input
+                              placeholder={`${t(`building_no`)}${
+                                addressTabType === 2 ? `*` : ``
+                              }`}
+                              className={`${addressInputField}`}
+                              suppressHydrationWarning={suppressText}
+                              {...register('building_no')}
+                              aria-invalid={errors.building_no ? 'true' : 'false'}
+                            />
+                          </div>
+                          <div>
+                            {errors.building_no?.message.key ? (
+                              <p
+                                className={`text-sm text-red-800`}
+                                suppressHydrationWarning={suppressText}
+                              >
+                                {t(`${errors.building_no?.message.key}`, {
+                                  min: errors.building_no?.message.values,
+                                })}
+                              </p>
+                            ) : (
+                              <p
+                                className={`text-sm text-red-800`}
+                                suppressHydrationWarning={suppressText}
+                              >
+                                {t(errors.building_no?.message)}
                               </p>
                             )}
                           </div>
@@ -870,7 +931,7 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                       <div className="flex justify-between py-2 border-b-4 border-stone-100">
                         <input
                           type="date"
-                          className={`border-none w-full`}
+                          className={`border-none w-full px-0`}
                           min={new Date().toISOString().split('T')[0]}
                           onChange={(e) => {
                             setPrefrences({
@@ -896,7 +957,7 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                           timeCaption="Time"
                           dateFormat="hh:mm"
                           locale="en"
-                          minTime={prefrences.time as Date}
+                          minTime={new Date()}
                           maxTime={new Date(new Date().setHours(23, 59))}
                         ></DatePicker>
                       </div>
@@ -991,7 +1052,8 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                         timeCaption="Time"
                         dateFormat="hh:mm"
                         locale="en"
-                        // minTime={prefrences.time as Date}
+                        minTime={new Date()}
+                        maxTime={new Date(new Date().setHours(23, 59))}
                       ></DatePicker>
                     </div>
                   </div>
