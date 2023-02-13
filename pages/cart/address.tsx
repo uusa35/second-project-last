@@ -64,7 +64,9 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
     customer: { userAgent, address, id: customer_id },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
-  const [addressTabType, setAddressTabType] = useState(1);
+  const [addressTabType, setAddressTabType] = useState(
+    address.type === "APARTMENT" ? 2 : address.type === 'OFFICE' ? 3 : 1
+  );
   const [show, SetShow] = useState(false);
   const refForm = useRef<any>();
   const [triggerAddAddress, { isLoading: AddAddressLoading }] =
@@ -128,13 +130,15 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
           }
           return schema.nullable(true);
         }),
-      building_no: yup.string()
-      .max(100).when('address_type', (address_type, schema) => {
-        if (address_type === 2 && method === `delivery`) {
-          return schema.required(t(`validation.required`));
-        }
-        return schema.nullable(true);
-      }),
+      building_no: yup
+        .string()
+        .max(100)
+        .when('address_type', (address_type, schema) => {
+          if (address_type === 2 && method === `delivery`) {
+            return schema.required(t(`validation.required`));
+          }
+          return schema.nullable(true);
+        }),
       office_no: yup.mixed().when('address_type', (address_type, schema) => {
         if (address_type === 3 && method === `delivery`) {
           return schema.required(t(`validation.required`));
@@ -169,7 +173,7 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
       street: address.street ?? ``,
       house_no: address.house_no ?? ``,
       floor_no: address.floor_no ?? ``,
-      building_no:address.building_no??``,
+      building_no: address.building_no ?? ``,
       office_no: address.office_no ?? ``,
       avenue: address.avenue,
       paci: address.paci,
@@ -270,7 +274,7 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
           avenue: body.avenue,
           paci: body.paci,
           floor_no: body.floor_no,
-          building_no:body.building_no,
+          building_no: body.building_no,
           office_no: body.office_no,
           additional: body.additional,
         },
@@ -704,7 +708,9 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                               className={`${addressInputField}`}
                               suppressHydrationWarning={suppressText}
                               {...register('building_no')}
-                              aria-invalid={errors.building_no ? 'true' : 'false'}
+                              aria-invalid={
+                                errors.building_no ? 'true' : 'false'
+                              }
                             />
                           </div>
                           <div>
@@ -928,10 +934,10 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                   </div>
                   {show && (
                     <div className={`flex flex-col gap-3`}>
-                      <div className="flex justify-between py-2 border-b-4 border-stone-100">
+                      <div className="flex justify-between p-2 border-b-4 border-stone-100 ">
                         <input
                           type="date"
-                          className={`border-none w-full px-0`}
+                          className={`border-none w-full px-0 focus:border-none focus:ring-transparent`}
                           min={new Date().toISOString().split('T')[0]}
                           onChange={(e) => {
                             setPrefrences({
