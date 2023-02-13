@@ -38,7 +38,7 @@ const SlideTopNav: FC<Props> = ({ offset, isHome = false }): JSX.Element => {
   const handleChangeLang = async (locale: string) => {
     if (locale !== router.locale) {
       await router
-        .push(router.pathname, router.asPath, {
+        .replace(router.pathname, router.asPath, {
           locale,
           scroll: false,
         })
@@ -75,14 +75,17 @@ const SlideTopNav: FC<Props> = ({ offset, isHome = false }): JSX.Element => {
       </button>
       {/* logo */}
       <div className="flex w-full flex-row justify-between items-center">
-      
         <Link
           scroll={true}
           href={appLinks.home.path}
           locale={lang}
           className="flex flex-1 w-full justify-center cursor-pointer "
         >
-          <div className={`flex grow justify-center ltr:ml-10 rtl:mr-10 ${offset <= 80 ? 'hidden': 'block'}`}>
+          <div
+            className={`flex grow justify-center ltr:ml-10 rtl:mr-10 ${
+              offset <= 80 ? 'hidden' : 'block'
+            }`}
+          >
             <Image
               className="h-auto w-12 xl:w-auto xl:h-16"
               src={`${imgUrl(vendor.logo)}`}
@@ -92,7 +95,7 @@ const SlideTopNav: FC<Props> = ({ offset, isHome = false }): JSX.Element => {
             />
           </div>
         </Link>
-        
+
         <div className={`flex flex-row justify-between items-center w-20`}>
           <Link
             scroll={true}

@@ -51,7 +51,7 @@ const VerProductWidget: FC<Props> = ({ element }): JSX.Element => {
             <div className="ps-5 w-[100%] pe-5">
               <p className="text-lg truncate pb-5">
                 <TextTrans
-                  style={{ color }}
+                  style={{ color: `black` }}
                   ar={element.name_ar}
                   en={element.name_en}
                 />
@@ -64,7 +64,7 @@ const VerProductWidget: FC<Props> = ({ element }): JSX.Element => {
                 <div>
                   <p
                     className="text-md text-end uppercase pb-2"
-                    style={{ color }}
+                    style={{ color: `black` }}
                   >
                     {element.price}{' '}
                     <span className={`uppercase`}>{t(`kwd`)}</span>

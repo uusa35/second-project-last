@@ -1,4 +1,10 @@
-import { appLinks, suppressText } from '@/constants/*';
+import {
+  appLinks,
+  suppressText,
+  convertColor,
+  gessFont,
+  arboriaFont,
+} from '@/constants/*';
 import { isNull } from 'lodash';
 import { FC } from 'react';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -22,6 +28,7 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
   const color = useAppSelector(themeColor);
   const { t } = useTranslation();
   const router = useRouter();
+  console.log({ color });
 
   const handleSelectMethod = (m: appSetting['method']) => {
     router.push(appLinks.cartSelectMethod(m));
@@ -33,19 +40,26 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
       <div className="flex flex-1 w-full flex-row justify-between items-center my-2 border-t-[14px] border-stone-100 px-14 text-lg pt-4 capitalize">
         <button
           className={`${
-            method === 'delivery' && `border-b-2 pb-1 border-b-primary_BG`
-          } md:ltr:mr-3 md:rtl:ml-3 capitalize `}
+            method === 'delivery' && `border-b-2 pb-1`
+          } md:ltr:mr-3 md:rtl:ml-3 capitalize ${
+            router.locale === 'ar' ? gessFont : arboriaFont
+          }`}
           onClick={() => handleSelectMethod(`delivery`)}
           suppressHydrationWarning={suppressText}
+          style={{ borderBottomColor: 'gray' }}
         >
           {t('delivery')}
         </button>
         <button
           className={`${
-            method === 'pickup' && `border-b-2 pb-1 border-b-primary_BG`
-          } md:ltr:mr-3 md:rtl:ml-3 capitalize `}
+            method === 'pickup' && `border-b-2 pb-1`
+          } md:ltr:mr-3 md:rtl:ml-3 capitalize ${
+            router.locale === 'ar' ? gessFont : arboriaFont
+          }`}
           onClick={() => handleSelectMethod(`pickup`)}
           suppressHydrationWarning={suppressText}
+          // style={{ borderBottomColor: convertColor(color, 100) }}
+          style={{ borderBottomColor: 'gray' }}
         >
           {t('pickup')}
         </button>

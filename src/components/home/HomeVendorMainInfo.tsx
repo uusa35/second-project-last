@@ -35,11 +35,11 @@ const HomeVendorMainInfo: FC<Props> = ({ element }) => {
             </h1>
             <div className="text-sm text-neutral-400 space-y-1">
               <p suppressHydrationWarning={suppressText}>
-                <Check className="text-lime-400 text-base" />
+                <Check className="text-lime-400 text-base checkCircle" />
                 {t('payment_by_cards')}
               </p>
               <p suppressHydrationWarning={suppressText}>
-                <Check className="text-lime-400 text-base" />
+                <Check className="text-lime-400 text-base checkCircle" />
                 {t('cash_on_delivery')}
               </p>
             </div>
@@ -49,7 +49,7 @@ const HomeVendorMainInfo: FC<Props> = ({ element }) => {
         <Link
           href={appLinks.vendorShow.path}
           scroll={true}
-          className={`flex-none pt-4`}
+          className={`flex-none pt-4 grayscale`}
         >
           <InfoOutlined className="w-6 h-6 lg:w-8 lg:h-8" style={{ color }} />
         </Link>

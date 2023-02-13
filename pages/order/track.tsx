@@ -7,7 +7,17 @@ import { setCurrentModule, setUrl } from '@/redux/slices/appSettingSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { useLazyTrackOrderQuery } from '@/redux/api/orderApi';
-import { debounce, isEmpty, lowerCase, snakeCase } from 'lodash';
+import {
+  debounce,
+  each,
+  filter,
+  forEach,
+  isEmpty,
+  lowerCase,
+  map,
+  snakeCase,
+  toString,
+} from 'lodash';
 import { useRouter } from 'next/router';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { themeColor } from '@/redux/slices/vendorSlice';
@@ -48,15 +58,15 @@ const TrackOrder: NextPage<Props> = ({ url }): JSX.Element => {
   }
 
   const handelDisplayAddress = () => {
-    if (data) {
-      let address = Object.values(data.data.address.address);
-      let concatAdd = '';
-      address.map((a) => {
-        if (a !== null) {
-          concatAdd += a + ', ';
-        }
-      });
-      return concatAdd;
+    if (isSuccess && data && data.status) {
+      const address = filter(
+        map(
+          data.data.address.address,
+          (value, key) => value !== null && `${key} : ${value}  `
+        ),
+        (a) => a
+      );
+      return toString(address).replaceAll(',', ' / ');
     }
   };
 
@@ -87,7 +97,7 @@ const TrackOrder: NextPage<Props> = ({ url }): JSX.Element => {
                     : ``
                 }
                 onChange={debounce((e) => handleChange(e.target.value), 400)}
-                className="block w-full rounded-md  focus:ring-1 focus:ring-primary_BG pl-10 border-none bg-gray-100 capitalize h-14"
+                className="block w-full rounded-md  focus:ring-1 focus:ring-primary_BG pl-10 border-none bg-gray-100 capitalize h-12"
                 suppressHydrationWarning={suppressText}
                 placeholder={`${t(`enter_order_code`)}`}
               />

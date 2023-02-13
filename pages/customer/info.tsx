@@ -5,6 +5,7 @@ import { BadgeOutlined, EmailOutlined, Phone } from '@mui/icons-material';
 import GreyLine from '@/components/GreyLine';
 import { useTranslation } from 'react-i18next';
 import PhoneInput from 'react-phone-number-input';
+import { isSupportedCountry } from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
 import { useEffect, Suspense } from 'react';
 import { ServerCart } from '@/types/index';
@@ -81,7 +82,7 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
       phone: customer?.phone ?? ``,
     },
   });
-
+console.log({customer})
   useEffect(() => {
     dispatch(setCurrentModule('customer_info'));
     dispatch(setShowFooterElement(`customerInfo`));
@@ -179,19 +180,19 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
                   </p>
                 )}
               </div>
-              <div className="flex items-center gap-x-2 px-2 border-b-4 border-b-gray-200 w-full focus:ring-transparent py-4">
+              <div className="flex items-center gap-x-2 px-2 border-b-4 border-b-gray-200 w-full focus:ring-transparent py-4 capitalize">
                 <Phone style={{ color }} />
                 <Controller
                   render={(props) => (
                     <PhoneInput
                       international
-                      defaultCountry="KW"
+                      defaultCountry='KW'
                       placeholder={`${t('enter_your_phone')}`}
                       inputRef={register}
                       inputProps={{
                         name: 'phone',
                         required: true,
-                        autoFocus: true,
+                        autoFocus: true
                       }}
                       id="phone"
                       name="phone"
@@ -199,11 +200,12 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
                       onChange={(value) => setValue('phone', value)}
                       error={!!errors.phone}
                       helperText={t(`${errors?.phone?.message}`)}
+                      value={`${customer.phone && `${customer.phone}`}`}
                     />
                   )}
                   name="phone"
                   control={control}
-                  defaultValue={phone ?? ``}
+                  defaultValue={phone}
                   rules={{ required: true }}
                 />
               </div>

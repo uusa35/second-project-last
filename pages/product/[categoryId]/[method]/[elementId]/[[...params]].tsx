@@ -11,7 +11,7 @@ import { NextPage } from 'next';
 import { apiSlice } from '@/redux/api';
 import MainHead from '@/components/MainHead';
 import { imageSizes, suppressText } from '@/constants/*';
-import { debounce, isEmpty, map, replace } from 'lodash';
+import { capitalize, debounce, isEmpty, map, replace } from 'lodash';
 import NotFoundImage from '@/appImages/not_found.png';
 import HorProductWidget from '@/widgets/product/HorProductWidget';
 import { AppQueryResult, ProductPagination } from '@/types/queries';
@@ -75,7 +75,7 @@ const ProductIndex: NextPage<Props> = ({
 
   useEffect(() => {
     if (query && query.slug) {
-      dispatch(setCurrentModule(replace(query?.slug, '-', ' ')));
+      dispatch(setCurrentModule(capitalize(query.slug.replaceAll('-', ' '))));
     } else {
       dispatch(setCurrentModule(`product_index`));
     }
@@ -119,7 +119,7 @@ const ProductIndex: NextPage<Props> = ({
                   name="search"
                   id="search"
                   onChange={debounce((e) => handleChange(e.target.value), 400)}
-                  className="block w-full focus:ring-1 focus:ring-primary_BG rounded-md  pl-20 border-none  bg-gray-100 py-3 h-14  text-lg capitalize"
+                  className="block w-full focus:ring-1 focus:ring-primary_BG rounded-md  pl-20 border-none  bg-gray-100 py-3 h-12  text-lg capitalize"
                   suppressHydrationWarning={suppressText}
                   placeholder={`${t(`search_products`)}`}
                 />
@@ -132,9 +132,9 @@ const ProductIndex: NextPage<Props> = ({
               className="pt-1 ps-2"
             >
               {icon ? (
-                <CustomImage src={List} alt="menu" className={'w-8 h-8'} />
+                <List alt="menu" className={'w-8 h-8 grayscale'} />
               ) : (
-                <CustomImage src={Menu} alt="menu" className={'w-8 h-8'} />
+                <Menu alt="menu" className={'w-8 h-8 grayscale'} />
               )}
             </button>
           </div>

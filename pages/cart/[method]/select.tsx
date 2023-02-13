@@ -109,7 +109,7 @@ const SelectMethod: NextPage<Props> = ({
         xmlns="http://www.w3.org/2000/svg"
         className={`${
           id === open ? 'rotate-180' : ''
-        } h-5 w-5 transition-transform`}
+        } h-5 w-5 transition-transform grayscale`}
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
@@ -168,7 +168,7 @@ const SelectMethod: NextPage<Props> = ({
                 type="search"
                 name="search"
                 id="search"
-                className="block w-full focus:ring-1 focus:ring-primary_BG rounded-md  pl-20 border-none  bg-gray-100 py-3 h-14  text-lg capitalize"
+                className="block w-full focus:ring-1 focus:ring-primary_BG rounded-md  pl-20 border-none  bg-gray-100 py-3 h-12  text-lg capitalize"
                 suppressHydrationWarning={suppressText}
                 placeholder={`${t(`search`)}`}
               />
