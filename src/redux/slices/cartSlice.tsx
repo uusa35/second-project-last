@@ -35,10 +35,6 @@ export const cartSlice = createSlice({
     ) => {
       return {
         ...state,
-        total: 0,
-        subTotal: 0,
-        tax: 0,
-        delivery_fees: `0`,
         promoCode: action.payload,
         promoEnabled: true,
       };

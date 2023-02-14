@@ -47,14 +47,17 @@ const PaymentSummary: FC = () => {
           <div className="flex justify-between mb-2 text-lg">
             <p suppressHydrationWarning={suppressText}>{t('coupon_value')} </p>
             <div className={`flex flex-row`}>
-              <p suppressHydrationWarning={suppressText} className={`px-2`}>
-                {coupon.promo_code_discount}{' '}
+              <p
+                suppressHydrationWarning={suppressText}
+                className={`px-2 text-red-600`}
+              >
+                {coupon.promo_code_discount}
               </p>
               <p
-                className={`uppercase`}
+                className={`uppercase text-red-600`}
                 suppressHydrationWarning={suppressText}
               >
-                {coupon.promo_code_type === 'exact_value' ? t('kwd') : '%'}
+                {t('kwd')}
               </p>
             </div>
           </div>
