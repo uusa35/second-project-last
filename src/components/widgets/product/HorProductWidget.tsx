@@ -75,7 +75,10 @@ const HorProductWidget: FC<Props> = ({ element }): JSX.Element => {
                 className="border-[1px] rounded-md px-4 pt-1 uppercase text-center text-sm"
                 suppressHydrationWarning={suppressText}
               >
-                + {t('add')}
+                <div className={`flex justify-between rtl:flex-row-reverse`}>
+                  <p className="pe-2 rtl:ps-2 rtl:pe-0">+</p>
+                  <p>{t('add')}</p>
+                </div>
               </button>
             </div>
           </div>

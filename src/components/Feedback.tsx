@@ -124,14 +124,14 @@ const Feedback: FC<Props> = ({
             isRTL && `flex-row-reverse`
           }`}
         >
-          <div className="flex items-center">
+          <div className={`flex items-center space-x-4 ${isRTL && 'flex-row-reverse space-x-reverse'}`}>
             <CustomImage
               className="w-5 h-5 grayscale"
               src={ModalFeedbackIcon}
               alt={t('feedback')}
             />
             <p
-              className="ps-4 capitalize font-semibold text-base"
+              className="capitalize font-semibold text-base"
               style={{ color }}
               suppressHydrationWarning={suppressText}
             >
@@ -204,7 +204,7 @@ const Feedback: FC<Props> = ({
               />
               <input
                 {...register('user_name')}
-                className={`px-4 border-0 focus:ring-transparent outline-none capitalize ${
+                className={`w-full px-4 border-0 focus:ring-transparent outline-none capitalize ${
                   isRTL && 'text-right'
                 }`}
                 name="user_name"
@@ -236,7 +236,7 @@ const Feedback: FC<Props> = ({
               }`}
             >
               <div
-                className={`flex items-center ${isRTL && `flex-row-reverse`}`}
+                className={`flex items-center ${isRTL && `flex-row-reverse`} w-full`}
               >
                 <CustomImage
                   src={Phone.src}
@@ -246,7 +246,7 @@ const Feedback: FC<Props> = ({
                   className={`w-6 h-6 grayscale`}
                 />
                 <input
-                  className={`px-4 border-0 focus:ring-transparent outline-none capitalize ${
+                  className={`w-full px-4 border-0 focus:ring-transparent outline-none capitalize ${
                     isRTL && 'text-right'
                   }`}
                   {...register('phone')}
@@ -273,7 +273,7 @@ const Feedback: FC<Props> = ({
               <input
                 {...register('note')}
                 aria-invalid={errors.note ? 'true' : 'false'}
-                className={`px-4 border-0 focus:ring-transparent outline-none capitalize ${
+                className={`w-full px-4 border-0 focus:ring-transparent outline-none capitalize ${
                   isRTL && 'text-right'
                 }`}
                 type="text"
