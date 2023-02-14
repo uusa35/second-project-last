@@ -86,13 +86,15 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
       cartItems.data.Cart &&
       !isEmpty(cartItems)
     ) {
-      const { total, subTotal, delivery_fees }: any = cartItems.data;
-      dispatch(setCartTotalAndSubTotal({ total, subTotal, delivery_fees }));
+      const { total, subTotal, delivery_fees, tax }: any = cartItems.data;
+      dispatch(
+        setCartTotalAndSubTotal({ total, subTotal, delivery_fees, tax })
+      );
     }
   }, [cartItems]);
 
   useEffect(() => {
-    dispatch(setCartPromoCode(''))
+    dispatch(setCartPromoCode(''));
     dispatch(setCurrentModule('cart'));
     dispatch(setShowFooterElement(`cart_index`));
     if (url) {
@@ -449,10 +451,16 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
                   onChange={debounce((e) => handleCoupon(e.target.value), 400)}
                   suppressHydrationWarning={suppressText}
                   className={`border-0 border-b-2 ${
-                    promoEnabled ? 'border-b-lime-500 focus:border-b-lime-500' : 'border-b-gray-200 focus:border-b-gray-200'
+                    promoEnabled
+                      ? 'border-b-lime-500 focus:border-b-lime-500'
+                      : 'border-b-gray-200 focus:border-b-gray-200'
                   } w-full focus:ring-transparent capitalize`}
                 />
-                {promoEnabled ? <Done className="!text-lime-500 absolute end-0" /> : <></>}
+                {promoEnabled ? (
+                  <Done className="!text-lime-500 absolute end-0" />
+                ) : (
+                  <></>
+                )}
               </div>
             </div>
 

@@ -4,6 +4,7 @@ import { ClientCart } from '@/types/index';
 const initialState: ClientCart = {
   subTotal: 0,
   total: 0,
+  tax: 0,
   delivery_fees: `0`,
   PromoCode: null,
   promoEnabled: false,

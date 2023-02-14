@@ -495,6 +495,7 @@
   "your_order_has_been_recorded": "thank you. your order has been recorded.",
   "store_name": "store name",
   "let_us_know_more": "let us know more",
+  "coupon_value" : "discount",
   "select_a_branch_or_area_before_order_or_some_fields_are_required_missing" : "select a branch or area before order or some fields are required missing",
   "building_no":"building no"
 }
