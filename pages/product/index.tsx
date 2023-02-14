@@ -89,8 +89,6 @@ const ProductSearchIndex: NextPage<Props> = ({
     return <LoadingSpinner fullWidth={true} />;
   }
 
-  console.log("elements",elements)
-
   return (
     <Suspense>
       <MainHead

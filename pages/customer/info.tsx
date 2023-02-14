@@ -82,7 +82,6 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
       phone: customer?.phone ?? ``,
     },
   });
-  console.log({ customer });
   useEffect(() => {
     dispatch(setCurrentModule('customer_info'));
     dispatch(setShowFooterElement(`customerInfo`));

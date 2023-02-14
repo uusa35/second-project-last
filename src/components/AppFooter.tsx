@@ -64,11 +64,9 @@ const AppFooter: FC<Props> = ({
       (method === `pickup` && isNull(branchId)) ||
       (method === `delivery` && isNull(area.id))
     ) {
-      console.log('case 1');
       router.push(appLinks.cartSelectMethod(`delivery`));
     }
     if (!productCart.enabled) {
-      console.log('case 2');
       dispatch(
         showToastMessage({
           content: `please_review_sections_some_r_required`,
@@ -77,7 +75,6 @@ const AppFooter: FC<Props> = ({
       );
     } else {
       if (!isEmpty(productCart) && userAgent) {
-        console.log('case 3');
         await triggerAddToCart({
           process_type: method,
           area_branch: method === 'delivery' ? area.id : branchId,
@@ -93,14 +90,10 @@ const AppFooter: FC<Props> = ({
           },
           url,
         }).then((r: any) => {
-          console.log('the r', r);
           if (r && r.data && r.data.status && r.data.data && r.data.data.Cart) {
             triggerGetCartProducts({ UserAgent: userAgent, url }).then((r) => {
-              console.log('another r', r);
               if (r.data && r.data.data && r.data.data.Cart) {
-                console.log('case 4');
               } else {
-                console.log('case 5');
               }
               dispatch(
                 showToastMessage({
@@ -111,7 +104,6 @@ const AppFooter: FC<Props> = ({
             });
           } else {
             if (r.error && r.error.data) {
-              console.log('case 6');
               dispatch(
                 showToastMessage({
                   content: r.error.data.msg
@@ -121,7 +113,6 @@ const AppFooter: FC<Props> = ({
                 })
               );
             } else {
-              console.log('case 7');
             }
           }
         });
@@ -172,20 +163,19 @@ const AppFooter: FC<Props> = ({
           }
         });
       }
-      triggerGetCartProducts({ UserAgent: userAgent, url })
-        .then((r) => {
-          if (r.data && r.data.data && r.data.data.Cart) {
-            router.push(appLinks.customerInfo.path);
-          }
-        })
-        // .then(() =>
-        //   dispatch(
-        //     showToastMessage({
-        //       content: 'item_added_successfully',
-        //       type: `success`,
-        //     })
-        //   )
-        // );
+      triggerGetCartProducts({ UserAgent: userAgent, url }).then((r) => {
+        if (r.data && r.data.data && r.data.data.Cart) {
+          router.push(appLinks.customerInfo.path);
+        }
+      });
+      // .then(() =>
+      //   dispatch(
+      //     showToastMessage({
+      //       content: 'item_added_successfully',
+      //       type: `success`,
+      //     })
+      //   )
+      // );
     }
   };
 

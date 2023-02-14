@@ -2,7 +2,7 @@ import MainContentLayout from '@/layouts/MainContentLayout';
 import { NextPage } from 'next';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useTranslation } from 'react-i18next';
-import { useEffect, Suspense, Fragment } from 'react';
+import { useEffect, Suspense, Fragment, useState } from 'react';
 import {
   setCurrentModule,
   resetShowFooterElement,
@@ -62,6 +62,7 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
   const dispatch = useAppDispatch();
+  const [couponVal, setCouponVal] = useState<string>(``);
   const [triggerAddToCart] = useAddToCartMutation();
   const {
     data: cartItems,
@@ -143,7 +144,20 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
     }
   };
 
+  useEffect(() => {
+    if (couponVal.length > 3) {
+      handleCoupon(couponVal);
+      // debounce(() => handleCoupon(couponVal), 500);
+    }
+  }, [couponVal]);
+
+  const resetCoupon = () => {
+    dispatch(setCartPromoCode(``));
+    setCouponVal(``);
+  };
+
   const handleRemove = async (element: ProductCart) => {
+    resetCoupon();
     const currentItems = filter(
       cartItems.data.Cart,
       (i) => i.id !== element.id
@@ -184,6 +198,7 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
   };
 
   const handleIncrease = (element: ProductCart) => {
+    resetCoupon();
     triggerAddToCart({
       process_type: method,
       area_branch: method === 'delivery' ? areaId : branchId,
@@ -220,6 +235,7 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
   };
 
   const handleDecrease = (element: ProductCart) => {
+    resetCoupon();
     triggerAddToCart({
       process_type: method,
       area_branch: method === 'delivery' ? areaId : branchId,
@@ -448,7 +464,8 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
                 <input
                   type="text"
                   placeholder={`${startCase(t('enter_code_here').toString())}`}
-                  onChange={debounce((e) => handleCoupon(e.target.value), 400)}
+                  value={couponVal}
+                  onChange={(e) => setCouponVal(e.target.value)}
                   suppressHydrationWarning={suppressText}
                   className={`border-0 border-b-2 ${
                     promoEnabled

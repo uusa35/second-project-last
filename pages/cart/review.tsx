@@ -8,7 +8,7 @@ import {
   CreditCardOutlined,
   LocationOnOutlined,
   ReceiptOutlined,
-  HomeOutlined
+  HomeOutlined,
 } from '@mui/icons-material';
 // import Home from '@/appIcons/home.svg';
 import CustomImage from '@/components/CustomImage';
@@ -61,7 +61,7 @@ const CartReview: NextPage<Props> = ({ url }) => {
   const {
     customer,
     branch: { id: branchId, name_ar: branchAR, name_en: branchEN },
-    area: { id: areaId ,name_ar:areaAR, name_en:areaEN},
+    area: { id: areaId, name_ar: areaAR, name_en: areaEN },
     customer: { userAgent },
     appSetting: { method: process_type },
   } = useAppSelector((state) => state);
@@ -234,7 +234,6 @@ const CartReview: NextPage<Props> = ({ url }) => {
     });
   };
 
-  console.log('customer', customer);
   return (
     <Suspense>
       <MainContentLayout handleSubmit={handleCreateOrder} url={url}>
@@ -321,8 +320,7 @@ const CartReview: NextPage<Props> = ({ url }) => {
                     </h5>
                   </div>
                   <Link
-                  href={appLinks.cartSelectMethod(process_type)}
-                    
+                    href={appLinks.cartSelectMethod(process_type)}
                     className="text-base font-semibold capitalize"
                     suppressHydrationWarning={suppressText}
                     style={{ color }}

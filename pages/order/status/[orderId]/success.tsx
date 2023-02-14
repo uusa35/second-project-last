@@ -33,7 +33,7 @@ const OrderSuccess: NextPage<Props> = ({ element, url }) => {
   const color = useAppSelector(themeColor);
   const dispatch = useAppDispatch();
   const [triggerGetCartProducts] = useLazyGetCartProductsQuery();
-console.log({element})
+
   useEffect(() => {
     dispatch(setCurrentModule('order_success'));
     dispatch(setShowFooterElement(t('order_success')));

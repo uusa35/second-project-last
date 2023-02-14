@@ -65,7 +65,7 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
   const [addressTabType, setAddressTabType] = useState(
-    address.type === "APARTMENT" ? 2 : address.type === 'OFFICE' ? 3 : 1
+    address.type === 'APARTMENT' ? 2 : address.type === 'OFFICE' ? 3 : 1
   );
   const [show, SetShow] = useState(false);
   const refForm = useRef<any>();
@@ -347,8 +347,6 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
       new Event('submit', { cancelable: true, bubbles: true })
     );
   };
-
-  console.log('dfghjkl;hgfdfghjkl', ApartmentAcitveIcon, ApartmentIcon);
 
   return (
     <Suspense>

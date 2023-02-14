@@ -28,7 +28,6 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
   const color = useAppSelector(themeColor);
   const { t } = useTranslation();
   const router = useRouter();
-  console.log({ color });
 
   const handleSelectMethod = (m: appSetting['method']) => {
     router.push(appLinks.cartSelectMethod(m));
