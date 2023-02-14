@@ -8,8 +8,9 @@ import {
   CreditCardOutlined,
   LocationOnOutlined,
   ReceiptOutlined,
+  HomeOutlined
 } from '@mui/icons-material';
-import Home from '@/appIcons/home.svg';
+// import Home from '@/appIcons/home.svg';
 import CustomImage from '@/components/CustomImage';
 import Knet from '@/appImages/knet.png';
 import Cash from '@/appImages/cash_on_delivery.jpg';
@@ -60,7 +61,7 @@ const CartReview: NextPage<Props> = ({ url }) => {
   const {
     customer,
     branch: { id: branchId, name_ar: branchAR, name_en: branchEN },
-    area: { id: areaId },
+    area: { id: areaId ,name_ar:areaAR, name_en:areaEN},
     customer: { userAgent },
     appSetting: { method: process_type },
   } = useAppSelector((state) => state);
@@ -320,16 +321,17 @@ const CartReview: NextPage<Props> = ({ url }) => {
                     </h5>
                   </div>
                   <Link
-                    href={appLinks.address.path}
+                  href={appLinks.cartSelectMethod(process_type)}
+                    
                     className="text-base font-semibold capitalize"
                     suppressHydrationWarning={suppressText}
                     style={{ color }}
                   >
-                    {t('change')}
+                    <TextTrans ar={areaAR} en={areaEN} />
                   </Link>
                 </div>
                 {/* map */}
-                {customer.address.longitude && customer.address.latitude && (
+                {/* {customer.address.longitude && customer.address.latitude && (
                   <div className="w-full h-36 rounded-md">
                     <GoogleMapReact
                       bootstrapURLKeys={{
@@ -344,19 +346,19 @@ const CartReview: NextPage<Props> = ({ url }) => {
                       defaultZoom={11}
                     ></GoogleMapReact>
                   </div>
-                )}
+                )} */}
                 {/* address */}
-                <div className="flex justify-between">
+                <div className="flex justify-between gap-x-2">
                   <div className="flex items-center">
-                    <Home className={`w-12 h-12 grayscale`} />
+                    <HomeOutlined className={`grayscale`} />
                     {customer.address && (
-                      <p className="text-xs ps-5 capitalize text-ellipsis overflow-hidden">
+                      <p className="text-xs ps-2 capitalize text-ellipsis overflow-hidden">
                         {handelDisplayAddress()}
                       </p>
                     )}
                   </div>
                   <Link
-                    href={appLinks.cartSelectMethod(process_type)}
+                    href={appLinks.address.path}
                     className="text-base font-semibold capitalize"
                     suppressHydrationWarning={suppressText}
                     style={{ color }}
