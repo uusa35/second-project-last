@@ -402,7 +402,7 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                       style={{ color }}
                       suppressHydrationWarning={suppressText}
                     >
-                      <p className="text-md">{area.name}</p>
+                      <p className="text-md">{`${t('change')}`}</p>
                     </Link>
                   </div>
                   {/* <div className="w-full h-36 rounded-md my-3">
