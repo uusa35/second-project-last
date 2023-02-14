@@ -291,7 +291,7 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
                 width={100}
                 height={100}
               />
-              <p suppressHydrationWarning={suppressText} className="capitalize">
+              <p suppressHydrationWarning={suppressText} className="capitalize text-slate-600">
                 {t('your_cart_is_empty')}
               </p>
             </div>
