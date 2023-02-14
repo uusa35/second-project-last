@@ -39,6 +39,8 @@ const OrderInvoice: NextPage<Props> = ({ element, url }): JSX.Element => {
     }
   }, []);
 
+  console.log(element)
+
   return (
     <Suspense>
       <MainContentLayout url={url}>
@@ -196,7 +198,7 @@ const OrderInvoice: NextPage<Props> = ({ element, url }): JSX.Element => {
                       {t('total')}
                     </th>
                   </tr>
-                  <tr>
+                  {/* <tr>
                   <th
                       scope="col"
                       className="py-3 px-3"
@@ -204,7 +206,7 @@ const OrderInvoice: NextPage<Props> = ({ element, url }): JSX.Element => {
                     >
                       {t('add_on')}
                     </th>
-                  </tr>
+                  </tr> */}
                 </thead>
                 <tbody>
                   {map(element.order_summary.items, (item, idx) => (
@@ -221,7 +223,7 @@ const OrderInvoice: NextPage<Props> = ({ element, url }): JSX.Element => {
                       </tr>
                       {!isEmpty(item.addon) && (
                         <tr className="py-3 px-3 w-full border-b border-gray-200">
-                          <td>{t('add_on')} : </td>
+                          <td >{t('add_on')} : </td>
                           <td>
                             {map(item.addon, (a) => (
                               <span
