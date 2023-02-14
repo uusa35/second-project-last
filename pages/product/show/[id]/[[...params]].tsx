@@ -331,7 +331,6 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
     currentQty,
   ]);
 
-  console.log('element', element);
   return (
     <Suspense>
       <MainHead

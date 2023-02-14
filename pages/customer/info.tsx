@@ -82,7 +82,7 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
       phone: customer?.phone ?? ``,
     },
   });
-console.log({customer})
+
   useEffect(() => {
     dispatch(setCurrentModule('customer_info'));
     dispatch(setShowFooterElement(`customerInfo`));
@@ -186,13 +186,13 @@ console.log({customer})
                   render={(props) => (
                     <PhoneInput
                       international
-                      defaultCountry='KW'
+                      defaultCountry="KW"
                       placeholder={`${t('enter_your_phone')}`}
                       inputRef={register}
                       inputProps={{
                         name: 'phone',
                         required: true,
-                        autoFocus: true
+                        autoFocus: true,
                       }}
                       id="phone"
                       name="phone"
