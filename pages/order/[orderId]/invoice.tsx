@@ -39,7 +39,7 @@ const OrderInvoice: NextPage<Props> = ({ element, url }): JSX.Element => {
     }
   }, []);
 
-  console.log(element)
+  console.log(element);
 
   return (
     <Suspense>
@@ -222,22 +222,50 @@ const OrderInvoice: NextPage<Props> = ({ element, url }): JSX.Element => {
                         </td>
                       </tr>
                       {!isEmpty(item.addon) && (
-                        <tr className="py-3 px-3 w-full border-b border-gray-200">
-                          <td >{t('add_on')} : </td>
-                          <td>
-                            {map(item.addon, (a) => (
-                              <span
-                                className={`${
-                                  item.addon.length > 1 &&
-                                  'border-e-2 border-gray-400 pe-1'
-                                }`}
+                        <tr className="py-3 px-3 w-full">
+                          <td colSpan={5} className="">
+                            <div className="flex gap-x-2">
+                              <p
+                                suppressHydrationWarning={suppressText}
+                                className="whitespace-nowrap font-bold"
                               >
-                                {`${a} `}
-                              </span>
-                            ))}
+                                {t('add_on')} :{' '}
+                              </p>
+                              <div className="flex flex-wrap">
+                                {map(item.addon, (a, idx) => (
+                                  <span
+                                    className={`${
+                                      item.addon.length > 1 &&
+                                      'pe-1 whitespace-nowrap'
+                                    }`}
+                                  >
+                                    {`${a} `}
+                                    {idx !== item.addon.length - 1 ? '/ ' : ''}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
                           </td>
                         </tr>
                       )}
+
+                      {item.extra_notes && (
+                        <tr className="py-3 px-3 w-full">
+                          <td colSpan={5}>
+                            <div className='flex gap-x-2'>
+                            <p
+                              className="font-bold"
+                              suppressHydrationWarning={suppressText}
+                            >
+                              {t('notes')} :{' '}
+                            </p>
+                            <p>{item.extra_notes}</p>
+                            </div>
+                          </td>
+                        </tr>
+                      )}
+
+                      <tr className="py-3 px-3 w-full border-b border-gray-200"></tr>
                     </>
                   ))}
                 </tbody>

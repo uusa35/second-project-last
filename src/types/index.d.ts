@@ -238,6 +238,7 @@ export interface OrderInvoice {
         addon: string[];
         price: string;
         total: number;
+        extra_notes: string;
       }
     ];
   };
