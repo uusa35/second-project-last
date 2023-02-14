@@ -382,6 +382,7 @@
   "must_select_min_and_max" : "يجب اختيار اقل كمية {{min}} واقصى كمية {{max}}",
   "select_method" : "طريقة استلام الطلب",
   "product_search_index" : "البحث في المنتجات ..",
+  "coupon_value" : "قيمة الخصم",
   "delivery_to" : "التوصيل لـ",
   "name_and_phone_are_required":"يجب ادخال رقم الهاتف و الاسم",
   "search_branch": "ابحث عن فرع",

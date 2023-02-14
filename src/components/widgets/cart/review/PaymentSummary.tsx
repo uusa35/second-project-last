@@ -12,6 +12,7 @@ const PaymentSummary: FC = () => {
     promoEnabled,
     subTotal,
     total,
+    tax,
     delivery_fees,
   } = useAppSelector((state) => state.cart);
   const color = useAppSelector(themeColor);
@@ -24,13 +25,41 @@ const PaymentSummary: FC = () => {
           <p suppressHydrationWarning={suppressText}>{t('subtotal')} </p>
           <div className={`flex flex-row`}>
             <p suppressHydrationWarning={suppressText} className={`px-2`}>
-              {promoEnabled ? coupon.total_cart_after_tax : subTotal}
+              {promoEnabled ? coupon.sub_total : subTotal}
             </p>
             <p className={`uppercase`} suppressHydrationWarning={suppressText}>
               {t('kwd')}
             </p>
           </div>
         </div>
+        <div className="flex justify-between mb-2 text-lg">
+          <p suppressHydrationWarning={suppressText}>{t('tax')} </p>
+          <div className={`flex flex-row`}>
+            <p suppressHydrationWarning={suppressText} className={`px-2`}>
+              {promoEnabled ? coupon.tax : tax}
+            </p>
+            <p className={`uppercase`} suppressHydrationWarning={suppressText}>
+              %
+            </p>
+          </div>
+        </div>
+        {promoEnabled && (
+          <div className="flex justify-between mb-2 text-lg">
+            <p suppressHydrationWarning={suppressText}>{t('coupon_value')} </p>
+            <div className={`flex flex-row`}>
+              <p suppressHydrationWarning={suppressText} className={`px-2`}>
+                {coupon.promo_code_discount}{' '}
+              </p>
+              <p
+                className={`uppercase`}
+                suppressHydrationWarning={suppressText}
+              >
+                {coupon.promo_code_type === 'exact_value' ? t('kwd') : '%'}
+              </p>
+            </div>
+          </div>
+        )}
+
         <div className="flex justify-between mb-2 text-lg">
           <p suppressHydrationWarning={suppressText}>{t('delivery_fees')}</p>
           <p suppressHydrationWarning={suppressText}></p>

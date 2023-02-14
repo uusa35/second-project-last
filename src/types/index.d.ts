@@ -120,6 +120,7 @@ export interface ServerCart {
 export interface ClientCart {
   subTotal: number;
   total: number;
+  tax: number;
   delivery_fees: string;
   PromoCode: string | null;
   promoEnabled: boolean;
