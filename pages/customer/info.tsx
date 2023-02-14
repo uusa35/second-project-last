@@ -82,7 +82,7 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
       phone: customer?.phone ?? ``,
     },
   });
-console.log({customer})
+  console.log({ customer });
   useEffect(() => {
     dispatch(setCurrentModule('customer_info'));
     dispatch(setShowFooterElement(`customerInfo`));
@@ -182,17 +182,25 @@ console.log({customer})
               </div>
               <div className="flex items-center gap-x-2 px-2 border-b-4 border-b-gray-200 w-full focus:ring-transparent py-4 capitalize">
                 <Phone style={{ color }} />
-                <Controller
+                <input
+                  type="tel"
+                  {...register('phone')}
+                  aria-invalid={errors.phone ? 'true' : 'false'}
+                  className={`border-0 w-full focus:ring-transparent outline-0 capitalize`}
+                  onChange={(e) => setValue('phone', e.target.value)}
+                  placeholder={`${t('enter_your_phone')}`}
+                />
+                {/* <Controller
                   render={(props) => (
                     <PhoneInput
                       international
-                      defaultCountry='KW'
+                      defaultCountry="KW"
                       placeholder={`${t('enter_your_phone')}`}
                       inputRef={register}
                       inputProps={{
                         name: 'phone',
                         required: true,
-                        autoFocus: true
+                        autoFocus: true,
                       }}
                       id="phone"
                       name="phone"
@@ -207,7 +215,7 @@ console.log({customer})
                   control={control}
                   defaultValue={phone}
                   rules={{ required: true }}
-                />
+                /> */}
               </div>
               <div>
                 {errors?.phone?.message && (
