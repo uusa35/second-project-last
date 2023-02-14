@@ -2,13 +2,15 @@ import MainContentLayout from '@/layouts/MainContentLayout';
 import { wrapper } from '@/redux/store';
 import { AppQueryResult } from '@/types/queries';
 import { apiSlice } from '@/redux/api';
-import { Product, ProductSection, QuantityMeters } from '@/types/index';
+import { Product, ProductSection, QuantityMeters, img } from '@/types/index';
 import { productApi, useGetProductQuery } from '@/redux/api/productApi';
 import { NextPage } from 'next';
 import MainHead from '@/components/MainHead';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useEffect, useState, Fragment, Suspense } from 'react';
+import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
+import { Carousel } from 'react-responsive-carousel';
 import {
   resetShowFooterElement,
   setCurrentModule,
@@ -329,6 +331,7 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
     currentQty,
   ]);
 
+  console.log('element', element);
   return (
     <Suspense>
       <MainHead
@@ -346,17 +349,33 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
           <>
             <div className="relative w-full capitalize">
               <div className="relative w-full h-auto overflow-hidden">
-                <CustomImage
-                  src={`${
-                    !isEmpty(element.img)
-                      ? imgUrl(element.img[0].original)
-                      : NoFoundImage.src
-                  }`}
-                  alt={element.name}
-                  width={imageSizes.xl}
-                  height={imageSizes.lg}
-                  className={`object-cover w-full h-96`}
-                />
+                {!isEmpty(element.img) ? (
+                  <Carousel className={`h-96`}>
+                    {map(element.img, (image: img, i) => (
+                      <div key={i}>
+                        <CustomImage
+                          src={`${
+                            image && image.original
+                              ? imgUrl(image.original)
+                              : NoFoundImage.src
+                          }`}
+                          alt={element.name}
+                          width={imageSizes.xl}
+                          height={imageSizes.lg}
+                          className={`object-cover w-full h-96`}
+                        />
+                      </div>
+                    ))}
+                  </Carousel>
+                ) : (
+                  <CustomImage
+                    src={`${NoFoundImage.src}`}
+                    alt={element.name}
+                    width={imageSizes.xl}
+                    height={imageSizes.lg}
+                    className={`object-cover w-full h-96`}
+                  />
+                )}
               </div>
               <div className="absolute inset-x-0 top-0 flex h-full items-end justify-end overflow-hidden">
                 <div
