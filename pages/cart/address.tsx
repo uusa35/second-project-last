@@ -697,13 +697,13 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                           {/* building_no */}
                           <div
                             className={
-                              addressTabType === 2 ? 'block' : 'hidden'
+                              (addressTabType === 2 || addressTabType === 3)  ? 'block' : 'hidden'
                             }
                             id="apartment"
                           >
                             <input
                               placeholder={`${t(`building_no`)}${
-                                addressTabType === 2 ? `*` : ``
+                                (addressTabType === 2 || addressTabType === 3) ? `*` : ``
                               }`}
                               className={`${addressInputField}`}
                               suppressHydrationWarning={suppressText}
