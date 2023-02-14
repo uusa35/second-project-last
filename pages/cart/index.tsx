@@ -39,6 +39,7 @@ import TextTrans from '@/components/TextTrans';
 import { AppQueryResult } from '@/types/queries';
 import { setNotes } from '@/redux/slices/customerSlice';
 import {
+  resetCartTotalAndSubTotal,
   setCartPromoCode,
   setCartPromoSuccess,
   setCartTotalAndSubTotal,
@@ -291,7 +292,10 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
                 width={100}
                 height={100}
               />
-              <p suppressHydrationWarning={suppressText} className="capitalize text-slate-600">
+              <p
+                suppressHydrationWarning={suppressText}
+                className="capitalize text-slate-600"
+              >
                 {t('your_cart_is_empty')}
               </p>
             </div>

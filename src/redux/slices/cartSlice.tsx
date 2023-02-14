@@ -35,6 +35,10 @@ export const cartSlice = createSlice({
     ) => {
       return {
         ...state,
+        total: 0,
+        subTotal: 0,
+        tax: 0,
+        delivery_fees: `0`,
         promoCode: action.payload,
         promoEnabled: true,
       };
@@ -55,6 +59,18 @@ export const cartSlice = createSlice({
         ...action.payload,
       };
     },
+    resetCartTotalAndSubTotal: (
+      state: typeof initialState,
+      action: PayloadAction<void>
+    ) => {
+      return {
+        ...state,
+        total: 0,
+        subTotal: 0,
+        tax: 0,
+        delivery_fees: `0`,
+      };
+    },
   },
 });
 
@@ -62,5 +78,6 @@ export const {
   resetCart,
   setCartPromoCode,
   setCartTotalAndSubTotal,
+  resetCartTotalAndSubTotal,
   setCartPromoSuccess,
 } = cartSlice.actions;
