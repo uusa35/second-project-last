@@ -146,10 +146,8 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
   };
 
   useEffect(() => {
-    if (couponVal.length > 3) {
-      handleCoupon(couponVal);
-      // debounce(() => handleCoupon(couponVal), 500);
-    }
+    handleCoupon(couponVal);
+    // debounce(() => handleCoupon(couponVal), 500);
   }, [couponVal]);
 
   const resetCoupon = () => {

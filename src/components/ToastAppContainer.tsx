@@ -23,6 +23,7 @@ const ToastAppContainer = () => {
         hideProgressBar={false}
         newestOnTop={true}
         transition={Flip}
+        limit={1}
         closeOnClick
         rtl={isRTL}
         pauseOnFocusLoss

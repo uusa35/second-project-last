@@ -44,23 +44,43 @@ const PaymentSummary: FC = () => {
           </div>
         </div>
         {promoEnabled && (
-          <div className="flex justify-between mb-2 text-lg">
-            <p suppressHydrationWarning={suppressText}>{t('coupon_value')} </p>
-            <div className={`flex flex-row`}>
-              <p
-                suppressHydrationWarning={suppressText}
-                className={`px-2 text-red-600`}
-              >
-                {coupon.promo_code_discount}
+          <>
+            <div className="flex justify-between mb-2 text-lg">
+              <p suppressHydrationWarning={suppressText}>
+                {t('total_before_tax')}{' '}
               </p>
-              <p
-                className={`uppercase text-red-600`}
-                suppressHydrationWarning={suppressText}
-              >
-                {t('kwd')}
-              </p>
+              <div className={`flex flex-row`}>
+                <p suppressHydrationWarning={suppressText} className={`px-2`}>
+                  {coupon.total_cart_after_tax}
+                </p>
+                <p
+                  className={`uppercase`}
+                  suppressHydrationWarning={suppressText}
+                >
+                  {t('kwd')}
+                </p>
+              </div>
             </div>
-          </div>
+            <div className="flex justify-between mb-2 text-lg">
+              <p suppressHydrationWarning={suppressText}>
+                {t('coupon_value')}{' '}
+              </p>
+              <div className={`flex flex-row`}>
+                <p
+                  suppressHydrationWarning={suppressText}
+                  className={`px-2 text-red-600`}
+                >
+                  {coupon.promo_code_discount}
+                </p>
+                <p
+                  className={`uppercase text-red-600`}
+                  suppressHydrationWarning={suppressText}
+                >
+                  {t('kwd')}
+                </p>
+              </div>
+            </div>
+          </>
         )}
 
         <div className="flex justify-between mb-2 text-lg">
@@ -82,7 +102,7 @@ const PaymentSummary: FC = () => {
           </div>
         </div>
         <div className="flex justify-between mb-2 text-lg">
-          <p suppressHydrationWarning={suppressText}>{t('total')}</p>
+          <p suppressHydrationWarning={suppressText}>{t('net_total')}</p>
           <div className={`flex flex-row`} style={{ color }}>
             <p suppressHydrationWarning={suppressText} className={`px-2`}>
               {promoEnabled ? coupon.total_cart_before_tax : total}

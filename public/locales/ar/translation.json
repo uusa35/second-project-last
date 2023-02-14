@@ -510,5 +510,7 @@
   "store_name": "اسم المخزن",
   "let_us_know_more": "اجعلنا نعرف المزيد",
   "select_a_branch_or_area_before_order_or_some_fields_are_required_missing" : "يجب اختيار فرع / منطقة قبل البدأ في طلبك .. أو ان بعض الحقول مطلوبة",
-  "building_no":"رقم المبنى"
+  "building_no":"رقم المبنى",
+  "net_total" : "الإجمالي",
+  "total_before_tax" : "الإجمالي مع الضريبة"
 }
