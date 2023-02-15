@@ -39,8 +39,6 @@ const OrderInvoice: NextPage<Props> = ({ element, url }): JSX.Element => {
     }
   }, []);
 
-  console.log(element);
-
   return (
     <Suspense>
       <MainContentLayout url={url}>
@@ -252,14 +250,14 @@ const OrderInvoice: NextPage<Props> = ({ element, url }): JSX.Element => {
                       {item.extra_notes && (
                         <tr className="py-3 px-3 w-full">
                           <td colSpan={5}>
-                            <div className='flex gap-x-2'>
-                            <p
-                              className="font-bold"
-                              suppressHydrationWarning={suppressText}
-                            >
-                              {t('notes')} :{' '}
-                            </p>
-                            <p>{item.extra_notes}</p>
+                            <div className="flex gap-x-2">
+                              <p
+                                className="font-bold"
+                                suppressHydrationWarning={suppressText}
+                              >
+                                {t('notes')} :{' '}
+                              </p>
+                              <p>{item.extra_notes}</p>
                             </div>
                           </td>
                         </tr>

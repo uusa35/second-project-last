@@ -271,7 +271,6 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
     }
   };
 
-  console.log('product', element);
   useEffect(() => {
     if (isSuccess && !isNull(element)) {
       if (isEmpty(element.sections)) {
