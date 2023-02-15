@@ -54,11 +54,26 @@ const HorProductWidget: FC<Props> = ({ element }): JSX.Element => {
               suppressHydrationWarning={suppressText}
             >
               <TextTrans
-                style={{ color: `black` }}
+                style={{
+                  maxWidth: '30ch',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  display: 'block',
+                  color: `black`,
+                }}
                 ar={element.name_ar}
                 en={element.name_en}
               />
               <TextTrans
+                style={{
+                  maxWidth: '30ch',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  display: 'block',
+                  color: `black`,
+                }}
                 ar={element.description_ar}
                 en={element.description_en}
               />

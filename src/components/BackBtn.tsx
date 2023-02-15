@@ -123,10 +123,11 @@ const BackBtn: FC<Props> = ({
         <div className={`flex flex-1 justify-center items-center pt-1`}>
           <span
             className={`text-md capitalize truncate overflow-hidden max-w-md`}
+  
             suppressHydrationWarning={suppressText}
-            style={{ color }}
+            style={{ color , maxWidth:'20ch' , textOverflow:'truncate'}}
           >
-            {t(currentModule)}
+            {t(currentModule)} ddddddddddddddddddddddddddddddddddddddddddddddddddddddd
           </span>
         </div>
         <div className={`flex flex-row justify-between items-center w-20 z-50`}>

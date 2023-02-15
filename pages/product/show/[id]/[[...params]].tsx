@@ -389,10 +389,29 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
               <div className="flex flex-row w-full justify-between items-center px-4 md:px-8 pb-4 border-b-2 border-stone-200">
                 <div className={` flex-1 space-y-3`}>
                   <p className="font-bold text-xl">
-                    <TextTrans ar={element.name_ar} en={element.name_en} />
+                    <TextTrans
+                      ar={element.name_ar}
+                      en={element.name_en}
+                      style={{
+                        maxWidth: '30ch',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        display: 'block',
+                        color: `black`,
+                      }}
+                    />
                   </p>
                   <p className={` rtl:pl-1 ltr:pr-1`}>
                     <TextTrans
+                      style={{
+                        maxWidth: '1000ch',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        display: 'block',
+                        color: `black`,
+                      }}
                       ar={element.description_ar}
                       en={element.description_en}
                     />
