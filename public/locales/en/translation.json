@@ -500,5 +500,6 @@
   "building_no":"building no",
   "net_total" : "total",
   "total_before_tax" : "total before tax",
-  "add": "add"
+  "add": "add",
+  "delivery_instructions" : "delivery instructions"
 }

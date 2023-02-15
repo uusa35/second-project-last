@@ -695,13 +695,17 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                           {/* building_no */}
                           <div
                             className={
-                              (addressTabType === 2 || addressTabType === 3)  ? 'block' : 'hidden'
+                              addressTabType === 2 || addressTabType === 3
+                                ? 'block'
+                                : 'hidden'
                             }
                             id="apartment"
                           >
                             <input
                               placeholder={`${t(`building_no`)}${
-                                (addressTabType === 2 || addressTabType === 3) ? `*` : ``
+                                addressTabType === 2 || addressTabType === 3
+                                  ? `*`
+                                  : ``
                               }`}
                               className={`${addressInputField}`}
                               suppressHydrationWarning={suppressText}
@@ -824,9 +828,10 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                       )}
                     </div>
 
-                    <input
-                      placeholder={`${t(`additional`)}`}
-                      className={`${addressInputField}`}
+                    <textarea
+                      cols={2}
+                      placeholder={`${t(`delivery_instructions`)}`}
+                      className={`${addressInputField} p-0`}
                       suppressHydrationWarning={suppressText}
                       {...register('additional')}
                       aria-invalid={errors.additional ? 'true' : 'false'}
