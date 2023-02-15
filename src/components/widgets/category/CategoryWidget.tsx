@@ -61,7 +61,17 @@ const CategoryWidget: FC<Props> = ({ element }) => {
                 className="relative text-md font-semibold text-white"
                 suppressHydrationWarning={suppressText}
               >
-                <TextTrans ar={element.name_ar} en={element.name_en} />
+                <TextTrans
+                  style={{
+                    maxWidth: '30ch',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                    overflow : 'hidden',
+                    display:'block'
+                  }}
+                  ar={element.name_ar}
+                  en={element.name_en}
+                />
               </p>
             </div>
           </div>
