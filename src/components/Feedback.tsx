@@ -13,6 +13,7 @@ import {
   arboriaFont,
   convertColor,
   gessFont,
+  imgUrl,
   submitBtnClass,
   suppressText,
 } from '@/constants/*';
@@ -22,6 +23,7 @@ import { FC, useState } from 'react';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 
 type Props = {
   isOpen: boolean;
@@ -125,11 +127,7 @@ const Feedback: FC<Props> = ({
           }`}
         >
           <div className="flex items-center">
-            <CustomImage
-              className="w-5 h-5 grayscale"
-              src={ModalFeedbackIcon}
-              alt={t('feedback')}
-            />
+            <ModalFeedbackIcon className="grayscale" />
             <p
               className="ps-4 capitalize font-semibold text-base"
               style={{ color }}
@@ -195,13 +193,7 @@ const Feedback: FC<Props> = ({
                 isRTL && `flex-row-reverse`
               }`}
             >
-              <CustomImage
-                src={Card.src}
-                alt="card"
-                width={20}
-                height={20}
-                className={`w-6 h-6 grayscale`}
-              />
+              <Card className="grayscale" />
               <input
                 {...register('user_name')}
                 className={`px-4 border-0 focus:ring-transparent outline-none capitalize ${
@@ -238,13 +230,7 @@ const Feedback: FC<Props> = ({
               <div
                 className={`flex items-center ${isRTL && `flex-row-reverse`}`}
               >
-                <CustomImage
-                  src={Phone.src}
-                  alt="phone"
-                  width={20}
-                  height={20}
-                  className={`w-6 h-6 grayscale`}
-                />
+                <Phone className="grayscale" />
                 <input
                   className={`px-4 border-0 focus:ring-transparent outline-none capitalize ${
                     isRTL && 'text-right'
@@ -263,13 +249,7 @@ const Feedback: FC<Props> = ({
             <div className="my-2 px-5 py-1 bg-gray-100"></div>
 
             <div className={`flex items-center ${isRTL && `flex-row-reverse`}`}>
-              <CustomImage
-                src={Comment.src}
-                alt="comment"
-                width={20}
-                height={20}
-                className={`w-6 h-6 grayscale`}
-              />
+              <Comment className="grayscale" />
               <input
                 {...register('note')}
                 aria-invalid={errors.note ? 'true' : 'false'}
