@@ -124,10 +124,13 @@ const Feedback: FC<Props> = ({
             isRTL && `flex-row-reverse`
           }`}
         >
-          <div className={`flex items-center space-x-4 ${isRTL && 'flex-row-reverse space-x-reverse'}`}>
-            <CustomImage
-              className="w-5 h-5 grayscale"
-              src={ModalFeedbackIcon}
+          <div
+            className={`flex items-center space-x-4 ${
+              isRTL && 'flex-row-reverse space-x-reverse'
+            }`}
+          >
+            <ModalFeedbackIcon
+              className="w-8 h-8 grayscale pt-1"
               alt={t('feedback')}
             />
             <p
@@ -195,12 +198,11 @@ const Feedback: FC<Props> = ({
                 isRTL && `flex-row-reverse`
               }`}
             >
-              <CustomImage
-                src={Card.src}
+              <Card
                 alt="card"
-                width={20}
-                height={20}
-                className={`w-6 h-6 grayscale`}
+                width={15}
+                height={15}
+                className="w-8 h-8 grayscale pt-1"
               />
               <input
                 {...register('user_name')}
@@ -208,7 +210,7 @@ const Feedback: FC<Props> = ({
                   isRTL && 'text-right'
                 }`}
                 name="user_name"
-                placeholder={`${t(`let_us_know_more`)}`}
+                placeholder={`${t(`name`)}`}
                 onChange={(e: any) => {
                   // setValue('user_name', e.target.value);
                   // clearErrors('user_name')
@@ -236,14 +238,15 @@ const Feedback: FC<Props> = ({
               }`}
             >
               <div
-                className={`flex items-center ${isRTL && `flex-row-reverse`} w-full`}
+                className={`flex items-center ${
+                  isRTL && `flex-row-reverse`
+                } w-full`}
               >
-                <CustomImage
-                  src={Phone.src}
+                <Phone
                   alt="phone"
-                  width={20}
-                  height={20}
-                  className={`w-6 h-6 grayscale`}
+                  width={10}
+                  height={10}
+                  className="w-8 h-8 grayscale pt-1"
                 />
                 <input
                   className={`w-full px-4 border-0 focus:ring-transparent outline-none capitalize ${
@@ -252,7 +255,7 @@ const Feedback: FC<Props> = ({
                   {...register('phone')}
                   onChange={(e) => setValue('phone', e.target.value)}
                   aria-invalid={errors.phone ? 'true' : 'false'}
-                  placeholder={`${t(`let_us_know_more`)}`}
+                  placeholder={`${t(`phone`)}`}
                   suppressHydrationWarning={suppressText}
                 />
               </div>
@@ -263,12 +266,11 @@ const Feedback: FC<Props> = ({
             <div className="my-2 px-5 py-1 bg-gray-100"></div>
 
             <div className={`flex items-center ${isRTL && `flex-row-reverse`}`}>
-              <CustomImage
-                src={Comment.src}
+              <Comment
                 alt="comment"
                 width={20}
                 height={20}
-                className={`w-6 h-6 grayscale`}
+                className="w-8 h-8 grayscale pt-1"
               />
               <input
                 {...register('note')}
