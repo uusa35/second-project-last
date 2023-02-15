@@ -17,8 +17,7 @@ const ToastAppContainer = () => {
     <Suspense>
       <ToastContainer
         position={isRTL ? `top-center` : 'top-center'}
-        className={`opacity-90 shadow-inner font-extrabold text-white w-max h-auto`}
-        // className={`${tajwalFont} opacity-80 shadow-inner shadow-lg mt-[7%] lg:mt-[3%] w-full rtl:right-2 ltr:left-2 p-0 m-0 h-20`}
+        className={`${tajwalFont} opacity-90 shadow-inner font-extrabold text-white w-max text-center`}
         autoClose={2000}
         hideProgressBar={false}
         newestOnTop={true}
@@ -28,7 +27,7 @@ const ToastAppContainer = () => {
         rtl={isRTL}
         pauseOnFocusLoss
         pauseOnHover
-        bodyStyle={{ height: 'auto' }}
+        // bodyStyle={{ height: 'auto' }}
         // style={{ width: `45vh` }}
         // theme="light"
         // progressClassName={`bg-red-900`}

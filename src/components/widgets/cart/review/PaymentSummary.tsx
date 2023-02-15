@@ -32,22 +32,12 @@ const PaymentSummary: FC = () => {
             </p>
           </div>
         </div>
-        <div className="flex justify-between mb-2 text-lg">
-          <p suppressHydrationWarning={suppressText}>{t('tax')} </p>
-          <div className={`flex flex-row`}>
-            <p suppressHydrationWarning={suppressText} className={`px-2`}>
-              {promoEnabled ? coupon.tax : tax}
-            </p>
-            <p className={`uppercase`} suppressHydrationWarning={suppressText}>
-              %
-            </p>
-          </div>
-        </div>
+
         {promoEnabled && (
           <>
-            <div className="flex justify-between mb-2 text-lg">
+            {/* <div className="flex justify-between mb-2 text-lg">
               <p suppressHydrationWarning={suppressText}>
-                {t('total_before_tax')}{' '}
+                {t('total_after_tax')}{' '}
               </p>
               <div className={`flex flex-row`}>
                 <p suppressHydrationWarning={suppressText} className={`px-2`}>
@@ -60,7 +50,7 @@ const PaymentSummary: FC = () => {
                   {t('kwd')}
                 </p>
               </div>
-            </div>
+            </div> */}
             <div className="flex justify-between mb-2 text-lg">
               <p suppressHydrationWarning={suppressText}>
                 {t('coupon_value')}{' '}
@@ -83,6 +73,25 @@ const PaymentSummary: FC = () => {
           </>
         )}
 
+        {(promoEnabled && coupon.tax) || tax ? (
+          <div className="flex justify-between mb-2 text-lg">
+            <p suppressHydrationWarning={suppressText}>{t('tax')} </p>
+            <div className={`flex flex-row`}>
+              <p suppressHydrationWarning={suppressText} className={`px-2`}>
+                {promoEnabled ? coupon.tax : tax}
+              </p>
+              <p
+                className={`uppercase`}
+                suppressHydrationWarning={suppressText}
+              >
+                %
+              </p>
+            </div>
+          </div>
+        ) : (
+          <></>
+        )}
+
         <div className="flex justify-between mb-2 text-lg">
           <p suppressHydrationWarning={suppressText}>{t('delivery_fees')}</p>
           <p suppressHydrationWarning={suppressText}></p>
@@ -101,6 +110,7 @@ const PaymentSummary: FC = () => {
             </p>
           </div>
         </div>
+
         <div className="flex justify-between mb-2 text-lg">
           <p suppressHydrationWarning={suppressText}>{t('net_total')}</p>
           <div className={`flex flex-row`} style={{ color }}>
