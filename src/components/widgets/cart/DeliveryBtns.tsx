@@ -19,7 +19,7 @@ const DeliveryBtns: FC<Props> = ({ method_in_select = '' }): JSX.Element => {
     appSetting: { method },
   } = useAppSelector((state) => state);
   return (
-    <div className="flex flex-1 space-x-5 mx-auto flex-row justify-between items-center px-5 text-lg py-8">
+    <div className="flex flex-1 space-x-5 mx-auto flex-row justify-between items-center px-5 text-lg py-8 rtl:space-x-reverse">
       <Link
         scroll={true}
         className={`${

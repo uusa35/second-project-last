@@ -379,7 +379,7 @@
   "delivery" : "توصيل",
   "earliest_delivery" : "التوصيل خلال",
   "done": "تم",
-  "must_select_min_and_max" : "يجب اختيار اقل كمية {{min}} واقصى كمية {{max}}",
+  "must_select_min_and_max" : "يجب اختيار أقل كمية {{min}} وأقصى كمية {{max}}",
   "select_method" : "طريقة استلام الطلب",
   "product_search_index" : "البحث في المنتجات ..",
   "coupon_value" : "قيمة الخصم",
@@ -512,5 +512,6 @@
   "select_a_branch_or_area_before_order_or_some_fields_are_required_missing" : "يجب اختيار فرع / منطقة قبل البدأ في طلبك .. أو ان بعض الحقول مطلوبة",
   "building_no":"رقم المبنى",
   "net_total" : "الإجمالي",
-  "total_before_tax" : "الإجمالي مع الضريبة"
+  "total_before_tax" : "الإجمالي مع الضريبة",
+  "add": "أضف"
 }
