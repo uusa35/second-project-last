@@ -146,9 +146,9 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
   };
 
   useEffect(() => {
-    if(couponVal !== ''){
+    if (couponVal !== '') {
       handleCoupon(couponVal);
-    }  
+    }
     // debounce(() => handleCoupon(couponVal), 500);
   }, [couponVal]);
 
@@ -350,6 +350,7 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
                                   className={`font-semibold capitalize`}
                                   ar={item.ProductName}
                                   en={item.ProductName}
+                                  length={15}
                                 />
                               </Link>
                             </div>
