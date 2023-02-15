@@ -144,6 +144,9 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
 
   const handleResetInitialProductCart = () => {
     if (isSuccess && !isNull(element)) {
+      if (isEmpty(element.sections)) {
+        dispatch(enableAddToCart());
+      }
       dispatch(
         setInitialProductCart({
           ProductID: element.id,
@@ -268,6 +271,7 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
     }
   };
 
+  console.log('product', element);
   useEffect(() => {
     if (isSuccess && !isNull(element)) {
       if (isEmpty(element.sections)) {
