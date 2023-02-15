@@ -96,6 +96,9 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
   useEffect(() => {
     if (isSuccess && !isNull(element)) {
       dispatch(setCurrentModule(element.name));
+      if (isEmpty(element.sections)) {
+        dispatch(enableAddToCart());
+      }
       if (productCart.ProductID !== element.id) {
         handleResetInitialProductCart();
       }
@@ -144,9 +147,6 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
 
   const handleResetInitialProductCart = () => {
     if (isSuccess && !isNull(element)) {
-      if (isEmpty(element.sections)) {
-        dispatch(enableAddToCart());
-      }
       dispatch(
         setInitialProductCart({
           ProductID: element.id,
