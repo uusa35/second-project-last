@@ -34,8 +34,8 @@
     font-family: 'GE_SS_Text_Light', 'sans-serif' !important;
 }
 
-.font-tajwal-medium {
-    font-family: 'Arboria-Light', 'sans-serif' !important;
+.font-tajwal-medium, .Toastify__toast-body > div {
+    font-family: 'Tajawal-Medium', 'sans-serif' !important;
 }
 
 .font-future-bold {
