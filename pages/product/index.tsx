@@ -12,6 +12,7 @@ import { debounce, isEmpty, map, isNull } from 'lodash';
 import { appLinks, baseUrl, imageSizes, suppressText } from '@/constants/*';
 import MainHead from '@/components/MainHead';
 import NotFoundImage from '@/appImages/not_found.png';
+import NoResultFound from '@/appImages/no_result_found.webp';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useEffect, useState, Suspense } from 'react';
@@ -176,8 +177,8 @@ const ProductSearchIndex: NextPage<Props> = ({
                 className={`w-full flex flex-1 flex-col justify-center items-center space-y-4 my-12`}
               >
                 <CustomImage
-                  src={NotFoundImage.src}
-                  alt={`not_found`}
+                  src={NoResultFound.src}
+                  alt={`no_result`}
                   width={imageSizes.sm}
                   height={imageSizes.sm}
                   className={`w-60 h-auto`}
