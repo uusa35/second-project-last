@@ -126,10 +126,6 @@ const Feedback: FC<Props> = ({
             isRTL && `flex-row-reverse`
           }`}
         >
-<<<<<<< HEAD
-          <div className="flex items-center">
-            <ModalFeedbackIcon className="grayscale" />
-=======
           <div
             className={`flex items-center space-x-4 ${
               isRTL && 'flex-row-reverse space-x-reverse'
@@ -139,7 +135,6 @@ const Feedback: FC<Props> = ({
               className="w-8 h-8 grayscale pt-1"
               alt={t('feedback')}
             />
->>>>>>> 598817e86375fae79be57ba2c61ccbf92d12114c
             <p
               className="capitalize font-semibold text-base"
               style={{ color }}
@@ -205,16 +200,12 @@ const Feedback: FC<Props> = ({
                 isRTL && `flex-row-reverse`
               }`}
             >
-<<<<<<< HEAD
-              <Card className="grayscale" />
-=======
               <Card
                 alt="card"
                 width={15}
                 height={15}
                 className="w-8 h-8 grayscale pt-1"
               />
->>>>>>> 598817e86375fae79be57ba2c61ccbf92d12114c
               <input
                 {...register('user_name')}
                 className={`w-full px-4 border-0 focus:ring-transparent outline-none capitalize ${
@@ -253,16 +244,12 @@ const Feedback: FC<Props> = ({
                   isRTL && `flex-row-reverse`
                 } w-full`}
               >
-<<<<<<< HEAD
-                <Phone className="grayscale" />
-=======
                 <Phone
                   alt="phone"
                   width={10}
                   height={10}
                   className="w-8 h-8 grayscale pt-1"
                 />
->>>>>>> 598817e86375fae79be57ba2c61ccbf92d12114c
                 <input
                   className={`w-full px-4 border-0 focus:ring-transparent outline-none capitalize ${
                     isRTL && 'text-right'
@@ -281,16 +268,12 @@ const Feedback: FC<Props> = ({
             <div className="my-2 px-5 py-1 bg-gray-100"></div>
 
             <div className={`flex items-center ${isRTL && `flex-row-reverse`}`}>
-<<<<<<< HEAD
-              <Comment className="grayscale" />
-=======
               <Comment
                 alt="comment"
                 width={20}
                 height={20}
                 className="w-8 h-8 grayscale pt-1"
               />
->>>>>>> 598817e86375fae79be57ba2c61ccbf92d12114c
               <input
                 {...register('note')}
                 aria-invalid={errors.note ? 'true' : 'false'}
