@@ -514,5 +514,6 @@
   "net_total" : "الإجمالي",
   "total_before_tax" : "الإجمالي مع الضريبة",
   "add": "أضف",
-  "delivery_instructions" : "ملاحظات خاصة بعملية التوصيل"
+  "delivery_instructions" : "ملاحظات خاصة بعملية التوصيل",
+  "pickup_now" : "استلام الطلب"
 }

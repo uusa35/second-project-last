@@ -501,5 +501,6 @@
   "net_total" : "total",
   "total_before_tax" : "total before tax",
   "add": "add",
-  "delivery_instructions" : "delivery instructions"
+  "delivery_instructions" : "delivery instructions",
+  "pickup_now" : "pick up order"
 }

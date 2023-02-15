@@ -234,6 +234,8 @@ const CartReview: NextPage<Props> = ({ url }) => {
     });
   };
 
+  console.log('customer', customer);
+
   return (
     <Suspense>
       <MainContentLayout handleSubmit={handleCreateOrder} url={url}>
@@ -274,7 +276,7 @@ const CartReview: NextPage<Props> = ({ url }) => {
                   className="font-semibold text-lg capitalize"
                   suppressHydrationWarning={suppressText}
                 >
-                  {t('delivery_now')}
+                  {t(customer.prefrences.type)}
                 </h4>
               </div>
             </div>
