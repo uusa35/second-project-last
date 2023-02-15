@@ -17,7 +17,7 @@ const ToastAppContainer = () => {
     <Suspense>
       <ToastContainer
         position={isRTL ? `top-center` : 'top-center'}
-        className={`${tajwalFont} opacity-90 shadow-inner font-extrabold text-white w-max`}
+        className={`${tajwalFont} opacity-90 shadow-inner font-extrabold text-white w-max text-center`}
         autoClose={2000}
         hideProgressBar={false}
         newestOnTop={true}
