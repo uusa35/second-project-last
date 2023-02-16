@@ -68,6 +68,7 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
     locale: { lang },
     branch: { id: branch_id },
     area: { id: area_id },
+    cart: { total },
   } = useAppSelector((state) => state);
   const router = useRouter();
   const color = useAppSelector(themeColor);
@@ -101,7 +102,7 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
       if (isEmpty(element.sections)) {
         dispatch(enableAddToCart());
       }
-      if (productCart.ProductID !== element.id) {
+      if (productCart.ProductID !== element.id && total !== 0) {
         handleResetInitialProductCart();
       }
     }
