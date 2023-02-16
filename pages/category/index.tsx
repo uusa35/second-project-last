@@ -63,6 +63,8 @@ const ProductSearchIndex: NextPage<Props> = ({
       isSuccess: boolean;
     }>();
 
+  console.log('ProductIndex without branch');
+
   useEffect(() => {
     dispatch(setCurrentModule('product_search_index'));
     if (url) {

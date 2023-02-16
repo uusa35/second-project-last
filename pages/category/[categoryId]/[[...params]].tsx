@@ -3,6 +3,7 @@ import MainContentLayout from '@/layouts/MainContentLayout';
 import { wrapper } from '@/redux/store';
 import {
   productApi,
+  useGetProductsQuery,
   useLazyGetSearchProductsQuery,
 } from '@/redux/api/productApi';
 import { appSetting, Product } from '@/types/index';
@@ -27,26 +28,45 @@ import List from '@/appIcons/list.svg';
 import { useRouter } from 'next/router';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import CustomImage from '@/components/CustomImage';
+import LoadingSpinner from '@/components/LoadingSpinner';
 type Props = {
-  elements: ProductPagination<Product[]>;
+  // elements: ProductPagination<Product[]>;
   slug: string;
   url: string;
+  branch_id: string;
+  area_id: string;
+  page: string;
+  limit: string;
 };
 const ProductIndex: NextPage<Props> = ({
-  elements,
+  // elements,
   slug,
   url,
+  branch_id,
+  area_id,
+  page,
+  limit,
 }): JSX.Element => {
   const { t } = useTranslation();
   const {
     locale: { lang },
-    branch: { id: branch_id },
+    branch: { id: branchId },
+    area: { id: areaId },
     appSetting: { productPreview },
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const [Icon, SetIcon] = useState(true);
-  const { query }: any = useRouter();
+  const { query, locale }: any = useRouter();
   const [currentProducts, setCurrentProducts] = useState<any>([]);
+  const { data, isSuccess, isFetching } = useGetProductsQuery({
+    category_id: query.categoryId,
+    page,
+    limit,
+    ...(branch_id && { branch_id }),
+    ...(area_id && { area_id }),
+    lang: locale,
+    url,
+  });
   const [triggerSearchProducts] = useLazyGetSearchProductsQuery<{
     triggerSearchProducts: () => void;
   }>();
@@ -65,8 +85,13 @@ const ProductIndex: NextPage<Props> = ({
     if (url) {
       dispatch(setUrl(url));
     }
-    setCurrentProducts(elements.products);
   }, []);
+
+  useEffect(() => {
+    if (isSuccess && data && data.Data && data.Data.products) {
+      setCurrentProducts(data.Data.products);
+    }
+  }, [isSuccess]);
 
   const handleChange = (key: string) => {
     if (key.length > 2) {
@@ -74,11 +99,14 @@ const ProductIndex: NextPage<Props> = ({
         setCurrentProducts(r.data.Data)
       );
     } else {
-      setCurrentProducts(elements.products);
+      setCurrentProducts(data.Data.products);
     }
   };
 
-  console.log('here');
+  if (isFetching) {
+    return <LoadingSpinner fullWidth={true} />;
+  }
+
   return (
     <Suspense>
       <MainHead title={slug} description={slug} />
@@ -169,36 +197,38 @@ export const getServerSideProps = wrapper.getServerSideProps(
           notFound: true,
         };
       }
-      const {
-        data: elements,
-        isError,
-      }: {
-        data: AppQueryResult<Product[]>;
-        isError: boolean;
-      } = await store.dispatch(
-        productApi.endpoints.getProducts.initiate({
-          category_id: categoryId.toString(),
-          page: page ?? `1`,
-          limit: limit ?? `10`,
-          ...(branch_id && { branch_id }),
-          ...(area_id && { area_id }),
-          lang: locale,
-          url: req.headers.host,
-        })
-      );
-      await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
-      if (isError || !elements.Data) {
-        return {
-          notFound: true,
-        };
-      }
+      // const {
+      //   data: elements,
+      //   isError,
+      // }: {
+      //   data: AppQueryResult<Product[]>;
+      //   isError: boolean;
+      // } = await store.dispatch(
+      //   productApi.endpoints.getProducts.initiate({
+      //     category_id: categoryId.toString(),
+      //     page: page ?? `1`,
+      //     limit: limit ?? `10`,
+      //     ...(branch_id && { branch_id }),
+      //     ...(area_id && { area_id }),
+      //     lang: locale,
+      //     url: req.headers.host,
+      //   })
+      // );
+      // await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
+      // if (isError || !elements.Data) {
+      //   return {
+      //     notFound: true,
+      //   };
+      // }
       return {
         props: {
-          elements: elements.Data,
+          // elements: elements.Data,
           slug: slug ?? ``,
           url: req.headers.host,
-          branch_id,
-          area_id,
+          branch_id: branch_id ?? ``,
+          area_id: area_id ?? ``,
+          page: page ?? 1,
+          limit: limit ?? 10,
         },
       };
     }
