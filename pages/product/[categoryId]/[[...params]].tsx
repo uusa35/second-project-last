@@ -78,6 +78,7 @@ const ProductIndex: NextPage<Props> = ({
     }
   };
 
+  console.log('here');
   return (
     <Suspense>
       <MainHead title={slug} description={slug} />
@@ -196,6 +197,8 @@ export const getServerSideProps = wrapper.getServerSideProps(
           elements: elements.Data,
           slug: slug ?? ``,
           url: req.headers.host,
+          branch_id,
+          area_id,
         },
       };
     }

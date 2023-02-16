@@ -236,7 +236,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
         })
       );
       await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
-      if (isError || !elements.Data) {
+      if (isError || !elements) {
         return {
           notFound: true,
         };
