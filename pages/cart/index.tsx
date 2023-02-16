@@ -79,7 +79,8 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
     url,
   });
   const [triggerCheckPromoCode] = useLazyCheckPromoCodeQuery();
-  const [triggerGetCartProducts] = useLazyGetCartProductsQuery();
+
+  console.log('cartItems', cartItems);
 
   useEffect(() => {
     if (

@@ -20,6 +20,7 @@ import {
 import { baseUrl, imageSizes, imgUrl, suppressText } from '@/constants/*';
 import CustomImage from '@/components/CustomImage';
 import {
+  ceil,
   concat,
   filter,
   first,
@@ -29,6 +30,7 @@ import {
   map,
   multiply,
   now,
+  round,
   sum,
   sumBy,
 } from 'lodash';
@@ -157,8 +159,8 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
           ProductDesc: element.desc,
           Quantity: currentQty,
           ExtraNotes: ``,
-          totalPrice: parseFloat(element.price),
-          grossTotalPrice: parseFloat(element.price),
+          totalPrice: ceil(element.price, 3),
+          grossTotalPrice: ceil(element.price, 3),
           totalQty: currentQty,
           Price: parseFloat(element.price),
           enabled: false,
