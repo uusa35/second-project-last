@@ -942,6 +942,7 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                           type="date"
                           className={`border-none w-full px-0 focus:border-none focus:ring-transparent`}
                           min={new Date().toISOString().split('T')[0]}
+                          // value={prefrences.date as Date}
                           onChange={(e) => {
                             setPrefrences({
                               ...prefrences,
@@ -966,8 +967,15 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                           timeCaption="Time"
                           dateFormat="hh:mm"
                           locale="en"
-                          minTime={new Date()}
-                          maxTime={new Date(new Date().setHours(23, 59))}
+                          {...(prefrences.date?.setHours(0, 0, 0, 0) ==
+                          new Date().setHours(0, 0, 0, 0)
+                            ? {
+                                minTime: new Date(),
+                                maxTime: new Date(new Date().setHours(23, 59)),
+                              }
+                            : {})}
+                          // minTime={new Date()}
+                          // maxTime={new Date(new Date().setHours(23, 59))}
                         ></DatePicker>
                       </div>
                     </div>
@@ -1039,6 +1047,7 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                         type="date"
                         className={`border-none w-full`}
                         min={new Date().toISOString().split('T')[0]}
+                        // value={(prefrences.date as Date).toDateString()}
                         onChange={(e) => {
                           setPrefrences({
                             ...prefrences,
@@ -1061,8 +1070,13 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                         timeCaption="Time"
                         dateFormat="hh:mm"
                         locale="en"
-                        minTime={new Date()}
-                        maxTime={new Date(new Date().setHours(23, 59))}
+                        {...(prefrences.date?.setHours(0, 0, 0, 0) ==
+                        new Date().setHours(0, 0, 0, 0)
+                          ? {
+                              minTime: new Date(),
+                              maxTime: new Date(new Date().setHours(23, 59)),
+                            }
+                          : {})}
                       ></DatePicker>
                     </div>
                   </div>
