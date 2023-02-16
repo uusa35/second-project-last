@@ -43,6 +43,7 @@ import {
   removeFromCheckBox,
   removeMeter,
   resetCheckBoxes,
+  resetMeters,
   resetRadioBtns,
   setCartProductQty,
   setInitialProductCart,
@@ -96,29 +97,31 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
     }
   }, [isSuccess]);
 
+  console.log('total', total);
   useEffect(() => {
     if (isSuccess && !isNull(element)) {
       dispatch(setCurrentModule(element.name));
       if (isEmpty(element.sections)) {
         dispatch(enableAddToCart());
       }
-      // else if (total !== 0) {
-      //   handleResetInitialProductCart();
-      // }
       if (productCart.ProductID !== element.id) {
         handleResetInitialProductCart();
+      }
+      if (total > 0) {
+        dispatch(resetRadioBtns());
+        dispatch(resetCheckBoxes());
+        dispatch(resetMeters());
       }
     }
     if (url) {
       dispatch(setUrl(url));
     }
     dispatch(setShowFooterElement(`product_show`));
+
     return () => {
       dispatch(resetShowFooterElement());
     };
   }, [element?.id]);
-
-  console.log('element', element);
 
   const customAnimation = {
     mount: { scale: 1 },
