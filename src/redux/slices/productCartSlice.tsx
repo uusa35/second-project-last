@@ -67,6 +67,12 @@ export const productCartSlice = createSlice({
         ),
       };
     },
+    resetMeters: (state: typeof initialState, action: PayloadAction<void>) => {
+      return {
+        ...state,
+        QuantityMeters: initialState.QuantityMeters,
+      };
+    },
     addToCheckBox: (
       state: typeof initialState,
       action: PayloadAction<CheckBoxes>
@@ -194,6 +200,7 @@ export const {
   updatePrice,
   addMeter,
   removeMeter,
+  resetMeters,
   enableAddToCart,
   disableAddToCart,
   updateId,
