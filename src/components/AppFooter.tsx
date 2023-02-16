@@ -25,12 +25,19 @@ import {
   kebabCase,
   lowerCase,
   values,
+  countBy,
 } from 'lodash';
 import { setCartPromoSuccess } from '@/redux/slices/cartSlice';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import PaymentSummary from '@/widgets/cart/review/PaymentSummary';
-import { resetProductCart } from '@/redux/slices/productCartSlice';
+import {
+  removeMeter,
+  resetCheckBoxes,
+  resetMeters,
+  resetProductCart,
+  resetRadioBtns,
+} from '@/redux/slices/productCartSlice';
 
 type Props = {
   handleSubmit?: (element?: any) => void;
@@ -110,19 +117,22 @@ const AppFooter: FC<Props> = ({
                     type: `success`,
                   })
                 );
-                dispatch(resetProductCart());
+                dispatch(resetRadioBtns());
+                dispatch(resetCheckBoxes());
+                dispatch(resetMeters());
               } else {
               }
             });
           } else {
             if (r.error && r.error.data) {
-              console.log('r', isArray(r.error.data.msg));
+              // console.log('r', r.error.data.msg);
+              // console.log('isArray', r.error.data.msg);
               dispatch(
                 showToastMessage({
                   content: r.error.data.msg
                     ? lowerCase(
                         kebabCase(
-                          isArray(r.error.data.msg.length)
+                          first(values(r.error.data.msg))
                             ? first(values(r.error.data.msg))
                             : r.error.data.msg
                         )
