@@ -66,6 +66,10 @@ const AppFooter: FC<Props> = ({
     refetch: refetchCart,
   } = useGetCartProductsQuery({
     UserAgent: userAgent,
+    area_branch:
+      method === `pickup`
+        ? { 'x-branch-id': branchId }
+        : { 'x-area-id': area.id },
     url,
   });
   const [triggerCheckPromoCode] = useLazyCheckPromoCodeQuery();
@@ -102,7 +106,14 @@ const AppFooter: FC<Props> = ({
           url,
         }).then((r: any) => {
           if (r && r.data && r.data.status && r.data.data && r.data.data.Cart) {
-            triggerGetCartProducts({ UserAgent: userAgent, url }).then((r) => {
+            triggerGetCartProducts({
+              UserAgent: userAgent,
+              area_branch:
+                method === `pickup`
+                  ? { 'x-branch-id': branchId }
+                  : { 'x-area-id': area.id },
+              url,
+            }).then((r) => {
               if (r.data && r.data.data && r.data.data.Cart) {
                 dispatch(
                   showToastMessage({
@@ -182,7 +193,14 @@ const AppFooter: FC<Props> = ({
           }
         });
       }
-      triggerGetCartProducts({ UserAgent: userAgent, url }).then((r) => {
+      triggerGetCartProducts({
+        UserAgent: userAgent,
+        area_branch:
+          method === `pickup`
+            ? { 'x-branch-id': branchId }
+            : { 'x-area-id': area.id },
+        url,
+      }).then((r) => {
         if (r.data && r.data.data && r.data.data.Cart) {
           router.push(appLinks.customerInfo.path);
         }

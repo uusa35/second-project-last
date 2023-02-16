@@ -70,6 +70,10 @@ const SelectMethod: NextPage<Props> = ({
     refetch: refetchCart,
   } = useGetCartProductsQuery({
     UserAgent: userAgent,
+    area_branch:
+      method_type === `pickup`
+        ? { 'x-branch-id': branch.id }
+        : { 'x-area-id': selectedArea.id },
     url,
   });
   const { data: locations, isLoading: locationsLoading } =

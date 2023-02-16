@@ -24,12 +24,18 @@ const SlideTopNav: FC<Props> = ({ offset, isHome = false }): JSX.Element => {
   const { t } = useTranslation();
   const {
     vendor,
-    appSetting: { sideMenuOpen, url },
+    appSetting: { sideMenuOpen, url, method },
+    area,
+    branch,
     customer: { userAgent },
     locale: { lang, otherLang },
   } = useAppSelector((state) => state);
   const { data: cartItems, isSuccess } = useGetCartProductsQuery({
     UserAgent: userAgent,
+    area_branch:
+      method === `pickup`
+        ? { 'x-branch-id': branch.id }
+        : { 'x-area-id': area.id },
     url,
   });
   const dispatch = useAppDispatch();

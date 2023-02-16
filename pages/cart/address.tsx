@@ -77,6 +77,10 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
     refetch: () => void;
   }>({
     UserAgent: userAgent,
+    area_branch:
+      method === `pickup`
+        ? { 'x-branch-id': branch.id }
+        : { 'x-area-id': area.id },
     url,
   });
   const [prefrences, setPrefrences] = useState<Prefrences>({

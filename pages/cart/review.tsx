@@ -72,6 +72,10 @@ const CartReview: NextPage<Props> = ({ url }) => {
     refetch: () => void;
   }>({
     UserAgent: userAgent,
+    area_branch:
+      process_type === `pickup`
+        ? { 'x-branch-id': branchId }
+        : { 'x-area-id': areaId },
     url,
   });
   const [triggerCreateOrder, { isLoading }] = useLazyCreateOrderQuery();

@@ -64,6 +64,10 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
     isSuccess: boolean;
   }>({
     UserAgent: userAgent,
+    area_branch:
+      method === `pickup`
+        ? { 'x-branch-id': branchId }
+        : { 'x-area-id': areaId },
     url,
   });
   const [triggerSaveCustomerInfo] = useSaveCustomerInfoMutation();

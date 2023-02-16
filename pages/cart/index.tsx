@@ -76,6 +76,10 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
     refetch: () => void;
   }>({
     UserAgent: userAgent,
+    area_branch:
+      method === `pickup`
+        ? { 'x-branch-id': branchId }
+        : { 'x-area-id': areaId },
     url,
   });
   const [triggerCheckPromoCode] = useLazyCheckPromoCodeQuery();
