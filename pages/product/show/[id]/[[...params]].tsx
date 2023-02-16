@@ -97,7 +97,6 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
     }
   }, [isSuccess]);
 
-  console.log('total', total);
   useEffect(() => {
     if (isSuccess && !isNull(element)) {
       dispatch(setCurrentModule(element.name));
