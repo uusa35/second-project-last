@@ -64,6 +64,10 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
     isSuccess: boolean;
   }>({
     UserAgent: userAgent,
+    area_branch:
+      method === `pickup`
+        ? { 'x-branch-id': branchId }
+        : { 'x-area-id': areaId },
     url,
   });
   const [triggerSaveCustomerInfo] = useSaveCustomerInfoMutation();
@@ -182,7 +186,7 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
               <div className="flex items-center gap-x-2 px-2 border-b-4 border-b-gray-200 w-full focus:ring-transparent py-4 capitalize">
                 <Phone style={{ color }} />
                 <input
-                  type="tel"
+                  type="number"
                   {...register('phone')}
                   aria-invalid={errors.phone ? 'true' : 'false'}
                   className={`border-0 w-full focus:ring-transparent outline-0 capitalize`}

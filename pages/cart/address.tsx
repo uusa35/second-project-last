@@ -77,6 +77,10 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
     refetch: () => void;
   }>({
     UserAgent: userAgent,
+    area_branch:
+      method === `pickup`
+        ? { 'x-branch-id': branch.id }
+        : { 'x-area-id': area.id },
     url,
   });
   const [prefrences, setPrefrences] = useState<Prefrences>({
@@ -695,13 +699,17 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                           {/* building_no */}
                           <div
                             className={
-                              (addressTabType === 2 || addressTabType === 3)  ? 'block' : 'hidden'
+                              addressTabType === 2 || addressTabType === 3
+                                ? 'block'
+                                : 'hidden'
                             }
                             id="apartment"
                           >
                             <input
                               placeholder={`${t(`building_no`)}${
-                                (addressTabType === 2 || addressTabType === 3) ? `*` : ``
+                                addressTabType === 2 || addressTabType === 3
+                                  ? `*`
+                                  : ``
                               }`}
                               className={`${addressInputField}`}
                               suppressHydrationWarning={suppressText}
@@ -824,9 +832,10 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                       )}
                     </div>
 
-                    <input
-                      placeholder={`${t(`additional`)}`}
-                      className={`${addressInputField}`}
+                    <textarea
+                      cols={2}
+                      placeholder={`${t(`delivery_instructions`)}`}
+                      className={`${addressInputField} p-0`}
                       suppressHydrationWarning={suppressText}
                       {...register('additional')}
                       aria-invalid={errors.additional ? 'true' : 'false'}
@@ -937,6 +946,7 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                           type="date"
                           className={`border-none w-full px-0 focus:border-none focus:ring-transparent`}
                           min={new Date().toISOString().split('T')[0]}
+                          // value={prefrences.date as Date}
                           onChange={(e) => {
                             setPrefrences({
                               ...prefrences,
@@ -961,8 +971,15 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                           timeCaption="Time"
                           dateFormat="hh:mm"
                           locale="en"
-                          minTime={new Date()}
-                          maxTime={new Date(new Date().setHours(23, 59))}
+                          {...(prefrences.date?.setHours(0, 0, 0, 0) ==
+                          new Date().setHours(0, 0, 0, 0)
+                            ? {
+                                minTime: new Date(),
+                                maxTime: new Date(new Date().setHours(23, 59)),
+                              }
+                            : {})}
+                          // minTime={new Date()}
+                          // maxTime={new Date(new Date().setHours(23, 59))}
                         ></DatePicker>
                       </div>
                     </div>
@@ -1034,6 +1051,7 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                         type="date"
                         className={`border-none w-full`}
                         min={new Date().toISOString().split('T')[0]}
+                        // value={(prefrences.date as Date).toDateString()}
                         onChange={(e) => {
                           setPrefrences({
                             ...prefrences,
@@ -1056,8 +1074,13 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                         timeCaption="Time"
                         dateFormat="hh:mm"
                         locale="en"
-                        minTime={new Date()}
-                        maxTime={new Date(new Date().setHours(23, 59))}
+                        {...(prefrences.date?.setHours(0, 0, 0, 0) ==
+                        new Date().setHours(0, 0, 0, 0)
+                          ? {
+                              minTime: new Date(),
+                              maxTime: new Date(new Date().setHours(23, 59)),
+                            }
+                          : {})}
                       ></DatePicker>
                     </div>
                   </div>

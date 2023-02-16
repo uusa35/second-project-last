@@ -12,6 +12,7 @@ import { debounce, isEmpty, map, isNull } from 'lodash';
 import { appLinks, baseUrl, imageSizes, suppressText } from '@/constants/*';
 import MainHead from '@/components/MainHead';
 import NotFoundImage from '@/appImages/not_found.png';
+import NoResultFound from '@/appImages/no_result_found.webp';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useEffect, useState, Suspense } from 'react';
@@ -27,10 +28,14 @@ import LoadingSpinner from '@/components/LoadingSpinner';
 type Props = {
   elements: Product[];
   url: string;
+  branch_id: string;
+  area_id: string;
 };
 const ProductSearchIndex: NextPage<Props> = ({
   elements,
   url,
+  branch_id,
+  area_id,
 }): JSX.Element => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
@@ -47,8 +52,8 @@ const ProductSearchIndex: NextPage<Props> = ({
   const { data: topSearch, isSuccess: topSearchSuccess } = useGetTopSearchQuery(
     {
       lang,
-      branchId,
-      areaId,
+      branchId: branch_id ?? branchId,
+      areaId: area_id ?? areaId,
       url,
     }
   );
@@ -176,8 +181,8 @@ const ProductSearchIndex: NextPage<Props> = ({
                 className={`w-full flex flex-1 flex-col justify-center items-center space-y-4 my-12`}
               >
                 <CustomImage
-                  src={NotFoundImage.src}
-                  alt={`not_found`}
+                  src={NoResultFound.src}
+                  alt={`no_result`}
                   width={imageSizes.sm}
                   height={imageSizes.sm}
                   className={`w-60 h-auto`}
@@ -215,7 +220,7 @@ export default ProductSearchIndex;
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ query, locale, req }) => {
-      const { key, branchId, area_id }: any = query;
+      const { key, branch_id, area_id }: any = query;
       if (!req.headers.host) {
         return {
           notFound: true,
@@ -224,14 +229,14 @@ export const getServerSideProps = wrapper.getServerSideProps(
       const { data: elements, isError } = await store.dispatch(
         productApi.endpoints.getSearchProducts.initiate({
           key: key ?? ``,
-          ...(branchId && { branch_id: branchId }),
+          ...(branch_id && { branch_id }),
           ...(area_id && { areaId: area_id }),
           lang: locale,
           url: req.headers.host,
         })
       );
       await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
-      if (isError || !elements.Data) {
+      if (isError || !elements) {
         return {
           notFound: true,
         };
@@ -240,6 +245,8 @@ export const getServerSideProps = wrapper.getServerSideProps(
         props: {
           elements: elements.Data,
           url: req.headers.host,
+          branch_id: branch_id ?? ``,
+          area_id: area_id ?? ``,
         },
       };
     }

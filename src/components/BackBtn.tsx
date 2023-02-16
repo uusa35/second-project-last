@@ -27,12 +27,18 @@ const BackBtn: FC<Props> = ({
   const { t } = useTranslation();
   const color = useAppSelector(themeColor);
   const {
-    appSetting: { currentModule, url, previousUrl },
+    appSetting: { currentModule, url, previousUrl ,method},
+    branch,
+    area,
     locale: { lang, otherLang },
     customer: { userAgent },
   } = useAppSelector((state) => state);
   const { data: cartItems, isSuccess } = useGetCartProductsQuery({
     UserAgent: userAgent,
+    area_branch:
+      method === `pickup`
+        ? { 'x-branch-id': branch.id }
+        : { 'x-area-id': area.id },
     url,
   });
 
@@ -124,7 +130,7 @@ const BackBtn: FC<Props> = ({
           <span
             className={`text-md capitalize truncate overflow-hidden max-w-md`}
             suppressHydrationWarning={suppressText}
-            style={{ color }}
+            style={{ color, maxWidth: '20ch', textOverflow: 'truncate' }}
           >
             {t(currentModule)}
           </span>

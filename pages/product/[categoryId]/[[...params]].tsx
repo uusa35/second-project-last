@@ -11,7 +11,7 @@ import { apiSlice } from '@/redux/api';
 import MainHead from '@/components/MainHead';
 import { imageSizes, suppressText } from '@/constants/*';
 import { capitalize, debounce, isEmpty, map, replace } from 'lodash';
-import NotFoundImage from '@/appImages/not_found.png';
+import NoResultFound from '@/appImages/no_result_found.webp';
 import HorProductWidget from '@/widgets/product/HorProductWidget';
 import { AppQueryResult, ProductPagination } from '@/types/queries';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -78,6 +78,7 @@ const ProductIndex: NextPage<Props> = ({
     }
   };
 
+  console.log('here');
   return (
     <Suspense>
       <MainHead title={slug} description={slug} />
@@ -119,7 +120,7 @@ const ProductIndex: NextPage<Props> = ({
               className={`w-full flex flex-1 flex-col justify-center items-center space-y-4 my-12`}
             >
               <CustomImage
-                src={NotFoundImage.src}
+                src={NoResultFound.src}
                 alt={`not_found`}
                 width={imageSizes.sm}
                 height={imageSizes.sm}
@@ -157,7 +158,7 @@ export default ProductIndex;
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ query, locale, req }) => {
-      const { categoryId, branchId, page, limit, areaId, slug }: any = query;
+      const { categoryId, branch_id, page, limit, area_id, slug }: any = query;
       if (!categoryId) {
         return {
           notFound: true,
@@ -179,8 +180,8 @@ export const getServerSideProps = wrapper.getServerSideProps(
           category_id: categoryId.toString(),
           page: page ?? `1`,
           limit: limit ?? `10`,
-          ...(branchId && { branch_id: branchId }),
-          ...(areaId && { area_id: areaId }),
+          ...(branch_id && { branch_id }),
+          ...(area_id && { area_id }),
           lang: locale,
           url: req.headers.host,
         })
@@ -196,6 +197,8 @@ export const getServerSideProps = wrapper.getServerSideProps(
           elements: elements.Data,
           slug: slug ?? ``,
           url: req.headers.host,
+          branch_id,
+          area_id,
         },
       };
     }

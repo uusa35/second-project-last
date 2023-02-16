@@ -20,6 +20,7 @@ import {
 import { baseUrl, imageSizes, imgUrl, suppressText } from '@/constants/*';
 import CustomImage from '@/components/CustomImage';
 import {
+  ceil,
   concat,
   filter,
   first,
@@ -29,6 +30,7 @@ import {
   map,
   multiply,
   now,
+  round,
   sum,
   sumBy,
 } from 'lodash';
@@ -41,6 +43,7 @@ import {
   removeFromCheckBox,
   removeMeter,
   resetCheckBoxes,
+  resetMeters,
   resetRadioBtns,
   setCartProductQty,
   setInitialProductCart,
@@ -66,6 +69,7 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
     locale: { lang },
     branch: { id: branch_id },
     area: { id: area_id },
+    cart: { total },
   } = useAppSelector((state) => state);
   const router = useRouter();
   const color = useAppSelector(themeColor);
@@ -96,14 +100,23 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
   useEffect(() => {
     if (isSuccess && !isNull(element)) {
       dispatch(setCurrentModule(element.name));
+      if (isEmpty(element.sections)) {
+        dispatch(enableAddToCart());
+      }
       if (productCart.ProductID !== element.id) {
         handleResetInitialProductCart();
+      }
+      if (total > 0) {
+        dispatch(resetRadioBtns());
+        dispatch(resetCheckBoxes());
+        dispatch(resetMeters());
       }
     }
     if (url) {
       dispatch(setUrl(url));
     }
     dispatch(setShowFooterElement(`product_show`));
+
     return () => {
       dispatch(resetShowFooterElement());
     };
@@ -389,12 +402,26 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
               <div className="flex flex-row w-full justify-between items-center px-4 md:px-8 pb-4 border-b-2 border-stone-200">
                 <div className={` flex-1 space-y-3`}>
                   <p className="font-bold text-xl">
-                    <TextTrans ar={element.name_ar} en={element.name_en} />
+                    <TextTrans
+                      ar={element.name_ar}
+                      en={element.name_en}
+                      style={{
+                        maxWidth: '30ch',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        display: 'block',
+                        color: `black`,
+                      }}
+                    />
                   </p>
-                  <p className={` rtl:pl-1 ltr:pr-1`}>
+                  <p
+                    className={`flex flex-wrap rtl:pl-1 ltr:pr-1 overflow-hidden`}
+                  >
                     <TextTrans
                       ar={element.description_ar}
                       en={element.description_en}
+                      length={999}
                     />
                   </p>
                 </div>

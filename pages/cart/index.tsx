@@ -76,10 +76,15 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
     refetch: () => void;
   }>({
     UserAgent: userAgent,
+    area_branch:
+      method === `pickup`
+        ? { 'x-branch-id': branchId }
+        : { 'x-area-id': areaId },
     url,
   });
   const [triggerCheckPromoCode] = useLazyCheckPromoCodeQuery();
-  const [triggerGetCartProducts] = useLazyGetCartProductsQuery();
+
+  console.log('cartItems', cartItems);
 
   useEffect(() => {
     if (
@@ -146,9 +151,9 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
   };
 
   useEffect(() => {
-    if(couponVal !== ''){
+    if (couponVal !== '') {
       handleCoupon(couponVal);
-    }  
+    }
     // debounce(() => handleCoupon(couponVal), 500);
   }, [couponVal]);
 
@@ -350,6 +355,7 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
                                   className={`font-semibold capitalize`}
                                   ar={item.ProductName}
                                   en={item.ProductName}
+                                  length={15}
                                 />
                               </Link>
                             </div>

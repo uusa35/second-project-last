@@ -39,8 +39,6 @@ const OrderInvoice: NextPage<Props> = ({ element, url }): JSX.Element => {
     }
   }, []);
 
-  console.log(element);
-
   return (
     <Suspense>
       <MainContentLayout url={url}>
@@ -176,13 +174,13 @@ const OrderInvoice: NextPage<Props> = ({ element, url }): JSX.Element => {
                     >
                       {t('item')}
                     </th>
-                    <th
-                      scope="col"
-                      className="py-3 px-3"
-                      suppressHydrationWarning={suppressText}
-                    >
-                      {t('sp_req')}
-                    </th>
+                    {/*<th*/}
+                    {/*  scope="col"*/}
+                    {/*  className="py-3 px-3"*/}
+                    {/*  suppressHydrationWarning={suppressText}*/}
+                    {/*>*/}
+                    {/*  {t('sp_req')}*/}
+                    {/*</th>*/}
                     <th
                       scope="col"
                       className="py-3 px-3"
@@ -214,7 +212,7 @@ const OrderInvoice: NextPage<Props> = ({ element, url }): JSX.Element => {
                       <tr key={idx} className="text-start">
                         <td className="py-3 px-3">{item.quantity}</td>
                         <td className="py-3 px-3">{item.item}</td>
-                        <td className="py-3 px-3"></td>
+                        {/*<td className="py-3 px-3"></td>*/}
                         <td className="py-3 px-3">{item.price}</td>
                         <td className="py-3 px-3 uppercase">
                           {item.total}
@@ -252,14 +250,14 @@ const OrderInvoice: NextPage<Props> = ({ element, url }): JSX.Element => {
                       {item.extra_notes && (
                         <tr className="py-3 px-3 w-full">
                           <td colSpan={5}>
-                            <div className='flex gap-x-2'>
-                            <p
-                              className="font-bold"
-                              suppressHydrationWarning={suppressText}
-                            >
-                              {t('notes')} :{' '}
-                            </p>
-                            <p>{item.extra_notes}</p>
+                            <div className="flex gap-x-2">
+                              <p
+                                className="font-bold"
+                                suppressHydrationWarning={suppressText}
+                              >
+                                {t('notes')} :{' '}
+                              </p>
+                              <p>{item.extra_notes}</p>
                             </div>
                           </td>
                         </tr>

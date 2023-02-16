@@ -72,6 +72,10 @@ const CartReview: NextPage<Props> = ({ url }) => {
     refetch: () => void;
   }>({
     UserAgent: userAgent,
+    area_branch:
+      process_type === `pickup`
+        ? { 'x-branch-id': branchId }
+        : { 'x-area-id': areaId },
     url,
   });
   const [triggerCreateOrder, { isLoading }] = useLazyCreateOrderQuery();
@@ -234,6 +238,8 @@ const CartReview: NextPage<Props> = ({ url }) => {
     });
   };
 
+  console.log('customer', customer);
+
   return (
     <Suspense>
       <MainContentLayout handleSubmit={handleCreateOrder} url={url}>
@@ -274,7 +280,7 @@ const CartReview: NextPage<Props> = ({ url }) => {
                   className="font-semibold text-lg capitalize"
                   suppressHydrationWarning={suppressText}
                 >
-                  {t('delivery_now')}
+                  {t(customer.prefrences.type)}
                 </h4>
               </div>
             </div>

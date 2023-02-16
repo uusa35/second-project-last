@@ -111,7 +111,7 @@ input[type=number] {
 input[type="date"]::-webkit-calendar-picker-indicator {
     opacity: 1;
     display: flex;
-    /* background: url('../public/assets/icons/calender.svg') no-repeat; */
+     /*background: url('../public/assets/icons/calender.svg') no-repeat;*/
     width: 3vh;
     height: 3vh;
 }
