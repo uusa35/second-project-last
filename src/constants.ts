@@ -14,9 +14,9 @@ export const appLinks = {
     page?: string,
     limit?: string
   ) =>
-    `/product/${categoryId}?&slug=${slug}&branch_id=${branchId ?? ''}&area_id=${
-      areaId ?? ``
-    }&page=${page ?? `1`}&limit=${limit ?? `10`}`,
+    `/category/${categoryId}?&slug=${slug}&branch_id=${
+      branchId ?? ''
+    }&area_id=${areaId ?? ``}&page=${page ?? `1`}&limit=${limit ?? `10`}`,
   productIndexDefined: (
     categoryId: string,
     slug: string,
@@ -25,12 +25,12 @@ export const appLinks = {
     page?: string,
     limit?: string
   ) =>
-    `/product/${categoryId}/${method}/${elementId}?slug=${slug}&page=${
+    `/category/${categoryId}/${method}/${elementId}?slug=${slug}&page=${
       page ?? `1`
     }&limit=${limit ?? `10`}`,
 
   productSearchIndex: (query?: string, branchId?: string, areaId?: string) =>
-    `/product/?key=${query ?? ``}&branch_id=${branchId ?? ''}&area_id=${
+    `/category/?key=${query ?? ``}&branch_id=${branchId ?? ''}&area_id=${
       areaId ?? ``
     }`,
 
