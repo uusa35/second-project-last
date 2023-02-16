@@ -102,10 +102,10 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
       if (isEmpty(element.sections)) {
         dispatch(enableAddToCart());
       }
+      // else if (total !== 0) {
+      //   handleResetInitialProductCart();
+      // }
       if (productCart.ProductID !== element.id) {
-        handleResetInitialProductCart();
-      }
-      if (total !== 0) {
         handleResetInitialProductCart();
       }
     }
@@ -117,6 +117,8 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
       dispatch(resetShowFooterElement());
     };
   }, [element?.id]);
+
+  console.log('element', element);
 
   const customAnimation = {
     mount: { scale: 1 },

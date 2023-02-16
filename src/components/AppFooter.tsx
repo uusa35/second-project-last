@@ -19,6 +19,7 @@ import {
   debounce,
   filter,
   first,
+  isArray,
   isEmpty,
   isNull,
   kebabCase,
@@ -115,15 +116,15 @@ const AppFooter: FC<Props> = ({
             });
           } else {
             if (r.error && r.error.data) {
-              console.log('r', first(values(r.error.data.msg)));
+              console.log('r', isArray(r.error.data.msg));
               dispatch(
                 showToastMessage({
                   content: r.error.data.msg
                     ? lowerCase(
                         kebabCase(
-                          r.error.data.msg.length === 1
-                            ? r.error.data.msg
-                            : first(values(r.error.data.msg))
+                          isArray(r.error.data.msg.length)
+                            ? first(values(r.error.data.msg))
+                            : r.error.data.msg
                         )
                       )
                     : 'select_a_branch_or_area_before_order_or_some_fields_are_required_missing',
