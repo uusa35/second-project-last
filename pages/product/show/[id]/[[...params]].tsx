@@ -20,6 +20,7 @@ import {
 import { baseUrl, imageSizes, imgUrl, suppressText } from '@/constants/*';
 import CustomImage from '@/components/CustomImage';
 import {
+  ceil,
   concat,
   filter,
   first,
@@ -29,6 +30,7 @@ import {
   map,
   multiply,
   now,
+  round,
   sum,
   sumBy,
 } from 'lodash';
@@ -66,6 +68,7 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
     locale: { lang },
     branch: { id: branch_id },
     area: { id: area_id },
+    cart: { total },
   } = useAppSelector((state) => state);
   const router = useRouter();
   const color = useAppSelector(themeColor);
@@ -99,6 +102,9 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
       if (isEmpty(element.sections)) {
         dispatch(enableAddToCart());
       }
+      // else if (total !== 0) {
+      //   handleResetInitialProductCart();
+      // }
       if (productCart.ProductID !== element.id) {
         handleResetInitialProductCart();
       }
@@ -111,6 +117,8 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
       dispatch(resetShowFooterElement());
     };
   }, [element?.id]);
+
+  console.log('element', element);
 
   const customAnimation = {
     mount: { scale: 1 },

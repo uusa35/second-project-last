@@ -28,8 +28,8 @@ import LoadingSpinner from '@/components/LoadingSpinner';
 type Props = {
   elements: Product[];
   url: string;
-  branch_id;
-  area_id;
+  branch_id: string;
+  area_id: string;
 };
 const ProductSearchIndex: NextPage<Props> = ({
   elements,
@@ -236,7 +236,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
         })
       );
       await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
-      if (isError || !elements.Data) {
+      if (isError || !elements) {
         return {
           notFound: true,
         };

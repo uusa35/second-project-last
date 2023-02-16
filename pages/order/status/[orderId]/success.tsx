@@ -63,7 +63,7 @@ const OrderSuccess: NextPage<Props> = ({ element, url }) => {
               {t('thank_you')}
             </h4>
             <p suppressHydrationWarning={suppressText}>
-              {t('your_order_has_been_recorded')}
+              {t('your_order_has_been_received')}
             </p>
           </div>
           <div className="mt-10 px-5 py-1 bg-gray-100"></div>
@@ -102,7 +102,7 @@ const OrderSuccess: NextPage<Props> = ({ element, url }) => {
               className="text-center pt-4 pb-2"
               suppressHydrationWarning={suppressText}
             >
-              {t('track_your_order_and_check_the_status_of_it_live')}
+              {t('track_your_order_status_below')}
             </p>
             <Link
               href={appLinks.orderInvoice(`${element.order_id}`)}

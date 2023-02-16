@@ -15,11 +15,22 @@ import {
   useLazyCheckPromoCodeQuery,
   useLazyGetCartProductsQuery,
 } from '@/redux/api/cartApi';
-import { filter, isEmpty, isNull, kebabCase, lowerCase } from 'lodash';
+import {
+  debounce,
+  filter,
+  first,
+  isArray,
+  isEmpty,
+  isNull,
+  kebabCase,
+  lowerCase,
+  values,
+} from 'lodash';
 import { setCartPromoSuccess } from '@/redux/slices/cartSlice';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import PaymentSummary from '@/widgets/cart/review/PaymentSummary';
+import { resetProductCart } from '@/redux/slices/productCartSlice';
 
 type Props = {
   handleSubmit?: (element?: any) => void;
@@ -93,21 +104,29 @@ const AppFooter: FC<Props> = ({
           if (r && r.data && r.data.status && r.data.data && r.data.data.Cart) {
             triggerGetCartProducts({ UserAgent: userAgent, url }).then((r) => {
               if (r.data && r.data.data && r.data.data.Cart) {
+                dispatch(
+                  showToastMessage({
+                    content: 'item_added_successfully',
+                    type: `success`,
+                  })
+                );
+                dispatch(resetProductCart());
               } else {
               }
-              dispatch(
-                showToastMessage({
-                  content: 'item_added_successfully',
-                  type: `success`,
-                })
-              );
             });
           } else {
             if (r.error && r.error.data) {
+              console.log('r', isArray(r.error.data.msg));
               dispatch(
                 showToastMessage({
                   content: r.error.data.msg
-                    ? lowerCase(kebabCase(r.error.data.msg))
+                    ? lowerCase(
+                        kebabCase(
+                          isArray(r.error.data.msg.length)
+                            ? first(values(r.error.data.msg))
+                            : r.error.data.msg
+                        )
+                      )
                     : 'select_a_branch_or_area_before_order_or_some_fields_are_required_missing',
                   type: `error`,
                 })
@@ -248,7 +267,7 @@ const AppFooter: FC<Props> = ({
               }}
             >
               <button
-                onClick={() => handleAddToCart()}
+                onClick={debounce(() => handleAddToCart(), 400)}
                 className={`${footerBtnClass}`}
                 style={{
                   backgroundColor: convertColor(color, 100),
@@ -261,7 +280,7 @@ const AppFooter: FC<Props> = ({
               </button>
               <span className={`flex flex-row items-center gap-2`}>
                 <p className={`text-xl text-white`}>
-                  {productCart.grossTotalPrice}
+                  {parseFloat(productCart.grossTotalPrice).toFixed(3)}
                 </p>
                 <span className={`text-white uppercase`}>{t('kwd')}</span>
               </span>
