@@ -157,7 +157,7 @@ export default ProductIndex;
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ query, locale, req }) => {
-      const { categoryId, branchId, page, limit, areaId, slug }: any = query;
+      const { categoryId, branch_id, page, limit, area_id, slug }: any = query;
       if (!categoryId) {
         return {
           notFound: true,
@@ -179,8 +179,8 @@ export const getServerSideProps = wrapper.getServerSideProps(
           category_id: categoryId.toString(),
           page: page ?? `1`,
           limit: limit ?? `10`,
-          ...(branchId && { branch_id: branchId }),
-          ...(areaId && { area_id: areaId }),
+          ...(branch_id && { branch_id }),
+          ...(area_id && { area_id }),
           lang: locale,
           url: req.headers.host,
         })

@@ -405,18 +405,13 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
                       }}
                     />
                   </p>
-                  <p className={` rtl:pl-1 ltr:pr-1`}>
+                  <p
+                    className={`flex flex-wrap rtl:pl-1 ltr:pr-1 overflow-hidden`}
+                  >
                     <TextTrans
-                      style={{
-                        maxWidth: '1000ch',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap',
-                        overflow: 'hidden',
-                        display: 'block',
-                        color: `black`,
-                      }}
                       ar={element.description_ar}
                       en={element.description_en}
+                      length={999}
                     />
                   </p>
                 </div>

@@ -28,10 +28,14 @@ import LoadingSpinner from '@/components/LoadingSpinner';
 type Props = {
   elements: Product[];
   url: string;
+  branch_id;
+  area_id;
 };
 const ProductSearchIndex: NextPage<Props> = ({
   elements,
   url,
+  branch_id,
+  area_id,
 }): JSX.Element => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
@@ -48,8 +52,8 @@ const ProductSearchIndex: NextPage<Props> = ({
   const { data: topSearch, isSuccess: topSearchSuccess } = useGetTopSearchQuery(
     {
       lang,
-      branchId,
-      areaId,
+      branchId: branch_id ?? branchId,
+      areaId: area_id ?? areaId,
       url,
     }
   );
@@ -216,7 +220,7 @@ export default ProductSearchIndex;
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ query, locale, req }) => {
-      const { key, branchId, area_id }: any = query;
+      const { key, branch_id, area_id }: any = query;
       if (!req.headers.host) {
         return {
           notFound: true,
@@ -225,7 +229,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
       const { data: elements, isError } = await store.dispatch(
         productApi.endpoints.getSearchProducts.initiate({
           key: key ?? ``,
-          ...(branchId && { branch_id: branchId }),
+          ...(branch_id && { branch_id }),
           ...(area_id && { areaId: area_id }),
           lang: locale,
           url: req.headers.host,
@@ -241,6 +245,8 @@ export const getServerSideProps = wrapper.getServerSideProps(
         props: {
           elements: elements.Data,
           url: req.headers.host,
+          branch_id: branch_id ?? ``,
+          area_id: area_id ?? ``,
         },
       };
     }
