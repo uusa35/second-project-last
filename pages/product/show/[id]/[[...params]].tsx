@@ -102,7 +102,10 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
       if (isEmpty(element.sections)) {
         dispatch(enableAddToCart());
       }
-      if (productCart.ProductID !== element.id && total !== 0) {
+      if (productCart.ProductID !== element.id) {
+        handleResetInitialProductCart();
+      }
+      if (total !== 0) {
         handleResetInitialProductCart();
       }
     }
@@ -160,8 +163,8 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
           ProductDesc: element.desc,
           Quantity: currentQty,
           ExtraNotes: ``,
-          totalPrice: ceil(element.price, 3),
-          grossTotalPrice: ceil(element.price, 3),
+          totalPrice: parseFloat(element.price),
+          grossTotalPrice: parseFloat(element.price),
           totalQty: currentQty,
           Price: parseFloat(element.price),
           enabled: false,
