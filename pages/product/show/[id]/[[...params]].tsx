@@ -70,6 +70,7 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
     branch: { id: branch_id },
     area: { id: area_id },
     cart: { total },
+    vendor: { logo },
   } = useAppSelector((state) => state);
   const router = useRouter();
   const color = useAppSelector(themeColor);
@@ -346,6 +347,7 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
 
   console.log('productCart', productCart);
   console.log('isSuccess', isSuccess);
+  console.log('element', element?.Data);
   if (!isSuccess) {
     return <LoadingSpinner fullWidth={true} />;
   }
@@ -355,6 +357,7 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
         title={`${product.name_ar} - ${product.name_en}`}
         description={`${product.description_ar} - ${product.description_en}`}
         mainImage={`${baseUrl}${product?.img[0]?.thumbnail.toString()}`}
+        icon={`${baseUrl}${logo}`}
       />
       <MainContentLayout
         url={url}

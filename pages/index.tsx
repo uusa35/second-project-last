@@ -66,6 +66,7 @@ const HomePage: NextPage<Props> = ({ element, url }): JSX.Element => {
       <MainHead
         title={element.name}
         mainImage={`${baseUrl}${element.logo}`}
+        icon={`${baseUrl}${element.logo}`}
         phone={element.phone}
       />
       <MainContentLayout url={url}>

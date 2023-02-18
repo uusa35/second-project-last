@@ -123,7 +123,7 @@ const ProductSearchIndex: NextPage<Props> = ({ url }): JSX.Element => {
         description={`searching products`}
         mainImage={`${baseUrl}${logo}`}
       />
-      <MainContentLayout url={url}>
+      <MainContentLayout url={url} backHome={true}>
         <div className={`px-4`}>
           {/*   search Input */}
           <div className={`w-full capitalize`}>

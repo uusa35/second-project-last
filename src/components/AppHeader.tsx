@@ -5,7 +5,10 @@ import SlideTopNav from '@/components/home/SlideTopNav';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { debounce } from 'lodash';
 
-const AppHeader: FC = () => {
+type Props = {
+  backHome?: boolean;
+};
+const AppHeader: FC<Props> = ({ backHome = false }) => {
   const [offset, setOffset] = useState(0);
   const router = useRouter();
   const [isHome, setIsHome] = useState(
@@ -32,7 +35,7 @@ const AppHeader: FC = () => {
       >
         {router.asPath === '/' ||
           (!router.asPath.includes('/home') && (
-            <BackBtn backHome={false} offset={offset} />
+            <BackBtn backHome={backHome} offset={offset} />
           ))}
         <SlideTopNav offset={offset} isHome={isHome} />
       </header>

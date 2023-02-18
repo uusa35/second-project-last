@@ -108,7 +108,7 @@ const ProductIndex: NextPage<Props> = ({
   return (
     <Suspense>
       <MainHead title={slug} description={slug} />
-      <MainContentLayout url={url}>
+      <MainContentLayout url={url} backHome={true}>
         <h1 className="capitalize" suppressHydrationWarning={suppressText}></h1>
         <div className={`px-4 capitalize`}>
           <div className="flex justify-center items-center">
