@@ -190,25 +190,6 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
           map(productCart.RadioBtnsAddons, (r) => r.uId)
       );
       dispatch(updateId(`${productCart.ProductID}${join(uIds, '')}`));
-
-      // if (
-      //     isEmpty(productCart.QuantityMeters) &&
-      //     element?.Data?.sections?.length !== 0
-      // ) {
-      //   dispatch(disableAddToCart());
-      //   console.log('case 1');
-      // } else {
-      //   const allAddons = map(productCart.QuantityMeters, (q) => q.addons[0]);
-      //   const currentValue = sumBy(allAddons, (a) => a.Value);
-      //   if (currentValue > 0 && currentQty > 0) {
-      //     dispatch(enableAddToCart());
-      //   } else {
-      //     if (element?.Data?.sections?.length !== 0) {
-      //       dispatch(disableAddToCart());
-      //       console.log('case 2');
-      //     }
-      //   }
-      // }
     }
   }, [
     productCart.QuantityMeters,
