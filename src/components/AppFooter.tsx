@@ -148,7 +148,7 @@ const AppFooter: FC<Props> = ({
                   content: r.error.data.msg
                     ? lowerCase(
                         kebabCase(
-                          first(values(r.error.data.msg))
+                          r.error.data.msg.isArray
                             ? first(values(r.error.data.msg))
                             : r.error.data.msg
                         )
