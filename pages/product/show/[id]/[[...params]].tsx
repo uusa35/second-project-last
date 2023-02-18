@@ -77,10 +77,9 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
   const [currentQty, setCurrentyQty] = useState<number>(
     productCart.ProductID === product.id ? productCart.Quantity : 1
   );
-  const [element, setElement] = useState<Product | null>(null);
   const [tabsOpen, setTabsOpen] = useState<{ id: number }[]>([]);
   const {
-    data,
+    data: element,
     isSuccess,
     refetch: refetchGetProduct,
   } = useGetProductQuery({
@@ -90,21 +89,17 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
     ...(area_id && { area_id }),
     url,
   });
+  console.log('element', element);
 
   useEffect(() => {
-    if (isSuccess && data && data.Data) {
-      setElement(data.Data);
-    }
-  }, [isSuccess]);
-
-  useEffect(() => {
-    if (isSuccess && !isNull(element)) {
-      dispatch(setCurrentModule(element.name));
-      if (isEmpty(element.sections)) {
-        dispatch(enableAddToCart());
-      }
-      if (productCart.ProductID !== element.id) {
+    if (isSuccess && element.Data) {
+      console.log('from inside if');
+      dispatch(setCurrentModule(element?.Data?.name));
+      if (productCart.ProductID !== element?.Data?.id) {
         handleResetInitialProductCart();
+      }
+      if (element?.Data?.sections?.length === 0) {
+        dispatch(enableAddToCart());
       }
       if (total > 0) {
         dispatch(resetRadioBtns());
@@ -112,15 +107,76 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
         dispatch(resetMeters());
       }
     }
+  }, [isSuccess, element?.Data?.id]);
+
+  useEffect(() => {
     if (url) {
       dispatch(setUrl(url));
     }
     dispatch(setShowFooterElement(`product_show`));
-
     return () => {
       dispatch(resetShowFooterElement());
     };
-  }, [element]);
+  }, []);
+
+  useEffect(() => {
+    if (isSuccess && !isNull(element)) {
+      if (isEmpty(productCart.QuantityMeters)) {
+        dispatch(disableAddToCart());
+      } else {
+        const allAddons = map(productCart.QuantityMeters, (q) => q.addons[0]);
+        const currentValue = sumBy(allAddons, (a) => a.Value);
+        if (currentValue > 0 && currentQty > 0) {
+          dispatch(enableAddToCart());
+        } else {
+          dispatch(disableAddToCart());
+        }
+      }
+    }
+  }, [productCart.QuantityMeters]);
+
+  useEffect(() => {
+    if (
+      isSuccess &&
+      !isNull(element) &&
+      !isNull(element.Data) &&
+      !isEmpty(productCart) &&
+      currentQty >= 1 &&
+      element?.Data?.amount &&
+      element?.Data?.amount >= currentQty
+    ) {
+      const allCheckboxes = map(productCart.CheckBoxes, (q) => q.addons[0]);
+      const allRadioBtns = map(productCart.RadioBtnsAddons, (q) => q.addons);
+      const allMeters = map(productCart.QuantityMeters, (q) => q.addons[0]);
+      const metersSum = sumBy(allMeters, (a) => multiply(a.price, a.Value)); // qty
+      const checkboxesSum = sumBy(allCheckboxes, (a) => a.Value * a.price); // qty
+      const radioBtnsSum = sumBy(allRadioBtns, (a) => a.Value * a.price); // qty
+      dispatch(
+        updatePrice({
+          totalPrice: sum([
+            parseFloat(element?.Data?.price),
+            metersSum,
+            checkboxesSum,
+            radioBtnsSum,
+          ]),
+          totalQty: currentQty,
+        })
+      );
+      const uIds = concat(
+        productCart.QuantityMeters &&
+          map(productCart.QuantityMeters, (q) => q.uId),
+        productCart.CheckBoxes && map(productCart.CheckBoxes, (c) => c.uId),
+        productCart.RadioBtnsAddons &&
+          map(productCart.RadioBtnsAddons, (r) => r.uId)
+      );
+      dispatch(updateId(`${productCart.ProductID}${join(uIds, '')}`));
+    }
+  }, [
+    productCart.QuantityMeters,
+    productCart.CheckBoxes,
+    productCart.RadioBtnsAddons,
+    currentQty,
+  ]);
 
   const customAnimation = {
     mount: { scale: 1 },
@@ -130,9 +186,9 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
   const handleIncrease = () => {
     if (
       element &&
-      element.amount &&
-      element.amount &&
-      element.amount >= currentQty + 1
+      element?.Data?.amount &&
+      element?.Data?.amount &&
+      element?.Data?.amount >= currentQty + 1
     ) {
       setCurrentyQty(currentQty + 1);
       dispatch(setCartProductQty(currentQty + 1));
@@ -143,8 +199,8 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
     if (isSuccess && !isNull(element)) {
       if (
         currentQty - 1 > 0 &&
-        element.amount &&
-        currentQty <= element.amount
+        element?.Data?.amount &&
+        currentQty <= element?.Data?.amount
       ) {
         setCurrentyQty(currentQty - 1);
         dispatch(setCartProductQty(currentQty - 1));
@@ -156,23 +212,23 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
   };
 
   const handleResetInitialProductCart = () => {
-    if (isSuccess && !isNull(element)) {
+    if (isSuccess && !isNull(element) && element.Data) {
       dispatch(
         setInitialProductCart({
-          ProductID: element.id,
-          ProductName: element.name,
-          ProductImage: element.img[0]?.thumbnail ?? ``,
-          name_ar: element.name_ar,
-          name_en: element.name_en,
-          ProductDesc: element.desc,
+          ProductID: element?.Data?.id,
+          ProductName: element?.Data?.name,
+          ProductImage: element?.Data?.img[0]?.thumbnail ?? ``,
+          name_ar: element?.Data?.name_ar,
+          name_en: element?.Data?.name_en,
+          ProductDesc: element?.Data?.desc,
           Quantity: currentQty,
           ExtraNotes: ``,
-          totalPrice: parseFloat(element.price),
-          grossTotalPrice: parseFloat(element.price),
+          totalPrice: parseFloat(element?.Data?.price),
+          grossTotalPrice: parseFloat(element?.Data?.price),
           totalQty: currentQty,
-          Price: parseFloat(element.price),
+          Price: parseFloat(element?.Data?.price),
           enabled: false,
-          image: imgUrl(element?.img[0]?.toString()),
+          image: imgUrl(element?.Data.img[0]?.toString()),
           id: now().toString(),
         })
       );
@@ -281,69 +337,11 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
     }
   };
 
-  useEffect(() => {
-    if (isSuccess && !isNull(element)) {
-      if (isEmpty(element.sections)) {
-        dispatch(enableAddToCart());
-      } else {
-        if (isEmpty(productCart.QuantityMeters)) {
-          dispatch(disableAddToCart());
-        } else {
-          const allAddons = map(productCart.QuantityMeters, (q) => q.addons[0]);
-          const currentValue = sumBy(allAddons, (a) => a.Value);
-          if (currentValue > 0 && currentQty > 0) {
-            dispatch(enableAddToCart());
-          } else {
-            // handleResetInitialProductCart();
-            dispatch(disableAddToCart());
-          }
-        }
-      }
-    }
-  }, [productCart.QuantityMeters]);
-
-  useEffect(() => {
-    if (
-      isSuccess &&
-      !isNull(element) &&
-      !isEmpty(productCart) &&
-      currentQty >= 1 &&
-      element.amount &&
-      element.amount >= currentQty
-    ) {
-      const allCheckboxes = map(productCart.CheckBoxes, (q) => q.addons[0]);
-      const allRadioBtns = map(productCart.RadioBtnsAddons, (q) => q.addons);
-      const allMeters = map(productCart.QuantityMeters, (q) => q.addons[0]);
-      const metersSum = sumBy(allMeters, (a) => multiply(a.price, a.Value)); // qty
-      const checkboxesSum = sumBy(allCheckboxes, (a) => a.Value * a.price); // qty
-      const radioBtnsSum = sumBy(allRadioBtns, (a) => a.Value * a.price); // qty
-      dispatch(
-        updatePrice({
-          totalPrice: sum([
-            parseFloat(element.price),
-            metersSum,
-            checkboxesSum,
-            radioBtnsSum,
-          ]),
-          totalQty: currentQty,
-        })
-      );
-      const uIds = concat(
-        productCart.QuantityMeters &&
-          map(productCart.QuantityMeters, (q) => q.uId),
-        productCart.CheckBoxes && map(productCart.CheckBoxes, (c) => c.uId),
-        productCart.RadioBtnsAddons &&
-          map(productCart.RadioBtnsAddons, (r) => r.uId)
-      );
-      dispatch(updateId(`${productCart.ProductID}${join(uIds, '')}`));
-    }
-  }, [
-    productCart.QuantityMeters,
-    productCart.CheckBoxes,
-    productCart.RadioBtnsAddons,
-    currentQty,
-  ]);
-
+  console.log('productCart', productCart);
+  console.log('isSuccess', isSuccess);
+  if (!isSuccess) {
+    return <LoadingSpinner fullWidth={true} />;
+  }
   return (
     <Suspense>
       <MainHead
@@ -357,13 +355,13 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
         handleIncreaseProductQty={handleIncrease}
         handleDecreaseProductQty={handleDecrease}
       >
-        {isSuccess && !isNull(element) ? (
+        {isSuccess && !isNull(element) && element.Data ? (
           <>
             <div className="relative w-full capitalize">
               <div className="relative w-full h-auto overflow-hidden">
-                {!isEmpty(element.img) ? (
+                {!isEmpty(element?.Data?.img) ? (
                   <Carousel className={`h-96`}>
-                    {map(element.img, (image: img, i) => (
+                    {map(element?.Data?.img, (image: img, i) => (
                       <div key={i}>
                         <CustomImage
                           src={`${
@@ -371,7 +369,7 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
                               ? imgUrl(image.original)
                               : NoFoundImage.src
                           }`}
-                          alt={element.name}
+                          alt={element?.Data?.name ?? ``}
                           width={imageSizes.xl}
                           height={imageSizes.lg}
                           className={`object-cover w-full h-96`}
@@ -382,7 +380,7 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
                 ) : (
                   <CustomImage
                     src={`${NoFoundImage.src}`}
-                    alt={element.name}
+                    alt={element?.Data?.name}
                     width={imageSizes.xl}
                     height={imageSizes.lg}
                     className={`object-cover w-full h-96`}
@@ -403,8 +401,8 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
                 <div className={` flex-1 space-y-3`}>
                   <p className="font-bold text-xl">
                     <TextTrans
-                      ar={element.name_ar}
-                      en={element.name_en}
+                      ar={element?.Data?.name_ar}
+                      en={element?.Data?.name_en}
                       style={{
                         maxWidth: '30ch',
                         textOverflow: 'ellipsis',
@@ -419,20 +417,20 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
                     className={`flex flex-wrap rtl:pl-1 ltr:pr-1 overflow-hidden`}
                   >
                     <TextTrans
-                      ar={element.description_ar}
-                      en={element.description_en}
+                      ar={element?.Data?.description_ar}
+                      en={element?.Data?.description_en}
                       length={999}
                     />
                   </p>
                 </div>
                 {/* <div className={`shrink-0`}>
               <p className={`text-lg `} style={{ color }}>
-                {element.price} <span className={`uppercase`}>{t(`kwd`)}</span>
+                {element?.Data?.price} <span className={`uppercase`}>{t(`kwd`)}</span>
               </p>
             </div> */}
               </div>
               {/*     sections  */}
-              {map(element.sections, (s: ProductSection, i) => (
+              {map(element?.Data?.sections, (s: ProductSection, i) => (
                 <div
                   className={`border-b-8 border-stone-100 px-8 py-4`}
                   key={i}
@@ -720,7 +718,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
         })
       );
       await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
-      if (isError || !element.status || !element.Data) {
+      if (isError || !element.Data) {
         return {
           notFound: true,
         };

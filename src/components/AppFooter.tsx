@@ -97,6 +97,7 @@ const AppFooter: FC<Props> = ({
       );
     } else {
       if (!isEmpty(productCart) && userAgent) {
+        console.log('productCart', productCart);
         await triggerAddToCart({
           process_type: method,
           area_branch: method === 'delivery' ? area.id : branchId,
