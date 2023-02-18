@@ -30,14 +30,18 @@ import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import CustomImage from '@/components/CustomImage';
 import LoadingSpinner from '@/components/LoadingSpinner';
 type Props = {
-  elements: ProductPagination<Product[]>;
   slug: string;
   url: string;
+  categoryId: string;
+  method: string;
+  elementId: string;
 };
 const ProductIndex: NextPage<Props> = ({
-  elements,
   slug,
   url,
+  categoryId,
+  method,
+  elementId,
 }): JSX.Element => {
   const { t } = useTranslation();
   const {
@@ -50,7 +54,6 @@ const ProductIndex: NextPage<Props> = ({
   const [icon, setIcon] = useState(true);
   const { query }: any = useRouter();
   const [currentProducts, setCurrentProducts] = useState<any>([]);
-  const { categoryId, method, elementId } = router.query;
   const { data: getSearchResults, isSuccess } = useGetProductsQuery<{
     data: AppQueryResult<ProductPagination<Product>>;
     isSuccess: boolean;
@@ -192,32 +195,11 @@ export const getServerSideProps = wrapper.getServerSideProps(
           notFound: true,
         };
       }
-      const {
-        data: elements,
-        isError,
-      }: {
-        data: AppQueryResult<Product[]>;
-        isError: boolean;
-      } = await store.dispatch(
-        productApi.endpoints.getProducts.initiate({
-          category_id: categoryId.toString(),
-          ...(method === `pickup` && { branch_id: elementId }),
-          ...(method === `delivery` && { area_id: elementId }),
-          page: page ?? `1`,
-          limit: limit ?? `10`,
-          lang: locale,
-          url: req.headers.host,
-        })
-      );
-      await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
-      if (isError || !elements.Data) {
-        return {
-          notFound: true,
-        };
-      }
       return {
         props: {
-          elements: elements.Data,
+          categoryId,
+          method,
+          elementId,
           slug: slug ?? ``,
           url: req.headers.host,
         },
