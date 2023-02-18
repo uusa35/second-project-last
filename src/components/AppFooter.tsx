@@ -121,7 +121,8 @@ const AppFooter: FC<Props> = ({
                   : { 'x-area-id': area.id },
               url,
             }).then((r) => {
-              if (r.data && r.data.data && r.data.data.Cart) {
+              if ((r.data && r.data.data) || r.data?.data.Cart) {
+                console.log('the r', r);
                 dispatch(
                   showToastMessage({
                     content: 'item_added_successfully',
@@ -132,6 +133,7 @@ const AppFooter: FC<Props> = ({
                 dispatch(resetCheckBoxes());
                 dispatch(resetMeters());
               } else {
+                console.log('else');
               }
             });
           } else {

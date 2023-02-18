@@ -52,8 +52,6 @@ const HomePage: NextPage<Props> = ({ element, url }): JSX.Element => {
       url,
     });
 
-  console.log('the vendor forom home', vendor);
-
   useEffect(() => {
     dispatch(setCurrentModule('home'));
     dispatch(setShowFooterElement('home'));

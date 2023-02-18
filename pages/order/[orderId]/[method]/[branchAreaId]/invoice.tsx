@@ -61,8 +61,6 @@ const OrderInvoice: NextPage<Props> = ({ url }): JSX.Element => {
     return <LoadingSpinner />;
   }
 
-  console.log(element.data);
-
   return (
     <Suspense>
       <MainContentLayout url={url}>
@@ -178,9 +176,7 @@ const OrderInvoice: NextPage<Props> = ({ url }): JSX.Element => {
               >
                 {t('delivery_instructions')} :
               </p>
-              <p>
-                {`${element.data.delivery_instruction}`}
-              </p>
+              <p>{`${element.data.delivery_instruction}`}</p>
             </div>
           </div>
           <div className="my-5 px-5 py-1 bg-gray-100"></div>
