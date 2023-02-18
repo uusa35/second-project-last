@@ -4,11 +4,11 @@ import { NextPage } from 'next';
 import Image from 'next/image';
 import { imgUrl, suppressText } from '@/constants/*';
 import { useTranslation } from 'react-i18next';
-import { orderApi } from '@/redux/api/orderApi';
+import { orderApi, useGetInvoiceQuery } from '@/redux/api/orderApi';
 import { isEmpty, map } from 'lodash';
 import { wrapper } from '@/redux/store';
 import { AppQueryResult } from '@/types/queries';
-import { OrderInvoice } from '@/types/index';
+// import { OrderInvoice } from '@/types/index';
 import { apiSlice } from '@/redux/api';
 import { useEffect, Suspense } from 'react';
 import {
@@ -17,16 +17,34 @@ import {
   setUrl,
 } from '@/redux/slices/appSettingSlice';
 import { themeColor } from '@/redux/slices/vendorSlice';
+import { useRouter } from 'next/router';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 type Props = {
-  element: OrderInvoice;
   url: string;
 };
-const OrderInvoice: NextPage<Props> = ({ element, url }): JSX.Element => {
-  const { vendor } = useAppSelector((state) => state);
+const OrderInvoice: NextPage<Props> = ({ url }): JSX.Element => {
+  const {
+    vendor,
+    branch,
+    area,
+    appSetting: { method },
+  } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const color = useAppSelector(themeColor);
   const { t } = useTranslation();
+  const { orderId } = useRouter().query;
+
+  // get invoice data
+  const { data: element, isSuccess } = useGetInvoiceQuery({
+    order_id: orderId as string,
+    url,
+    area_branch:
+      method === `pickup`
+        ? { 'x-branch-id': branch.id }
+        : { 'x-area-id': area.id },
+  });
+
   const handleMapLocation = (lat: string, long: string) => {
     window.open(`https://maps.google.com?q=${lat},${long}`);
   };
@@ -38,6 +56,12 @@ const OrderInvoice: NextPage<Props> = ({ element, url }): JSX.Element => {
       dispatch(setUrl(url));
     }
   }, []);
+
+  if (!isSuccess) {
+    return <LoadingSpinner />;
+  }
+
+  console.log(element.data);
 
   return (
     <Suspense>
@@ -57,14 +81,14 @@ const OrderInvoice: NextPage<Props> = ({ element, url }): JSX.Element => {
               className="px-2 font-semibold capitalize"
               suppressHydrationWarning={suppressText}
             >
-              {t('order')} {element.order_code}
+              {t('order')} {element.data.order_code}
             </h4>
           </div>
           <p
             className="font-semibold text-center pt-2 capitalize"
             suppressHydrationWarning={suppressText}
           >
-            {t(`${element.order_type}`)}
+            {t(`${element.data.order_type}`)}
           </p>
           <div className="my-5 px-5 py-1 bg-gray-100"></div>
           <div className="flex justify-between px-4 py-2 capitalize">
@@ -75,9 +99,9 @@ const OrderInvoice: NextPage<Props> = ({ element, url }): JSX.Element => {
               >
                 {t('customer_info')}
               </h4>
-              <p className="py-1">{element.customer.name}</p>
-              <p className="py-1">{element.customer.phone}</p>
-              <p className="py-1">{element.customer.email}</p>
+              <p className="py-1">{element.data.customer.name}</p>
+              <p className="py-1">{element.data.customer.phone}</p>
+              <p className="py-1">{element.data.customer.email}</p>
             </div>
             <div>
               <h4
@@ -87,7 +111,7 @@ const OrderInvoice: NextPage<Props> = ({ element, url }): JSX.Element => {
                 {t('pick_up_details')}
               </h4>
               <p className="py-1" suppressHydrationWarning={suppressText}>
-                {t('branch')} : {element.pickup_details.branch}
+                {t('branch')} : {element.data.pickup_details.branch}
               </p>
               <button
                 suppressHydrationWarning={suppressText}
@@ -95,8 +119,8 @@ const OrderInvoice: NextPage<Props> = ({ element, url }): JSX.Element => {
                 style={{ color }}
                 onClick={() =>
                   handleMapLocation(
-                    element.pickup_details.latitude,
-                    element.pickup_details.longitude
+                    element.data.pickup_details.latitude,
+                    element.data.pickup_details.longitude
                   )
                 }
               >
@@ -112,9 +136,9 @@ const OrderInvoice: NextPage<Props> = ({ element, url }): JSX.Element => {
               {t('payment_details')}
             </h4>
             <p suppressHydrationWarning={suppressText}>
-              {element.payment_type === 'C.O.D'
+              {element.data.payment_type === 'C.O.D'
                 ? t('cash_on_delivery')
-                : element.payment_type}
+                : element.data.payment_type}
             </p>
           </div>
           <div className="px-4 pt-4">
@@ -132,7 +156,7 @@ const OrderInvoice: NextPage<Props> = ({ element, url }): JSX.Element => {
                 {t('store_branch')} :
               </p>
               <p>
-                {`${element.order_details.branch}  - ${element.order_details.branch_address}`}
+                {`${element.data.order_details.branch}  - ${element.data.order_details.branch_address}`}
               </p>
             </div>
             <div className="flex items-center py-1">
@@ -143,8 +167,19 @@ const OrderInvoice: NextPage<Props> = ({ element, url }): JSX.Element => {
                 {t('time_date')} :
               </p>
               <p>
-                {element.order_details.order_time}{' '}
-                {element.order_details.order_date}
+                {element.data.order_details.order_time}{' '}
+                {element.data.order_details.order_date}
+              </p>
+            </div>
+            <div className="flex items-center py-1">
+              <p
+                className="pe-2 font-extrabold"
+                suppressHydrationWarning={suppressText}
+              >
+                {t('delivery_instructions')} :
+              </p>
+              <p>
+                {`${element.data.delivery_instruction}`}
               </p>
             </div>
           </div>
@@ -207,7 +242,7 @@ const OrderInvoice: NextPage<Props> = ({ element, url }): JSX.Element => {
                   </tr> */}
                 </thead>
                 <tbody>
-                  {map(element.order_summary.items, (item, idx) => (
+                  {map(element.data.order_summary.items, (item, idx) => (
                     <>
                       <tr key={idx} className="text-start">
                         <td className="py-3 px-3">{item.quantity}</td>
@@ -277,18 +312,24 @@ const OrderInvoice: NextPage<Props> = ({ element, url }): JSX.Element => {
                 suppressHydrationWarning={suppressText}
                 className={`uppercase`}
               >
-                {element.order_summary.sub_total} {t('kwd')}
+                {element.data.order_summary.sub_total} {t('kwd')}
               </p>
             </div>
-            <div className="flex justify-between mb-3 text-lg">
-              <p suppressHydrationWarning={suppressText}>{t('tax')}</p>
-              <p
-                suppressHydrationWarning={suppressText}
-                className={`uppercase`}
-              >
-                {element.order_summary.tax} {t('kwd')}
-              </p>
-            </div>
+
+            {element.data.order_summary.tax ? (
+              <div className="flex justify-between mb-3 text-lg">
+                <p suppressHydrationWarning={suppressText}>{t('tax')}</p>
+                <p
+                  suppressHydrationWarning={suppressText}
+                  className={`uppercase`}
+                >
+                  {element.data.order_summary.tax} {t('kwd')}
+                </p>
+              </div>
+            ) : (
+              <></>
+            )}
+
             <div className="flex justify-between mb-3 text-lg">
               <p suppressHydrationWarning={suppressText}>
                 {t('delivery_services')}
@@ -297,7 +338,7 @@ const OrderInvoice: NextPage<Props> = ({ element, url }): JSX.Element => {
                 suppressHydrationWarning={suppressText}
                 className={`uppercase`}
               >
-                {element.order_summary.delivery_fee} {t('kwd')}
+                {element.data.order_summary.delivery_fee} {t('kwd')}
               </p>
             </div>
 
@@ -313,7 +354,7 @@ const OrderInvoice: NextPage<Props> = ({ element, url }): JSX.Element => {
                 suppressHydrationWarning={suppressText}
                 className={`uppercase`}
               >
-                {element.order_summary.total} {t('kwd')}
+                {element.data.order_summary.total} {t('kwd')}
               </p>
             </div>
           </div>
@@ -327,37 +368,43 @@ export default OrderInvoice;
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ req, query }) => {
-      if (!req.headers.host) {
+      const { orderId, method, branchAreaId }: any = query;
+      if (!orderId || !method || !req.headers.host) {
         return {
           notFound: true,
         };
       }
       const url = req.headers.host;
-      const { orderId }: any = query;
-      if (!orderId) {
+      if (!branchAreaId) {
         return {
-          notFound: true,
+          redirect: {
+            destination: `/cart/${method}/select`,
+            permanent: false,
+          },
         };
       }
-      const {
-        data: element,
-        isError,
-      }: { data: AppQueryResult<OrderInvoice>; isError: boolean } =
-        await store.dispatch(
-          orderApi.endpoints.getInvoice.initiate({
-            order_id: orderId,
-            url,
-          })
-        );
-      await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
-      if (isError || !element.status || !element.data) {
-        return {
-          notFound: true,
-        };
-      }
+      // const {
+      //   data: element.data,
+      //   isError,
+      // }: { data: AppQueryResult<OrderInvoice>; isError: boolean } =
+      //   await store.dispatch(
+      //     orderApi.endpoints.getInvoice.initiate({
+      //       order_id: orderId,
+      //       url,
+      //       area_branch:
+      //         method === `pickup`
+      //           ? { 'x-branch-id': branchAreaId }
+      //           : { 'x-area-id': branchAreaId },
+      //     })
+      //   );
+      // await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
+      // if (isError || !element.data.status || !element.data.data) {
+      //   return {
+      //     notFound: true,
+      //   };
+      // }
       return {
         props: {
-          element: element.data,
           url,
         },
       };

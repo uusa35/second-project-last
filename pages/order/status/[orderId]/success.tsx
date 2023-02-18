@@ -29,6 +29,9 @@ const OrderSuccess: NextPage<Props> = ({ element, url }) => {
   const { t } = useTranslation();
   const {
     customer: { userAgent },
+    appSetting: { method },
+    branch,
+    area,
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
   const dispatch = useAppDispatch();
@@ -40,7 +43,14 @@ const OrderSuccess: NextPage<Props> = ({ element, url }) => {
     if (url) {
       dispatch(setUrl(url));
     }
-    triggerGetCartProducts({ UserAgent: userAgent, url });
+    triggerGetCartProducts({
+      UserAgent: userAgent,
+      area_branch:
+        method === `pickup`
+          ? { 'x-branch-id': branch.id }
+          : { 'x-area-id': area.id },
+      url,
+    });
   }, []);
 
   return (
@@ -105,7 +115,11 @@ const OrderSuccess: NextPage<Props> = ({ element, url }) => {
               {t('track_your_order_status_below')}
             </p>
             <Link
-              href={appLinks.orderInvoice(`${element.order_id}`)}
+              href={appLinks.orderInvoice(
+                `${element.order_id}`,
+                `${method}`,
+                `${method === 'delivery' ? area.id : branch.id}`
+              )}
               scroll={true}
               className={`flex grow justify-center items-center p-4 rounded-lg text-white mb-3 shadow-lg`}
               style={{ backgroundColor: color }}
