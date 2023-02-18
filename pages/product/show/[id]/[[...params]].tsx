@@ -121,15 +121,22 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
 
   useEffect(() => {
     if (isSuccess && !isNull(element)) {
-      if (isEmpty(productCart.QuantityMeters)) {
+      if (
+        isEmpty(productCart.QuantityMeters) &&
+        element?.Data?.sections?.length !== 0
+      ) {
         dispatch(disableAddToCart());
+        console.log('case 1');
       } else {
         const allAddons = map(productCart.QuantityMeters, (q) => q.addons[0]);
         const currentValue = sumBy(allAddons, (a) => a.Value);
         if (currentValue > 0 && currentQty > 0) {
           dispatch(enableAddToCart());
         } else {
-          dispatch(disableAddToCart());
+          if (element?.Data?.sections?.length !== 0) {
+            dispatch(disableAddToCart());
+            console.log('case 2');
+          }
         }
       }
     }
