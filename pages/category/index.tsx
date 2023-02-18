@@ -83,23 +83,24 @@ const ProductSearchIndex: NextPage<Props> = ({ url }): JSX.Element => {
 
   const handleChange = (searchInputKey: string) => {
     setSearchIsEmpty(searchInputKey.length === 0);
-    if (searchInputKey.length > 2) {
-      triggerGetProducts({
-        key: searchInputKey ?? ``,
-        ...(branchId && { branch_id: branch_id ?? branchId }),
-        ...(areaId && { areaId: area_id ?? areaId }),
-        lang: router.locale,
-        url,
-      }).then((r: any) => {
-        if (r.data && r.data.Data && r.data.Data.length > 0) {
-          setCurrentProducts(r.data.Data);
-        }
-      });
-    } else {
-      if (searchProductsSuccess) {
-        setCurrentProducts(elements.Data);
+    // if (searchInputKey.length > 2) {
+    triggerGetProducts({
+      key: searchInputKey ?? ``,
+      ...(branchId && { branch_id: branch_id ?? branchId }),
+      ...(areaId && { areaId: area_id ?? areaId }),
+      lang: router.locale,
+      url,
+    }).then((r: any) => {
+      if (r.data && r.data.Data && r.data.Data.length > 0) {
+        setCurrentProducts(r.data.Data);
       }
-    }
+    });
+    // }
+    // else {
+    //   if (searchProductsSuccess) {
+    //     setCurrentProducts(elements.Data);
+    //   }
+    // }
   };
 
   if (

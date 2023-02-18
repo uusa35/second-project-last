@@ -84,8 +84,6 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
   });
   const [triggerCheckPromoCode] = useLazyCheckPromoCodeQuery();
 
-  console.log('cartItems', cartItems);
-
   useEffect(() => {
     if (
       isSuccess &&

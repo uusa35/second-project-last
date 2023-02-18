@@ -238,8 +238,6 @@ const CartReview: NextPage<Props> = ({ url }) => {
     });
   };
 
-  console.log('customer', customer);
-
   return (
     <Suspense>
       <MainContentLayout handleSubmit={handleCreateOrder} url={url}>
