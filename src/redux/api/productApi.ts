@@ -111,5 +111,6 @@ export const {
   useGetProductsQuery,
   useGetProductQuery,
   useGetTopSearchQuery,
+  useGetSearchProductsQuery,
   useLazyGetSearchProductsQuery,
 } = productApi;
