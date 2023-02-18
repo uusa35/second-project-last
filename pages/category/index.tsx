@@ -24,17 +24,8 @@ import LoadingSpinner from '@/components/LoadingSpinner';
 
 type Props = {
   url: string;
-  branch_id: string;
-  area_id: string;
-  key: string;
 };
-const ProductSearchIndex: NextPage<Props> = ({
-  // elements,
-  url,
-  branch_id,
-  area_id,
-  key,
-}): JSX.Element => {
+const ProductSearchIndex: NextPage<Props> = ({ url }): JSX.Element => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const {
@@ -44,6 +35,7 @@ const ProductSearchIndex: NextPage<Props> = ({
     vendor: { logo },
   } = useAppSelector((state) => state);
   const router = useRouter();
+  const { key, branch_id, area_id }: any = router.query;
   const [searchIsEmpty, setSearchIsEmpty] = useState(true);
   const [currentProducts, setCurrentProducts] = useState<any>([]);
   const { data: topSearch, isSuccess: topSearchSuccess } = useGetTopSearchQuery(
@@ -62,8 +54,8 @@ const ProductSearchIndex: NextPage<Props> = ({
   const { data: elements, isSuccess: searchProductsSuccess } =
     useGetSearchProductsQuery({
       key: key ?? ``,
-      ...(branch_id && { branch_id }),
-      ...(area_id && { areaId: area_id }),
+      ...(branchId && { branch_id: branch_id ?? branchId }),
+      ...(areaId && { areaId: area_id ?? areaId }),
       lang: router.locale,
       url,
     });
@@ -76,31 +68,46 @@ const ProductSearchIndex: NextPage<Props> = ({
   }, []);
 
   useEffect(() => {
-    if (elements && elements.Data) {
-      setCurrentProducts(elements.Data);
-    }
-  }, [searchProductsSuccess]);
+    triggerGetProducts({
+      key: key ?? ``,
+      ...(branchId && { branch_id: branch_id ?? branchId }),
+      ...(areaId && { areaId: area_id ?? areaId }),
+      lang: router.locale,
+      url,
+    }).then((r: any) => {
+      if (r.data && r.data.Data && r.data.Data.length > 0) {
+        setCurrentProducts(r.data.Data);
+      }
+    });
+  }, [key]);
 
-  const handleChange = (key: string) => {
-    if (searchProductsSuccess) {
-      setSearchIsEmpty(key.length === 0);
-      if (key.length > 2) {
-        triggerGetProducts({
-          key: key ?? ``,
-          ...(branch_id && { branch_id }),
-          ...(area_id && { areaId: area_id }),
-          lang: router.locale,
-          url,
-        }).then((r: any) => {
+  const handleChange = (searchInputKey: string) => {
+    setSearchIsEmpty(searchInputKey.length === 0);
+    if (searchInputKey.length > 2) {
+      triggerGetProducts({
+        key: searchInputKey ?? ``,
+        ...(branchId && { branch_id: branch_id ?? branchId }),
+        ...(areaId && { areaId: area_id ?? areaId }),
+        lang: router.locale,
+        url,
+      }).then((r: any) => {
+        if (r.data && r.data.Data && r.data.Data.length > 0) {
           setCurrentProducts(r.data.Data);
-        });
-      } else {
+        }
+      });
+    } else {
+      if (searchProductsSuccess) {
         setCurrentProducts(elements.Data);
       }
     }
   };
 
-  if (!topSearchSuccess || !topSearch.Data || !searchProductsSuccess) {
+  if (
+    !topSearchSuccess ||
+    !topSearch.Data ||
+    !router.isReady ||
+    !searchProductsSuccess
+  ) {
     return <LoadingSpinner fullWidth={true} />;
   }
 
@@ -124,7 +131,15 @@ const ProductSearchIndex: NextPage<Props> = ({
                 {isEmpty(key) ? (
                   <MagnifyingGlassIcon className="h-8 w-8" aria-hidden="true" />
                 ) : (
-                  <Link href={appLinks.productSearchIndex(branchId, areaId)}>
+                  <Link
+                    scroll={true}
+                    replace={true}
+                    href={appLinks.productSearchIndex(
+                      ``,
+                      branch_id ?? branchId,
+                      area_id ?? areaId
+                    )}
+                  >
                     <XMarkIcon
                       className="h-8 w-8 text-stone-400"
                       aria-hidden="true"
@@ -154,14 +169,16 @@ const ProductSearchIndex: NextPage<Props> = ({
                 !isNull(searchKey) &&
                 searchKey !== 'null' && (
                   <Link
+                    scroll={true}
+                    replace={true}
                     className={`col-span-1 p-2 rounded-md bg-stone-100 text-center ${
                       key === searchKey && `bg-stone-200 shadow-sm`
                     }`}
                     key={i}
                     href={appLinks.productSearchIndex(
                       searchKey,
-                      branchId,
-                      areaId
+                      branch_id ?? branchId,
+                      area_id ?? areaId
                     )}
                   >
                     {searchKey}
@@ -214,35 +231,15 @@ export default ProductSearchIndex;
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
-    async ({ query, locale, req }) => {
-      const { key, branch_id, area_id }: any = query;
+    async ({ req, query }) => {
       if (!req.headers.host) {
         return {
           notFound: true,
         };
       }
-      // const { data: elements, isError } = await store.dispatch(
-      //   productApi.endpoints.getSearchProducts.initiate({
-      //     key: key ?? ``,
-      //     ...(branch_id && { branch_id }),
-      //     ...(area_id && { areaId: area_id }),
-      //     lang: locale,
-      //     url: req.headers.host,
-      //   })
-      // );
-      // await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
-      // if (isError || !elements) {
-      //   return {
-      //     notFound: true,
-      //   };
-      // }
       return {
         props: {
-          // elements: elements.Data,
-          key,
           url: req.headers.host,
-          branch_id: branch_id ?? ``,
-          area_id: area_id ?? ``,
         },
       };
     }
