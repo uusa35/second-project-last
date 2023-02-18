@@ -120,7 +120,7 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
     return () => {
       dispatch(resetShowFooterElement());
     };
-  }, [element?.id]);
+  }, [element]);
 
   const customAnimation = {
     mount: { scale: 1 },

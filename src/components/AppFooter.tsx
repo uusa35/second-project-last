@@ -137,7 +137,9 @@ const AppFooter: FC<Props> = ({
               }
             });
           } else {
+            console.log('else');
             if (r.error && r.error.data) {
+              console.log('r', r);
               // console.log('r', r.error.data.msg);
               // console.log('isArray', r.error.data.msg);
               dispatch(
