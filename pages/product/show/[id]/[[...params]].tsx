@@ -120,28 +120,28 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
     };
   }, []);
 
-  useEffect(() => {
-    if (isSuccess && !isNull(element)) {
-      if (
-        isEmpty(productCart.QuantityMeters) &&
-        element?.Data?.sections?.length !== 0
-      ) {
-        dispatch(disableAddToCart());
-        console.log('case 1');
-      } else {
-        const allAddons = map(productCart.QuantityMeters, (q) => q.addons[0]);
-        const currentValue = sumBy(allAddons, (a) => a.Value);
-        if (currentValue > 0 && currentQty > 0) {
-          dispatch(enableAddToCart());
-        } else {
-          if (element?.Data?.sections?.length !== 0) {
-            dispatch(disableAddToCart());
-            console.log('case 2');
-          }
-        }
-      }
-    }
-  }, [productCart.QuantityMeters]);
+  // useEffect(() => {
+  //   if (isSuccess && !isNull(element)) {
+  //     if (
+  //       isEmpty(productCart.QuantityMeters) &&
+  //       element?.Data?.sections?.length !== 0
+  //     ) {
+  //       dispatch(disableAddToCart());
+  //       console.log('case 1');
+  //     } else {
+  //       const allAddons = map(productCart.QuantityMeters, (q) => q.addons[0]);
+  //       const currentValue = sumBy(allAddons, (a) => a.Value);
+  //       if (currentValue > 0 && currentQty > 0) {
+  //         dispatch(enableAddToCart());
+  //       } else {
+  //         if (element?.Data?.sections?.length !== 0) {
+  //           dispatch(disableAddToCart());
+  //           console.log('case 2');
+  //         }
+  //       }
+  //     }
+  //   }
+  // }, [productCart.QuantityMeters]);
 
   useEffect(() => {
     if (
@@ -159,6 +159,18 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
       const metersSum = sumBy(allMeters, (a) => multiply(a.price, a.Value)); // qty
       const checkboxesSum = sumBy(allCheckboxes, (a) => a.Value * a.price); // qty
       const radioBtnsSum = sumBy(allRadioBtns, (a) => a.Value * a.price); // qty
+      if (
+        element?.Data?.sections?.length !== 0 &&
+        isEmpty(allCheckboxes) &&
+        isEmpty(allRadioBtns) &&
+        isEmpty(allMeters)
+      ) {
+        console.log('if');
+        dispatch(disableAddToCart());
+      } else {
+        console.log('else');
+        dispatch(enableAddToCart());
+      }
       dispatch(
         updatePrice({
           totalPrice: sum([
@@ -178,6 +190,25 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
           map(productCart.RadioBtnsAddons, (r) => r.uId)
       );
       dispatch(updateId(`${productCart.ProductID}${join(uIds, '')}`));
+
+      // if (
+      //     isEmpty(productCart.QuantityMeters) &&
+      //     element?.Data?.sections?.length !== 0
+      // ) {
+      //   dispatch(disableAddToCart());
+      //   console.log('case 1');
+      // } else {
+      //   const allAddons = map(productCart.QuantityMeters, (q) => q.addons[0]);
+      //   const currentValue = sumBy(allAddons, (a) => a.Value);
+      //   if (currentValue > 0 && currentQty > 0) {
+      //     dispatch(enableAddToCart());
+      //   } else {
+      //     if (element?.Data?.sections?.length !== 0) {
+      //       dispatch(disableAddToCart());
+      //       console.log('case 2');
+      //     }
+      //   }
+      // }
     }
   }, [
     productCart.QuantityMeters,
