@@ -2,14 +2,9 @@ import { FC, ReactNode, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import i18n from 'i18next';
 import { useRouter } from 'next/router';
-import {
-  changePreviousUrlLocale,
-  hideSideMenu,
-  setPreviousUrl,
-  setUrl,
-} from '@/redux/slices/appSettingSlice';
+import { hideSideMenu } from '@/redux/slices/appSettingSlice';
 import { setUserAgent } from '@/redux/slices/customerSlice';
-import { arboriaFont, gessFont, tajwalFont } from '@/constants/*';
+import { arboriaFont, gessFont } from '@/constants/*';
 import { setLocale } from '@/redux/slices/localeSlice';
 import moment from 'moment';
 import dynamic from 'next/dynamic';
@@ -17,7 +12,7 @@ import { useGetVendorQuery } from '@/redux/api/vendorApi';
 import { AppQueryResult } from '@/types/queries';
 import { Vendor } from '@/types/index';
 import { setVendor } from '@/redux/slices/vendorSlice';
-import { isEmpty, isNull } from 'lodash';
+import { isNull } from 'lodash';
 import { useLazyCreateTempIdQuery } from '@/redux/api/cartApi';
 import * as yup from 'yup';
 const MainAsideLayout = dynamic(
