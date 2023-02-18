@@ -1,17 +1,14 @@
 import MainContentLayout from '@/layouts/MainContentLayout';
 import { wrapper } from '@/redux/store';
 import {
-  productApi,
+  useGetSearchProductsQuery,
   useGetTopSearchQuery,
   useLazyGetSearchProductsQuery,
 } from '@/redux/api/productApi';
-import { Product } from '@/types/index';
 import { NextPage } from 'next';
-import { apiSlice } from '@/redux/api';
 import { debounce, isEmpty, map, isNull } from 'lodash';
 import { appLinks, baseUrl, imageSizes, suppressText } from '@/constants/*';
 import MainHead from '@/components/MainHead';
-import NotFoundImage from '@/appImages/not_found.png';
 import NoResultFound from '@/appImages/no_result_found.webp';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -26,16 +23,17 @@ import CustomImage from '@/components/CustomImage';
 import LoadingSpinner from '@/components/LoadingSpinner';
 
 type Props = {
-  elements: Product[];
   url: string;
   branch_id: string;
   area_id: string;
+  key: string;
 };
 const ProductSearchIndex: NextPage<Props> = ({
-  elements,
+  // elements,
   url,
   branch_id,
   area_id,
+  key,
 }): JSX.Element => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
@@ -46,7 +44,6 @@ const ProductSearchIndex: NextPage<Props> = ({
     vendor: { logo },
   } = useAppSelector((state) => state);
   const router = useRouter();
-  const { key } = router.query;
   const [searchIsEmpty, setSearchIsEmpty] = useState(true);
   const [currentProducts, setCurrentProducts] = useState<any>([]);
   const { data: topSearch, isSuccess: topSearchSuccess } = useGetTopSearchQuery(
@@ -62,8 +59,14 @@ const ProductSearchIndex: NextPage<Props> = ({
       triggerGetProducts: () => void;
       isSuccess: boolean;
     }>();
-
-  console.log('ProductIndex without branch');
+  const { data: elements, isSuccess: searchProductsSuccess } =
+    useGetSearchProductsQuery({
+      key: key ?? ``,
+      ...(branch_id && { branch_id }),
+      ...(area_id && { areaId: area_id }),
+      lang: router.locale,
+      url,
+    });
 
   useEffect(() => {
     dispatch(setCurrentModule('product_search_index'));
@@ -73,28 +76,37 @@ const ProductSearchIndex: NextPage<Props> = ({
   }, []);
 
   useEffect(() => {
-    setCurrentProducts(elements);
-  }, [key]);
+    if (elements && elements.Data) {
+      setCurrentProducts(elements.Data);
+    }
+  }, [searchProductsSuccess]);
 
   const handleChange = (key: string) => {
-    if (key.length === 0) {
-      setSearchIsEmpty(true);
-    } else setSearchIsEmpty(false);
-
-    if (key.length > 2) {
-      triggerGetProducts({ key, lang, branch_id: branchId, url }).then(
-        (r: any) => {
+    if (searchProductsSuccess) {
+      setSearchIsEmpty(key.length === 0);
+      if (key.length > 2) {
+        triggerGetProducts({
+          key: key ?? ``,
+          ...(branch_id && { branch_id }),
+          ...(area_id && { areaId: area_id }),
+          lang: router.locale,
+          url,
+        }).then((r: any) => {
           setCurrentProducts(r.data.Data);
-        }
-      );
-    } else {
-      setCurrentProducts(elements);
+        });
+      } else {
+        setCurrentProducts(elements.Data);
+      }
     }
   };
 
-  if (!topSearchSuccess && !getProductsSuccess) {
+  if (!topSearchSuccess || !topSearch.Data || !searchProductsSuccess) {
     return <LoadingSpinner fullWidth={true} />;
   }
+
+  // console.log('searching ...');
+  // console.log('elements ===>', elements);
+  // console.log('current', currentProducts);
 
   return (
     <Suspense>
@@ -134,51 +146,37 @@ const ProductSearchIndex: NextPage<Props> = ({
             </div>
           </div>
 
-          {topSearchSuccess && topSearch.Data && (
-            <>
-              <div className="grid grid-cols-4 capitalize gap-x-4 gap-y-2 my-3">
-                {map(
-                  topSearch.Data.topSearch,
-                  (searchKey, i) =>
-                    !isEmpty(searchKey) &&
-                    !isNull(searchKey) &&
-                    searchKey !== 'null' && (
-                      <Link
-                        className={`col-span-1 p-2 rounded-md bg-stone-100 text-center ${
-                          key === searchKey && `bg-stone-200 shadow-sm`
-                        }`}
-                        key={i}
-                        href={appLinks.productSearchIndex(
-                          searchKey,
-                          branchId,
-                          areaId
-                        )}
-                      >
-                        {searchKey}
-                      </Link>
-                    )
-                )}
-                {/* <Link
-                  className={`p-2 rounded-md bg-red-700 text-white`}
-                  href={appLinks.productSearchIndex(branchId, areaId)}
-                >
-                  {t(`clear`)}
-                </Link> */}
-              </div>
-              {(key === '' || key === 'null') && searchIsEmpty && (
-                <div>
-                  <div className="h-2 bg-stone-100 my-5 -mx-3"></div>
-                  <p className="mb-3 text-semibold">{t('trending_items')}</p>
-                  {map(topSearch.Data.trendingItems, (item) => {
-                    return <VerProductWidget element={item} key={item.id} />;
-                  })}
-                </div>
-              )}
-            </>
-          )}
-
+          <div className="grid grid-cols-4 capitalize gap-x-4 gap-y-2 my-3">
+            {map(
+              topSearch.Data.topSearch,
+              (searchKey, i) =>
+                !isEmpty(searchKey) &&
+                !isNull(searchKey) &&
+                searchKey !== 'null' && (
+                  <Link
+                    className={`col-span-1 p-2 rounded-md bg-stone-100 text-center ${
+                      key === searchKey && `bg-stone-200 shadow-sm`
+                    }`}
+                    key={i}
+                    href={appLinks.productSearchIndex(
+                      searchKey,
+                      branchId,
+                      areaId
+                    )}
+                  >
+                    {searchKey}
+                  </Link>
+                )
+            )}
+            {/*<Link*/}
+            {/*  className={`p-2 rounded-md bg-gray-100 text-black text-center`}*/}
+            {/*  href={appLinks.productSearchIndex(branchId, areaId)}*/}
+            {/*>*/}
+            {/*  {t(`clear`)}*/}
+            {/*</Link>*/}
+          </div>
           <div className="my-4 capitalize">
-            {isEmpty(currentProducts) && !topSearchSuccess && (
+            {isEmpty(currentProducts) && (
               <div
                 className={`w-full flex flex-1 flex-col justify-center items-center space-y-4 my-12`}
               >
@@ -194,22 +192,17 @@ const ProductSearchIndex: NextPage<Props> = ({
                 </span>
               </div>
             )}
+            <div className="flex justify-between items-center">
+              <p className="text-semibold">{t('top_results')}</p>
+              <p className="text-stone-300">
+                {currentProducts.length} {t('product_found')}
+              </p>
+            </div>
 
-            {!isEmpty(currentProducts) && (
-              <>
-                <div className="flex justify-between items-center">
-                  <p className="text-semibold">{t('top_results')}</p>
-                  <p className="text-stone-300">
-                    {currentProducts.length} {t('product_found')}
-                  </p>
-                </div>
-
-                <div className="h-2 bg-stone-100 my-5 -mx-3"></div>
-                {map(currentProducts, (p, i) => (
-                  <VerProductWidget element={p} key={i} />
-                ))}
-              </>
-            )}
+            <div className="h-2 bg-stone-100 my-5 -mx-3"></div>
+            {map(currentProducts, (p, i) => (
+              <VerProductWidget element={p} key={i} />
+            ))}
           </div>
         </div>
       </MainContentLayout>
@@ -228,24 +221,25 @@ export const getServerSideProps = wrapper.getServerSideProps(
           notFound: true,
         };
       }
-      const { data: elements, isError } = await store.dispatch(
-        productApi.endpoints.getSearchProducts.initiate({
-          key: key ?? ``,
-          ...(branch_id && { branch_id }),
-          ...(area_id && { areaId: area_id }),
-          lang: locale,
-          url: req.headers.host,
-        })
-      );
-      await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
-      if (isError || !elements) {
-        return {
-          notFound: true,
-        };
-      }
+      // const { data: elements, isError } = await store.dispatch(
+      //   productApi.endpoints.getSearchProducts.initiate({
+      //     key: key ?? ``,
+      //     ...(branch_id && { branch_id }),
+      //     ...(area_id && { areaId: area_id }),
+      //     lang: locale,
+      //     url: req.headers.host,
+      //   })
+      // );
+      // await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
+      // if (isError || !elements) {
+      //   return {
+      //     notFound: true,
+      //   };
+      // }
       return {
         props: {
-          elements: elements.Data,
+          // elements: elements.Data,
+          key,
           url: req.headers.host,
           branch_id: branch_id ?? ``,
           area_id: area_id ?? ``,
