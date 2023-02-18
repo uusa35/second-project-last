@@ -9,15 +9,17 @@ export const vendorApi = apiSlice.injectEndpoints({
       {
         lang: Locale['lang'] | string | undefined;
         url: string | undefined;
-        area_branch?: any;
+        branch_id?: string;
+        area_id?: string;
       }
     >({
-      query: ({ lang, url, area_branch }) => ({
+      query: ({ lang, url, branch_id = ``, area_id = `` }) => ({
         url: `vendorDetails`,
         headers: {
           lang,
           url,
-          ...(area_branch ?? area_branch),
+          ...(area_id && { 'x-area-id': area_id }),
+          ...(branch_id && { 'x-branch-id': branch_id }),
         },
         validateStatus: (response, result) =>
           response.status == 200 && result.status,

@@ -42,6 +42,7 @@ const HomePage: NextPage<Props> = ({ element, url }): JSX.Element => {
     locale: { lang },
     branch: { id: branch_id },
     area: { id: area_id },
+    vendor,
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -50,6 +51,8 @@ const HomePage: NextPage<Props> = ({ element, url }): JSX.Element => {
       lang,
       url,
     });
+
+  console.log('the vendor forom home', vendor);
 
   useEffect(() => {
     dispatch(setCurrentModule('home'));

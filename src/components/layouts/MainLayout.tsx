@@ -56,10 +56,8 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
   }>({
     lang: locale.lang,
     url,
-    area_branch:
-      method === `pickup`
-        ? { 'x-branch-id': branch.id }
-        : { 'x-area-id': area.id },
+    branch_id: method !== `pickup` ? branch.id : ``,
+    area_id: method === `pickup` ? area.id : ``,
   });
 
   useEffect(() => {

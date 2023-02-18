@@ -41,8 +41,8 @@ export const productApi = apiSlice.injectEndpoints({
       AppQueryResult<Product[]>,
       {
         lang: Locale['lang'] | string | undefined;
-        branch_id?: string;
         key?: string;
+        branch_id?: string;
         areaId?: string;
         url: string;
       }
