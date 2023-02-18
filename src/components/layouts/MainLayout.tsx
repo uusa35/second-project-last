@@ -42,17 +42,35 @@ type Handler = (...evts: any[]) => void;
 
 const MainLayout: FC<Props> = ({ children }): JSX.Element => {
   const {
-    appSetting: { sideMenuOpen, url, previousUrl },
+    appSetting: { sideMenuOpen, url, previousUrl, method },
     customer: { userAgent },
     locale,
     vendor,
+    branch,
+    area,
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const { data: vendorElement, isSuccess } = useGetVendorQuery<{
+  const {
+    data: vendorElement,
+    isSuccess,
+    refetch,
+  } = useGetVendorQuery<{
     data: AppQueryResult<Vendor>;
     isSuccess: boolean;
-  }>({ lang: locale.lang, url });
+  }>({
+    lang: locale.lang,
+    url,
+    area_branch:
+      method === `pickup`
+        ? { 'x-branch-id': branch.id }
+        : { 'x-area-id': area.id },
+  });
+
+  useEffect(() => {
+    refetch();
+  }, [branch.id, area.id]);
+
   const [triggerCreateTempId, { isSuccess: tempIdSuccess }] =
     useLazyCreateTempIdQuery();
 

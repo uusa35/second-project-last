@@ -56,7 +56,11 @@ export const appLinks = {
   customerInfo: { path: '/customer/info' },
   vendorShow: { path: '/vendor/show' },
   address: { path: `/cart/address` },
-  orderInvoice: (orderId: string) => `/order/${orderId}/invoice`,
+  orderInvoice: (
+    orderId: string,
+    method: string,
+    branchAreaId: string | number
+  ) => `/order/${orderId}/${method}/${branchAreaId}/invoice`,
 };
 
 export const isLocal = process.env.NODE_ENV !== 'production';

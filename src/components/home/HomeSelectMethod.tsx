@@ -91,7 +91,9 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
         <div className="flex flex-1 gap-x-2 w-full flex-row justify-between items-center mb-2">
           <div className={`flex flex-grow justify-start items-center`}>
             <h1 className={`pt-4`} suppressHydrationWarning={suppressText}>
-              {t('earliest_delivery')}
+              {method === 'delivery'
+                ? t('earliest_delivery')
+                : t('estimated_prepration_time')}
             </h1>
           </div>
           <div className={`pt-4`} style={{ color }}>
