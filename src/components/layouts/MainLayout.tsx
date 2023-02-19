@@ -2,14 +2,9 @@ import { FC, ReactNode, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import i18n from 'i18next';
 import { useRouter } from 'next/router';
-import {
-  changePreviousUrlLocale,
-  hideSideMenu,
-  setPreviousUrl,
-  setUrl,
-} from '@/redux/slices/appSettingSlice';
+import { hideSideMenu } from '@/redux/slices/appSettingSlice';
 import { setUserAgent } from '@/redux/slices/customerSlice';
-import { arboriaFont, gessFont, tajwalFont } from '@/constants/*';
+import { arboriaFont, gessFont } from '@/constants/*';
 import { setLocale } from '@/redux/slices/localeSlice';
 import moment from 'moment';
 import dynamic from 'next/dynamic';
@@ -17,7 +12,7 @@ import { useGetVendorQuery } from '@/redux/api/vendorApi';
 import { AppQueryResult } from '@/types/queries';
 import { Vendor } from '@/types/index';
 import { setVendor } from '@/redux/slices/vendorSlice';
-import { isEmpty, isNull } from 'lodash';
+import { isNull } from 'lodash';
 import { useLazyCreateTempIdQuery } from '@/redux/api/cartApi';
 import * as yup from 'yup';
 const MainAsideLayout = dynamic(
@@ -42,17 +37,33 @@ type Handler = (...evts: any[]) => void;
 
 const MainLayout: FC<Props> = ({ children }): JSX.Element => {
   const {
-    appSetting: { sideMenuOpen, url, previousUrl },
+    appSetting: { sideMenuOpen, url, previousUrl, method },
     customer: { userAgent },
     locale,
     vendor,
+    branch,
+    area,
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const { data: vendorElement, isSuccess } = useGetVendorQuery<{
+  const {
+    data: vendorElement,
+    isSuccess,
+    refetch,
+  } = useGetVendorQuery<{
     data: AppQueryResult<Vendor>;
     isSuccess: boolean;
-  }>({ lang: locale.lang, url });
+  }>({
+    lang: locale.lang,
+    url,
+    branch_id: method !== `pickup` ? branch.id : ``,
+    area_id: method === `pickup` ? area.id : ``,
+  });
+
+  useEffect(() => {
+    refetch();
+  }, [branch.id, area.id]);
+
   const [triggerCreateTempId, { isSuccess: tempIdSuccess }] =
     useLazyCreateTempIdQuery();
 

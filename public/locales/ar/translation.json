@@ -515,5 +515,6 @@
   "total_before_tax" : "الإجمالي مع الضريبة",
   "add": "أضف",
   "delivery_instructions" : "ملاحظات خاصة بعملية التوصيل",
-  "pickup_now" : "استلام الطلب"
+  "pickup_now" : "استلام الطلب",
+  "estimated_prepration_time":"الوقت المحدد للتجهبز"
 }

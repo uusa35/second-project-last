@@ -6,13 +6,20 @@ export const vendorApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getVendor: builder.query<
       AppQueryResult<Vendor>,
-      { lang: Locale['lang'] | string | undefined; url: string | undefined }
+      {
+        lang: Locale['lang'] | string | undefined;
+        url: string | undefined;
+        branch_id?: string;
+        area_id?: string;
+      }
     >({
-      query: ({ lang, url }) => ({
+      query: ({ lang, url, branch_id = ``, area_id = `` }) => ({
         url: `vendorDetails`,
         headers: {
           lang,
           url,
+          ...(area_id && { 'x-area-id': area_id }),
+          ...(branch_id && { 'x-branch-id': branch_id }),
         },
         validateStatus: (response, result) =>
           response.status == 200 && result.status,

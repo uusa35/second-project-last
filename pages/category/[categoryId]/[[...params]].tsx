@@ -2,19 +2,16 @@ import { useEffect, useState, Suspense } from 'react';
 import MainContentLayout from '@/layouts/MainContentLayout';
 import { wrapper } from '@/redux/store';
 import {
-  productApi,
   useGetProductsQuery,
   useLazyGetSearchProductsQuery,
 } from '@/redux/api/productApi';
 import { appSetting, Product } from '@/types/index';
 import { NextPage } from 'next';
-import { apiSlice } from '@/redux/api';
 import MainHead from '@/components/MainHead';
 import { imageSizes, suppressText } from '@/constants/*';
-import { capitalize, debounce, isEmpty, map, replace } from 'lodash';
+import { capitalize, debounce, isEmpty, map } from 'lodash';
 import NoResultFound from '@/appImages/no_result_found.webp';
 import HorProductWidget from '@/widgets/product/HorProductWidget';
-import { AppQueryResult, ProductPagination } from '@/types/queries';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import {
   setCurrentModule,
@@ -29,8 +26,8 @@ import { useRouter } from 'next/router';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import CustomImage from '@/components/CustomImage';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import { AppQueryResult, ProductPagination } from '@/types/queries';
 type Props = {
-  // elements: ProductPagination<Product[]>;
   slug: string;
   url: string;
   branch_id: string;
@@ -39,7 +36,6 @@ type Props = {
   limit: string;
 };
 const ProductIndex: NextPage<Props> = ({
-  // elements,
   slug,
   url,
   branch_id,
@@ -50,15 +46,17 @@ const ProductIndex: NextPage<Props> = ({
   const { t } = useTranslation();
   const {
     locale: { lang },
-    branch: { id: branchId },
-    area: { id: areaId },
     appSetting: { productPreview },
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const [Icon, SetIcon] = useState(true);
   const { query, locale }: any = useRouter();
   const [currentProducts, setCurrentProducts] = useState<any>([]);
-  const { data, isSuccess, isFetching } = useGetProductsQuery({
+  const { data, isSuccess, isFetching } = useGetProductsQuery<{
+    data: AppQueryResult<ProductPagination<Product>>;
+    isSuccess: boolean;
+    isFetching: boolean;
+  }>({
     category_id: query.categoryId,
     page,
     limit,
@@ -99,7 +97,7 @@ const ProductIndex: NextPage<Props> = ({
         setCurrentProducts(r.data.Data)
       );
     } else {
-      setCurrentProducts(data.Data.products);
+      setCurrentProducts(data.Data?.products);
     }
   };
 
@@ -110,7 +108,7 @@ const ProductIndex: NextPage<Props> = ({
   return (
     <Suspense>
       <MainHead title={slug} description={slug} />
-      <MainContentLayout url={url}>
+      <MainContentLayout url={url} backHome={true}>
         <h1 className="capitalize" suppressHydrationWarning={suppressText}></h1>
         <div className={`px-4 capitalize`}>
           <div className="flex justify-center items-center">
@@ -197,32 +195,8 @@ export const getServerSideProps = wrapper.getServerSideProps(
           notFound: true,
         };
       }
-      // const {
-      //   data: elements,
-      //   isError,
-      // }: {
-      //   data: AppQueryResult<Product[]>;
-      //   isError: boolean;
-      // } = await store.dispatch(
-      //   productApi.endpoints.getProducts.initiate({
-      //     category_id: categoryId.toString(),
-      //     page: page ?? `1`,
-      //     limit: limit ?? `10`,
-      //     ...(branch_id && { branch_id }),
-      //     ...(area_id && { area_id }),
-      //     lang: locale,
-      //     url: req.headers.host,
-      //   })
-      // );
-      // await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
-      // if (isError || !elements.Data) {
-      //   return {
-      //     notFound: true,
-      //   };
-      // }
       return {
         props: {
-          // elements: elements.Data,
           slug: slug ?? ``,
           url: req.headers.host,
           branch_id: branch_id ?? ``,

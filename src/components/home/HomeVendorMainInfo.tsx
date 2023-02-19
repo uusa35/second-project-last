@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import CustomImage from '@/components/CustomImage';
 import { appLinks, imageSizes, imgUrl, suppressText } from '@/constants/*';
 import Link from 'next/link';
@@ -12,9 +12,10 @@ import { themeColor } from '@/redux/slices/vendorSlice';
 type Props = {
   element: Vendor;
 };
-const HomeVendorMainInfo: FC<Props> = ({ element }) => {
+const HomeVendorMainInfo: FC<Props> = () => {
   const { t } = useTranslation();
   const color = useAppSelector(themeColor);
+  const { vendor: element } = useAppSelector((state) => state);
 
   return (
     <>

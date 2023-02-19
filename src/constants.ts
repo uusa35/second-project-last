@@ -1,5 +1,5 @@
 export const baseUrl = `${process.env.NEXT_PUBLIC_BASE_URL}`;
-export const xDomain = `next-q.testbedbynd.com`;
+export const xDomain = `next2-q.testbedbynd.com`;
 //https://pages.testbedbynd.com/
 //https://pages-dash.testbedbynd.com/
 export const apiUrl = `${baseUrl}api/`;
@@ -56,7 +56,11 @@ export const appLinks = {
   customerInfo: { path: '/customer/info' },
   vendorShow: { path: '/vendor/show' },
   address: { path: `/cart/address` },
-  orderInvoice: (orderId: string) => `/order/${orderId}/invoice`,
+  orderInvoice: (
+    orderId: string,
+    method: string,
+    branchAreaId: string | number
+  ) => `/order/${orderId}/${method}/${branchAreaId}/invoice`,
 };
 
 export const isLocal = process.env.NODE_ENV !== 'production';

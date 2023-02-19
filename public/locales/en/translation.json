@@ -502,5 +502,6 @@
   "total_before_tax" : "total before tax",
   "add": "add",
   "delivery_instructions" : "delivery instructions",
-  "pickup_now" : "pick up order"
+  "pickup_now" : "pick up order",
+  "estimated_prepration_time":"estimated prepration time"
 }

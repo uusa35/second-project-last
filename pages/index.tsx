@@ -42,6 +42,7 @@ const HomePage: NextPage<Props> = ({ element, url }): JSX.Element => {
     locale: { lang },
     branch: { id: branch_id },
     area: { id: area_id },
+    vendor,
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -57,7 +58,7 @@ const HomePage: NextPage<Props> = ({ element, url }): JSX.Element => {
   }, []);
 
   const handleFocus = () =>
-    router.push(appLinks.productSearchIndex('null', branch_id, area_id));
+    router.push(appLinks.productSearchIndex('', branch_id, area_id));
 
   return (
     <Suspense fallback={<LoadingSpinner fullWidth={false} />}>
@@ -65,6 +66,7 @@ const HomePage: NextPage<Props> = ({ element, url }): JSX.Element => {
       <MainHead
         title={element.name}
         mainImage={`${baseUrl}${element.logo}`}
+        icon={`${baseUrl}${element.logo}`}
         phone={element.phone}
       />
       <MainContentLayout url={url}>

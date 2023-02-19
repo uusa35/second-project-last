@@ -97,6 +97,7 @@ const AppFooter: FC<Props> = ({
       );
     } else {
       if (!isEmpty(productCart) && userAgent) {
+        console.log('productCart', productCart);
         await triggerAddToCart({
           process_type: method,
           area_branch: method === 'delivery' ? area.id : branchId,
@@ -121,7 +122,8 @@ const AppFooter: FC<Props> = ({
                   : { 'x-area-id': area.id },
               url,
             }).then((r) => {
-              if (r.data && r.data.data && r.data.data.Cart) {
+              if ((r.data && r.data.data) || r.data?.data.Cart) {
+                console.log('the r', r);
                 dispatch(
                   showToastMessage({
                     content: 'item_added_successfully',
@@ -132,10 +134,13 @@ const AppFooter: FC<Props> = ({
                 dispatch(resetCheckBoxes());
                 dispatch(resetMeters());
               } else {
+                console.log('else');
               }
             });
           } else {
+            console.log('else');
             if (r.error && r.error.data) {
+              console.log('r', r);
               // console.log('r', r.error.data.msg);
               // console.log('isArray', r.error.data.msg);
               dispatch(
@@ -143,7 +148,7 @@ const AppFooter: FC<Props> = ({
                   content: r.error.data.msg
                     ? lowerCase(
                         kebabCase(
-                          first(values(r.error.data.msg))
+                          r.error.data.msg.isArray
                             ? first(values(r.error.data.msg))
                             : r.error.data.msg
                         )
