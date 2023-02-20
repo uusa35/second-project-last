@@ -117,9 +117,11 @@ const AppFooter: FC<Props> = ({
             triggerGetCartProducts({
               UserAgent: userAgent,
               area_branch:
-                method === `pickup`
+                method === `pickup` && branchId
                   ? { 'x-branch-id': branchId }
-                  : { 'x-area-id': area.id },
+                  : method === `delivery` && area.id
+                  ? { 'x-area-id': area.id }
+                  : {},
               url,
             }).then((r) => {
               if ((r.data && r.data.data) || r.data?.data.Cart) {
@@ -186,6 +188,9 @@ const AppFooter: FC<Props> = ({
         await triggerCheckPromoCode({
           userAgent,
           PromoCode: coupon,
+          area_branch: branchId
+            ? { 'x-branch-id': branchId }
+            : { 'x-area-id': area.id },
           url,
         }).then((r: any) => {
           if (r.data && r.data.status && r.data.promoCode) {
