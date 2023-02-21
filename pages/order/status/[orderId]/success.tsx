@@ -55,7 +55,7 @@ const OrderSuccess: NextPage<Props> = ({ element, url }) => {
 
   return (
     <Suspense>
-      <MainContentLayout url={url}>
+      <MainContentLayout url={url} backRoute={appLinks.home.path}>
         <div className="capitalize">
           <div className="flex flex-col items-center">
             <CustomImage

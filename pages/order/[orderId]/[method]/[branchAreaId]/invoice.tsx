@@ -41,11 +41,11 @@ const OrderInvoice: NextPage<Props> = ({ url }): JSX.Element => {
       order_id: orderId as string,
       url,
       area_branch:
-      method === `pickup` && branch.id
-      ? { 'x-branch-id': branch.id }
-      : method === `delivery` && area.id
-      ? { 'x-area-id': area.id }
-      : {},
+        method === `pickup` && branch.id
+          ? { 'x-branch-id': branch.id }
+          : method === `delivery` && area.id
+          ? { 'x-area-id': area.id }
+          : {},
     },
     { refetchOnMountOrArgChange: true }
   );
@@ -65,8 +65,6 @@ const OrderInvoice: NextPage<Props> = ({ url }): JSX.Element => {
   if (!isSuccess) {
     return <LoadingSpinner />;
   }
-
-  console.log(element);
 
   return (
     <Suspense>
@@ -129,7 +127,7 @@ const OrderInvoice: NextPage<Props> = ({ url }): JSX.Element => {
               {element.data.order_type.includes('delivery') ? (
                 <>
                   <p className="py-1" suppressHydrationWarning={suppressText}>
-                    {t('area')} : {element.data.area ?? ''}
+                    {t('area')} : {element?.data?.area ?? ''}
                   </p>
                   <button
                     suppressHydrationWarning={suppressText}
