@@ -100,7 +100,6 @@ const MainContentLayout: FC<Props> = ({
         productCurrentQty={productCurrentQty}
       />
       <NextNProgress
-        suppressHydrationWarning={suppressText}
         color={color}
         startPosition={0.3}
         stopDelayMs={200}
