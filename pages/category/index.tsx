@@ -209,7 +209,7 @@ const ProductSearchIndex: NextPage<Props> = ({ url }): JSX.Element => {
 
             <div className="h-2 bg-stone-100 my-5 -mx-3"></div>
             {map(currentProducts, (p, i) => (
-              <VerProductWidget element={p} key={i} />
+              <VerProductWidget element={p} key={i} category_id={null} />
             ))}
           </div>
         </div>

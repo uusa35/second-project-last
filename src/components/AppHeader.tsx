@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import SlideTopNav from '@/components/home/SlideTopNav';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { debounce } from 'lodash';
+import { suppressText } from '@/constants/*';
 
 type Props = {
   backHome?: boolean;
@@ -33,6 +34,7 @@ const AppHeader: FC<Props> = ({ backHome = false, backRoute = null }) => {
         className={`${offset <= 80 ? `bg-white` : `bg-transparent`} ${
           isHome ? `bg-transparent` : `bg-white`
         } relative sticky top-0 z-50 flex flex-col justify-start items-center w-full scroll-smooth capitalize`}
+        suppressHydrationWarning={suppressText}
       >
         {router.asPath === '/' ||
           (!router.asPath.includes('/home') && (

@@ -340,7 +340,6 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
     return <LoadingSpinner fullWidth={true} />;
   }
 
-  console.log('query', query);
   return (
     <Suspense>
       <MainHead
@@ -352,7 +351,7 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
       <MainContentLayout
         url={url}
         backRoute={
-          query.category_id
+          query.category_id !== 'null'
             ? appLinks.productIndex(query.category_id, product.name_en)
             : null
         }
