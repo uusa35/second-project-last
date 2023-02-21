@@ -198,6 +198,7 @@ export interface OrderInvoice {
   vendor_name: string;
   vendor_logo: string;
   order_type: string;
+  area: string;
   customer: {
     id: number;
     name: string;
