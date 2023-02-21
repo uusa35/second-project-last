@@ -14,6 +14,7 @@ const PaymentSummary: FC = () => {
     total,
     tax,
     delivery_fees,
+    appSetting: { method },
   } = useAppSelector((state) => state.cart);
   const color = useAppSelector(themeColor);
   useEffect(() => {}, [promoEnabled]);
@@ -92,24 +93,31 @@ const PaymentSummary: FC = () => {
           <></>
         )}
 
-        <div className="flex justify-between mb-2 text-lg">
-          <p suppressHydrationWarning={suppressText}>{t('delivery_fees')}</p>
-          <p suppressHydrationWarning={suppressText}></p>
-          <div className={`flex flex-row`}>
-            <p suppressHydrationWarning={suppressText} className={`px-2`}>
-              {promoEnabled
-                ? coupon.free_delivery === `false`
-                  ? coupon.delivery_fee
-                  : 0
-                : isNull(delivery_fees)
-                ? 0
-                : delivery_fees}
-            </p>
-            <p className={`uppercase`} suppressHydrationWarning={suppressText}>
-              {t('kwd')}
-            </p>
+        {method === 'delivery' ? (
+          <div className="flex justify-between mb-2 text-lg">
+            <p suppressHydrationWarning={suppressText}>{t('delivery_fees')}</p>
+            <p suppressHydrationWarning={suppressText}></p>
+            <div className={`flex flex-row`}>
+              <p suppressHydrationWarning={suppressText} className={`px-2`}>
+                {promoEnabled
+                  ? coupon.free_delivery === `false`
+                    ? coupon.delivery_fee
+                    : 0
+                  : isNull(delivery_fees)
+                  ? 0
+                  : delivery_fees}
+              </p>
+              <p
+                className={`uppercase`}
+                suppressHydrationWarning={suppressText}
+              >
+                {t('kwd')}
+              </p>
+            </div>
           </div>
-        </div>
+        ) : (
+          <></>
+        )}
 
         <div className="flex justify-between mb-2 text-lg">
           <p suppressHydrationWarning={suppressText}>{t('net_total')}</p>

@@ -321,11 +321,8 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
     if (url) {
       dispatch(setUrl(url));
     }
-    if (
-      (isNull(area.id) && isNull(branch.id)) ||
-      (isSuccess && !cartItems.data?.Cart) ||
-      (isSuccess && cartItems.data?.Cart.length === 0)
-    ) {
+
+    if (isNull(area.id) && isNull(branch.id)) {
       router.replace(appLinks.cartSelectMethod(method)).then(() =>
         dispatch(
           showToastMessage({
@@ -335,6 +332,32 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
         )
       );
     }
+
+    if (
+      (isSuccess && !cartItems.data?.Cart) ||
+      (isSuccess && cartItems.data?.Cart.length === 0)
+    ) {
+      dispatch(
+        showToastMessage({
+          content: `your_cart_is_empty`,
+          type: `warning`,
+        })
+      );
+      router.replace(appLinks.home.path);
+    }
+
+    // if customer id is not found
+    if (!customer_id) {
+      router.replace(appLinks.customerInfo.path).then(() =>
+        dispatch(
+          showToastMessage({
+            content: `enter_your_information_to_proceed`,
+            type: `warning`,
+          })
+        )
+      );
+    }
+
     return () => {
       dispatch(resetShowFooterElement());
     };
