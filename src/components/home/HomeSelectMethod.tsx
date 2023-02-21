@@ -50,8 +50,6 @@ const HomeSelectMethod: FC<Props> = ({
     { refetchOnMountOrArgChange: true }
   );
 
-  console.log(data);
-
   return (
     <>
       {/* Delivery / Pickup Btns */}
@@ -82,7 +80,6 @@ const HomeSelectMethod: FC<Props> = ({
           {t('pickup')}
         </button>
       </div>
-
 
       <div className={`px-8 py-0 text-lg capitalize mb-2`}>
         <Link
