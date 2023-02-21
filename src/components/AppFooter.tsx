@@ -108,7 +108,10 @@ const AppFooter: FC<Props> = ({
                 ? filter(cartItems.data.Cart, (i) => {
                     if (i.id !== productCart.id) {
                       return i;
-                    } else if (i.Quantity !== productCart.Quantity) {
+                    } else if (
+                      i.Quantity !== productCart.Quantity &&
+                      i.id === productCart.id
+                    ) {
                       return {
                         ...i,
                         Quantity: i.Quantity + productCart.Quantity,
