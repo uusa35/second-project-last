@@ -1,5 +1,6 @@
 export const baseUrl = `${process.env.NEXT_PUBLIC_BASE_URL}`;
-export const xDomain = `next2-q.testbedbynd.com`;
+// export const xDomain = `next2-q.testbedbynd.com`;
+export const xDomain = `next-q.testbedbynd.com`;
 //https://pages.testbedbynd.com/
 //https://pages-dash.testbedbynd.com/
 export const apiUrl = `${baseUrl}api/`;

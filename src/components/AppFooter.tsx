@@ -105,10 +105,16 @@ const AppFooter: FC<Props> = ({
             UserAgent: userAgent,
             Cart:
               cartItems && cartItems.data && cartItems.data.Cart
-                ? filter(
-                    cartItems.data.Cart,
-                    (i) => i.id !== productCart.id
-                  ).concat(productCart)
+                ? filter(cartItems.data.Cart, (i) => {
+                    if (i.id !== productCart.id) {
+                      return i;
+                    } else if (i.Quantity !== productCart.Quantity) {
+                      return {
+                        ...i,
+                        Quantity: i.Quantity + productCart.Quantity,
+                      };
+                    }
+                  }).concat(productCart)
                 : [productCart],
           },
           url,
