@@ -395,17 +395,21 @@ const OrderInvoice: NextPage<Props> = ({ url }): JSX.Element => {
               <></>
             )}
 
-            <div className="flex justify-between mb-3 text-lg">
-              <p suppressHydrationWarning={suppressText}>
-                {t('delivery_services')}
-              </p>
-              <p
-                suppressHydrationWarning={suppressText}
-                className={`uppercase`}
-              >
-                {element.data.order_summary.delivery_fee} {t('kwd')}
-              </p>
-            </div>
+            {element.data.order_type.includes('delivery') ? (
+              <div className="flex justify-between mb-3 text-lg">
+                <p suppressHydrationWarning={suppressText}>
+                  {t('delivery_services')}
+                </p>
+                <p
+                  suppressHydrationWarning={suppressText}
+                  className={`uppercase`}
+                >
+                  {element.data.order_summary.delivery_fee} {t('kwd')}
+                </p>
+              </div>
+            ) : (
+              <></>
+            )}
 
             <div className="flex justify-between mb-3 text-lg ">
               <p
