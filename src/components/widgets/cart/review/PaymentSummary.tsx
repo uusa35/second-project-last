@@ -13,9 +13,9 @@ const PaymentSummary: FC = () => {
     subTotal,
     total,
     tax,
-    delivery_fees,
-    appSetting: { method },
+    delivery_fees
   } = useAppSelector((state) => state.cart);
+  const { appSetting: { method } } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
   useEffect(() => {}, [promoEnabled]);
 
