@@ -1,9 +1,6 @@
 import NoFoundImage from '@/appImages/not_found.png';
 export const baseUrl = `${process.env.NEXT_PUBLIC_BASE_URL}`;
-<<<<<<< HEAD
-=======
 // export const xDomain = `next2-q.testbedbynd.com`;
->>>>>>> structure
 export const xDomain = `next-q.testbedbynd.com`;
 //https://pages.testbedbynd.com/
 //https://pages-dash.testbedbynd.com/
