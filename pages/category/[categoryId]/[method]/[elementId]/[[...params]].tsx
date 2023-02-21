@@ -103,7 +103,6 @@ const ProductIndex: NextPage<Props> = ({
     }
   };
 
-  console.log('cat', categoryId);
   return (
     <Suspense>
       <MainHead title={slug} description={slug} />
