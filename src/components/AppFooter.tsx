@@ -97,7 +97,7 @@ const AppFooter: FC<Props> = ({
       );
     } else {
       if (!isEmpty(productCart) && userAgent) {
-        console.log('productCart', productCart);
+        // console.log('productCart', productCart);
         await triggerAddToCart({
           process_type: method,
           area_branch: method === 'delivery' ? area.id : branchId,
@@ -105,10 +105,19 @@ const AppFooter: FC<Props> = ({
             UserAgent: userAgent,
             Cart:
               cartItems && cartItems.data && cartItems.data.Cart
-                ? filter(
-                    cartItems.data.Cart,
-                    (i) => i.id !== productCart.id
-                  ).concat(productCart)
+                ? filter(cartItems.data.Cart, (i) => {
+                    if (i.id !== productCart.id) {
+                      return i;
+                    } else if (
+                      i.Quantity !== productCart.Quantity &&
+                      i.id === productCart.id
+                    ) {
+                      return {
+                        ...i,
+                        Quantity: i.Quantity + productCart.Quantity,
+                      };
+                    }
+                  }).concat(productCart)
                 : [productCart],
           },
           url,

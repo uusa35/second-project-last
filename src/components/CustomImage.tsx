@@ -23,9 +23,9 @@ const CustomImage: FC<Props> = ({
 }): JSX.Element => {
   const [imgSrc, setImageSrc] = useState<string>(src);
 
-  useEffect(() => {
-    setImageSrc(src);
-  }, [src]);
+  // useEffect(() => {
+  //   setImageSrc(src);
+  // }, [src]);
 
   return (
     <Image

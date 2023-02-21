@@ -336,7 +336,7 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
     }
   };
 
-  if (!isSuccess) {
+  if (!isSuccess || !url) {
     return <LoadingSpinner fullWidth={true} />;
   }
 
@@ -345,8 +345,8 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
       <MainHead
         title={`${product.name_ar} - ${product.name_en}`}
         description={`${product.description_ar} - ${product.description_en}`}
-        mainImage={`${baseUrl}${product?.img[0]?.thumbnail.toString()}`}
-        icon={`${baseUrl}${logo}`}
+        mainImage={`${product?.img[0]?.thumbnail?.toString()}`}
+        icon={`${logo}`}
       />
       <MainContentLayout
         url={url}

@@ -1,5 +1,7 @@
+import NoFoundImage from '@/appImages/not_found.png';
 export const baseUrl = `${process.env.NEXT_PUBLIC_BASE_URL}`;
-export const xDomain = `next2-q.testbedbynd.com`;
+// export const xDomain = `next2-q.testbedbynd.com`;
+export const xDomain = `next-q.testbedbynd.com`;
 //https://pages.testbedbynd.com/
 //https://pages-dash.testbedbynd.com/
 export const apiUrl = `${baseUrl}api/`;
@@ -84,7 +86,9 @@ export const imageSizes = {
   xl: 650,
 };
 
-export const imgUrl = (img: string) => `${baseUrl}${img}`;
+// export const imgUrl = (img: string) => `${baseUrl}${img}`;
+export const imgUrl = (img: string) =>
+  img.includes('http') ? img : NoFoundImage.src;
 
 export const convertColor = (hex: string, opacity: number) => {
   const tempHex = hex.replace('#', '');

@@ -100,8 +100,8 @@ const VendorShow: NextPage<Props> = ({ element, url }) => {
       <MainHead
         title={element.name}
         description={element.desc}
-        mainImage={`${baseUrl}${element.logo}`}
-        icon={`${baseUrl}${element.logo}`}
+        mainImage={`${element.logo}`}
+        icon={`${element.logo}`}
       />
       <MainContentLayout url={url}>
         <VendorDetailsItem

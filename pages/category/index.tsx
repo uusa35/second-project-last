@@ -111,7 +111,7 @@ const ProductSearchIndex: NextPage<Props> = ({ url }): JSX.Element => {
       <MainHead
         title={`search products`}
         description={`searching products`}
-        mainImage={`${baseUrl}${logo}`}
+        mainImage={`${logo}`}
       />
       <MainContentLayout url={url} backHome={true}>
         <div className={`px-4`}>
