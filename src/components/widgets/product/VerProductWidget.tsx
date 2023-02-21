@@ -8,7 +8,6 @@ import CustomImage from '@/components/CustomImage';
 import { useTranslation } from 'react-i18next';
 import { useAppSelector } from '@/redux/hooks';
 import TextTrans from '@/components/TextTrans';
-import { themeColor } from '@/redux/slices/vendorSlice';
 import { motion } from 'framer-motion';
 
 type Props = {
@@ -58,10 +57,12 @@ const VerProductWidget: FC<Props> = ({
                   style={{ color: `black` }}
                   ar={element.name_ar}
                   en={element.name_en}
+                  length={20}
                 />
                 <TextTrans
                   ar={element.description_ar}
                   en={element.description_en}
+                  length={30}
                 />
               </p>
               <div>
