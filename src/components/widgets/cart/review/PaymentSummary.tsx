@@ -99,8 +99,8 @@ const PaymentSummary: FC = () => {
             <p suppressHydrationWarning={suppressText} className={`px-2`}>
               {promoEnabled
                 ? coupon.free_delivery === `false`
-                  ? 0
-                  : coupon.free_delivery
+                  ? coupon.delivery_fee
+                  : 0
                 : isNull(delivery_fees)
                 ? 0
                 : delivery_fees}

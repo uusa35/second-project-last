@@ -82,7 +82,7 @@ const HomePage: NextPage<Props> = ({ element, url }): JSX.Element => {
           <div className={`px-6 mt-3 lg:mt-0`}>
             <HomeVendorMainInfo element={element} />
           </div>
-          <HomeSelectMethod element={element} />
+          <HomeSelectMethod element={element} url={url}/>
           {/* Search Input */}
           <div
             className={`flex flex-1 w-auto flex-grow mx-2 pb-4 border-b border-stone-300`}
