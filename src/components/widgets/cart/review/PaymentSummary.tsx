@@ -114,7 +114,7 @@ const PaymentSummary: FC = () => {
         <div className="flex justify-between mb-2 text-lg">
           <p suppressHydrationWarning={suppressText}>{t('net_total')}</p>
           <div className={`flex flex-row`} style={{ color }}>
-            <p suppressHydrationWarning={suppressText} className={`px-2`}>
+            <p suppressHydrationWarning={suppressText} className={`px-2`} data-cy="net-total">
               {promoEnabled ? coupon.total_cart_before_tax : total}
             </p>
             <p className={`uppercase`} suppressHydrationWarning={suppressText}>

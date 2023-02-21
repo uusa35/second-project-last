@@ -37,6 +37,8 @@ const HorProductWidget: FC<Props> = ({ element }): JSX.Element => {
           areaId
         )}`}
         className={`h-auto shadow-7xl  block  capitalize mb-2 border-b-2 border-gray-100 py-3`}
+        data-cy="product"
+
       >
         <div className="relative">
           <div className="h-60 w-full overflow-hidden rounded-lg">

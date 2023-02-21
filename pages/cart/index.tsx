@@ -415,9 +415,11 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
                             onClick={() => {
                               handleIncrease(item);
                             }}
+                            data-cy="increase-addon"
                           >
                             <span
                               className={`border border-gray-300 p-1 px-3 bg-white rounded-md text-md font-extrabold  w-8 h-8 flex justify-center items-center`}
+                              
                             >
                               +
                             </span>
@@ -436,6 +438,7 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
                             onClick={() => {
                               handleDecrease(item);
                             }}
+                            data-cy="decrease-addon"
                           >
                             <span
                               className={`border border-gray-300 p-1 px-3 bg-white rounded-md text-md font-extrabold  w-8 h-8 flex justify-center items-center`}
