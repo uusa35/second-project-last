@@ -210,6 +210,7 @@ export interface OrderInvoice {
       type: string;
       block: string;
       street: string;
+      additional?: string;
     };
     latitude: string;
     longitude: string;
@@ -231,17 +232,26 @@ export interface OrderInvoice {
     total: string;
     delivery_fee: string;
     tax: string;
+    promo_code?: string;
+    promo_code_value?: string | number;
     items: [
       {
         quantity: number;
         item: string;
-        addon: string[];
+        addon: InvoiceAddon[];
         price: string;
         total: number;
         extra_notes: string;
       }
     ];
   };
+}
+
+export interface InvoiceAddon {
+  addon_id: string | number;
+  addon_name: string;
+  addon_quantity: string | number;
+  addon_unit_price: string | number;
 }
 
 export interface OrderTrack {

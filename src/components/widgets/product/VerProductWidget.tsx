@@ -2,25 +2,27 @@ import { FC } from 'react';
 import { appLinks, imageSizes, imgUrl } from '@/constants/*';
 import { Product } from '@/types/index';
 import NoFoundImage from '@/appImages/not_found.png';
-import { first, isEmpty, kebabCase, lowerCase } from 'lodash';
+import { isEmpty, kebabCase, lowerCase } from 'lodash';
 import Link from 'next/link';
 import CustomImage from '@/components/CustomImage';
 import { useTranslation } from 'react-i18next';
 import { useAppSelector } from '@/redux/hooks';
 import TextTrans from '@/components/TextTrans';
-import { themeColor } from '@/redux/slices/vendorSlice';
 import { motion } from 'framer-motion';
 
 type Props = {
   element: Product;
+  category_id: string | null;
 };
-const VerProductWidget: FC<Props> = ({ element }): JSX.Element => {
+const VerProductWidget: FC<Props> = ({
+  element,
+  category_id = null,
+}): JSX.Element => {
   const { t } = useTranslation();
   const {
     branch: { id: branchId },
     area: { id: areaId },
   } = useAppSelector((state) => state);
-  const color = useAppSelector(themeColor);
   const firstImage: any = !isEmpty(element.img)
     ? imgUrl(element.img[0].thumbnail)
     : NoFoundImage.src;
@@ -33,7 +35,8 @@ const VerProductWidget: FC<Props> = ({ element }): JSX.Element => {
           element.id,
           kebabCase(lowerCase(element.name)),
           branchId,
-          areaId
+          areaId,
+          category_id
         )}`}
         className={`h-auto shadow-7xl mb-2 block capitalize border-b-2 border-gray-100 py-3`}
       >
@@ -54,10 +57,12 @@ const VerProductWidget: FC<Props> = ({ element }): JSX.Element => {
                   style={{ color: `black` }}
                   ar={element.name_ar}
                   en={element.name_en}
+                  length={20}
                 />
                 <TextTrans
                   ar={element.description_ar}
                   en={element.description_en}
+                  length={30}
                 />
               </p>
               <div>

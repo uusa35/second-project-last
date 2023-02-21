@@ -55,7 +55,7 @@ const OrderSuccess: NextPage<Props> = ({ element, url }) => {
 
   return (
     <Suspense>
-      <MainContentLayout url={url}>
+      <MainContentLayout url={url} backRoute={appLinks.home.path}>
         <div className="capitalize">
           <div className="flex flex-col items-center">
             <CustomImage
@@ -156,14 +156,9 @@ export default OrderSuccess;
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ req, query }) => {
-      if (!req.headers.host) {
-        return {
-          notFound: true,
-        };
-      }
-      const url = req.headers.host;
       const { orderId }: any = query;
-      if (!orderId) {
+      const url = req.headers.host;
+      if (!url || !orderId) {
         return {
           notFound: true,
         };

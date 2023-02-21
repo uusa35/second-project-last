@@ -63,7 +63,7 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
   const dispatch = useAppDispatch();
-  const [couponVal, setCouponVal] = useState<string>(``);
+  const [couponVal, setCouponVal] = useState<string | undefined>(undefined);
   const [triggerAddToCart] = useAddToCartMutation();
   const {
     data: cartItems,
@@ -77,14 +77,14 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
   }>({
     UserAgent: userAgent,
     area_branch:
-      method === `pickup`
+      method === `pickup` && branchId
         ? { 'x-branch-id': branchId }
-        : { 'x-area-id': areaId },
+        : method === `delivery` && areaId
+        ? { 'x-area-id': areaId }
+        : {},
     url,
   });
   const [triggerCheckPromoCode] = useLazyCheckPromoCodeQuery();
-
-  console.log('cartItems', cartItems);
 
   useEffect(() => {
     if (
@@ -125,6 +125,12 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
         await triggerCheckPromoCode({
           userAgent,
           PromoCode: coupon,
+          area_branch:
+            method === `pickup` && branchId
+              ? { 'x-branch-id': branchId }
+              : method === `delivery` && areaId
+              ? { 'x-area-id': areaId }
+              : {},
           url,
         }).then((r: any) => {
           if (r.data && r.data.status && r.data.promoCode) {
@@ -151,7 +157,7 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
   };
 
   useEffect(() => {
-    if (couponVal !== '') {
+    if (couponVal !== undefined) {
       handleCoupon(couponVal);
     }
     // debounce(() => handleCoupon(couponVal), 500);

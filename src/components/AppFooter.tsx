@@ -97,7 +97,7 @@ const AppFooter: FC<Props> = ({
       );
     } else {
       if (!isEmpty(productCart) && userAgent) {
-        console.log('productCart', productCart);
+        // console.log('productCart', productCart);
         await triggerAddToCart({
           process_type: method,
           area_branch: method === 'delivery' ? area.id : branchId,
@@ -105,10 +105,19 @@ const AppFooter: FC<Props> = ({
             UserAgent: userAgent,
             Cart:
               cartItems && cartItems.data && cartItems.data.Cart
-                ? filter(
-                    cartItems.data.Cart,
-                    (i) => i.id !== productCart.id
-                  ).concat(productCart)
+                ? filter(cartItems.data.Cart, (i) => {
+                    if (i.id !== productCart.id) {
+                      return i;
+                    } else if (
+                      i.Quantity !== productCart.Quantity &&
+                      i.id === productCart.id
+                    ) {
+                      return {
+                        ...i,
+                        Quantity: i.Quantity + productCart.Quantity,
+                      };
+                    }
+                  }).concat(productCart)
                 : [productCart],
           },
           url,
@@ -117,9 +126,11 @@ const AppFooter: FC<Props> = ({
             triggerGetCartProducts({
               UserAgent: userAgent,
               area_branch:
-                method === `pickup`
+                method === `pickup` && branchId
                   ? { 'x-branch-id': branchId }
-                  : { 'x-area-id': area.id },
+                  : method === `delivery` && area.id
+                  ? { 'x-area-id': area.id }
+                  : {},
               url,
             }).then((r) => {
               if ((r.data && r.data.data) || r.data?.data.Cart) {
@@ -186,6 +197,9 @@ const AppFooter: FC<Props> = ({
         await triggerCheckPromoCode({
           userAgent,
           PromoCode: coupon,
+          area_branch: branchId
+            ? { 'x-branch-id': branchId }
+            : { 'x-area-id': area.id },
           url,
         }).then((r: any) => {
           if (r.data && r.data.status && r.data.promoCode) {

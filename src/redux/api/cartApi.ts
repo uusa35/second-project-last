@@ -47,12 +47,12 @@ export const cartApi = apiSlice.injectEndpoints({
         area_branch: any;
       }
     >({
-      query: ({ UserAgent, url ,area_branch}) => ({
+      query: ({ UserAgent, url, area_branch }) => ({
         url: `shoppingCart`,
         params: { UserAgent },
         headers: {
           url,
-          ...area_branch
+          ...area_branch,
         },
         validateStatus: (response, result) =>
           response.status == 200 && result.status,
@@ -65,11 +65,12 @@ export const cartApi = apiSlice.injectEndpoints({
         userAgent: string;
         PromoCode: string;
         url: string;
+        area_branch: any;
       }
     >({
-      query: ({ userAgent, PromoCode, url }) => ({
+      query: ({ userAgent, PromoCode, url, area_branch }) => ({
         url: `checkPromoCode`,
-        headers: { url },
+        headers: { url, ...area_branch },
         params: { userAgent, PromoCode },
         validateStatus: (response, result) =>
           response.status == 200 && result.status,

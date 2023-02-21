@@ -95,12 +95,6 @@ const ProductSearchIndex: NextPage<Props> = ({ url }): JSX.Element => {
         setCurrentProducts(r.data.Data);
       }
     });
-    // }
-    // else {
-    //   if (searchProductsSuccess) {
-    //     setCurrentProducts(elements.Data);
-    //   }
-    // }
   };
 
   if (
@@ -112,16 +106,12 @@ const ProductSearchIndex: NextPage<Props> = ({ url }): JSX.Element => {
     return <LoadingSpinner fullWidth={true} />;
   }
 
-  // console.log('searching ...');
-  // console.log('elements ===>', elements);
-  // console.log('current', currentProducts);
-
   return (
     <Suspense>
       <MainHead
         title={`search products`}
         description={`searching products`}
-        mainImage={`${baseUrl}${logo}`}
+        mainImage={`${logo}`}
       />
       <MainContentLayout url={url} backHome={true}>
         <div className={`px-4`}>
@@ -219,7 +209,7 @@ const ProductSearchIndex: NextPage<Props> = ({ url }): JSX.Element => {
 
             <div className="h-2 bg-stone-100 my-5 -mx-3"></div>
             {map(currentProducts, (p, i) => (
-              <VerProductWidget element={p} key={i} />
+              <VerProductWidget element={p} key={i} category_id={null} />
             ))}
           </div>
         </div>

@@ -1,4 +1,9 @@
+import NoFoundImage from '@/appImages/not_found.png';
 export const baseUrl = `${process.env.NEXT_PUBLIC_BASE_URL}`;
+<<<<<<< HEAD
+=======
+// export const xDomain = `next2-q.testbedbynd.com`;
+>>>>>>> structure
 export const xDomain = `next-q.testbedbynd.com`;
 //https://pages.testbedbynd.com/
 //https://pages-dash.testbedbynd.com/
@@ -39,11 +44,12 @@ export const appLinks = {
     product_id?: number,
     slug?: string,
     branchId?: string,
-    areaId?: string
+    areaId?: string,
+    category_id?: string | null
   ) =>
     `/product/show/${id}?product_id=${product_id}&slug=${slug}&branchId=${
       branchId ?? ``
-    }&areaId=${areaId ?? ``}`,
+    }&areaId=${areaId ?? ``}&category_id=${category_id}`,
 
   branchIndex: { path: '/branch' },
   cartIndex: { path: '/cart' },
@@ -83,7 +89,9 @@ export const imageSizes = {
   xl: 650,
 };
 
-export const imgUrl = (img: string) => `${baseUrl}${img}`;
+// export const imgUrl = (img: string) => `${baseUrl}${img}`;
+export const imgUrl = (img: string) =>
+  img.includes('http') ? img : NoFoundImage.src;
 
 export const convertColor = (hex: string, opacity: number) => {
   const tempHex = hex.replace('#', '');

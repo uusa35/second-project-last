@@ -130,7 +130,11 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
 
   return (
     <Suspense>
-      <MainContentLayout handleSubmit={handleSubmit(onSubmit)} url={url}>
+      <MainContentLayout
+        handleSubmit={handleSubmit(onSubmit)}
+        url={url}
+        backRoute={appLinks.cartIndex.path}
+      >
         <div className="flex-col justify-center h-full px-5">
           <div className="flex justify-center py-10 lg:my-5 lg:pb-5">
             <CustomImage

@@ -15,6 +15,7 @@ import CashOnDelivery from '@/appImages/cash_on_delivery.jpg';
 import Visa from '@/appImages/visa.png';
 import { useTranslation } from 'react-i18next';
 import {
+  baseUrl,
   convertColor,
   iconColor,
   imageSizes,
@@ -99,7 +100,8 @@ const VendorShow: NextPage<Props> = ({ element, url }) => {
       <MainHead
         title={element.name}
         description={element.desc}
-        mainImage={element.logo}
+        mainImage={`${element.logo}`}
+        icon={`${element.logo}`}
       />
       <MainContentLayout url={url}>
         <VendorDetailsItem

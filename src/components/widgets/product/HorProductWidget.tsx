@@ -14,14 +14,17 @@ import { motion } from 'framer-motion';
 
 type Props = {
   element: Product;
+  category_id?: string | null;
 };
-const HorProductWidget: FC<Props> = ({ element }): JSX.Element => {
+const HorProductWidget: FC<Props> = ({
+  element,
+  category_id = null,
+}): JSX.Element => {
   const { t } = useTranslation();
   const {
     branch: { id: branchId },
     area: { id: areaId },
   } = useAppSelector((state) => state);
-  const color = useAppSelector(themeColor);
   const firstImage: any = !isEmpty(element.img)
     ? imgUrl(element.img[0].thumbnail)
     : NoFoundImage.src;
@@ -34,7 +37,8 @@ const HorProductWidget: FC<Props> = ({ element }): JSX.Element => {
           element.id,
           lowerCase(kebabCase(element.name)),
           branchId,
-          areaId
+          areaId,
+          category_id
         )}`}
         className={`h-auto shadow-7xl  block  capitalize mb-2 border-b-2 border-gray-100 py-3`}
         data-cy="product"

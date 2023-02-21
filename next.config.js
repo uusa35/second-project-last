@@ -51,7 +51,11 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    domains: ['testbedbynd.com', 'pages-dash.testbedbynd.com'],
+    domains: [
+      'testbedbynd.com',
+      'pages-dash.testbedbynd.com',
+      'queue-spaces.nyc3.digitaloceanspaces.com',
+    ],
     // minimumCacheTTL: 60 * 60 * 24,
     minimumCacheTTL: 0,
     dangerouslyAllowSVG: true,

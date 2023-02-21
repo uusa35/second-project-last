@@ -42,7 +42,6 @@ const HomePage: NextPage<Props> = ({ element, url }): JSX.Element => {
     locale: { lang },
     branch: { id: branch_id },
     area: { id: area_id },
-    vendor,
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -65,8 +64,8 @@ const HomePage: NextPage<Props> = ({ element, url }): JSX.Element => {
       {/* SEO Head DEV*/}
       <MainHead
         title={element.name}
-        mainImage={`${baseUrl}${element.logo}`}
-        icon={`${baseUrl}${element.logo}`}
+        mainImage={`${element.logo}`}
+        icon={`${element.logo}`}
         phone={element.phone}
       />
       <MainContentLayout url={url}>
@@ -83,7 +82,7 @@ const HomePage: NextPage<Props> = ({ element, url }): JSX.Element => {
           <div className={`px-6 mt-3 lg:mt-0`}>
             <HomeVendorMainInfo element={element} />
           </div>
-          <HomeSelectMethod element={element} />
+          <HomeSelectMethod element={element} url={url} />
           {/* Search Input */}
           <div
             className={`flex flex-1 w-auto flex-grow mx-2 pb-4 border-b border-stone-300`}
