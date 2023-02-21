@@ -85,7 +85,7 @@ export const imageSizes = {
   xl: 650,
 };
 
-export const imgUrl = (img: string) => `${baseUrl}${img}`;
+export const imgUrl = (img: string) => `${img}`;
 
 export const convertColor = (hex: string, opacity: number) => {
   const tempHex = hex.replace('#', '');
