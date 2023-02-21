@@ -503,5 +503,6 @@
   "add": "add",
   "delivery_instructions" : "delivery instructions",
   "pickup_now" : "pick up order",
-  "estimated_prepration_time":"estimated prepration time"
+  "estimated_prepration_time":"estimated prepration time",
+  "enter_your_information_to_proceed":"please enter your information"
 }

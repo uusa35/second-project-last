@@ -516,5 +516,6 @@
   "add": "أضف",
   "delivery_instructions" : "ملاحظات خاصة بعملية التوصيل",
   "pickup_now" : "استلام الطلب",
-  "estimated_prepration_time":"الوقت المحدد للتجهبز"
+  "estimated_prepration_time":"الوقت المحدد للتجهبز",
+  "enter_your_information_to_proceed":"ادخل بياناتك من فضلك"
 }
