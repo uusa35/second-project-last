@@ -39,11 +39,12 @@ export const appLinks = {
     product_id?: number,
     slug?: string,
     branchId?: string,
-    areaId?: string
+    areaId?: string,
+    category_id?: string | null
   ) =>
     `/product/show/${id}?product_id=${product_id}&slug=${slug}&branchId=${
       branchId ?? ``
-    }&areaId=${areaId ?? ``}`,
+    }&areaId=${areaId ?? ``}&category_id=${category_id}`,
 
   branchIndex: { path: '/branch' },
   cartIndex: { path: '/cart' },

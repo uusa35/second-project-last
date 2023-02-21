@@ -2,13 +2,11 @@ import { useEffect, useState, Suspense } from 'react';
 import MainContentLayout from '@/layouts/MainContentLayout';
 import { wrapper } from '@/redux/store';
 import {
-  productApi,
   useGetProductsQuery,
   useLazyGetSearchProductsQuery,
 } from '@/redux/api/productApi';
 import { appSetting, Product } from '@/types/index';
 import { NextPage } from 'next';
-import { apiSlice } from '@/redux/api';
 import MainHead from '@/components/MainHead';
 import { imageSizes, suppressText } from '@/constants/*';
 import { capitalize, debounce, isEmpty, map } from 'lodash';
@@ -105,6 +103,7 @@ const ProductIndex: NextPage<Props> = ({
     }
   };
 
+  console.log('cat', categoryId);
   return (
     <Suspense>
       <MainHead title={slug} description={slug} />
@@ -172,9 +171,17 @@ const ProductIndex: NextPage<Props> = ({
             {isSuccess &&
               map(currentProducts, (p: Product, i) =>
                 productPreview === 'hor' ? (
-                  <HorProductWidget element={p} key={i} />
+                  <HorProductWidget
+                    element={p}
+                    key={i}
+                    category_id={categoryId ?? null}
+                  />
                 ) : (
-                  <VerProductWidget element={p} key={i} />
+                  <VerProductWidget
+                    element={p}
+                    key={i}
+                    category_id={categoryId ?? null}
+                  />
                 )
               )}
           </div>

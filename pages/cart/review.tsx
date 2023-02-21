@@ -240,7 +240,11 @@ const CartReview: NextPage<Props> = ({ url }) => {
 
   return (
     <Suspense>
-      <MainContentLayout handleSubmit={handleCreateOrder} url={url}>
+      <MainContentLayout
+        handleSubmit={handleCreateOrder}
+        url={url}
+        backRoute={appLinks.cartIndex.path}
+      >
         <div className={`mb-[40%]`}>
           {customer.prefrences.type === `delivery_later` ? (
             <div className="flex justify-center items-end p-5">

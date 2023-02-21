@@ -17,10 +17,15 @@ import {
   setShowFooterElement,
   setUrl,
 } from '@/redux/slices/appSettingSlice';
-import { baseUrl, imageSizes, imgUrl, suppressText } from '@/constants/*';
+import {
+  appLinks,
+  baseUrl,
+  imageSizes,
+  imgUrl,
+  suppressText,
+} from '@/constants/*';
 import CustomImage from '@/components/CustomImage';
 import {
-  ceil,
   concat,
   filter,
   first,
@@ -30,7 +35,6 @@ import {
   map,
   multiply,
   now,
-  round,
   sum,
   sumBy,
 } from 'lodash';
@@ -55,8 +59,8 @@ import { Accordion, AccordionBody } from '@material-tailwind/react';
 import TextTrans from '@/components/TextTrans';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import NoFoundImage from '@/appImages/not_found.png';
-import { useRouter } from 'next/router';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import { useRouter } from 'next/router';
 
 type Props = {
   product: Product;
@@ -72,8 +76,8 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
     cart: { total },
     vendor: { logo },
   } = useAppSelector((state) => state);
-  const router = useRouter();
   const color = useAppSelector(themeColor);
+  const { query }: any = useRouter();
   const dispatch = useAppDispatch();
   const [currentQty, setCurrentyQty] = useState<number>(
     productCart.ProductID === product.id ? productCart.Quantity : 1
@@ -90,11 +94,9 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
     ...(area_id && { area_id }),
     url,
   });
-  console.log('element', element);
 
   useEffect(() => {
     if (isSuccess && element.Data) {
-      console.log('from inside if');
       dispatch(setCurrentModule(element?.Data?.name));
       if (productCart.ProductID !== element?.Data?.id) {
         handleResetInitialProductCart();
@@ -119,29 +121,6 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
       dispatch(resetShowFooterElement());
     };
   }, []);
-
-  // useEffect(() => {
-  //   if (isSuccess && !isNull(element)) {
-  //     if (
-  //       isEmpty(productCart.QuantityMeters) &&
-  //       element?.Data?.sections?.length !== 0
-  //     ) {
-  //       dispatch(disableAddToCart());
-  //       console.log('case 1');
-  //     } else {
-  //       const allAddons = map(productCart.QuantityMeters, (q) => q.addons[0]);
-  //       const currentValue = sumBy(allAddons, (a) => a.Value);
-  //       if (currentValue > 0 && currentQty > 0) {
-  //         dispatch(enableAddToCart());
-  //       } else {
-  //         if (element?.Data?.sections?.length !== 0) {
-  //           dispatch(disableAddToCart());
-  //           console.log('case 2');
-  //         }
-  //       }
-  //     }
-  //   }
-  // }, [productCart.QuantityMeters]);
 
   useEffect(() => {
     if (
@@ -357,12 +336,11 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
     }
   };
 
-  console.log('productCart', productCart);
-  console.log('isSuccess', isSuccess);
-  console.log('element', element?.Data);
   if (!isSuccess) {
     return <LoadingSpinner fullWidth={true} />;
   }
+
+  console.log('query', query);
   return (
     <Suspense>
       <MainHead
@@ -373,6 +351,11 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
       />
       <MainContentLayout
         url={url}
+        backRoute={
+          query.category_id
+            ? appLinks.productIndex(query.category_id, product.name_en)
+            : null
+        }
         productCurrentQty={currentQty}
         handleIncreaseProductQty={handleIncrease}
         handleDecreaseProductQty={handleDecrease}

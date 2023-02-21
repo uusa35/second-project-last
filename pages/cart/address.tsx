@@ -354,7 +354,11 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
 
   return (
     <Suspense>
-      <MainContentLayout handleSubmit={handleNext} url={url}>
+      <MainContentLayout
+        handleSubmit={handleNext}
+        url={url}
+        backRoute={appLinks.cartIndex.path}
+      >
         {/* delivery method buttons */}
         <DeliveryBtns />
         <div className="flex justify-center items-center">

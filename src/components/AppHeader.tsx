@@ -7,8 +7,9 @@ import { debounce } from 'lodash';
 
 type Props = {
   backHome?: boolean;
+  backRoute?: string | null;
 };
-const AppHeader: FC<Props> = ({ backHome = false }) => {
+const AppHeader: FC<Props> = ({ backHome = false, backRoute = null }) => {
   const [offset, setOffset] = useState(0);
   const router = useRouter();
   const [isHome, setIsHome] = useState(
@@ -35,7 +36,11 @@ const AppHeader: FC<Props> = ({ backHome = false }) => {
       >
         {router.asPath === '/' ||
           (!router.asPath.includes('/home') && (
-            <BackBtn backHome={backHome} offset={offset} />
+            <BackBtn
+              backHome={backHome}
+              offset={offset}
+              backRoute={backRoute}
+            />
           ))}
         <SlideTopNav offset={offset} isHome={isHome} />
       </header>

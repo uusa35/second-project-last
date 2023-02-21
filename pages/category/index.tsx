@@ -95,12 +95,6 @@ const ProductSearchIndex: NextPage<Props> = ({ url }): JSX.Element => {
         setCurrentProducts(r.data.Data);
       }
     });
-    // }
-    // else {
-    //   if (searchProductsSuccess) {
-    //     setCurrentProducts(elements.Data);
-    //   }
-    // }
   };
 
   if (
@@ -111,10 +105,6 @@ const ProductSearchIndex: NextPage<Props> = ({ url }): JSX.Element => {
   ) {
     return <LoadingSpinner fullWidth={true} />;
   }
-
-  // console.log('searching ...');
-  // console.log('elements ===>', elements);
-  // console.log('current', currentProducts);
 
   return (
     <Suspense>
