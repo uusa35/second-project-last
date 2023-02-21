@@ -336,7 +336,7 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
     }
   };
 
-  if (!isSuccess) {
+  if (!isSuccess || !url) {
     return <LoadingSpinner fullWidth={true} />;
   }
 
