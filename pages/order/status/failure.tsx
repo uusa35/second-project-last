@@ -47,7 +47,7 @@ const OrderFailure: NextPage<Props> = ({ url }): JSX.Element => {
     }
   }, []);
   return (
-    <MainContentLayout url={url}>
+    <MainContentLayout url={url} backRoute={appLinks.home.path}>
       <div>
         <div className="flex flex-col items-center capitalize">
           <CustomImage

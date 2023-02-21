@@ -95,12 +95,6 @@ const ProductSearchIndex: NextPage<Props> = ({ url }): JSX.Element => {
         setCurrentProducts(r.data.Data);
       }
     });
-    // }
-    // else {
-    //   if (searchProductsSuccess) {
-    //     setCurrentProducts(elements.Data);
-    //   }
-    // }
   };
 
   if (
@@ -112,10 +106,6 @@ const ProductSearchIndex: NextPage<Props> = ({ url }): JSX.Element => {
     return <LoadingSpinner fullWidth={true} />;
   }
 
-  // console.log('searching ...');
-  // console.log('elements ===>', elements);
-  // console.log('current', currentProducts);
-
   return (
     <Suspense>
       <MainHead
@@ -123,7 +113,7 @@ const ProductSearchIndex: NextPage<Props> = ({ url }): JSX.Element => {
         description={`searching products`}
         mainImage={`${baseUrl}${logo}`}
       />
-      <MainContentLayout url={url}>
+      <MainContentLayout url={url} backHome={true}>
         <div className={`px-4`}>
           {/*   search Input */}
           <div className={`w-full capitalize`}>

@@ -27,7 +27,7 @@ const BackBtn: FC<Props> = ({
   const { t } = useTranslation();
   const color = useAppSelector(themeColor);
   const {
-    appSetting: { currentModule, url, previousUrl ,method},
+    appSetting: { currentModule, url, previousUrl, method },
     branch,
     area,
     locale: { lang, otherLang },
@@ -77,9 +77,6 @@ const BackBtn: FC<Props> = ({
       });
     } else {
       router.back();
-      // router.replace(previousUrl.pathName, previousUrl.asPath, {
-      //   locale: router.locale,
-      // });
     }
   };
 

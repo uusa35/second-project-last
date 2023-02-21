@@ -7,8 +7,8 @@ import NoInternet from '@/appImages/no_internet.png';
 import NextNProgress from 'nextjs-progressbar';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { setUrl } from '@/redux/slices/appSettingSlice';
-import { xDomain } from '@/constants/*';
-import { isEmpty, isUndefined } from 'lodash';
+import { isUndefined } from 'lodash';
+
 const AppHeader = dynamic(() => import(`@/components/AppHeader`), {
   ssr: false,
 });
@@ -77,7 +77,7 @@ const MainContentLayout: FC<Props> = ({
       className={`flex flex-col justify-start items-start w-full lg:w-2/4 xl:w-1/3 relative`}
     >
       <SideMenu />
-      {showHeader && <AppHeader />}
+      {showHeader && <AppHeader backHome={backHome} backRoute={backRoute} />}
       <main
         className={`w-full mb-[20%] relative rounded-t-full min-h-screen`}
         style={{ height: '100%' }}

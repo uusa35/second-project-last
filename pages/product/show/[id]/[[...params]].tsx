@@ -17,10 +17,15 @@ import {
   setShowFooterElement,
   setUrl,
 } from '@/redux/slices/appSettingSlice';
-import { baseUrl, imageSizes, imgUrl, suppressText } from '@/constants/*';
+import {
+  appLinks,
+  baseUrl,
+  imageSizes,
+  imgUrl,
+  suppressText,
+} from '@/constants/*';
 import CustomImage from '@/components/CustomImage';
 import {
-  ceil,
   concat,
   filter,
   first,
@@ -30,7 +35,6 @@ import {
   map,
   multiply,
   now,
-  round,
   sum,
   sumBy,
 } from 'lodash';
@@ -55,8 +59,8 @@ import { Accordion, AccordionBody } from '@material-tailwind/react';
 import TextTrans from '@/components/TextTrans';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import NoFoundImage from '@/appImages/not_found.png';
-import { useRouter } from 'next/router';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import { useRouter } from 'next/router';
 
 type Props = {
   product: Product;
@@ -70,9 +74,10 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
     branch: { id: branch_id },
     area: { id: area_id },
     cart: { total },
+    vendor: { logo },
   } = useAppSelector((state) => state);
-  const router = useRouter();
   const color = useAppSelector(themeColor);
+  const { query }: any = useRouter();
   const dispatch = useAppDispatch();
   const [currentQty, setCurrentyQty] = useState<number>(
     productCart.ProductID === product.id ? productCart.Quantity : 1
@@ -89,11 +94,9 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
     ...(area_id && { area_id }),
     url,
   });
-  console.log('element', element);
 
   useEffect(() => {
     if (isSuccess && element.Data) {
-      console.log('from inside if');
       dispatch(setCurrentModule(element?.Data?.name));
       if (productCart.ProductID !== element?.Data?.id) {
         handleResetInitialProductCart();
@@ -120,29 +123,6 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
   }, []);
 
   useEffect(() => {
-    if (isSuccess && !isNull(element)) {
-      if (
-        isEmpty(productCart.QuantityMeters) &&
-        element?.Data?.sections?.length !== 0
-      ) {
-        dispatch(disableAddToCart());
-        console.log('case 1');
-      } else {
-        const allAddons = map(productCart.QuantityMeters, (q) => q.addons[0]);
-        const currentValue = sumBy(allAddons, (a) => a.Value);
-        if (currentValue > 0 && currentQty > 0) {
-          dispatch(enableAddToCart());
-        } else {
-          if (element?.Data?.sections?.length !== 0) {
-            dispatch(disableAddToCart());
-            console.log('case 2');
-          }
-        }
-      }
-    }
-  }, [productCart.QuantityMeters]);
-
-  useEffect(() => {
     if (
       isSuccess &&
       !isNull(element) &&
@@ -158,6 +138,18 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
       const metersSum = sumBy(allMeters, (a) => multiply(a.price, a.Value)); // qty
       const checkboxesSum = sumBy(allCheckboxes, (a) => a.Value * a.price); // qty
       const radioBtnsSum = sumBy(allRadioBtns, (a) => a.Value * a.price); // qty
+      if (
+        element?.Data?.sections?.length !== 0 &&
+        isEmpty(allCheckboxes) &&
+        isEmpty(allRadioBtns) &&
+        isEmpty(allMeters)
+      ) {
+        console.log('if');
+        dispatch(disableAddToCart());
+      } else {
+        console.log('else');
+        dispatch(enableAddToCart());
+      }
       dispatch(
         updatePrice({
           totalPrice: sum([
@@ -344,20 +336,26 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
     }
   };
 
-  console.log('productCart', productCart);
-  console.log('isSuccess', isSuccess);
   if (!isSuccess) {
     return <LoadingSpinner fullWidth={true} />;
   }
+
+  console.log('query', query);
   return (
     <Suspense>
       <MainHead
         title={`${product.name_ar} - ${product.name_en}`}
         description={`${product.description_ar} - ${product.description_en}`}
         mainImage={`${baseUrl}${product?.img[0]?.thumbnail.toString()}`}
+        icon={`${baseUrl}${logo}`}
       />
       <MainContentLayout
         url={url}
+        backRoute={
+          query.category_id
+            ? appLinks.productIndex(query.category_id, product.name_en)
+            : null
+        }
         productCurrentQty={currentQty}
         handleIncreaseProductQty={handleIncrease}
         handleDecreaseProductQty={handleDecrease}

@@ -4,12 +4,10 @@ import { NextPage } from 'next';
 import Image from 'next/image';
 import { imgUrl, suppressText } from '@/constants/*';
 import { useTranslation } from 'react-i18next';
-import { orderApi, useGetInvoiceQuery } from '@/redux/api/orderApi';
+import { useGetInvoiceQuery } from '@/redux/api/orderApi';
 import { isEmpty, map } from 'lodash';
 import { wrapper } from '@/redux/store';
-import { AppQueryResult } from '@/types/queries';
-// import { OrderInvoice } from '@/types/index';
-import { apiSlice } from '@/redux/api';
+
 import { useEffect, Suspense } from 'react';
 import {
   setCurrentModule,
@@ -34,7 +32,6 @@ const OrderInvoice: NextPage<Props> = ({ url }): JSX.Element => {
   const color = useAppSelector(themeColor);
   const { t } = useTranslation();
   const { orderId } = useRouter().query;
-
   // get invoice data
   const { data: element, isSuccess } = useGetInvoiceQuery(
     {
@@ -65,8 +62,6 @@ const OrderInvoice: NextPage<Props> = ({ url }): JSX.Element => {
   if (!isSuccess) {
     return <LoadingSpinner />;
   }
-
-  console.log(element);
 
   return (
     <Suspense>
@@ -129,7 +124,7 @@ const OrderInvoice: NextPage<Props> = ({ url }): JSX.Element => {
               {element.data.order_type.includes('delivery') ? (
                 <>
                   <p className="py-1" suppressHydrationWarning={suppressText}>
-                    {t('area')} : {element.data.area ?? ''}
+                    {t('area')} : {element?.data?.area ?? ''}
                   </p>
                   <button
                     suppressHydrationWarning={suppressText}
@@ -453,26 +448,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
           },
         };
       }
-      // const {
-      //   data: element.data,
-      //   isError,
-      // }: { data: AppQueryResult<OrderInvoice>; isError: boolean } =
-      //   await store.dispatch(
-      //     orderApi.endpoints.getInvoice.initiate({
-      //       order_id: orderId,
-      //       url,
-      //       area_branch:
-      //         method === `pickup`
-      //           ? { 'x-branch-id': branchAreaId }
-      //           : { 'x-area-id': branchAreaId },
-      //     })
-      //   );
-      // await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
-      // if (isError || !element.data.status || !element.data.data) {
-      //   return {
-      //     notFound: true,
-      //   };
-      // }
       return {
         props: {
           url,

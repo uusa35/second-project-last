@@ -1,7 +1,12 @@
 import React, { FC, Suspense } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { imageSizes, submitBtnClass, suppressText, convertColor } from '@/constants/*';
+import {
+  imageSizes,
+  submitBtnClass,
+  suppressText,
+  convertColor,
+} from '@/constants/*';
 import { useTranslation } from 'react-i18next';
 import { isNull } from 'lodash';
 import { themeColor } from '@/redux/slices/vendorSlice';
@@ -13,7 +18,7 @@ type Props = {
 };
 const OffLineWidget: FC<Props> = ({ message, img = null }): JSX.Element => {
   const { t } = useTranslation();
-  const color = useAppSelector(themeColor); 
+  const color = useAppSelector(themeColor);
   return (
     <Suspense>
       <div

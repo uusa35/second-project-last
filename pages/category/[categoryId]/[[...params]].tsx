@@ -34,6 +34,7 @@ type Props = {
   area_id: string;
   page: string;
   limit: string;
+  category_id: string;
 };
 const ProductIndex: NextPage<Props> = ({
   slug,
@@ -42,6 +43,7 @@ const ProductIndex: NextPage<Props> = ({
   area_id,
   page,
   limit,
+  category_id,
 }): JSX.Element => {
   const { t } = useTranslation();
   const {
@@ -108,7 +110,7 @@ const ProductIndex: NextPage<Props> = ({
   return (
     <Suspense>
       <MainHead title={slug} description={slug} />
-      <MainContentLayout url={url}>
+      <MainContentLayout url={url} backHome={true}>
         <h1 className="capitalize" suppressHydrationWarning={suppressText}></h1>
         <div className={`px-4 capitalize`}>
           <div className="flex justify-center items-center">
@@ -167,9 +169,17 @@ const ProductIndex: NextPage<Props> = ({
             {!isEmpty(currentProducts) &&
               map(currentProducts, (p: Product, i) =>
                 productPreview === 'hor' ? (
-                  <HorProductWidget element={p} key={i} />
+                  <HorProductWidget
+                    element={p}
+                    key={i}
+                    category_id={category_id}
+                  />
                 ) : (
-                  <VerProductWidget element={p} key={i} />
+                  <VerProductWidget
+                    element={p}
+                    key={i}
+                    category_id={category_id}
+                  />
                 )
               )}
           </div>
@@ -203,6 +213,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
           area_id: area_id ?? ``,
           page: page ?? 1,
           limit: limit ?? 10,
+          category_id: categoryId,
         },
       };
     }
