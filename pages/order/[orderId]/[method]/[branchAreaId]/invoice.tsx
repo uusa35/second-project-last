@@ -36,14 +36,19 @@ const OrderInvoice: NextPage<Props> = ({ url }): JSX.Element => {
   const { orderId } = useRouter().query;
 
   // get invoice data
-  const { data: element, isSuccess } = useGetInvoiceQuery({
-    order_id: orderId as string,
-    url,
-    area_branch:
-      method === `pickup`
-        ? { 'x-branch-id': branch.id }
-        : { 'x-area-id': area.id },
-  });
+  const { data: element, isSuccess } = useGetInvoiceQuery(
+    {
+      order_id: orderId as string,
+      url,
+      area_branch:
+      method === `pickup` && branch.id
+      ? { 'x-branch-id': branch.id }
+      : method === `delivery` && area.id
+      ? { 'x-area-id': area.id }
+      : {},
+    },
+    { refetchOnMountOrArgChange: true }
+  );
 
   const handleMapLocation = (lat: string, long: string) => {
     window.open(`https://maps.google.com?q=${lat},${long}`);
@@ -61,10 +66,13 @@ const OrderInvoice: NextPage<Props> = ({ url }): JSX.Element => {
     return <LoadingSpinner />;
   }
 
+  console.log(element);
+
   return (
     <Suspense>
       <MainContentLayout url={url}>
         <div>
+          {/* customer logo and name */}
           <div className="flex px-4  pt-5 justify-between items-center">
             <div className="flex items-center">
               <Image
@@ -82,6 +90,8 @@ const OrderInvoice: NextPage<Props> = ({ url }): JSX.Element => {
               {t('order')} {element.data.order_code}
             </h4>
           </div>
+
+          {/* centered order type */}
           <p
             className="font-semibold text-center pt-2 capitalize"
             suppressHydrationWarning={suppressText}
@@ -89,7 +99,10 @@ const OrderInvoice: NextPage<Props> = ({ url }): JSX.Element => {
             {t(`${element.data.order_type}`)}
           </p>
           <div className="my-5 px-5 py-1 bg-gray-100"></div>
+
+          {/* second section */}
           <div className="flex justify-between px-4 py-2 capitalize">
+            {/* customer info */}
             <div>
               <h4
                 className="font-semibold "
@@ -101,37 +114,67 @@ const OrderInvoice: NextPage<Props> = ({ url }): JSX.Element => {
               <p className="py-1">{element.data.customer.phone}</p>
               <p className="py-1">{element.data.customer.email}</p>
             </div>
+
+            {/* branch or area */}
             <div>
               <h4
                 className="font-semibold "
                 suppressHydrationWarning={suppressText}
               >
-                {t('pick_up_details')}
+                {element.data.order_type.includes('delivery')
+                  ? t('delivery_details')
+                  : t('pick_up_details')}
               </h4>
-              <p className="py-1" suppressHydrationWarning={suppressText}>
-                {t('branch')} : {element.data.pickup_details.branch}
-              </p>
-              <button
-                suppressHydrationWarning={suppressText}
-                className="capitalize py-1"
-                style={{ color }}
-                onClick={() =>
-                  handleMapLocation(
-                    element.data.pickup_details.latitude,
-                    element.data.pickup_details.longitude
-                  )
-                }
-              >
-                {t('map_location')}
-              </button>
+
+              {element.data.order_type.includes('delivery') ? (
+                <>
+                  <p className="py-1" suppressHydrationWarning={suppressText}>
+                    {t('area')} : {element.data.area ?? ''}
+                  </p>
+                  <button
+                    suppressHydrationWarning={suppressText}
+                    className="capitalize py-1"
+                    style={{ color }}
+                    onClick={() =>
+                      handleMapLocation(
+                        element.data.delivery_address.latitude,
+                        element.data.delivery_address.longitude
+                      )
+                    }
+                  >
+                    {t('map_location')}
+                  </button>
+                </>
+              ) : (
+                <>
+                  <p className="py-1" suppressHydrationWarning={suppressText}>
+                    {t('branch')} : {element.data.pickup_details.branch}
+                  </p>
+                  <button
+                    suppressHydrationWarning={suppressText}
+                    className="capitalize py-1"
+                    style={{ color }}
+                    onClick={() =>
+                      handleMapLocation(
+                        element.data.pickup_details.latitude,
+                        element.data.pickup_details.longitude
+                      )
+                    }
+                  >
+                    {t('map_location')}
+                  </button>
+                </>
+              )}
             </div>
           </div>
-          <div className="px-4 border-t border-gray-300 pt-4">
+
+          {/* payment details */}
+          <div className="flex gap-x-2 px-4 border-t border-b border-gray-300 py-4">
             <h4
               className="font-extrabold pb-2"
               suppressHydrationWarning={suppressText}
             >
-              {t('payment_details')}
+              {t('payment_details')} :
             </h4>
             <p suppressHydrationWarning={suppressText}>
               {element.data.payment_type === 'C.O.D'
@@ -169,15 +212,23 @@ const OrderInvoice: NextPage<Props> = ({ url }): JSX.Element => {
                 {element.data.order_details.order_date}
               </p>
             </div>
-            <div className="flex items-center py-1">
-              <p
-                className="pe-2 font-extrabold"
-                suppressHydrationWarning={suppressText}
-              >
-                {t('delivery_instructions')} :
-              </p>
-              <p>{`${element.data.delivery_instruction}`}</p>
-            </div>
+
+            {/* delivery instructions */}
+            {element.data.order_type.includes('delivery') ? (
+              <div className="flex items-center py-1">
+                <p
+                  className="pe-2 font-extrabold"
+                  suppressHydrationWarning={suppressText}
+                >
+                  {t('delivery_instructions')} :
+                </p>
+                <p>{`${
+                  element.data.delivery_address?.address?.additional ?? ''
+                }`}</p>
+              </div>
+            ) : (
+              <></>
+            )}
           </div>
           <div className="my-5 px-5 py-1 bg-gray-100"></div>
           <div className="px-4">
@@ -263,12 +314,13 @@ const OrderInvoice: NextPage<Props> = ({ url }): JSX.Element => {
                               <div className="flex flex-wrap">
                                 {map(item.addon, (a, idx) => (
                                   <span
+                                    key={a.addon_id}
                                     className={`${
                                       item.addon.length > 1 &&
                                       'pe-1 whitespace-nowrap'
                                     }`}
                                   >
-                                    {`${a} `}
+                                    {`${a.addon_name} X${a.addon_quantity} `}
                                     {idx !== item.addon.length - 1 ? '/ ' : ''}
                                   </span>
                                 ))}
@@ -301,6 +353,28 @@ const OrderInvoice: NextPage<Props> = ({ url }): JSX.Element => {
               </table>
             </div>
           </div>
+
+          {/* promo */}
+          {element.data.order_summary.promo_code &&
+          element.data.order_summary.promo_code_value ? (
+            <div className="flex justify-between items-center py-1 px-4 mt-4">
+              <div>
+                <p
+                  className="pe-2 font-extrabold"
+                  suppressHydrationWarning={suppressText}
+                >
+                  {t('promocode')} :
+                </p>
+                <p>{`${element.data.order_summary.promo_code}`}</p>
+              </div>
+
+              <p>{`- ${element.data.order_summary.promo_code_value}`}</p>
+            </div>
+          ) : (
+            <></>
+          )}
+
+          {/* payment summary */}
           <div className={`px-4 py-4`}>
             <div className="flex justify-between mb-3 text-lg">
               <p suppressHydrationWarning={suppressText}>{t('subtotal')}</p>
@@ -312,7 +386,7 @@ const OrderInvoice: NextPage<Props> = ({ url }): JSX.Element => {
               </p>
             </div>
 
-            {element.data.order_summary.tax ? (
+            {parseFloat(element.data.order_summary.tax) ? (
               <div className="flex justify-between mb-3 text-lg">
                 <p suppressHydrationWarning={suppressText}>{t('tax')}</p>
                 <p

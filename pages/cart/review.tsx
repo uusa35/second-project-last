@@ -64,6 +64,7 @@ const CartReview: NextPage<Props> = ({ url }) => {
     area: { id: areaId, name_ar: areaAR, name_en: areaEN },
     customer: { userAgent },
     appSetting: { method: process_type },
+    cart: { promoEnabled, PromoCode },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
   const { data: cartItems, isSuccess } = useGetCartProductsQuery<{
@@ -159,6 +160,7 @@ const CartReview: NextPage<Props> = ({ url }) => {
           UserAgent: userAgent,
           Messg: customer.notes,
           PaymentMethod: selectedPaymentMethod,
+          ...(promoEnabled && PromoCode ? { PromoCode: PromoCode } : {}),
           Date: `${new Date(customer.prefrences.date as Date).getFullYear()}-${
             new Date(customer.prefrences.date as Date).getMonth() + 1
           }-${new Date(customer.prefrences.date as Date).getDate()}`,
