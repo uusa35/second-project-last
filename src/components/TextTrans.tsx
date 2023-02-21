@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { useAppSelector } from '@/redux/hooks';
 import { truncate } from 'lodash';
+import { suppressText } from '@/constants/*';
 
 type Props = {
   ar: string;
@@ -18,7 +19,11 @@ const TextTrans: FC<Props> = ({
 }) => {
   const { isRTL } = useAppSelector((state) => state.locale);
   return (
-    <span className={`capitalize ${className}`} style={style}>
+    <span
+      className={`capitalize ${className}`}
+      style={style}
+      suppressHydrationWarning={suppressText}
+    >
       {truncate(isRTL ? ar : en, { length })}
     </span>
   );

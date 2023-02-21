@@ -4,7 +4,7 @@ import i18n from 'i18next';
 import { useRouter } from 'next/router';
 import { hideSideMenu } from '@/redux/slices/appSettingSlice';
 import { setUserAgent } from '@/redux/slices/customerSlice';
-import { arboriaFont, gessFont } from '@/constants/*';
+import { arboriaFont, gessFont, suppressText } from '@/constants/*';
 import { setLocale } from '@/redux/slices/localeSlice';
 import moment from 'moment';
 import dynamic from 'next/dynamic';
@@ -159,6 +159,7 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
         className={`hidden lg:block flex flex-row  w-full h-screen lg:w-2/4 xl:w-2/3 fixed ${
           router.locale === 'ar' ? 'left-0' : 'right-0'
         }`}
+        suppressHydrationWarning={suppressText}
       >
         {isSuccess && <MainAsideLayout element={vendor} />}
       </div>

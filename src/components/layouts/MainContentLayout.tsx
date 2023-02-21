@@ -8,6 +8,7 @@ import NextNProgress from 'nextjs-progressbar';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { setUrl } from '@/redux/slices/appSettingSlice';
 import { isUndefined } from 'lodash';
+import { suppressText } from '@/constants/*';
 
 const AppHeader = dynamic(() => import(`@/components/AppHeader`), {
   ssr: false,
@@ -75,6 +76,7 @@ const MainContentLayout: FC<Props> = ({
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       className={`flex flex-col justify-start items-start w-full lg:w-2/4 xl:w-1/3 relative`}
+      suppressHydrationWarning={suppressText}
     >
       <SideMenu />
       {showHeader && <AppHeader backHome={backHome} backRoute={backRoute} />}
@@ -98,6 +100,7 @@ const MainContentLayout: FC<Props> = ({
         productCurrentQty={productCurrentQty}
       />
       <NextNProgress
+        suppressHydrationWarning={suppressText}
         color={color}
         startPosition={0.3}
         stopDelayMs={200}
