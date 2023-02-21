@@ -67,3 +67,9 @@ export interface Feedback {
   note: string;
   phone: number;
 }
+export interface DeliveryPickupDetails {
+  delivery_time: string;
+  estimated_preparation_time: string;
+  delivery_fees: string;
+  id: number;
+}

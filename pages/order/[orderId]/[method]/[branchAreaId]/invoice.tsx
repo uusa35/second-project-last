@@ -41,11 +41,11 @@ const OrderInvoice: NextPage<Props> = ({ url }): JSX.Element => {
       order_id: orderId as string,
       url,
       area_branch:
-      method === `pickup` && branch.id
-      ? { 'x-branch-id': branch.id }
-      : method === `delivery` && area.id
-      ? { 'x-area-id': area.id }
-      : {},
+        method === `pickup` && branch.id
+          ? { 'x-branch-id': branch.id }
+          : method === `delivery` && area.id
+          ? { 'x-area-id': area.id }
+          : {},
     },
     { refetchOnMountOrArgChange: true }
   );
