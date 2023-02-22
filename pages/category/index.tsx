@@ -7,9 +7,9 @@ import {
 } from '@/redux/api/productApi';
 import { NextPage } from 'next';
 import { debounce, isEmpty, map, isNull } from 'lodash';
-import { appLinks, baseUrl, imageSizes, suppressText } from '@/constants/*';
+import { appLinks, imageSizes, suppressText } from '@/constants/*';
 import MainHead from '@/components/MainHead';
-import NoResultFound from '@/appImages/no_result_found.webp';
+import NoResultFound from '@/appImages/no-result-found.gif';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useEffect, useState, Suspense } from 'react';
@@ -68,6 +68,7 @@ const ProductSearchIndex: NextPage<Props> = ({ url }): JSX.Element => {
   }, []);
 
   useEffect(() => {
+    console.log('key', key);
     triggerGetProducts({
       key: key ?? ``,
       ...(branchId && { branch_id: branch_id ?? branchId }),
@@ -77,13 +78,14 @@ const ProductSearchIndex: NextPage<Props> = ({ url }): JSX.Element => {
     }).then((r: any) => {
       if (r.data && r.data.Data && r.data.Data.length > 0) {
         setCurrentProducts(r.data.Data);
+      } else {
+        setCurrentProducts([]);
       }
     });
   }, [key]);
 
   const handleChange = (searchInputKey: string) => {
     setSearchIsEmpty(searchInputKey.length === 0);
-    // if (searchInputKey.length > 2) {
     triggerGetProducts({
       key: searchInputKey ?? ``,
       ...(branchId && { branch_id: branch_id ?? branchId }),
@@ -93,6 +95,8 @@ const ProductSearchIndex: NextPage<Props> = ({ url }): JSX.Element => {
     }).then((r: any) => {
       if (r.data && r.data.Data && r.data.Data.length > 0) {
         setCurrentProducts(r.data.Data);
+      } else {
+        setCurrentProducts([]);
       }
     });
   };
@@ -142,7 +146,7 @@ const ProductSearchIndex: NextPage<Props> = ({ url }): JSX.Element => {
                 type="search"
                 name="search"
                 id="search"
-                onChange={debounce((e) => handleChange(e.target.value), 400)}
+                onChange={debounce((e) => handleChange(e.target.value), 600)}
                 className="block w-full focus:ring-1 focus:ring-primary_BG rounded-md  rtl:pl-20 ltr:pr-20 border-none  bg-gray-100 py-3 h-12  text-lg capitalize"
                 suppressHydrationWarning={suppressText}
                 placeholder={`${
