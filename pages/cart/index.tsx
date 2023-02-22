@@ -23,7 +23,7 @@ import {
   startCase,
 } from 'lodash';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
-import { ProductCart, QuantityMeters, ServerCart } from '@/types/index';
+import { ProductCart, QuantityMeters, RadioBtnsAddons, ServerCart } from '@/types/index';
 import Link from 'next/link';
 import {
   useAddToCartMutation,
@@ -385,8 +385,8 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
                                           <TextTrans
                                             key={i}
                                             className={`ltr:border-r-2 ltr:last:border-r-0 ltr:first:pr-1 rtl:border-l-2 rtl:last:border-l-0 rtl:first:pl-1 px-1 text-xs capitalize`}
-                                            ar={addon.name}
-                                            en={addon.name}
+                                            ar={addon.nameAr}
+                                            en={addon.nameEn}
                                           />
                                         ))}
                                       </Fragment>
@@ -395,6 +395,20 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
                               </div>
                             </div>
                           </div>
+                          {!isEmpty(item.RadioBtnsAddons) &&
+                                  map(
+                                    item.RadioBtnsAddons,
+                                    (r: RadioBtnsAddons) => (
+                                      <Fragment key={r.addons.attributeID}>
+                                        <TextTrans
+                                            key={r.addons.attributeID}
+                                            className={`ltr:border-r-2 ltr:last:border-r-0 ltr:first:pr-1 rtl:border-l-2 rtl:last:border-l-0 rtl:first:pl-1 px-1 text-xs capitalize text-gray-400`}
+                                            ar={r.addons.nameAr}
+                                            en={r.addons.nameEn}
+                                          />
+                                      </Fragment>
+                                    )
+                                  )}
                           {item.ExtraNotes && (
                             <div
                               className={`w-full border-t border-gray-200 pt-2`}

@@ -168,15 +168,23 @@ export interface QuantityMeters {
   addonID: number; // selectionId
   uId: string; // addonId+AttributeId
   addons: CartAddons[]; // choiceId
+
 }
 
 export interface CartAddons {
   attributeID: number;
   name: string;
-  name_ar: string;
-  name_en: string;
+  nameAr: string;
+  nameEn: string;
   Value?: number; // qty
   price?: number;
+}
+
+export interface CartRadioAddons {
+  attributeID: number;
+  ame: string;
+  nameAr: string;
+  nameEn: string;
 }
 
 export interface Order {
@@ -314,4 +322,9 @@ export interface Prefrences {
   type: string;
   date?: string | Date;
   time?: string | Date;
+}
+
+export interface RadioBtnsAddons {
+  addonID: number; 
+  addons: CartRadioAddons; 
 }
