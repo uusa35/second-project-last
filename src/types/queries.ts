@@ -71,5 +71,6 @@ export interface DeliveryPickupDetails {
   delivery_time: string;
   estimated_preparation_time: string;
   delivery_fees: string;
+  delivery_time_type: string;
   id: number;
 }
