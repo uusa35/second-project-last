@@ -26,6 +26,10 @@ import {
   lowerCase,
   values,
   countBy,
+  findIndex,
+  map,
+  find,
+  isUndefined,
 } from 'lodash';
 import { setCartPromoSuccess } from '@/redux/slices/cartSlice';
 import { themeColor } from '@/redux/slices/vendorSlice';
@@ -81,6 +85,42 @@ const AppFooter: FC<Props> = ({
   });
   const [triggerCheckPromoCode] = useLazyCheckPromoCodeQuery();
 
+  const handelCartPayload = () => {
+    const items = map(cartItems?.data.Cart, (i) => {
+      if (i.id !== productCart.id) {
+        return i;
+      } else if (
+        // i.Quantity !== productCart.Quantity &&
+        i.id === productCart.id
+      ) {
+        // console.log(
+        //   'product and itemid',
+        //   productCart.id,
+        //   i.id,
+        //   i.Quantity + productCart.Quantity,
+        //   {
+        //     ...i,
+        //     Quantity: i.Quantity + productCart.Quantity,
+        //   },
+        //   cartItems.data.Cart
+        // );
+        return {
+          ...i,
+          Quantity: i.Quantity + productCart.Quantity,
+        };
+      }
+    });
+
+    if (isUndefined(find(items, (x) => x?.id === productCart.id))) {
+      // console.log('in find')
+      items.push(productCart);
+    }
+
+    // console.log('items', items,isUndefined(find(items, (x) => x.id === productCart.id)));
+
+    return items;
+  };
+
   const handleAddToCart = async () => {
     if (
       (method === `pickup` && isNull(branchId)) ||
@@ -97,7 +137,6 @@ const AppFooter: FC<Props> = ({
       );
     } else {
       if (!isEmpty(productCart) && userAgent) {
-        // console.log('productCart', productCart);
         await triggerAddToCart({
           process_type: method,
           area_branch: method === 'delivery' ? area.id : branchId,
@@ -105,21 +144,31 @@ const AppFooter: FC<Props> = ({
             UserAgent: userAgent,
             Cart:
               cartItems && cartItems.data && cartItems.data.Cart
-                ? filter(cartItems.data.Cart, (i) => {
-                 
-                    if (i.id !== productCart.id) {
-                      return i;
-                    } else if (
-                      // i.Quantity !== productCart.Quantity &&
-                      i.id === productCart.id
-                    ) {
-                      return {
-                        ...i,
-                        Quantity: i.Quantity + productCart.Quantity,
-                      };
-                    }
-                  }).concat(productCart)
-                : [productCart],
+                ? handelCartPayload()
+                : // filter(cartItems.data.Cart, (i) => {
+                  //     if (i.id !== productCart.id) {
+                  //       console.log('hello form heeeere');
+                  //       return i;
+                  //     } else if (
+                  //       // i.Quantity !== productCart.Quantity &&
+                  //       i.id === productCart.id
+                  //     ) {
+                  //       console.log(
+                  //         'hi',
+                  //         [
+                  //           {
+                  //             ...i,
+                  //             Quantity: i.Quantity + productCart.Quantity,
+                  //           },
+                  //         ].concat(productCart)
+                  //       );
+                  //       return {
+                  //         ...i,
+                  //         Quantity: i.Quantity + productCart.Quantity,
+                  //       };
+                  //     }
+                  //   }).concat(!ProductExist && productCart)
+                  [productCart],
           },
           url,
         }).then((r: any) => {
