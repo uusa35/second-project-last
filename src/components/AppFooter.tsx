@@ -26,6 +26,7 @@ import {
   lowerCase,
   values,
   countBy,
+  map,
 } from 'lodash';
 import { setCartPromoSuccess } from '@/redux/slices/cartSlice';
 import { themeColor } from '@/redux/slices/vendorSlice';
@@ -105,20 +106,23 @@ const AppFooter: FC<Props> = ({
             UserAgent: userAgent,
             Cart:
               cartItems && cartItems.data && cartItems.data.Cart
-                ? filter(cartItems.data.Cart, (i) => {
-                 
-                    if (i.id !== productCart.id) {
-                      return i;
-                    } else if (
-                      // i.Quantity !== productCart.Quantity &&
-                      i.id === productCart.id
-                    ) {
-                      return {
-                        ...i,
-                        Quantity: i.Quantity + productCart.Quantity,
-                      };
+                ? map(cartItems.data.Cart.concat(productCart), (p) => {
+                    if (p.id !== productCart.id) {
+                      return p;
                     }
-                  }).concat(productCart)
+                    if (p.id === productCart.id) {
+                      // update the quantity only
+                      return {
+                        ...productCart,
+                        Price:
+                          productCart.Price *
+                          (p.Quantity + productCart.Quantity),
+                        Quantity: p.Quantity + productCart.Quantity,
+                      };
+                    } else {
+                      return p;
+                    }
+                  })
                 : [productCart],
           },
           url,
