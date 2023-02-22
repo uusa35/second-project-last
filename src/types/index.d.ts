@@ -180,12 +180,6 @@ export interface CartAddons {
   price?: number;
 }
 
-export interface CartRadioAddons {
-  attributeID: number;
-  ame: string;
-  nameAr: string;
-  nameEn: string;
-}
 
 export interface Order {
   payment_method: string;
@@ -326,5 +320,10 @@ export interface Prefrences {
 
 export interface RadioBtnsAddons {
   addonID: number; 
-  addons: CartRadioAddons; 
+  addons: CartAddons; 
+}
+
+export interface CheckBoxesAddons {
+  addonID: number; 
+  addons: CartAddons[]; 
 }

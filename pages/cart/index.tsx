@@ -23,7 +23,7 @@ import {
   startCase,
 } from 'lodash';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
-import { ProductCart, QuantityMeters, RadioBtnsAddons, ServerCart } from '@/types/index';
+import { CheckBoxesAddons, ProductCart, QuantityMeters, RadioBtnsAddons, ServerCart } from '@/types/index';
 import Link from 'next/link';
 import {
   useAddToCartMutation,
@@ -408,7 +408,31 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
                                           />
                                       </Fragment>
                                     )
+                          )}
+                          <div className="flex">
+                            <div className="w-fit pb-2">
+                              <div
+                                className={`flex text-gray-400 w-auto flex-wrap justify-between`}
+                              >
+                                {!isEmpty(item.CheckBoxes) &&
+                                  map(
+                                    item.CheckBoxes,
+                                    (c: CheckBoxesAddons, i) => (
+                                      <Fragment key={i}>
+                                        {map(c.addons, (addon, i) => (
+                                          <TextTrans
+                                            key={i}
+                                            className={`ltr:border-r-2 ltr:last:border-r-0 ltr:first:pr-1 rtl:border-l-2 rtl:last:border-l-0 rtl:first:pl-1 px-1 text-xs capitalize`}
+                                            ar={addon.nameAr}
+                                            en={addon.nameEn}
+                                          />
+                                        ))}
+                                      </Fragment>
+                                    )
                                   )}
+                              </div>
+                            </div>
+                          </div>
                           {item.ExtraNotes && (
                             <div
                               className={`w-full border-t border-gray-200 pt-2`}
