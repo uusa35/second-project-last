@@ -14,15 +14,12 @@ import Notes from '@/appIcons/notes.svg';
 import { appLinks, imageSizes, imgUrl, suppressText } from '@/constants/*';
 import CustomImage from '@/components/CustomImage';
 import {
-  capitalize,
   debounce,
   filter,
   isEmpty,
   kebabCase,
   lowerCase,
   map,
-  snakeCase,
-  upperCase,
   startCase,
 } from 'lodash';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
@@ -32,20 +29,18 @@ import {
   useAddToCartMutation,
   useGetCartProductsQuery,
   useLazyCheckPromoCodeQuery,
-  useLazyGetCartProductsQuery,
 } from '@/redux/api/cartApi';
 import PaymentSummary from '@/widgets/cart/review/PaymentSummary';
 import TextTrans from '@/components/TextTrans';
 import { AppQueryResult } from '@/types/queries';
 import { setNotes } from '@/redux/slices/customerSlice';
 import {
-  resetCartTotalAndSubTotal,
   setCartPromoCode,
   setCartPromoSuccess,
   setCartTotalAndSubTotal,
 } from '@/redux/slices/cartSlice';
 import { themeColor } from '@/redux/slices/vendorSlice';
-import EmptyCart from '@/appImages/empty_cart.png';
+import EmptyCart from '@/appImages/empty-cart.gif';
 import { wrapper } from '@/redux/store';
 import { Done } from '@mui/icons-material';
 
