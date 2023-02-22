@@ -10,7 +10,7 @@ import { NextPage } from 'next';
 import MainHead from '@/components/MainHead';
 import { imageSizes, suppressText } from '@/constants/*';
 import { capitalize, debounce, isEmpty, map } from 'lodash';
-import NoResultFound from '@/appImages/no_result_found.webp';
+import NoResultFound from '@/appImages/no-result-found.gif';
 import HorProductWidget from '@/widgets/product/HorProductWidget';
 import { AppQueryResult, ProductPagination } from '@/types/queries';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
