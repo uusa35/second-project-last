@@ -113,7 +113,6 @@ const AppFooter: FC<Props> = ({
                       // i.Quantity !== productCart.Quantity &&
                       i.id === productCart.id
                     ) {
-                      console.log('productCart',productCart,i)
                       return {
                         ...i,
                         Quantity: i.Quantity + productCart.Quantity,
