@@ -121,6 +121,8 @@ const HomeSelectMethod: FC<Props> = ({
               {method === 'delivery'
                 ? data?.Data?.delivery_time
                 : data?.Data?.estimated_preparation_time}
+                {' '}
+                {t(`${data?.Data?.delivery_time_type}`)}
             </div>
           </div>
         ) : (

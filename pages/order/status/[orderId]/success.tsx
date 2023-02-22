@@ -56,7 +56,7 @@ const OrderSuccess: NextPage<Props> = ({ element, url }) => {
   return (
     <Suspense>
       <MainContentLayout url={url} backRoute={appLinks.home.path}>
-        <div className="capitalize">
+        <div className="capitalize" suppressHydrationWarning={suppressText}>
           <div className="flex flex-col items-center">
             <CustomImage
               className="w-22 h-fit"
@@ -123,6 +123,7 @@ const OrderSuccess: NextPage<Props> = ({ element, url }) => {
               scroll={true}
               className={`flex grow justify-center items-center p-4 rounded-lg text-white mb-3 shadow-lg`}
               style={{ backgroundColor: color }}
+              suppressHydrationWarning={suppressText}
             >
               {t('view_receipt')}
             </Link>
@@ -134,6 +135,7 @@ const OrderSuccess: NextPage<Props> = ({ element, url }) => {
               scroll={true}
               className={`flex grow justify-center items-center p-4 rounded-lg text-white mb-3 shadow-lg`}
               style={{ backgroundColor: color }}
+              suppressHydrationWarning={suppressText}
             >
               {t('track_order')}
             </Link>
