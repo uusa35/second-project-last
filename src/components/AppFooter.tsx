@@ -17,26 +17,23 @@ import {
 } from '@/redux/api/cartApi';
 import {
   debounce,
-  filter,
   first,
-  isArray,
   isEmpty,
   isNull,
   kebabCase,
   lowerCase,
   values,
-  countBy,
   map,
+  find,
+  isUndefined,
 } from 'lodash';
 import { setCartPromoSuccess } from '@/redux/slices/cartSlice';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import PaymentSummary from '@/widgets/cart/review/PaymentSummary';
 import {
-  removeMeter,
   resetCheckBoxes,
   resetMeters,
-  resetProductCart,
   resetRadioBtns,
 } from '@/redux/slices/productCartSlice';
 
@@ -82,6 +79,23 @@ const AppFooter: FC<Props> = ({
   });
   const [triggerCheckPromoCode] = useLazyCheckPromoCodeQuery();
 
+  const handelCartPayload = () => {
+    const items = map(cartItems?.data.Cart, (i) => {
+      if (i.id !== productCart.id) {
+        return i;
+      } else if (i.id === productCart.id) {
+        return {
+          ...i,
+          Quantity: i.Quantity + productCart.Quantity,
+        };
+      }
+    });
+    if (isUndefined(find(items, (x) => x?.id === productCart.id))) {
+      items.push(productCart);
+    }
+    return items;
+  };
+
   const handleAddToCart = async () => {
     if (
       (method === `pickup` && isNull(branchId)) ||
@@ -98,7 +112,6 @@ const AppFooter: FC<Props> = ({
       );
     } else {
       if (!isEmpty(productCart) && userAgent) {
-        // console.log('productCart', productCart);
         await triggerAddToCart({
           process_type: method,
           area_branch: method === 'delivery' ? area.id : branchId,
@@ -106,23 +119,7 @@ const AppFooter: FC<Props> = ({
             UserAgent: userAgent,
             Cart:
               cartItems && cartItems.data && cartItems.data.Cart
-                ? map(cartItems.data.Cart.concat(productCart), (p) => {
-                    if (p.id !== productCart.id) {
-                      return p;
-                    }
-                    if (p.id === productCart.id) {
-                      // update the quantity only
-                      return {
-                        ...productCart,
-                        Price:
-                          productCart.Price *
-                          (p.Quantity + productCart.Quantity),
-                        Quantity: p.Quantity + productCart.Quantity,
-                      };
-                    } else {
-                      return p;
-                    }
-                  })
+                ? handelCartPayload()
                 : [productCart],
           },
           url,
