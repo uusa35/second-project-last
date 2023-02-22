@@ -106,12 +106,14 @@ const AppFooter: FC<Props> = ({
             Cart:
               cartItems && cartItems.data && cartItems.data.Cart
                 ? filter(cartItems.data.Cart, (i) => {
+                 
                     if (i.id !== productCart.id) {
                       return i;
                     } else if (
-                      i.Quantity !== productCart.Quantity &&
+                      // i.Quantity !== productCart.Quantity &&
                       i.id === productCart.id
                     ) {
+                      console.log('productCart',productCart,i)
                       return {
                         ...i,
                         Quantity: i.Quantity + productCart.Quantity,
