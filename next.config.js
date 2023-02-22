@@ -52,9 +52,8 @@ const nextConfig = {
   },
   images: {
     domains: [
-      'testbedbynd.com',
-      'pages-dash.testbedbynd.com',
-      'queue-spaces.nyc3.digitaloceanspaces.com',
+      'mybusiness.getq.me',
+      'queue-app.sgp1.digitaloceanspaces.com',
     ],
     // minimumCacheTTL: 60 * 60 * 24,
     minimumCacheTTL: 0,
