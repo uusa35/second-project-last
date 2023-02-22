@@ -29,6 +29,9 @@ const OrderSuccess: NextPage<Props> = ({ element, url }) => {
   const { t } = useTranslation();
   const {
     customer: { userAgent },
+    appSetting: { method },
+    branch,
+    area,
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
   const dispatch = useAppDispatch();
@@ -40,13 +43,20 @@ const OrderSuccess: NextPage<Props> = ({ element, url }) => {
     if (url) {
       dispatch(setUrl(url));
     }
-    triggerGetCartProducts({ UserAgent: userAgent, url });
+    triggerGetCartProducts({
+      UserAgent: userAgent,
+      area_branch:
+        method === `pickup`
+          ? { 'x-branch-id': branch.id }
+          : { 'x-area-id': area.id },
+      url,
+    });
   }, []);
 
   return (
     <Suspense>
-      <MainContentLayout url={url}>
-        <div className="capitalize">
+      <MainContentLayout url={url} backRoute={appLinks.home.path}>
+        <div className="capitalize" suppressHydrationWarning={suppressText}>
           <div className="flex flex-col items-center">
             <CustomImage
               className="w-22 h-fit"
@@ -63,7 +73,7 @@ const OrderSuccess: NextPage<Props> = ({ element, url }) => {
               {t('thank_you')}
             </h4>
             <p suppressHydrationWarning={suppressText}>
-              {t('your_order_is_confirmed_and_on_its_way')}
+              {t('your_order_has_been_received')}
             </p>
           </div>
           <div className="mt-10 px-5 py-1 bg-gray-100"></div>
@@ -88,7 +98,7 @@ const OrderSuccess: NextPage<Props> = ({ element, url }) => {
                 style={{ color }}
                 suppressHydrationWarning={suppressText}
               >
-                {t('vendor_name')}
+                {t('store_name')}
               </h4>
               <TextTrans
                 ar={element.vendor_name_ar}
@@ -102,13 +112,18 @@ const OrderSuccess: NextPage<Props> = ({ element, url }) => {
               className="text-center pt-4 pb-2"
               suppressHydrationWarning={suppressText}
             >
-              {t('track_your_order_and_check_the_status_of_it_live')}
+              {t('track_your_order_status_below')}
             </p>
             <Link
-              href={appLinks.orderInvoice(`${element.order_id}`)}
+              href={appLinks.orderInvoice(
+                `${element.order_id}`,
+                `${method}`,
+                `${method === 'delivery' ? area.id : branch.id}`
+              )}
               scroll={true}
               className={`flex grow justify-center items-center p-4 rounded-lg text-white mb-3 shadow-lg`}
               style={{ backgroundColor: color }}
+              suppressHydrationWarning={suppressText}
             >
               {t('view_receipt')}
             </Link>
@@ -120,6 +135,7 @@ const OrderSuccess: NextPage<Props> = ({ element, url }) => {
               scroll={true}
               className={`flex grow justify-center items-center p-4 rounded-lg text-white mb-3 shadow-lg`}
               style={{ backgroundColor: color }}
+              suppressHydrationWarning={suppressText}
             >
               {t('track_order')}
             </Link>
@@ -142,14 +158,9 @@ export default OrderSuccess;
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ req, query }) => {
-      if (!req.headers.host) {
-        return {
-          notFound: true,
-        };
-      }
-      const url = req.headers.host;
       const { orderId }: any = query;
-      if (!orderId) {
+      const url = req.headers.host;
+      if (!url || !orderId) {
         return {
           notFound: true,
         };

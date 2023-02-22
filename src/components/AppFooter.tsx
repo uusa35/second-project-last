@@ -15,11 +15,29 @@ import {
   useLazyCheckPromoCodeQuery,
   useLazyGetCartProductsQuery,
 } from '@/redux/api/cartApi';
-import { filter, isEmpty, isNull, kebabCase, lowerCase } from 'lodash';
+import {
+  debounce,
+  filter,
+  first,
+  isArray,
+  isEmpty,
+  isNull,
+  kebabCase,
+  lowerCase,
+  values,
+  countBy,
+} from 'lodash';
 import { setCartPromoSuccess } from '@/redux/slices/cartSlice';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import PaymentSummary from '@/widgets/cart/review/PaymentSummary';
+import {
+  removeMeter,
+  resetCheckBoxes,
+  resetMeters,
+  resetProductCart,
+  resetRadioBtns,
+} from '@/redux/slices/productCartSlice';
 
 type Props = {
   handleSubmit?: (element?: any) => void;
@@ -55,6 +73,10 @@ const AppFooter: FC<Props> = ({
     refetch: refetchCart,
   } = useGetCartProductsQuery({
     UserAgent: userAgent,
+    area_branch:
+      method === `pickup`
+        ? { 'x-branch-id': branchId }
+        : { 'x-area-id': area.id },
     url,
   });
   const [triggerCheckPromoCode] = useLazyCheckPromoCodeQuery();
@@ -64,11 +86,9 @@ const AppFooter: FC<Props> = ({
       (method === `pickup` && isNull(branchId)) ||
       (method === `delivery` && isNull(area.id))
     ) {
-      console.log('case 1');
       router.push(appLinks.cartSelectMethod(`delivery`));
     }
     if (!productCart.enabled) {
-      console.log('case 2');
       dispatch(
         showToastMessage({
           content: `please_review_sections_some_r_required`,
@@ -77,7 +97,7 @@ const AppFooter: FC<Props> = ({
       );
     } else {
       if (!isEmpty(productCart) && userAgent) {
-        console.log('case 3');
+        // console.log('productCart', productCart);
         await triggerAddToCart({
           process_type: method,
           area_branch: method === 'delivery' ? area.id : branchId,
@@ -85,44 +105,71 @@ const AppFooter: FC<Props> = ({
             UserAgent: userAgent,
             Cart:
               cartItems && cartItems.data && cartItems.data.Cart
-                ? filter(
-                    cartItems.data.Cart,
-                    (i) => i.id !== productCart.id
-                  ).concat(productCart)
+                ? filter(cartItems.data.Cart, (i) => {
+                 
+                    if (i.id !== productCart.id) {
+                      return i;
+                    } else if (
+                      // i.Quantity !== productCart.Quantity &&
+                      i.id === productCart.id
+                    ) {
+                      return {
+                        ...i,
+                        Quantity: i.Quantity + productCart.Quantity,
+                      };
+                    }
+                  }).concat(productCart)
                 : [productCart],
           },
           url,
         }).then((r: any) => {
-          console.log('the url', url);
-          console.log('the r', r);
           if (r && r.data && r.data.status && r.data.data && r.data.data.Cart) {
-            triggerGetCartProducts({ UserAgent: userAgent, url }).then((r) => {
-              console.log('another r', r);
-              if (r.data && r.data.data && r.data.data.Cart) {
-                console.log('case 4');
+            triggerGetCartProducts({
+              UserAgent: userAgent,
+              area_branch:
+                method === `pickup` && branchId
+                  ? { 'x-branch-id': branchId }
+                  : method === `delivery` && area.id
+                  ? { 'x-area-id': area.id }
+                  : {},
+              url,
+            }).then((r) => {
+              if ((r.data && r.data.data) || r.data?.data.Cart) {
+                console.log('the r', r);
+                dispatch(
+                  showToastMessage({
+                    content: 'item_added_successfully',
+                    type: `success`,
+                  })
+                );
+                dispatch(resetRadioBtns());
+                dispatch(resetCheckBoxes());
+                dispatch(resetMeters());
               } else {
-                console.log('case 5');
+                console.log('else');
               }
-              dispatch(
-                showToastMessage({
-                  content: 'item_added_successfully',
-                  type: `success`,
-                })
-              );
             });
           } else {
+            console.log('else');
             if (r.error && r.error.data) {
-              console.log('case 6');
+              console.log('r', r);
+              // console.log('r', r.error.data.msg);
+              // console.log('isArray', r.error.data.msg);
               dispatch(
                 showToastMessage({
                   content: r.error.data.msg
-                    ? lowerCase(kebabCase(r.error.data.msg))
+                    ? lowerCase(
+                        kebabCase(
+                          r.error.data.msg.isArray
+                            ? first(values(r.error.data.msg))
+                            : r.error.data.msg
+                        )
+                      )
                     : 'select_a_branch_or_area_before_order_or_some_fields_are_required_missing',
                   type: `error`,
                 })
               );
             } else {
-              console.log('case 7');
             }
           }
         });
@@ -151,6 +198,9 @@ const AppFooter: FC<Props> = ({
         await triggerCheckPromoCode({
           userAgent,
           PromoCode: coupon,
+          area_branch: branchId
+            ? { 'x-branch-id': branchId }
+            : { 'x-area-id': area.id },
           url,
         }).then((r: any) => {
           if (r.data && r.data.status && r.data.promoCode) {
@@ -173,20 +223,26 @@ const AppFooter: FC<Props> = ({
           }
         });
       }
-      triggerGetCartProducts({ UserAgent: userAgent, url })
-        .then((r) => {
-          if (r.data && r.data.data && r.data.data.Cart) {
-            router.push(appLinks.customerInfo.path);
-          }
-        })
-        .then(() =>
-          dispatch(
-            showToastMessage({
-              content: 'item_added_successfully',
-              type: `success`,
-            })
-          )
-        );
+      triggerGetCartProducts({
+        UserAgent: userAgent,
+        area_branch:
+          method === `pickup`
+            ? { 'x-branch-id': branchId }
+            : { 'x-area-id': area.id },
+        url,
+      }).then((r) => {
+        if (r.data && r.data.data && r.data.data.Cart) {
+          router.push(appLinks.customerInfo.path);
+        }
+      });
+      // .then(() =>
+      //   dispatch(
+      //     showToastMessage({
+      //       content: 'item_added_successfully',
+      //       type: `success`,
+      //     })
+      //   )
+      // );
     }
   };
 
@@ -259,7 +315,7 @@ const AppFooter: FC<Props> = ({
               }}
             >
               <button
-                onClick={() => handleAddToCart()}
+                onClick={debounce(() => handleAddToCart(), 400)}
                 className={`${footerBtnClass}`}
                 style={{
                   backgroundColor: convertColor(color, 100),
@@ -272,7 +328,7 @@ const AppFooter: FC<Props> = ({
               </button>
               <span className={`flex flex-row items-center gap-2`}>
                 <p className={`text-xl text-white`}>
-                  {productCart.grossTotalPrice}
+                  {parseFloat(productCart.grossTotalPrice).toFixed(3)}
                 </p>
                 <span className={`text-white uppercase`}>{t('kwd')}</span>
               </span>

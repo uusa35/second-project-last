@@ -4,6 +4,7 @@ import { ClientCart } from '@/types/index';
 const initialState: ClientCart = {
   subTotal: 0,
   total: 0,
+  tax: 0,
   delivery_fees: `0`,
   PromoCode: null,
   promoEnabled: false,
@@ -54,6 +55,18 @@ export const cartSlice = createSlice({
         ...action.payload,
       };
     },
+    resetCartTotalAndSubTotal: (
+      state: typeof initialState,
+      action: PayloadAction<void>
+    ) => {
+      return {
+        ...state,
+        total: 0,
+        subTotal: 0,
+        tax: 0,
+        delivery_fees: `0`,
+      };
+    },
   },
 });
 
@@ -61,5 +74,6 @@ export const {
   resetCart,
   setCartPromoCode,
   setCartTotalAndSubTotal,
+  resetCartTotalAndSubTotal,
   setCartPromoSuccess,
 } = cartSlice.actions;

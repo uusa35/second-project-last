@@ -5,6 +5,7 @@ import { BadgeOutlined, EmailOutlined, Phone } from '@mui/icons-material';
 import GreyLine from '@/components/GreyLine';
 import { useTranslation } from 'react-i18next';
 import PhoneInput from 'react-phone-number-input';
+import { isSupportedCountry } from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
 import { useEffect, Suspense } from 'react';
 import { ServerCart } from '@/types/index';
@@ -63,6 +64,10 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
     isSuccess: boolean;
   }>({
     UserAgent: userAgent,
+    area_branch:
+      method === `pickup`
+        ? { 'x-branch-id': branchId }
+        : { 'x-area-id': areaId },
     url,
   });
   const [triggerSaveCustomerInfo] = useSaveCustomerInfoMutation();
@@ -81,7 +86,6 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
       phone: customer?.phone ?? ``,
     },
   });
-
   useEffect(() => {
     dispatch(setCurrentModule('customer_info'));
     dispatch(setShowFooterElement(`customerInfo`));
@@ -126,7 +130,11 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
 
   return (
     <Suspense>
-      <MainContentLayout handleSubmit={handleSubmit(onSubmit)} url={url}>
+      <MainContentLayout
+        handleSubmit={handleSubmit(onSubmit)}
+        url={url}
+        backRoute={appLinks.cartIndex.path}
+      >
         <div className="flex-col justify-center h-full px-5">
           <div className="flex justify-center py-10 lg:my-5 lg:pb-5">
             <CustomImage
@@ -179,9 +187,17 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
                   </p>
                 )}
               </div>
-              <div className="flex items-center gap-x-2 px-2 border-b-4 border-b-gray-200 w-full focus:ring-transparent py-4">
+              <div className="flex items-center gap-x-2 px-2 border-b-4 border-b-gray-200 w-full focus:ring-transparent py-4 capitalize">
                 <Phone style={{ color }} />
-                <Controller
+                <input
+                  type="number"
+                  {...register('phone')}
+                  aria-invalid={errors.phone ? 'true' : 'false'}
+                  className={`border-0 w-full focus:ring-transparent outline-0 capitalize`}
+                  onChange={(e) => setValue('phone', e.target.value)}
+                  placeholder={`${t('enter_your_phone')}`}
+                />
+                {/* <Controller
                   render={(props) => (
                     <PhoneInput
                       international
@@ -199,13 +215,14 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
                       onChange={(value) => setValue('phone', value)}
                       error={!!errors.phone}
                       helperText={t(`${errors?.phone?.message}`)}
+                      value={`${customer.phone && `${customer.phone}`}`}
                     />
                   )}
                   name="phone"
                   control={control}
-                  defaultValue={phone ?? ``}
+                  defaultValue={phone}
                   rules={{ required: true }}
-                />
+                /> */}
               </div>
               <div>
                 {errors?.phone?.message && (

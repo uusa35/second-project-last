@@ -7,7 +7,7 @@ export default function Custom404() {
   const { t } = useTranslation();
   return (
     <MainContentLayout backHome={true}>
-      <OffLineWidget img={`${error404.src}`} message={t(`not_found`)} />
+      <OffLineWidget img={`${error404.src}`} message={`not_found`} />
     </MainContentLayout>
   );
 }

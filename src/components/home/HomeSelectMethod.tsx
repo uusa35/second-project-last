@@ -1,4 +1,10 @@
-import { appLinks, suppressText } from '@/constants/*';
+import {
+  appLinks,
+  suppressText,
+  convertColor,
+  gessFont,
+  arboriaFont,
+} from '@/constants/*';
 import { isNull } from 'lodash';
 import { FC } from 'react';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -9,13 +15,20 @@ import { setCartMethod } from '@/redux/slices/appSettingSlice';
 import Link from 'next/link';
 import TextTrans from '@/components/TextTrans';
 import { themeColor } from '@/redux/slices/vendorSlice';
+import { useGetDeliveryPickupDetailsQuery } from '@/redux/api/vendorApi';
+import { addMethod } from 'yup';
 
 type Props = {
   element: Vendor;
+  url?: string;
 };
-const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
+const HomeSelectMethod: FC<Props> = ({
+  element,
+  url = undefined,
+}): JSX.Element => {
   const {
     appSetting: { method },
+    locale: { lang },
     area,
     branch,
   } = useAppSelector((state) => state);
@@ -27,30 +40,48 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
     router.push(appLinks.cartSelectMethod(m));
   };
 
+  const { data, isSuccess } = useGetDeliveryPickupDetailsQuery(
+    {
+      lang,
+      url,
+      ...(method === `pickup` && branch.id ? { branch_id: branch.id } : {}),
+      ...(method === `delivery` && area.id ? { area_id: area.id } : {}),
+    },
+    { refetchOnMountOrArgChange: true }
+  );
+
   return (
     <>
       {/* Delivery / Pickup Btns */}
       <div className="flex flex-1 w-full flex-row justify-between items-center my-2 border-t-[14px] border-stone-100 px-14 text-lg pt-4 capitalize">
         <button
           className={`${
-            method === 'delivery' && `border-b-2 pb-1 border-b-primary_BG`
-          } md:ltr:mr-3 md:rtl:ml-3 capitalize `}
+            method === 'delivery' && `border-b-2 pb-1`
+          } md:ltr:mr-3 md:rtl:ml-3 capitalize ${
+            router.locale === 'ar' ? gessFont : arboriaFont
+          }`}
           onClick={() => handleSelectMethod(`delivery`)}
           suppressHydrationWarning={suppressText}
+          style={{ borderBottomColor: 'gray' }}
         >
           {t('delivery')}
         </button>
         <button
           className={`${
-            method === 'pickup' && `border-b-2 pb-1 border-b-primary_BG`
-          } md:ltr:mr-3 md:rtl:ml-3 capitalize `}
+            method === 'pickup' && `border-b-2 pb-1`
+          } md:ltr:mr-3 md:rtl:ml-3 capitalize ${
+            router.locale === 'ar' ? gessFont : arboriaFont
+          }`}
           onClick={() => handleSelectMethod(`pickup`)}
           suppressHydrationWarning={suppressText}
+          // style={{ borderBottomColor: convertColor(color, 100) }}
+          style={{ borderBottomColor: 'gray' }}
         >
           {t('pickup')}
         </button>
       </div>
-      <div className={`px-8 py-0 text-lg capitalize`}>
+
+      <div className={`px-8 py-0 text-lg capitalize mb-2`}>
         <Link
           href={appLinks.cartSelectMethod(method)}
           scroll={true}
@@ -75,16 +106,28 @@ const HomeSelectMethod: FC<Props> = ({ element }): JSX.Element => {
           </div>
         </Link>
 
-        <div className="flex flex-1 gap-x-2 w-full flex-row justify-between items-center mb-2">
-          <div className={`flex flex-grow justify-start items-center`}>
-            <h1 className={`pt-4`} suppressHydrationWarning={suppressText}>
-              {t('earliest_delivery')}
-            </h1>
+        {/* earliest delivery and estimated prep time */}
+        {(isSuccess && data && method === 'delivery' && area.id) ||
+        (method === 'pickup' && branch.id) ? (
+          <div className="flex flex-1 gap-x-2 w-full flex-row justify-between items-center">
+            <div className={`flex flex-grow justify-start items-center`}>
+              <h1 className={`pt-4`} suppressHydrationWarning={suppressText}>
+                {method === 'delivery'
+                  ? t('earliest_delivery')
+                  : t('estimated_prepration_time')}
+              </h1>
+            </div>
+            <div className={`pt-4`} style={{ color }}>
+              {method === 'delivery'
+                ? data?.Data?.delivery_time
+                : data?.Data?.estimated_preparation_time}
+                {' '}
+                {t(`${data?.Data?.delivery_time_type}`)}
+            </div>
           </div>
-          <div className={`pt-4`} style={{ color }}>
-            {element.DeliveryTime}
-          </div>
-        </div>
+        ) : (
+          <></>
+        )}
       </div>
     </>
   );

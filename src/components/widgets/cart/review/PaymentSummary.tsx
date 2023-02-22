@@ -12,8 +12,13 @@ const PaymentSummary: FC = () => {
     promoEnabled,
     subTotal,
     total,
+    tax,
     delivery_fees,
   } = useAppSelector((state) => state.cart);
+  const {
+    appSetting: { method },
+  } = useAppSelector((state) => state);
+
   const color = useAppSelector(themeColor);
   useEffect(() => {}, [promoEnabled]);
 
@@ -24,33 +29,101 @@ const PaymentSummary: FC = () => {
           <p suppressHydrationWarning={suppressText}>{t('subtotal')} </p>
           <div className={`flex flex-row`}>
             <p suppressHydrationWarning={suppressText} className={`px-2`}>
-              {promoEnabled ? coupon.total_cart_after_tax : subTotal}
+              {promoEnabled ? coupon.sub_total : subTotal}
             </p>
             <p className={`uppercase`} suppressHydrationWarning={suppressText}>
               {t('kwd')}
             </p>
           </div>
         </div>
-        <div className="flex justify-between mb-2 text-lg">
-          <p suppressHydrationWarning={suppressText}>{t('delivery_fees')}</p>
-          <p suppressHydrationWarning={suppressText}></p>
-          <div className={`flex flex-row`}>
-            <p suppressHydrationWarning={suppressText} className={`px-2`}>
-              {promoEnabled
-                ? coupon.free_delivery === `false`
+
+        {promoEnabled && (
+          <>
+            {/* <div className="flex justify-between mb-2 text-lg">
+              <p suppressHydrationWarning={suppressText}>
+                {t('total_after_tax')}{' '}
+              </p>
+              <div className={`flex flex-row`}>
+                <p suppressHydrationWarning={suppressText} className={`px-2`}>
+                  {coupon.total_cart_after_tax}
+                </p>
+                <p
+                  className={`uppercase`}
+                  suppressHydrationWarning={suppressText}
+                >
+                  {t('kwd')}
+                </p>
+              </div>
+            </div> */}
+            <div className="flex justify-between mb-2 text-lg">
+              <p suppressHydrationWarning={suppressText}>
+                {t('coupon_value')}{' '}
+              </p>
+              <div className={`flex flex-row`}>
+                <p
+                  suppressHydrationWarning={suppressText}
+                  className={`px-2 text-red-600`}
+                >
+                  {coupon.promo_code_discount}
+                </p>
+                <p
+                  className={`uppercase text-red-600`}
+                  suppressHydrationWarning={suppressText}
+                >
+                  {t('kwd')}
+                </p>
+              </div>
+            </div>
+          </>
+        )}
+
+        {(promoEnabled && coupon.tax) || tax ? (
+          <div className="flex justify-between mb-2 text-lg">
+            <p suppressHydrationWarning={suppressText}>{t('tax')} </p>
+            <div className={`flex flex-row`}>
+              <p suppressHydrationWarning={suppressText} className={`px-2`}>
+                {promoEnabled ? coupon.tax : tax}
+              </p>
+              <p
+                className={`uppercase`}
+                suppressHydrationWarning={suppressText}
+              >
+                %
+              </p>
+            </div>
+          </div>
+        ) : (
+          <></>
+        )}
+
+        {method === 'delivery' ? (
+          <div className="flex justify-between mb-2 text-lg">
+            <p suppressHydrationWarning={suppressText}>{t('delivery_fees')}</p>
+            <p suppressHydrationWarning={suppressText}></p>
+            <div className={`flex flex-row`}>
+              <p suppressHydrationWarning={suppressText} className={`px-2`}>
+                {promoEnabled
+                  ? coupon.free_delivery === `false`
+                    ? coupon.delivery_fee
+                    : 0
+                  : isNull(delivery_fees)
                   ? 0
-                  : coupon.free_delivery
-                : isNull(delivery_fees)
-                ? 0
-                : delivery_fees}
-            </p>
-            <p className={`uppercase`} suppressHydrationWarning={suppressText}>
-              {t('kwd')}
-            </p>
+                  : delivery_fees}
+              </p>
+              <p
+                className={`uppercase`}
+                suppressHydrationWarning={suppressText}
+              >
+                {t('kwd')}
+              </p>
+            </div>
           </div>
-        </div>
+        ) : (
+          <></>
+        )}
+
         <div className="flex justify-between mb-2 text-lg">
-          <p suppressHydrationWarning={suppressText}>{t('total')}</p>
+          <p suppressHydrationWarning={suppressText}>{t('net_total')}</p>
           <div className={`flex flex-row`} style={{ color }}>
             <p suppressHydrationWarning={suppressText} className={`px-2`}>
               {promoEnabled ? coupon.total_cart_before_tax : total}

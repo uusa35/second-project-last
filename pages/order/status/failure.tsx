@@ -28,10 +28,15 @@ const OrderFailure: NextPage<Props> = ({ url }): JSX.Element => {
     branch: { id: branchId },
     area: { id: areaId },
     customer: { userAgent },
+    appSetting: { method },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
   const { data: cartItems, isSuccess } = useGetCartProductsQuery({
     UserAgent: userAgent,
+    area_branch:
+      method === `pickup`
+        ? { 'x-branch-id': branchId }
+        : { 'x-area-id': areaId },
     url,
   });
   const dispatch = useAppDispatch();
@@ -42,7 +47,7 @@ const OrderFailure: NextPage<Props> = ({ url }): JSX.Element => {
     }
   }, []);
   return (
-    <MainContentLayout url={url}>
+    <MainContentLayout url={url} backRoute={appLinks.home.path}>
       <div>
         <div className="flex flex-col items-center capitalize">
           <CustomImage

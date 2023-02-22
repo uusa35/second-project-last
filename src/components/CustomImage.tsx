@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import NoFoundImage from '@/appImages/not_found.png';
 import { imageSizes, suppressText } from '@/constants/*';
 
@@ -22,10 +22,6 @@ const CustomImage: FC<Props> = ({
   ...rest
 }): JSX.Element => {
   const [imgSrc, setImageSrc] = useState<string>(src);
-
-  useEffect(() => {
-    setImageSrc(src);
-  }, [src]);
 
   return (
     <Image

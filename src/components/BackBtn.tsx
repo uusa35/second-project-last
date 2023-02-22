@@ -27,12 +27,18 @@ const BackBtn: FC<Props> = ({
   const { t } = useTranslation();
   const color = useAppSelector(themeColor);
   const {
-    appSetting: { currentModule, url },
+    appSetting: { currentModule, url, previousUrl, method },
+    branch,
+    area,
     locale: { lang, otherLang },
     customer: { userAgent },
   } = useAppSelector((state) => state);
   const { data: cartItems, isSuccess } = useGetCartProductsQuery({
     UserAgent: userAgent,
+    area_branch:
+      method === `pickup`
+        ? { 'x-branch-id': branch.id }
+        : { 'x-area-id': area.id },
     url,
   });
 
@@ -45,7 +51,7 @@ const BackBtn: FC<Props> = ({
   const handleChangeLang = async (locale: string) => {
     if (locale !== router.locale) {
       await router
-        .push(router.pathname, router.asPath, {
+        .replace(router.pathname, router.asPath, {
           locale,
           scroll: false,
         })
@@ -61,6 +67,19 @@ const BackBtn: FC<Props> = ({
     }
   };
 
+  const handleBack = () => {
+    if (backHome) {
+      handleGoHome();
+    } else if (!isNull(backRoute)) {
+      router.push(`${backRoute}`, undefined, {
+        locale: router.locale,
+        scroll: false,
+      });
+    } else {
+      router.back();
+    }
+  };
+
   return (
     <Suspense>
       <div
@@ -69,16 +88,7 @@ const BackBtn: FC<Props> = ({
         } flex w-full my-3 justify-center items-center rounded-md py-4 px-4`}
       >
         <button
-          onClick={() =>
-            backHome
-              ? handleGoHome()
-              : !isNull(backRoute)
-              ? router.push(`${backRoute}`, undefined, {
-                  locale: lang,
-                  scroll: false,
-                })
-              : router.back()
-          }
+          onClick={() => handleBack()}
           className={`flex justify-start items-center pt-1 w-20`}
         >
           {router.locale === 'en' ? (
@@ -88,7 +98,7 @@ const BackBtn: FC<Props> = ({
               viewBox="0 0 24 24"
               strokeWidth="1.5"
               stroke="currentColor"
-              className="w-6 h-6"
+              className="w-6 h-6 grayscale"
             >
               <path
                 strokeLinecap="round"
@@ -117,7 +127,7 @@ const BackBtn: FC<Props> = ({
           <span
             className={`text-md capitalize truncate overflow-hidden max-w-md`}
             suppressHydrationWarning={suppressText}
-            style={{ color }}
+            style={{ color, maxWidth: '20ch', textOverflow: 'truncate' }}
           >
             {t(currentModule)}
           </span>

@@ -24,12 +24,18 @@ const SlideTopNav: FC<Props> = ({ offset, isHome = false }): JSX.Element => {
   const { t } = useTranslation();
   const {
     vendor,
-    appSetting: { sideMenuOpen, url },
+    appSetting: { sideMenuOpen, url, method },
+    area,
+    branch,
     customer: { userAgent },
     locale: { lang, otherLang },
   } = useAppSelector((state) => state);
   const { data: cartItems, isSuccess } = useGetCartProductsQuery({
     UserAgent: userAgent,
+    area_branch:
+      method === `pickup`
+        ? { 'x-branch-id': branch.id }
+        : { 'x-area-id': area.id },
     url,
   });
   const dispatch = useAppDispatch();
@@ -38,7 +44,7 @@ const SlideTopNav: FC<Props> = ({ offset, isHome = false }): JSX.Element => {
   const handleChangeLang = async (locale: string) => {
     if (locale !== router.locale) {
       await router
-        .push(router.pathname, router.asPath, {
+        .replace(router.pathname, router.asPath, {
           locale,
           scroll: false,
         })
@@ -60,7 +66,7 @@ const SlideTopNav: FC<Props> = ({ offset, isHome = false }): JSX.Element => {
         offset <= (isHome ? -1 : 80)
           ? `hidden `
           : `flex transition-opacity duration-3000 ${
-              offset <= 80 ? `bg-transparent text-white` : `bg-white text-black`
+              offset <= 80 ? `bg-transparent text-black` : `bg-white text-black`
             }`
       } flex flex-row  justify-center items-center w-full  px-4 h-20 top-0  relative lg:text-black lg:bg-white
       `}
@@ -73,7 +79,6 @@ const SlideTopNav: FC<Props> = ({ offset, isHome = false }): JSX.Element => {
       >
         <Bars3Icon className={`w-8 h-8 drop-shadow-sm`} />
       </button>
-
       {/* logo */}
       <div className="flex w-full flex-row justify-between items-center">
         <Link
@@ -82,16 +87,21 @@ const SlideTopNav: FC<Props> = ({ offset, isHome = false }): JSX.Element => {
           locale={lang}
           className="flex flex-1 w-full justify-center cursor-pointer "
         >
-          <div className="flex xl:hidden  grow justify-center ltr:ml-10 rtl:mr-10">
+          <div
+            className={`flex grow justify-center ltr:ml-10 rtl:mr-10 ${
+              offset <= 80 ? 'hidden' : 'block'
+            }`}
+          >
             <Image
-              className="h-auto w-12 xl:w-auto"
-              src={imgUrl(vendor.logo)}
+              className="h-auto w-12 xl:w-auto xl:h-16"
+              src={`${imgUrl(vendor.logo)}`}
               alt={`logo`}
               width={imageSizes.xs}
               height={imageSizes.xs}
             />
           </div>
         </Link>
+
         <div className={`flex flex-row justify-between items-center w-20`}>
           <Link
             scroll={true}

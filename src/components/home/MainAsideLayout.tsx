@@ -23,7 +23,7 @@ const MainAsideLayout: FC<Props> = ({ element }): JSX.Element => {
         <CustomImage
           src={`${imgUrl(element.cover)}`}
           alt={element.name}
-          className={`absolute top-0 object-cover w-full aspect-1 h-screen mix-blend-hard-light z-0`}
+          className={`absolute top-0 object-cover w-full aspect-1 h-screen z-0`}
           width={imageSizes.lg}
           height={imageSizes.lg}
         />

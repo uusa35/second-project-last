@@ -2,18 +2,16 @@ import { useEffect, useState, Suspense } from 'react';
 import MainContentLayout from '@/layouts/MainContentLayout';
 import { wrapper } from '@/redux/store';
 import {
-  productApi,
+  useGetProductsQuery,
   useLazyGetSearchProductsQuery,
 } from '@/redux/api/productApi';
 import { appSetting, Product } from '@/types/index';
 import { NextPage } from 'next';
-import { apiSlice } from '@/redux/api';
 import MainHead from '@/components/MainHead';
 import { imageSizes, suppressText } from '@/constants/*';
-import { debounce, isEmpty, map, replace } from 'lodash';
-import NotFoundImage from '@/appImages/not_found.png';
+import { capitalize, debounce, isEmpty, map } from 'lodash';
+import NoResultFound from '@/appImages/no-result-found.gif';
 import HorProductWidget from '@/widgets/product/HorProductWidget';
-import { AppQueryResult, ProductPagination } from '@/types/queries';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import {
   setCurrentModule,
@@ -27,21 +25,48 @@ import List from '@/appIcons/list.svg';
 import { useRouter } from 'next/router';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import CustomImage from '@/components/CustomImage';
+import LoadingSpinner from '@/components/LoadingSpinner';
+import { AppQueryResult, ProductPagination } from '@/types/queries';
 type Props = {
-  elements: ProductPagination<Product[]>;
+  slug: string;
   url: string;
+  branch_id: string;
+  area_id: string;
+  page: string;
+  limit: string;
+  category_id: string;
 };
-const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
+const ProductIndex: NextPage<Props> = ({
+  slug,
+  url,
+  branch_id,
+  area_id,
+  page,
+  limit,
+  category_id,
+}): JSX.Element => {
   const { t } = useTranslation();
   const {
     locale: { lang },
-    branch: { id: branch_id },
     appSetting: { productPreview },
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const [Icon, SetIcon] = useState(true);
-  const { query }: any = useRouter();
+  const { query, locale }: any = useRouter();
   const [currentProducts, setCurrentProducts] = useState<any>([]);
+  const { data, isSuccess, isFetching } = useGetProductsQuery<{
+    data: AppQueryResult<ProductPagination<Product>>;
+    isSuccess: boolean;
+    isFetching: boolean;
+  }>({
+    category_id: query.categoryId,
+    page,
+    limit,
+    ...(branch_id && { branch_id }),
+    ...(area_id && { area_id }),
+    lang: locale,
+    url,
+  });
   const [triggerSearchProducts] = useLazyGetSearchProductsQuery<{
     triggerSearchProducts: () => void;
   }>();
@@ -53,15 +78,20 @@ const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
 
   useEffect(() => {
     if (query && query.slug) {
-      dispatch(setCurrentModule(replace(query?.slug, '-', ' ')));
+      dispatch(setCurrentModule(capitalize(query.slug.replaceAll('-', ' '))));
     } else {
       dispatch(setCurrentModule(`product_index`));
     }
     if (url) {
       dispatch(setUrl(url));
     }
-    setCurrentProducts(elements.products);
   }, []);
+
+  useEffect(() => {
+    if (isSuccess && data && data.Data && data.Data.products) {
+      setCurrentProducts(data.Data.products);
+    }
+  }, [isSuccess]);
 
   const handleChange = (key: string) => {
     if (key.length > 2) {
@@ -69,14 +99,18 @@ const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
         setCurrentProducts(r.data.Data)
       );
     } else {
-      setCurrentProducts(elements.products);
+      setCurrentProducts(data.Data?.products);
     }
   };
 
+  if (isFetching) {
+    return <LoadingSpinner fullWidth={true} />;
+  }
+
   return (
     <Suspense>
-      <MainHead title={`productIndex`} description={`productIndex`} />
-      <MainContentLayout url={url}>
+      <MainHead title={slug} description={slug} />
+      <MainContentLayout url={url} backHome={true}>
         <h1 className="capitalize" suppressHydrationWarning={suppressText}></h1>
         <div className={`px-4 capitalize`}>
           <div className="flex justify-center items-center">
@@ -90,7 +124,7 @@ const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
                   name="search"
                   id="search"
                   onChange={debounce((e) => handleChange(e.target.value), 400)}
-                  className="block w-full focus:ring-1 focus:ring-primary_BG rounded-md  pl-20 border-none  bg-gray-100 py-3 h-14  text-lg capitalize"
+                  className="block w-full focus:ring-1 focus:ring-primary_BG rounded-md  pl-20 border-none  bg-gray-100 py-3 h-12  text-lg capitalize"
                   suppressHydrationWarning={suppressText}
                   placeholder={`${t(`search_products`)}`}
                 />
@@ -103,9 +137,9 @@ const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
               className="pt-1 ps-2"
             >
               {Icon ? (
-                <CustomImage src={List} alt="menu" className={'w-8 h-8'} />
+                <List alt="menu" className={'w-8 h-8 grayscale'} />
               ) : (
-                <CustomImage src={Menu} alt="menu" className={'w-8 h-8'} />
+                <Menu alt="menu" className={'w-8 h-8 grayscale'} />
               )}
             </button>
           </div>
@@ -114,7 +148,7 @@ const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
               className={`w-full flex flex-1 flex-col justify-center items-center space-y-4 my-12`}
             >
               <CustomImage
-                src={NotFoundImage.src}
+                src={NoResultFound.src}
                 alt={`not_found`}
                 width={imageSizes.sm}
                 height={imageSizes.sm}
@@ -128,16 +162,24 @@ const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
           <div
             className={
               productPreview === 'hor'
-                ? ' grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 gap-0 py-4'
+                ? ' grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 gap-0 gap-x-2 py-4'
                 : ''
             }
           >
             {!isEmpty(currentProducts) &&
               map(currentProducts, (p: Product, i) =>
                 productPreview === 'hor' ? (
-                  <HorProductWidget element={p} key={i} />
+                  <HorProductWidget
+                    element={p}
+                    key={i}
+                    category_id={category_id}
+                  />
                 ) : (
-                  <VerProductWidget element={p} key={i} />
+                  <VerProductWidget
+                    element={p}
+                    key={i}
+                    category_id={category_id}
+                  />
                 )
               )}
           </div>
@@ -152,7 +194,7 @@ export default ProductIndex;
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ query, locale, req }) => {
-      const { categoryId, branchId, page, limit, areaId }: any = query;
+      const { categoryId, branch_id, page, limit, area_id, slug }: any = query;
       if (!categoryId) {
         return {
           notFound: true,
@@ -163,33 +205,15 @@ export const getServerSideProps = wrapper.getServerSideProps(
           notFound: true,
         };
       }
-      const {
-        data: elements,
-        isError,
-      }: {
-        data: AppQueryResult<Product[]>;
-        isError: boolean;
-      } = await store.dispatch(
-        productApi.endpoints.getProducts.initiate({
-          category_id: categoryId.toString(),
-          page: page ?? `1`,
-          limit: limit ?? `10`,
-          ...(branchId && { branch_id: branchId }),
-          ...(areaId && { area_id: areaId }),
-          lang: locale,
-          url: req.headers.host,
-        })
-      );
-      await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
-      if (isError || !elements.Data) {
-        return {
-          notFound: true,
-        };
-      }
       return {
         props: {
-          elements: elements.Data,
+          slug: slug ?? ``,
           url: req.headers.host,
+          branch_id: branch_id ?? ``,
+          area_id: area_id ?? ``,
+          page: page ?? 1,
+          limit: limit ?? 10,
+          category_id: categoryId,
         },
       };
     }

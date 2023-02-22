@@ -2,12 +2,22 @@ import { useEffect, Suspense } from 'react';
 import { NextPage } from 'next';
 import MainContentLayout from '@/layouts/MainContentLayout';
 import { useTranslation } from 'react-i18next';
-import { suppressText, submitBtnClass } from '@/constants/*';
+import { suppressText, submitBtnClass, appLinks } from '@/constants/*';
 import { setCurrentModule, setUrl } from '@/redux/slices/appSettingSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { useLazyTrackOrderQuery } from '@/redux/api/orderApi';
-import { debounce, isEmpty, lowerCase, snakeCase } from 'lodash';
+import {
+  debounce,
+  each,
+  filter,
+  forEach,
+  isEmpty,
+  lowerCase,
+  map,
+  snakeCase,
+  toString,
+} from 'lodash';
 import { useRouter } from 'next/router';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { themeColor } from '@/redux/slices/vendorSlice';
@@ -24,9 +34,14 @@ const TrackOrder: NextPage<Props> = ({ url }): JSX.Element => {
   const [triggerGetTrackOrder, { data, isSuccess, isLoading }] =
     useLazyTrackOrderQuery();
 
-  const handleChange = (order_code: string) => {
+  const handleChange = async (order_code: string) => {
+    // if (router.query.order_code) {
+    //   router.replace(appLinks.trackOrder.path);
+    // }
     if (order_code && order_code.length >= 3) {
-      triggerGetTrackOrder({ order_code, url });
+     await triggerGetTrackOrder({ order_code, url }).then(()=>{
+        router.replace(appLinks.trackOrder.path);
+      });
     }
   };
 
@@ -48,15 +63,15 @@ const TrackOrder: NextPage<Props> = ({ url }): JSX.Element => {
   }
 
   const handelDisplayAddress = () => {
-    if (data) {
-      let address = Object.values(data.data.address.address);
-      let concatAdd = '';
-      address.map((a) => {
-        if (a !== null) {
-          concatAdd += a + ', ';
-        }
-      });
-      return concatAdd;
+    if (isSuccess && data && data.status) {
+      const address = filter(
+        map(
+          data.data.address.address,
+          (value, key) => value !== null && `${key} : ${value}  `
+        ),
+        (a) => a
+      );
+      return toString(address).replaceAll(',', ' / ');
     }
   };
 
@@ -87,7 +102,7 @@ const TrackOrder: NextPage<Props> = ({ url }): JSX.Element => {
                     : ``
                 }
                 onChange={debounce((e) => handleChange(e.target.value), 400)}
-                className="block w-full rounded-md  focus:ring-1 focus:ring-primary_BG pl-10 border-none bg-gray-100 capitalize h-14"
+                className="block w-full rounded-md  focus:ring-1 focus:ring-primary_BG pl-10 border-none bg-gray-100 capitalize h-12"
                 suppressHydrationWarning={suppressText}
                 placeholder={`${t(`enter_order_code`)}`}
               />

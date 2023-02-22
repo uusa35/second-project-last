@@ -1,4 +1,6 @@
+import NoFoundImage from '@/appImages/not_found.png';
 export const baseUrl = `${process.env.NEXT_PUBLIC_BASE_URL}`;
+// export const xDomain = `next2-q.testbedbynd.com`;
 export const xDomain = `next-q.testbedbynd.com`;
 //https://pages.testbedbynd.com/
 //https://pages-dash.testbedbynd.com/
@@ -14,9 +16,9 @@ export const appLinks = {
     page?: string,
     limit?: string
   ) =>
-    `/product/${categoryId}?&slug=${slug}&branch_id=${branchId ?? ''}&areaId=${
-      areaId ?? ``
-    }&page=${page ?? `1`}&limit=${limit ?? `10`}`,
+    `/category/${categoryId}?&slug=${slug}&branch_id=${
+      branchId ?? ''
+    }&area_id=${areaId ?? ``}&page=${page ?? `1`}&limit=${limit ?? `10`}`,
   productIndexDefined: (
     categoryId: string,
     slug: string,
@@ -25,12 +27,12 @@ export const appLinks = {
     page?: string,
     limit?: string
   ) =>
-    `/product/${categoryId}/${method}/${elementId}?slug=${slug}&page=${
+    `/category/${categoryId}/${method}/${elementId}?slug=${slug}&page=${
       page ?? `1`
     }&limit=${limit ?? `10`}`,
 
   productSearchIndex: (query?: string, branchId?: string, areaId?: string) =>
-    `/product/?key=${query ?? ``}&branch_id=${branchId ?? ''}&areaId=${
+    `/category/?key=${query ?? ``}&branch_id=${branchId ?? ''}&area_id=${
       areaId ?? ``
     }`,
 
@@ -39,11 +41,12 @@ export const appLinks = {
     product_id?: number,
     slug?: string,
     branchId?: string,
-    areaId?: string
+    areaId?: string,
+    category_id?: string | null
   ) =>
     `/product/show/${id}?product_id=${product_id}&slug=${slug}&branchId=${
       branchId ?? ``
-    }&areaId=${areaId ?? ``}`,
+    }&areaId=${areaId ?? ``}&category_id=${category_id}`,
 
   branchIndex: { path: '/branch' },
   cartIndex: { path: '/cart' },
@@ -56,7 +59,11 @@ export const appLinks = {
   customerInfo: { path: '/customer/info' },
   vendorShow: { path: '/vendor/show' },
   address: { path: `/cart/address` },
-  orderInvoice: (orderId: string) => `/order/${orderId}/invoice`,
+  orderInvoice: (
+    orderId: string,
+    method: string,
+    branchAreaId: string | number
+  ) => `/order/${orderId}/${method}/${branchAreaId}/invoice`,
 };
 
 export const isLocal = process.env.NODE_ENV !== 'production';
@@ -79,7 +86,9 @@ export const imageSizes = {
   xl: 650,
 };
 
-export const imgUrl = (img: string) => `${baseUrl}${img}`;
+// export const imgUrl = (img: string) => `${baseUrl}${img}`;
+export const imgUrl = (img: string) =>
+  img.includes('http') ? img : NoFoundImage.src;
 
 export const convertColor = (hex: string, opacity: number) => {
   const tempHex = hex.replace('#', '');
@@ -88,3 +97,5 @@ export const convertColor = (hex: string, opacity: number) => {
   const b = parseInt(tempHex.substring(4, 6), 16);
   return `rgba(${r},${g},${b},${opacity / 100})`;
 };
+
+export const iconColor = `grayscale`;

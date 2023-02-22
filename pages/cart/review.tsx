@@ -8,8 +8,9 @@ import {
   CreditCardOutlined,
   LocationOnOutlined,
   ReceiptOutlined,
+  HomeOutlined,
 } from '@mui/icons-material';
-import Home from '@/appIcons/home.svg';
+// import Home from '@/appIcons/home.svg';
 import CustomImage from '@/components/CustomImage';
 import Knet from '@/appImages/knet.png';
 import Cash from '@/appImages/cash_on_delivery.jpg';
@@ -27,7 +28,15 @@ import {
   useGetCartProductsQuery,
 } from '@/redux/api/cartApi';
 import TextTrans from '@/components/TextTrans';
-import { filter, isEmpty, isNull, kebabCase, lowerCase, map } from 'lodash';
+import {
+  filter,
+  isEmpty,
+  isNull,
+  kebabCase,
+  lowerCase,
+  map,
+  toString,
+} from 'lodash';
 import Link from 'next/link';
 import { OrderUser, ProductCart, ServerCart } from '@/types/index';
 import { AppQueryResult } from '@/types/queries';
@@ -52,9 +61,10 @@ const CartReview: NextPage<Props> = ({ url }) => {
   const {
     customer,
     branch: { id: branchId, name_ar: branchAR, name_en: branchEN },
-    area: { id: areaId },
+    area: { id: areaId, name_ar: areaAR, name_en: areaEN },
     customer: { userAgent },
     appSetting: { method: process_type },
+    cart: { promoEnabled, PromoCode },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
   const { data: cartItems, isSuccess } = useGetCartProductsQuery<{
@@ -63,6 +73,10 @@ const CartReview: NextPage<Props> = ({ url }) => {
     refetch: () => void;
   }>({
     UserAgent: userAgent,
+    area_branch:
+      process_type === `pickup`
+        ? { 'x-branch-id': branchId }
+        : { 'x-area-id': areaId },
     url,
   });
   const [triggerCreateOrder, { isLoading }] = useLazyCreateOrderQuery();
@@ -78,39 +92,41 @@ const CartReview: NextPage<Props> = ({ url }) => {
     dispatch(setShowFooterElement('order_review'));
     if (url) {
       dispatch(setUrl(url));
-    }
-  }, []);
-
-  useEffect(() => {
-    if (
-      (isNull(areaId) && isNull(branchId)) ||
-      (isSuccess && !cartItems.data?.Cart) ||
-      cartItems.data?.Cart.length === 0
-    ) {
-      router.replace(appLinks.cartSelectMethod(process_type)).then(() =>
-        dispatch(
-          showToastMessage({
-            content: `select_a_branch_or_area_before_order`,
-            type: `warning`,
-          })
-        )
-      );
+      if (
+        (isNull(areaId) && isNull(branchId)) ||
+        (isSuccess && !cartItems.data?.Cart) ||
+        (isSuccess && cartItems.data?.Cart.length === 0)
+      ) {
+        if (router.isReady) {
+          router.replace(appLinks.cartSelectMethod(process_type)).then(() =>
+            dispatch(
+              showToastMessage({
+                content: `select_a_branch_or_area_before_order`,
+                type: `warning`,
+              })
+            )
+          );
+        }
+      }
     }
   }, []);
 
   const handelDisplayAddress = () => {
-    let address = Object.values(customer.address);
-
-    let concatAdd = '';
-    address.map((a) => {
-      if (a !== null) {
-        concatAdd += a + ', ';
-      }
-    });
-    return concatAdd;
+    if (customer && !isEmpty(customer.address)) {
+      const address = filter(
+        map(
+          customer.address,
+          (value, key) =>
+            value !== null && key !== `id` && `${key} : ${value}  `
+        ),
+        (a) => a
+      );
+      const allAddress = toString(address).replaceAll(',', ' / ');
+      return allAddress;
+    }
   };
 
-  if (isLoading || !url) {
+  if (isLoading || !isSuccess || !url) {
     return <LoadingSpinner fullWidth={true} />;
   }
 
@@ -144,6 +160,7 @@ const CartReview: NextPage<Props> = ({ url }) => {
           UserAgent: userAgent,
           Messg: customer.notes,
           PaymentMethod: selectedPaymentMethod,
+          ...(promoEnabled && PromoCode ? { PromoCode: PromoCode } : {}),
           Date: `${new Date(customer.prefrences.date as Date).getFullYear()}-${
             new Date(customer.prefrences.date as Date).getMonth() + 1
           }-${new Date(customer.prefrences.date as Date).getDate()}`,
@@ -225,40 +242,54 @@ const CartReview: NextPage<Props> = ({ url }) => {
 
   return (
     <Suspense>
-      <MainContentLayout handleSubmit={handleCreateOrder} url={url}>
+      <MainContentLayout
+        handleSubmit={handleCreateOrder}
+        url={url}
+        backRoute={appLinks.cartIndex.path}
+      >
         <div className={`mb-[40%]`}>
-          <div className="flex justify-center items-end p-5">
-            <CustomImage
-              src={TrunkClock.src}
-              alt={`${t('trunk')}`}
-              className={`w-16 h-16`}
-            />
+          {customer.prefrences.type === `delivery_later` ? (
+            <div className="flex justify-center items-end p-5">
+              <TrunkClock className={`w-16 h-16 grayscale`} />
+              <div className="px-6">
+                <h4
+                  className="font-semibold text-lg capitalize"
+                  suppressHydrationWarning={suppressText}
+                >
+                  {process_type === 'pickup' &&
+                    branchId &&
+                    t('pickup_time_and_date')}
 
-            <div className="px-6">
-              <h4
-                className="font-semibold text-lg capitalize"
-                suppressHydrationWarning={suppressText}
-              >
-                {process_type === 'pickup' &&
-                  branchId &&
-                  t('pickup_time_and_date')}
-
-                {process_type === 'delivery' &&
-                  areaId &&
-                  t('delivery_time_and_date')}
-              </h4>
-              <div className="flex">
-                <p className="pe-5">
-                  {customer.prefrences.date &&
-                    new Date(customer.prefrences.date).toLocaleDateString()}
-                </p>
-                <p>
-                  {customer.prefrences.time &&
-                    new Date(customer.prefrences.time).toLocaleTimeString()}
-                </p>
+                  {process_type === 'delivery' &&
+                    areaId &&
+                    t('delivery_time_and_date')}
+                </h4>
+                <div className="flex">
+                  <p className="pe-5">
+                    {customer.prefrences.date &&
+                      new Date(customer.prefrences.date).toLocaleDateString()}
+                  </p>
+                  <p>
+                    {customer.prefrences.time &&
+                      new Date(customer.prefrences.time).toLocaleTimeString()}
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
+          ) : (
+            <div className="flex justify-center items-center p-5">
+              <TrunkClock className={`w-16 h-16 grayscale`} />
+              <div className="px-6">
+                <h4
+                  className="font-semibold text-lg capitalize"
+                  suppressHydrationWarning={suppressText}
+                >
+                  {t(customer.prefrences.type)}
+                </h4>
+              </div>
+            </div>
+          )}
+
           <div className="bg-gray-200 w-full mt-5 p-0 h-2 px-4"></div>
           <div className={`px-4 py-5 space-y-6`}>
             {process_type === 'pickup' && branchId && (
@@ -299,16 +330,16 @@ const CartReview: NextPage<Props> = ({ url }) => {
                     </h5>
                   </div>
                   <Link
-                    href={appLinks.address.path}
+                    href={appLinks.cartSelectMethod(process_type)}
                     className="text-base font-semibold capitalize"
                     suppressHydrationWarning={suppressText}
                     style={{ color }}
                   >
-                    {t('change')}
+                    <TextTrans ar={areaAR} en={areaEN} />
                   </Link>
                 </div>
                 {/* map */}
-                {customer.address.longitude && customer.address.latitude && (
+                {/* {customer.address.longitude && customer.address.latitude && (
                   <div className="w-full h-36 rounded-md">
                     <GoogleMapReact
                       bootstrapURLKeys={{
@@ -323,25 +354,19 @@ const CartReview: NextPage<Props> = ({ url }) => {
                       defaultZoom={11}
                     ></GoogleMapReact>
                   </div>
-                )}
+                )} */}
                 {/* address */}
-                <div className="flex justify-between">
+                <div className="flex justify-between gap-x-2">
                   <div className="flex items-center">
-                    <CustomImage
-                      src={Home.src}
-                      alt="home"
-                      width={imageSizes.xs}
-                      height={imageSizes.xs}
-                      className={`w-6 h-6`}
-                    />
+                    <HomeOutlined className={`grayscale`} />
                     {customer.address && (
-                      <p className="text-md ps-5 capitalize">
+                      <p className="text-xs ps-2 capitalize text-ellipsis overflow-hidden">
                         {handelDisplayAddress()}
                       </p>
                     )}
                   </div>
                   <Link
-                    href={appLinks.cartSelectMethod(process_type)}
+                    href={appLinks.address.path}
                     className="text-base font-semibold capitalize"
                     suppressHydrationWarning={suppressText}
                     style={{ color }}
@@ -464,7 +489,7 @@ const CartReview: NextPage<Props> = ({ url }) => {
                                       <>
                                         <TextTrans
                                           key={i}
-                                          className={`ltr:border-r-2 ltr:last:border-r-0 ltr:first:pr-1 rtl:border-l-2 rtl:last:border-l-0 rtl:first:pl-1 px-1 text-xs capitalize`}
+                                          className={`ltr:border-r-2 ltr:last:border-r-0 ltr:first:pr-1 rtl:border-l-2 rtl:last:border-l-0 rtl:first:pl-1  text-xs capitalize`}
                                           ar={addon.name}
                                           en={addon.name}
                                         />
@@ -476,6 +501,15 @@ const CartReview: NextPage<Props> = ({ url }) => {
                             </div>
                           </div>
                         </div>
+                        {item.ExtraNotes && (
+                          <div
+                            className={`w-full border-t border-gray-200 py-1 mb-1`}
+                          >
+                            <p className={`text-xs`}>
+                              {t('notes')} : {item.ExtraNotes}
+                            </p>
+                          </div>
+                        )}
                         <div className="flex justify-between items-end">
                           <div>
                             <div
@@ -540,7 +574,7 @@ const CartReview: NextPage<Props> = ({ url }) => {
                       selectedPaymentMethod == m.id ? 'block' : 'hidden'
                     }`}
                   >
-                    <CheckCircle />
+                    <CheckCircle className="checkCircle" />
                     <p>{t('selected')}</p>
                   </div>
                 </div>

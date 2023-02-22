@@ -26,15 +26,15 @@
     font-display: swap;
 }
 
-.font-arboria-light, button, .Toastify__toast-body {
+.font-arboria-light {
     font-family: 'Arboria-Light', 'sans-serif' !important;
 }
 
-.font-gess-medium, button, .Toastify__toast-body {
+.font-gess-medium {
     font-family: 'GE_SS_Text_Light', 'sans-serif' !important;
 }
 
-.font-tajwal-medium, button, .Toastify__toast-body {
+.font-tajwal-medium, .Toastify__toast-body > div {
     font-family: 'Tajawal-Medium', 'sans-serif' !important;
 }
 
@@ -68,11 +68,6 @@
 
 .slick-next:before {
     color: black !important;
-}
-
-#headerModalTitle {
-    min-width: 35rem !important;
-    font-family: 'Tajawal-Medium', 'sans-serif' !important;
 }
 
 .css-195y93z-MuiButtonBase-root-MuiPickersDay-root:not(.Mui-selected) {
@@ -116,7 +111,7 @@ input[type=number] {
 input[type="date"]::-webkit-calendar-picker-indicator {
     opacity: 1;
     display: flex;
-    background: url('../public/assets/icons/calender.svg') no-repeat;
+     /*background: url('../public/assets/icons/calender.svg') no-repeat;*/
     width: 3vh;
     height: 3vh;
 }
@@ -129,3 +124,23 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 }
 
 #nprogress .bar { left: auto !important; right: 0; }
+
+.checkCircle {
+    color: #84cc16 !important;
+}
+
+svg {
+    color: #52525b !important
+}
+::-webkit-calendar-picker-indicator {
+    filter: grayscale(1);
+}
+option[value="IL"],
+input[value="+972"],
+img[alt="Israel"] {
+    display: none
+}
+input[type="tel"] {
+    text-transform: capitalize;
+}
+

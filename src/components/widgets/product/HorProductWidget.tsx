@@ -14,14 +14,17 @@ import { motion } from 'framer-motion';
 
 type Props = {
   element: Product;
+  category_id?: string | null;
 };
-const HorProductWidget: FC<Props> = ({ element }): JSX.Element => {
+const HorProductWidget: FC<Props> = ({
+  element,
+  category_id = null,
+}): JSX.Element => {
   const { t } = useTranslation();
   const {
     branch: { id: branchId },
     area: { id: areaId },
   } = useAppSelector((state) => state);
-  const color = useAppSelector(themeColor);
   const firstImage: any = !isEmpty(element.img)
     ? imgUrl(element.img[0].thumbnail)
     : NoFoundImage.src;
@@ -34,7 +37,8 @@ const HorProductWidget: FC<Props> = ({ element }): JSX.Element => {
           element.id,
           lowerCase(kebabCase(element.name)),
           branchId,
-          areaId
+          areaId,
+          category_id
         )}`}
         className={`h-auto shadow-7xl  block  capitalize mb-2 border-b-2 border-gray-100 py-3`}
       >
@@ -54,11 +58,26 @@ const HorProductWidget: FC<Props> = ({ element }): JSX.Element => {
               suppressHydrationWarning={suppressText}
             >
               <TextTrans
-                style={{ color }}
+                style={{
+                  maxWidth: '30ch',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  display: 'block',
+                  color: `black`,
+                }}
                 ar={element.name_ar}
                 en={element.name_en}
               />
               <TextTrans
+                style={{
+                  maxWidth: '30ch',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  display: 'block',
+                  color: `black`,
+                }}
                 ar={element.description_ar}
                 en={element.description_en}
               />
@@ -67,6 +86,7 @@ const HorProductWidget: FC<Props> = ({ element }): JSX.Element => {
               <p
                 className="text-md text-end uppercase"
                 suppressHydrationWarning={suppressText}
+                style={{ color: `black` }}
               >
                 {element.price} <span className={`uppercase`}>{t(`kwd`)}</span>
               </p>
@@ -74,7 +94,10 @@ const HorProductWidget: FC<Props> = ({ element }): JSX.Element => {
                 className="border-[1px] rounded-md px-4 pt-1 uppercase text-center text-sm"
                 suppressHydrationWarning={suppressText}
               >
-                + {t('add')}
+                <div className={`flex justify-between rtl:flex-row-reverse`}>
+                  <p className="pe-2 rtl:ps-2 rtl:pe-0">+</p>
+                  <p>{t('add')}</p>
+                </div>
               </button>
             </div>
           </div>

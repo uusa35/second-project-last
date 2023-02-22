@@ -2,17 +2,15 @@ import { useEffect, useState, Suspense } from 'react';
 import MainContentLayout from '@/layouts/MainContentLayout';
 import { wrapper } from '@/redux/store';
 import {
-  productApi,
   useGetProductsQuery,
   useLazyGetSearchProductsQuery,
 } from '@/redux/api/productApi';
 import { appSetting, Product } from '@/types/index';
 import { NextPage } from 'next';
-import { apiSlice } from '@/redux/api';
 import MainHead from '@/components/MainHead';
 import { imageSizes, suppressText } from '@/constants/*';
-import { debounce, isEmpty, map, replace } from 'lodash';
-import NotFoundImage from '@/appImages/not_found.png';
+import { capitalize, debounce, isEmpty, map } from 'lodash';
+import NoResultFound from '@/appImages/no-result-found.gif';
 import HorProductWidget from '@/widgets/product/HorProductWidget';
 import { AppQueryResult, ProductPagination } from '@/types/queries';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -30,10 +28,19 @@ import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import CustomImage from '@/components/CustomImage';
 import LoadingSpinner from '@/components/LoadingSpinner';
 type Props = {
-  elements: ProductPagination<Product[]>;
+  slug: string;
   url: string;
+  categoryId: string;
+  method: string;
+  elementId: string;
 };
-const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
+const ProductIndex: NextPage<Props> = ({
+  slug,
+  url,
+  categoryId,
+  method,
+  elementId,
+}): JSX.Element => {
   const { t } = useTranslation();
   const {
     locale: { lang },
@@ -45,7 +52,6 @@ const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
   const [icon, setIcon] = useState(true);
   const { query }: any = useRouter();
   const [currentProducts, setCurrentProducts] = useState<any>([]);
-  const { categoryId, method, elementId } = router.query;
   const { data: getSearchResults, isSuccess } = useGetProductsQuery<{
     data: AppQueryResult<ProductPagination<Product>>;
     isSuccess: boolean;
@@ -70,7 +76,7 @@ const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
 
   useEffect(() => {
     if (query && query.slug) {
-      dispatch(setCurrentModule(replace(query?.slug, '-', ' ')));
+      dispatch(setCurrentModule(capitalize(query.slug.replaceAll('-', ' '))));
     } else {
       dispatch(setCurrentModule(`product_index`));
     }
@@ -97,14 +103,10 @@ const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
     }
   };
 
-  if (!isSuccess) {
-    return <LoadingSpinner fullWidth={true} />;
-  }
-
   return (
     <Suspense>
-      <MainHead title={`productIndex`} description={`productIndex`} />
-      <MainContentLayout url={url}>
+      <MainHead title={slug} description={slug} />
+      <MainContentLayout url={url} backHome={true}>
         <h1 className="capitalize" suppressHydrationWarning={suppressText}></h1>
         <div className={`px-4 capitalize`}>
           <div className="flex justify-center items-center">
@@ -118,7 +120,7 @@ const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
                   name="search"
                   id="search"
                   onChange={debounce((e) => handleChange(e.target.value), 400)}
-                  className="block w-full focus:ring-1 focus:ring-primary_BG rounded-md  pl-20 border-none  bg-gray-100 py-3 h-14  text-lg capitalize"
+                  className="block w-full focus:ring-1 focus:ring-primary_BG rounded-md  pl-20 border-none  bg-gray-100 py-3 h-12  text-lg capitalize"
                   suppressHydrationWarning={suppressText}
                   placeholder={`${t(`search_products`)}`}
                 />
@@ -131,18 +133,23 @@ const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
               className="pt-1 ps-2"
             >
               {icon ? (
-                <CustomImage src={List} alt="menu" className={'w-8 h-8'} />
+                <List alt="menu" className={'w-8 h-8 grayscale'} />
               ) : (
-                <CustomImage src={Menu} alt="menu" className={'w-8 h-8'} />
+                <Menu alt="menu" className={'w-8 h-8 grayscale'} />
               )}
             </button>
           </div>
+          {!isSuccess && (
+            <div className={`flex w-auto h-[30vh] justify-center items-center`}>
+              <LoadingSpinner fullWidth={false} />
+            </div>
+          )}
           {isSuccess && isEmpty(currentProducts) && (
             <div
               className={`w-full flex flex-1 flex-col justify-center items-center space-y-4 my-12`}
             >
               <CustomImage
-                src={NotFoundImage.src}
+                src={NoResultFound.src}
                 alt={`not_found`}
                 width={imageSizes.sm}
                 height={imageSizes.sm}
@@ -156,16 +163,24 @@ const ProductIndex: NextPage<Props> = ({ elements, url }): JSX.Element => {
           <div
             className={
               productPreview === 'hor'
-                ? ' grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 gap-0 py-4'
+                ? ' grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 gap-x-3 py-4'
                 : ''
             }
           >
             {isSuccess &&
               map(currentProducts, (p: Product, i) =>
                 productPreview === 'hor' ? (
-                  <HorProductWidget element={p} key={i} />
+                  <HorProductWidget
+                    element={p}
+                    key={i}
+                    category_id={categoryId ?? null}
+                  />
                 ) : (
-                  <VerProductWidget element={p} key={i} />
+                  <VerProductWidget
+                    element={p}
+                    key={i}
+                    category_id={categoryId ?? null}
+                  />
                 )
               )}
           </div>
@@ -180,38 +195,18 @@ export default ProductIndex;
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ query, locale, req }) => {
-      const { categoryId, method, elementId, limit, page }: any = query;
+      const { categoryId, method, elementId, limit, page, slug }: any = query;
       if (!categoryId || !method || !elementId || !req.headers.host) {
-        return {
-          notFound: true,
-        };
-      }
-      const {
-        data: elements,
-        isError,
-      }: {
-        data: AppQueryResult<Product[]>;
-        isError: boolean;
-      } = await store.dispatch(
-        productApi.endpoints.getProducts.initiate({
-          category_id: categoryId.toString(),
-          ...(method === `pickup` && { branch_id: elementId }),
-          ...(method === `delivery` && { area_id: elementId }),
-          page: page ?? `1`,
-          limit: limit ?? `10`,
-          lang: locale,
-          url: req.headers.host,
-        })
-      );
-      await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
-      if (isError || !elements.Data) {
         return {
           notFound: true,
         };
       }
       return {
         props: {
-          elements: elements.Data,
+          categoryId,
+          method,
+          elementId,
+          slug: slug ?? ``,
           url: req.headers.host,
         },
       };

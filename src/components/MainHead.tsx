@@ -4,21 +4,27 @@ import Head from 'next/head';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 import { useRouter } from 'next/router';
+import { useAppSelector } from '@/redux/hooks';
 
 type Props = {
   title: string;
   description?: string;
   mainImage?: string;
   phone?: string;
+  icon?: string;
 };
 const MainHead: FC<Props> = ({
   title = '',
   description = ``,
   mainImage = ``,
   phone = ``,
+  icon = ``,
 }): JSX.Element => {
   const { t } = useTranslation();
   const router = useRouter();
+  const {
+    vendor: { logo },
+  } = useAppSelector((state) => state);
   return (
     <>
       <Head>
@@ -34,7 +40,11 @@ const MainHead: FC<Props> = ({
         <meta property="og:description" content={`${description}`} />
         <meta property="og:image" content={`${mainImage}`} />
         <meta name="logo" content={`${mainImage}`} />
-        <link href={`${mainImage}`} rel="shortcut icon" type="image/png" />
+        <link
+          href={`${icon ?? mainImage}`}
+          rel="shortcut icon"
+          type="image/png"
+        />
         <meta property="og:image:alt" content={`${title}`} />
         <meta property="og:mobile" content={phone} />
         <meta property="og:whatsapp" content={phone} />

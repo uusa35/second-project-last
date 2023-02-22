@@ -35,13 +35,14 @@ const BranchIndex: NextPage<Props> = ({ elements, url }) => {
     <MainContentLayout url={url}>
       <div className={`px-4`}>
         {map(elements, (b, i) => (
-          <Link href={`#`} onClick={() => dispatch(setBranch(b))} key={i}>
-            <p
+          <div key={i}>
+            <button
+              onClick={() => dispatch(setBranch(b))}
               className="font-semibold pb-3 capitalize"
               suppressHydrationWarning={suppressText}
             >
               {t(b.name)}
-            </p>
+            </button>
             <div className="w-full h-36 rounded-md">
               <GoogleMapReact
                 bootstrapURLKeys={{
@@ -57,22 +58,26 @@ const BranchIndex: NextPage<Props> = ({ elements, url }) => {
               ></GoogleMapReact>
             </div>
             <div className="flex justify-between my-5 items-center">
-              <p
+              <button
+                onClick={() => dispatch(setBranch(b))}
                 className=" text-lg font-semibold capitalize"
                 suppressHydrationWarning={suppressText}
                 style={{ color }}
               >
                 {t(b.location)}
-              </p>
-              <div className="flex rounded-2xl bg-LightGray py-1 px-5 ltr:ml-2 rtl:mr-2">
+              </button>
+              <a
+                href={`tel:+${b.mobile}`}
+                className="flex rounded-2xl bg-LightGray py-1 px-5 ltr:ml-2 rtl:mr-2"
+              >
                 <PhoneCallback
                   style={{ color }}
                   className="ltr:mr-2 rtl:ml-2 h-5 items-center"
                 />
                 <p className="whitespace-nowrap capitalize">{b.mobile}</p>
-              </div>
+              </a>
             </div>
-          </Link>
+          </div>
         ))}
       </div>
     </MainContentLayout>
