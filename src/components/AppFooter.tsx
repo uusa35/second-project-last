@@ -17,16 +17,12 @@ import {
 } from '@/redux/api/cartApi';
 import {
   debounce,
-  filter,
   first,
-  isArray,
   isEmpty,
   isNull,
   kebabCase,
   lowerCase,
   values,
-  countBy,
-  findIndex,
   map,
   find,
   isUndefined,
@@ -36,10 +32,8 @@ import { themeColor } from '@/redux/slices/vendorSlice';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import PaymentSummary from '@/widgets/cart/review/PaymentSummary';
 import {
-  removeMeter,
   resetCheckBoxes,
   resetMeters,
-  resetProductCart,
   resetRadioBtns,
 } from '@/redux/slices/productCartSlice';
 
@@ -89,35 +83,16 @@ const AppFooter: FC<Props> = ({
     const items = map(cartItems?.data.Cart, (i) => {
       if (i.id !== productCart.id) {
         return i;
-      } else if (
-        // i.Quantity !== productCart.Quantity &&
-        i.id === productCart.id
-      ) {
-        // console.log(
-        //   'product and itemid',
-        //   productCart.id,
-        //   i.id,
-        //   i.Quantity + productCart.Quantity,
-        //   {
-        //     ...i,
-        //     Quantity: i.Quantity + productCart.Quantity,
-        //   },
-        //   cartItems.data.Cart
-        // );
+      } else if (i.id === productCart.id) {
         return {
           ...i,
           Quantity: i.Quantity + productCart.Quantity,
         };
       }
     });
-
     if (isUndefined(find(items, (x) => x?.id === productCart.id))) {
-      // console.log('in find')
       items.push(productCart);
     }
-
-    // console.log('items', items,isUndefined(find(items, (x) => x.id === productCart.id)));
-
     return items;
   };
 
@@ -145,30 +120,7 @@ const AppFooter: FC<Props> = ({
             Cart:
               cartItems && cartItems.data && cartItems.data.Cart
                 ? handelCartPayload()
-                : // filter(cartItems.data.Cart, (i) => {
-                  //     if (i.id !== productCart.id) {
-                  //       console.log('hello form heeeere');
-                  //       return i;
-                  //     } else if (
-                  //       // i.Quantity !== productCart.Quantity &&
-                  //       i.id === productCart.id
-                  //     ) {
-                  //       console.log(
-                  //         'hi',
-                  //         [
-                  //           {
-                  //             ...i,
-                  //             Quantity: i.Quantity + productCart.Quantity,
-                  //           },
-                  //         ].concat(productCart)
-                  //       );
-                  //       return {
-                  //         ...i,
-                  //         Quantity: i.Quantity + productCart.Quantity,
-                  //       };
-                  //     }
-                  //   }).concat(!ProductExist && productCart)
-                  [productCart],
+                : [productCart],
           },
           url,
         }).then((r: any) => {
