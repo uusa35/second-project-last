@@ -160,7 +160,7 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
 
   const resetCoupon = () => {
     dispatch(setCartPromoCode(``));
-    setCouponVal(``);
+    setCouponVal(undefined);
   };
 
   const handleRemove = async (element: ProductCart) => {
@@ -374,7 +374,7 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
                           <div className="flex">
                             <div className="w-fit pb-2">
                               <div
-                                className={`flex text-gray-400 w-auto flex-wrap justify-between`}
+                                className={`flex text-gray-400 w-auto flex-wrap`}
                               >
                                 {!isEmpty(item.QuantityMeters) &&
                                   map(
@@ -382,11 +382,43 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
                                     (q: QuantityMeters, i) => (
                                       <Fragment key={i}>
                                         {map(q.addons, (addon, i) => (
+                                          <>
+                                            <TextTrans
+                                              key={i}
+                                              className={`ltr:border-r-2 ltr:last:border-r-0 ltr:first:pr-1 rtl:border-l-2 rtl:last:border-l-0 rtl:first:pl-1 px-1 text-xxs capitalize`}
+                                              ar={`${addon.nameAr} ${addon.Value} X`}
+                                              en={`${addon.nameEn} ${addon.Value} X`}
+                                            />
+                                          </>
+                                        ))}
+                                      </Fragment>
+                                    )
+                                  )}
+                                {!isEmpty(item.RadioBtnsAddons) &&
+                                  map(
+                                    item.RadioBtnsAddons,
+                                    (r: RadioBtnsAddons) => (
+                                      <Fragment key={r.addons.attributeID}>
+                                        <TextTrans
+                                          key={r.addons.attributeID}
+                                          className={`ltr:border-r-2 ltr:last:border-r-0 ltr:first:pr-1 rtl:border-l-2 rtl:last:border-l-0 rtl:first:pl-1 px-1 text-xxs capitalize text-gray-400`}
+                                          ar={r.addons.nameAr}
+                                          en={r.addons.nameEn}
+                                        />
+                                      </Fragment>
+                                    )
+                                  )}
+                                {!isEmpty(item.CheckBoxes) &&
+                                  map(
+                                    item.CheckBoxes,
+                                    (c: CheckBoxesAddons, i) => (
+                                      <Fragment key={i}>
+                                        {map(c.addons, (addon, i) => (
                                           <TextTrans
                                             key={i}
-                                            className={`ltr:border-r-2 ltr:last:border-r-0 ltr:first:pr-1 rtl:border-l-2 rtl:last:border-l-0 rtl:first:pl-1 px-1 text-xs capitalize`}
-                                            ar={addon.name}
-                                            en={addon.name}
+                                            className={`ltr:border-r-2 ltr:last:border-r-0 ltr:first:pr-1 rtl:border-l-2 rtl:last:border-l-0 rtl:first:pl-1 px-1 text-xxs capitalize`}
+                                            ar={addon.nameAr}
+                                            en={addon.nameEn}
                                           />
                                         ))}
                                       </Fragment>
