@@ -25,7 +25,7 @@ export type Category = {
 };
 
 export type Branch = {
-  id: number | null;
+  id: number | string | null;
   name: string;
   name_ar: string;
   name_en: string;

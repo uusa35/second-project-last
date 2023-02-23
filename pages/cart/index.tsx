@@ -286,7 +286,7 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
 
   return (
     <Suspense>
-      <MainContentLayout url={url}>
+      <MainContentLayout url={url} backHome={true}>
         {/* if cart is empty */}
         {isSuccess && isEmpty(cartItems?.data?.Cart) ? (
           <div className={'px-4'}>
