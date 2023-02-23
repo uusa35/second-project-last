@@ -392,8 +392,8 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
                                             <TextTrans
                                               key={i}
                                               className={`ltr:border-r-2 ltr:last:border-r-0 ltr:first:pr-1 rtl:border-l-2 rtl:last:border-l-0 rtl:first:pl-1 px-1 text-xxs capitalize`}
-                                              ar={`${addon.nameAr} ${addon.Value} X`}
-                                              en={`${addon.nameEn} ${addon.Value} X`}
+                                              ar={`${addon.name_ar} ${addon.Value} X`}
+                                              en={`${addon.name_en} ${addon.Value} X`}
                                             />
                                           </>
                                         ))}
@@ -406,8 +406,8 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
                                       <TextTrans
                                         key={r.addons.attributeID}
                                         className={`ltr:border-r-2 ltr:last:border-r-0 ltr:first:pr-1 rtl:border-l-2 rtl:last:border-l-0 rtl:first:pl-1 px-1 text-xxs capitalize text-gray-400`}
-                                        ar={r.addons.nameAr}
-                                        en={r.addons.nameEn}
+                                        ar={r.addons.name_ar}
+                                        en={r.addons.name_en}
                                       />
                                     </Fragment>
                                   ))}
@@ -418,8 +418,8 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
                                         <TextTrans
                                           key={i}
                                           className={`ltr:border-r-2 ltr:last:border-r-0 ltr:first:pr-1 rtl:border-l-2 rtl:last:border-l-0 rtl:first:pl-1 px-1 text-xxs capitalize`}
-                                          ar={addon.nameAr}
-                                          en={addon.nameEn}
+                                          ar={addon.name_ar}
+                                          en={addon.name_en}
                                         />
                                       ))}
                                     </Fragment>

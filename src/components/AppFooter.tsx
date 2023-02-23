@@ -146,6 +146,15 @@ const AppFooter: FC<Props> = ({
                 dispatch(resetRadioBtns());
                 dispatch(resetCheckBoxes());
                 dispatch(resetMeters());
+                console.log('router', router.query);
+                if (router.query.category_id) {
+                  router.replace(
+                    appLinks.productIndex(
+                      router.query.category_id.toString(),
+                      ``
+                    )
+                  );
+                }
               } else {
                 console.log('else');
               }

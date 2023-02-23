@@ -173,8 +173,8 @@ export interface QuantityMeters {
 export interface CartAddons {
   attributeID: number;
   name: string;
-  nameAr: string;
-  nameEn: string;
+  name_ar: string;
+  name_en: string;
   Value?: number; // qty
   price?: number;
 }
