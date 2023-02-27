@@ -93,7 +93,7 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
       dispatch(setUrl(url));
     }
     if (
-      (isNull(areaId) && isNull(branchId)) ||
+      (!areaId && !branchId) ||
       (isSuccess && !cartItems.data?.Cart) ||
       (isSuccess && cartItems.data?.Cart.length === 0)
     ) {

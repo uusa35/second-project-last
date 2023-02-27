@@ -194,8 +194,8 @@ const AppFooter: FC<Props> = ({
 
   const handleCartIndex = async () => {
     if (
-      (method === `pickup` && isNull(branchId)) ||
-      (method === `delivery` && isNull(area.id))
+      (method === `pickup` && !branchId) ||
+      (method === `delivery` && !area.id)
     ) {
       router.push(appLinks.cartSelectMethod(`delivery`));
     }
