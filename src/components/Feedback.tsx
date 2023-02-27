@@ -13,6 +13,7 @@ import {
   arboriaFont,
   convertColor,
   gessFont,
+  imgUrl,
   submitBtnClass,
   suppressText,
 } from '@/constants/*';
@@ -22,6 +23,7 @@ import { FC, useState } from 'react';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 
 type Props = {
   isOpen: boolean;

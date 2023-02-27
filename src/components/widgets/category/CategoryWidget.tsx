@@ -40,6 +40,7 @@ const CategoryWidget: FC<Props> = ({ element }) => {
         }
         className={`h-60 lg:h-72 shadow-lg rounded-lg capitalize`}
         suppressHydrationWarning={suppressText}
+        data-cy="category"
       >
         <div className="relative">
           <div className="relative w-full h-auto overflow-hidden rounded-lg">

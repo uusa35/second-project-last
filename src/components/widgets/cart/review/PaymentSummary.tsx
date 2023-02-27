@@ -22,6 +22,7 @@ const PaymentSummary: FC = () => {
   const color = useAppSelector(themeColor);
   useEffect(() => {}, [promoEnabled]);
 
+  console.log({ coupon, delivery_fees })
   return (
     <div className={`px-4 py-2 capitalize`}>
       <>
@@ -103,7 +104,7 @@ const PaymentSummary: FC = () => {
             <div className={`flex flex-row`}>
               <p suppressHydrationWarning={suppressText} className={`px-2`}>
                 {promoEnabled
-                  ? coupon.free_delivery === `false`
+                  ? coupon.free_delivery === false
                     ? coupon.delivery_fee
                     : 0
                   : isNull(delivery_fees)
@@ -125,7 +126,7 @@ const PaymentSummary: FC = () => {
         <div className="flex justify-between mb-2 text-lg">
           <p suppressHydrationWarning={suppressText}>{t('net_total')}</p>
           <div className={`flex flex-row`} style={{ color }}>
-            <p suppressHydrationWarning={suppressText} className={`px-2`}>
+            <p suppressHydrationWarning={suppressText} className={`px-2`} data-cy="net-total">
               {promoEnabled ? coupon.total_cart_before_tax : total}
             </p>
             <p className={`uppercase`} suppressHydrationWarning={suppressText}>

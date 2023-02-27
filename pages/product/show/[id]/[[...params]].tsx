@@ -580,6 +580,7 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
                                     type="button"
                                     className="relative -ml-px inline-flex items-center ltr:rounded-l-sm rtl:rounded-r-sm  bg-gray-100 px-1 py-1 text-sm font-medium text-black  focus:z-10 w-10"
                                     style={{ color }}
+                                    data-cy="increase-addon"
                                   >
                                     <span
                                       className={`border border-gray-300 p-1 px-3 bg-white rounded-md text-md font-extrabold  w-8 h-8 flex justify-center items-center`}
@@ -619,6 +620,7 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
                                     type="button"
                                     className="relative inline-flex items-center ltr:rounded-r-sm rtl:rounded-l-sm bg-gray-100 px-1 py-1 text-sm font-medium text-black  focus:z-10 w-10"
                                     style={{ color }}
+                                    data-cy="decrease-addon"
                                   >
                                     <span
                                       className={`border border-gray-300 p-1 px-3 bg-white rounded-md text-md font-extrabold  w-8 h-8 flex justify-center items-center`}

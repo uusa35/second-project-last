@@ -203,6 +203,7 @@ const SelectMethod: NextPage<Props> = ({
                             onClick={() =>
                               setSelectedData({ ...selectedData, area: a })
                             }
+                            data-cy="area"
                           >
                             <p
                               className="text-base text-black capitalize"
@@ -272,6 +273,7 @@ const SelectMethod: NextPage<Props> = ({
             className={`${submitBtnClass} mt-12 capitalize`}
             style={{ backgroundColor: color }}
             suppressHydrationWarning={suppressText}
+            data-cy="confirm"
           >
             {t('confirm')}
           </button>
