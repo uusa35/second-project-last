@@ -167,6 +167,7 @@ export interface CheckBoxes {
 export interface QuantityMeters {
   addonID: number; // selectionId
   uId: string; // addonId+AttributeId
+  uId2:string; //addonId+AttributeId+value
   addons: CartAddons[]; // choiceId
 }
 
