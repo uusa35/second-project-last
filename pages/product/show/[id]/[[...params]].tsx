@@ -153,7 +153,11 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
       dispatch(
         updatePrice({
           totalPrice: sum([
-            parseFloat(element?.Data?.price),
+            parseFloat(
+              element?.Data?.new_price && !isEmpty(element?.Data?.new_price)
+                ? element?.Data?.new_price
+                : element?.Data?.price
+            ),
             metersSum,
             checkboxesSum,
             radioBtnsSum,
@@ -222,10 +226,22 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
           ProductDesc: element?.Data?.desc,
           Quantity: currentQty,
           ExtraNotes: ``,
-          totalPrice: parseFloat(element?.Data?.price),
-          grossTotalPrice: parseFloat(element?.Data?.price),
+          totalPrice: parseFloat(
+            element?.Data?.new_price && !isEmpty(element?.Data?.new_price)
+              ? element?.Data?.new_price
+              : element?.Data?.price
+          ),
+          grossTotalPrice: parseFloat(
+            element?.Data?.new_price && !isEmpty(element?.Data?.new_price)
+              ? element?.Data?.new_price
+              : element?.Data?.price
+          ),
           totalQty: currentQty,
-          Price: parseFloat(element?.Data?.price),
+          Price: parseFloat(
+            element?.Data?.new_price && !isEmpty(element?.Data?.new_price)
+              ? element?.Data?.new_price
+              : element?.Data?.price
+          ),
           enabled: false,
           image: imgUrl(element?.Data.img[0]?.toString()),
           id: now().toString(),
@@ -341,6 +357,9 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
   if (!isSuccess || !url) {
     return <LoadingSpinner fullWidth={true} />;
   }
+
+  console.log('product', element);
+  console.log('productCart', productCart);
 
   return (
     <Suspense>

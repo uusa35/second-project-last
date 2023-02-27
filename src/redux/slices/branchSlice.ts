@@ -3,7 +3,7 @@ import { Branch } from '@/types/queries';
 import { areaSlice } from './areaSlice';
 
 const initialState: Branch = {
-  id: null,
+  id: ``,
   name: ``,
   name_ar: ``,
   name_en: ``,

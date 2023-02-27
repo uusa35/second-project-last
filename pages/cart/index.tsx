@@ -23,7 +23,13 @@ import {
   startCase,
 } from 'lodash';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
-import { ProductCart, QuantityMeters, ServerCart } from '@/types/index';
+import {
+  CheckBoxes,
+  ProductCart,
+  QuantityMeters,
+  RadioBtns,
+  ServerCart,
+} from '@/types/index';
 import Link from 'next/link';
 import {
   useAddToCartMutation,
@@ -286,7 +292,7 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
 
   return (
     <Suspense>
-      <MainContentLayout url={url}>
+      <MainContentLayout url={url} backHome={true}>
         {/* if cart is empty */}
         {isSuccess && isEmpty(cartItems?.data?.Cart) ? (
           <div className={'px-4'}>
@@ -386,8 +392,8 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
                                             <TextTrans
                                               key={i}
                                               className={`ltr:border-r-2 ltr:last:border-r-0 ltr:first:pr-1 rtl:border-l-2 rtl:last:border-l-0 rtl:first:pl-1 px-1 text-xxs capitalize`}
-                                              ar={`${addon.nameAr} ${addon.Value} X`}
-                                              en={`${addon.nameEn} ${addon.Value} X`}
+                                              ar={`${addon.name_ar} ${addon.Value} X`}
+                                              en={`${addon.name_en} ${addon.Value} X`}
                                             />
                                           </>
                                         ))}
@@ -395,35 +401,29 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
                                     )
                                   )}
                                 {!isEmpty(item.RadioBtnsAddons) &&
-                                  map(
-                                    item.RadioBtnsAddons,
-                                    (r: RadioBtnsAddons) => (
-                                      <Fragment key={r.addons.attributeID}>
-                                        <TextTrans
-                                          key={r.addons.attributeID}
-                                          className={`ltr:border-r-2 ltr:last:border-r-0 ltr:first:pr-1 rtl:border-l-2 rtl:last:border-l-0 rtl:first:pl-1 px-1 text-xxs capitalize text-gray-400`}
-                                          ar={r.addons.nameAr}
-                                          en={r.addons.nameEn}
-                                        />
-                                      </Fragment>
-                                    )
-                                  )}
+                                  map(item.RadioBtnsAddons, (r: RadioBtns) => (
+                                    <Fragment key={r.addons.attributeID}>
+                                      <TextTrans
+                                        key={r.addons.attributeID}
+                                        className={`ltr:border-r-2 ltr:last:border-r-0 ltr:first:pr-1 rtl:border-l-2 rtl:last:border-l-0 rtl:first:pl-1 px-1 text-xxs capitalize text-gray-400`}
+                                        ar={r.addons.name_ar}
+                                        en={r.addons.name_en}
+                                      />
+                                    </Fragment>
+                                  ))}
                                 {!isEmpty(item.CheckBoxes) &&
-                                  map(
-                                    item.CheckBoxes,
-                                    (c: CheckBoxesAddons, i) => (
-                                      <Fragment key={i}>
-                                        {map(c.addons, (addon, i) => (
-                                          <TextTrans
-                                            key={i}
-                                            className={`ltr:border-r-2 ltr:last:border-r-0 ltr:first:pr-1 rtl:border-l-2 rtl:last:border-l-0 rtl:first:pl-1 px-1 text-xxs capitalize`}
-                                            ar={addon.nameAr}
-                                            en={addon.nameEn}
-                                          />
-                                        ))}
-                                      </Fragment>
-                                    )
-                                  )}
+                                  map(item.CheckBoxes, (c: CheckBoxes, i) => (
+                                    <Fragment key={i}>
+                                      {map(c.addons, (addon, i) => (
+                                        <TextTrans
+                                          key={i}
+                                          className={`ltr:border-r-2 ltr:last:border-r-0 ltr:first:pr-1 rtl:border-l-2 rtl:last:border-l-0 rtl:first:pl-1 px-1 text-xxs capitalize`}
+                                          ar={addon.name_ar}
+                                          en={addon.name_en}
+                                        />
+                                      ))}
+                                    </Fragment>
+                                  ))}
                               </div>
                             </div>
                           </div>
