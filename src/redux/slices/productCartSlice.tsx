@@ -49,10 +49,21 @@ export const productCartSlice = createSlice({
     ) => {
       return {
         ...state,
-        QuantityMeters: [
-          action.payload,
-          ...filter(state.QuantityMeters, (m) => m.uId !== action.payload.uId),
-        ],
+        QuantityMeters:
+          action.payload.addons[0].Value === 0
+            ? [
+                ...filter(
+                  state.QuantityMeters,
+                  (m) => m.uId !== action.payload.uId
+                ),
+              ]
+            : [
+                action.payload,
+                ...filter(
+                  state.QuantityMeters,
+                  (m) => m.uId !== action.payload.uId
+                ),
+              ],
       };
     },
     removeMeter: (

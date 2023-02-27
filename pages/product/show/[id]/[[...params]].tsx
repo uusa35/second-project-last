@@ -330,6 +330,7 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
             : parseFloat(currentMeter[0]?.addons[0].Value) - 1 >= 0
             ? parseFloat(currentMeter[0]?.addons[0].Value) - 1
             : parseFloat(currentMeter[0]?.addons[0].Value);
+            
           dispatch(
             addMeter({
               addonID: selection.id,
@@ -347,6 +348,7 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
               ],
             })
           );
+
         } else {
           dispatch(removeMeter(`${selection.id}${choice.id}`));
         }
