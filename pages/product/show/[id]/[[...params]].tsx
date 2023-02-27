@@ -167,7 +167,7 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
       );
       const uIds = concat(
         productCart.QuantityMeters &&
-          map(productCart.QuantityMeters, (q) => q.uId),
+          map(productCart.QuantityMeters, (q) => q.uId2),
         productCart.CheckBoxes && map(productCart.CheckBoxes, (c) => c.uId),
         productCart.RadioBtnsAddons &&
           map(productCart.RadioBtnsAddons, (r) => r.uId)
@@ -308,6 +308,7 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
         dispatch(
           addMeter({
             addonID: selection.id,
+            uId2: `${selection.id}${choice.id}${Value}`,
             uId: `${selection.id}${choice.id}`,
             addons: [
               {
@@ -329,9 +330,11 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
             : parseFloat(currentMeter[0]?.addons[0].Value) - 1 >= 0
             ? parseFloat(currentMeter[0]?.addons[0].Value) - 1
             : parseFloat(currentMeter[0]?.addons[0].Value);
+            
           dispatch(
             addMeter({
               addonID: selection.id,
+              uId2: `${selection.id}${choice.id}${Value}`,
               uId: `${selection.id}${choice.id}`,
               addons: [
                 {
@@ -345,6 +348,7 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
               ],
             })
           );
+
         } else {
           dispatch(removeMeter(`${selection.id}${choice.id}`));
         }
