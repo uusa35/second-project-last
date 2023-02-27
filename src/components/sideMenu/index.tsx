@@ -132,7 +132,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
 
                 <Link
                   scroll={true}
-                  href={appLinks.productSearchIndex('null', branchId, 'null')}
+                  href={appLinks.productSearchIndex('', branchId ?? ``, '')}
                 >
                   <div className="flex gap-x-3 pb-7 items-center ps-1">
                     <PlagiarismOutlined
