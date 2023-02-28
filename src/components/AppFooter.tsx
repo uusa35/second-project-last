@@ -81,24 +81,34 @@ const AppFooter: FC<Props> = ({
 
   const handelCartPayload = () => {
     const items = map(cartItems?.data.Cart, (i) => {
+      // if item is not in the cart return all items in cart
       if (i.id !== productCart.id) {
         return i;
-      } else if (i.id === productCart.id) {
+      }
+      // if item is in the cart return item but with quantity increased
+      // if (i.id === productCart.id)
+      else if (
+        i.id?.split('_').sort().join(',') ===
+        productCart.id.split('_').sort().join(',')
+      ) {
         return {
           ...i,
           Quantity: i.Quantity + productCart.Quantity,
         };
       }
     });
+
+    // if item is not in the cart add it
     if (isUndefined(find(items, (x) => x?.id === productCart.id))) {
       items.push(productCart);
     }
+
     return items;
   };
 
   const handleAddToCart = async () => {
     if (
-      (method === `pickup` && ! branchId) ||
+      (method === `pickup` && !branchId) ||
       (method === `delivery` && !area.id)
     ) {
       router.push(appLinks.cartSelectMethod(`delivery`));
