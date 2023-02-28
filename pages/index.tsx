@@ -70,7 +70,7 @@ const HomePage: NextPage<Props> = ({ element, url }): JSX.Element => {
       />
       <MainContentLayout url={url}>
         {/*  ImageBackGround Header */}
-        <div className="h-52"
+        <div className="sm:h-52 lg:h-auto"
         >
         <CustomImage
           src={`${imgUrl(element.cover)}`}

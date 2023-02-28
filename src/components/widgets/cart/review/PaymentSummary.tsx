@@ -29,7 +29,7 @@ const PaymentSummary: FC = () => {
         <div className="flex justify-between mb-2 text-lg">
           <p suppressHydrationWarning={suppressText}>{t('subtotal')} </p>
           <div className={`flex flex-row`}>
-            <p suppressHydrationWarning={suppressText} className={`px-2`}>
+            <p suppressHydrationWarning={suppressText} className={`px-2`} data-cy="sub-total">
               {promoEnabled ? coupon.sub_total : subTotal}
             </p>
             <p className={`uppercase`} suppressHydrationWarning={suppressText}>
@@ -102,7 +102,7 @@ const PaymentSummary: FC = () => {
             <p suppressHydrationWarning={suppressText}>{t('delivery_fees')}</p>
             <p suppressHydrationWarning={suppressText}></p>
             <div className={`flex flex-row`}>
-              <p suppressHydrationWarning={suppressText} className={`px-2`}>
+              <p suppressHydrationWarning={suppressText} className={`px-2`} data-cy="deliveryFees">
                 {promoEnabled
                   ? coupon.free_delivery === false
                     ? coupon.delivery_fee

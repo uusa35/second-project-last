@@ -15,11 +15,19 @@ describe('Navigation', () => {
     cy.get('[data-cy="start-order"]').contains('add to cart').click();
     cy.get('[data-cy="shopping-cart"]').click();
     cy.url().should('contains', '/cart');
-
+    const total = cy.get('[data-cy="net-total"]');
+    const subTotal = cy.get('[data-cy="sub-total"]');
+    const deliveryFees = cy.get('[data-cy="deliveryFees"]');
+    cy.log(`${total}`);
+    cy.log(`${subTotal}`);
+    cy.log(`${deliveryFees}`);
+    const fn = (a: number, b: number) => {
+      return a + b 
+    }
     
-
-
-
+    cy.wrap({ sum: fn })
+      .invoke('sum', subTotal, deliveryFees)
+      .should('be.eq', total) 
   })
 });
 export {}
