@@ -191,6 +191,7 @@ const SelectMethod: NextPage<Props> = ({
                       className="px-2 pb-0 border-b-0 capitalize"
                       onClick={() => handleOpen(item.id)}
                       suppressHydrationWarning={suppressText}
+                      data-cy="accordion"
                     >
                       <TextTrans ar={item.name_ar} en={item.name_en} />
                     </AccordionHeader>
