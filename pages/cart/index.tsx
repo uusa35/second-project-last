@@ -481,13 +481,32 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
                           </button>
                         </span>
                         <div>
+                         {item.SalePrice !== item.Price ? (
+                           <div>
+                              <p
+                              className="uppercase line-through"
+                              style={{ color }}
+                              suppressHydrationWarning={suppressText}
+                              >
+                              {item.Price} {t('kwd')}
+                            </p>
+                            <p
+                              className=" uppercase"
+                              style={{ color }}
+                              suppressHydrationWarning={suppressText}
+                            >
+                              {item.SalePrice} {t('kwd')}
+                            </p>
+                           </div>
+                         ): (
                           <p
-                            className=" uppercase"
-                            style={{ color }}
-                            suppressHydrationWarning={suppressText}
-                          >
-                            {item.Price} {t('kwd')}
-                          </p>
+                          className=" uppercase"
+                          style={{ color }}
+                          suppressHydrationWarning={suppressText}
+                        >
+                          {item.Price} {t('kwd')}
+                        </p>
+                         )}
                         </div>
                       </div>
                     </div>
