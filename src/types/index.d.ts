@@ -141,6 +141,7 @@ export interface ProductCart {
   ExtraNotes: string;
   Quantity: number;
   Price: number;
+  SalePrice?: number;
   totalQty: number;
   totalPrice: number;
   grossTotalPrice: number;
