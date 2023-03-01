@@ -167,11 +167,12 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
       );
       const uIds = concat(
         productCart.QuantityMeters &&
-          map(productCart.QuantityMeters, (q) => q.uId2),
-        productCart.CheckBoxes && map(productCart.CheckBoxes, (c) => c.uId),
+          map(productCart.QuantityMeters, (q) => `_${q.uId2}`),
+        productCart.CheckBoxes && map(productCart.CheckBoxes, (c) => `_${c.uId}`),
         productCart.RadioBtnsAddons &&
-          map(productCart.RadioBtnsAddons, (r) => r.uId)
+          map(productCart.RadioBtnsAddons, (r) => `_${r.uId}`)
       );
+      console.log('uIds',`${productCart.ProductID}${join(uIds, '')}`)
       dispatch(updateId(`${productCart.ProductID}${join(uIds, '')}`));
     }
   }, [
