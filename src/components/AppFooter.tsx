@@ -89,7 +89,8 @@ const AppFooter: FC<Props> = ({
       // if (i.id === productCart.id)
       else if (
         i.id?.split('_').sort().join(',') ===
-        productCart.id.split('_').sort().join(',')
+          productCart.id.split('_').sort().join(',') &&
+        i.ExtraNotes === productCart.ExtraNotes
       ) {
         return {
           ...i,
@@ -99,7 +100,17 @@ const AppFooter: FC<Props> = ({
     });
 
     // if item is not in the cart add it
-    if (isUndefined(find(items, (x) => x?.id === productCart.id))) {
+    if (
+      isUndefined(
+        find(
+          items,
+          (x) =>
+            x?.id?.split('_').sort().join(',') ===
+            productCart.id.split('_').sort().join(',') && 
+            x?.ExtraNotes === productCart.ExtraNotes
+        )
+      )
+    ) {
       items.push(productCart);
     }
 
