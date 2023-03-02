@@ -65,10 +65,12 @@ const SlideTopNav: FC<Props> = ({ offset, isHome = false }): JSX.Element => {
       className={`${
         offset <= (isHome ? -1 : 80)
           ? `hidden `
-          : `flex transition-opacity duration-3000 ${
+          : `flex transition-opacity duration-3000 lg:${
               offset <= 80 ? `bg-transparent text-black` : `bg-white text-black`
+            } ${
+              offset <= 80 ? `bg-transparent` : `bg-white`
             }`
-      } flex flex-row  justify-center items-center w-full  px-4 h-20 top-0  relative lg:text-black lg:bg-white
+      } flex flex-row  justify-center items-center w-full  px-4 h-20 top-0  sm:fixed lg:relative lg:text-black lg:bg-white
       `}
     >
       <button

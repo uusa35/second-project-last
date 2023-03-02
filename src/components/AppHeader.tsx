@@ -31,9 +31,11 @@ const AppHeader: FC<Props> = ({ backHome = false, backRoute = null }) => {
   return (
     <Suspense fallback={<LoadingSpinner fullWidth={false} />}>
       <header
-        className={`${offset <= 80 ? `bg-white` : `bg-transparent`} ${
+        className={`lg:${offset <= 80 ? `bg-white` : `bg-transparent`} lg:${
           isHome ? `bg-transparent` : `bg-white`
-        } relative sticky top-0 z-50 flex flex-col justify-start items-center w-full scroll-smooth capitalize`}
+        } 
+        ${offset <= 80 ? `bg-transparent` : `bg-white`}
+        relative sticky top-0 z-50 flex flex-col justify-start items-center w-full scroll-smooth capitalize`}
         suppressHydrationWarning={suppressText}
       >
         {router.asPath === '/' ||
