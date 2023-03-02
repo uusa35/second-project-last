@@ -81,7 +81,7 @@ const HomePage: NextPage<Props> = ({ element, url }): JSX.Element => {
         />
         </div>
         
-        <div className="bg-white mt-40 lg:mt-0 border-t-4 border-stone-100 lg:border-none rounded-none relative -top-10 lg:top-auto  pt-1 lg:pt-0 ">
+        <div className="bg-white mt-40 lg:mt-0 border-t-4 border-stone-100 lg:border-none rounded-none relative top-32 lg:top-auto  pt-1 lg:pt-0 ">
           {/*  HomePage Header */}
           <div className={`px-6 mt-3 lg:mt-0`}>
             <HomeVendorMainInfo element={element} />
