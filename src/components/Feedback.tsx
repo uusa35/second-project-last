@@ -51,7 +51,7 @@ const Feedback: FC<Props> = ({
     .shape({
       user_name: yup.string().min(2).max(50).required(),
       rate: yup.number().min(1).max(3).required(),
-      note: yup.string().required().min(2).max(50),
+      note: yup.string().required().min(2).max(500),
     })
     .required();
   const {
