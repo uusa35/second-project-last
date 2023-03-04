@@ -146,7 +146,6 @@ const AppFooter: FC<Props> = ({
               url,
             }).then((r) => {
               if ((r.data && r.data.data) || r.data?.data.Cart) {
-                console.log('the r', r);
                 dispatch(
                   showToastMessage({
                     content: 'item_added_successfully',
@@ -156,7 +155,6 @@ const AppFooter: FC<Props> = ({
                 dispatch(resetRadioBtns());
                 dispatch(resetCheckBoxes());
                 dispatch(resetMeters());
-                console.log('router', router.query);
                 if (
                   router.query.category_id &&
                   router.query.category_id !== 'null'
@@ -171,13 +169,10 @@ const AppFooter: FC<Props> = ({
                   router.replace(appLinks.productIndex(``, ``));
                 }
               } else {
-                console.log('else');
               }
             });
           } else {
-            console.log('else');
             if (r.error && r.error.data) {
-              console.log('r', r);
               // console.log('r', r.error.data.msg);
               // console.log('isArray', r.error.data.msg);
               dispatch(
@@ -354,7 +349,10 @@ const AppFooter: FC<Props> = ({
               </button>
               <span className={`flex flex-row items-center gap-2`}>
                 <p className={`text-xl text-white`}>
-                  {parseFloat(productCart.grossTotalPrice).toFixed(3)}
+                  {parseFloat(productCart.grossTotalPrice).toFixed(3) ===
+                  '0.000'
+                    ? t(`price_on_selection`)
+                    : parseFloat(productCart.grossTotalPrice).toFixed(3)}
                 </p>
                 <span className={`text-white uppercase`}>{t('kwd')}</span>
               </span>

@@ -361,9 +361,6 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
     return <LoadingSpinner fullWidth={true} />;
   }
 
-  console.log('product', element);
-  console.log('productCart', productCart);
-
   return (
     <Suspense>
       <MainHead
