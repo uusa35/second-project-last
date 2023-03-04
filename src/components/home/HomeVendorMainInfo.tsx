@@ -8,7 +8,7 @@ import TextTrans from '@/components/TextTrans';
 import { useAppSelector } from '@/redux/hooks';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { useLazyGetVendorQuery } from '@/redux/api/vendorApi';
-import { filter } from 'lodash';
+import { filter, isEmpty } from 'lodash';
 
 type Props = {
   url: string;
@@ -70,17 +70,19 @@ const HomeVendorMainInfo: FC<Props> = ({ url }): JSX.Element => {
                 />
               </h1>
               {/* online */}
-              <span
-                className={`flex flex-row justify-center items-center text-xs mx-2`}
-                suppressHydrationWarning={suppressText}
-              >
-                <div
-                  className={`w-4 h-4 rounded-full ${currentStoreStatus[0].className} rtl:ml-2 ltr:mr-2`}
-                ></div>
-                <p suppressHydrationWarning={suppressText}>
-                  ({t(currentStoreStatus[0].status)})
-                </p>
-              </span>
+              {element?.Data?.status && !isEmpty(currentStoreStatus) && (
+                <span
+                  className={`flex flex-row justify-center items-center text-xs mx-2`}
+                  suppressHydrationWarning={suppressText}
+                >
+                  <div
+                    className={`w-4 h-4 rounded-full ${currentStoreStatus[0].className} rtl:ml-2 ltr:mr-2`}
+                  ></div>
+                  <p suppressHydrationWarning={suppressText}>
+                    ({t(currentStoreStatus[0].status)})
+                  </p>
+                </span>
+              )}
             </div>
             <div className="text-sm text-neutral-400 space-y-1">
               <p suppressHydrationWarning={suppressText}>

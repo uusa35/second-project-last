@@ -354,7 +354,10 @@ const AppFooter: FC<Props> = ({
                     ? t(`price_on_selection`)
                     : parseFloat(productCart.grossTotalPrice).toFixed(3)}
                 </p>
-                <span className={`text-white uppercase`}>{t('kwd')}</span>
+                {parseFloat(productCart.grossTotalPrice).toFixed(3) !==
+                  '0.000' && (
+                  <span className={`text-white uppercase`}>{t('kwd')}</span>
+                )}
               </span>
             </div>
           </div>
