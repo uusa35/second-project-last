@@ -63,6 +63,7 @@ const HomeVendorMainInfo: FC<Props> = ({ url }): JSX.Element => {
           </Link>
           <div className={`flex flex-col w-full p-1`}>
             <div className={`flex flex-row justify-start items-center`}>
+              {/* name */}
               <h1 className="font-bold text-lg">
                 <TextTrans
                   ar={element.Data.name_ar}
@@ -84,6 +85,7 @@ const HomeVendorMainInfo: FC<Props> = ({ url }): JSX.Element => {
                 </span>
               )}
             </div>
+            {/* payment info */}
             <div className="text-sm text-neutral-400 space-y-1">
               <p suppressHydrationWarning={suppressText}>
                 <Check className="text-lime-400 text-base checkCircle" />
@@ -96,7 +98,7 @@ const HomeVendorMainInfo: FC<Props> = ({ url }): JSX.Element => {
             </div>
           </div>
         </div>
-
+        {/* vendorshow icon */}
         <Link
           href={appLinks.vendorShow.path}
           scroll={true}
@@ -105,7 +107,7 @@ const HomeVendorMainInfo: FC<Props> = ({ url }): JSX.Element => {
           <InfoOutlined className="w-6 h-6 lg:w-8 lg:h-8" style={{ color }} />
         </Link>
       </div>
-
+      {/* description */}
       {element.Data.desc && (
         <div className="flex gap-x-1 justify-center items-start mt-2 capitalize">
           <p
