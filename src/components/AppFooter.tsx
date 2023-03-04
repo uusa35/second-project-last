@@ -26,6 +26,7 @@ import {
   map,
   find,
   isUndefined,
+  filter,
 } from 'lodash';
 import { setCartPromoSuccess } from '@/redux/slices/cartSlice';
 import { themeColor } from '@/redux/slices/vendorSlice';
@@ -80,40 +81,75 @@ const AppFooter: FC<Props> = ({
   const [triggerCheckPromoCode] = useLazyCheckPromoCodeQuery();
 
   const handelCartPayload = () => {
-    const items = map(cartItems?.data.Cart, (i) => {
+    let items = map(cartItems?.data.Cart, (i) => {
+      console.log(
+        'i===product',
+        i.id?.split('_').sort().join(','),
+        productCart.id.split('_').sort().join(','),
+        i.id?.split('_').sort().join(',') ===
+          productCart.id.split('_').sort().join(','),
+        i.ExtraNotes === productCart.ExtraNotes,
+        i
+      );
+
       // if item is not in the cart return all items in cart
-      if (i.id !== productCart.id) {
+      if (
+        i.id?.split('_').sort().join(',') !==
+        productCart.id.split('_').sort().join(',')
+      ) {
+        console.log('id!=id');
         return i;
       }
       // if item is in the cart return item but with quantity increased
       // if (i.id === productCart.id)
       else if (
         i.id?.split('_').sort().join(',') ===
-          productCart.id.split('_').sort().join(',') &&
-        i.ExtraNotes === productCart.ExtraNotes
+        productCart.id.split('_').sort().join(',')
       ) {
-        return {
-          ...i,
-          Quantity: i.Quantity + productCart.Quantity,
-        };
+        if (i.ExtraNotes === productCart.ExtraNotes) {
+          console.log('id=id,note=note', 'inc qty', {
+            ...i,
+            Quantity: i.Quantity + productCart.Quantity,
+          });
+          return {
+            ...i,
+            Quantity: i.Quantity + productCart.Quantity,
+          };
+        } else {
+          console.log('id=id,note!=note');
+          // equal id but diffrent extranotes
+          return i;
+        }
       }
-    });
+    }).filter((notUndefined) => notUndefined !== undefined);
 
     // if item is not in the cart add it
+
     if (
       isUndefined(
         find(
           items,
           (x) =>
             x?.id?.split('_').sort().join(',') ===
-            productCart.id.split('_').sort().join(',') && 
-            x?.ExtraNotes === productCart.ExtraNotes
+            productCart.id.split('_').sort().join(',')
+        )
+      ) ||
+      !isUndefined(
+        find(
+          items,
+          (x) =>
+            x?.id?.split('_').sort().join(',') ===
+              productCart.id.split('_').sort().join(',') &&
+            x?.ExtraNotes !== productCart.ExtraNotes
         )
       )
     ) {
+      console.log('add new itm');
       items.push(productCart);
     }
 
+    console.log('items', items,cartItems.data.Cart);
+                                             
     return items;
   };
 
@@ -167,7 +203,7 @@ const AppFooter: FC<Props> = ({
                 dispatch(resetRadioBtns());
                 dispatch(resetCheckBoxes());
                 dispatch(resetMeters());
-                console.log('router', router.query);
+                // console.log('router', router.query);
                 if (
                   router.query.category_id &&
                   router.query.category_id !== 'null'
