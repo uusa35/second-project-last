@@ -3,19 +3,40 @@ import CustomImage from '@/components/CustomImage';
 import { appLinks, imageSizes, imgUrl, suppressText } from '@/constants/*';
 import Link from 'next/link';
 import { InfoOutlined, Check } from '@mui/icons-material';
-import { Vendor } from '@/types/index';
 import { useTranslation } from 'react-i18next';
 import TextTrans from '@/components/TextTrans';
 import { useAppSelector } from '@/redux/hooks';
 import { themeColor } from '@/redux/slices/vendorSlice';
+import { useLazyGetVendorQuery } from '@/redux/api/vendorApi';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 type Props = {
-  element: Vendor;
+  url: string;
 };
-const HomeVendorMainInfo: FC<Props> = () => {
+const HomeVendorMainInfo: FC<Props> = ({ url }): JSX.Element => {
   const { t } = useTranslation();
   const color = useAppSelector(themeColor);
-  const { vendor: element } = useAppSelector((state) => state);
+  const {
+    locale: { lang },
+    branch: { id: branch_id },
+    area: { id: area_id },
+  } = useAppSelector((state) => state);
+  const [triggerGetVendor, { data: element, isSuccess }] =
+    useLazyGetVendorQuery();
+
+  useEffect(() => {
+    if (url) {
+      triggerGetVendor({
+        lang,
+        url,
+        ...(branch_id && { branch_id }),
+        ...(area_id && { area_id }),
+      });
+    }
+  }, [branch_id, area_id]);
+
+  if (!isSuccess || !element || !element.Data)
+    return <LoadingSpinner fullWidth={true} />;
 
   return (
     <>
@@ -26,13 +47,13 @@ const HomeVendorMainInfo: FC<Props> = () => {
               width={imageSizes.xs}
               height={imageSizes.xs}
               className="rounded-md w-full h-fit aspect-square"
-              alt={element.name}
-              src={imgUrl(element.logo)}
+              alt={element.Data.name}
+              src={imgUrl(element.Data.logo)}
             />
           </Link>
           <div className={`flex flex-col w-full p-2`}>
             <h1 className="font-bold text-lg">
-              <TextTrans ar={element.name_ar} en={element.name_en} />
+              <TextTrans ar={element.Data.name_ar} en={element.Data.name_en} />
             </h1>
             <div className="text-sm text-neutral-400 space-y-1">
               <p suppressHydrationWarning={suppressText}>
@@ -56,13 +77,13 @@ const HomeVendorMainInfo: FC<Props> = () => {
         </Link>
       </div>
 
-      {element.desc && (
+      {element.Data.desc && (
         <div className="flex gap-x-1 justify-center items-start mt-2 capitalize">
           <p
             suppressHydrationWarning={suppressText}
             className="text-sm text-neutral-400 px-2"
           >
-            {element.desc}
+            {element.Data.desc}
           </p>
         </div>
       )}
