@@ -52,6 +52,7 @@ const Feedback: FC<Props> = ({
       user_name: yup.string().min(2).max(50).required(),
       rate: yup.number().min(1).max(3).required(),
       note: yup.string().required().min(2).max(500),
+      phone: yup.string().min(0).max(999999999999),
     })
     .required();
   const {
