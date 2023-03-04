@@ -168,11 +168,12 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
       const uIds = concat(
         productCart.QuantityMeters &&
           map(productCart.QuantityMeters, (q) => `_${q.uId2}`),
-        productCart.CheckBoxes && map(productCart.CheckBoxes, (c) => `_${c.uId}`),
+        productCart.CheckBoxes &&
+          map(productCart.CheckBoxes, (c) => `_${c.uId}`),
         productCart.RadioBtnsAddons &&
           map(productCart.RadioBtnsAddons, (r) => `_${r.uId}`)
       );
-      console.log('uIds',`${productCart.ProductID}${join(uIds, '')}`)
+      console.log('uIds', `${productCart.ProductID}${join(uIds, '')}`);
       dispatch(updateId(`${productCart.ProductID}${join(uIds, '')}`));
     }
   }, [
@@ -331,7 +332,7 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
             : parseFloat(currentMeter[0]?.addons[0].Value) - 1 >= 0
             ? parseFloat(currentMeter[0]?.addons[0].Value) - 1
             : parseFloat(currentMeter[0]?.addons[0].Value);
-            
+
           dispatch(
             addMeter({
               addonID: selection.id,
@@ -349,7 +350,6 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
               ],
             })
           );
-
         } else {
           dispatch(removeMeter(`${selection.id}${choice.id}`));
         }
@@ -680,8 +680,8 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
                                   </label>
                                 </div>
                                 <div>
-                                  {c.price}{' '}
-                                  <span className={`uppercase`}>
+                                  {parseFloat(c.price).toFixed(3)}
+                                  <span className={`mx-1 uppercase`}>
                                     {t(`kwd`)}
                                   </span>
                                 </div>

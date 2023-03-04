@@ -70,21 +70,20 @@ const HomePage: NextPage<Props> = ({ element, url }): JSX.Element => {
       />
       <MainContentLayout url={url}>
         {/*  ImageBackGround Header */}
-        <div className="sm:h-52 lg:h-auto"
-        >
-        <CustomImage
-          src={`${imgUrl(element.cover)}`}
-          alt={element.name}
-          className={`block lg:hidden object-cover w-full absolute left-0 right-0 -top-10 shadow-xl z-0 overflow-hidden`}
-          width={imageSizes.xl}
-          height={imageSizes.xl}
-        />
+        <div className="sm:h-52 lg:h-auto">
+          <CustomImage
+            src={`${imgUrl(element.cover)}`}
+            alt={element.name}
+            className={`block lg:hidden object-cover w-full absolute left-0 right-0 -top-10 shadow-xl z-0 overflow-hidden`}
+            width={imageSizes.xl}
+            height={imageSizes.xl}
+          />
         </div>
-        
-        <div className="bg-white mt-40 lg:mt-0 border-t-4 border-stone-100 lg:border-none rounded-none relative -top-10 lg:top-auto  pt-1 lg:pt-0 ">
+
+        <div className="bg-white mt-40 lg:mt-0 border-t-4 border-stone-100 lg:border-none rounded-none relative top-32 lg:top-auto  pt-1 lg:pt-0 ">
           {/*  HomePage Header */}
           <div className={`px-6 mt-3 lg:mt-0`}>
-            <HomeVendorMainInfo element={element} />
+            <HomeVendorMainInfo url={url} />
           </div>
           <HomeSelectMethod element={element} url={url} />
           {/* Search Input */}
