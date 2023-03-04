@@ -2,16 +2,13 @@ import { FC, useEffect } from 'react';
 import CustomImage from '@/components/CustomImage';
 import { appLinks, imageSizes, imgUrl, suppressText } from '@/constants/*';
 import Link from 'next/link';
-import { InfoOutlined, Check, FiberManualRecord } from '@mui/icons-material';
+import { InfoOutlined, Check } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import TextTrans from '@/components/TextTrans';
 import { useAppSelector } from '@/redux/hooks';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { useLazyGetVendorQuery } from '@/redux/api/vendorApi';
-<<<<<<< HEAD
-=======
 import { filter } from 'lodash';
->>>>>>> Esraa
 
 type Props = {
   url: string;
