@@ -2,14 +2,14 @@ import { FC, useEffect } from 'react';
 import CustomImage from '@/components/CustomImage';
 import { appLinks, imageSizes, imgUrl, suppressText } from '@/constants/*';
 import Link from 'next/link';
-import { InfoOutlined, Check, FiberManualRecord } from '@mui/icons-material';
+import { InfoOutlined, Check, FiberManualRecord  } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import TextTrans from '@/components/TextTrans';
 import { useAppSelector } from '@/redux/hooks';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { useLazyGetVendorQuery } from '@/redux/api/vendorApi';
 import LoadingSpinner from '@/components/LoadingSpinner';
-import { filter, isNull, isUndefined } from 'lodash';
+import { filter } from 'lodash';
 
 type Props = {
   url: string;
@@ -25,10 +25,10 @@ const HomeVendorMainInfo: FC<Props> = ({ url }): JSX.Element => {
   const [triggerGetVendor, { data: element, isSuccess }] =
     useLazyGetVendorQuery();
   const storeStatus = [
-    {id: 1, status: "open", className: "openStore"},
-    {id:2, status: "busy", className: "busyStore"},
-    {id: 3, status: "closed", className: "closedStore"}
-  ]
+        {id: 1, status: "open", className: "openStore"},
+        {id:2, status: "busy", className: "busyStore"},
+        {id: 3, status: "closed", className: "closedStore"}
+      ]
   const currentStoreStatus = filter(storeStatus, (store) =>store.status === element?.Data?.status.toLowerCase());
   useEffect(() => {
     if (url) {
@@ -45,7 +45,6 @@ const HomeVendorMainInfo: FC<Props> = ({ url }): JSX.Element => {
   }, [branch_id, area_id]);
 
   if (!isSuccess || !element || !element.Data) return <></>;
-  console.log({ element, currentStoreStatus })
   return (
     <>
       <div className="flex gap-x-2 justify-between items-start capitalize">
@@ -72,11 +71,11 @@ const HomeVendorMainInfo: FC<Props> = ({ url }): JSX.Element => {
                 <Check className="text-lime-400 text-base checkCircle" />
                 {t('cash_on_delivery')}
               </p>
-              {!isUndefined(currentStoreStatus) && !isNull(currentStoreStatus) && (
+              {currentStoreStatus.length !== 0 && (
                 <p suppressHydrationWarning={suppressText}>
-                <FiberManualRecord className={`${currentStoreStatus?.[0]?.className} text-xs`} />
-                {currentStoreStatus?.[0]?.status}
-              </p>
+                <FiberManualRecord className={`${currentStoreStatus[0].className} text-xs`} />
+                 {currentStoreStatus[0].status}
+               </p>
               )}
             </div>
           </div>
