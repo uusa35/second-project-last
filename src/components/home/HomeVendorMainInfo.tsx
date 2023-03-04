@@ -9,7 +9,7 @@ import { useAppSelector } from '@/redux/hooks';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { useLazyGetVendorQuery } from '@/redux/api/vendorApi';
 import LoadingSpinner from '@/components/LoadingSpinner';
-import { filter } from 'lodash';
+import { filter, isNull, isUndefined } from 'lodash';
 
 type Props = {
   url: string;
@@ -72,10 +72,12 @@ const HomeVendorMainInfo: FC<Props> = ({ url }): JSX.Element => {
                 <Check className="text-lime-400 text-base checkCircle" />
                 {t('cash_on_delivery')}
               </p>
-              <p suppressHydrationWarning={suppressText}>
-                <FiberManualRecord className={`${currentStoreStatus[0].className} text-xs`} />
-                {currentStoreStatus[0].status}
+              {!isUndefined(currentStoreStatus) && !isNull(currentStoreStatus) && (
+                <p suppressHydrationWarning={suppressText}>
+                <FiberManualRecord className={`${currentStoreStatus?.[0]?.className} text-xs`} />
+                {currentStoreStatus?.[0]?.status}
               </p>
+              )}
             </div>
           </div>
         </div>
