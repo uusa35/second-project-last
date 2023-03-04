@@ -195,12 +195,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ query, locale, req }) => {
       const { categoryId, branch_id, page, limit, area_id, slug }: any = query;
-      if (!categoryId) {
-        return {
-          notFound: true,
-        };
-      }
-      if (!req.headers.host) {
+      if (!categoryId || !req.headers.host) {
         return {
           notFound: true,
         };

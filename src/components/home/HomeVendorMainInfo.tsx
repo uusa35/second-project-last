@@ -8,7 +8,7 @@ import TextTrans from '@/components/TextTrans';
 import { useAppSelector } from '@/redux/hooks';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { useLazyGetVendorQuery } from '@/redux/api/vendorApi';
-import LoadingSpinner from '@/components/LoadingSpinner';
+import { filter, isEmpty } from 'lodash';
 
 type Props = {
   url: string;
@@ -23,7 +23,15 @@ const HomeVendorMainInfo: FC<Props> = ({ url }): JSX.Element => {
   } = useAppSelector((state) => state);
   const [triggerGetVendor, { data: element, isSuccess }] =
     useLazyGetVendorQuery();
-
+  const storeStatus = [
+    { id: 1, status: 'open', className: 'bg-lime-400' },
+    { id: 2, status: 'busy', className: 'bg-red-400' },
+    { id: 3, status: 'closed', className: 'bg-gray-400' },
+  ];
+  const currentStoreStatus = filter(
+    storeStatus,
+    (store) => store.status === element?.Data?.status.toLowerCase()
+  );
   useEffect(() => {
     if (url) {
       triggerGetVendor(
@@ -53,10 +61,31 @@ const HomeVendorMainInfo: FC<Props> = ({ url }): JSX.Element => {
               src={imgUrl(element.Data.logo)}
             />
           </Link>
-          <div className={`flex flex-col w-full p-2`}>
-            <h1 className="font-bold text-lg">
-              <TextTrans ar={element.Data.name_ar} en={element.Data.name_en} />
-            </h1>
+          <div className={`flex flex-col w-full p-1`}>
+            <div className={`flex flex-row justify-start items-center`}>
+              {/* name */}
+              <h1 className="font-bold text-lg">
+                <TextTrans
+                  ar={element.Data.name_ar}
+                  en={element.Data.name_en}
+                />
+              </h1>
+              {/* online */}
+              {element?.Data?.status && !isEmpty(currentStoreStatus) && (
+                <span
+                  className={`flex flex-row justify-center items-center text-xs mx-2`}
+                  suppressHydrationWarning={suppressText}
+                >
+                  <div
+                    className={`w-4 h-4 rounded-full ${currentStoreStatus[0].className} rtl:ml-2 ltr:mr-2`}
+                  ></div>
+                  <p suppressHydrationWarning={suppressText}>
+                    ({t(currentStoreStatus[0].status)})
+                  </p>
+                </span>
+              )}
+            </div>
+            {/* payment info */}
             <div className="text-sm text-neutral-400 space-y-1">
               <p suppressHydrationWarning={suppressText}>
                 <Check className="text-lime-400 text-base checkCircle" />
@@ -69,7 +98,7 @@ const HomeVendorMainInfo: FC<Props> = ({ url }): JSX.Element => {
             </div>
           </div>
         </div>
-
+        {/* vendorshow icon */}
         <Link
           href={appLinks.vendorShow.path}
           scroll={true}
@@ -78,7 +107,7 @@ const HomeVendorMainInfo: FC<Props> = ({ url }): JSX.Element => {
           <InfoOutlined className="w-6 h-6 lg:w-8 lg:h-8" style={{ color }} />
         </Link>
       </div>
-
+      {/* description */}
       {element.Data.desc && (
         <div className="flex gap-x-1 justify-center items-start mt-2 capitalize">
           <p

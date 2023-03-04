@@ -1,5 +1,4 @@
 /** @type {import('next').NextConfig} */
-const { withSentryConfig } = require('@sentry/nextjs');
 const nextConfig = {
   reactStrictMode: false,
   swcMinify: true,
@@ -64,11 +63,6 @@ const nextConfig = {
   },
   staticPageGenerationTimeout: 60,
   // Optional build-time configuration options
-  sentry: {
-    disableServerWebpackPlugin: true,
-    disableClientWebpackPlugin: true,
-    hideSourceMaps: true,
-  },
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,
@@ -79,4 +73,4 @@ const nextConfig = {
   },
 };
 
-module.exports = withSentryConfig(nextConfig);
+module.exports = nextConfig;

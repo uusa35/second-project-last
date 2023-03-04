@@ -27,6 +27,9 @@ yarn-error.log*
 
 # local env files
 .env*.local
+sentry.server.config.ts
+sentry.client.config.ts
+sentry.edge.config.ts
 
 # vercel
 .vercel
