@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { appLinks, imageSizes, imgUrl } from '@/constants/*';
+import { appLinks, imageSizes, imgUrl, suppressText } from '@/constants/*';
 import { Product } from '@/types/index';
 import NoFoundImage from '@/appImages/not_found.png';
 import { isEmpty, kebabCase, lowerCase } from 'lodash';
@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { useAppSelector } from '@/redux/hooks';
 import TextTrans from '@/components/TextTrans';
 import { motion } from 'framer-motion';
+import { themeColor } from '@/redux/slices/vendorSlice';
 
 type Props = {
   element: Product;
@@ -19,6 +20,7 @@ const VerProductWidget: FC<Props> = ({
   category_id = null,
 }): JSX.Element => {
   const { t } = useTranslation();
+  const color = useAppSelector(themeColor);
   const {
     branch: { id: branchId },
     area: { id: areaId },
@@ -67,15 +69,35 @@ const VerProductWidget: FC<Props> = ({
               </p>
               <div>
                 <div>
-                  <p
-                    className="text-md text-end uppercase pb-2"
-                    style={{ color: `black` }}
-                  >
-                    {element.price}{' '}
-                    <span className={`uppercase`}>{t(`kwd`)}</span>
-                  </p>
+                  {element.new_price && element.new_price !== element.price ? (
+                    <div className='text-end'>
+                      <p
+                        className="uppercase line-through"
+                        style={{ color }}
+                        suppressHydrationWarning={suppressText}
+                      >
+                        {element.price} {t('kwd')}
+                      </p>
+                      <p
+                        className=" uppercase"
+                        // style={{ color }}
+                        suppressHydrationWarning={suppressText}
+                      >
+                        {element.new_price} {t('kwd')}
+                      </p>
+                    </div>
+                  ) : (
+                    <p
+                      className="text-md text-end uppercase"
+                      suppressHydrationWarning={suppressText}
+                      style={{ color: `black` }}
+                    >
+                      {element.price}{' '}
+                      <span className={`uppercase`}>{t(`kwd`)}</span>
+                    </p>
+                  )}
                   <div className="text-end">
-                    <button className="border-[1px] rounded-md border-primary_BG px-7 uppercase text-center text-sm">
+                    <button className="border-[1px] rounded-md  px-7 uppercase text-center text-sm">
                       + {t('add')}
                     </button>
                   </div>
