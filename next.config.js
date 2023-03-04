@@ -63,6 +63,11 @@ const nextConfig = {
     // disableStaticImages: false,
   },
   staticPageGenerationTimeout: 60,
+  sentry: {
+    disableServerWebpackPlugin: true,
+    disableClientWebpackPlugin: true,
+    hideSourceMaps: true,
+  },
   // Optional build-time configuration options
   webpack(config) {
     config.module.rules.push({
@@ -74,4 +79,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+module.exports = withSentryConfig(nextConfig);
