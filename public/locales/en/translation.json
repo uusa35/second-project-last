@@ -506,5 +506,6 @@
   "estimated_prepration_time":"estimated prepration time",
   "enter_your_information_to_proceed":"please enter your information",
   "invalid_area_data" : "you must choose a branch or an area.",
-  "min":"min"
+  "min":"min",
+  "price_on_selection" : "price on selection"
 }
