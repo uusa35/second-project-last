@@ -8,7 +8,6 @@ import TextTrans from '@/components/TextTrans';
 import { useAppSelector } from '@/redux/hooks';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { useLazyGetVendorQuery } from '@/redux/api/vendorApi';
-import LoadingSpinner from '@/components/LoadingSpinner';
 
 type Props = {
   url: string;
