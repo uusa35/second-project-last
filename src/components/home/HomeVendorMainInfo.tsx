@@ -26,12 +26,15 @@ const HomeVendorMainInfo: FC<Props> = ({ url }): JSX.Element => {
 
   useEffect(() => {
     if (url) {
-      triggerGetVendor({
-        lang,
-        url,
-        ...(branch_id && { branch_id }),
-        ...(area_id && { area_id }),
-      });
+      triggerGetVendor(
+        {
+          lang,
+          url,
+          ...(branch_id && { branch_id }),
+          ...(area_id && { area_id }),
+        },
+        false
+      );
     }
   }, [branch_id, area_id]);
 
