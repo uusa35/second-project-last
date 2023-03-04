@@ -2,7 +2,7 @@ import MainContentLayout from '@/layouts/MainContentLayout';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { NextPage } from 'next';
 import Image from 'next/image';
-import { imgUrl, suppressText } from '@/constants/*';
+import { appLinks, imgUrl, suppressText } from '@/constants/*';
 import { useTranslation } from 'react-i18next';
 import { useGetInvoiceQuery } from '@/redux/api/orderApi';
 import { isEmpty, map } from 'lodash';
@@ -17,6 +17,8 @@ import {
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { useRouter } from 'next/router';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import PoweredByQ from '@/components/PoweredByQ';
+import Link from 'next/link';
 
 type Props = {
   url: string;
@@ -426,6 +428,19 @@ const OrderInvoice: NextPage<Props> = ({ url }): JSX.Element => {
                 {element.data.order_summary.total} {t('kwd')}
               </p>
             </div>
+          </div>
+
+          <Link
+            href={appLinks.home.path}
+            style={{ backgroundColor: color }}
+            scroll={true}
+            className={`flex grow justify-center items-center p-4 rounded-lg text-white mb-3 shadow-lg mx-4`}
+          >
+            {t('home')}
+          </Link>
+
+          <div className={`mt-[10%]`}>
+            <PoweredByQ />
           </div>
         </div>
       </MainContentLayout>

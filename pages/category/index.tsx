@@ -102,8 +102,8 @@ const ProductSearchIndex: NextPage<Props> = ({ url }): JSX.Element => {
   };
 
   if (
-    !topSearchSuccess ||
-    !topSearch.Data ||
+    // !topSearchSuccess ||
+    // !topSearch.Data ||
     !router.isReady ||
     !searchProductsSuccess
   ) {
@@ -156,37 +156,40 @@ const ProductSearchIndex: NextPage<Props> = ({ url }): JSX.Element => {
             </div>
           </div>
 
-          <div className="grid grid-cols-4 capitalize gap-x-4 gap-y-2 my-3">
-            {map(
-              topSearch.Data.topSearch,
-              (searchKey, i) =>
-                !isEmpty(searchKey) &&
-                !isNull(searchKey) &&
-                searchKey !== 'null' && (
-                  <Link
-                    scroll={true}
-                    replace={true}
-                    className={`col-span-1 p-2 rounded-md bg-stone-100 text-center ${
-                      key === searchKey && `bg-stone-200 shadow-sm`
-                    }`}
-                    key={i}
-                    href={appLinks.productSearchIndex(
-                      searchKey,
-                      branch_id ?? branchId,
-                      area_id ?? areaId
-                    )}
-                  >
-                    {searchKey}
-                  </Link>
-                )
-            )}
-            {/*<Link*/}
-            {/*  className={`p-2 rounded-md bg-gray-100 text-black text-center`}*/}
-            {/*  href={appLinks.productSearchIndex(branchId, areaId)}*/}
-            {/*>*/}
-            {/*  {t(`clear`)}*/}
-            {/*</Link>*/}
-          </div>
+          {topSearchSuccess && topSearch.Data && (
+            <div className="grid grid-cols-4 capitalize gap-x-4 gap-y-2 my-3">
+              {map(
+                topSearch.Data.topSearch,
+                (searchKey, i) =>
+                  !isEmpty(searchKey) &&
+                  !isNull(searchKey) &&
+                  searchKey !== 'null' && (
+                    <Link
+                      scroll={true}
+                      replace={true}
+                      className={`col-span-1 p-2 rounded-md bg-stone-100 text-center ${
+                        key === searchKey && `bg-stone-200 shadow-sm`
+                      }`}
+                      key={i}
+                      href={appLinks.productSearchIndex(
+                        searchKey,
+                        branch_id ?? branchId,
+                        area_id ?? areaId
+                      )}
+                    >
+                      {searchKey}
+                    </Link>
+                  )
+              )}
+              {/*<Link*/}
+              {/*  className={`p-2 rounded-md bg-gray-100 text-black text-center`}*/}
+              {/*  href={appLinks.productSearchIndex(branchId, areaId)}*/}
+              {/*>*/}
+              {/*  {t(`clear`)}*/}
+              {/*</Link>*/}
+            </div>
+          )}
+
           <div className="my-4 capitalize">
             {isEmpty(currentProducts) && (
               <div

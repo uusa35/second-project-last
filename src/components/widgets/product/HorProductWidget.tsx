@@ -21,6 +21,7 @@ const HorProductWidget: FC<Props> = ({
   category_id = null,
 }): JSX.Element => {
   const { t } = useTranslation();
+  const color = useAppSelector(themeColor);
   const {
     branch: { id: branchId },
     area: { id: areaId },
@@ -40,9 +41,8 @@ const HorProductWidget: FC<Props> = ({
           areaId,
           category_id
         )}`}
-        className={`h-auto shadow-7xl  block  capitalize mb-2 border-b-2 border-gray-100 py-3`}
+        className={`h-auto shadow-7xl h-full  block  capitalize mb-2 border-b-2 border-gray-100 py-5`}
         data-cy="product"
-
       >
         <div className="relative">
           <div className="h-60 w-full overflow-hidden rounded-lg">
@@ -84,14 +84,41 @@ const HorProductWidget: FC<Props> = ({
                 en={element.description_en}
               />
             </p>
-            <div className="flex justify-between items-center">
-              <p
+            <div className="flex justify-between items-end">
+              {element.new_price && element.new_price !== element.price ? (
+                <div>
+                  <p
+                    className="uppercase line-through"
+                    style={{ color }}
+                    suppressHydrationWarning={suppressText}
+                  >
+                    {element.price} {t('kwd')}
+                  </p>
+                  <p
+                    className=" uppercase"
+                    // style={{ color }}
+                    suppressHydrationWarning={suppressText}
+                  >
+                    {element.new_price} {t('kwd')}
+                  </p>
+                </div>
+              ) : (
+                <p
+                  className="text-md text-end uppercase"
+                  suppressHydrationWarning={suppressText}
+                  style={{ color: `black` }}
+                >
+                  {element.price}{' '}
+                  <span className={`uppercase`}>{t(`kwd`)}</span>
+                </p>
+              )}
+              {/* <p
                 className="text-md text-end uppercase"
                 suppressHydrationWarning={suppressText}
                 style={{ color: `black` }}
               >
                 {element.price} <span className={`uppercase`}>{t(`kwd`)}</span>
-              </p>
+              </p> */}
               <button
                 className="border-[1px] rounded-md px-4 pt-1 uppercase text-center text-sm"
                 suppressHydrationWarning={suppressText}
