@@ -38,8 +38,7 @@ const HomeVendorMainInfo: FC<Props> = ({ url }): JSX.Element => {
     }
   }, [branch_id, area_id]);
 
-  if (!isSuccess || !element || !element.Data)
-    return <LoadingSpinner fullWidth={true} />;
+  if (!isSuccess || !element || !element.Data) return <></>;
 
   return (
     <>
