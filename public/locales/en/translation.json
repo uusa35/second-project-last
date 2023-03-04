@@ -507,5 +507,8 @@
   "enter_your_information_to_proceed":"please enter your information",
   "invalid_area_data" : "you must choose a branch or an area.",
   "min":"min",
-  "price_on_selection" : "price on selection"
+  "price_on_selection" : "price on selection",
+  "open" : "open",
+  "closed" : "closed",
+  "busy" : "busy"
 }

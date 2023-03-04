@@ -11,13 +11,7 @@ import { Vendor } from '@/types/index';
 import { useGetCategoriesQuery } from '@/redux/api/categoryApi';
 import { isEmpty, map } from 'lodash';
 import CategoryWidget from '@/widgets/category/CategoryWidget';
-import {
-  appLinks,
-  baseUrl,
-  imageSizes,
-  imgUrl,
-  suppressText,
-} from '@/constants/*';
+import { appLinks, imageSizes, imgUrl, suppressText } from '@/constants/*';
 import { useTranslation } from 'react-i18next';
 import { setLocale } from '@/redux/slices/localeSlice';
 import {

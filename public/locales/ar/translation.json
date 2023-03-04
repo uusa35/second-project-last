@@ -520,5 +520,8 @@
   "enter_your_information_to_proceed":"ادخل بياناتك من فضلك",
   "invalid_area_data" : "يجب عليك اختيار منطقة أو فرع",
   "min":"دقيقة",
-  "price_on_selection" : "السعر حسب الاختيار"
+  "price_on_selection" : "السعر حسب الاختيار",
+  "open" : "مفتوح",
+  "closed" : "مغلق",
+  "busy" : "غير متاح"
 }

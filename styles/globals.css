@@ -143,15 +143,3 @@ img[alt="Israel"] {
 input[type="tel"] {
     text-transform: capitalize;
 }
-
-.openStore {
-    color: #047857 !important;
-}
-
-.busyStore {
-    color: #a3a3a3 !important;
-}
-
-.closedStore {
-    color: #dc2626 !important;
-}
