@@ -510,5 +510,6 @@
   "price_on_selection" : "price on selection",
   "open" : "open",
   "closed" : "closed",
-  "busy" : "busy"
+  "busy" : "busy",
+  "next_pagination": "next"
 }
