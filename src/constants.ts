@@ -99,3 +99,11 @@ export const convertColor = (hex: string, opacity: number) => {
 };
 
 export const iconColor = `grayscale`;
+
+export const updateUrlParams = (
+  url: string,
+  name: string,
+  value: string | number
+) => {
+  return url.replace(/\bpage=[0-9a-zA-Z_@.#+-]{1,50}\b/, `${name}=${value}`);
+};
