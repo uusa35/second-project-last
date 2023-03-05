@@ -29,7 +29,6 @@ const HorProductWidget: FC<Props> = ({
   const firstImage: any = !isEmpty(element.img)
     ? imgUrl(element.img[0].thumbnail)
     : NoFoundImage.src;
-
   return (
     <motion.div whileTap={{ opacity: 1 }} whileHover={{ opacity: 0.8 }}>
       <Link

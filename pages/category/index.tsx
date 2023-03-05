@@ -46,6 +46,7 @@ const ProductSearchIndex: NextPage<Props> = ({ url }): JSX.Element => {
       url,
     }
   );
+  
   const [triggerGetProducts, { isSuccess: getProductsSuccess }] =
     useLazyGetSearchProductsQuery<{
       triggerGetProducts: () => void;
@@ -100,7 +101,7 @@ const ProductSearchIndex: NextPage<Props> = ({ url }): JSX.Element => {
       }
     });
   };
-
+  
   if (
     // !topSearchSuccess ||
     // !topSearch.Data ||

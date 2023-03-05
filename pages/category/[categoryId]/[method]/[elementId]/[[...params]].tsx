@@ -45,6 +45,7 @@ const ProductIndex: NextPage<Props> = ({
   const {
     locale: { lang },
     branch: { id: branch_id },
+    area: { id: area_id },
     appSetting: { productPreview },
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
@@ -84,7 +85,6 @@ const ProductIndex: NextPage<Props> = ({
       dispatch(setUrl(url));
     }
   }, []);
-
   useEffect(() => {
     if (isSuccess && getSearchResults.Data && getSearchResults.Data.products) {
       setCurrentProducts(getSearchResults.Data.products);
@@ -94,7 +94,7 @@ const ProductIndex: NextPage<Props> = ({
   const handleChange = (key: string) => {
     if (isSuccess) {
       if (key.length > 2) {
-        triggerSearchProducts({ key, lang, branch_id, url }).then((r: any) => {
+        triggerSearchProducts({ key, lang, branch_id, areaId: area_id, url }).then((r: any) => {
           setCurrentProducts(r.data.Data);
         });
       } else {
