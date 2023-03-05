@@ -114,9 +114,10 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
       url,
     }).then((r: any) => {
       if (r.data && r.data.Data && r.data.status) {
+        dispatch(setCustomer(r.data.Data))
         router
           .push(appLinks.address.path)
-          .then(() => dispatch(setCustomer(r.data.Data)));
+          // .then(() => dispatch(setCustomer(r.data.Data)));
       } else {
         dispatch(
           showToastMessage({
