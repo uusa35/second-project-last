@@ -191,6 +191,7 @@ const SelectMethod: NextPage<Props> = ({
                       className="px-2 pb-0 border-b-0 capitalize"
                       onClick={() => handleOpen(item.id)}
                       suppressHydrationWarning={suppressText}
+                      data-cy="accordion"
                     >
                       <TextTrans ar={item.name_ar} en={item.name_en} />
                     </AccordionHeader>
@@ -203,6 +204,7 @@ const SelectMethod: NextPage<Props> = ({
                             onClick={() =>
                               setSelectedData({ ...selectedData, area: a })
                             }
+                            data-cy="area"
                           >
                             <p
                               className="text-base text-black capitalize"
@@ -266,12 +268,13 @@ const SelectMethod: NextPage<Props> = ({
           <button
             onClick={() => handleContinue()}
             disabled={
-              (method === 'delivery' && isNull(selectedData.area.id)) ||
-              (method === 'pickup' && isNull(selectedData.branch.id))
+              (method === 'delivery' && !selectedData.area.id) ||
+              (method === 'pickup' && !selectedData.branch.id)
             }
             className={`${submitBtnClass} mt-12 capitalize`}
             style={{ backgroundColor: color }}
             suppressHydrationWarning={suppressText}
+            data-cy="confirm"
           >
             {t('confirm')}
           </button>

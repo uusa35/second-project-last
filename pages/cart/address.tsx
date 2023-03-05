@@ -322,7 +322,7 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
       dispatch(setUrl(url));
     }
 
-    if (isNull(area.id) && isNull(branch.id)) {
+    if (!area.id && !branch.id) {
       router.replace(appLinks.cartSelectMethod(method)).then(() =>
         dispatch(
           showToastMessage({
@@ -1016,7 +1016,7 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
             )}
 
             {/* pickup prefrences */}
-            {method === `pickup` && !isNull(branch.id) && (
+            {method === `pickup` && branch.id && (
               <div className="mx-4">
                 <p
                   className="my-5 font-semibold text-base"

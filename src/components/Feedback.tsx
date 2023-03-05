@@ -13,6 +13,7 @@ import {
   arboriaFont,
   convertColor,
   gessFont,
+  imgUrl,
   submitBtnClass,
   suppressText,
 } from '@/constants/*';
@@ -22,6 +23,7 @@ import { FC, useState } from 'react';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 
 type Props = {
   isOpen: boolean;
@@ -49,7 +51,8 @@ const Feedback: FC<Props> = ({
     .shape({
       user_name: yup.string().min(2).max(50).required(),
       rate: yup.number().min(1).max(3).required(),
-      note: yup.string().required().min(2).max(50),
+      note: yup.string().required().min(2).max(500),
+      phone: yup.string().min(0).max(999999999999),
     })
     .required();
   const {

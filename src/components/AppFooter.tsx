@@ -26,6 +26,7 @@ import {
   map,
   find,
   isUndefined,
+  filter,
 } from 'lodash';
 import { setCartPromoSuccess } from '@/redux/slices/cartSlice';
 import { themeColor } from '@/redux/slices/vendorSlice';
@@ -80,26 +81,82 @@ const AppFooter: FC<Props> = ({
   const [triggerCheckPromoCode] = useLazyCheckPromoCodeQuery();
 
   const handelCartPayload = () => {
-    const items = map(cartItems?.data.Cart, (i) => {
-      if (i.id !== productCart.id) {
+    let items = map(cartItems?.data.Cart, (i) => {
+      console.log(
+        'i===product',
+        i.id?.split('_').sort().join(','),
+        productCart.id.split('_').sort().join(','),
+        i.id?.split('_').sort().join(',') ===
+          productCart.id.split('_').sort().join(','),
+        i.ExtraNotes === productCart.ExtraNotes,
+        i
+      );
+
+      // if item is not in the cart return all items in cart
+      if (
+        i.id?.split('_').sort().join(',') !==
+        productCart.id.split('_').sort().join(',')
+      ) {
+        console.log('id!=id');
         return i;
-      } else if (i.id === productCart.id) {
-        return {
-          ...i,
-          Quantity: i.Quantity + productCart.Quantity,
-        };
       }
-    });
-    if (isUndefined(find(items, (x) => x?.id === productCart.id))) {
+      // if item is in the cart return item but with quantity increased
+      // if (i.id === productCart.id)
+      else if (
+        i.id?.split('_').sort().join(',') ===
+        productCart.id.split('_').sort().join(',')
+      ) {
+        if (i.ExtraNotes === productCart.ExtraNotes) {
+          console.log('id=id,note=note', 'inc qty', {
+            ...i,
+            Quantity: i.Quantity + productCart.Quantity,
+          });
+          return {
+            ...i,
+            Quantity: i.Quantity + productCart.Quantity,
+          };
+        } else {
+          console.log('id=id,note!=note');
+          // equal id but diffrent extranotes
+          return i;
+        }
+      }
+    }).filter((notUndefined) => notUndefined !== undefined);
+
+    // if item is not in the cart add it
+
+    if (
+      isUndefined(
+        find(
+          items,
+          (x) =>
+            x?.id?.split('_').sort().join(',') ===
+            productCart.id.split('_').sort().join(',')
+        )
+      ) ||
+      !isUndefined(
+        find(
+          items,
+          (x) =>
+            x?.id?.split('_').sort().join(',') ===
+              productCart.id.split('_').sort().join(',') &&
+            x?.ExtraNotes !== productCart.ExtraNotes
+        )
+      )
+    ) {
+      console.log('add new itm');
       items.push(productCart);
     }
+
+    console.log('items', items,cartItems.data.Cart);
+                                             
     return items;
   };
 
   const handleAddToCart = async () => {
     if (
-      (method === `pickup` && isNull(branchId)) ||
-      (method === `delivery` && isNull(area.id))
+      (method === `pickup` && !branchId) ||
+      (method === `delivery` && !area.id)
     ) {
       router.push(appLinks.cartSelectMethod(`delivery`));
     }
@@ -136,7 +193,6 @@ const AppFooter: FC<Props> = ({
               url,
             }).then((r) => {
               if ((r.data && r.data.data) || r.data?.data.Cart) {
-                console.log('the r', r);
                 dispatch(
                   showToastMessage({
                     content: 'item_added_successfully',
@@ -146,14 +202,24 @@ const AppFooter: FC<Props> = ({
                 dispatch(resetRadioBtns());
                 dispatch(resetCheckBoxes());
                 dispatch(resetMeters());
+                if (
+                  router.query.category_id &&
+                  router.query.category_id !== 'null'
+                ) {
+                  router.replace(
+                    appLinks.productIndex(
+                      router.query.category_id.toString(),
+                      ``
+                    )
+                  );
+                } else {
+                  router.replace(appLinks.productIndex(``, ``));
+                }
               } else {
-                console.log('else');
               }
             });
           } else {
-            console.log('else');
             if (r.error && r.error.data) {
-              console.log('r', r);
               // console.log('r', r.error.data.msg);
               // console.log('isArray', r.error.data.msg);
               dispatch(
@@ -180,8 +246,8 @@ const AppFooter: FC<Props> = ({
 
   const handleCartIndex = async () => {
     if (
-      (method === `pickup` && isNull(branchId)) ||
-      (method === `delivery` && isNull(area.id))
+      (method === `pickup` && !branchId) ||
+      (method === `delivery` && !area.id)
     ) {
       router.push(appLinks.cartSelectMethod(`delivery`));
     }
@@ -272,6 +338,7 @@ const AppFooter: FC<Props> = ({
                     type="button"
                     className="relative -ml-px inline-flex items-center ltr:rounded-l-sm rtl:rounded-r-sm  bg-gray-100 px-1 py-1 text-sm font-medium text-black  focus:z-10 w-10"
                     style={{ color }}
+                    data-cy="increase-product"
                   >
                     <span
                       className={`border border-gray-300 p-1 px-3 bg-white rounded-md text-md font-extrabold  w-8 h-8 flex justify-center items-center`}
@@ -296,6 +363,7 @@ const AppFooter: FC<Props> = ({
                     type="button"
                     className="relative inline-flex items-center ltr:rounded-r-sm rtl:rounded-l-sm bg-gray-100 px-1 py-1 text-sm font-medium text-black  focus:z-10 "
                     style={{ color }}
+                    data-cy="decrease-product"
                   >
                     <span
                       className={`border border-gray-300 p-1 px-3 bg-white rounded-md text-md font-extrabold  w-8 h-8 flex justify-center items-center`}
@@ -322,16 +390,21 @@ const AppFooter: FC<Props> = ({
                   backgroundColor: convertColor(color, 100),
                   color: `white`,
                 }}
+                data-cy="start-order"
               >
-                {isNull(area.id) && isNull(branchId)
-                  ? t(`start_ordering`)
-                  : t('add_to_cart')}
+                {!area.id && !branchId ? t(`start_ordering`) : t('add_to_cart')}
               </button>
               <span className={`flex flex-row items-center gap-2`}>
                 <p className={`text-xl text-white`}>
-                  {parseFloat(productCart.grossTotalPrice).toFixed(3)}
+                  {parseFloat(productCart.grossTotalPrice).toFixed(3) ===
+                  '0.000'
+                    ? t(`price_on_selection`)
+                    : parseFloat(productCart.grossTotalPrice).toFixed(3)}
                 </p>
-                <span className={`text-white uppercase`}>{t('kwd')}</span>
+                {parseFloat(productCart.grossTotalPrice).toFixed(3) !==
+                  '0.000' && (
+                  <span className={`text-white uppercase`}>{t('kwd')}</span>
+                )}
               </span>
             </div>
           </div>

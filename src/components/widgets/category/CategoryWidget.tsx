@@ -23,8 +23,8 @@ const CategoryWidget: FC<Props> = ({ element }) => {
     <motion.div whileTap={{ opacity: 1 }} whileHover={{ opacity: 0.8 }}>
       <Link
         href={
-          (method === `pickup` && isNull(branch.id)) ||
-          (method === `delivery` && isNull(area.id))
+          (method === `pickup` && !branch.id) ||
+          (method === `delivery` && !area.id)
             ? appLinks.productIndex(
                 element.id.toString(),
                 kebabCase(lowerCase(element.name)),
@@ -40,6 +40,7 @@ const CategoryWidget: FC<Props> = ({ element }) => {
         }
         className={`h-60 lg:h-72 shadow-lg rounded-lg capitalize`}
         suppressHydrationWarning={suppressText}
+        data-cy="category"
       >
         <div className="relative">
           <div className="relative w-full h-auto overflow-hidden rounded-lg">

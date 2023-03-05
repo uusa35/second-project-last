@@ -86,6 +86,7 @@ const HomeSelectMethod: FC<Props> = ({
           href={appLinks.cartSelectMethod(method)}
           scroll={true}
           className="flex flex-1 gap-x-3 w-full flex-row justify-between items-center mt-0 mb-0"
+          data-cy="selectLocation"
         >
           <div className={`flex flex-grow justify-start items-center`}>
             <h1 className={`pt-4`}>
@@ -107,7 +108,7 @@ const HomeSelectMethod: FC<Props> = ({
         </Link>
 
         {/* earliest delivery and estimated prep time */}
-        {(isSuccess && data && method === 'delivery' && area.id) ||
+        {(isSuccess && data.Data && method === 'delivery' && area.id) ||
         (method === 'pickup' && branch.id) ? (
           <div className="flex flex-1 gap-x-2 w-full flex-row justify-between items-center">
             <div className={`flex flex-grow justify-start items-center`}>

@@ -23,7 +23,13 @@ import {
   startCase,
 } from 'lodash';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
-import { ProductCart, QuantityMeters, ServerCart } from '@/types/index';
+import {
+  CheckBoxes,
+  ProductCart,
+  QuantityMeters,
+  RadioBtns,
+  ServerCart,
+} from '@/types/index';
 import Link from 'next/link';
 import {
   useAddToCartMutation,
@@ -160,7 +166,7 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
 
   const resetCoupon = () => {
     dispatch(setCartPromoCode(``));
-    setCouponVal(``);
+    setCouponVal(undefined);
   };
 
   const handleRemove = async (element: ProductCart) => {
@@ -286,7 +292,7 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
 
   return (
     <Suspense>
-      <MainContentLayout url={url}>
+      <MainContentLayout url={url} backHome={true}>
         {/* if cart is empty */}
         {isSuccess && isEmpty(cartItems?.data?.Cart) ? (
           <div className={'px-4'}>
@@ -374,7 +380,7 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
                           <div className="flex">
                             <div className="w-fit pb-2">
                               <div
-                                className={`flex text-gray-400 w-auto flex-wrap justify-between`}
+                                className={`flex text-gray-400 w-auto flex-wrap`}
                               >
                                 {!isEmpty(item.QuantityMeters) &&
                                   map(
@@ -382,16 +388,42 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
                                     (q: QuantityMeters, i) => (
                                       <Fragment key={i}>
                                         {map(q.addons, (addon, i) => (
-                                          <TextTrans
-                                            key={i}
-                                            className={`ltr:border-r-2 ltr:last:border-r-0 ltr:first:pr-1 rtl:border-l-2 rtl:last:border-l-0 rtl:first:pl-1 px-1 text-xs capitalize`}
-                                            ar={addon.name}
-                                            en={addon.name}
-                                          />
+                                          <>
+                                            <TextTrans
+                                              key={i}
+                                              className={`ltr:border-r-2 ltr:last:border-r-0 ltr:first:pr-1 rtl:border-l-2 rtl:last:border-l-0 rtl:first:pl-1 px-1 text-xxs capitalize`}
+                                              ar={`${addon.name_ar} ${addon.Value} X`}
+                                              en={`${addon.name_en} ${addon.Value} X`}
+                                            />
+                                          </>
                                         ))}
                                       </Fragment>
                                     )
                                   )}
+                                {!isEmpty(item.RadioBtnsAddons) &&
+                                  map(item.RadioBtnsAddons, (r: RadioBtns) => (
+                                    <Fragment key={r.addons.attributeID}>
+                                      <TextTrans
+                                        key={r.addons.attributeID}
+                                        className={`ltr:border-r-2 ltr:last:border-r-0 ltr:first:pr-1 rtl:border-l-2 rtl:last:border-l-0 rtl:first:pl-1 px-1 text-xxs capitalize text-gray-400`}
+                                        ar={r.addons.name_ar}
+                                        en={r.addons.name_en}
+                                      />
+                                    </Fragment>
+                                  ))}
+                                {!isEmpty(item.CheckBoxes) &&
+                                  map(item.CheckBoxes, (c: CheckBoxes, i) => (
+                                    <Fragment key={i}>
+                                      {map(c.addons, (addon, i) => (
+                                        <TextTrans
+                                          key={i}
+                                          className={`ltr:border-r-2 ltr:last:border-r-0 ltr:first:pr-1 rtl:border-l-2 rtl:last:border-l-0 rtl:first:pl-1 px-1 text-xxs capitalize`}
+                                          ar={addon.name_ar}
+                                          en={addon.name_en}
+                                        />
+                                      ))}
+                                    </Fragment>
+                                  ))}
                               </div>
                             </div>
                           </div>
@@ -416,9 +448,11 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
                             onClick={() => {
                               handleIncrease(item);
                             }}
+                            data-cy="increase-addon"
                           >
                             <span
                               className={`border border-gray-300 p-1 px-3 bg-white rounded-md text-md font-extrabold  w-8 h-8 flex justify-center items-center`}
+                              
                             >
                               +
                             </span>
@@ -437,6 +471,7 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
                             onClick={() => {
                               handleDecrease(item);
                             }}
+                            data-cy="decrease-addon"
                           >
                             <span
                               className={`border border-gray-300 p-1 px-3 bg-white rounded-md text-md font-extrabold  w-8 h-8 flex justify-center items-center`}
@@ -446,13 +481,32 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
                           </button>
                         </span>
                         <div>
+                         {item.SalePrice !== item.Price ? (
+                           <div>
+                              <p
+                              className="uppercase line-through"
+                              style={{ color }}
+                              suppressHydrationWarning={suppressText}
+                              >
+                              {item.Price} {t('kwd')}
+                            </p>
+                            <p
+                              className=" uppercase"
+                              style={{ color }}
+                              suppressHydrationWarning={suppressText}
+                            >
+                              {item.SalePrice} {t('kwd')}
+                            </p>
+                           </div>
+                         ): (
                           <p
-                            className=" uppercase"
-                            style={{ color }}
-                            suppressHydrationWarning={suppressText}
-                          >
-                            {item.Price} {t('kwd')}
-                          </p>
+                          className=" uppercase"
+                          style={{ color }}
+                          suppressHydrationWarning={suppressText}
+                        >
+                          {item.Price} {t('kwd')}
+                        </p>
+                         )}
                         </div>
                       </div>
                     </div>

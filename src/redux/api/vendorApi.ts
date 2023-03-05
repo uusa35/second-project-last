@@ -27,27 +27,31 @@ export const vendorApi = apiSlice.injectEndpoints({
     }),
 
     getDeliveryPickupDetails: builder.query<
-    AppQueryResult<DeliveryPickupDetails>,
-    {
-      lang: Locale['lang'] | string | undefined;
-      url: string | undefined;
-      branch_id?: string;
-      area_id?: string;
-    }
-  >({
-    query: ({ lang, url, branch_id = ``, area_id = `` }) => ({
-      url: `deliveryDetails`,
-      headers: {
-        lang,
-        url,
-        ...(area_id && { 'x-area-id': area_id }),
-        ...(branch_id && { 'x-branch-id': branch_id }),
-      },
-      validateStatus: (response, result) =>
-        response.status == 200 && result.status,
+      AppQueryResult<DeliveryPickupDetails>,
+      {
+        lang: Locale['lang'] | string | undefined;
+        url: string | undefined;
+        branch_id?: string;
+        area_id?: string;
+      }
+    >({
+      query: ({ lang, url, branch_id = ``, area_id = `` }) => ({
+        url: `deliveryDetails`,
+        headers: {
+          lang,
+          url,
+          ...(area_id && { 'x-area-id': area_id }),
+          ...(branch_id && { 'x-branch-id': branch_id }),
+        },
+        validateStatus: (response, result) =>
+          response.status == 200 && result.status,
+      }),
     }),
-  }),
   }),
 });
 
-export const { useGetVendorQuery ,useGetDeliveryPickupDetailsQuery} = vendorApi;
+export const {
+  useGetVendorQuery,
+  useGetDeliveryPickupDetailsQuery,
+  useLazyGetVendorQuery,
+} = vendorApi;

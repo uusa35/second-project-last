@@ -153,7 +153,11 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
       dispatch(
         updatePrice({
           totalPrice: sum([
-            parseFloat(element?.Data?.price),
+            parseFloat(
+              element?.Data?.new_price && !isEmpty(element?.Data?.new_price)
+                ? element?.Data?.new_price
+                : element?.Data?.price
+            ),
             metersSum,
             checkboxesSum,
             radioBtnsSum,
@@ -163,11 +167,13 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
       );
       const uIds = concat(
         productCart.QuantityMeters &&
-          map(productCart.QuantityMeters, (q) => q.uId),
-        productCart.CheckBoxes && map(productCart.CheckBoxes, (c) => c.uId),
+          map(productCart.QuantityMeters, (q) => `_${q.uId2}`),
+        productCart.CheckBoxes &&
+          map(productCart.CheckBoxes, (c) => `_${c.uId}`),
         productCart.RadioBtnsAddons &&
-          map(productCart.RadioBtnsAddons, (r) => r.uId)
+          map(productCart.RadioBtnsAddons, (r) => `_${r.uId}`)
       );
+      console.log('uIds', `${productCart.ProductID}${join(uIds, '')}`);
       dispatch(updateId(`${productCart.ProductID}${join(uIds, '')}`));
     }
   }, [
@@ -222,10 +228,22 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
           ProductDesc: element?.Data?.desc,
           Quantity: currentQty,
           ExtraNotes: ``,
-          totalPrice: parseFloat(element?.Data?.price),
-          grossTotalPrice: parseFloat(element?.Data?.price),
+          totalPrice: parseFloat(
+            element?.Data?.new_price && !isEmpty(element?.Data?.new_price)
+              ? element?.Data?.new_price
+              : element?.Data?.price
+          ),
+          grossTotalPrice: parseFloat(
+            element?.Data?.new_price && !isEmpty(element?.Data?.new_price)
+              ? element?.Data?.new_price
+              : element?.Data?.price
+          ),
           totalQty: currentQty,
-          Price: parseFloat(element?.Data?.price),
+          Price: parseFloat(
+            element?.Data?.new_price && !isEmpty(element?.Data?.new_price)
+              ? element?.Data?.new_price
+              : element?.Data?.price
+          ),
           enabled: false,
           image: imgUrl(element?.Data.img[0]?.toString()),
           id: now().toString(),
@@ -292,6 +310,7 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
         dispatch(
           addMeter({
             addonID: selection.id,
+            uId2: `${selection.id}${choice.id}${Value}`,
             uId: `${selection.id}${choice.id}`,
             addons: [
               {
@@ -313,9 +332,11 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
             : parseFloat(currentMeter[0]?.addons[0].Value) - 1 >= 0
             ? parseFloat(currentMeter[0]?.addons[0].Value) - 1
             : parseFloat(currentMeter[0]?.addons[0].Value);
+
           dispatch(
             addMeter({
               addonID: selection.id,
+              uId2: `${selection.id}${choice.id}${Value}`,
               uId: `${selection.id}${choice.id}`,
               addons: [
                 {
@@ -559,6 +580,7 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
                                     type="button"
                                     className="relative -ml-px inline-flex items-center ltr:rounded-l-sm rtl:rounded-r-sm  bg-gray-100 px-1 py-1 text-sm font-medium text-black  focus:z-10 w-10"
                                     style={{ color }}
+                                    data-cy="increase-addon"
                                   >
                                     <span
                                       className={`border border-gray-300 p-1 px-3 bg-white rounded-md text-md font-extrabold  w-8 h-8 flex justify-center items-center`}
@@ -598,6 +620,7 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
                                     type="button"
                                     className="relative inline-flex items-center ltr:rounded-r-sm rtl:rounded-l-sm bg-gray-100 px-1 py-1 text-sm font-medium text-black  focus:z-10 w-10"
                                     style={{ color }}
+                                    data-cy="decrease-addon"
                                   >
                                     <span
                                       className={`border border-gray-300 p-1 px-3 bg-white rounded-md text-md font-extrabold  w-8 h-8 flex justify-center items-center`}
@@ -654,8 +677,8 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
                                   </label>
                                 </div>
                                 <div>
-                                  {c.price}{' '}
-                                  <span className={`uppercase`}>
+                                  {parseFloat(c.price).toFixed(3)}
+                                  <span className={`mx-1 uppercase`}>
                                     {t(`kwd`)}
                                   </span>
                                 </div>

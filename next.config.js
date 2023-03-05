@@ -62,12 +62,12 @@ const nextConfig = {
     // disableStaticImages: false,
   },
   staticPageGenerationTimeout: 60,
-  // Optional build-time configuration options
   sentry: {
     disableServerWebpackPlugin: true,
     disableClientWebpackPlugin: true,
     hideSourceMaps: true,
   },
+  // Optional build-time configuration options
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,

@@ -107,6 +107,7 @@ const SlideTopNav: FC<Props> = ({ offset, isHome = false }): JSX.Element => {
             scroll={true}
             href={appLinks.cartIndex.path}
             className={`relative`}
+            data-cy="shopping-cart"
           >
             <ShoppingBagOutlined className={`w-8 h-8 drop-shadow-sm`} />
             {isSuccess &&

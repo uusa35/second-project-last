@@ -40,6 +40,7 @@
     "@types/redux-logger": "^3.0.9",
     "@types/redux-saga": "^0.10.5",
     "clsx": "^1.2.1",
+    "cypress": "^12.6.0",
     "date-fns": "^2.29.3",
     "flowbite": "^1.5.5",
     "flowbite-react": "^0.3.7",
