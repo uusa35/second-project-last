@@ -35,7 +35,7 @@ const schema = yup
   .object({
     id: yup.number(),
     name: yup.string().required().min(2).max(50),
-    email: yup.string().email().required(),
+    email: yup.string().email(),
     phone: yup.number().min(100000).max(999999999999).required(),
   })
   .required();

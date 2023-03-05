@@ -109,18 +109,22 @@ input[type=number] {
 
 
 input[type="date"]::-webkit-calendar-picker-indicator {
-    opacity: 1;
-    display: flex;
+    /*opacity: 1;*/
+    /*display: flex;*/
      /*background: url('../public/assets/icons/calender.svg') no-repeat;*/
-    width: 3vh;
-    height: 3vh;
+    /*width: 3vh;*/
+    /*height: 3vh;*/
+    /*position: relative;*/
+    /*top : 3px;*/
+    /*left: 40px;*/
+    display : none;
 }
 input[type="time"]::-webkit-calendar-picker-indicator {
     opacity: 1;
     display: flex;
     background: url('../public/assets/icons/clock.svg') no-repeat;
     width: 2vh;
-    height: 2vh;
+    /*height: 2vh;*/
 }
 
 #nprogress .bar { left: auto !important; right: 0; }
@@ -142,4 +146,12 @@ img[alt="Israel"] {
 }
 input[type="tel"] {
     text-transform: capitalize;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    border-radius: 4px;
+    margin-right: 2px;
+    opacity: 0.6;
+    filter: invert(0.8);
 }
