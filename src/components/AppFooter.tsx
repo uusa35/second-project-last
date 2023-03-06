@@ -209,11 +209,13 @@ const AppFooter: FC<Props> = ({
                   router.replace(
                     appLinks.productIndex(
                       router.query.category_id.toString(),
-                      ``
+                      ``,
+                      branchId,
+                      area.id
                     )
                   );
                 } else {
-                  router.replace(appLinks.productIndex(``, ``));
+                  router.replace(appLinks.productIndex(``, ``, branchId, area.id));
                 }
               } else {
               }
