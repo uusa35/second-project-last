@@ -10,7 +10,7 @@ import { appSetting, Product } from '@/types/index';
 import { NextPage } from 'next';
 import MainHead from '@/components/MainHead';
 import { imageSizes, suppressText, updateUrlParams } from '@/constants/*';
-import { capitalize, debounce, isEmpty, isNull, map } from 'lodash';
+import { capitalize, debounce, filter, isEmpty, isNull, map } from 'lodash';
 import NoResultFound from '@/appImages/no-result-found.gif';
 import HorProductWidget from '@/widgets/product/HorProductWidget';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -93,8 +93,12 @@ const ProductIndex: NextPage<Props> = ({
         url,
       }).then((r) => {
         console.log('r from next', r);
-        if (r.data && r.data.Data && r.data.Data.products) {
-          setCurrentProducts(r.data.Data.products);
+        if (r.data && r.data.Data && r.data.Data?.products) {
+          const filteredProducts = filter(
+            [r.data.Data.products, ...currentProducts],
+            (p) => p.id
+          );
+          setCurrentProducts(filteredProducts);
         } else {
           setCurrentProducts([]);
         }
@@ -146,9 +150,13 @@ const ProductIndex: NextPage<Props> = ({
 
   const handleChange = (key: string) => {
     if (key.length > 2) {
-      triggerSearchProducts({ key, lang, branch_id, areaId: area_id, url }).then((r: any) =>
-        setCurrentProducts(r.data.Data)
-      );
+      triggerSearchProducts({
+        key,
+        lang,
+        branch_id,
+        areaId: area_id,
+        url,
+      }).then((r: any) => setCurrentProducts(r.data.Data));
     } else {
       setCurrentProducts(data.Data?.products);
     }
@@ -235,7 +243,7 @@ const ProductIndex: NextPage<Props> = ({
           </div>
           {/* pagination */}
           <div
-            className={`flex  flex-row-reverse flex-row justify-between items-center`}
+            className={`d-none flex  flex-row-reverse flex-row justify-between items-center`}
           >
             {!isNull(page) && parseInt(page) >= 1 && (
               <Link
