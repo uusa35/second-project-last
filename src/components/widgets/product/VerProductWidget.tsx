@@ -26,7 +26,7 @@ const VerProductWidget: FC<Props> = ({
     area: { id: areaId },
   } = useAppSelector((state) => state);
   const firstImage: any = !isEmpty(element.img)
-    ? imgUrl(element.img[0].thumbnail)
+    ? imgUrl(element.img[0].original)
     : NoFoundImage.src;
 
   return (
@@ -48,8 +48,8 @@ const VerProductWidget: FC<Props> = ({
               <CustomImage
                 src={`${firstImage}`}
                 alt={element.name}
-                width={imageSizes.sm}
-                height={imageSizes.sm}
+                width={imageSizes.lg}
+                height={imageSizes.lg}
                 className="h-36 w-full object-cover object-center"
               />
             </div>
@@ -70,7 +70,7 @@ const VerProductWidget: FC<Props> = ({
               <div>
                 <div>
                   {element.new_price && element.new_price !== element.price ? (
-                    <div className='text-end'>
+                    <div className="text-end">
                       <p
                         className="uppercase line-through"
                         style={{ color }}
