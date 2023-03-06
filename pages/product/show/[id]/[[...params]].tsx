@@ -395,8 +395,8 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
                               : NoFoundImage.src
                           }`}
                           alt={element?.Data?.name ?? ``}
-                          width={imageSizes.xl}
-                          height={imageSizes.lg}
+                          width={imageSizes.xxl}
+                          height={imageSizes.xxl}
                           className={`object-cover w-full h-96`}
                         />
                       </div>

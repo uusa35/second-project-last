@@ -84,6 +84,7 @@ export const imageSizes = {
   md: 250,
   lg: 500,
   xl: 650,
+  xxl: 1250,
 };
 
 // export const imgUrl = (img: string) => `${baseUrl}${img}`;
