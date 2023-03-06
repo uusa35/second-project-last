@@ -49,6 +49,7 @@ import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 import { AppQueryResult } from '@/types/queries';
 import TextTrans from '@/components/TextTrans';
 import { wrapper } from '@/redux/store';
+import { addressSchema } from 'src/validations';
 
 type Props = {
   url: string;
@@ -95,70 +96,6 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
     date: new Date(),
     time: new Date(),
   });
-  const schema = yup
-    .object()
-    .shape({
-      method: yup.string().required(),
-      address_type: yup.number().required(),
-      block: yup
-        .string()
-        .max(100)
-        .when('address_type', (address_type, schema) => {
-          if (method === `delivery`) {
-            return schema.required(t(`validation.required`));
-          }
-          return schema.nullable(true);
-        }),
-      street: yup
-        .string()
-        .max(100)
-        .when('address_type', (address_type, schema) => {
-          if (method === `delivery`) {
-            return schema.required(t(`validation.required`));
-          }
-          return schema.nullable(true);
-        }),
-      house_no: yup
-        .string()
-        .max(100)
-        .when('address_type', (address_type, schema) => {
-          if (address_type === 1 && method === `delivery`) {
-            return schema.required(t(`validation.required`));
-          }
-          return schema.nullable(true);
-        }),
-      floor_no: yup
-        .string()
-        .max(100)
-        .when('address_type', (address_type, schema) => {
-          if (address_type === 2 && method === `delivery`) {
-            return schema.required(t(`validation.required`));
-          }
-          return schema.nullable(true);
-        }),
-      building_no: yup
-        .string()
-        .max(100)
-        .when('address_type', (address_type, schema) => {
-          if (address_type === 2 && method === `delivery`) {
-            return schema.required(t(`validation.required`));
-          }
-          return schema.nullable(true);
-        }),
-      office_no: yup.mixed().when('address_type', (address_type, schema) => {
-        if (address_type === 3 && method === `delivery`) {
-          return schema.required(t(`validation.required`));
-        }
-        return schema.nullable(true);
-      }),
-      avenue: yup.string().max(50).nullable(true),
-      paci: yup.string().max(50).nullable(true),
-      additional: yup.string().nullable(true),
-      longitude: yup.string(),
-      latitude: yup.string(),
-      customer_id: yup.string().required(),
-    })
-    .required();
 
   const {
     register,
@@ -168,7 +105,7 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
     reset,
     formState: { errors },
   } = useForm<any>({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(addressSchema(method, t)),
     defaultValues: {
       method,
       address_type: addressTabType ?? 1,

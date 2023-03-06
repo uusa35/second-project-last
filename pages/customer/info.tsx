@@ -30,15 +30,8 @@ import { isNull } from 'lodash';
 import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 import { AppQueryResult } from '@/types/queries';
 import { wrapper } from '@/redux/store';
+import { customerInfoSchema } from 'src/validations';
 
-const schema = yup
-  .object({
-    id: yup.number(),
-    name: yup.string().required().min(2).max(50),
-    email: yup.string().email(),
-    phone: yup.number().min(100000).max(999999999999).required(),
-  })
-  .required();
 
 type Props = {
   url: string;
@@ -78,7 +71,7 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
     control,
     formState: { errors },
   } = useForm<any>({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(customerInfoSchema),
     defaultValues: {
       id: customer?.id ?? 0,
       name: customer?.name ?? ``,
