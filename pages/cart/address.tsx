@@ -940,6 +940,7 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
 
                   {show && (
                     <div className={`flex flex-col gap-3`}>
+                      {/* date */}
                       <div className="flex justify-between p-2 border-b-4 border-stone-100 ">
                         <input
                           ref={dateRef}
@@ -983,6 +984,8 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                           </svg>
                         </span>
                       </div>
+
+                      {/* time */}
                       <div className="flex justify-between py-2 border-b-4 border-stone-100">
                         <DatePicker
                           selected={prefrences.time as Date}
@@ -1074,9 +1077,11 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                 </div>
                 {show && (
                   <div className={`flex flex-col gap-3`}>
+                    {/* date */}
                     <div className="flex justify-between py-2 border-b-4 border-stone-100">
                       <input
                         type="date"
+                        ref={dateRef}
                         className={`border-none w-full`}
                         min={new Date().toISOString().split('T')[0]}
                         // value={(prefrences.date as Date).toDateString()}
@@ -1085,10 +1090,38 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                             ...prefrences,
                             date: new Date(e.target.value),
                           });
+                          dateRef?.current?.blur();
                         }}
                       />
+                      <span
+                        className={`relative left-0 top-2.5`}
+                        onClick={(e) => {
+                          dateRef?.current?.click();
+                          dateRef?.current?.showPicker();
+                        }}
+                        onChange={() => dateRef?.current?.blur()}
+                        onFocus={() => dateRef?.current?.showPicker()}
+                        onBlur={() => dateRef?.current?.blur()}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke-width="1.5"
+                          stroke="currentColor"
+                          className="w-6 h-6"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z"
+                          />
+                        </svg>
+                      </span>
                       {/*<CalendarDaysIcon className="text-primary_BG w-8 h-8" />*/}
                     </div>
+
+                    {/* time */}
                     <div className="flex justify-between py-2 border-b-4 border-stone-100">
                       <DatePicker
                         selected={prefrences.time as Date}
