@@ -27,7 +27,7 @@ const HorProductWidget: FC<Props> = ({
     area: { id: areaId },
   } = useAppSelector((state) => state);
   const firstImage: any = !isEmpty(element.img)
-    ? imgUrl(element.img[0].thumbnail)
+    ? imgUrl(element.img[0].original)
     : NoFoundImage.src;
   return (
     <motion.div whileTap={{ opacity: 1 }} whileHover={{ opacity: 0.8 }}>
@@ -48,8 +48,8 @@ const HorProductWidget: FC<Props> = ({
             <CustomImage
               src={`${firstImage}`}
               alt={element.name}
-              width={imageSizes.sm}
-              height={imageSizes.sm}
+              width={imageSizes.lg}
+              height={imageSizes.lg}
               className="h-60 w-full object-cover object-center"
             />
           </div>

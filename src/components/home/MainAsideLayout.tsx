@@ -24,8 +24,8 @@ const MainAsideLayout: FC<Props> = ({ element }): JSX.Element => {
           src={`${imgUrl(element.cover)}`}
           alt={element.name}
           className={`absolute top-0 object-cover w-full aspect-1 h-screen z-0`}
-          width={imageSizes.lg}
-          height={imageSizes.lg}
+          width={imageSizes.xxl}
+          height={imageSizes.xxl}
         />
         <div
           className={`absolute top-0 left-0 flex w-full justify-between items-center grow  z-90 text-white p-4
