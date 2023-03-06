@@ -1,9 +1,8 @@
 import Link from 'next/link';
-import { Pagination } from '@/types/queries';
+
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useRouter } from 'next/router';
-import { useAppSelector } from '@/redux/hooks';
 import { suppressText } from '../constants';
 
 type Props = {

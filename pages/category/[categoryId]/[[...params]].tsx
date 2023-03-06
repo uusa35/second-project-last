@@ -3,13 +3,14 @@ import MainContentLayout from '@/layouts/MainContentLayout';
 import { wrapper } from '@/redux/store';
 import {
   useGetProductsQuery,
+  useLazyGetProductsQuery,
   useLazyGetSearchProductsQuery,
 } from '@/redux/api/productApi';
 import { appSetting, Product } from '@/types/index';
 import { NextPage } from 'next';
 import MainHead from '@/components/MainHead';
-import { imageSizes, suppressText } from '@/constants/*';
-import { capitalize, debounce, isEmpty, map } from 'lodash';
+import { imageSizes, suppressText, updateUrlParams } from '@/constants/*';
+import { capitalize, debounce, isEmpty, isNull, map } from 'lodash';
 import NoResultFound from '@/appImages/no-result-found.gif';
 import HorProductWidget from '@/widgets/product/HorProductWidget';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -27,6 +28,7 @@ import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import CustomImage from '@/components/CustomImage';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { AppQueryResult, ProductPagination } from '@/types/queries';
+import Link from 'next/link';
 type Props = {
   slug: string;
   url: string;
@@ -52,7 +54,7 @@ const ProductIndex: NextPage<Props> = ({
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const [Icon, SetIcon] = useState(true);
-  const { query, locale }: any = useRouter();
+  const { query, locale, asPath }: any = useRouter();
   const [currentProducts, setCurrentProducts] = useState<any>([]);
   const { data, isSuccess, isFetching } = useGetProductsQuery<{
     data: AppQueryResult<ProductPagination<Product>>;
@@ -67,6 +69,7 @@ const ProductIndex: NextPage<Props> = ({
     lang: locale,
     url,
   });
+  const [triggerGetProducts] = useLazyGetProductsQuery();
   const [triggerSearchProducts] = useLazyGetSearchProductsQuery<{
     triggerSearchProducts: () => void;
   }>();
@@ -74,6 +77,54 @@ const ProductIndex: NextPage<Props> = ({
   const changeStyle = (preview: appSetting['productPreview']) => {
     dispatch(setProductPreview(preview));
     SetIcon(!Icon);
+  };
+
+  const handleNext = () => {
+    const nextPage = parseInt(page) + 1;
+    if (nextPage >= 1) {
+      console.log('next', nextPage);
+      triggerGetProducts({
+        category_id: query.categoryId,
+        page: nextPage.toString(),
+        limit,
+        ...(branch_id && { branch_id }),
+        ...(area_id && { area_id }),
+        lang: locale,
+        url,
+      }).then((r) => {
+        console.log('r from next', r);
+        if (r.data && r.data.Data && r.data.Data.products) {
+          setCurrentProducts(r.data.Data.products);
+        } else {
+          setCurrentProducts([]);
+        }
+      });
+    }
+  };
+
+  const handlePrevious = () => {
+    const previousPage = parseInt(page) - 1;
+    if (previousPage >= 1) {
+      console.log('prev', previousPage);
+      triggerGetProducts({
+        category_id: query.categoryId,
+        page: previousPage.toString(),
+        limit,
+        ...(branch_id && { branch_id }),
+        ...(area_id && { area_id }),
+        lang: locale,
+        url,
+      }).then((r: any) => {
+        console.log('r from pre', r);
+        if (r.data && r.data.Data && r.data.Data.products) {
+          console.log('inside');
+          setCurrentProducts(r.data.Data.products);
+        } else {
+          console.log('else');
+          setCurrentProducts([]);
+        }
+      });
+    }
   };
 
   useEffect(() => {
@@ -182,6 +233,39 @@ const ProductIndex: NextPage<Props> = ({
                 )
               )}
           </div>
+          {/* pagination */}
+          <div
+            className={`flex  flex-row-reverse flex-row justify-between items-center`}
+          >
+            {!isNull(page) && parseInt(page) >= 1 && (
+              <Link
+                onClick={() => handleNext()}
+                locale={lang}
+                href={`${updateUrlParams(
+                  asPath,
+                  'page',
+                  (parseInt(page) + 1).toString()
+                )}`}
+                className={`border border-gray-200 p-3 px-6 justify-center items-center rounded-md`}
+              >
+                {t('next_pagination')}
+              </Link>
+            )}
+            {!isNull(page) && parseInt(page) > 1 && (
+              <Link
+                onClick={() => handlePrevious()}
+                locale={lang}
+                href={`${updateUrlParams(
+                  asPath,
+                  'page',
+                  (parseInt(page) - 1).toString()
+                )}`}
+                className={`border border-gray-200 p-3 px-6 justify-center items-center rounded-md`}
+              >
+                {t('previous')}
+              </Link>
+            )}
+          </div>
         </div>
       </MainContentLayout>
     </Suspense>
@@ -205,7 +289,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
           url: req.headers.host,
           branch_id: branch_id ?? ``,
           area_id: area_id ?? ``,
-          page: page ?? 1,
+          page,
           limit: limit ?? 10,
           category_id: categoryId,
         },

@@ -29,7 +29,7 @@ import OfficeIcon from '@/appIcons/office.svg';
 import OfficeAcitveIcon from '@/appIcons/office_active.svg';
 import { HomeOutlined } from '@mui/icons-material';
 import { addressInputField, appLinks, suppressText } from '@/constants/*';
-import { isEmpty, isNull, kebabCase, lowerCase } from 'lodash';
+import { isEmpty, kebabCase, lowerCase } from 'lodash';
 import {
   useCheckTimeAvilabilityMutation,
   useCreateAddressMutation,
@@ -61,6 +61,7 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
     area,
     branch,
     appSetting: { method },
+    locale: { isRTL },
     customer: { userAgent, address, id: customer_id },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
@@ -83,6 +84,7 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
         : { 'x-area-id': area.id },
     url,
   });
+  const dateRef = useRef<HTMLInputElement>(null);
   const [prefrences, setPrefrences] = useState<Prefrences>({
     type:
       method === 'delivery'
@@ -358,6 +360,7 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
       );
     }
 
+    console.log('window', window.navigator.userAgent);
     return () => {
       dispatch(resetShowFooterElement());
     };
@@ -434,39 +437,6 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                       <p className="text-md">{`${t('change')}`}</p>
                     </Link>
                   </div>
-                  {/* <div className="w-full h-36 rounded-md my-3">
-                    <GoogleMapReact
-                      bootstrapURLKeys={{
-                        // remove the key if you want to fork
-                        key: 'AIzaSyChibV0_W_OlSRJg2GjL8TWVU8CzpRHRAE',
-                        language: 'en',
-                        region: 'US',
-                      }}
-                      defaultCenter={{
-                        lat: parseInt(address.latitude)
-                          ? parseInt(address.latitude)
-                          : 29.2733964,
-                        lng: parseInt(address.longitude)
-                          ? parseInt(address.longitude)
-                          : 47.4979476,
-                      }}
-                      onChange={() => {}}
-                      defaultZoom={11}
-                    ></GoogleMapReact>
-                  </div> */}
-
-                  {/* <div className="flex justify-between">
-                    <p className="text-md">{area.name}</p>
-                    <Link
-                      href={appLinks.cartSelectMethod(method)}
-                      scroll={true}
-                      className="text-base font-semibold"
-                      style={{ color }}
-                      suppressHydrationWarning={suppressText}
-                    >
-                      {t('edit')}
-                    </Link>
-                  </div> */}
                 </div>
 
                 {/* address */}
@@ -917,6 +887,7 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                   >
                     {t('delivery_prefrences')}
                   </p>
+
                   <div className="flex items-center mb-4">
                     <input
                       id="deliverNow"
@@ -966,12 +937,16 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                       {t('deliver_later')}
                     </label>
                   </div>
+
                   {show && (
                     <div className={`flex flex-col gap-3`}>
                       <div className="flex justify-between p-2 border-b-4 border-stone-100 ">
                         <input
+                          ref={dateRef}
                           type="date"
-                          className={`border-none w-full px-0 focus:border-none focus:ring-transparent`}
+                          className={`${
+                            isRTL ? `text-right` : `text-left`
+                          } border-none w-full px-0 focus:border-none focus:ring-transparent`}
                           min={new Date().toISOString().split('T')[0]}
                           // value={prefrences.date as Date}
                           onChange={(e) => {
@@ -979,8 +954,34 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                               ...prefrences,
                               date: new Date(e.target.value),
                             });
+                            dateRef?.current?.blur();
                           }}
                         />
+                        <span
+                          className={`relative left-0 top-2.5`}
+                          onClick={(e) => {
+                            dateRef?.current?.click();
+                            dateRef?.current?.showPicker();
+                          }}
+                          onChange={() => dateRef?.current?.blur()}
+                          onFocus={() => dateRef?.current?.showPicker()}
+                          onBlur={() => dateRef?.current?.blur()}
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.5"
+                            stroke="currentColor"
+                            className="w-6 h-6"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z"
+                            />
+                          </svg>
+                        </span>
                       </div>
                       <div className="flex justify-between py-2 border-b-4 border-stone-100">
                         <DatePicker
