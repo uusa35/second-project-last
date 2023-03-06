@@ -146,14 +146,13 @@ const ProductIndex: NextPage<Props> = ({
 
   const handleChange = (key: string) => {
     if (key.length > 2) {
-      triggerSearchProducts({ key, lang, branch_id, url }).then((r: any) =>
+      triggerSearchProducts({ key, lang, branch_id, areaId: area_id, url }).then((r: any) =>
         setCurrentProducts(r.data.Data)
       );
     } else {
       setCurrentProducts(data.Data?.products);
     }
   };
-
   if (isFetching) {
     return <LoadingSpinner fullWidth={true} />;
   }
