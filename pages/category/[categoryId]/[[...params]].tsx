@@ -29,6 +29,7 @@ import CustomImage from '@/components/CustomImage';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { AppQueryResult, ProductPagination } from '@/types/queries';
 import Link from 'next/link';
+import SearchInput from '@/components/SearchInput';
 type Props = {
   slug: string;
   url: string;
@@ -166,7 +167,11 @@ const ProductIndex: NextPage<Props> = ({
         <div className={`px-4 capitalize`}>
           <div className="flex justify-center items-center">
             <div className={`w-full`}>
-              <div className="relative mt-1 rounded-md shadow-sm text-gray-400">
+              <SearchInput
+                placeholder={`${t(`search_products`)}`}
+                onChange={debounce((e) => handleChange(e.target.value), 400)}
+              />
+              {/* <div className="relative mt-1 rounded-md shadow-sm text-gray-400">
                 <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center px-6">
                   <MagnifyingGlassIcon className="h-8 w-8" aria-hidden="true" />
                 </div>
@@ -179,7 +184,7 @@ const ProductIndex: NextPage<Props> = ({
                   suppressHydrationWarning={suppressText}
                   placeholder={`${t(`search_products`)}`}
                 />
-              </div>
+              </div> */}
             </div>
             <button
               onClick={() =>

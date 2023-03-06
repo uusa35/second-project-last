@@ -25,6 +25,7 @@ import { useRouter } from 'next/router';
 import CustomImage from '@/components/CustomImage';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import PoweredByQ from '@/components/PoweredByQ';
+import SearchInput from '@/components/SearchInput';
 
 type Props = {
   element: Vendor;
@@ -85,7 +86,11 @@ const HomePage: NextPage<Props> = ({ element, url }): JSX.Element => {
             className={`flex flex-1 w-auto flex-grow mx-2 pb-4 border-b border-stone-300`}
           >
             <div className={`w-full`}>
-              <div className="relative mt-1 rounded-md shadow-sm text-gray-400">
+              <SearchInput
+                placeholder={`${t(`search_products`)}`}
+                onFocus={() => handleFocus()}
+              />
+              {/* <div className="relative mt-1 rounded-md shadow-sm text-gray-400">
                 <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center px-6">
                   <MagnifyingGlassIcon className="h-8 w-8" aria-hidden="true" />
                 </div>
@@ -98,7 +103,7 @@ const HomePage: NextPage<Props> = ({ element, url }): JSX.Element => {
                   suppressHydrationWarning={suppressText}
                   placeholder={`${t(`search_products`)}`}
                 />
-              </div>
+              </div> */}
             </div>
           </div>
           {/* Categories List */}
