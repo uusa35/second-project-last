@@ -47,7 +47,6 @@ const HomeVendorMainInfo: FC<Props> = ({ url }): JSX.Element => {
   }, [branch_id, area_id]);
 
   if (!isSuccess || !element || !element.Data) return <></>;
-
   return (
     <>
       <div className="flex gap-x-2 justify-between items-start capitalize">

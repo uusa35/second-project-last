@@ -46,6 +46,7 @@ const ProductSearchIndex: NextPage<Props> = ({ url }): JSX.Element => {
       url,
     }
   );
+  
   const [triggerGetProducts, { isSuccess: getProductsSuccess }] =
     useLazyGetSearchProductsQuery<{
       triggerGetProducts: () => void;
@@ -68,7 +69,6 @@ const ProductSearchIndex: NextPage<Props> = ({ url }): JSX.Element => {
   }, []);
 
   useEffect(() => {
-    console.log('key', key);
     triggerGetProducts({
       key: key ?? ``,
       ...(branchId && { branch_id: branch_id ?? branchId }),
@@ -101,14 +101,11 @@ const ProductSearchIndex: NextPage<Props> = ({ url }): JSX.Element => {
     });
   };
 
-  if (
-    // !topSearchSuccess ||
-    // !topSearch.Data ||
-    !router.isReady ||
-    !searchProductsSuccess
-  ) {
+  if (!router.isReady || !searchProductsSuccess) {
     return <LoadingSpinner fullWidth={true} />;
   }
+
+  console.log('here', currentProducts);
 
   return (
     <Suspense>
