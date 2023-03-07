@@ -466,13 +466,32 @@ const CartReview: NextPage<Props> = ({ url }) => {
                                 areaId
                               )}`}
                             >
-                              <div
+                              {item.SalePrice !== item.Price? (
+                                 <div>
+                                    <div
+                                      className="uppercase flex grow line-through"
+                                      suppressHydrationWarning={suppressText}
+                                      style={{ color }}
+                                    >
+                                    {item.Price} {t('kwd')}
+                                  </div>
+                                    <div
+                                    className="uppercase flex grow"
+                                    suppressHydrationWarning={suppressText}
+                                    style={{ color }}
+                                    >
+                                    {item.SalePrice} {t('kwd')}
+                                    </div>
+                                 </div>
+                              ): (
+                                <div
                                 className="uppercase flex grow"
                                 suppressHydrationWarning={suppressText}
                                 style={{ color }}
                               >
                                 {item.Price} {t('kwd')}
                               </div>
+                              )}
                             </Link>
                           </div>
                         </div>
