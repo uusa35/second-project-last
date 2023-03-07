@@ -140,7 +140,7 @@ const HomePage: NextPage<Props> = ({ url }): JSX.Element => {
           <div className={`py-4 px-2 `}>
             {categoriesSuccess &&
             !isEmpty(categories) &&
-            element.template_type === 'basic_category!!!' ? (
+            element.template_type === 'basic_category' ? (
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-1">
                 {map(categories.Data, (c, i) => (
                   <CategoryWidget element={c} key={i} />
