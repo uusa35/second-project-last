@@ -267,7 +267,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
           categoryId,
           slug: slug ?? ``,
           page: page ?? `1`,
-          limit: limit ?? `6`,
+          limit: parseInt(limit) > 10 ? limit : '10',
           url: req.headers.host,
         },
       };

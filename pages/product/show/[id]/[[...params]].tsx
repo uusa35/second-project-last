@@ -379,7 +379,7 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
         url={url}
         backRoute={
           query.category_id !== 'null'
-            ? appLinks.productIndex(query.category_id, product.name_en)
+            ? appLinks.productIndex(query.category_id, product.name_en, branch_id, area_id)
             : null
         }
         productCurrentQty={currentQty}
