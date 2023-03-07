@@ -500,7 +500,7 @@ const CartReview: NextPage<Props> = ({ url }) => {
                         <div className="flex">
                           <div className="w-fit pb-2">
                             <div
-                              className={`flex text-gray-400 w-auto flex-wrap justify-between`}
+                              className={`flex text-gray-400 w-auto flex-wrap justify-between items-center`}
                             >
                               {!isEmpty(item.QuantityMeters) &&
                                 map(item.QuantityMeters, (q, i) => (
