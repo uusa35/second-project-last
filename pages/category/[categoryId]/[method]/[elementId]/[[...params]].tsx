@@ -26,6 +26,7 @@ import { useRouter } from 'next/router';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import CustomImage from '@/components/CustomImage';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import SearchInput from '@/components/SearchInput';
 
 type Props = {
   slug: string;
