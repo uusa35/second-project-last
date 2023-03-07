@@ -1,24 +1,17 @@
-import { useEffect, useState, Suspense } from 'react';
+import { useEffect, useState, Suspense, useRef } from 'react';
 import MainContentLayout from '@/layouts/MainContentLayout';
 import { wrapper } from '@/redux/store';
 import {
-  useGetProductsQuery,
   useLazyGetProductsQuery,
   useLazyGetSearchProductsQuery,
 } from '@/redux/api/productApi';
 import { appSetting, Product } from '@/types/index';
 import { NextPage } from 'next';
 import MainHead from '@/components/MainHead';
-import {
-  imageSizes,
-  suppressText,
-  updateUrlParams,
-  urlParamsObj,
-} from '@/constants/*';
-import { capitalize, debounce, isEmpty, isNull, map } from 'lodash';
+import { imageSizes, suppressText } from '@/constants/*';
+import { capitalize, debounce, isEmpty, isNull, map, uniqBy } from 'lodash';
 import NoResultFound from '@/appImages/no-result-found.gif';
 import HorProductWidget from '@/widgets/product/HorProductWidget';
-import { AppQueryResult, ProductPagination } from '@/types/queries';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import {
   setCurrentModule,
@@ -29,11 +22,11 @@ import { useTranslation } from 'react-i18next';
 import VerProductWidget from '@/components/widgets/product/VerProductWidget';
 import Menu from '@/appIcons/menus.svg';
 import List from '@/appIcons/list.svg';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import CustomImage from '@/components/CustomImage';
 import LoadingSpinner from '@/components/LoadingSpinner';
+
 type Props = {
   slug: string;
   url: string;
@@ -41,6 +34,7 @@ type Props = {
   categoryId: string;
   method: string;
   elementId: string;
+  limit: string;
 };
 const ProductIndex: NextPage<Props> = ({
   slug,
@@ -49,6 +43,7 @@ const ProductIndex: NextPage<Props> = ({
   categoryId,
   method,
   elementId,
+  limit,
 }): JSX.Element => {
   const { t } = useTranslation();
   const {
@@ -59,124 +54,109 @@ const ProductIndex: NextPage<Props> = ({
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const [icon, setIcon] = useState(true);
-  const { query, asPath }: any = useRouter();
+  const listRef = useRef<HTMLDivElement>();
+  const [currentPage, setCurrentPage] = useState<number>(1); // storing current page number
+  const [previousPage, setPreviousPage] = useState<number>(0); // storing prev page number
+  const [latest, setLatest] = useState(false); // setting a flag to know the last list
+  const [searchKey, setSearchKey] = useState<string | null>(``);
+  const { query }: any = useRouter();
   const [currentProducts, setCurrentProducts] = useState<any>([]);
-  // const [nextPage, setNextPage] = useState(parseInt(router?.query?.page) + 1);
-  const { data: getCurrentProducts, isSuccess } = useGetProductsQuery<{
-    data: AppQueryResult<ProductPagination<Product>>;
-    isSuccess: boolean;
-  }>({
-    category_id: categoryId?.toString(),
-    ...(method === `pickup` && { branch_id: elementId }),
-    ...(method === `delivery` && { area_id: elementId }),
-    page,
-    limit: '10',
-    url,
-    lang,
-  });
-  const [triggerGetProducts] = useLazyGetProductsQuery();
+  const [triggerGetProducts, { isLoading: getProductsLoading }] =
+    useLazyGetProductsQuery();
   const [triggerSearchProducts] = useLazyGetSearchProductsQuery<{
     triggerSearchProducts: () => void;
   }>();
-  // change menue view to list view
   const changeStyle = (preview: appSetting['productPreview']) => {
     dispatch(setProductPreview(preview));
     setIcon(!icon);
   };
 
-  const handleNext = () => {
-    const nextPage = parseInt(page) + 1;
-    if (nextPage >= 1) {
-      console.log('next', nextPage);
-      triggerGetProducts({
-        category_id: categoryId?.toString(),
-        ...(method === `pickup` && { branch_id: elementId }),
-        ...(method === `delivery` && { area_id: elementId }),
-        page: nextPage.toString(),
-        limit: '10',
-        url,
-        lang,
-      }).then((r) => {
-        console.log('r from next', r);
-        if (r.data && r.data.Data && r.data.Data.products) {
-          setCurrentProducts(r.data.Data.products);
-        } else {
-          setCurrentProducts([]);
-        }
-      });
-    }
-  };
-
-  const handlePrevious = () => {
-    const previousPage = parseInt(page) - 1;
-    if (previousPage >= 1) {
-      console.log('prev', previousPage);
-      triggerGetProducts({
-        category_id: categoryId?.toString(),
-        ...(method === `pickup` && { branch_id: elementId }),
-        ...(method === `delivery` && { area_id: elementId }),
-        page: previousPage.toString(),
-        limit: '10',
-        url,
-        lang,
-      }).then((r: any) => {
-        console.log('r from pre', r);
-        if (r.data && r.data.Data && r.data.Data.products) {
-          console.log('inside');
-          setCurrentProducts(r.data.Data.products);
-        } else {
-          console.log('else');
-          setCurrentProducts([]);
-        }
-      });
-    }
-  };
-
   useEffect(() => {
+    dispatch(setCurrentModule('product_search_index'));
+    if (url) {
+      dispatch(setUrl(url));
+    }
     if (query && query.slug) {
       dispatch(setCurrentModule(capitalize(query.slug.replaceAll('-', ' '))));
     } else {
       dispatch(setCurrentModule(`product_index`));
     }
-    if (url) {
-      dispatch(setUrl(url));
-    }
   }, []);
-  useEffect(() => {
-    if (
-      isSuccess &&
-      getCurrentProducts.Data &&
-      getCurrentProducts.Data.products
-    ) {
-      setCurrentProducts(getCurrentProducts.Data.products);
-    }
-  }, [isSuccess]);
 
-  const handleChange = (key: string) => {
-    if (isSuccess) {
-      if (key.length > 2) {
-        triggerSearchProducts({
-          key,
-          lang,
-          branch_id,
-          areaId: area_id,
-          url,
-        }).then((r: any) => {
-          if (r.data && r.data.Data) {
-            console.log('inside');
-            setCurrentProducts(r.data.Data);
-          } else {
-            console.log('else');
-            setCurrentProducts([]);
-          }
-        });
+  const handleFire = async () => {
+    await triggerGetProducts({
+      category_id: categoryId?.toString(),
+      ...(method === `pickup` && { branch_id: elementId }),
+      ...(method === `delivery` && { area_id: elementId }),
+      page: currentPage.toString(),
+      limit,
+      url,
+      lang,
+    }).then((r) => {
+      if (r.data && r.data.Data && r.data.Data.products) {
+        if (r.data.Data.products.length === 0) {
+          setLatest(true);
+          return;
+        }
+        setPreviousPage(currentPage);
+        const filteredProducts = uniqBy(
+          [...r.data.Data.products, ...currentProducts],
+          'id'
+        );
+        setCurrentProducts(filteredProducts);
       } else {
-        setCurrentProducts(getCurrentProducts?.Data?.products);
+        setCurrentProducts([]);
+      }
+    });
+  };
+
+  useEffect(() => {
+    if (!latest && previousPage !== currentPage) {
+      handleFire();
+    }
+  }, [latest, currentProducts, previousPage, currentPage]);
+
+  const onScroll = () => {
+    if (listRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } = listRef.current;
+      if (scrollTop + clientHeight === scrollHeight) {
+        setCurrentPage(currentPage + 1);
       }
     }
   };
 
-  if (!isSuccess) {
+  const resetPages = async () => {
+    setCurrentProducts([]);
+    setCurrentPage(1);
+    setPreviousPage(0);
+  };
+
+  const handleChange = async (key: string) => {
+    if (key.length >= 2) {
+      setSearchKey(key);
+      await triggerSearchProducts({
+        key,
+        lang,
+        branch_id,
+        areaId: area_id,
+        url,
+      }).then((r: any) => {
+        if (r.data && r.data.Data && r.data.Data.length > 0) {
+          setCurrentProducts(r.data.Data);
+        } else {
+          setCurrentProducts([]);
+        }
+      });
+    } else {
+      await resetPages().then(() => setSearchKey(null));
+    }
+  };
+
+  useEffect(() => {
+    isNull(searchKey) && handleFire();
+  }, [searchKey]);
+
+  if (getProductsLoading && isEmpty(currentProducts)) {
     return <LoadingSpinner fullWidth={true} />;
   }
 
@@ -185,8 +165,8 @@ const ProductIndex: NextPage<Props> = ({
       <MainHead title={slug} description={slug} />
       <MainContentLayout url={url} backHome={true}>
         <h1 className="capitalize" suppressHydrationWarning={suppressText}></h1>
-        <div className={`px-4 capitalize`}>
-          <div className="flex justify-center items-center">
+        <div className={`px-4 capitalize h-[100vh]`}>
+          <div className="flex justify-center items-center pb-3">
             <div className={`w-full`}>
               <div className="relative mt-1 rounded-md shadow-sm text-gray-400">
                 <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center px-6">
@@ -196,7 +176,7 @@ const ProductIndex: NextPage<Props> = ({
                   type="search"
                   name="search"
                   id="search"
-                  onChange={debounce((e) => handleChange(e.target.value), 400)}
+                  onChange={debounce((e) => handleChange(e.target.value), 2000)}
                   className="block w-full focus:ring-1 focus:ring-primary_BG rounded-md  pl-20 border-none  bg-gray-100 py-3 h-12  text-lg capitalize"
                   suppressHydrationWarning={suppressText}
                   placeholder={`${t(`search_products`)}`}
@@ -216,12 +196,7 @@ const ProductIndex: NextPage<Props> = ({
               )}
             </button>
           </div>
-          {!isSuccess && (
-            <div className={`flex w-auto h-[30vh] justify-center items-center`}>
-              <LoadingSpinner fullWidth={false} />
-            </div>
-          )}
-          {isSuccess && isEmpty(currentProducts) && (
+          {!currentProducts.length && isEmpty(currentProducts) && (
             <div
               className={`w-full flex flex-1 flex-col justify-center items-center space-y-4 my-12`}
             >
@@ -238,62 +213,37 @@ const ProductIndex: NextPage<Props> = ({
             </div>
           )}
           <div
-            className={
-              productPreview === 'hor'
-                ? ' grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 gap-x-3 py-4'
-                : ''
-            }
+            ref={listRef}
+            onScroll={onScroll}
+            className={`${
+              !isNull(searchKey) && currentProducts.length < 3
+                ? `h-min`
+                : `h-[100vh]`
+            }  overflow-y-scroll
+              ${
+                productPreview === 'hor'
+                  ? ' grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 gap-x-3 py-4'
+                  : ''
+              }
+            `}
           >
-            {isSuccess &&
-              map(currentProducts, (p: Product, i) =>
-                productPreview === 'hor' ? (
-                  <HorProductWidget
-                    element={p}
-                    key={i}
-                    category_id={categoryId ?? null}
-                  />
-                ) : (
-                  <VerProductWidget
-                    element={p}
-                    key={i}
-                    category_id={categoryId ?? null}
-                  />
+            {currentProducts.length
+              ? map(currentProducts, (p: Product, i) =>
+                  productPreview === 'hor' ? (
+                    <HorProductWidget
+                      element={p}
+                      key={i}
+                      category_id={categoryId ?? null}
+                    />
+                  ) : (
+                    <VerProductWidget
+                      element={p}
+                      key={i}
+                      category_id={categoryId ?? null}
+                    />
+                  )
                 )
-              )}
-          </div>
-          {/* pagination */}
-          {/* pagination */}
-          <div
-            className={`flex flex-row-reverse flex-row justify-between items-center`}
-          >
-            {!isNull(page) && parseInt(page) >= 1 && (
-              <Link
-                onClick={() => handleNext()}
-                locale={lang}
-                href={`${updateUrlParams(
-                  asPath,
-                  'page',
-                  (parseInt(page) + 1).toString()
-                )}`}
-                className={`border border-gray-200 p-3 px-6 justify-center items-center rounded-md`}
-              >
-                {t('next_pagination')}
-              </Link>
-            )}
-            {!isNull(page) && parseInt(page) > 1 && (
-              <Link
-                onClick={() => handlePrevious()}
-                locale={lang}
-                href={`${updateUrlParams(
-                  asPath,
-                  'page',
-                  (parseInt(page) - 1).toString()
-                )}`}
-                className={`border border-gray-200 p-3 px-6 justify-center items-center rounded-md`}
-              >
-                {t('previous')}
-              </Link>
-            )}
+              : null}
           </div>
         </div>
       </MainContentLayout>
@@ -305,7 +255,7 @@ export default ProductIndex;
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
-    async ({ query, locale, req }) => {
+    async ({ query, req }) => {
       const { categoryId, method, elementId, limit, page, slug }: any = query;
       if (!categoryId || !method || !elementId || !req.headers.host) {
         return {
@@ -319,6 +269,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
           elementId,
           slug: slug ?? ``,
           page: page ?? `1`,
+          limit: limit ?? `6`,
           url: req.headers.host,
         },
       };

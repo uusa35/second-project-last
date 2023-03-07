@@ -296,8 +296,6 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
         )
       );
     }
-
-    console.log('window', window.navigator.userAgent);
     return () => {
       dispatch(resetShowFooterElement());
     };
