@@ -1,4 +1,11 @@
-import { useEffect, Suspense } from 'react';
+import {
+  useEffect,
+  Suspense,
+  useLayoutEffect,
+  useRef,
+  useState,
+  useCallback,
+} from 'react';
 import { wrapper } from '@/redux/store';
 import { NextPage } from 'next';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -7,7 +14,7 @@ import MainHead from '@/components/MainHead';
 import { Product, Vendor } from '@/types/index';
 import { useGetVendorQuery, vendorApi } from '@/redux/api/vendorApi';
 import { useGetCategoriesQuery } from '@/redux/api/categoryApi';
-import { isEmpty, kebabCase, lowerCase, map } from 'lodash';
+import { debounce, isEmpty, kebabCase, lowerCase, map } from 'lodash';
 import CategoryWidget from '@/widgets/category/CategoryWidget';
 import { appLinks, imageSizes, imgUrl } from '@/constants/*';
 import { useTranslation } from 'react-i18next';
@@ -16,7 +23,6 @@ import {
   setCurrentModule,
   setShowFooterElement,
 } from '@/redux/slices/appSettingSlice';
-import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import HomeSelectMethod from '@/components/home/HomeSelectMethod';
 import HomeVendorMainInfo from '@/components/home/HomeVendorMainInfo';
 import { useRouter } from 'next/router';
@@ -36,6 +42,7 @@ type Props = {
 };
 const HomePage: NextPage<Props> = ({ url, element }): JSX.Element => {
   const { t } = useTranslation();
+  const [offset, setOffset] = useState(0);
   const {
     locale: { lang },
     branch: { id: branch_id },
@@ -44,6 +51,8 @@ const HomePage: NextPage<Props> = ({ url, element }): JSX.Element => {
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const listRef = useRef<any>(null);
+
   const { data: categories, isSuccess: categoriesSuccess } =
     useGetCategoriesQuery({
       lang,
@@ -74,12 +83,39 @@ const HomePage: NextPage<Props> = ({ url, element }): JSX.Element => {
   const handleFocus = () =>
     router.push(appLinks.productSearchIndex('', branch_id, area_id));
 
-  if (!vendorSuccess) {
-    return <LoadingSpinner />;
-  }
+  // useEffect(() => {
+  //   if (categoriesSuccess && elementsSuccess) {
+  //   }
+  //   console.log('from inside useEffect', listRef);
+  // }, [listRef]);
+
+  // useEffect(() => {
+  //   const onScroll = () => setOffset(window.pageYOffset);
+  //   window.addEventListener('scroll', onScroll, { passive: true });
+  //   return () => {
+  //     window.removeEventListener('scroll', debounce(onScroll, 400));
+  //   };
+  // }, []);
+
+  const getoffSet = (e) => {
+    console.log(
+      'position ====>',
+      e.natiiveEvent.target.childNodes[0].offsetTop
+    );
+  };
+
+  const onScroll = () => {
+    console.log('inside callback', listRef.current);
+    if (listRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } = listRef.current;
+      console.log('inside', scrollHeight);
+      if (scrollTop + clientHeight === scrollHeight) {
+      }
+    }
+  };
 
   return (
-    <Suspense fallback={<LoadingSpinner fullWidth={false} />}>
+    <Suspense fallback={<LoadingSpinner fullWidth={true} />}>
       {/* SEO Head DEV*/}
       <MainHead
         title={element.name}
@@ -89,15 +125,17 @@ const HomePage: NextPage<Props> = ({ url, element }): JSX.Element => {
       />
       <MainContentLayout url={url}>
         {/*  ImageBackGround Header */}
-        <div className="sm:h-52 lg:h-auto">
-          <CustomImage
-            src={`${imgUrl(vendorDetails?.Data?.cover)}`}
-            alt={vendorDetails?.Data?.name}
-            className={`block lg:hidden object-cover w-full absolute left-0 right-0 -top-10 shadow-xl z-0 overflow-hidden`}
-            width={imageSizes.xl}
-            height={imageSizes.xl}
-          />
-        </div>
+        {vendorSuccess && vendorDetails && !vendorDetails.Data && (
+          <div className="sm:h-52 lg:h-auto">
+            <CustomImage
+              src={`${imgUrl(vendorDetails?.Data?.cover)}`}
+              alt={vendorDetails?.Data?.name}
+              className={`block lg:hidden object-cover w-full absolute left-0 right-0 -top-10 shadow-xl z-0 overflow-hidden`}
+              width={imageSizes.xl}
+              height={imageSizes.xl}
+            />
+          </div>
+        )}
 
         <div className="bg-white md:mt-40 mt-10 lg:mt-0 border-t-4 border-stone-100 lg:border-none rounded-none relative top-32 lg:top-auto  pt-1 lg:pt-0 ">
           {/*  HomePage Header */}
@@ -114,35 +152,25 @@ const HomePage: NextPage<Props> = ({ url, element }): JSX.Element => {
                 placeholder={`${t(`search_products`)}`}
                 onFocus={() => handleFocus()}
               />
-              {/* <div className="relative mt-1 rounded-md shadow-sm text-gray-400">
-                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center px-6">
-                  <MagnifyingGlassIcon className="h-8 w-8" aria-hidden="true" />
-                </div>
-                <input
-                  type="search"
-                  name="search"
-                  id="search"
-                  onFocus={() => handleFocus()}
-                  className="block w-full rounded-md  pl-20 focus:ring-1 focus:ring-primary_BG border-none  bg-gray-100 h-12  text-lg capitalize"
-                  suppressHydrationWarning={suppressText}
-                  placeholder={`${t(`search_products`)}`}
-                />
-              </div> */}
             </div>
           </div>
-          {/* Categories List */}
+          {/* Loading Spinner */}
           {isEmpty(categories) ||
             (isEmpty(elements?.Data) && (
               <div
-                className={`flex w-auto h-[30vh] justify-center items-center`}
+                className={`flex w-full h-[30vh] justify-center items-center w-full`}
               >
-                <LoadingSpinner fullWidth={false} />
+                <LoadingSpinner fullWidth={true} />
               </div>
             ))}
-          <div className={`py-4 px-2 `}>
+          <div
+            className={`py-4 px-2 overflow-y-scroll`}
+            ref={(el) => (listRef.current = el)}
+            onScroll={onScroll}
+          >
             {categoriesSuccess &&
             !isEmpty(categories) &&
-            element.template_type === 'basic_category' ? (
+            element.template_type === 'basic_category!' ? (
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-1">
                 {map(categories.Data, (c, i) => (
                   <CategoryWidget element={c} key={i} />
@@ -162,39 +190,42 @@ const HomePage: NextPage<Props> = ({ url, element }): JSX.Element => {
                   },
                   i
                 ) => (
-                  <div key={i} className={`flex flex-col mb-8`}>
-                    <Link
-                      href={
-                        (method === `pickup` && !branch_id) ||
-                        (method === `delivery` && !area_id)
-                          ? appLinks.productIndex(
-                              list.cat_id.toString(),
-                              kebabCase(lowerCase(list.name)),
-                              branch_id,
-                              area_id
-                            )
-                          : appLinks.productIndexDefined(
-                              list.cat_id.toString(),
-                              kebabCase(lowerCase(list.name)),
-                              method,
-                              method === `delivery` ? area_id : branch_id
-                            )
-                      }
-                      className={`w-full font-extrabold text-lg py-3 border-b-2 border-t-2 bg-gray-200 rounded-lg px-4`}
-                    >
-                      {list.name}
-                    </Link>
+                  <div key={i} className={`flex flex-col mt-2`}>
+                    {!isEmpty(list.items) && (
+                      <Link
+                        href={
+                          (method === `pickup` && !branch_id) ||
+                          (method === `delivery` && !area_id)
+                            ? appLinks.productIndex(
+                                list.cat_id.toString(),
+                                kebabCase(lowerCase(list.name)),
+                                branch_id,
+                                area_id
+                              )
+                            : appLinks.productIndexDefined(
+                                list.cat_id.toString(),
+                                kebabCase(lowerCase(list.name)),
+                                method,
+                                method === `delivery` ? area_id : branch_id
+                              )
+                        }
+                        className={`w-full font-extrabold text-lg py-3 bg-stone-100 rounded-md px-4`}
+                      >
+                        {list.name}
+                      </Link>
+                    )}
                     <div
                       className={`grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 gap-x-3 py-4'      
                           `}
                     >
-                      {map(list.items, (p: Product, i) => (
-                        <HorProductWidget
-                          element={p}
-                          key={i}
-                          category_id={list.cat_id.toString()}
-                        />
-                      ))}
+                      {!isEmpty(list.items) &&
+                        map(list.items, (p: Product, i) => (
+                          <HorProductWidget
+                            element={p}
+                            key={i}
+                            category_id={list.cat_id.toString()}
+                          />
+                        ))}
                     </div>
                   </div>
                 )
@@ -242,4 +273,3 @@ export const getServerSideProps = wrapper.getServerSideProps(
       };
     }
 );
-
