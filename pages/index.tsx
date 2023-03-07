@@ -152,15 +152,7 @@ const HomePage: NextPage<Props> = ({ url, element }): JSX.Element => {
                     <div key={i} className={`flex flex-col mt-2`}>
                       {!isEmpty(list.items) && (
                         <Sticky>
-                          {({
-                            style,
-                            // the following are also available but unused in this example
-                            isSticky,
-                            wasSticky,
-                            distanceFromTop,
-                            distanceFromBottom,
-                            calculatedHeight,
-                          }) => (
+                          {({ style, isSticky }) => (
                             <header
                               style={style}
                               className={`w-full bg-white z-40   ${
