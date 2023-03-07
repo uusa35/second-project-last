@@ -15,6 +15,7 @@ export interface Product {
   new_price?: string;
   img: img[];
   sections?: ProductSection[];
+  cover: string
 }
 
 export interface ProductSection {
