@@ -7,9 +7,9 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import MainContentLayout from '@/layouts/MainContentLayout';
 import MainHead from '@/components/MainHead';
 import { vendorApi } from '@/redux/api/vendorApi';
-import { Vendor } from '@/types/index';
+import { Product, Vendor } from '@/types/index';
 import { useGetCategoriesQuery } from '@/redux/api/categoryApi';
-import { isEmpty, map } from 'lodash';
+import { groupBy, isEmpty, isNull, kebabCase, lowerCase, map } from 'lodash';
 import CategoryWidget from '@/widgets/category/CategoryWidget';
 import { appLinks, imageSizes, imgUrl, suppressText } from '@/constants/*';
 import { useTranslation } from 'react-i18next';
@@ -25,6 +25,9 @@ import { useRouter } from 'next/router';
 import CustomImage from '@/components/CustomImage';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import PoweredByQ from '@/components/PoweredByQ';
+import { useLazyGetProductsQuery } from '@/redux/api/productApi';
+import HorProductWidget from '@/widgets/product/HorProductWidget';
+import Link from 'next/link';
 
 type Props = {
   element: Vendor;
@@ -36,6 +39,7 @@ const HomePage: NextPage<Props> = ({ element, url }): JSX.Element => {
     locale: { lang },
     branch: { id: branch_id },
     area: { id: area_id },
+    appSetting: { method },
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -44,15 +48,27 @@ const HomePage: NextPage<Props> = ({ element, url }): JSX.Element => {
       lang,
       url,
     });
+  const [triggerGetProducts, { data: elements, isSuccess: elementsSuccess }] =
+    useLazyGetProductsQuery();
 
   useEffect(() => {
     dispatch(setCurrentModule('home'));
     dispatch(setShowFooterElement('home'));
+    triggerGetProducts({
+      url,
+      lang,
+      category_id: ``,
+      page: `1`,
+      limit: `10`,
+      branch_id: branch_id.toString(),
+      area_id: area_id.toString(),
+    });
   }, []);
 
   const handleFocus = () =>
     router.push(appLinks.productSearchIndex('', branch_id, area_id));
 
+  console.log('elements', elements);
   return (
     <Suspense fallback={<LoadingSpinner fullWidth={false} />}>
       {/* SEO Head DEV*/}
@@ -102,17 +118,75 @@ const HomePage: NextPage<Props> = ({ element, url }): JSX.Element => {
             </div>
           </div>
           {/* Categories List */}
-          {isEmpty(categories) && (
-            <div className={`flex w-auto h-[30vh] justify-center items-center`}>
-              <LoadingSpinner fullWidth={false} />
-            </div>
-          )}
-          <div className="py-4 px-2 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-1">
+          {isEmpty(categories) ||
+            (isEmpty(elements?.Data) && (
+              <div
+                className={`flex w-auto h-[30vh] justify-center items-center`}
+              >
+                <LoadingSpinner fullWidth={false} />
+              </div>
+            ))}
+          <div className={`py-4 px-2 `}>
             {categoriesSuccess &&
-              !isEmpty(categories) &&
-              map(categories.Data, (c, i) => (
-                <CategoryWidget element={c} key={i} />
-              ))}
+            !isEmpty(categories) &&
+            element.template_type === 'basic_category!!!' ? (
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-1">
+                {map(categories.Data, (c, i) => (
+                  <CategoryWidget element={c} key={i} />
+                ))}
+              </div>
+            ) : (
+              elements &&
+              !isEmpty(elements.Data) &&
+              elementsSuccess &&
+              map(
+                elements.Data,
+                (
+                  list: {
+                    cat_id: number;
+                    items: Product[];
+                    name: string;
+                  },
+                  i
+                ) => (
+                  <div key={i} className={`flex flex-col mb-8`}>
+                    <Link
+                      href={
+                        (method === `pickup` && !branch_id) ||
+                        (method === `delivery` && !area_id)
+                          ? appLinks.productIndex(
+                              list.cat_id.toString(),
+                              kebabCase(lowerCase(list.name)),
+                              branch_id,
+                              area_id
+                            )
+                          : appLinks.productIndexDefined(
+                              list.cat_id.toString(),
+                              kebabCase(lowerCase(list.name)),
+                              method,
+                              method === `delivery` ? area_id : branch_id
+                            )
+                      }
+                      className={`w-full font-extrabold text-lg py-3 border-b-2 border-t-2 bg-gray-200 rounded-lg px-4`}
+                    >
+                      {list.name}
+                    </Link>
+                    <div
+                      className={`grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 gap-x-3 py-4'      
+                          `}
+                    >
+                      {map(list.items, (p: Product, i) => (
+                        <HorProductWidget
+                          element={p}
+                          key={i}
+                          category_id={list.cat_id.toString()}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )
+              )
+            )}
           </div>
         </div>
         <div className={`mt-[10%]`}>

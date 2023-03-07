@@ -7,13 +7,13 @@ export const productApi = apiSlice.injectEndpoints({
     getProducts: builder.query<
       AppQueryResult<Product[]>,
       {
-        category_id: string | number;
-        branch_id?: string | null;
         page: string;
         limit: string;
-        area_id?: string;
         lang: Locale['lang'] | string | undefined;
         url: string;
+        category_id: string | number;
+        branch_id?: string | null;
+        area_id?: string;
       }
     >({
       query: ({

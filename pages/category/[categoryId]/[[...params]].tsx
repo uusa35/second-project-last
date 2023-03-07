@@ -83,6 +83,8 @@ const ProductIndex: NextPage<Props> = ({
   const handleFire = async () => {
     await triggerGetProducts({
       category_id: categoryId?.toString(),
+      branch_id: branch_id,
+      area_id: area_id,
       page: currentPage.toString(),
       limit,
       url,
