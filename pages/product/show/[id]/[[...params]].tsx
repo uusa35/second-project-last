@@ -221,14 +221,13 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
       }
     }
   };
-
   const handleResetInitialProductCart = () => {
     if (isSuccess && !isNull(element) && element.Data) {
       dispatch(
         setInitialProductCart({
           ProductID: element?.Data?.id,
           ProductName: element?.Data?.name,
-          ProductImage: element?.Data?.img[0]?.thumbnail ?? ``,
+          ProductImage: element?.Data?.cover ?? ``,
           name_ar: element?.Data?.name_ar,
           name_en: element?.Data?.name_en,
           ProductDesc: element?.Data?.desc,
@@ -372,7 +371,7 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
       <MainHead
         title={`${product.name_ar} - ${product.name_en}`}
         description={`${product.description_ar} - ${product.description_en}`}
-        mainImage={`${product?.img[0]?.thumbnail?.toString()}`}
+        mainImage={`${product?.cover.toString()}`}
         icon={`${logo}`}
       />
       <MainContentLayout
