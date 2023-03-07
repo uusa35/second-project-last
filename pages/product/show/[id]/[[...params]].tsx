@@ -144,10 +144,8 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
         isEmpty(allRadioBtns) &&
         isEmpty(allMeters)
       ) {
-        console.log('if');
         dispatch(disableAddToCart());
       } else {
-        console.log('else');
         dispatch(enableAddToCart());
       }
       dispatch(
@@ -171,9 +169,16 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
         productCart.CheckBoxes &&
           map(productCart.CheckBoxes, (c) => `_${c.uId}`),
         productCart.RadioBtnsAddons &&
-          map(productCart.RadioBtnsAddons, (r) => `_${r.uId}`)
+          map(productCart.RadioBtnsAddons, (r) => `_${r.uId}`),
+        ` _${productCart.ExtraNotes.replace(/[^A-Z0-9]/gi, '')}`
       );
-      console.log('uIds', `${productCart.ProductID}${join(uIds, '')}`);
+      // console.log(
+      //   'uIds',
+      //   `${productCart.ProductID}${join(
+      //     uIds,
+      //     ''
+      //   )}`
+      // );
       dispatch(updateId(`${productCart.ProductID}${join(uIds, '')}`));
     }
   }, [
@@ -181,6 +186,7 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
     productCart.CheckBoxes,
     productCart.RadioBtnsAddons,
     currentQty,
+    productCart.ExtraNotes,
   ]);
 
   const customAnimation = {

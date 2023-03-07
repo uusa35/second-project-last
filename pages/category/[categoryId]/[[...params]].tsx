@@ -26,6 +26,7 @@ import { useRouter } from 'next/router';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import CustomImage from '@/components/CustomImage';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import SearchInput from '@/components/SearchInput';
 
 type Props = {
   slug: string;
@@ -83,6 +84,8 @@ const ProductIndex: NextPage<Props> = ({
   const handleFire = async () => {
     await triggerGetProducts({
       category_id: categoryId?.toString(),
+      branch_id: branch_id,
+      area_id: area_id,
       page: currentPage.toString(),
       limit,
       url,
@@ -112,6 +115,7 @@ const ProductIndex: NextPage<Props> = ({
   }, [latest, currentProducts, previousPage, currentPage]);
 
   const onScroll = () => {
+    console.log('scroll');
     if (listRef.current) {
       const { scrollTop, scrollHeight, clientHeight } = listRef.current;
       if (scrollTop + clientHeight === scrollHeight) {
@@ -163,7 +167,11 @@ const ProductIndex: NextPage<Props> = ({
         <div className={`px-4 capitalize h-[100vh]`}>
           <div className="flex justify-center items-center pb-3">
             <div className={`w-full`}>
-              <div className="relative mt-1 rounded-md shadow-sm text-gray-400">
+              <SearchInput
+                placeholder={`${t(`search_products`)}`}
+                onChange={debounce((e) => handleChange(e.target.value), 400)}
+              />
+              {/* <div className="relative mt-1 rounded-md shadow-sm text-gray-400">
                 <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center px-6">
                   <MagnifyingGlassIcon className="h-8 w-8" aria-hidden="true" />
                 </div>
@@ -176,7 +184,7 @@ const ProductIndex: NextPage<Props> = ({
                   suppressHydrationWarning={suppressText}
                   placeholder={`${t(`search_products`)}`}
                 />
-              </div>
+              </div> */}
             </div>
             <button
               onClick={() =>

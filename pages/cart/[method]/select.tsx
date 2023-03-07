@@ -32,6 +32,7 @@ import ChangeLocationModal from '@/components/ChangeLocationModal';
 import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 import { wrapper } from '@/redux/store';
 import { themeColor } from '@/redux/slices/vendorSlice';
+import SearchInput from '@/components/SearchInput';
 
 type Props = {
   previousRoute: string | null;
@@ -164,7 +165,8 @@ const SelectMethod: NextPage<Props> = ({
         <div className={`px-4`}>
           <DeliveryBtns method_in_select={method} />
           <div className={`w-full mb-4`}>
-            <div className="relative mt-1 rounded-md shadow-sm text-gray-400">
+            <SearchInput/>
+            {/* <div className="relative mt-1 rounded-md shadow-sm text-gray-400">
               <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center px-6">
                 <MagnifyingGlassIcon className="h-8 w-8" aria-hidden="true" />
               </div>
@@ -176,7 +178,7 @@ const SelectMethod: NextPage<Props> = ({
                 suppressHydrationWarning={suppressText}
                 placeholder={`${t(`search`)}`}
               />
-            </div>
+            </div> */}
           </div>
           {method === 'delivery' && (
             <div className={`px-4`}>
