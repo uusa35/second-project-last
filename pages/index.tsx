@@ -1,17 +1,15 @@
 import { useEffect, Suspense } from 'react';
 import { wrapper } from '@/redux/store';
-import { apiSlice } from '@/redux/api';
 import { NextPage } from 'next';
-import { AppQueryResult } from '@/types/queries';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import MainContentLayout from '@/layouts/MainContentLayout';
 import MainHead from '@/components/MainHead';
-import { vendorApi } from '@/redux/api/vendorApi';
-import { Product, Vendor } from '@/types/index';
+import { Product } from '@/types/index';
+import { useGetVendorQuery } from '@/redux/api/vendorApi';
 import { useGetCategoriesQuery } from '@/redux/api/categoryApi';
-import { groupBy, isEmpty, isNull, kebabCase, lowerCase, map } from 'lodash';
+import { isEmpty, kebabCase, lowerCase, map } from 'lodash';
 import CategoryWidget from '@/widgets/category/CategoryWidget';
-import { appLinks, imageSizes, imgUrl, suppressText } from '@/constants/*';
+import { appLinks, imageSizes, imgUrl } from '@/constants/*';
 import { useTranslation } from 'react-i18next';
 import { setLocale } from '@/redux/slices/localeSlice';
 import {
@@ -28,12 +26,13 @@ import PoweredByQ from '@/components/PoweredByQ';
 import { useLazyGetProductsQuery } from '@/redux/api/productApi';
 import HorProductWidget from '@/widgets/product/HorProductWidget';
 import Link from 'next/link';
+import SearchInput from '@/components/SearchInput';
 
 type Props = {
-  element: Vendor;
+  // element.Data: Vendor;
   url: string;
 };
-const HomePage: NextPage<Props> = ({ element, url }): JSX.Element => {
+const HomePage: NextPage<Props> = ({ url }): JSX.Element => {
   const { t } = useTranslation();
   const {
     locale: { lang },
@@ -50,6 +49,11 @@ const HomePage: NextPage<Props> = ({ element, url }): JSX.Element => {
     });
   const [triggerGetProducts, { data: elements, isSuccess: elementsSuccess }] =
     useLazyGetProductsQuery();
+
+  const { data: element, isSuccess: vendorSuccess } = useGetVendorQuery({
+    lang,
+    url,
+  });
 
   useEffect(() => {
     dispatch(setCurrentModule('home'));
@@ -68,40 +72,47 @@ const HomePage: NextPage<Props> = ({ element, url }): JSX.Element => {
   const handleFocus = () =>
     router.push(appLinks.productSearchIndex('', branch_id, area_id));
 
-  console.log('elements', elements);
+  if (!vendorSuccess) {
+    return <LoadingSpinner />;
+  }
+
   return (
     <Suspense fallback={<LoadingSpinner fullWidth={false} />}>
       {/* SEO Head DEV*/}
       <MainHead
-        title={element.name}
-        mainImage={`${element.logo}`}
-        icon={`${element.logo}`}
-        phone={element.phone}
+        title={element?.Data?.name}
+        mainImage={`${element?.Data?.logo}`}
+        icon={`${element?.Data?.logo}`}
+        phone={element?.Data?.phone}
       />
       <MainContentLayout url={url}>
         {/*  ImageBackGround Header */}
         <div className="sm:h-52 lg:h-auto">
           <CustomImage
-            src={`${imgUrl(element.cover)}`}
-            alt={element.name}
+            src={`${imgUrl(element?.Data?.cover)}`}
+            alt={element?.Data?.name}
             className={`block lg:hidden object-cover w-full absolute left-0 right-0 -top-10 shadow-xl z-0 overflow-hidden`}
             width={imageSizes.xl}
             height={imageSizes.xl}
           />
         </div>
 
-        <div className="bg-white mt-40 lg:mt-0 border-t-4 border-stone-100 lg:border-none rounded-none relative top-32 lg:top-auto  pt-1 lg:pt-0 ">
+        <div className="bg-white md:mt-40 mt-10 lg:mt-0 border-t-4 border-stone-100 lg:border-none rounded-none relative top-32 lg:top-auto  pt-1 lg:pt-0 ">
           {/*  HomePage Header */}
           <div className={`px-6 mt-3 lg:mt-0`}>
             <HomeVendorMainInfo url={url} />
           </div>
-          <HomeSelectMethod element={element} url={url} />
+          <HomeSelectMethod element={element?.Data} url={url} />
           {/* Search Input */}
           <div
             className={`flex flex-1 w-auto flex-grow mx-2 pb-4 border-b border-stone-300`}
           >
             <div className={`w-full`}>
-              <div className="relative mt-1 rounded-md shadow-sm text-gray-400">
+              <SearchInput
+                placeholder={`${t(`search_products`)}`}
+                onFocus={() => handleFocus()}
+              />
+              {/* <div className="relative mt-1 rounded-md shadow-sm text-gray-400">
                 <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center px-6">
                   <MagnifyingGlassIcon className="h-8 w-8" aria-hidden="true" />
                 </div>
@@ -114,7 +125,7 @@ const HomePage: NextPage<Props> = ({ element, url }): JSX.Element => {
                   suppressHydrationWarning={suppressText}
                   placeholder={`${t(`search_products`)}`}
                 />
-              </div>
+              </div> */}
             </div>
           </div>
           {/* Categories List */}
@@ -205,25 +216,25 @@ export const getServerSideProps = wrapper.getServerSideProps(
       if (store.getState().locale.lang !== locale) {
         store.dispatch(setLocale(locale));
       }
-      const {
-        data: element,
-        isError,
-      }: { data: AppQueryResult<Vendor>; isError: boolean } =
-        await store.dispatch(
-          vendorApi.endpoints.getVendor.initiate({
-            lang: locale,
-            url,
-          })
-        );
-      await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
-      if (isError || !element.status || !element.Data) {
-        return {
-          notFound: true,
-        };
-      }
+      // const {
+      //   data: element,
+      //   isError,
+      // }: { data: AppQueryResult<Vendor>; isError: boolean } =
+      //   await store.dispatch(
+      //     vendorApi.endpoints.getVendor.initiate({
+      //       lang: locale,
+      //       url,
+      //     })
+      //   );
+      // await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
+      // if (isError || !element.status || !element.Data) {
+      //   return {
+      //     notFound: true,
+      //   };
+      // }
       return {
         props: {
-          element: element.Data,
+          // element: element.Data,
           url,
         },
       };

@@ -29,6 +29,7 @@ const OrderInvoice: NextPage<Props> = ({ url }): JSX.Element => {
     branch,
     area,
     appSetting: { method },
+    locale: { lang },
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const color = useAppSelector(themeColor);
@@ -45,6 +46,7 @@ const OrderInvoice: NextPage<Props> = ({ url }): JSX.Element => {
           : method === `delivery` && area.id
           ? { 'x-area-id': area.id }
           : {},
+      lang,
     },
     { refetchOnMountOrArgChange: true }
   );
@@ -211,7 +213,10 @@ const OrderInvoice: NextPage<Props> = ({ url }): JSX.Element => {
             </div>
 
             {/* delivery instructions */}
-            {element.data.order_type.includes('delivery') ? (
+            {element.data.order_type.includes('delivery') &&
+            element.data.delivery_address &&
+            element.data.delivery_address.address &&
+            element.data.delivery_address.address.additional ? (
               <div className="flex items-center py-1">
                 <p
                   className="pe-2 font-extrabold"
