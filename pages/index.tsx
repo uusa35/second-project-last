@@ -1,11 +1,4 @@
-import {
-  useEffect,
-  Suspense,
-  useLayoutEffect,
-  useRef,
-  useState,
-  useCallback,
-} from 'react';
+import { useEffect, Suspense } from 'react';
 import { wrapper } from '@/redux/store';
 import { NextPage } from 'next';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -14,9 +7,9 @@ import MainHead from '@/components/MainHead';
 import { Product, Vendor } from '@/types/index';
 import { useGetVendorQuery, vendorApi } from '@/redux/api/vendorApi';
 import { useGetCategoriesQuery } from '@/redux/api/categoryApi';
-import { debounce, isEmpty, kebabCase, lowerCase, map } from 'lodash';
+import { isEmpty, kebabCase, lowerCase, map } from 'lodash';
 import CategoryWidget from '@/widgets/category/CategoryWidget';
-import { appLinks, imageSizes, imgUrl } from '@/constants/*';
+import { appLinks, imageSizes } from '@/constants/*';
 import { useTranslation } from 'react-i18next';
 import { setLocale } from '@/redux/slices/localeSlice';
 import {
@@ -35,6 +28,7 @@ import Link from 'next/link';
 import SearchInput from '@/components/SearchInput';
 import { apiSlice } from '@/redux/api';
 import { AppQueryResult } from '@/types/queries';
+import { StickyContainer, Sticky } from 'react-sticky';
 
 type Props = {
   element: Vendor;
@@ -42,7 +36,6 @@ type Props = {
 };
 const HomePage: NextPage<Props> = ({ url, element }): JSX.Element => {
   const { t } = useTranslation();
-  const [offset, setOffset] = useState(0);
   const {
     locale: { lang },
     branch: { id: branch_id },
@@ -51,7 +44,6 @@ const HomePage: NextPage<Props> = ({ url, element }): JSX.Element => {
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const listRef = useRef<any>(null);
 
   const { data: categories, isSuccess: categoriesSuccess } =
     useGetCategoriesQuery({
@@ -60,7 +52,6 @@ const HomePage: NextPage<Props> = ({ url, element }): JSX.Element => {
     });
   const [triggerGetProducts, { data: elements, isSuccess: elementsSuccess }] =
     useLazyGetProductsQuery();
-
   const { data: vendorDetails, isSuccess: vendorSuccess } = useGetVendorQuery({
     lang,
     url,
@@ -83,37 +74,6 @@ const HomePage: NextPage<Props> = ({ url, element }): JSX.Element => {
   const handleFocus = () =>
     router.push(appLinks.productSearchIndex('', branch_id, area_id));
 
-  // useEffect(() => {
-  //   if (categoriesSuccess && elementsSuccess) {
-  //   }
-  //   console.log('from inside useEffect', listRef);
-  // }, [listRef]);
-
-  // useEffect(() => {
-  //   const onScroll = () => setOffset(window.pageYOffset);
-  //   window.addEventListener('scroll', onScroll, { passive: true });
-  //   return () => {
-  //     window.removeEventListener('scroll', debounce(onScroll, 400));
-  //   };
-  // }, []);
-
-  const getoffSet = (e) => {
-    console.log(
-      'position ====>',
-      e.natiiveEvent.target.childNodes[0].offsetTop
-    );
-  };
-
-  const onScroll = () => {
-    console.log('inside callback', listRef.current);
-    if (listRef.current) {
-      const { scrollTop, scrollHeight, clientHeight } = listRef.current;
-      console.log('inside', scrollHeight);
-      if (scrollTop + clientHeight === scrollHeight) {
-      }
-    }
-  };
-
   return (
     <Suspense fallback={<LoadingSpinner fullWidth={true} />}>
       {/* SEO Head DEV*/}
@@ -125,10 +85,10 @@ const HomePage: NextPage<Props> = ({ url, element }): JSX.Element => {
       />
       <MainContentLayout url={url}>
         {/*  ImageBackGround Header */}
-        {vendorSuccess && vendorDetails && !vendorDetails.Data && (
-          <div className="sm:h-52 lg:h-auto">
+        {vendorSuccess && vendorDetails && vendorDetails.Data && (
+          <div className="sm:h-52 lg:h-auto border-4">
             <CustomImage
-              src={`${imgUrl(vendorDetails?.Data?.cover)}`}
+              src={`${vendorDetails?.Data?.cover}`}
               alt={vendorDetails?.Data?.name}
               className={`block lg:hidden object-cover w-full absolute left-0 right-0 -top-10 shadow-xl z-0 overflow-hidden`}
               width={imageSizes.xl}
@@ -142,10 +102,12 @@ const HomePage: NextPage<Props> = ({ url, element }): JSX.Element => {
           <div className={`px-6 mt-3 lg:mt-0`}>
             <HomeVendorMainInfo url={url} />
           </div>
-          <HomeSelectMethod element={vendorDetails?.Data} url={url} />
+          {vendorSuccess && vendorDetails?.Data && (
+            <HomeSelectMethod element={vendorDetails?.Data} url={url} />
+          )}
           {/* Search Input */}
           <div
-            className={`flex flex-1 w-auto flex-grow mx-2 pb-4 border-b border-stone-300`}
+            className={`flex flex-1 w-auto flex-grow mx-2 pb-4 border-b border-stone-200`}
           >
             <div className={`w-full`}>
               <SearchInput
@@ -163,11 +125,7 @@ const HomePage: NextPage<Props> = ({ url, element }): JSX.Element => {
                 <LoadingSpinner fullWidth={true} />
               </div>
             ))}
-          <div
-            className={`py-4 px-2 overflow-y-scroll`}
-            ref={(el) => (listRef.current = el)}
-            onScroll={onScroll}
-          >
+          <div className={`py-4 px-2`}>
             {categoriesSuccess &&
             !isEmpty(categories) &&
             element.template_type === 'basic_category!' ? (
@@ -190,44 +148,71 @@ const HomePage: NextPage<Props> = ({ url, element }): JSX.Element => {
                   },
                   i
                 ) => (
-                  <div key={i} className={`flex flex-col mt-2`}>
-                    {!isEmpty(list.items) && (
-                      <Link
-                        href={
-                          (method === `pickup` && !branch_id) ||
-                          (method === `delivery` && !area_id)
-                            ? appLinks.productIndex(
-                                list.cat_id.toString(),
-                                kebabCase(lowerCase(list.name)),
-                                branch_id,
-                                area_id
-                              )
-                            : appLinks.productIndexDefined(
-                                list.cat_id.toString(),
-                                kebabCase(lowerCase(list.name)),
-                                method,
-                                method === `delivery` ? area_id : branch_id
-                              )
-                        }
-                        className={`w-full font-extrabold text-lg py-3 bg-stone-100 rounded-md px-4`}
-                      >
-                        {list.name}
-                      </Link>
-                    )}
-                    <div
-                      className={`grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 gap-x-3 py-4'      
+                  <StickyContainer key={i}>
+                    <div key={i} className={`flex flex-col mt-2`}>
+                      {!isEmpty(list.items) && (
+                        <Sticky>
+                          {({
+                            style,
+                            // the following are also available but unused in this example
+                            isSticky,
+                            wasSticky,
+                            distanceFromTop,
+                            distanceFromBottom,
+                            calculatedHeight,
+                          }) => (
+                            <header
+                              style={style}
+                              className={`w-full bg-white z-40   ${
+                                isSticky
+                                  ? `relative mt-[80px]   py-3 rounded-none border-t border-b-2 border-stone-100`
+                                  : ` bg-stone-100 rounded-md`
+                              }`}
+                            >
+                              <Link
+                                href={
+                                  (method === `pickup` && !branch_id) ||
+                                  (method === `delivery` && !area_id)
+                                    ? appLinks.productIndex(
+                                        list.cat_id.toString(),
+                                        kebabCase(lowerCase(list.name)),
+                                        branch_id,
+                                        area_id
+                                      )
+                                    : appLinks.productIndexDefined(
+                                        list.cat_id.toString(),
+                                        kebabCase(lowerCase(list.name)),
+                                        method,
+                                        method === `delivery`
+                                          ? area_id
+                                          : branch_id
+                                      )
+                                }
+                                className={`flex flex-1 font-bold  ${
+                                  isSticky ? `text-xl` : `text-lg`
+                                }`}
+                              >
+                                {list.name}
+                              </Link>
+                            </header>
+                          )}
+                        </Sticky>
+                      )}
+                      <div
+                        className={`grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 gap-x-3 py-4'      
                           `}
-                    >
-                      {!isEmpty(list.items) &&
-                        map(list.items, (p: Product, i) => (
-                          <HorProductWidget
-                            element={p}
-                            key={i}
-                            category_id={list.cat_id.toString()}
-                          />
-                        ))}
+                      >
+                        {!isEmpty(list.items) &&
+                          map(list.items, (p: Product, i) => (
+                            <HorProductWidget
+                              element={p}
+                              key={i}
+                              category_id={list.cat_id.toString()}
+                            />
+                          ))}
+                      </div>
                     </div>
-                  </div>
+                  </StickyContainer>
                 )
               )
             )}
