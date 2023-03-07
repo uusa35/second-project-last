@@ -1,17 +1,15 @@
 import { useEffect, Suspense } from 'react';
 import { wrapper } from '@/redux/store';
-import { apiSlice } from '@/redux/api';
 import { NextPage } from 'next';
-import { AppQueryResult } from '@/types/queries';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import MainContentLayout from '@/layouts/MainContentLayout';
 import MainHead from '@/components/MainHead';
+import { Product, Vendor } from '@/types/index';
 import { useGetVendorQuery, vendorApi } from '@/redux/api/vendorApi';
-import { Vendor } from '@/types/index';
 import { useGetCategoriesQuery } from '@/redux/api/categoryApi';
-import { isEmpty, map } from 'lodash';
+import { isEmpty, kebabCase, lowerCase, map } from 'lodash';
 import CategoryWidget from '@/widgets/category/CategoryWidget';
-import { appLinks, imageSizes, imgUrl, suppressText } from '@/constants/*';
+import { appLinks, imageSizes, imgUrl } from '@/constants/*';
 import { useTranslation } from 'react-i18next';
 import { setLocale } from '@/redux/slices/localeSlice';
 import {
@@ -25,18 +23,24 @@ import { useRouter } from 'next/router';
 import CustomImage from '@/components/CustomImage';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import PoweredByQ from '@/components/PoweredByQ';
+import { useLazyGetProductsQuery } from '@/redux/api/productApi';
+import HorProductWidget from '@/widgets/product/HorProductWidget';
+import Link from 'next/link';
 import SearchInput from '@/components/SearchInput';
+import { apiSlice } from '@/redux/api';
+import { AppQueryResult } from '@/types/queries';
 
 type Props = {
-  // element.Data: Vendor;
+  element: Vendor;
   url: string;
 };
-const HomePage: NextPage<Props> = ({ url }): JSX.Element => {
+const HomePage: NextPage<Props> = ({ url, element }): JSX.Element => {
   const { t } = useTranslation();
   const {
     locale: { lang },
     branch: { id: branch_id },
     area: { id: area_id },
+    appSetting: { method },
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -45,8 +49,10 @@ const HomePage: NextPage<Props> = ({ url }): JSX.Element => {
       lang,
       url,
     });
+  const [triggerGetProducts, { data: elements, isSuccess: elementsSuccess }] =
+    useLazyGetProductsQuery();
 
-  const { data: element, isSuccess: VendorSuccess } = useGetVendorQuery({
+  const { data: vendorDetails, isSuccess: vendorSuccess } = useGetVendorQuery({
     lang,
     url,
   });
@@ -54,30 +60,39 @@ const HomePage: NextPage<Props> = ({ url }): JSX.Element => {
   useEffect(() => {
     dispatch(setCurrentModule('home'));
     dispatch(setShowFooterElement('home'));
+    triggerGetProducts({
+      url,
+      lang,
+      category_id: ``,
+      page: `1`,
+      limit: `10`,
+      branch_id: branch_id.toString(),
+      area_id: area_id.toString(),
+    });
   }, []);
 
   const handleFocus = () =>
     router.push(appLinks.productSearchIndex('', branch_id, area_id));
 
-    if(!VendorSuccess){
-      return <LoadingSpinner/>
-    }
+  if (!vendorSuccess) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <Suspense fallback={<LoadingSpinner fullWidth={false} />}>
       {/* SEO Head DEV*/}
       <MainHead
-        title={element?.Data?.name}
-        mainImage={`${element?.Data?.logo}`}
-        icon={`${element?.Data?.logo}`}
-        phone={element?.Data?.phone}
+        title={element.name}
+        mainImage={`${element.logo}`}
+        icon={`${element.logo}`}
+        phone={element.phone}
       />
       <MainContentLayout url={url}>
         {/*  ImageBackGround Header */}
         <div className="sm:h-52 lg:h-auto">
           <CustomImage
-            src={`${imgUrl(element?.Data?.cover)}`}
-            alt={element?.Data?.name}
+            src={`${imgUrl(vendorDetails?.Data?.cover)}`}
+            alt={vendorDetails?.Data?.name}
             className={`block lg:hidden object-cover w-full absolute left-0 right-0 -top-10 shadow-xl z-0 overflow-hidden`}
             width={imageSizes.xl}
             height={imageSizes.xl}
@@ -89,7 +104,7 @@ const HomePage: NextPage<Props> = ({ url }): JSX.Element => {
           <div className={`px-6 mt-3 lg:mt-0`}>
             <HomeVendorMainInfo url={url} />
           </div>
-          <HomeSelectMethod element={element?.Data} url={url} />
+          <HomeSelectMethod element={vendorDetails?.Data} url={url} />
           {/* Search Input */}
           <div
             className={`flex flex-1 w-auto flex-grow mx-2 pb-4 border-b border-stone-300`}
@@ -116,17 +131,75 @@ const HomePage: NextPage<Props> = ({ url }): JSX.Element => {
             </div>
           </div>
           {/* Categories List */}
-          {isEmpty(categories) && (
-            <div className={`flex w-auto h-[30vh] justify-center items-center`}>
-              <LoadingSpinner fullWidth={false} />
-            </div>
-          )}
-          <div className="py-4 px-2 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-1">
+          {isEmpty(categories) ||
+            (isEmpty(elements?.Data) && (
+              <div
+                className={`flex w-auto h-[30vh] justify-center items-center`}
+              >
+                <LoadingSpinner fullWidth={false} />
+              </div>
+            ))}
+          <div className={`py-4 px-2 `}>
             {categoriesSuccess &&
-              !isEmpty(categories) &&
-              map(categories.Data, (c, i) => (
-                <CategoryWidget element={c} key={i} />
-              ))}
+            !isEmpty(categories) &&
+            element.template_type === 'basic_category!!!' ? (
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-1">
+                {map(categories.Data, (c, i) => (
+                  <CategoryWidget element={c} key={i} />
+                ))}
+              </div>
+            ) : (
+              elements &&
+              !isEmpty(elements.Data) &&
+              elementsSuccess &&
+              map(
+                elements.Data,
+                (
+                  list: {
+                    cat_id: number;
+                    items: Product[];
+                    name: string;
+                  },
+                  i
+                ) => (
+                  <div key={i} className={`flex flex-col mb-8`}>
+                    <Link
+                      href={
+                        (method === `pickup` && !branch_id) ||
+                        (method === `delivery` && !area_id)
+                          ? appLinks.productIndex(
+                              list.cat_id.toString(),
+                              kebabCase(lowerCase(list.name)),
+                              branch_id,
+                              area_id
+                            )
+                          : appLinks.productIndexDefined(
+                              list.cat_id.toString(),
+                              kebabCase(lowerCase(list.name)),
+                              method,
+                              method === `delivery` ? area_id : branch_id
+                            )
+                      }
+                      className={`w-full font-extrabold text-lg py-3 border-b-2 border-t-2 bg-gray-200 rounded-lg px-4`}
+                    >
+                      {list.name}
+                    </Link>
+                    <div
+                      className={`grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 gap-x-3 py-4'      
+                          `}
+                    >
+                      {map(list.items, (p: Product, i) => (
+                        <HorProductWidget
+                          element={p}
+                          key={i}
+                          category_id={list.cat_id.toString()}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )
+              )
+            )}
           </div>
         </div>
         <div className={`mt-[10%]`}>
@@ -145,27 +218,28 @@ export const getServerSideProps = wrapper.getServerSideProps(
       if (store.getState().locale.lang !== locale) {
         store.dispatch(setLocale(locale));
       }
-      // const {
-      //   data: element,
-      //   isError,
-      // }: { data: AppQueryResult<Vendor>; isError: boolean } =
-      //   await store.dispatch(
-      //     vendorApi.endpoints.getVendor.initiate({
-      //       lang: locale,
-      //       url,
-      //     })
-      //   );
-      // await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
-      // if (isError || !element.status || !element.Data) {
-      //   return {
-      //     notFound: true,
-      //   };
-      // }
+      const {
+        data: element,
+        isError,
+      }: { data: AppQueryResult<Vendor>; isError: boolean } =
+        await store.dispatch(
+          vendorApi.endpoints.getVendor.initiate({
+            lang: locale,
+            url,
+          })
+        );
+      await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
+      if (isError || !element.status || !element.Data) {
+        return {
+          notFound: true,
+        };
+      }
       return {
         props: {
-          // element: element.Data,
+          element: element.Data,
           url,
         },
       };
     }
 );
+
