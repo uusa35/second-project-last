@@ -96,7 +96,6 @@ const HomePage: NextPage<Props> = ({ url, element }): JSX.Element => {
             />
           </div>
         )}
-
         <div className="bg-white md:mt-40 mt-10 lg:mt-0 border-t-4 border-stone-100 lg:border-none rounded-none relative top-32 lg:top-auto  pt-1 lg:pt-0 ">
           {/*  HomePage Header */}
           <div className={`px-6 mt-3 lg:mt-0`}>
