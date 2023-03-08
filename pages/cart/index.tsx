@@ -536,7 +536,7 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
                     promoEnabled
                       ? 'border-b-lime-500 focus:border-b-lime-500'
                       : 'border-b-gray-200 focus:border-b-gray-200'
-                  } w-full focus:ring-transparent capitalize`}
+                  } w-full focus:ring-transparent`}
                 />
                 {promoEnabled ? (
                   <Done className="!text-lime-500 absolute end-0" />
