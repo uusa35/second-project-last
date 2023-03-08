@@ -158,10 +158,9 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
   };
 
   useEffect(() => {
-    if (couponVal !== undefined) {
+    if (couponVal !== undefined && couponVal.length > 2) {
       handleCoupon(couponVal);
     }
-    // debounce(() => handleCoupon(couponVal), 500);
   }, [couponVal]);
 
   const resetCoupon = () => {
@@ -452,7 +451,6 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
                           >
                             <span
                               className={`border border-gray-300 p-1 px-3 bg-white rounded-md text-md font-extrabold  w-8 h-8 flex justify-center items-center`}
-                              
                             >
                               +
                             </span>
@@ -481,32 +479,32 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
                           </button>
                         </span>
                         <div>
-                         {item.SalePrice !== item.Price ? (
-                           <div>
+                          {item.SalePrice !== item.Price ? (
+                            <div>
                               <p
-                              className="uppercase line-through"
-                              style={{ color }}
-                              suppressHydrationWarning={suppressText}
+                                className="uppercase line-through"
+                                style={{ color }}
+                                suppressHydrationWarning={suppressText}
                               >
-                              {item.Price} {t('kwd')}
-                            </p>
+                                {item.Price} {t('kwd')}
+                              </p>
+                              <p
+                                className=" uppercase"
+                                style={{ color }}
+                                suppressHydrationWarning={suppressText}
+                              >
+                                {item.SalePrice} {t('kwd')}
+                              </p>
+                            </div>
+                          ) : (
                             <p
                               className=" uppercase"
                               style={{ color }}
                               suppressHydrationWarning={suppressText}
                             >
-                              {item.SalePrice} {t('kwd')}
+                              {item.Price} {t('kwd')}
                             </p>
-                           </div>
-                         ): (
-                          <p
-                          className=" uppercase"
-                          style={{ color }}
-                          suppressHydrationWarning={suppressText}
-                        >
-                          {item.Price} {t('kwd')}
-                        </p>
-                         )}
+                          )}
                         </div>
                       </div>
                     </div>
@@ -529,8 +527,8 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
                 <input
                   type="text"
                   placeholder={`${startCase(t('enter_code_here').toString())}`}
-                  value={couponVal}
-                  onChange={(e) => setCouponVal(e.target.value)}
+                  defaultValue={couponVal}
+                  onChange={debounce((e) => setCouponVal(e.target.value), 3000)}
                   suppressHydrationWarning={suppressText}
                   className={`border-0 border-b-2 ${
                     promoEnabled

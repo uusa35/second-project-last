@@ -116,8 +116,8 @@ const HomePage: NextPage<Props> = ({ url, element }): JSX.Element => {
             </div>
           </div>
           {/* Loading Spinner */}
-          {isEmpty(categories) ||
-            (isEmpty(elements?.Data) && (
+          {!categoriesSuccess ||
+            (!elementsSuccess && (
               <div
                 className={`flex w-full h-[30vh] justify-center items-center w-full`}
               >

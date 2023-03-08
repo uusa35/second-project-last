@@ -165,20 +165,7 @@ const SelectMethod: NextPage<Props> = ({
         <div className={`px-4`}>
           <DeliveryBtns method_in_select={method} />
           <div className={`w-full mb-4`}>
-            <SearchInput/>
-            {/* <div className="relative mt-1 rounded-md shadow-sm text-gray-400">
-              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center px-6">
-                <MagnifyingGlassIcon className="h-8 w-8" aria-hidden="true" />
-              </div>
-              <input
-                type="search"
-                name="search"
-                id="search"
-                className="block w-full focus:ring-1 focus:ring-primary_BG rounded-md  pl-20 border-none  bg-gray-100 py-3 h-12  text-lg capitalize"
-                suppressHydrationWarning={suppressText}
-                placeholder={`${t(`search`)}`}
-              />
-            </div> */}
+            <SearchInput />
           </div>
           {method === 'delivery' && (
             <div className={`px-4`}>
