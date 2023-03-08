@@ -86,17 +86,17 @@ const HomePage: NextPage<Props> = ({ url, element }): JSX.Element => {
       <MainContentLayout url={url}>
         {/*  ImageBackGround Header */}
         {vendorSuccess && vendorDetails && vendorDetails.Data && (
-          <div className="sm:h-52 lg:h-auto border-4">
+          <div className="block lg:hidden lg:h-auto border-4 h-60">
             <CustomImage
               src={`${vendorDetails?.Data?.cover}`}
               alt={vendorDetails?.Data?.name}
-              className={`block lg:hidden object-cover w-full absolute left-0 right-0 -top-10 shadow-xl z-0 overflow-hidden`}
+              className={`object-fit w-full h-full  shadow-xl z-0 overflow-hidden`}
               width={imageSizes.xl}
               height={imageSizes.xl}
             />
           </div>
         )}
-        <div className="bg-white md:mt-40 mt-10 lg:mt-0 border-t-4 border-stone-100 lg:border-none rounded-none relative top-32 lg:top-auto  pt-1 lg:pt-0 ">
+        <div className="bg-white border-t-4 border-stone-100 lg:border-none rounded-none relative lg:top-auto  pt-1 lg:pt-0 ">
           {/*  HomePage Header */}
           <div className={`px-6 mt-3 lg:mt-0`}>
             <HomeVendorMainInfo url={url} />
@@ -127,7 +127,7 @@ const HomePage: NextPage<Props> = ({ url, element }): JSX.Element => {
           <div className={`py-4 px-2`}>
             {categoriesSuccess &&
             !isEmpty(categories) &&
-            element.template_type === 'basic_category' ? (
+            vendorDetails?.Data?.template_type === 'basic_category' ? (
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-1">
                 {map(categories.Data, (c, i) => (
                   <CategoryWidget element={c} key={i} />
