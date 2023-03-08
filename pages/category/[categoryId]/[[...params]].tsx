@@ -66,57 +66,6 @@ const ProductIndex: NextPage<Props> = ({
   // change menue view to list view
   const changeStyle = (preview: appSetting['productPreview']) => {
     dispatch(setProductPreview(preview));
-
-  const handleNext = () => {
-    const nextPage = parseInt(page) + 1;
-    if (nextPage >= 1) {
-      console.log('next', nextPage);
-      triggerGetProducts({
-        category_id: query.categoryId,
-        page: nextPage.toString(),
-        limit,
-        ...(branch_id && { branch_id }),
-        ...(area_id && { area_id }),
-        lang: locale,
-        url,
-      }).then((r) => {
-        console.log('r from next', r);
-        if (r.data && r.data.Data && r.data.Data?.products) {
-          const filteredProducts = filter(
-            [r.data.Data.products, ...currentProducts],
-            (p) => p.id
-          );
-          setCurrentProducts(filteredProducts);
-        } else {
-          setCurrentProducts([]);
-        }
-      });
-    }
-  };
-
-  const handlePrevious = () => {
-    const previousPage = parseInt(page) - 1;
-    if (previousPage >= 1) {
-      console.log('prev', previousPage);
-      triggerGetProducts({
-        category_id: query.categoryId,
-        page: previousPage.toString(),
-        limit,
-        ...(branch_id && { branch_id }),
-        ...(area_id && { area_id }),
-        lang: locale,
-        url,
-      }).then((r: any) => {
-        console.log('r from pre', r);
-        if (r.data && r.data.Data && r.data.Data.products) {
-          console.log('inside');
-          setCurrentProducts(r.data.Data.products);
-        } else {
-          console.log('else');
-          setCurrentProducts([]);
-        }
-      });
-    }
     setIcon(!icon);
   };
 
@@ -159,19 +108,6 @@ const ProductIndex: NextPage<Props> = ({
     });
   };
 
-<<<<<<< HEAD
-  const handleChange = (key: string) => {
-    if (key.length > 2) {
-      triggerSearchProducts({
-        key,
-        lang,
-        branch_id,
-        areaId: area_id,
-        url,
-      }).then((r: any) => setCurrentProducts(r.data.Data));
-    } else {
-      setCurrentProducts(data.Data?.products);
-=======
   useEffect(() => {
     if (!latest && previousPage !== currentPage) {
       handleFire();
@@ -185,7 +121,6 @@ const ProductIndex: NextPage<Props> = ({
       if (scrollTop + clientHeight === scrollHeight) {
         setCurrentPage(currentPage + 1);
       }
->>>>>>> structure
     }
   };
 
@@ -311,44 +246,7 @@ const ProductIndex: NextPage<Props> = ({
                     />
                   )
                 )
-<<<<<<< HEAD
-              )}
-          </div>
-          {/* pagination */}
-          <div
-            className={`d-none flex  flex-row-reverse flex-row justify-between items-center`}
-          >
-            {!isNull(page) && parseInt(page) >= 1 && (
-              <Link
-                onClick={() => handleNext()}
-                locale={lang}
-                href={`${updateUrlParams(
-                  asPath,
-                  'page',
-                  (parseInt(page) + 1).toString()
-                )}`}
-                className={`border border-gray-200 p-3 px-6 justify-center items-center rounded-md`}
-              >
-                {t('next_pagination')}
-              </Link>
-            )}
-            {!isNull(page) && parseInt(page) > 1 && (
-              <Link
-                onClick={() => handlePrevious()}
-                locale={lang}
-                href={`${updateUrlParams(
-                  asPath,
-                  'page',
-                  (parseInt(page) - 1).toString()
-                )}`}
-                className={`border border-gray-200 p-3 px-6 justify-center items-center rounded-md`}
-              >
-                {t('previous')}
-              </Link>
-            )}
-=======
               : null}
->>>>>>> structure
           </div>
         </div>
       </MainContentLayout>
