@@ -12,9 +12,10 @@ import {
 } from '@mui/icons-material';
 // import Home from '@/appIcons/home.svg';
 import CustomImage from '@/components/CustomImage';
-import Knet from '@/appImages/knet.png';
-import Cash from '@/appImages/cash_on_delivery.jpg';
-import Visa from '@/appImages/visa.png';
+import Knet from '@/appImages/knet.svg';
+import Cash from '@/appImages/cash_on_delivery.svg';
+import CreditCard from '@/appImages/credit_card.svg';
+import PersonalDetails from '@/appImages/personal_information.svg';
 import GoogleMapReact from 'google-map-react';
 import {
   setCurrentModule,
@@ -82,9 +83,9 @@ const CartReview: NextPage<Props> = ({ url }) => {
   const [triggerCreateOrder, { isLoading }] = useLazyCreateOrderQuery();
   const [triggerAddToCart] = useAddToCartMutation();
   const paymentMethods: { id: OrderUser['PaymentMethod']; src: any }[] = [
-    { id: 'visa', src: Visa.src },
-    { id: 'knet', src: Knet.src },
-    { id: 'cash_on_delivery', src: Cash.src },
+    { id: 'visa', src: <CreditCard /> },
+    { id: 'knet', src: <Knet /> },
+    { id: 'cash_on_delivery', src: <Cash /> },
   ];
 
   useEffect(() => {
@@ -378,8 +379,8 @@ const CartReview: NextPage<Props> = ({ url }) => {
             )}
             {/* information */}
             <div className="flex justify-between items-center">
-              <div className="flex">
-                <BadgeOutlined sx={{ color: color }} />
+              <div className="flex items-center">
+                <PersonalDetails className={`personal-details w-6 h-6`}  />
                 <div className="ps-2 capitalize">
                   <h4 className="font-semibold text-base">{customer.name}</h4>
                   <p>{customer.phone}</p>
@@ -499,7 +500,7 @@ const CartReview: NextPage<Props> = ({ url }) => {
                         <div className="flex">
                           <div className="w-fit pb-2">
                             <div
-                              className={`flex text-gray-400 w-auto flex-wrap justify-between`}
+                              className={`flex text-gray-400 w-auto flex-wrap justify-between items-center`}
                             >
                               {!isEmpty(item.QuantityMeters) &&
                                 map(item.QuantityMeters, (q, i) => (
@@ -579,13 +580,9 @@ const CartReview: NextPage<Props> = ({ url }) => {
                     } bg-stone-100 flex justify-center items-center w-24 h-24 rounded-md shadow-lg`}
                   >
                     <div>
-                      <CustomImage
-                        src={m.src}
-                        alt="payment"
-                        width={imageSizes.xs}
-                        height={imageSizes.xs}
-                        className={`w-14 h-14`}
-                      />
+                      <div className={`w-14 h-14`}>
+                      {m.src}
+                      </div>
                     </div>
                   </button>
                   <div
