@@ -86,11 +86,11 @@ const HomePage: NextPage<Props> = ({ url, element }): JSX.Element => {
       <MainContentLayout url={url}>
         {/*  ImageBackGround Header */}
         {vendorSuccess && vendorDetails && vendorDetails.Data && (
-          <div className="block lg:hidden lg:h-auto border-4">
+          <div className="block lg:hidden lg:h-auto border-4 h-60">
             <CustomImage
               src={`${vendorDetails?.Data?.cover}`}
               alt={vendorDetails?.Data?.name}
-              className={`object-cover w-full -top-10 shadow-xl z-0 overflow-hidden`}
+              className={`object-fit w-full h-full  shadow-xl z-0 overflow-hidden`}
               width={imageSizes.xl}
               height={imageSizes.xl}
             />
