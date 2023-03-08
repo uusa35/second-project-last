@@ -95,12 +95,12 @@ const AppFooter: FC<Props> = ({
         i.id?.split('_').sort().join(',') ===
         productCart.id.split('_').sort().join(',')
       ) {
-          return {
-            ...i,
-            Quantity: i.Quantity + productCart.Quantity,
-          };
-        }
-    })
+        return {
+          ...i,
+          Quantity: i.Quantity + productCart.Quantity,
+        };
+      }
+    });
     // if item is not in the cart add it
     if (
       isUndefined(
@@ -110,13 +110,13 @@ const AppFooter: FC<Props> = ({
             x?.id?.split('_').sort().join(',') ===
             productCart.id.split('_').sort().join(',')
         )
-      ) 
+      )
     ) {
       items.push(productCart);
     }
 
     console.log('items', items);
-                                             
+
     return items;
   };
 
@@ -182,7 +182,9 @@ const AppFooter: FC<Props> = ({
                     )
                   );
                 } else {
-                  router.replace(appLinks.productIndex(``, ``, branchId, area.id));
+                  router.replace(
+                    appLinks.productIndex(``, ``, branchId, area.id)
+                  );
                 }
               } else {
               }
@@ -351,6 +353,10 @@ const AppFooter: FC<Props> = ({
               }}
             >
               <button
+                disabled={
+                  parseFloat(productCart.grossTotalPrice).toFixed(3) ===
+                    '0.000' && !method
+                }
                 onClick={debounce(() => handleAddToCart(), 400)}
                 className={`${footerBtnClass}`}
                 style={{
