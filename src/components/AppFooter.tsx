@@ -82,22 +82,11 @@ const AppFooter: FC<Props> = ({
 
   const handelCartPayload = () => {
     let items = map(cartItems?.data.Cart, (i) => {
-      console.log(
-        'i===product',
-        i.id?.split('_').sort().join(','),
-        productCart.id.split('_').sort().join(','),
-        i.id?.split('_').sort().join(',') ===
-          productCart.id.split('_').sort().join(','),
-        i.ExtraNotes === productCart.ExtraNotes,
-        i
-      );
-
       // if item is not in the cart return all items in cart
       if (
         i.id?.split('_').sort().join(',') !==
         productCart.id.split('_').sort().join(',')
       ) {
-        console.log('id!=id');
         return i;
       }
       // if item is in the cart return item but with quantity increased
@@ -106,25 +95,13 @@ const AppFooter: FC<Props> = ({
         i.id?.split('_').sort().join(',') ===
         productCart.id.split('_').sort().join(',')
       ) {
-        if (i.ExtraNotes === productCart.ExtraNotes) {
-          console.log('id=id,note=note', 'inc qty', {
-            ...i,
-            Quantity: i.Quantity + productCart.Quantity,
-          });
           return {
             ...i,
             Quantity: i.Quantity + productCart.Quantity,
           };
-        } else {
-          console.log('id=id,note!=note');
-          // equal id but diffrent extranotes
-          return i;
         }
-      }
-    }).filter((notUndefined) => notUndefined !== undefined);
-
+    })
     // if item is not in the cart add it
-
     if (
       isUndefined(
         find(
@@ -133,22 +110,12 @@ const AppFooter: FC<Props> = ({
             x?.id?.split('_').sort().join(',') ===
             productCart.id.split('_').sort().join(',')
         )
-      ) ||
-      !isUndefined(
-        find(
-          items,
-          (x) =>
-            x?.id?.split('_').sort().join(',') ===
-              productCart.id.split('_').sort().join(',') &&
-            x?.ExtraNotes !== productCart.ExtraNotes
-        )
-      )
+      ) 
     ) {
-      console.log('add new itm');
       items.push(productCart);
     }
 
-    console.log('items', items,cartItems.data.Cart);
+    console.log('items', items);
                                              
     return items;
   };
@@ -222,8 +189,6 @@ const AppFooter: FC<Props> = ({
             });
           } else {
             if (r.error && r.error.data) {
-              // console.log('r', r.error.data.msg);
-              // console.log('isArray', r.error.data.msg);
               dispatch(
                 showToastMessage({
                   content: r.error.data.msg

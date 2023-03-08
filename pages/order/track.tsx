@@ -22,6 +22,7 @@ import { useRouter } from 'next/router';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { wrapper } from '@/redux/store';
+import SearchInput from '@/components/SearchInput';
 
 type Props = {
   url: string;
@@ -39,7 +40,7 @@ const TrackOrder: NextPage<Props> = ({ url }): JSX.Element => {
     //   router.replace(appLinks.trackOrder.path);
     // }
     if (order_code && order_code.length >= 3) {
-     await triggerGetTrackOrder({ order_code, url }).then(()=>{
+      await triggerGetTrackOrder({ order_code, url }).then(() => {
         router.replace(appLinks.trackOrder.path);
       });
     }
@@ -83,7 +84,18 @@ const TrackOrder: NextPage<Props> = ({ url }): JSX.Element => {
             {t('check_your_order_status')}
           </p>
           <div className={`w-full`}>
-            <div className="relative mt-1 rounded-md shadow-sm">
+            <SearchInput
+              defaultValue={
+                router.isReady &&
+                router.query.order_code &&
+                router.query?.order_code
+                  ? router.query.order_code as string
+                  : ``
+              }
+              onChange={debounce((e) => handleChange(e.target.value), 400)}
+              placeholder={`${t(`enter_order_code`)}`}
+            />
+            {/* <div className="relative mt-1 rounded-md shadow-sm">
               <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                 <MagnifyingGlassIcon
                   className="h-5 w-5 text-gray-400"
@@ -106,7 +118,7 @@ const TrackOrder: NextPage<Props> = ({ url }): JSX.Element => {
                 suppressHydrationWarning={suppressText}
                 placeholder={`${t(`enter_order_code`)}`}
               />
-            </div>
+            </div> */}
             {isSuccess && !isEmpty(data) && !data?.status && (
               <p
                 className=" text-sm font-semibold text-red-700 text-center pt-6"

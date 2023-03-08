@@ -15,6 +15,7 @@ export interface Product {
   new_price?: string;
   img: img[];
   sections?: ProductSection[];
+  cover: string
 }
 
 export interface ProductSection {
@@ -49,6 +50,7 @@ export interface Vendor {
   name: string;
   name_ar: string;
   name_en: string;
+  template_type: string;
   theme_color: string;
   status: string;
   phone: string;

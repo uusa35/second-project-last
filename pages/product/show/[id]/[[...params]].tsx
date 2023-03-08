@@ -144,10 +144,8 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
         isEmpty(allRadioBtns) &&
         isEmpty(allMeters)
       ) {
-        console.log('if');
         dispatch(disableAddToCart());
       } else {
-        console.log('else');
         dispatch(enableAddToCart());
       }
       dispatch(
@@ -171,9 +169,16 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
         productCart.CheckBoxes &&
           map(productCart.CheckBoxes, (c) => `_${c.uId}`),
         productCart.RadioBtnsAddons &&
-          map(productCart.RadioBtnsAddons, (r) => `_${r.uId}`)
+          map(productCart.RadioBtnsAddons, (r) => `_${r.uId}`),
+        ` _${productCart.ExtraNotes.replace(/[^A-Z0-9]/gi, '')}`
       );
-      console.log('uIds', `${productCart.ProductID}${join(uIds, '')}`);
+      // console.log(
+      //   'uIds',
+      //   `${productCart.ProductID}${join(
+      //     uIds,
+      //     ''
+      //   )}`
+      // );
       dispatch(updateId(`${productCart.ProductID}${join(uIds, '')}`));
     }
   }, [
@@ -181,6 +186,7 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
     productCart.CheckBoxes,
     productCart.RadioBtnsAddons,
     currentQty,
+    productCart.ExtraNotes,
   ]);
 
   const customAnimation = {
@@ -215,14 +221,13 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
       }
     }
   };
-
   const handleResetInitialProductCart = () => {
     if (isSuccess && !isNull(element) && element.Data) {
       dispatch(
         setInitialProductCart({
           ProductID: element?.Data?.id,
           ProductName: element?.Data?.name,
-          ProductImage: element?.Data?.img[0]?.thumbnail ?? ``,
+          ProductImage: element?.Data?.cover ?? ``,
           name_ar: element?.Data?.name_ar,
           name_en: element?.Data?.name_en,
           ProductDesc: element?.Data?.desc,
@@ -366,14 +371,14 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
       <MainHead
         title={`${product.name_ar} - ${product.name_en}`}
         description={`${product.description_ar} - ${product.description_en}`}
-        mainImage={`${product?.img[0]?.thumbnail?.toString()}`}
+        mainImage={`${product?.cover.toString()}`}
         icon={`${logo}`}
       />
       <MainContentLayout
         url={url}
         backRoute={
           query.category_id !== 'null'
-            ? appLinks.productIndex(query.category_id, product.name_en)
+            ? appLinks.productIndex(query.category_id, product.name_en, branch_id, area_id)
             : null
         }
         productCurrentQty={currentQty}

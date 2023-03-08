@@ -139,6 +139,9 @@ svg {
 ::-webkit-calendar-picker-indicator {
     filter: grayscale(1);
 }
+.personal-details {
+    filter: brightness(0.5);
+}
 option[value="IL"],
 input[value="+972"],
 img[alt="Israel"] {
