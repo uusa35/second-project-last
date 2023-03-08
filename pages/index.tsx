@@ -96,7 +96,6 @@ const HomePage: NextPage<Props> = ({ url, element }): JSX.Element => {
             />
           </div>
         )}
-
         <div className="bg-white md:mt-40 mt-10 lg:mt-0 border-t-4 border-stone-100 lg:border-none rounded-none relative top-32 lg:top-auto  pt-1 lg:pt-0 ">
           {/*  HomePage Header */}
           <div className={`px-6 mt-3 lg:mt-0`}>
@@ -128,7 +127,7 @@ const HomePage: NextPage<Props> = ({ url, element }): JSX.Element => {
           <div className={`py-4 px-2`}>
             {categoriesSuccess &&
             !isEmpty(categories) &&
-            element.template_type === 'basic_category!' ? (
+            element.template_type === 'basic_category' ? (
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-1">
                 {map(categories.Data, (c, i) => (
                   <CategoryWidget element={c} key={i} />
