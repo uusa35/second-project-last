@@ -10,12 +10,11 @@ import Clock from '@/appIcons/clock.svg';
 import DeliveryIcon from '@/appIcons/delivery.svg';
 import PreOrderAvailabilityIcon from '@/appIcons/availability.svg';
 import PaymentIcon from '@/appIcons/payment.svg';
-import Knet from '@/appImages/knet.png';
-import CashOnDelivery from '@/appImages/cash_on_delivery.jpg';
-import Visa from '@/appImages/visa.png';
+import Knet from '@/appImages/knet.svg';
+import CashOnDelivery from '@/appImages/cod.svg';
+import Visa from '@/appImages/credit_card.svg';
 import { useTranslation } from 'react-i18next';
 import {
-  baseUrl,
   convertColor,
   iconColor,
   imageSizes,
