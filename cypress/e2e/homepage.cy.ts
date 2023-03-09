@@ -15,12 +15,31 @@ describe('Navigation', () => {
     cy.get('[data-cy="start-order"]').contains('add to cart').click();
     cy.get('[data-cy="shopping-cart"]').eq(0).click();
     cy.url().should('contains', '/cart');
-    const total = cy.get('[data-cy="net-total"]').invoke('val');
-    const subTotal = cy.get('[data-cy="sub-total"]').invoke('val');
-    const deliveryFees = cy.get('[data-cy="deliveryFees"]').invoke('val');
-    cy.log(`${total}`);
-    cy.log(`${subTotal}`);
-    cy.log(`${deliveryFees}`);
+    cy.get('[data-cy="net-total"]')
+      .invoke('val')
+      .then((total) => {
+        cy.log('total', total);
+
+        cy.get('[data-cy="sub-total"]')
+          .invoke('val')
+          .then((subTotal) => {
+            cy.log('subTotal', subTotal);
+
+            cy.get('[data-cy="deliveryFees"]')
+              .invoke('val')
+              .then((deliveryFees) => {
+                cy.log('deliveryFees', deliveryFees);
+                // cy.wrap(add(1, 2)).should('equal', 3)
+                // const num1 = parseFloat($span.text())
+              });
+          });
+      });
+    // const total = cy.get('[data-cy="net-total"]').invoke('val');
+    // const subTotal = cy.get('[data-cy="sub-total"]').invoke('val');
+    // const deliveryFees = cy.get('[data-cy="deliveryFees"]').invoke('val');
+    // cy.log(`${total}`);
+    // cy.log(`${subTotal}`);
+    // cy.log(`${deliveryFees}`);
     // const fn = (a: number, b: number) => {
     //   return a + b 
     // }
