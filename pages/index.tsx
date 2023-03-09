@@ -89,7 +89,6 @@ const HomePage: NextPage<Props> = ({ url, element }): JSX.Element => {
   const handleFocus = () =>
     router.push(appLinks.productSearchIndex('', branch_id, area_id));
 
-  console.log('element', element);
   if (!element) {
     return <LoadingSpinner />;
   }
