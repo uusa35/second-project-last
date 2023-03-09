@@ -193,11 +193,11 @@ const SelectMethod: NextPage<Props> = ({
                             onClick={() =>
                               setSelectedData({ ...selectedData, area: a })
                             }
-                            data-cy="area"
                           >
                             <p
                               className="text-base text-black capitalize"
                               suppressHydrationWarning={suppressText}
+                              data-cy="area"
                             >
                               <TextTrans ar={a.name_ar} en={a.name_en} />
                             </p>
