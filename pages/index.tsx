@@ -44,10 +44,9 @@ const HomePage: NextPage<Props> = ({ url, element }): JSX.Element => {
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const router = useRouter();
-
   const { data: categories, isSuccess: categoriesSuccess } =
     useGetCategoriesQuery({
-      lang,
+      lang: router.locale,
       url,
     });
   const [triggerGetProducts, { data: elements, isSuccess: elementsSuccess }] =
@@ -60,19 +59,27 @@ const HomePage: NextPage<Props> = ({ url, element }): JSX.Element => {
   useEffect(() => {
     dispatch(setCurrentModule('home'));
     dispatch(setShowFooterElement('home'));
-    triggerGetProducts({
-      url,
-      lang,
-      category_id: ``,
-      page: `1`,
-      limit: `10`,
-      branch_id: branch_id.toString(),
-      area_id: area_id.toString(),
-    });
   }, []);
+
+  useEffect(() => {
+    triggerGetProducts(
+      {
+        url,
+        lang: router.locale,
+        category_id: ``,
+        page: `1`,
+        limit: `10`,
+        branch_id: branch_id.toString(),
+        area_id: area_id.toString(),
+      },
+      false
+    );
+  }, [router.locale]);
 
   const handleFocus = () =>
     router.push(appLinks.productSearchIndex('', branch_id, area_id));
+
+  console.log('elements', elements);
 
   return (
     <Suspense fallback={<LoadingSpinner fullWidth={true} />}>
@@ -116,15 +123,13 @@ const HomePage: NextPage<Props> = ({ url, element }): JSX.Element => {
             </div>
           </div>
           {/* Loading Spinner */}
-          {!categoriesSuccess ||
-            !elementsSuccess ||
-            (!vendorSuccess && (
-              <div
-                className={`flex w-full h-[30vh] justify-center items-center w-full`}
-              >
-                <LoadingSpinner fullWidth={true} />
-              </div>
-            ))}
+          {(!categoriesSuccess || !elementsSuccess || !vendorSuccess) && (
+            <div
+              className={`flex w-full h-[30vh] justify-center items-center w-full`}
+            >
+              <LoadingSpinner fullWidth={true} />
+            </div>
+          )}
           <div className={`py-4 px-2`}>
             {categoriesSuccess &&
             !isEmpty(categories) &&
