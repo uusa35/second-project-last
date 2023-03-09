@@ -46,7 +46,7 @@ import { useLazyCreateOrderQuery } from '@/redux/api/orderApi';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { useRouter } from 'next/router';
 import { setOrder, setPaymentMethod } from '@/redux/slices/orderSlice';
-import { CheckCircle, BadgeOutlined } from '@mui/icons-material';
+import { CheckCircle } from '@mui/icons-material';
 import { wrapper } from '@/redux/store';
 
 type Props = {
