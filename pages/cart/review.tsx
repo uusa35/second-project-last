@@ -380,11 +380,7 @@ const CartReview: NextPage<Props> = ({ url }) => {
             {/* information */}
             <div className="flex justify-between items-center">
               <div className="flex items-center">
-<<<<<<< HEAD
                 <BadgeOutlined sx={{ color: color }} />
-=======
-                <PersonalDetails className={`personal-details w-6 h-6`} />
->>>>>>> structure
                 <div className="ps-2 capitalize">
                   <h4 className="font-semibold text-base">{customer.name}</h4>
                   <p>{customer.phone}</p>

@@ -131,13 +131,6 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
         <div className="flex-col justify-center h-full px-5">
           <div className="flex justify-center py-10 lg:my-5 lg:pb-5">
           <PersonalDetails className={`my-10 lg:my-0 w-32 h-32`}  />
-            {/* <CustomImage
-              src={ContactImage.src}
-              alt="customer"
-              width={imageSizes.md}
-              height={imageSizes.md}
-              className={`my-10 lg:my-0 w-auto h-auto`}
-            /> */}
           </div>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="lg:mt-10">
