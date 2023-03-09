@@ -207,6 +207,7 @@ const HomePage: NextPage<Props> = ({ url, element }): JSX.Element => {
                       <div
                         className={`grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 gap-x-3 py-4'      
                           `}
+                        data-cy="items"
                       >
                         {!isEmpty(list.items) &&
                           map(list.items, (p: Product, i) => (

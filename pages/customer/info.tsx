@@ -31,6 +31,7 @@ import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 import { AppQueryResult } from '@/types/queries';
 import { wrapper } from '@/redux/store';
 import { customerInfoSchema } from 'src/validations';
+import PersonalDetails from '@/appImages/personal_information.svg';
 
 type Props = {
   url: string;
@@ -129,13 +130,7 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
       >
         <div className="flex-col justify-center h-full px-5">
           <div className="flex justify-center py-10 lg:my-5 lg:pb-5">
-            <CustomImage
-              src={ContactImage.src}
-              alt="customer"
-              width={imageSizes.md}
-              height={imageSizes.md}
-              className={`my-10 lg:my-0 w-auto h-auto`}
-            />
+          <PersonalDetails className={`my-10 lg:my-0 w-32 h-32`}  />
           </div>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="lg:mt-10">
