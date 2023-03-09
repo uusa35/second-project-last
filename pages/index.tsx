@@ -6,7 +6,7 @@ import MainContentLayout from '@/layouts/MainContentLayout';
 import MainHead from '@/components/MainHead';
 import { Product, Vendor } from '@/types/index';
 import { useGetVendorQuery, vendorApi } from '@/redux/api/vendorApi';
-import { useGetCategoriesQuery } from '@/redux/api/categoryApi';
+import { useLazyGetCategoriesQuery } from '@/redux/api/categoryApi';
 import { isEmpty, kebabCase, lowerCase, map } from 'lodash';
 import CategoryWidget from '@/widgets/category/CategoryWidget';
 import { appLinks, imageSizes } from '@/constants/*';
@@ -44,12 +44,10 @@ const HomePage: NextPage<Props> = ({ url, element }): JSX.Element => {
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const router = useRouter();
-
-  const { data: categories, isSuccess: categoriesSuccess } =
-    useGetCategoriesQuery({
-      lang,
-      url,
-    });
+  const [
+    triggerGetCategories,
+    { data: categories, isSuccess: categoriesSuccess },
+  ] = useLazyGetCategoriesQuery();
   const [triggerGetProducts, { data: elements, isSuccess: elementsSuccess }] =
     useLazyGetProductsQuery();
   const { data: vendorDetails, isSuccess: vendorSuccess } = useGetVendorQuery({
@@ -60,19 +58,36 @@ const HomePage: NextPage<Props> = ({ url, element }): JSX.Element => {
   useEffect(() => {
     dispatch(setCurrentModule('home'));
     dispatch(setShowFooterElement('home'));
-    triggerGetProducts({
-      url,
-      lang,
-      category_id: ``,
-      page: `1`,
-      limit: `10`,
-      branch_id: branch_id.toString(),
-      area_id: area_id.toString(),
-    });
   }, []);
+
+  useEffect(() => {
+    triggerGetProducts(
+      {
+        url,
+        lang: router.locale,
+        category_id: ``,
+        page: `1`,
+        limit: `10`,
+        branch_id: branch_id.toString(),
+        area_id: area_id.toString(),
+      },
+      false
+    );
+    triggerGetCategories(
+      {
+        lang: router.locale,
+        url,
+      },
+      false
+    );
+  }, [router.locale]);
 
   const handleFocus = () =>
     router.push(appLinks.productSearchIndex('', branch_id, area_id));
+
+  if (!element) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <Suspense fallback={<LoadingSpinner fullWidth={true} />}>
@@ -116,14 +131,13 @@ const HomePage: NextPage<Props> = ({ url, element }): JSX.Element => {
             </div>
           </div>
           {/* Loading Spinner */}
-          {!categoriesSuccess ||
-            (!elementsSuccess && (
-              <div
-                className={`flex w-full h-[30vh] justify-center items-center w-full`}
-              >
-                <LoadingSpinner fullWidth={true} />
-              </div>
-            ))}
+          {(!categoriesSuccess || !elementsSuccess || !vendorSuccess) && (
+            <div
+              className={`flex w-full h-[30vh] justify-center items-center w-full`}
+            >
+              <LoadingSpinner fullWidth={true} />
+            </div>
+          )}
           <div className={`py-4 px-2`}>
             {categoriesSuccess &&
             !isEmpty(categories) &&
@@ -134,6 +148,7 @@ const HomePage: NextPage<Props> = ({ url, element }): JSX.Element => {
                 ))}
               </div>
             ) : (
+              vendorSuccess &&
               elements &&
               !isEmpty(elements.Data) &&
               elementsSuccess &&
@@ -237,7 +252,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
           })
         );
       await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
-      if (isError || !element.status || !element.Data) {
+      if (isError || !element.status || !element.Data || !element) {
         return {
           notFound: true,
         };
