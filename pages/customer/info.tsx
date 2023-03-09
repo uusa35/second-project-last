@@ -32,7 +32,6 @@ import { AppQueryResult } from '@/types/queries';
 import { wrapper } from '@/redux/store';
 import { customerInfoSchema } from 'src/validations';
 
-
 type Props = {
   url: string;
 };
@@ -176,7 +175,7 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
                     className={`text-base text-red-800 font-semibold py-2 capitalize`}
                     suppressHydrationWarning={suppressText}
                   >
-                    {t('email_is_required')}
+                    {errors?.email?.message}
                   </p>
                 )}
               </div>
