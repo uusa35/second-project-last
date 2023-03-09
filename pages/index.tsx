@@ -79,6 +79,10 @@ const HomePage: NextPage<Props> = ({ url, element }): JSX.Element => {
   const handleFocus = () =>
     router.push(appLinks.productSearchIndex('', branch_id, area_id));
 
+  console.log('element', element);
+  if (!element) {
+    return <LoadingSpinner />;
+  }
   return (
     <Suspense fallback={<LoadingSpinner fullWidth={true} />}>
       {/* SEO Head DEV*/}
@@ -241,7 +245,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
           })
         );
       await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
-      if (isError || !element.status || !element.Data) {
+      if (isError || !element.status || !element.Data || !element) {
         return {
           notFound: true,
         };
