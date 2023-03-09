@@ -6,10 +6,14 @@ import MainContentLayout from '@/layouts/MainContentLayout';
 import MainHead from '@/components/MainHead';
 import { Product, Vendor } from '@/types/index';
 import { useGetVendorQuery, vendorApi } from '@/redux/api/vendorApi';
+<<<<<<< HEAD
 import {
   useGetCategoriesQuery,
   useLazyGetCategoriesQuery,
 } from '@/redux/api/categoryApi';
+=======
+import { useLazyGetCategoriesQuery } from '@/redux/api/categoryApi';
+>>>>>>> structure
 import { isEmpty, kebabCase, lowerCase, map } from 'lodash';
 import CategoryWidget from '@/widgets/category/CategoryWidget';
 import { appLinks, imageSizes } from '@/constants/*';
@@ -47,7 +51,10 @@ const HomePage: NextPage<Props> = ({ url, element }): JSX.Element => {
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const router = useRouter();
+<<<<<<< HEAD
 
+=======
+>>>>>>> structure
   const [
     triggerGetCategories,
     { data: categories, isSuccess: categoriesSuccess },
