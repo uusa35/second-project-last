@@ -13,7 +13,7 @@ import {
 // import Home from '@/appIcons/home.svg';
 import CustomImage from '@/components/CustomImage';
 import Knet from '@/appImages/knet.svg';
-import Cash from '@/appImages/cash_on_delivery.svg';
+import Cash from '@/appImages/cod.svg';
 import CreditCard from '@/appImages/credit_card.svg';
 import PersonalDetails from '@/appImages/personal_information.svg';
 import GoogleMapReact from 'google-map-react';
@@ -380,7 +380,7 @@ const CartReview: NextPage<Props> = ({ url }) => {
             {/* information */}
             <div className="flex justify-between items-center">
               <div className="flex items-center">
-                <PersonalDetails className={`personal-details w-6 h-6`}  />
+                <PersonalDetails className={`personal-details w-6 h-6`} />
                 <div className="ps-2 capitalize">
                   <h4 className="font-semibold text-base">{customer.name}</h4>
                   <p>{customer.phone}</p>
@@ -467,31 +467,31 @@ const CartReview: NextPage<Props> = ({ url }) => {
                                 areaId
                               )}`}
                             >
-                              {item.SalePrice !== item.Price? (
-                                 <div>
-                                    <div
-                                      className="uppercase flex grow line-through"
-                                      suppressHydrationWarning={suppressText}
-                                      style={{ color }}
-                                    >
+                              {item.SalePrice !== item.Price ? (
+                                <div>
+                                  <div
+                                    className="uppercase flex grow line-through"
+                                    suppressHydrationWarning={suppressText}
+                                    style={{ color }}
+                                  >
                                     {item.Price} {t('kwd')}
                                   </div>
-                                    <div
+                                  <div
                                     className="uppercase flex grow"
                                     suppressHydrationWarning={suppressText}
                                     style={{ color }}
-                                    >
+                                  >
                                     {item.SalePrice} {t('kwd')}
-                                    </div>
-                                 </div>
-                              ): (
+                                  </div>
+                                </div>
+                              ) : (
                                 <div
-                                className="uppercase flex grow"
-                                suppressHydrationWarning={suppressText}
-                                style={{ color }}
-                              >
-                                {item.Price} {t('kwd')}
-                              </div>
+                                  className="uppercase flex grow"
+                                  suppressHydrationWarning={suppressText}
+                                  style={{ color }}
+                                >
+                                  {item.Price} {t('kwd')}
+                                </div>
                               )}
                             </Link>
                           </div>
@@ -577,12 +577,10 @@ const CartReview: NextPage<Props> = ({ url }) => {
                     className={`${
                       selectedPaymentMethod == m.id &&
                       `ring-2 ring-lime-500 ring-offset-1`
-                    } bg-stone-100 flex justify-center items-center w-24 h-24 rounded-md shadow-lg`}
+                    } flex justify-center items-center w-24 h-24 rounded-md`}
                   >
                     <div>
-                      <div className={`w-14 h-14`}>
-                      {m.src}
-                      </div>
+                      <div className={`w-16 h-16`}>{m.src}</div>
                     </div>
                   </button>
                   <div
