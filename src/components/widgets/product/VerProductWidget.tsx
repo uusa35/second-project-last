@@ -88,12 +88,16 @@ const VerProductWidget: FC<Props> = ({
                     </div>
                   ) : (
                     <p
-                      className="text-md text-end uppercase"
+                      className="text-md uppercase"
                       suppressHydrationWarning={suppressText}
                       style={{ color: `black` }}
                     >
-                      {element.price}{' '}
-                      <span className={`uppercase`}>{t(`kwd`)}</span>
+                      {parseFloat(element.price).toFixed(3) === '0.000'
+                        ? t(`price_on_selection`)
+                        : parseFloat(element.price).toFixed(3)} 
+                        {parseFloat(element.price).toFixed(3) !== '0.000' && (
+                          <span className={`uppercase px-1`}>{t('kwd')}</span>
+                      )}
                     </p>
                   )}
                   <div className="text-end">

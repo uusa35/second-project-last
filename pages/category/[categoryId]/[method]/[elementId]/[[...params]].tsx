@@ -73,6 +73,7 @@ const ProductIndex: NextPage<Props> = ({
   };
 
   useEffect(() => {
+    listRef.current?.focus();
     dispatch(setCurrentModule('product_search_index'));
     if (url) {
       dispatch(setUrl(url));
@@ -224,11 +225,15 @@ const ProductIndex: NextPage<Props> = ({
           <div
             ref={listRef}
             onScroll={onScroll}
+<<<<<<< HEAD
             className={`${scrollClass} ${
               !isNull(searchKey) && currentProducts.length < 3
                 ? `h-min`
                 : `h-[100vh]`
-            }  overflow-y-scroll
+            }  
+=======
+            className={`${scrollClass}  
+>>>>>>> eren
               ${
                 productPreview === 'hor'
                   ? `grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 gap-x-3 py-4`
