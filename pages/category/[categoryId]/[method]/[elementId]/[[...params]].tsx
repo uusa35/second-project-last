@@ -8,7 +8,7 @@ import {
 import { appSetting, Product } from '@/types/index';
 import { NextPage } from 'next';
 import MainHead from '@/components/MainHead';
-import { imageSizes, suppressText } from '@/constants/*';
+import { imageSizes, scrollClass, suppressText } from '@/constants/*';
 import { capitalize, debounce, isEmpty, isNull, map, uniqBy } from 'lodash';
 import NoResultFound from '@/appImages/no-result-found.gif';
 import HorProductWidget from '@/widgets/product/HorProductWidget';
@@ -106,7 +106,7 @@ const ProductIndex: NextPage<Props> = ({
         );
         setCurrentProducts(filteredProducts);
       } else {
-        setCurrentProducts([]);
+        // setCurrentProducts([]);
       }
     });
   };
@@ -170,7 +170,7 @@ const ProductIndex: NextPage<Props> = ({
           <div className="flex justify-center items-center pb-3">
             <div className={`w-full`}>
               <SearchInput
-              placeholder={`${t(`search_products`)}`}
+                placeholder={`${t(`search_products`)}`}
                 onChange={debounce((e) => handleChange(e.target.value), 400)}
               />
             </div>
@@ -224,14 +224,14 @@ const ProductIndex: NextPage<Props> = ({
           <div
             ref={listRef}
             onScroll={onScroll}
-            className={`${
+            className={`${scrollClass} ${
               !isNull(searchKey) && currentProducts.length < 3
                 ? `h-min`
                 : `h-[100vh]`
             }  overflow-y-scroll
               ${
                 productPreview === 'hor'
-                  ? ' grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 gap-x-3 py-4'
+                  ? `grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 gap-x-3 py-4`
                   : ''
               }
             `}

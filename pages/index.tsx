@@ -7,7 +7,7 @@ import MainHead from '@/components/MainHead';
 import { Product, Vendor } from '@/types/index';
 import { useGetVendorQuery, vendorApi } from '@/redux/api/vendorApi';
 import { useLazyGetCategoriesQuery } from '@/redux/api/categoryApi';
-import { isEmpty, kebabCase, lowerCase, map } from 'lodash';
+import { isEmpty, map } from 'lodash';
 import CategoryWidget from '@/widgets/category/CategoryWidget';
 import { appLinks, imageSizes } from '@/constants/*';
 import { useTranslation } from 'react-i18next';
@@ -23,12 +23,9 @@ import CustomImage from '@/components/CustomImage';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import PoweredByQ from '@/components/PoweredByQ';
 import { useLazyGetProductsQuery } from '@/redux/api/productApi';
-import HorProductWidget from '@/widgets/product/HorProductWidget';
-import Link from 'next/link';
 import SearchInput from '@/components/SearchInput';
 import { apiSlice } from '@/redux/api';
 import { AppQueryResult } from '@/types/queries';
-import { StickyContainer, Sticky } from 'react-sticky';
 import ProductList from '@/components/home/ProductList';
 
 type Props = {
@@ -41,7 +38,6 @@ const HomePage: NextPage<Props> = ({ url, element }): JSX.Element => {
     locale: { lang },
     branch: { id: branch_id },
     area: { id: area_id },
-    appSetting: { method },
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -102,7 +98,7 @@ const HomePage: NextPage<Props> = ({ url, element }): JSX.Element => {
       <MainContentLayout url={url}>
         {/*  ImageBackGround Header */}
         {vendorSuccess && vendorDetails && vendorDetails.Data && (
-          <div className="block lg:hidden lg:h-auto border-4 h-60">
+          <div className="block lg:hidden lg:h-auto h-60">
             <CustomImage
               src={`${vendorDetails?.Data?.cover}`}
               alt={vendorDetails?.Data?.name}
@@ -144,7 +140,9 @@ const HomePage: NextPage<Props> = ({ url, element }): JSX.Element => {
             {categoriesSuccess &&
             !isEmpty(categories) &&
             vendorDetails?.Data?.template_type === 'basic_category' ? (
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-1">
+              <div
+                className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-1`}
+              >
                 {map(categories.Data, (c, i) => (
                   <CategoryWidget element={c} key={i} />
                 ))}
@@ -163,9 +161,7 @@ const HomePage: NextPage<Props> = ({ url, element }): JSX.Element => {
                     name: string;
                   },
                   i
-                ) => (
-                  <ProductList i={i} list={list}/>
-                )
+                ) => <ProductList i={i} list={list} />
               )
             )}
           </div>
