@@ -106,7 +106,7 @@ const ProductIndex: NextPage<Props> = ({
         );
         setCurrentProducts(filteredProducts);
       } else {
-        setCurrentProducts([]);
+        // setCurrentProducts([]);
       }
     });
   };
