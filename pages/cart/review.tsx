@@ -48,6 +48,7 @@ import { useRouter } from 'next/router';
 import { setOrder, setPaymentMethod } from '@/redux/slices/orderSlice';
 import { CheckCircle } from '@mui/icons-material';
 import { wrapper } from '@/redux/store';
+import { BadgeOutlined } from '@mui/icons-material';
 
 type Props = {
   url: string;
