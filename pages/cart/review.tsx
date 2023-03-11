@@ -98,16 +98,16 @@ const CartReview: NextPage<Props> = ({ url }) => {
         (isSuccess && !cartItems.data?.Cart) ||
         (isSuccess && cartItems.data?.Cart.length === 0)
       ) {
-        if (router.isReady) {
-          router.replace(appLinks.cartSelectMethod(process_type)).then(() =>
-            dispatch(
-              showToastMessage({
-                content: `select_a_branch_or_area_before_order`,
-                type: `warning`,
-              })
-            )
-          );
-        }
+        // if (router.isReady) {
+        //   router.replace(appLinks.cartSelectMethod(process_type)).then(() =>
+        //     dispatch(
+        //       showToastMessage({
+        //         content: `select_a_branch_or_area_before_order`,
+        //         type: `warning`,
+        //       })
+        //     )
+        //   );
+        // }
       }
     }
   }, []);

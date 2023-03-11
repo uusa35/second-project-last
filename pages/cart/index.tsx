@@ -359,8 +359,8 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
                               >
                                 <TextTrans
                                   className={`font-semibold capitalize`}
-                                  ar={item.ProductName}
-                                  en={item.ProductName}
+                                  ar={item.ProductNameAr}
+                                  en={item.ProductNameEn}
                                   length={15}
                                 />
                               </Link>
