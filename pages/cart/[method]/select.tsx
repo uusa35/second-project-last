@@ -159,6 +159,17 @@ const SelectMethod: NextPage<Props> = ({
     }
   };
 
+  if (
+    locationsLoading ||
+    branchesLoading ||
+    !locations ||
+    !locations.Data ||
+    !branches ||
+    !branches.Data
+  ) {
+    return <LoadingSpinner fullWidth={true} />;
+  }
+
   return (
     <Suspense>
       <MainContentLayout url={url}>
