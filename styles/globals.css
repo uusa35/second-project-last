@@ -159,13 +159,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     filter: invert(0.8);
 }
 
-/* Hide scrollbar for Chrome, Safari and Opera */
-.no-scrollbar ::-webkit-scrollbar {
-    display: none !important;
-}
-
-/* Hide scrollbar for IE, Edge and Firefox */
-.no-scrollbar {
-    -ms-overflow-style: none !important;  /* IE and Edge */
-    scrollbar-width: none !important;  /* Firefox */
+html::-webkit-scrollbar, body::-webkit-scrollbar {
+    display: none;
 }

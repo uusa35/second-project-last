@@ -8,7 +8,7 @@ import NextNProgress from 'nextjs-progressbar';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { setUrl } from '@/redux/slices/appSettingSlice';
 import { isUndefined } from 'lodash';
-import { suppressText } from '@/constants/*';
+import { scrollClass, suppressText } from '@/constants/*';
 
 const AppHeader = dynamic(() => import(`@/components/AppHeader`), {
   ssr: false,
@@ -81,7 +81,7 @@ const MainContentLayout: FC<Props> = ({
       <SideMenu />
       {showHeader && <AppHeader backHome={backHome} backRoute={backRoute} />}
       <main
-        className={`w-full mb-[20%] relative rounded-t-full min-h-screen no-scrollbar`}
+        className={`w-full mb-[20%] relative rounded-t-full min-h-screen `}
         style={{ height: '100%' }}
       >
         {isOnline ? (

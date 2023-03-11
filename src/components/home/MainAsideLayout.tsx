@@ -1,5 +1,11 @@
 import React, { FC, Suspense } from 'react';
-import { appLinks, imageSizes, imgUrl, suppressText } from '@/constants/*';
+import {
+  appLinks,
+  imageSizes,
+  imgUrl,
+  scrollClass,
+  suppressText,
+} from '@/constants/*';
 import Link from 'next/link';
 import CustomImage from '@/components/CustomImage';
 import { Vendor } from '@/types/index';
@@ -19,7 +25,9 @@ const MainAsideLayout: FC<Props> = ({ element }): JSX.Element => {
 
   return (
     <Suspense fallback={<LoadingSpinner fullWidth={false} />}>
-      <div className="flex relative justify-center items-center top-0  w-full h-screen bg-gradient-to-tr from-gray-400 to-gray-800">
+      <div
+        className={`flex relative justify-center items-center top-0  w-full h-screen bg-gradient-to-tr from-gray-400 to-gray-800 ${scrollClass}`}
+      >
         <CustomImage
           src={`${imgUrl(element.cover)}`}
           alt={element.name}
