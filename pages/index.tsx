@@ -145,7 +145,7 @@ const HomePage: NextPage<Props> = ({ url, element }): JSX.Element => {
             !isEmpty(categories) &&
             vendorDetails?.Data?.template_type === 'basic_category' ? (
               <div
-                className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-1 ${scrollClass}`}
+                className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-1`}
               >
                 {map(categories.Data, (c, i) => (
                   <CategoryWidget element={c} key={i} />

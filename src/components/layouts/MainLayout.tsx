@@ -155,7 +155,7 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
       dir={router.locale === 'ar' ? 'rtl' : 'ltr'}
       className={`${
         router.locale === 'ar' ? gessFont : arboriaFont
-      } flex-col justify-start items-start grow  lg:flex lg:flex-row flex flex-row h-screen  capitalize ${scrollClass}`}
+      } flex-col justify-start items-start grow  lg:flex lg:flex-row flex flex-row h-screen  capitalize`}
     >
       {children}
       {/* Main Image & Logo */}
