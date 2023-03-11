@@ -26,12 +26,12 @@ import * as yup from 'yup';
 import CustomImage from '@/components/CustomImage';
 import ContactImage from '@/appImages/contact_info.png';
 import { themeColor } from '@/redux/slices/vendorSlice';
-import { isNull } from 'lodash';
+import { isNull, startCase } from 'lodash';
 import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 import { AppQueryResult } from '@/types/queries';
 import { wrapper } from '@/redux/store';
 import { customerInfoSchema } from 'src/validations';
-
+import PersonalDetails from '@/appImages/personal_information.svg';
 
 type Props = {
   url: string;
@@ -130,13 +130,7 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
       >
         <div className="flex-col justify-center h-full px-5">
           <div className="flex justify-center py-10 lg:my-5 lg:pb-5">
-            <CustomImage
-              src={ContactImage.src}
-              alt="customer"
-              width={imageSizes.md}
-              height={imageSizes.md}
-              className={`my-10 lg:my-0 w-auto h-auto`}
-            />
+          <PersonalDetails className={`my-10 lg:my-0 w-32 h-32`}  />
           </div>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="lg:mt-10">
@@ -144,8 +138,8 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
                 <BadgeOutlined style={{ color }} />
                 <input
                   {...register('name')}
-                  className={`border-0 w-full focus:ring-transparent outline-0 capitalize`}
-                  placeholder={`${t('enter_your_name')}`}
+                  className={`border-0 w-full focus:ring-transparent outline-0`}
+                  placeholder={`${startCase(`${t('enter_your_name')}`)}`}
                   onChange={(e) => setValue('name', e.target.value)}
                   aria-invalid={errors.name ? 'true' : 'false'}
                 />
@@ -165,9 +159,9 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
                 <input
                   {...register('email')}
                   aria-invalid={errors.email ? 'true' : 'false'}
-                  className={`border-0 w-full focus:ring-transparent outline-0 capitalize`}
+                  className={`border-0 w-full focus:ring-transparent outline-0`}
                   onChange={(e) => setValue('email', e.target.value)}
-                  placeholder={`${t('enter_your_email')}`}
+                  placeholder={`${startCase(`${t('enter_your_email')}`)}`}
                 />
               </div>
               <div>
@@ -176,7 +170,7 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
                     className={`text-base text-red-800 font-semibold py-2 capitalize`}
                     suppressHydrationWarning={suppressText}
                   >
-                    {t('email_is_required')}
+                    {errors?.email?.message}
                   </p>
                 )}
               </div>
@@ -186,9 +180,9 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
                   type="number"
                   {...register('phone')}
                   aria-invalid={errors.phone ? 'true' : 'false'}
-                  className={`border-0 w-full focus:ring-transparent outline-0 capitalize`}
+                  className={`border-0 w-full focus:ring-transparent outline-0`}
                   onChange={(e) => setValue('phone', e.target.value)}
-                  placeholder={`${t('enter_your_phone')}`}
+                  placeholder={`${startCase(`${t('enter_your_phone')}`)}`}
                 />
                 {/* <Controller
                   render={(props) => (

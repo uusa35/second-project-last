@@ -2,6 +2,7 @@ import { FC } from 'react';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { suppressText } from '../constants';
 import { useTranslation } from 'react-i18next';
+import { startCase } from 'lodash';
 
 type Props = {
   onFocus?: () => void;
@@ -14,10 +15,10 @@ const SearchInput: FC<Props> = ({
   onFocus,
   onChange,
   placeholder = '',
-  defaultValue='',
+  defaultValue = '',
 }) => {
   const { t } = useTranslation();
-  
+
   return (
     <div className="relative mt-1 rounded-md shadow-sm text-gray-400">
       <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center px-6">
@@ -32,7 +33,9 @@ const SearchInput: FC<Props> = ({
         onChange={onChange}
         className="block w-full focus:ring-1 focus:ring-primary_BG rounded-md  pl-20 border-none  bg-gray-100 py-3 h-12  text-lg capitalize"
         suppressHydrationWarning={suppressText}
-        placeholder={placeholder ? placeholder : `${t(`search`)}`}
+        placeholder={
+          placeholder ? placeholder : `${startCase(`${t(`search`)}`)}`
+        }
       />
     </div>
   );
