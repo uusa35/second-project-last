@@ -124,7 +124,7 @@ const HomePage: NextPage<Props> = ({ url, element }): JSX.Element => {
                 <LoadingSpinner fullWidth={true} />
               </div>
             ))}
-          <div className={`py-4 px-2`}>
+          <div className={`py-4 px-2`} data-cy="productCategoryContainer">
             {categoriesSuccess &&
             !isEmpty(categories) &&
             vendorDetails?.Data?.template_type === 'basic_category' ? (
