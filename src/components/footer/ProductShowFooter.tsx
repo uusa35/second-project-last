@@ -154,7 +154,8 @@ const ProductShowFooter: FC<Props> = ({
                 dispatch(resetMeters());
                 if (
                   router.query.category_id &&
-                  router.query.category_id !== 'null'
+                  router.query.category_id !== 'null' &&
+                  router.query.category_id !== 'undefined'
                 ) {
                   router.replace(
                     appLinks.productIndex(

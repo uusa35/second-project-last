@@ -139,8 +139,6 @@ export interface ProductCart {
   ProductNameAr: string;
   ProductNameEn: string;
   ProductImage: string;
-  name_ar: string;
-  name_en: string;
   ProductDesc: string;
   ExtraNotes: string;
   Quantity: number;

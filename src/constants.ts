@@ -109,4 +109,4 @@ export const updateUrlParams = (
   return url.replace(/\bpage=[0-9a-zA-Z_@.#+-]{1,50}\b/, `${name}=${value}`);
 };
 
-export const scrollClass = `scroll-smooth overflow-scroll scrollbar-hide `;
+export const scrollClass = `scroll-smooth overflow-scroll scrollbar-hide overflow-y-scroll`;
