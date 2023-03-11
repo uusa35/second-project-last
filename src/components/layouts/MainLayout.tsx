@@ -161,7 +161,7 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
       {/* Main Image & Logo */}
       <ToastAppContainer />
       <div
-        className={`hidden lg:block flex flex-row  w-full h-screen lg:w-2/4 xl:w-2/3 fixed ${
+        className={`hidden lg:block flex flex-row  w-full h-screen lg:w-2/4 xl:w-2/3 fixed ${scrollClass} ${
           router.locale === 'ar' ? 'left-0' : 'right-0'
         }`}
         suppressHydrationWarning={suppressText}
