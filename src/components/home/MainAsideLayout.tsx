@@ -26,7 +26,7 @@ const MainAsideLayout: FC<Props> = ({ element }): JSX.Element => {
   return (
     <Suspense fallback={<LoadingSpinner fullWidth={false} />}>
       <div
-        className={`flex relative justify-center items-center top-0  w-full h-screen bg-gradient-to-tr from-gray-400 to-gray-800 scrollbar-hide `}
+        className={`flex relative justify-center items-center top-0  w-full h-screen bg-gradient-to-tr from-gray-400 to-gray-800 scrollbar-hide`}
       >
         <CustomImage
           src={`${imgUrl(element.cover)}`}
