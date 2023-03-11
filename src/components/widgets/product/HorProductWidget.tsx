@@ -108,19 +108,12 @@ const HorProductWidget: FC<Props> = ({
                   style={{ color: `black` }}
                 >
                   {parseFloat(element.price).toFixed(3) === '0.000'
-<<<<<<< HEAD
-                  ? t(`price_on_selection`)
-                  : parseFloat(element.price).toFixed(3)} 
-                  {parseFloat(element.price).toFixed(3) !== '0.000' && (
-                    <span className={`uppercase px-1`}>{t('kwd')}</span>
+                        ? t(`price_on_selection`)
+                        : parseFloat(element.price).toFixed(3)} 
+                        {parseFloat(element.price).toFixed(3) !== '0.000' && (
+                          <span className={`uppercase px-1`}>{t('kwd')}</span>
                   )}
-                    </p>
-=======
-                    ? t(`price_on_selection`)
-                    : parseFloat(element.price).toFixed(3)}
-                  <span className={`uppercase`}>{t(`kwd`)}</span>
                 </p>
->>>>>>> structure
               )}
               {/* <p
                 className="text-md text-end uppercase"
