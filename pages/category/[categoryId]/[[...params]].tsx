@@ -103,7 +103,7 @@ const ProductIndex: NextPage<Props> = ({
         );
         setCurrentProducts(filteredProducts);
       } else {
-        setCurrentProducts([]);
+        // nothing
       }
     });
   };
@@ -115,7 +115,6 @@ const ProductIndex: NextPage<Props> = ({
   }, [latest, currentProducts, previousPage, currentPage]);
 
   const onScroll = () => {
-    console.log('scroll');
     if (listRef.current) {
       const { scrollTop, scrollHeight, clientHeight } = listRef.current;
       if (scrollTop + clientHeight === scrollHeight) {

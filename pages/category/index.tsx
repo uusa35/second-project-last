@@ -122,8 +122,6 @@ const ProductSearchIndex: NextPage<Props> = ({ url }): JSX.Element => {
                 type="search"
                 name="search"
                 id="search"
-                onReset={() => console.log('reset')}
-                onBlur={() => console.log('blur')}
                 onChange={debounce((e) => handleChange(e.target.value), 600)}
                 className="block w-full focus:ring-1 focus:ring-primary_BG rounded-md  rtl:pl-20 ltr:pr-20 border-none  bg-gray-100 py-3 h-12  text-lg capitalize"
                 suppressHydrationWarning={suppressText}
@@ -133,7 +131,6 @@ const ProductSearchIndex: NextPage<Props> = ({ url }): JSX.Element => {
               />
             </div>
           </div>
-
           {topSearchSuccess && topSearch.Data && (
             <div className="grid grid-cols-4 capitalize gap-x-4 gap-y-2 my-3">
               {map(
