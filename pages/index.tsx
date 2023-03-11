@@ -29,6 +29,7 @@ import SearchInput from '@/components/SearchInput';
 import { apiSlice } from '@/redux/api';
 import { AppQueryResult } from '@/types/queries';
 import { StickyContainer, Sticky } from 'react-sticky';
+import ProductList from '@/components/home/ProductList';
 
 type Props = {
   element: Vendor;
@@ -131,14 +132,15 @@ const HomePage: NextPage<Props> = ({ url, element }): JSX.Element => {
             </div>
           </div>
           {/* Loading Spinner */}
-          {(!categoriesSuccess || !elementsSuccess || !vendorSuccess) && (
-            <div
-              className={`flex w-full h-[30vh] justify-center items-center w-full`}
-            >
-              <LoadingSpinner fullWidth={true} />
-            </div>
-          )}
-          <div className={`py-4 px-2`}>
+          {!categoriesSuccess ||
+            (!elementsSuccess && (
+              <div
+                className={`flex w-full h-[30vh] justify-center items-center w-full`}
+              >
+                <LoadingSpinner fullWidth={true} />
+              </div>
+            ))}
+          <div className={`py-4 px-2`} data-cy="productCategoryContainer">
             {categoriesSuccess &&
             !isEmpty(categories) &&
             vendorDetails?.Data?.template_type === 'basic_category' ? (
@@ -162,64 +164,7 @@ const HomePage: NextPage<Props> = ({ url, element }): JSX.Element => {
                   },
                   i
                 ) => (
-                  <StickyContainer key={i}>
-                    <div key={i} className={`flex flex-col mt-2`}>
-                      {!isEmpty(list.items) && (
-                        <Sticky>
-                          {({ style, isSticky }) => (
-                            <header
-                              style={style}
-                              className={`w-full bg-white z-40   ${
-                                isSticky
-                                  ? `relative mt-[80px]   py-3 rounded-none border-t border-b-2 border-stone-100`
-                                  : ` bg-stone-100 rounded-md`
-                              }`}
-                            >
-                              <Link
-                                href={
-                                  (method === `pickup` && !branch_id) ||
-                                  (method === `delivery` && !area_id)
-                                    ? appLinks.productIndex(
-                                        list.cat_id.toString(),
-                                        kebabCase(lowerCase(list.name)),
-                                        branch_id,
-                                        area_id
-                                      )
-                                    : appLinks.productIndexDefined(
-                                        list.cat_id.toString(),
-                                        kebabCase(lowerCase(list.name)),
-                                        method,
-                                        method === `delivery`
-                                          ? area_id
-                                          : branch_id
-                                      )
-                                }
-                                className={`flex flex-1 font-bold  ${
-                                  isSticky ? `text-xl` : `text-lg`
-                                }`}
-                              >
-                                {list.name}
-                              </Link>
-                            </header>
-                          )}
-                        </Sticky>
-                      )}
-                      <div
-                        className={`grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 gap-x-3 py-4'      
-                          `}
-                        data-cy="items"
-                      >
-                        {!isEmpty(list.items) &&
-                          map(list.items, (p: Product, i) => (
-                            <HorProductWidget
-                              element={p}
-                              key={i}
-                              category_id={list.cat_id.toString()}
-                            />
-                          ))}
-                      </div>
-                    </div>
-                  </StickyContainer>
+                  <ProductList i={i} list={list}/>
                 )
               )
             )}
