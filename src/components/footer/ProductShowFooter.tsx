@@ -1,10 +1,28 @@
 import { appLinks, convertColor, footerBtnClass } from '@/constants/*';
-import { useAddToCartMutation, useGetCartProductsQuery, useLazyGetCartProductsQuery } from '@/redux/api/cartApi';
+import {
+  useAddToCartMutation,
+  useGetCartProductsQuery,
+  useLazyGetCartProductsQuery,
+} from '@/redux/api/cartApi';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
-import { resetCheckBoxes, resetMeters, resetRadioBtns } from '@/redux/slices/productCartSlice';
+import {
+  resetCheckBoxes,
+  resetMeters,
+  resetRadioBtns,
+} from '@/redux/slices/productCartSlice';
 import { themeColor } from '@/redux/slices/vendorSlice';
-import { debounce, find, first, isEmpty, isUndefined, kebabCase, lowerCase, map, values } from 'lodash';
+import {
+  debounce,
+  find,
+  first,
+  isEmpty,
+  isUndefined,
+  kebabCase,
+  lowerCase,
+  map,
+  values,
+} from 'lodash';
 import { useRouter } from 'next/router';
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -20,7 +38,7 @@ const ProductShowFooter: FC<Props> = ({
 }) => {
   const {
     appSetting: { method, url },
-    customer: { userAgent},
+    customer: { userAgent },
     locale: { isRTL },
     productCart,
     branch: { id: branchId },
@@ -28,9 +46,9 @@ const ProductShowFooter: FC<Props> = ({
     area,
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
-  const dispatch=useAppDispatch()
+  const dispatch = useAppDispatch();
   const { t } = useTranslation();
-  const router=useRouter()
+  const router = useRouter();
 
   const [triggerAddToCart] = useAddToCartMutation();
   const [triggerGetCartProducts] = useLazyGetCartProductsQuery();
@@ -47,7 +65,6 @@ const ProductShowFooter: FC<Props> = ({
         : { 'x-area-id': area.id },
     url,
   });
-
 
   const handelCartPayload = () => {
     let items = map(cartItems?.data.Cart, (i) => {
@@ -83,9 +100,6 @@ const ProductShowFooter: FC<Props> = ({
     ) {
       items.push(productCart);
     }
-
-    console.log('items', items);
-
     return items;
   };
 

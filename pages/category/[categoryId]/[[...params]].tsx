@@ -82,7 +82,6 @@ const ProductIndex: NextPage<Props> = ({
   }, []);
 
   const handleFire = async () => {
-    console.log('handleFire');
     await triggerGetProducts({
       category_id: categoryId?.toString(),
       branch_id: branch_id,
@@ -93,7 +92,6 @@ const ProductIndex: NextPage<Props> = ({
       lang,
     }).then((r) => {
       if (r.data && r.data?.Data && r.data?.Data?.products) {
-        console.log('r ====>', r);
         if (r.data.Data?.products?.length === 0) {
           setLatest(true);
           return;
@@ -117,7 +115,6 @@ const ProductIndex: NextPage<Props> = ({
   }, [latest, currentProducts, previousPage, currentPage]);
 
   const onScroll = () => {
-    console.log('scroll');
     if (listRef.current) {
       const { scrollTop, scrollHeight, clientHeight } = listRef.current;
       if (scrollTop + clientHeight === scrollHeight) {
