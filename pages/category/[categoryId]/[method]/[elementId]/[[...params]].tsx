@@ -225,21 +225,11 @@ const ProductIndex: NextPage<Props> = ({
           <div
             ref={listRef}
             onScroll={onScroll}
-<<<<<<< HEAD
-            className={`${scrollClass} ${
-              !isNull(searchKey) && currentProducts.length < 3
-                ? `h-min`
-                : `h-[100vh]`
-            }  
-=======
-            className={`${scrollClass}  
->>>>>>> eren
-              ${
-                productPreview === 'hor'
-                  ? `grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 gap-x-3 py-4`
-                  : ''
-              }
-            `}
+            className={`${
+              productPreview === 'hor'
+                ? `grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 gap-x-3 py-4`
+                : ``
+            }`}
           >
             {currentProducts.length
               ? map(currentProducts, (p: Product, i) =>
