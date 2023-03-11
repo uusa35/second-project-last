@@ -92,7 +92,9 @@ const VerProductWidget: FC<Props> = ({
                       suppressHydrationWarning={suppressText}
                       style={{ color: `black` }}
                     >
-                      {element.price}{' '}
+                      {parseFloat(element.price).toFixed(3) === '0.000'
+                      ? t(`price_on_selection`)
+                      : parseFloat(element.price).toFixed(3)} 
                       <span className={`uppercase`}>{t(`kwd`)}</span>
                     </p>
                   )}
