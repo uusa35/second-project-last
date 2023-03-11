@@ -88,7 +88,7 @@ const VerProductWidget: FC<Props> = ({
                     </div>
                   ) : (
                     <p
-                      className="text-md text-end uppercase"
+                      className="text-md uppercase"
                       suppressHydrationWarning={suppressText}
                       style={{ color: `black` }}
                     >
