@@ -452,8 +452,8 @@ const CartReview: NextPage<Props> = ({ url }) => {
                           >
                             <p className="font-semibold capitalize">
                               <TextTrans
-                                ar={item.ProductName}
-                                en={item.ProductName}
+                                ar={item.ProductNameAr}
+                                en={item.ProductNameEn}
                               />
                             </p>
                           </Link>
