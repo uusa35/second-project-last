@@ -107,9 +107,11 @@ const HorProductWidget: FC<Props> = ({
                   suppressHydrationWarning={suppressText}
                   style={{ color: `black` }}
                 >
-                  {element.price}{' '}
-                  <span className={`uppercase`}>{t(`kwd`)}</span>
-                </p>
+                  {parseFloat(element.price).toFixed(3) === '0.000'
+                  ? t(`price_on_selection`)
+                  : parseFloat(element.price).toFixed(3)} 
+                      <span className={`uppercase`}>{t(`kwd`)}</span>
+                    </p>
               )}
               {/* <p
                 className="text-md text-end uppercase"
