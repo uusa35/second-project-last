@@ -9,7 +9,7 @@ import { useGetVendorQuery, vendorApi } from '@/redux/api/vendorApi';
 import { useLazyGetCategoriesQuery } from '@/redux/api/categoryApi';
 import { isEmpty, kebabCase, lowerCase, map } from 'lodash';
 import CategoryWidget from '@/widgets/category/CategoryWidget';
-import { appLinks, imageSizes, scrollClass } from '@/constants/*';
+import { appLinks, imageSizes } from '@/constants/*';
 import { useTranslation } from 'react-i18next';
 import { setLocale } from '@/redux/slices/localeSlice';
 import {
