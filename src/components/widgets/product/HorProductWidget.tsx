@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { appLinks, imageSizes, imgUrl } from '@/constants/*';
 import { Product } from '@/types/index';
 import NoFoundImage from '@/appImages/not_found.png';
-import { first, isEmpty, kebabCase, lowerCase } from 'lodash';
+import { isEmpty, kebabCase, lowerCase } from 'lodash';
 import Link from 'next/link';
 import CustomImage from '@/components/CustomImage';
 import { useTranslation } from 'react-i18next';
@@ -108,10 +108,10 @@ const HorProductWidget: FC<Props> = ({
                   style={{ color: `black` }}
                 >
                   {parseFloat(element.price).toFixed(3) === '0.000'
-                  ? t(`price_on_selection`)
-                  : parseFloat(element.price).toFixed(3)} 
-                      <span className={`uppercase`}>{t(`kwd`)}</span>
-                    </p>
+                    ? t(`price_on_selection`)
+                    : parseFloat(element.price).toFixed(3)}
+                  <span className={`uppercase`}>{t(`kwd`)}</span>
+                </p>
               )}
               {/* <p
                 className="text-md text-end uppercase"
