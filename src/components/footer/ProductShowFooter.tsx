@@ -165,9 +165,11 @@ const ProductShowFooter: FC<Props> = ({
                     )
                   );
                 } else {
-                  router.replace(
-                    appLinks.productIndex(``, ``, branchId, area.id)
-                  );
+                  // according to ahmed return to home if  no category
+                  // router.replace(
+                  //   appLinks.productIndex(``, ``, branchId, area.id)
+                  // );
+                  router.replace('/');
                 }
               } else {
               }
