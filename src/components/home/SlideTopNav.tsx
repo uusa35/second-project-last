@@ -60,6 +60,8 @@ const SlideTopNav: FC<Props> = ({ offset, isHome = false }): JSX.Element => {
     }
   };
 
+  console.log('cart', cartItems);
+
   return (
     <div
       className={`${

@@ -9,7 +9,7 @@ import { useGetVendorQuery, vendorApi } from '@/redux/api/vendorApi';
 import { useLazyGetCategoriesQuery } from '@/redux/api/categoryApi';
 import { isEmpty, kebabCase, lowerCase, map } from 'lodash';
 import CategoryWidget from '@/widgets/category/CategoryWidget';
-import { appLinks, imageSizes } from '@/constants/*';
+import { appLinks, imageSizes, scrollClass } from '@/constants/*';
 import { useTranslation } from 'react-i18next';
 import { setLocale } from '@/redux/slices/localeSlice';
 import {
@@ -144,7 +144,9 @@ const HomePage: NextPage<Props> = ({ url, element }): JSX.Element => {
             {categoriesSuccess &&
             !isEmpty(categories) &&
             vendorDetails?.Data?.template_type === 'basic_category' ? (
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-1">
+              <div
+                className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-1 ${scrollClass}`}
+              >
                 {map(categories.Data, (c, i) => (
                   <CategoryWidget element={c} key={i} />
                 ))}
@@ -163,9 +165,7 @@ const HomePage: NextPage<Props> = ({ url, element }): JSX.Element => {
                     name: string;
                   },
                   i
-                ) => (
-                  <ProductList i={i} list={list}/>
-                )
+                ) => <ProductList i={i} list={list} />
               )
             )}
           </div>

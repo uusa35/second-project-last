@@ -4,7 +4,12 @@ import i18n from 'i18next';
 import { useRouter } from 'next/router';
 import { hideSideMenu } from '@/redux/slices/appSettingSlice';
 import { setUserAgent } from '@/redux/slices/customerSlice';
-import { arboriaFont, gessFont, suppressText } from '@/constants/*';
+import {
+  arboriaFont,
+  gessFont,
+  scrollClass,
+  suppressText,
+} from '@/constants/*';
 import { setLocale } from '@/redux/slices/localeSlice';
 import moment from 'moment';
 import dynamic from 'next/dynamic';
@@ -150,7 +155,7 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
       dir={router.locale === 'ar' ? 'rtl' : 'ltr'}
       className={`${
         router.locale === 'ar' ? gessFont : arboriaFont
-      } flex-col justify-start items-start grow  lg:flex lg:flex-row flex flex-row h-screen  capitalize scroll-smooth hover:scroll-auto`}
+      } flex-col justify-start items-start grow  lg:flex lg:flex-row flex flex-row h-screen  capitalize ${scrollClass}`}
     >
       {children}
       {/* Main Image & Logo */}
