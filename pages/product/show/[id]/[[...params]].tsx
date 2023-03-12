@@ -376,11 +376,11 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
       />
       <MainContentLayout
         url={url}
-        backRoute={
-          query.category_id !== 'null'
-            ? appLinks.productIndex(query.category_id, product.name_en, branch_id, area_id)
-            : null
-        }
+        // backRoute={
+        //   query.category_id !== 'null'
+        //     ? appLinks.productIndex(query.category_id, product.name_en, branch_id, area_id)
+        //     : null
+        // }
         productCurrentQty={currentQty}
         handleIncreaseProductQty={handleIncrease}
         handleDecreaseProductQty={handleDecrease}
