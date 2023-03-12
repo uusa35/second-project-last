@@ -27,7 +27,7 @@ const HorProductWidget: FC<Props> = ({
     area: { id: areaId },
   } = useAppSelector((state) => state);
   const firstImage: any = !isEmpty(element.img)
-    ? imgUrl(element.img[0].original)
+    ? imgUrl(element.cover)
     : NoFoundImage.src;
   return (
     <motion.div whileTap={{ opacity: 1 }} whileHover={{ opacity: 0.8 }}>
@@ -107,11 +107,13 @@ const HorProductWidget: FC<Props> = ({
                   suppressHydrationWarning={suppressText}
                   style={{ color: `black` }}
                 >
-                  {parseFloat(element.price).toFixed(3) === '0.000'
-                        ? <span className="text-xs">{t(`price_on_selection`)}</span>
-                        : parseFloat(element.price).toFixed(3)} 
-                        {parseFloat(element.price).toFixed(3) !== '0.000' && (
-                          <span className={`uppercase px-1`}>{t('kwd')}</span>
+                  {parseFloat(element.price).toFixed(3) === '0.000' ? (
+                    <span className="text-xs">{t(`price_on_selection`)}</span>
+                  ) : (
+                    parseFloat(element.price).toFixed(3)
+                  )}
+                  {parseFloat(element.price).toFixed(3) !== '0.000' && (
+                    <span className={`uppercase px-1`}>{t('kwd')}</span>
                   )}
                 </p>
               )}
