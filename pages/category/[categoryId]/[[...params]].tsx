@@ -130,7 +130,7 @@ const ProductIndex: NextPage<Props> = ({
   };
 
   const handleChange = async (key: string) => {
-    if (key.length >= 2) {
+    if (key.length >= 2 && url) {
       setSearchKey(key);
       await triggerSearchProducts({
         key,

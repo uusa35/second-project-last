@@ -26,7 +26,7 @@ const VerProductWidget: FC<Props> = ({
     area: { id: areaId },
   } = useAppSelector((state) => state);
   const firstImage: any = !isEmpty(element.img)
-    ? imgUrl(element.cover)
+    ? element.cover
     : NoFoundImage.src;
 
   return (

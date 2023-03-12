@@ -27,7 +27,7 @@ const HorProductWidget: FC<Props> = ({
     area: { id: areaId },
   } = useAppSelector((state) => state);
   const firstImage: any = !isEmpty(element.img)
-    ? imgUrl(element.cover)
+    ? element.cover
     : NoFoundImage.src;
   return (
     <motion.div whileTap={{ opacity: 1 }} whileHover={{ opacity: 0.8 }}>
