@@ -64,7 +64,7 @@ const HomePage: NextPage<Props> = ({ url, element }): JSX.Element => {
         lang: router.locale,
         category_id: ``,
         page: `1`,
-        limit: `10`,
+        limit: `30`,
         branch_id: branch_id.toString(),
         area_id: area_id.toString(),
       },
@@ -77,7 +77,7 @@ const HomePage: NextPage<Props> = ({ url, element }): JSX.Element => {
       },
       false
     );
-  }, [router.locale]);
+  }, [router.locale, branch_id, area_id]);
 
   const handleFocus = () =>
     router.push(appLinks.productSearchIndex('', branch_id, area_id));
@@ -137,7 +137,8 @@ const HomePage: NextPage<Props> = ({ url, element }): JSX.Element => {
               </div>
             ))}
           <div className={`py-4 px-2`} data-cy="productCategoryContainer">
-            {categoriesSuccess &&
+            {vendorSuccess &&
+            categoriesSuccess &&
             !isEmpty(categories) &&
             vendorDetails?.Data?.template_type === 'basic_category' ? (
               <div
