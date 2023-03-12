@@ -54,6 +54,7 @@ module.exports = {
     require('@tailwindcss/aspect-ratio'),
     require('@tailwindcss/typography'),
     require('flowbite/plugin'),
+    require('tailwind-scrollbar-hide'),
   ],
   debug: false,
 };

@@ -24,6 +24,7 @@ import { showToastMessage } from '@/redux/slices/appSettingSlice';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
+import { feedbackSchema } from 'src/validations';
 
 type Props = {
   isOpen: boolean;
@@ -46,15 +47,6 @@ const Feedback: FC<Props> = ({
   const [triggerCreateFeedback] = useCreateFeedbackMutation();
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const schema = yup
-    .object()
-    .shape({
-      user_name: yup.string().min(2).max(50).required(),
-      rate: yup.number().min(1).max(3).required(),
-      note: yup.string().required().min(2).max(500),
-      phone: yup.string().min(0).max(999999999999),
-    })
-    .required();
   const {
     register,
     handleSubmit,
@@ -64,7 +56,7 @@ const Feedback: FC<Props> = ({
     clearErrors,
     formState: { errors },
   } = useForm<any>({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(feedbackSchema),
     defaultValues: {
       user_name: ``,
       rate: ``,

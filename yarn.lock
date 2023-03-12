@@ -2137,6 +2137,13 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-sticky@^6.0.4":
+  version "6.0.4"
+  resolved "https://registry.yarnpkg.com/@types/react-sticky/-/react-sticky-6.0.4.tgz#cab221a099227d5eabdfcdf0b8cd2fb479058115"
+  integrity sha512-n5yneeM7PrUu4nqk7oV0c0p9LqHXO2D+17DhQ/Z7UiWhaoSvKJXBkSzAdNRRxZO/njttKd0Ch9hLnaFPqZlAdg==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-transition-group@^4.4.0", "@types/react-transition-group@^4.4.5":
   version "4.4.5"
   resolved "https://registry.yarnpkg.com/@types/react-transition-group/-/react-transition-group-4.4.5.tgz#aae20dcf773c5aa275d5b9f7cdbca638abc5e416"
@@ -4749,6 +4756,13 @@ quick-lru@^5.1.1:
   resolved "https://registry.yarnpkg.com/quick-lru/-/quick-lru-5.1.1.tgz#366493e6b3e42a3a6885e2e99d18f80fb7a8c932"
   integrity sha512-WuyALRjWPDGtt/wzJiadO5AXY+8hZ80hVpe6MyivgraREW751X3SbhRvG3eLKOYN+8VEvqLcf3wdnt44Z4S4SA==
 
+raf@^3.3.0:
+  version "3.4.1"
+  resolved "https://registry.yarnpkg.com/raf/-/raf-3.4.1.tgz#0742e99a4a6552f445d73e3ee0328af0ff1ede39"
+  integrity sha512-Sq4CW4QhwOHE8ucn6J34MqtZCeWFP2aQSmrlroYgqAV1PjStIhJXxYuTgUIfkEk7zTLjmIjLmU5q+fbD1NnOJA==
+  dependencies:
+    performance-now "^2.1.0"
+
 rc@^1.2.7:
   version "1.2.8"
   resolved "https://registry.yarnpkg.com/rc/-/rc-1.2.8.tgz#cd924bf5200a075b83c188cd6b9e211b7fc0d3ed"
@@ -4982,6 +4996,14 @@ react-slick@^0.29.0:
     json2mq "^0.2.0"
     lodash.debounce "^4.0.8"
     resize-observer-polyfill "^1.5.0"
+
+react-sticky@^6.0.3:
+  version "6.0.3"
+  resolved "https://registry.yarnpkg.com/react-sticky/-/react-sticky-6.0.3.tgz#7a18b643e1863da113d7f7036118d2a75d9ecde4"
+  integrity sha512-LNH4UJlRatOqo29/VHxDZOf6fwbgfgcHO4mkEFvrie5FuaZCSTGtug5R8NGqJ0kSnX8gHw8qZN37FcvnFBJpTQ==
+  dependencies:
+    prop-types "^15.5.8"
+    raf "^3.3.0"
 
 react-toastify@^9.1.1:
   version "9.1.1"
@@ -5525,6 +5547,11 @@ tailwind-merge@^1.8.1:
   version "1.10.0"
   resolved "https://registry.yarnpkg.com/tailwind-merge/-/tailwind-merge-1.10.0.tgz#535541c7373d8a31afa81a4267e2ab9b4afa9429"
   integrity sha512-WFnDXSS4kFTZwjKg5/oZSGzBRU/l+qcbv5NVTzLUQvJ9yovDAP05h0F2+ZFW0Lw9EcgRoc2AfURUdZvnEFrXKg==
+
+tailwind-scrollbar-hide@^1.1.7:
+  version "1.1.7"
+  resolved "https://registry.yarnpkg.com/tailwind-scrollbar-hide/-/tailwind-scrollbar-hide-1.1.7.tgz#90b481fb2e204030e3919427416650c54f56f847"
+  integrity sha512-X324n9OtpTmOMqEgDUEA/RgLrNfBF/jwJdctaPZDzB3mppxJk7TLIDmOreEDm1Bq4R9LSPu4Epf8VSdovNU+iA==
 
 tailwindcss-rtl@^0.9.0:
   version "0.9.0"

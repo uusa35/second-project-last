@@ -1,7 +1,6 @@
 import MainContentLayout from '@/layouts/MainContentLayout';
 import { wrapper } from '@/redux/store';
 import {
-  useGetSearchProductsQuery,
   useGetTopSearchQuery,
   useLazyGetSearchProductsQuery,
 } from '@/redux/api/productApi';
@@ -11,9 +10,8 @@ import { appLinks, imageSizes, suppressText } from '@/constants/*';
 import MainHead from '@/components/MainHead';
 import NoResultFound from '@/appImages/no-result-found.gif';
 import { useTranslation } from 'react-i18next';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { useAppSelector } from '@/redux/hooks';
 import { useEffect, useState, Suspense } from 'react';
-import { setCurrentModule, setUrl } from '@/redux/slices/appSettingSlice';
 import VerProductWidget from '@/widgets/product/VerProductWidget';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
@@ -27,7 +25,6 @@ type Props = {
 };
 const ProductSearchIndex: NextPage<Props> = ({ url }): JSX.Element => {
   const { t } = useTranslation();
-  const dispatch = useAppDispatch();
   const {
     locale: { lang },
     branch: { id: branchId },
@@ -36,7 +33,7 @@ const ProductSearchIndex: NextPage<Props> = ({ url }): JSX.Element => {
   } = useAppSelector((state) => state);
   const router = useRouter();
   const { key, branch_id, area_id }: any = router.query;
-  const [searchIsEmpty, setSearchIsEmpty] = useState(true);
+  const [searchKey, setSearchKey] = useState<string>(key);
   const [currentProducts, setCurrentProducts] = useState<any>([]);
   const { data: topSearch, isSuccess: topSearchSuccess } = useGetTopSearchQuery(
     {
@@ -46,48 +43,23 @@ const ProductSearchIndex: NextPage<Props> = ({ url }): JSX.Element => {
       url,
     }
   );
-  
   const [triggerGetProducts, { isSuccess: getProductsSuccess }] =
     useLazyGetSearchProductsQuery<{
       triggerGetProducts: () => void;
       isSuccess: boolean;
     }>();
-  const { data: elements, isSuccess: searchProductsSuccess } =
-    useGetSearchProductsQuery({
-      key: key ?? ``,
-      ...(branchId && { branch_id: branch_id ?? branchId }),
-      ...(areaId && { areaId: area_id ?? areaId }),
-      lang: router.locale,
-      url,
-    });
 
   useEffect(() => {
-    dispatch(setCurrentModule('product_search_index'));
-    if (url) {
-      dispatch(setUrl(url));
-    }
-  }, []);
+    handleSearch(searchKey);
+  }, [searchKey]);
 
   useEffect(() => {
-    triggerGetProducts({
-      key: key ?? ``,
-      ...(branchId && { branch_id: branch_id ?? branchId }),
-      ...(areaId && { areaId: area_id ?? areaId }),
-      lang: router.locale,
-      url,
-    }).then((r: any) => {
-      if (r.data && r.data.Data && r.data.Data.length > 0) {
-        setCurrentProducts(r.data.Data);
-      } else {
-        setCurrentProducts([]);
-      }
-    });
+    setSearchKey(key);
   }, [key]);
 
-  const handleChange = (searchInputKey: string) => {
-    setSearchIsEmpty(searchInputKey.length === 0);
+  const handleSearch = (key: string) => {
     triggerGetProducts({
-      key: searchInputKey ?? ``,
+      key,
       ...(branchId && { branch_id: branch_id ?? branchId }),
       ...(areaId && { areaId: area_id ?? areaId }),
       lang: router.locale,
@@ -101,11 +73,17 @@ const ProductSearchIndex: NextPage<Props> = ({ url }): JSX.Element => {
     });
   };
 
-  if (!router.isReady || !searchProductsSuccess) {
+  const handleChange = async (searchInput: string) => {
+    if (searchInput.length >= 2) {
+      setSearchKey(searchInput);
+    } else {
+      setSearchKey(``);
+    }
+  };
+
+  if (!getProductsSuccess) {
     return <LoadingSpinner fullWidth={true} />;
   }
-
-  console.log('here', currentProducts);
 
   return (
     <Suspense>
@@ -120,7 +98,7 @@ const ProductSearchIndex: NextPage<Props> = ({ url }): JSX.Element => {
           <div className={`w-full capitalize`}>
             <div className="relative mt-1 rounded-md shadow-sm text-gray-400">
               <div className="absolute inset-y-0 cursor-pointer ltr:right-0 rtl:left-0 flex items-center px-6">
-                {isEmpty(key) ? (
+                {isEmpty(searchKey) ? (
                   <MagnifyingGlassIcon className="h-8 w-8" aria-hidden="true" />
                 ) : (
                   <Link
@@ -131,6 +109,7 @@ const ProductSearchIndex: NextPage<Props> = ({ url }): JSX.Element => {
                       branch_id ?? branchId,
                       area_id ?? areaId
                     )}
+                    onClick={() => setSearchKey(``)}
                   >
                     <XMarkIcon
                       className="h-8 w-8 text-stone-400"
@@ -147,46 +126,39 @@ const ProductSearchIndex: NextPage<Props> = ({ url }): JSX.Element => {
                 className="block w-full focus:ring-1 focus:ring-primary_BG rounded-md  rtl:pl-20 ltr:pr-20 border-none  bg-gray-100 py-3 h-12  text-lg capitalize"
                 suppressHydrationWarning={suppressText}
                 placeholder={`${
-                  key !== 'null' && key ? key : t(`search_products`)
+                  searchKey.length !== 0 ? searchKey : t(`search_products`)
                 }`}
               />
             </div>
           </div>
-
           {topSearchSuccess && topSearch.Data && (
             <div className="grid grid-cols-4 capitalize gap-x-4 gap-y-2 my-3">
               {map(
                 topSearch.Data.topSearch,
-                (searchKey, i) =>
-                  !isEmpty(searchKey) &&
-                  !isNull(searchKey) &&
-                  searchKey !== 'null' && (
+                (keyword, i) =>
+                  !isEmpty(keyword) &&
+                  !isNull(keyword) &&
+                  keyword !== 'null' && (
                     <Link
                       scroll={true}
                       replace={true}
                       className={`col-span-1 p-2 rounded-md bg-stone-100 text-center ${
-                        key === searchKey && `bg-stone-200 shadow-sm`
+                        searchKey === keyword && `bg-stone-200 shadow-sm`
                       }`}
                       key={i}
+                      onClick={() => setSearchKey(key)}
                       href={appLinks.productSearchIndex(
-                        searchKey,
+                        keyword,
                         branch_id ?? branchId,
                         area_id ?? areaId
                       )}
                     >
-                      {searchKey}
+                      {keyword}
                     </Link>
                   )
               )}
-              {/*<Link*/}
-              {/*  className={`p-2 rounded-md bg-gray-100 text-black text-center`}*/}
-              {/*  href={appLinks.productSearchIndex(branchId, areaId)}*/}
-              {/*>*/}
-              {/*  {t(`clear`)}*/}
-              {/*</Link>*/}
             </div>
           )}
-
           <div className="my-4 capitalize">
             {isEmpty(currentProducts) && (
               <div
@@ -226,7 +198,7 @@ export default ProductSearchIndex;
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
-    async ({ req, query }) => {
+    async ({ req }) => {
       if (!req.headers.host) {
         return {
           notFound: true,

@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { appLinks, imgUrl, suppressText } from '@/constants/*';
 import { useTranslation } from 'react-i18next';
 import { useGetInvoiceQuery } from '@/redux/api/orderApi';
-import { isEmpty, map } from 'lodash';
+import { isEmpty, map, parseInt } from 'lodash';
 import { wrapper } from '@/redux/store';
 
 import { useEffect, Suspense } from 'react';
@@ -29,6 +29,7 @@ const OrderInvoice: NextPage<Props> = ({ url }): JSX.Element => {
     branch,
     area,
     appSetting: { method },
+    locale: { lang },
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const color = useAppSelector(themeColor);
@@ -45,6 +46,7 @@ const OrderInvoice: NextPage<Props> = ({ url }): JSX.Element => {
           : method === `delivery` && area.id
           ? { 'x-area-id': area.id }
           : {},
+      lang,
     },
     { refetchOnMountOrArgChange: true }
   );
@@ -211,7 +213,10 @@ const OrderInvoice: NextPage<Props> = ({ url }): JSX.Element => {
             </div>
 
             {/* delivery instructions */}
-            {element.data.order_type.includes('delivery') ? (
+            {element.data.order_type.includes('delivery') &&
+            element.data.delivery_address &&
+            element.data.delivery_address.address &&
+            element.data.delivery_address.address.additional ? (
               <div className="flex items-center py-1">
                 <p
                   className="pe-2 font-extrabold"
@@ -292,7 +297,16 @@ const OrderInvoice: NextPage<Props> = ({ url }): JSX.Element => {
                         <td className="py-3 px-3">{item.quantity}</td>
                         <td className="py-3 px-3">{item.item}</td>
                         {/*<td className="py-3 px-3"></td>*/}
-                        <td className="py-3 px-3">{item.price}</td>
+                        <td className="py-3 px-3">
+                          {parseFloat(item.price) +
+                            item.addon.reduce((accumulator, object) => {
+                              return (
+                                accumulator +
+                                parseFloat(object.addon_quantity) *
+                                  parseFloat(object.addon_unit_price)
+                              );
+                            }, 0)}
+                        </td>
                         <td className="py-3 px-3 uppercase">
                           {item.total}
                           {t('kwd')}

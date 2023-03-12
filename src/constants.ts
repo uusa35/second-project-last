@@ -70,7 +70,7 @@ export const isLocal = process.env.NODE_ENV !== 'production';
 // export const isLocal = true;
 export const mainBg = `bg-gradient-to-tl mix-blend-multiply rounded-md text-sm text-white shadow-inner drop-shadow-md`;
 export const submitBtnClass = `w-full ${mainBg} rounded-md text-sm text-white py-4 my-2 cursor-pointer shadow-lg capitalize disabled:from-gray-200 disabled:to-gray-400 drop-shadow-md`;
-export const addressInputField = `border-0 outline-none border-b-2 border-b-gray-100 w-full py-4 focus:ring-0 capitalize`;
+export const addressInputField = `border-0 outline-none border-b-2 border-b-gray-100 w-full py-4 focus:ring-0`;
 export const footerBtnClass = `p-2 px-6 rounded-lg w-fit disabled:bg-stone-600 disabled:text-stone-200 disabled:bg-opacity-40 disabled:opacity-60  shadow-xl capitalize border border-stone-100/25 hover:shadow-inner hover:border-stone-200/80 `;
 export const tajwalFont = `font-tajwal-medium`;
 export const arboriaFont = `font-arboria-light`;
@@ -108,3 +108,5 @@ export const updateUrlParams = (
 ) => {
   return url.replace(/\bpage=[0-9a-zA-Z_@.#+-]{1,50}\b/, `${name}=${value}`);
 };
+
+export const scrollClass = `scroll-smooth overflow-scroll scrollbar-hide overflow-y-scroll`;

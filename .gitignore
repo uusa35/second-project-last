@@ -7,10 +7,12 @@
 
 # testing
 /coverage
+/cypress
 
 # next.js
 /.next/
 /out/
+
 
 # production
 /build

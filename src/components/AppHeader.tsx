@@ -19,12 +19,9 @@ const AppHeader: FC<Props> = ({ backHome = false, backRoute = null }) => {
 
   useEffect(() => {
     const onScroll = () => setOffset(window.pageYOffset);
-    // const handleMouseUp = () => console.log('up');
     window.addEventListener('scroll', onScroll, { passive: true });
-    // window.addEventListener('mouseup', handleMouseUp);
     return () => {
       window.removeEventListener('scroll', debounce(onScroll, 400));
-      // window.removeEventListener('mouseup', handleMouseUp);
     };
   }, [router.pathname]);
 
@@ -33,7 +30,7 @@ const AppHeader: FC<Props> = ({ backHome = false, backRoute = null }) => {
       <header
         className={`${offset <= 80 ? `bg-white` : `bg-transparent`} ${
           isHome ? `bg-transparent` : `bg-white`
-        } relative sticky top-0 z-50 flex flex-col justify-start items-center w-full scroll-smooth capitalize`}
+        } relative sticky top-0 z-50 flex flex-col justify-start items-center w-full capitalize`}
         suppressHydrationWarning={suppressText}
       >
         {router.asPath === '/' ||

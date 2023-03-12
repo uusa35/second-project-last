@@ -137,6 +137,7 @@ const BackBtn: FC<Props> = ({
             scroll={true}
             href={appLinks.cartIndex.path}
             className={`relative`}
+            data-cy="shopping-cart"
            
           >
             <ShoppingBagOutlined

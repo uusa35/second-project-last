@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import Dialog from '@mui/material/Dialog';
 import { useTranslation } from 'react-i18next';
 import ChangeBranch from '@/appImages/change_branch.png';
-import { imageSizes } from '@/constants/*';
+import { imageSizes, suppressText } from '@/constants/*';
 import CustomImage from './CustomImage';
 import { useLazyChangeLocationQuery } from '@/redux/api/cartApi';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -33,7 +33,7 @@ const ChangeLocationModal: FC<Props> = ({
   const { t } = useTranslation();
   const {
     customer: { userAgent },
-    appSetting: { method, url },
+    appSetting: { url },
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -69,6 +69,7 @@ const ChangeLocationModal: FC<Props> = ({
       onClose={OnClose}
       open={OpenModal}
       maxWidth="xs"
+      suppressHydrationWarning={suppressText}
       classes={{
         container: `w-full lg:w-2/4 xl:w-1/3 ${
           router.locale === 'ar' ? 'float-right' : 'float-left'
@@ -87,27 +88,38 @@ const ChangeLocationModal: FC<Props> = ({
             className="h-auto w-auto"
           />
         </div>
-        <p className="text-center text-lg font-semibold mb-3 mt-5 capitalize">
+        <p
+          suppressHydrationWarning={suppressText}
+          className="text-center text-lg font-semibold mb-3 mt-5 capitalize font-tajwal-medium"
+        >
           {t(`${'You_’re_about_to_change_your_location'}`)}
         </p>
-        <p className="text-start text-sm capitalize">
+        <p
+          suppressHydrationWarning={suppressText}
+          className="text-start text-sm capitalize font-tajwal-medium"
+        >
           {t(
             `${'changing_your_location_might_result_in_removing_the_items_from_your_cart'}`
           )}
         </p>
-        <div className="flex justify-between w-full pt-5 gap-x-2 px-0 lg:px-5 capitalize">
+        <div
+          suppressHydrationWarning={suppressText}
+          className="flex justify-between w-full pt-5 gap-x-2 px-0 lg:px-5 capitalize font-tajwal-medium"
+        >
           <button
             onClick={() => OnClose()}
-            className="capitalize"
+            suppressHydrationWarning={suppressText}
+            className="capitalize font-tajwal-medium"
             style={{ color }}
           >
             {t('cancel')}
           </button>
           <button
+            suppressHydrationWarning={suppressText}
             onClick={() => {
               handelChangeLocReq();
             }}
-            className="capitalize"
+            className="capitalize font-tajwal-medium"
             style={{ color }}
           >
             {t('change')}

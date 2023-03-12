@@ -12,9 +12,10 @@ import {
 } from '@mui/icons-material';
 // import Home from '@/appIcons/home.svg';
 import CustomImage from '@/components/CustomImage';
-import Knet from '@/appImages/knet.png';
-import Cash from '@/appImages/cash_on_delivery.jpg';
-import Visa from '@/appImages/visa.png';
+import Knet from '@/appImages/knet.svg';
+import Cash from '@/appImages/cod.svg';
+import CreditCard from '@/appImages/credit_card.svg';
+import PersonalDetails from '@/appImages/personal_information.svg';
 import GoogleMapReact from 'google-map-react';
 import {
   setCurrentModule,
@@ -45,8 +46,9 @@ import { useLazyCreateOrderQuery } from '@/redux/api/orderApi';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { useRouter } from 'next/router';
 import { setOrder, setPaymentMethod } from '@/redux/slices/orderSlice';
-import { CheckCircle, BadgeOutlined } from '@mui/icons-material';
+import { CheckCircle } from '@mui/icons-material';
 import { wrapper } from '@/redux/store';
+import { BadgeOutlined } from '@mui/icons-material';
 
 type Props = {
   url: string;
@@ -82,9 +84,9 @@ const CartReview: NextPage<Props> = ({ url }) => {
   const [triggerCreateOrder, { isLoading }] = useLazyCreateOrderQuery();
   const [triggerAddToCart] = useAddToCartMutation();
   const paymentMethods: { id: OrderUser['PaymentMethod']; src: any }[] = [
-    { id: 'visa', src: Visa.src },
-    { id: 'knet', src: Knet.src },
-    { id: 'cash_on_delivery', src: Cash.src },
+    { id: 'visa', src: <CreditCard /> },
+    { id: 'knet', src: <Knet /> },
+    { id: 'cash_on_delivery', src: <Cash /> },
   ];
 
   useEffect(() => {
@@ -97,16 +99,16 @@ const CartReview: NextPage<Props> = ({ url }) => {
         (isSuccess && !cartItems.data?.Cart) ||
         (isSuccess && cartItems.data?.Cart.length === 0)
       ) {
-        if (router.isReady) {
-          router.replace(appLinks.cartSelectMethod(process_type)).then(() =>
-            dispatch(
-              showToastMessage({
-                content: `select_a_branch_or_area_before_order`,
-                type: `warning`,
-              })
-            )
-          );
-        }
+        // if (router.isReady) {
+        //   router.replace(appLinks.cartSelectMethod(process_type)).then(() =>
+        //     dispatch(
+        //       showToastMessage({
+        //         content: `select_a_branch_or_area_before_order`,
+        //         type: `warning`,
+        //       })
+        //     )
+        //   );
+        // }
       }
     }
   }, []);
@@ -378,7 +380,7 @@ const CartReview: NextPage<Props> = ({ url }) => {
             )}
             {/* information */}
             <div className="flex justify-between items-center">
-              <div className="flex">
+              <div className="flex items-center">
                 <BadgeOutlined sx={{ color: color }} />
                 <div className="ps-2 capitalize">
                   <h4 className="font-semibold text-base">{customer.name}</h4>
@@ -451,8 +453,8 @@ const CartReview: NextPage<Props> = ({ url }) => {
                           >
                             <p className="font-semibold capitalize">
                               <TextTrans
-                                ar={item.ProductName}
-                                en={item.ProductName}
+                                ar={item.ProductNameAr}
+                                en={item.ProductNameEn}
                               />
                             </p>
                           </Link>
@@ -466,13 +468,32 @@ const CartReview: NextPage<Props> = ({ url }) => {
                                 areaId
                               )}`}
                             >
-                              <div
-                                className="uppercase flex grow"
-                                suppressHydrationWarning={suppressText}
-                                style={{ color }}
-                              >
-                                {item.Price} {t('kwd')}
-                              </div>
+                              {item.SalePrice !== item.Price ? (
+                                <div>
+                                  <div
+                                    className="uppercase flex grow line-through"
+                                    suppressHydrationWarning={suppressText}
+                                    style={{ color }}
+                                  >
+                                    {item.Price} {t('kwd')}
+                                  </div>
+                                  <div
+                                    className="uppercase flex grow"
+                                    suppressHydrationWarning={suppressText}
+                                    style={{ color }}
+                                  >
+                                    {item.SalePrice} {t('kwd')}
+                                  </div>
+                                </div>
+                              ) : (
+                                <div
+                                  className="uppercase flex grow"
+                                  suppressHydrationWarning={suppressText}
+                                  style={{ color }}
+                                >
+                                  {item.Price} {t('kwd')}
+                                </div>
+                              )}
                             </Link>
                           </div>
                         </div>
@@ -480,7 +501,7 @@ const CartReview: NextPage<Props> = ({ url }) => {
                         <div className="flex">
                           <div className="w-fit pb-2">
                             <div
-                              className={`flex text-gray-400 w-auto flex-wrap justify-between`}
+                              className={`flex text-gray-400 w-auto flex-wrap justify-between items-center`}
                             >
                               {!isEmpty(item.QuantityMeters) &&
                                 map(item.QuantityMeters, (q, i) => (
@@ -557,16 +578,10 @@ const CartReview: NextPage<Props> = ({ url }) => {
                     className={`${
                       selectedPaymentMethod == m.id &&
                       `ring-2 ring-lime-500 ring-offset-1`
-                    } bg-stone-100 flex justify-center items-center w-24 h-24 rounded-md shadow-lg`}
+                    } flex justify-center items-center w-24 h-24 rounded-md`}
                   >
                     <div>
-                      <CustomImage
-                        src={m.src}
-                        alt="payment"
-                        width={imageSizes.xs}
-                        height={imageSizes.xs}
-                        className={`w-14 h-14`}
-                      />
+                      <div className={`w-16 h-16`}>{m.src}</div>
                     </div>
                   </button>
                   <div

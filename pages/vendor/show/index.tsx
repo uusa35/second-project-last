@@ -10,12 +10,11 @@ import Clock from '@/appIcons/clock.svg';
 import DeliveryIcon from '@/appIcons/delivery.svg';
 import PreOrderAvailabilityIcon from '@/appIcons/availability.svg';
 import PaymentIcon from '@/appIcons/payment.svg';
-import Knet from '@/appImages/knet.png';
-import CashOnDelivery from '@/appImages/cash_on_delivery.jpg';
-import Visa from '@/appImages/visa.png';
+import Knet from '@/appImages/knet.svg';
+import CashOnDelivery from '@/appImages/cod.svg';
+import Visa from '@/appImages/credit_card.svg';
 import { useTranslation } from 'react-i18next';
 import {
-  baseUrl,
   convertColor,
   iconColor,
   imageSizes,
@@ -159,25 +158,17 @@ const VendorShow: NextPage<Props> = ({ element, url }) => {
             <div className="flex items-center">
               {element.Payment_Methods.visa && (
                 <div className="px-5">
-                  <CustomImage
-                    src={Visa.src}
-                    className="h-10 w-12"
-                    alt={t('visa')}
-                  />
+                  <Visa className={`h-8 w-12`} />
                 </div>
               )}
               {element.Payment_Methods.cash_on_delivery && (
                 <div className="px-5">
-                  <CustomImage
-                    className="h-10 w-12"
-                    src={CashOnDelivery.src}
-                    alt={t('cash_on_delivery')}
-                  />
+                  <CashOnDelivery className={`h-8 w-12`} />
                 </div>
               )}
               {element.Payment_Methods.knet && (
-                <div className="px-5">
-                  <CustomImage className="h-8 w-12" src={Knet.src} alt="knet" />
+                <div className="px-5 ">
+                  <Knet className={`h-8 w-12`} />
                 </div>
               )}
             </div>

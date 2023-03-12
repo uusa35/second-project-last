@@ -15,6 +15,7 @@ export interface Product {
   new_price?: string;
   img: img[];
   sections?: ProductSection[];
+  cover: string;
 }
 
 export interface ProductSection {
@@ -49,6 +50,7 @@ export interface Vendor {
   name: string;
   name_ar: string;
   name_en: string;
+  template_type: string;
   theme_color: string;
   status: string;
   phone: string;
@@ -134,9 +136,9 @@ export interface ClientCart {
 export interface ProductCart {
   ProductID: number;
   ProductName: string;
+  ProductNameAr: string;
+  ProductNameEn: string;
   ProductImage: string;
-  name_ar: string;
-  name_en: string;
   ProductDesc: string;
   ExtraNotes: string;
   Quantity: number;

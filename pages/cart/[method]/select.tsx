@@ -32,6 +32,7 @@ import ChangeLocationModal from '@/components/ChangeLocationModal';
 import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 import { wrapper } from '@/redux/store';
 import { themeColor } from '@/redux/slices/vendorSlice';
+import SearchInput from '@/components/SearchInput';
 
 type Props = {
   previousRoute: string | null;
@@ -158,25 +159,24 @@ const SelectMethod: NextPage<Props> = ({
     }
   };
 
+  if (
+    locationsLoading ||
+    branchesLoading ||
+    !locations ||
+    !locations.Data ||
+    !branches ||
+    !branches.Data
+  ) {
+    return <LoadingSpinner fullWidth={true} />;
+  }
+
   return (
     <Suspense>
       <MainContentLayout url={url}>
         <div className={`px-4`}>
           <DeliveryBtns method_in_select={method} />
           <div className={`w-full mb-4`}>
-            <div className="relative mt-1 rounded-md shadow-sm text-gray-400">
-              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center px-6">
-                <MagnifyingGlassIcon className="h-8 w-8" aria-hidden="true" />
-              </div>
-              <input
-                type="search"
-                name="search"
-                id="search"
-                className="block w-full focus:ring-1 focus:ring-primary_BG rounded-md  pl-20 border-none  bg-gray-100 py-3 h-12  text-lg capitalize"
-                suppressHydrationWarning={suppressText}
-                placeholder={`${t(`search`)}`}
-              />
-            </div>
+            <SearchInput />
           </div>
           {method === 'delivery' && (
             <div className={`px-4`}>
@@ -204,11 +204,11 @@ const SelectMethod: NextPage<Props> = ({
                             onClick={() =>
                               setSelectedData({ ...selectedData, area: a })
                             }
-                            data-cy="area"
                           >
                             <p
                               className="text-base text-black capitalize"
                               suppressHydrationWarning={suppressText}
+                              data-cy="area"
                             >
                               <TextTrans ar={a.name_ar} en={a.name_en} />
                             </p>
