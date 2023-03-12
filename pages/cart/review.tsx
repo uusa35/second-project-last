@@ -46,8 +46,9 @@ import { useLazyCreateOrderQuery } from '@/redux/api/orderApi';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { useRouter } from 'next/router';
 import { setOrder, setPaymentMethod } from '@/redux/slices/orderSlice';
-import { CheckCircle, BadgeOutlined } from '@mui/icons-material';
+import { CheckCircle } from '@mui/icons-material';
 import { wrapper } from '@/redux/store';
+import { BadgeOutlined } from '@mui/icons-material';
 
 type Props = {
   url: string;
@@ -98,16 +99,16 @@ const CartReview: NextPage<Props> = ({ url }) => {
         (isSuccess && !cartItems.data?.Cart) ||
         (isSuccess && cartItems.data?.Cart.length === 0)
       ) {
-        if (router.isReady) {
-          router.replace(appLinks.cartSelectMethod(process_type)).then(() =>
-            dispatch(
-              showToastMessage({
-                content: `select_a_branch_or_area_before_order`,
-                type: `warning`,
-              })
-            )
-          );
-        }
+        // if (router.isReady) {
+        //   router.replace(appLinks.cartSelectMethod(process_type)).then(() =>
+        //     dispatch(
+        //       showToastMessage({
+        //         content: `select_a_branch_or_area_before_order`,
+        //         type: `warning`,
+        //       })
+        //     )
+        //   );
+        // }
       }
     }
   }, []);
@@ -452,8 +453,8 @@ const CartReview: NextPage<Props> = ({ url }) => {
                           >
                             <p className="font-semibold capitalize">
                               <TextTrans
-                                ar={item.ProductName}
-                                en={item.ProductName}
+                                ar={item.ProductNameAr}
+                                en={item.ProductNameEn}
                               />
                             </p>
                           </Link>
