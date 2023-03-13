@@ -108,7 +108,10 @@ const ProductShowFooter: FC<Props> = ({
       (method === `pickup` && !branchId) ||
       (method === `delivery` && !area.id)
     ) {
-      router.push(appLinks.cartSelectMethod(`delivery`));
+      router.push(appLinks.cartSelectMethod(`delivery`), ``, {
+        locale: router.locale,
+        scroll: false,
+      });
     }
     if (!productCart.enabled) {
       dispatch(
