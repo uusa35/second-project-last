@@ -1,8 +1,7 @@
 import { FC } from 'react';
-import { appLinks, imageSizes, imgUrl, suppressText } from '@/constants/*';
+import { appLinks, imageSizes, suppressText } from '@/constants/*';
 import { Product } from '@/types/index';
-import NoFoundImage from '@/appImages/not_found.png';
-import { isEmpty, kebabCase, lowerCase } from 'lodash';
+import { kebabCase, lowerCase } from 'lodash';
 import Link from 'next/link';
 import CustomImage from '@/components/CustomImage';
 import { useTranslation } from 'react-i18next';
@@ -10,6 +9,7 @@ import { useAppSelector } from '@/redux/hooks';
 import TextTrans from '@/components/TextTrans';
 import { motion } from 'framer-motion';
 import { themeColor } from '@/redux/slices/vendorSlice';
+import NoFoundImage from '@/appImages/not_found.png';
 
 type Props = {
   element: Product;
@@ -25,9 +25,6 @@ const VerProductWidget: FC<Props> = ({
     branch: { id: branchId },
     area: { id: areaId },
   } = useAppSelector((state) => state);
-  const firstImage: any = !isEmpty(element.img)
-    ? element.cover
-    : NoFoundImage.src;
 
   return (
     <motion.div whileTap={{ opacity: 1 }} whileHover={{ opacity: 0.8 }}>
@@ -46,7 +43,7 @@ const VerProductWidget: FC<Props> = ({
           <div className="flex items-center">
             <div className="h-auto w-32 overflow-hidden rounded-lg">
               <CustomImage
-                src={`${firstImage}`}
+                src={`${element.cover ?? NoFoundImage.src}`}
                 alt={element.name}
                 width={imageSizes.lg}
                 height={imageSizes.lg}
