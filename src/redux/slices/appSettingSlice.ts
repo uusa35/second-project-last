@@ -235,7 +235,6 @@ export const appSettingSlice = createSlice({
     builder.addCase(branchSlice.actions.setBranch, (state, action) => {
       state.method = 'pickup';
     });
-
     builder.addCase(areaSlice.actions.setArea, (state, action) => {
       state.method = 'delivery';
     });
