@@ -50,12 +50,10 @@ const ProductSearchIndex: NextPage<Props> = ({ url }): JSX.Element => {
     }>();
 
   useEffect(() => {
-    // console.log('searchKey','key',searchKey,key);
     handleSearch(searchKey);
   }, [searchKey]);
 
   useEffect(() => {
-    // console.log('hello from set serch key', key);
     setSearchKey(key);
   }, [key]);
 
