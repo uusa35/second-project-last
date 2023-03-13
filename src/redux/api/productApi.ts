@@ -45,11 +45,22 @@ export const productApi = apiSlice.injectEndpoints({
         branch_id?: string;
         areaId?: string;
         url: string;
+        category_id?: string;
       }
     >({
-      query: ({ lang, key = ``, branch_id = '', areaId = ``, url }: any) => ({
+      query: ({
+        lang,
+        key = ``,
+        branch_id = '',
+        areaId = ``,
+        url,
+        category_id,
+      }: any) => ({
         url: `search`,
-        params: { key },
+        params: {
+          key,
+          ...(category_id && { category_id: category_id }),
+        },
         headers: {
           url,
           ...(areaId && { 'x-area-id': areaId }),

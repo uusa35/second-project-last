@@ -134,9 +134,10 @@ const ProductIndex: NextPage<Props> = ({
   };
 
   const handleChange = async (key: string) => {
-    if (key.length >= 2) {
+    if (key.length >= 2 && url) {
       setSearchKey(key);
       await triggerSearchProducts({
+        category_id: categoryId?.toString(),
         key,
         lang,
         branch_id,
@@ -167,7 +168,7 @@ const ProductIndex: NextPage<Props> = ({
       <MainHead title={slug} description={slug} />
       <MainContentLayout url={url} backHome={true}>
         <h1 className="capitalize" suppressHydrationWarning={suppressText}></h1>
-        <div className={`px-4 capitalize h-[100vh]`}>
+        <div className={`px-4 capitalize h-auto`}>
           <div className="flex justify-center items-center pb-3">
             <div className={`w-full`}>
               <SearchInput
@@ -175,24 +176,6 @@ const ProductIndex: NextPage<Props> = ({
                 onChange={debounce((e) => handleChange(e.target.value), 400)}
               />
             </div>
-
-            {/* <div className={`w-full`}>
-              <div className="relative mt-1 rounded-md shadow-sm text-gray-400">
-                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center px-6">
-                  <MagnifyingGlassIcon className="h-8 w-8" aria-hidden="true" />
-                </div>
-                <input
-                  type="search"
-                  name="search"
-                  id="search"
-                  onChange={debounce((e) => handleChange(e.target.value), 2000)}
-                  className="block w-full focus:ring-1 focus:ring-primary_BG rounded-md  pl-20 border-none  bg-gray-100 py-3 h-12  text-lg capitalize"
-                  suppressHydrationWarning={suppressText}
-                  placeholder={`${t(`search_products`)}`}
-                />
-              </div>
-            </div> */}
-
             <button
               onClick={() =>
                 changeStyle(productPreview === 'ver' ? 'hor' : 'ver')
@@ -225,11 +208,17 @@ const ProductIndex: NextPage<Props> = ({
           <div
             ref={listRef}
             onScroll={onScroll}
-            className={`${
-              productPreview === 'hor'
-                ? `grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 gap-x-3 py-4`
-                : ``
-            }`}
+            className={` ${scrollClass} ${
+              !isNull(searchKey) && currentProducts.length < 3
+                ? `h-min`
+                : `h-[100vh]`
+            }  overflow-y-scroll
+              ${
+                productPreview === 'hor'
+                  ? `grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 gap-x-3 py-4`
+                  : ''
+              }
+            `}
           >
             {currentProducts.length
               ? map(currentProducts, (p: Product, i) =>

@@ -13,6 +13,7 @@ export interface Product {
   branch_id?: string;
   price_on_selection?: boolean;
   new_price?: string;
+  cover: string;
   img: img[];
   sections?: ProductSection[];
   cover: string;
