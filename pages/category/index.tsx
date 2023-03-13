@@ -50,10 +50,12 @@ const ProductSearchIndex: NextPage<Props> = ({ url }): JSX.Element => {
     }>();
 
   useEffect(() => {
+    // console.log('searchKey','key',searchKey,key);
     handleSearch(searchKey);
   }, [searchKey]);
 
   useEffect(() => {
+    // console.log('hello from set serch key', key);
     setSearchKey(key);
   }, [key]);
 
@@ -98,7 +100,7 @@ const ProductSearchIndex: NextPage<Props> = ({ url }): JSX.Element => {
           <div className={`w-full capitalize`}>
             <div className="relative mt-1 rounded-md shadow-sm text-gray-400">
               <div className="absolute inset-y-0 cursor-pointer ltr:right-0 rtl:left-0 flex items-center px-6">
-                {isEmpty(searchKey) ? (
+                {isEmpty(searchKey) || isEmpty(key) ? (
                   <MagnifyingGlassIcon className="h-8 w-8" aria-hidden="true" />
                 ) : (
                   <Link
@@ -109,7 +111,7 @@ const ProductSearchIndex: NextPage<Props> = ({ url }): JSX.Element => {
                       branch_id ?? branchId,
                       area_id ?? areaId
                     )}
-                    onClick={() => setSearchKey(``)}
+                    // onClick={() => setSearchKey(``)}
                   >
                     <XMarkIcon
                       className="h-8 w-8 text-stone-400"
@@ -119,14 +121,18 @@ const ProductSearchIndex: NextPage<Props> = ({ url }): JSX.Element => {
                 )}
               </div>
               <input
-                type="search"
+                type="text"
                 name="search"
                 id="search"
-                onChange={debounce((e) => handleChange(e.target.value), 600)}
+                onChange={debounce((e) => {
+                  handleChange(e.target.value);
+                }, 600)}
                 className="block w-full focus:ring-1 focus:ring-primary_BG rounded-md  rtl:pl-20 ltr:pr-20 border-none  bg-gray-100 py-3 h-12  text-lg capitalize"
                 suppressHydrationWarning={suppressText}
+                defaultValue={searchKey}
                 placeholder={`${
-                  searchKey.length !== 0 ? searchKey : t(`search_products`)
+                  // searchKey.length !== 0 ? searchKey : t(`search_products`)
+                  t(`search_products`)
                 }`}
               />
             </div>
@@ -160,7 +166,7 @@ const ProductSearchIndex: NextPage<Props> = ({ url }): JSX.Element => {
             </div>
           )}
           <div className="my-4 capitalize">
-            {isEmpty(currentProducts) && (
+            {isEmpty(currentProducts) ? (
               <div
                 className={`w-full flex flex-1 flex-col justify-center items-center space-y-4 my-12`}
               >
@@ -175,18 +181,21 @@ const ProductSearchIndex: NextPage<Props> = ({ url }): JSX.Element => {
                   {t('no_results_found')}
                 </span>
               </div>
-            )}
-            <div className="flex justify-between items-center">
-              <p className="text-semibold">{t('top_results')}</p>
-              <p className="text-stone-300">
-                {currentProducts.length} {t('product_found')}
-              </p>
-            </div>
+            ) : (
+              <>
+                <div className="flex justify-between items-center">
+                  <p className="text-semibold">{t('top_results')}</p>
+                  <p className="text-stone-300">
+                    {currentProducts.length} {t('product_found')}
+                  </p>
+                </div>
 
-            <div className="h-2 bg-stone-100 my-5 -mx-3"></div>
-            {map(currentProducts, (p, i) => (
-              <VerProductWidget element={p} key={i} category_id={null} />
-            ))}
+                <div className="h-2 bg-stone-100 my-5 -mx-3"></div>
+                {map(currentProducts, (p, i) => (
+                  <VerProductWidget element={p} key={i} category_id={null} />
+                ))}
+              </>
+            )}
           </div>
         </div>
       </MainContentLayout>
