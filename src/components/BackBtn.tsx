@@ -1,8 +1,8 @@
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { FC, Suspense } from 'react';
+import { FC, Suspense, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { isNull } from 'lodash';
-import { appLinks, suppressText } from '../constants';
+import { appLinks, setLang, suppressText } from '../constants';
 import Link from 'next/link';
 import { ShoppingBagOutlined } from '@mui/icons-material';
 import { setLocale } from '@/redux/slices/localeSlice';
@@ -44,12 +44,15 @@ const BackBtn: FC<Props> = ({
 
   const handleGoHome = () => {
     router.push(`/`, ``, {
+      locale: lang,
       scroll: false,
     });
   };
 
   const handleChangeLang = async (locale: string) => {
     if (locale !== router.locale) {
+      dispatch(setLocale(locale));
+      await setLang(locale);
       await router
         .replace(router.pathname, router.asPath, {
           locale,
@@ -62,21 +65,35 @@ const BackBtn: FC<Props> = ({
               type: `info`,
             })
           )
-        )
-        .then(() => dispatch(setLocale(locale)));
+        );
     }
   };
 
-  const handleBack = () => {
+  const handleBack = async () => {
     if (backHome) {
       handleGoHome();
     } else if (!isNull(backRoute)) {
       router.push(`${backRoute}`, undefined, {
-        locale: router.locale,
+        locale: lang,
         scroll: false,
       });
     } else {
-      router.back();
+      // if (document.referrer.includes('ar') && lang === 'en') {
+      //   await setLang('en').then(() => {
+      //     router.back();
+      //   });
+      // } else if (!document.referrer.includes('ar') && lang === 'ar') {
+      //   await setLang('ar').then(() => {
+      //     router.back();
+      //   });
+      // } else {
+      //   await setLang('en').then(() => {
+      //     router.back();
+      //   });
+      // }
+      await setLang(lang).then(() => {
+        router.back();
+      });
     }
   };
 
@@ -138,7 +155,6 @@ const BackBtn: FC<Props> = ({
             href={appLinks.cartIndex.path}
             className={`relative`}
             data-cy="shopping-cart"
-           
           >
             <ShoppingBagOutlined
               className={`w-8 h-8 text-black drop-shadow-sm`}

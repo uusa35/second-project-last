@@ -110,3 +110,12 @@ export const updateUrlParams = (
 };
 
 export const scrollClass = `scroll-smooth overflow-scroll scrollbar-hide overflow-y-scroll`;
+
+export const setLang = (lang: any) =>
+  fetch(`/api/set/lang`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ lang }),
+  });

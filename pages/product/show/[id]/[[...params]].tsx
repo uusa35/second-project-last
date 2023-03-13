@@ -70,7 +70,7 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
   const { t } = useTranslation();
   const {
     productCart,
-    locale: { lang },
+    locale: { lang, isRTL },
     branch: { id: branch_id },
     area: { id: area_id },
     cart: { total },
@@ -97,7 +97,11 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
 
   useEffect(() => {
     if (isSuccess && element.Data) {
-      dispatch(setCurrentModule(element?.Data?.name));
+      dispatch(
+        setCurrentModule(
+          isRTL ? element?.Data?.name_ar : element?.Data?.name_en
+        )
+      );
       if (productCart.ProductID !== element?.Data?.id) {
         handleResetInitialProductCart();
       }
@@ -110,7 +114,7 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
         dispatch(resetMeters());
       }
     }
-  }, [isSuccess, element?.Data?.id]);
+  }, [isSuccess, element?.Data?.id, isRTL]);
 
   useEffect(() => {
     if (url) {
@@ -172,13 +176,6 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
           map(productCart.RadioBtnsAddons, (r) => `_${r.uId}`),
         ` _${productCart.ExtraNotes.replace(/[^A-Z0-9]/gi, '')}`
       );
-      // console.log(
-      //   'uIds',
-      //   `${productCart.ProductID}${join(
-      //     uIds,
-      //     ''
-      //   )}`
-      // );
       dispatch(updateId(`${productCart.ProductID}${join(uIds, '')}`));
     }
   }, [
@@ -228,8 +225,8 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
           ProductID: element?.Data?.id,
           ProductName: element?.Data?.name,
           ProductImage: element?.Data?.cover ?? ``,
-          name_ar: element?.Data?.name_ar,
-          name_en: element?.Data?.name_en,
+          ProductNameAr: element?.Data?.ProductNameAr,
+          ProductNameEn: element?.Data?.ProductNameEn,
           ProductDesc: element?.Data?.desc,
           Quantity: currentQty,
           ExtraNotes: ``,
