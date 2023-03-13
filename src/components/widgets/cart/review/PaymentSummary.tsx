@@ -138,7 +138,7 @@ const PaymentSummary: FC = () => {
               className={`px-2`}
               data-cy="net-total"
             >
-              {promoEnabled ? coupon.total_cart_before_tax : total}
+              {promoEnabled ? coupon.total_cart_after_tax : total}
             </p>
             <p className={`uppercase`} suppressHydrationWarning={suppressText}>
               {t('kwd')}

@@ -511,5 +511,6 @@
   "open" : "open",
   "closed" : "closed",
   "busy" : "busy",
-  "next_pagination": "next"
+  "next_pagination": "next",
+  "something_went_wrong_in_payment_please_try_again":"something went wrong in payment please try again"
 }
