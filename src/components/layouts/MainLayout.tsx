@@ -8,6 +8,7 @@ import {
   arboriaFont,
   gessFont,
   scrollClass,
+  setLang,
   suppressText,
 } from '@/constants/*';
 import { setLocale } from '@/redux/slices/localeSlice';
@@ -148,6 +149,7 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
         matches: 'validation.matches',
       },
     });
+    setLang(router.locale);
   }, [router.locale]);
 
   return (

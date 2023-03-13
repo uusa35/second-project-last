@@ -86,11 +86,13 @@ const HomePage: NextPage<Props> = ({ url, element }): JSX.Element => {
     return <LoadingSpinner />;
   }
 
+  console.log('element', element);
   return (
     <Suspense fallback={<LoadingSpinner fullWidth={true} />}>
       {/* SEO Head DEV*/}
       <MainHead
         title={element.name}
+        description={element.desc}
         mainImage={`${element.logo}`}
         icon={`${element.logo}`}
         phone={element.phone}
