@@ -79,17 +79,21 @@ const BackBtn: FC<Props> = ({
       });
     } else {
       // if (document.referrer.includes('ar') && lang === 'en') {
-      //   await setLang('en').then(() => {
-      //     router.back();
-      //   });
+      //   console.log('case 1', document.referrer.replace('ar/', ''));
+      // const prevUrl = document.referrer.replace('ar/', '');
+      // await setLang(lang).then(() => {
+      //   return router.push(prevUrl, ``, { locale: lang });
+      // });
       // } else if (!document.referrer.includes('ar') && lang === 'ar') {
+      //   console.log('case 2 ===>', window.document.referrer);
       //   await setLang('ar').then(() => {
-      //     router.back();
-      //   });
+      // router.back();
+      // });
       // } else {
+      //   console.log('else', lang);
       //   await setLang('en').then(() => {
-      //     router.back();
-      //   });
+      // router.back();
+      // });
       // }
       await setLang(lang).then(() => {
         router.back();
