@@ -69,8 +69,11 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
   useEffect(() => {
     if (isSuccess && vendorElement && vendorElement.Data) {
       // default is already set to delivery
+      // sometimes they switch from backend !! so let us reset the default again
       if (vendorElement?.Data?.delivery_pickup_type === 'pickup') {
         dispatch(setCartMethod('pickup'));
+      } else if (vendorElement?.Data?.delivery_pickup_type === 'delivery') {
+        dispatch(setCartMethod('delivery'));
       }
     }
   }, [isSuccess]);
