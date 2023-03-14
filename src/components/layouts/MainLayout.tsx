@@ -76,7 +76,7 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
         dispatch(setCartMethod('delivery'));
       }
     }
-  }, [isSuccess]);
+  }, [isSuccess, method]);
 
   useEffect(() => {
     refetch();
