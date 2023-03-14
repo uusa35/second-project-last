@@ -91,6 +91,7 @@ const HomePage: NextPage<Props> = ({ url, element }): JSX.Element => {
       {/* SEO Head DEV*/}
       <MainHead
         title={element.name}
+        description={element.desc}
         mainImage={`${element.logo}`}
         icon={`${element.logo}`}
         phone={element.phone}
