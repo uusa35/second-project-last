@@ -166,6 +166,8 @@ const SelectMethod: NextPage<Props> = ({
 
   if (
     !vendorSuccess ||
+    !vendorDetails ||
+    !vendorDetails.Data ||
     locationsLoading ||
     branchesLoading ||
     !locations ||
@@ -175,8 +177,6 @@ const SelectMethod: NextPage<Props> = ({
   ) {
     return <LoadingSpinner fullWidth={true} />;
   }
-
-  console.log('d', vendorDetails?.Data?.delivery_pickup_type);
 
   return (
     <Suspense>
