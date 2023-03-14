@@ -50,35 +50,42 @@ const HomeSelectMethod: FC<Props> = ({
     { refetchOnMountOrArgChange: true }
   );
 
+  console.log('element', element.delivery_pickup_type);
+
   return (
     <>
       {/* Delivery / Pickup Btns */}
       <div className="flex flex-1 w-full flex-row justify-between items-center my-2 border-t-[14px] border-stone-100 px-14 text-lg pt-4 capitalize">
-        <button
-          className={`${
-            method === 'delivery' && `border-b-2 pb-1`
-          } md:ltr:mr-3 md:rtl:ml-3 capitalize ${
-            router.locale === 'ar' ? gessFont : arboriaFont
-          }`}
-          onClick={() => handleSelectMethod(`delivery`)}
-          suppressHydrationWarning={suppressText}
-          style={{ borderBottomColor: 'gray' }}
-        >
-          {t('delivery')}
-        </button>
-        <button
-          className={`${
-            method === 'pickup' && `border-b-2 pb-1`
-          } md:ltr:mr-3 md:rtl:ml-3 capitalize ${
-            router.locale === 'ar' ? gessFont : arboriaFont
-          }`}
-          onClick={() => handleSelectMethod(`pickup`)}
-          suppressHydrationWarning={suppressText}
-          // style={{ borderBottomColor: convertColor(color, 100) }}
-          style={{ borderBottomColor: 'gray' }}
-        >
-          {t('pickup')}
-        </button>
+        {(element.delivery_pickup_type === 'delivery_pickup' ||
+          element.delivery_pickup_type === 'delivery') && (
+          <button
+            className={`${
+              method === 'delivery' && `border-b-2 pb-1`
+            } md:ltr:mr-3 md:rtl:ml-3 capitalize ${
+              router.locale === 'ar' ? gessFont : arboriaFont
+            }`}
+            onClick={() => handleSelectMethod(`delivery`)}
+            suppressHydrationWarning={suppressText}
+            style={{ borderBottomColor: 'gray' }}
+          >
+            {t('delivery')}
+          </button>
+        )}
+        {(element.delivery_pickup_type === 'delivery_pickup' ||
+          element.delivery_pickup_type === 'pickup') && (
+          <button
+            className={`${
+              method === 'pickup' && `border-b-2 pb-1`
+            } md:ltr:mr-3 md:rtl:ml-3 capitalize ${
+              router.locale === 'ar' ? gessFont : arboriaFont
+            }`}
+            onClick={() => handleSelectMethod(`pickup`)}
+            suppressHydrationWarning={suppressText}
+            style={{ borderBottomColor: 'gray' }}
+          >
+            {t('pickup')}
+          </button>
+        )}
       </div>
 
       <div className={`px-8 py-0 text-lg capitalize mb-2`}>
@@ -121,9 +128,8 @@ const HomeSelectMethod: FC<Props> = ({
             <div className={`pt-4`} style={{ color }}>
               {method === 'delivery'
                 ? data?.Data?.delivery_time
-                : data?.Data?.estimated_preparation_time}
-                {' '}
-                {t(`${data?.Data?.delivery_time_type}`)}
+                : data?.Data?.estimated_preparation_time}{' '}
+              {t(`${data?.Data?.delivery_time_type}`)}
             </div>
           </div>
         ) : (

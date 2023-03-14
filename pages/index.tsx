@@ -30,9 +30,14 @@ import ProductList from '@/components/home/ProductList';
 
 type Props = {
   element: Vendor;
+  currentLocale: string;
   url: string;
 };
-const HomePage: NextPage<Props> = ({ url, element }): JSX.Element => {
+const HomePage: NextPage<Props> = ({
+  url,
+  element,
+  currentLocale,
+}): JSX.Element => {
   const { t } = useTranslation();
   const {
     locale: { lang },
@@ -90,7 +95,7 @@ const HomePage: NextPage<Props> = ({ url, element }): JSX.Element => {
     <Suspense fallback={<LoadingSpinner fullWidth={true} />}>
       {/* SEO Head DEV*/}
       <MainHead
-        title={element.name}
+        title={currentLocale === 'ar' ? element.name_ar : element.name_ar}
         description={element.desc}
         mainImage={`${element.logo}`}
         icon={`${element.logo}`}
@@ -203,6 +208,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
       return {
         props: {
           element: element.Data,
+          currentLocale: locale,
           url,
         },
       };
