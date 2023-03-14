@@ -2,7 +2,7 @@ import { FC, ReactNode, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import i18n from 'i18next';
 import { useRouter } from 'next/router';
-import { hideSideMenu } from '@/redux/slices/appSettingSlice';
+import { hideSideMenu, setCartMethod } from '@/redux/slices/appSettingSlice';
 import { setUserAgent } from '@/redux/slices/customerSlice';
 import {
   arboriaFont,
@@ -65,6 +65,15 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
     branch_id: method !== `pickup` ? branch.id : ``,
     area_id: method === `pickup` ? area.id : ``,
   });
+
+  useEffect(() => {
+    if (isSuccess && vendorElement && vendorElement.Data) {
+      // default is already set to delivery
+      if (vendorElement?.Data?.delivery_pickup_type === 'pickup') {
+        dispatch(setCartMethod('pickup'));
+      }
+    }
+  }, [isSuccess]);
 
   useEffect(() => {
     refetch();

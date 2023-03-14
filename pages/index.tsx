@@ -59,15 +59,6 @@ const HomePage: NextPage<Props> = ({
   });
 
   useEffect(() => {
-    if (vendorSuccess && vendorDetails && vendorDetails.Data) {
-      // default is already set to delivery
-      if (vendorDetails?.Data?.delivery_pickup_type === 'pickup') {
-        dispatch(setCartMethod('pickup'));
-      }
-    }
-  }, [vendorDetails]);
-
-  useEffect(() => {
     dispatch(setCurrentModule('home'));
     dispatch(setShowFooterElement('home'));
   }, []);
