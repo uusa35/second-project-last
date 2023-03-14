@@ -109,7 +109,13 @@ const SelectMethod: NextPage<Props> = ({
     });
   }, [method]);
 
-  if (branchesLoading || locationsLoading) {
+  if (
+    branchesLoading ||
+    locationsLoading ||
+    !vendorSuccess ||
+    !vendorDetails ||
+    !vendorDetails.Data
+  ) {
     return <LoadingSpinner />;
   }
 
