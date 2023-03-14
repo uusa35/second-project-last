@@ -55,7 +55,13 @@ const HomeSelectMethod: FC<Props> = ({
   return (
     <>
       {/* Delivery / Pickup Btns */}
-      <div className="flex flex-1 w-full flex-row justify-between items-center my-2 border-t-[14px] border-stone-100 px-14 text-lg pt-4 capitalize">
+      <div
+        className={`flex flex-1 w-full flex-row ${
+          element.delivery_pickup_type === 'delivery_pickup'
+            ? `justify-between`
+            : `justify-center`
+        }  items-center my-2 border-t-[14px] border-stone-100 px-14 text-lg pt-4 capitalize`}
+      >
         {(element.delivery_pickup_type === 'delivery_pickup' ||
           element.delivery_pickup_type === 'delivery') && (
           <button
