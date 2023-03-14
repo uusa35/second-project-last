@@ -13,6 +13,7 @@ import { appLinks, imageSizes } from '@/constants/*';
 import { useTranslation } from 'react-i18next';
 import { setLocale } from '@/redux/slices/localeSlice';
 import {
+  setCartMethod,
   setCurrentModule,
   setShowFooterElement,
 } from '@/redux/slices/appSettingSlice';
@@ -56,6 +57,15 @@ const HomePage: NextPage<Props> = ({
     lang,
     url,
   });
+
+  useEffect(() => {
+    if (vendorSuccess && vendorDetails && vendorDetails.Data) {
+      // default is already set to delivery
+      if (vendorDetails?.Data?.delivery_pickup_type === 'pickup') {
+        dispatch(setCartMethod('pickup'));
+      }
+    }
+  }, [vendorDetails]);
 
   useEffect(() => {
     dispatch(setCurrentModule('home'));

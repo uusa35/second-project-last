@@ -50,8 +50,6 @@ const HomeSelectMethod: FC<Props> = ({
     { refetchOnMountOrArgChange: true }
   );
 
-  console.log('element', element.delivery_pickup_type);
-
   return (
     <>
       {/* Delivery / Pickup Btns */}
@@ -103,6 +101,7 @@ const HomeSelectMethod: FC<Props> = ({
         >
           <div className={`flex flex-grow justify-start items-center`}>
             <h1 className={`pt-4`}>
+              {/* delivery_pickup_type delivery_pickup delivery pickup */}
               {method === `delivery` ? t(`deliver_to`) : t('pickup_from')}
             </h1>
           </div>
