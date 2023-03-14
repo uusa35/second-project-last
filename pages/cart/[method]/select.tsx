@@ -189,8 +189,8 @@ const SelectMethod: NextPage<Props> = ({
           <div className={`w-full mb-4`}>
             <SearchInput />
           </div>
-          {(vendorDetails?.Data?.delivery_pickup_type === 'delivery_pickup' ||
-            vendorDetails?.Data?.delivery_pickup_type === 'delivery') && (
+          {vendorDetails?.Data?.delivery_pickup_type === 'delivery_pickup' ||
+          vendorDetails?.Data?.delivery_pickup_type === 'delivery' ? (
             <>
               {method === 'delivery' && (
                 <div className={`px-4`}>
@@ -241,9 +241,9 @@ const SelectMethod: NextPage<Props> = ({
                 </div>
               )}
             </>
-          )}
-          {(vendorDetails?.Data?.delivery_pickup_type === 'delivery_pickup' ||
-            vendorDetails?.Data?.delivery_pickup_type === 'pickup') && (
+          ) : null}
+          {vendorDetails?.Data?.delivery_pickup_type === 'delivery_pickup' ||
+          vendorDetails?.Data?.delivery_pickup_type === 'pickup' ? (
             <>
               {method === 'pickup' && (
                 <div className="px-4">
@@ -285,7 +285,7 @@ const SelectMethod: NextPage<Props> = ({
                 </div>
               )}
             </>
-          )}
+          ) : null}
           <button
             onClick={() => handleContinue()}
             disabled={
