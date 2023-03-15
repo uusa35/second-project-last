@@ -1,11 +1,5 @@
 import React, { FC, Suspense } from 'react';
-import {
-  appLinks,
-  imageSizes,
-  imgUrl,
-  scrollClass,
-  suppressText,
-} from '@/constants/*';
+import { appLinks, imageSizes, imgUrl, suppressText } from '@/constants/*';
 import Link from 'next/link';
 import CustomImage from '@/components/CustomImage';
 import { Vendor } from '@/types/index';
