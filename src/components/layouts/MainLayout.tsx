@@ -21,6 +21,8 @@ import { setVendor } from '@/redux/slices/vendorSlice';
 import { isNull } from 'lodash';
 import { useLazyCreateTempIdQuery } from '@/redux/api/cartApi';
 import * as yup from 'yup';
+import { removeBranch } from '@/redux/slices/branchSlice';
+import { removeArea } from '@/redux/slices/areaSlice';
 const MainAsideLayout = dynamic(
   async () => await import(`@/components/home/MainAsideLayout`),
   {
@@ -59,12 +61,15 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
   } = useGetVendorQuery<{
     data: AppQueryResult<Vendor>;
     isSuccess: boolean;
-  }>({
-    lang: locale.lang,
-    url,
-    branch_id: method !== `pickup` ? branch.id : ``,
-    area_id: method === `pickup` ? area.id : ``,
-  },{refetchOnMountOrArgChange:true});
+  }>(
+    {
+      lang: locale.lang,
+      url,
+      branch_id: method !== `pickup` ? branch.id : ``,
+      area_id: method === `pickup` ? area.id : ``,
+    },
+    { refetchOnMountOrArgChange: true }
+  );
 
   useEffect(() => {
     if (isSuccess && vendorElement && vendorElement.Data) {
@@ -72,8 +77,10 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
       // sometimes they switch from backend !! so let us reset the default again
       if (vendorElement?.Data?.delivery_pickup_type === 'pickup') {
         dispatch(setCartMethod('pickup'));
+        dispatch(removeArea());
       } else if (vendorElement?.Data?.delivery_pickup_type === 'delivery') {
         dispatch(setCartMethod('delivery'));
+        dispatch(removeBranch());
       }
     }
   }, [isSuccess, method]);
