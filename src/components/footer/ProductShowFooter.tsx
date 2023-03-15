@@ -39,10 +39,8 @@ const ProductShowFooter: FC<Props> = ({
   const {
     appSetting: { method, url },
     customer: { userAgent },
-    locale: { isRTL },
     productCart,
     branch: { id: branchId },
-    cart: { promoCode: coupon },
     area,
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
@@ -53,11 +51,7 @@ const ProductShowFooter: FC<Props> = ({
   const [triggerAddToCart] = useAddToCartMutation();
   const [triggerGetCartProducts] = useLazyGetCartProductsQuery();
 
-  const {
-    data: cartItems,
-    isSuccess,
-    refetch: refetchCart,
-  } = useGetCartProductsQuery({
+  const { data: cartItems } = useGetCartProductsQuery({
     UserAgent: userAgent,
     area_branch:
       method === `pickup`

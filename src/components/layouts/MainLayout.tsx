@@ -48,7 +48,6 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
     appSetting: { sideMenuOpen, url, previousUrl, method },
     customer: { userAgent },
     locale,
-    vendor,
     branch,
     area,
   } = useAppSelector((state) => state);
