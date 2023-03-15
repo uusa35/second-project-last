@@ -146,7 +146,7 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
                 <BadgeOutlined style={{ color }} />
                 <input
                   {...register('name')}
-                  className={`border-0 w-full focus:ring-transparent outline-0`}
+                  className={`border-0 w-full focus:ring-transparent outline-0 ${arboriaFont}`}
                   placeholder={`${startCase(`${t('enter_your_name')}`)}`}
                   onChange={(e) => setValue('name', toEn(e.target.value))}
                   aria-invalid={errors.name ? 'true' : 'false'}
@@ -167,7 +167,7 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
                 <input
                   {...register('email')}
                   aria-invalid={errors.email ? 'true' : 'false'}
-                  className={`border-0 w-full focus:ring-transparent outline-0`}
+                  className={`border-0 w-full focus:ring-transparent outline-0 ${arboriaFont}`}
                   onChange={(e) => setValue('email', toEn(e.target.value))}
                   placeholder={`${startCase(`${t('enter_your_email')}`)}`}
                 />
