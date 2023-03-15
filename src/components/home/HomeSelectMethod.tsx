@@ -26,11 +26,6 @@ const HomeSelectMethod: FC<Props> = ({
   const color = useAppSelector(themeColor);
   const { t } = useTranslation();
   const router = useRouter();
-
-  const handleSelectMethod = (m: appSetting['method']) => {
-    router.push(appLinks.cartSelectMethod(m));
-  };
-
   const { data, isSuccess } = useGetDeliveryPickupDetailsQuery(
     {
       lang,
@@ -40,6 +35,10 @@ const HomeSelectMethod: FC<Props> = ({
     },
     { refetchOnMountOrArgChange: true }
   );
+
+  const handleSelectMethod = (m: appSetting['method']) => {
+    router.push(appLinks.cartSelectMethod(m));
+  };
 
   return (
     <>

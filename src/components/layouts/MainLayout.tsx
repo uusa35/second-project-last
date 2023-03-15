@@ -46,7 +46,6 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
     appSetting: { sideMenuOpen, url, previousUrl, method },
     customer: { userAgent },
     locale,
-    vendor,
     branch,
     area,
   } = useAppSelector((state) => state);
@@ -59,12 +58,15 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
   } = useGetVendorQuery<{
     data: AppQueryResult<Vendor>;
     isSuccess: boolean;
-  }>({
-    lang: locale.lang,
-    url,
-    branch_id: method !== `pickup` ? branch.id : ``,
-    area_id: method === `pickup` ? area.id : ``,
-  },{refetchOnMountOrArgChange:true});
+  }>(
+    {
+      lang: locale.lang,
+      url,
+      branch_id: method !== `pickup` ? branch.id : ``,
+      area_id: method === `pickup` ? area.id : ``,
+    },
+    { refetchOnMountOrArgChange: true }
+  );
 
   useEffect(() => {
     if (isSuccess && vendorElement && vendorElement.Data) {

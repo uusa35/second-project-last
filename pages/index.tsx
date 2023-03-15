@@ -13,7 +13,6 @@ import { appLinks, imageSizes } from '@/constants/*';
 import { useTranslation } from 'react-i18next';
 import { setLocale } from '@/redux/slices/localeSlice';
 import {
-  setCartMethod,
   setCurrentModule,
   setShowFooterElement,
 } from '@/redux/slices/appSettingSlice';
