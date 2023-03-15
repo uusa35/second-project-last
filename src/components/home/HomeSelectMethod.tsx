@@ -1,22 +1,13 @@
-import {
-  appLinks,
-  suppressText,
-  convertColor,
-  gessFont,
-  arboriaFont,
-} from '@/constants/*';
-import { isNull } from 'lodash';
+import { appLinks, suppressText, gessFont, arboriaFont } from '@/constants/*';
 import { FC } from 'react';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { useAppSelector } from '@/redux/hooks';
 import { appSetting, Vendor } from '@/types/index';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
-import { setCartMethod } from '@/redux/slices/appSettingSlice';
 import Link from 'next/link';
 import TextTrans from '@/components/TextTrans';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { useGetDeliveryPickupDetailsQuery } from '@/redux/api/vendorApi';
-import { addMethod } from 'yup';
 
 type Props = {
   element: Vendor;
