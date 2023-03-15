@@ -126,7 +126,7 @@ const HomePage: NextPage<Props> = ({
     <Suspense fallback={<LoadingSpinner fullWidth={true} />}>
       {/* SEO Head DEV*/}
       <MainHead
-        title={currentLocale === 'ar' ? element.name_ar : element.name_ar}
+        title={currentLocale === 'ar' ? element.name_ar : element.name_en}
         description={element.desc}
         mainImage={`${element.logo}`}
         icon={`${element.logo}`}
