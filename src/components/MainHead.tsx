@@ -22,9 +22,6 @@ const MainHead: FC<Props> = ({
 }): JSX.Element => {
   const { t } = useTranslation();
   const router = useRouter();
-  const {
-    vendor: { logo },
-  } = useAppSelector((state) => state);
   return (
     <>
       <Head>

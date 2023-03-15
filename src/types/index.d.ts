@@ -52,6 +52,7 @@ export interface Vendor {
   name_ar: string;
   name_en: string;
   template_type: string;
+  delivery_pickup_type: string;
   theme_color: string;
   status: string;
   phone: string;

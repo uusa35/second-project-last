@@ -2,7 +2,7 @@ import { FC, ReactNode, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import i18n from 'i18next';
 import { useRouter } from 'next/router';
-import { hideSideMenu } from '@/redux/slices/appSettingSlice';
+import { hideSideMenu, setCartMethod } from '@/redux/slices/appSettingSlice';
 import { setUserAgent } from '@/redux/slices/customerSlice';
 import {
   arboriaFont,
@@ -21,6 +21,8 @@ import { setVendor } from '@/redux/slices/vendorSlice';
 import { isNull } from 'lodash';
 import { useLazyCreateTempIdQuery } from '@/redux/api/cartApi';
 import * as yup from 'yup';
+import { removeBranch } from '@/redux/slices/branchSlice';
+import { removeArea } from '@/redux/slices/areaSlice';
 const MainAsideLayout = dynamic(
   async () => await import(`@/components/home/MainAsideLayout`),
   {
@@ -46,7 +48,6 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
     appSetting: { sideMenuOpen, url, previousUrl, method },
     customer: { userAgent },
     locale,
-    vendor,
     branch,
     area,
   } = useAppSelector((state) => state);
@@ -59,12 +60,29 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
   } = useGetVendorQuery<{
     data: AppQueryResult<Vendor>;
     isSuccess: boolean;
-  }>({
-    lang: locale.lang,
-    url,
-    branch_id: method !== `pickup` ? branch.id : ``,
-    area_id: method === `pickup` ? area.id : ``,
-  });
+  }>(
+    {
+      lang: locale.lang,
+      url,
+      branch_id: method !== `pickup` ? branch.id : ``,
+      area_id: method === `pickup` ? area.id : ``,
+    },
+    { refetchOnMountOrArgChange: true }
+  );
+
+  useEffect(() => {
+    if (isSuccess && vendorElement && vendorElement.Data) {
+      // default is already set to delivery
+      // sometimes they switch from backend !! so let us reset the default again
+      if (vendorElement?.Data?.delivery_pickup_type === 'pickup') {
+        dispatch(setCartMethod('pickup'));
+        dispatch(removeArea());
+      } else if (vendorElement?.Data?.delivery_pickup_type === 'delivery') {
+        dispatch(setCartMethod('delivery'));
+        dispatch(removeBranch());
+      }
+    }
+  }, [isSuccess, method]);
 
   useEffect(() => {
     refetch();
@@ -168,7 +186,9 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
         }`}
         suppressHydrationWarning={suppressText}
       >
-        {isSuccess && <MainAsideLayout element={vendor} />}
+        {isSuccess && vendorElement && vendorElement.Data && (
+          <MainAsideLayout element={vendorElement.Data} />
+        )}
       </div>
     </div>
   );
