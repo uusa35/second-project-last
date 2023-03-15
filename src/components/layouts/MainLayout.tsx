@@ -1,8 +1,13 @@
-import { FC, ReactNode, useEffect } from 'react';
+import { FC, ReactNode, useCallback, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import i18n from 'i18next';
 import { useRouter } from 'next/router';
-import { hideSideMenu, setCartMethod } from '@/redux/slices/appSettingSlice';
+import {
+  hideSideMenu,
+  setCartMethod,
+  setCurrentModule,
+  setShowFooterElement,
+} from '@/redux/slices/appSettingSlice';
 import { setUserAgent } from '@/redux/slices/customerSlice';
 import {
   arboriaFont,
@@ -14,7 +19,10 @@ import {
 import { setLocale } from '@/redux/slices/localeSlice';
 import moment from 'moment';
 import dynamic from 'next/dynamic';
-import { useGetVendorQuery } from '@/redux/api/vendorApi';
+import {
+  useGetVendorQuery,
+  useLazyGetVendorQuery,
+} from '@/redux/api/vendorApi';
 import { AppQueryResult } from '@/types/queries';
 import { Vendor } from '@/types/index';
 import { setVendor } from '@/redux/slices/vendorSlice';
@@ -50,30 +58,35 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
     locale,
     branch,
     area,
+    branch: { id: branch_id },
+    area: { id: area_id },
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const {
-    data: vendorElement,
-    isSuccess,
-    refetch,
-  } = useGetVendorQuery<{
-    data: AppQueryResult<Vendor>;
-    isSuccess: boolean;
-  }>(
-    {
-      lang: locale.lang,
-      url,
-      branch_id: method !== `pickup` ? branch.id : ``,
-      area_id: method === `pickup` ? area.id : ``,
-    },
-    { refetchOnMountOrArgChange: true }
-  );
+  const [triggerGetVendor, { data: vendorElement, isSuccess: vendorSuccess }] =
+    useLazyGetVendorQuery();
 
   useEffect(() => {
-    if (isSuccess && vendorElement && vendorElement.Data) {
-      // default is already set to delivery
-      // sometimes they switch from backend !! so let us reset the default again
+    dispatch(setCurrentModule('home'));
+    dispatch(setShowFooterElement('home'));
+    getVendor();
+  }, []);
+
+  const getVendor = () => {
+    triggerGetVendor(
+      {
+        lang: locale.lang,
+        url,
+        branch_id: method !== `pickup` ? branch_id : ``,
+        area_id: method === `pickup` ? area_id : ``,
+      },
+      false
+    );
+  };
+
+  useEffect(() => {
+    getVendor();
+    if (vendorSuccess && vendorElement && vendorElement.Data) {
       if (vendorElement?.Data?.delivery_pickup_type === 'pickup') {
         dispatch(setCartMethod('pickup'));
         dispatch(removeArea());
@@ -82,18 +95,14 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
         dispatch(removeBranch());
       }
     }
-  }, [isSuccess, method]);
-
-  useEffect(() => {
-    refetch();
-  }, [branch.id, area.id]);
+  }, [branch.id, area.id, method]);
 
   const [triggerCreateTempId, { isSuccess: tempIdSuccess }] =
     useLazyCreateTempIdQuery();
 
   useEffect(() => {
     setAppDefaults();
-  }, [isSuccess, tempIdSuccess]);
+  }, [vendorSuccess, tempIdSuccess]);
 
   const setAppDefaults = () => {
     if (isNull(userAgent)) {
@@ -101,7 +110,7 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
         dispatch(setUserAgent(r.data.Data?.Id))
       );
     }
-    if (isSuccess && vendorElement.Data) {
+    if (vendorSuccess && vendorElement && vendorElement.Data) {
       dispatch(setVendor(vendorElement.Data));
     }
   };
@@ -186,7 +195,7 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
         }`}
         suppressHydrationWarning={suppressText}
       >
-        {isSuccess && vendorElement && vendorElement.Data && (
+        {vendorSuccess && vendorElement && vendorElement.Data && (
           <MainAsideLayout element={vendorElement.Data} />
         )}
       </div>

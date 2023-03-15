@@ -5,7 +5,11 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import MainContentLayout from '@/layouts/MainContentLayout';
 import MainHead from '@/components/MainHead';
 import { Product, Vendor } from '@/types/index';
-import { useGetVendorQuery, vendorApi } from '@/redux/api/vendorApi';
+import {
+  useGetVendorQuery,
+  useLazyGetVendorQuery,
+  vendorApi,
+} from '@/redux/api/vendorApi';
 import { useLazyGetCategoriesQuery } from '@/redux/api/categoryApi';
 import { isEmpty, map } from 'lodash';
 import CategoryWidget from '@/widgets/category/CategoryWidget';
@@ -13,6 +17,7 @@ import { appLinks, imageSizes } from '@/constants/*';
 import { useTranslation } from 'react-i18next';
 import { setLocale } from '@/redux/slices/localeSlice';
 import {
+  setCartMethod,
   setCurrentModule,
   setShowFooterElement,
 } from '@/redux/slices/appSettingSlice';
@@ -27,6 +32,8 @@ import SearchInput from '@/components/SearchInput';
 import { apiSlice } from '@/redux/api';
 import { AppQueryResult } from '@/types/queries';
 import ProductList from '@/components/home/ProductList';
+import { removeArea } from '@/redux/slices/areaSlice';
+import { removeBranch } from '@/redux/slices/branchSlice';
 
 type Props = {
   element: Vendor;
@@ -43,6 +50,7 @@ const HomePage: NextPage<Props> = ({
     locale: { lang },
     branch: { id: branch_id },
     area: { id: area_id },
+    appSetting: { method },
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -52,15 +60,38 @@ const HomePage: NextPage<Props> = ({
   ] = useLazyGetCategoriesQuery();
   const [triggerGetProducts, { data: elements, isSuccess: elementsSuccess }] =
     useLazyGetProductsQuery();
-  const { data: vendorDetails, isSuccess: vendorSuccess } = useGetVendorQuery({
-    lang,
-    url,
-  });
+  const [triggerGetVendor, { data: vendorElement, isSuccess: vendorSuccess }] =
+    useLazyGetVendorQuery();
 
   useEffect(() => {
     dispatch(setCurrentModule('home'));
     dispatch(setShowFooterElement('home'));
+    getVendor();
   }, []);
+
+  useEffect(() => {
+    if (vendorSuccess && vendorElement && vendorElement.Data) {
+      if (vendorElement?.Data?.delivery_pickup_type === 'pickup') {
+        dispatch(setCartMethod('pickup'));
+        dispatch(removeArea());
+      } else if (vendorElement?.Data?.delivery_pickup_type === 'delivery') {
+        dispatch(setCartMethod('delivery'));
+        dispatch(removeBranch());
+      }
+    }
+  }, [vendorSuccess, method, branch_id, area_id]);
+
+  const getVendor = () => {
+    triggerGetVendor(
+      {
+        lang,
+        url,
+        branch_id: method !== `pickup` ? branch_id : ``,
+        area_id: method === `pickup` ? area_id : ``,
+      },
+      false
+    );
+  };
 
   useEffect(() => {
     triggerGetProducts(
@@ -103,11 +134,11 @@ const HomePage: NextPage<Props> = ({
       />
       <MainContentLayout url={url}>
         {/*  ImageBackGround Header */}
-        {vendorSuccess && vendorDetails && vendorDetails.Data && (
+        {vendorSuccess && vendorElement && vendorElement.Data && (
           <div className="block lg:hidden lg:h-auto h-60">
             <CustomImage
-              src={`${vendorDetails?.Data?.cover}`}
-              alt={vendorDetails?.Data?.name}
+              src={`${vendorElement?.Data?.cover}`}
+              alt={vendorElement?.Data?.name}
               className={`object-fit w-full h-full  shadow-xl z-0 overflow-hidden`}
               width={imageSizes.xl}
               height={imageSizes.xl}
@@ -119,8 +150,8 @@ const HomePage: NextPage<Props> = ({
           <div className={`px-6 mt-3 lg:mt-0`}>
             <HomeVendorMainInfo url={url} />
           </div>
-          {vendorSuccess && vendorDetails?.Data && (
-            <HomeSelectMethod element={vendorDetails?.Data} url={url} />
+          {vendorSuccess && vendorElement?.Data && (
+            <HomeSelectMethod element={vendorElement?.Data} url={url} />
           )}
           {/* Search Input */}
           <div
@@ -146,7 +177,7 @@ const HomePage: NextPage<Props> = ({
             {vendorSuccess &&
             categoriesSuccess &&
             !isEmpty(categories) &&
-            vendorDetails?.Data?.template_type === 'basic_category' ? (
+            vendorElement?.Data?.template_type === 'basic_category' ? (
               <div
                 className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-1`}
               >
