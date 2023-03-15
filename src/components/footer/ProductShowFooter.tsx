@@ -108,7 +108,7 @@ const ProductShowFooter: FC<Props> = ({
       (method === `pickup` && !branchId) ||
       (method === `delivery` && !area.id)
     ) {
-      router.push(appLinks.cartSelectMethod(`delivery`), ``, {
+      router.push(appLinks.cartSelectMethod(method), ``, {
         locale: router.locale,
         scroll: false,
       });

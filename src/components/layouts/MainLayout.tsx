@@ -64,7 +64,7 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
     url,
     branch_id: method !== `pickup` ? branch.id : ``,
     area_id: method === `pickup` ? area.id : ``,
-  });
+  },{refetchOnMountOrArgChange:true});
 
   useEffect(() => {
     if (isSuccess && vendorElement && vendorElement.Data) {
