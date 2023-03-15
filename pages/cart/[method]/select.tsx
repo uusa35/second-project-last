@@ -86,10 +86,13 @@ const SelectMethod: NextPage<Props> = ({
     data: AppQueryResult<Branch[]>;
     isLoading: boolean;
   }>({ lang, url });
-  const { data: vendorDetails, isSuccess: vendorSuccess } = useGetVendorQuery({
-    lang,
-    url,
-  },{refetchOnMountOrArgChange:true});
+  const { data: vendorDetails, isSuccess: vendorSuccess } = useGetVendorQuery(
+    {
+      lang,
+      url,
+    },
+    { refetchOnMountOrArgChange: true }
+  );
 
   useEffect(() => {
     dispatch(setCurrentModule('select_method'));
@@ -182,10 +185,6 @@ const SelectMethod: NextPage<Props> = ({
   ) {
     return <LoadingSpinner fullWidth={true} />;
   }
-
-  // useEffect(() => {
-  //   console.log('sel data',selectedData);
-  // }, [selectedData]);
 
   return (
     <Suspense>
