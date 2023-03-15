@@ -188,8 +188,8 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
                   type="number"
                   {...register('phone')}
                   aria-invalid={errors.phone ? 'true' : 'false'}
-                  className={`border-0 w-full focus:ring-transparent outline-0`}
-                  onChange={(e) => setValue('phone', e.target.value)}
+                  className={`border-0 w-full focus:ring-transparent outline-0 ${arboriaFont}`}
+                  onChange={(e) => setValue('phone', toEn(e.target.value))}
                   placeholder={`${startCase(`${t('enter_your_phone')}`)}`}
                 />
                 {/* <Controller
