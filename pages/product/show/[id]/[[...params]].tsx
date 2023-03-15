@@ -19,6 +19,7 @@ import {
 } from '@/redux/slices/appSettingSlice';
 import {
   appLinks,
+  arboriaFont,
   baseUrl,
   imageSizes,
   imgUrl,
@@ -68,6 +69,7 @@ type Props = {
 };
 const ProductShow: NextPage<Props> = ({ product, url }) => {
   const { t } = useTranslation();
+  const router = useRouter();
   const {
     productCart,
     locale: { lang, isRTL },
@@ -703,7 +705,7 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
                   suppressHydrationWarning={suppressText}
                   value={productCart.ExtraNotes}
                   onChange={(e) => dispatch(setNotes(e.target.value))}
-                  className={`border-0 border-b-2 border-b-gray-200 w-full focus:ring-transparent capitalize`}
+                  className={`border-0 border-b-2 border-b-gray-200 w-full focus:ring-transparent capitalize ${router.locale === 'ar' && arboriaFont}`}
                 />
               </div>
             </div>

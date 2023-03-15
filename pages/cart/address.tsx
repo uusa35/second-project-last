@@ -28,7 +28,7 @@ import ApartmentAcitveIcon from '@/appIcons/apartment_active.svg';
 import OfficeIcon from '@/appIcons/office.svg';
 import OfficeAcitveIcon from '@/appIcons/office_active.svg';
 import { HomeOutlined } from '@mui/icons-material';
-import { addressInputField, appLinks, suppressText } from '@/constants/*';
+import { addressInputField, appLinks, arboriaFont, suppressText } from '@/constants/*';
 import { isEmpty, kebabCase, lowerCase } from 'lodash';
 import {
   useCheckTimeAvilabilityMutation,
@@ -125,7 +125,7 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
   });
 
   const CustomTimeInput = forwardRef(({ value, onClick }, ref) => (
-    <div className="flex w-full items-center justify-between px-2">
+    <div className={`flex w-full items-center justify-between px-2 ${router.locale === 'ar' && arboriaFont}`}>
       <input
         className="text-lg outline-none border-none"
         type="text"
@@ -322,7 +322,7 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
       >
         {/* delivery method buttons */}
         <DeliveryBtns />
-        <div className="flex justify-center items-center">
+        <div className={`flex justify-center items-center`}>
           {area && (
             <TextTrans
               className={`font-semibold capitalize`}
@@ -338,7 +338,7 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
             />
           )}
         </div>
-        <form id="hook-form" onSubmit={handleSubmit(onSubmit)} ref={refForm}>
+        <form id="hook-form" className={`${router.locale === 'ar' && arboriaFont}`} onSubmit={handleSubmit(onSubmit)} ref={refForm}>
           <input type="hidden" {...register('method')} value={method} />
           <input
             type="hidden"

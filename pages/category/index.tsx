@@ -6,7 +6,7 @@ import {
 } from '@/redux/api/productApi';
 import { NextPage } from 'next';
 import { debounce, isEmpty, map, isNull } from 'lodash';
-import { appLinks, imageSizes, suppressText } from '@/constants/*';
+import { appLinks, arboriaFont, imageSizes, suppressText } from '@/constants/*';
 import MainHead from '@/components/MainHead';
 import NoResultFound from '@/appImages/no-result-found.gif';
 import { useTranslation } from 'react-i18next';
@@ -125,7 +125,7 @@ const ProductSearchIndex: NextPage<Props> = ({ url }): JSX.Element => {
                 onChange={debounce((e) => {
                   handleChange(e.target.value);
                 }, 600)}
-                className="block w-full focus:ring-1 focus:ring-primary_BG rounded-md  rtl:pl-20 ltr:pr-20 border-none  bg-gray-100 py-3 h-12  text-lg capitalize"
+                className={`block w-full focus:ring-1 focus:ring-primary_BG rounded-md  rtl:pl-20 ltr:pr-20 border-none  bg-gray-100 py-3 h-12  text-lg capitalize ${router.locale === 'ar' && arboriaFont}`}
                 suppressHydrationWarning={suppressText}
                 defaultValue={searchKey}
                 placeholder={`${

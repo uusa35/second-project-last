@@ -1,8 +1,9 @@
 import { FC } from 'react';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-import { suppressText } from '../constants';
+import { arboriaFont, suppressText } from '../constants';
 import { useTranslation } from 'react-i18next';
 import { startCase } from 'lodash';
+import { useRouter } from 'next/router';
 
 type Props = {
   onFocus?: () => void;
@@ -18,6 +19,7 @@ const SearchInput: FC<Props> = ({
   defaultValue = '',
 }) => {
   const { t } = useTranslation();
+  const router = useRouter();
 
   return (
     <div className="relative mt-1 rounded-md shadow-sm text-gray-400">
@@ -31,7 +33,7 @@ const SearchInput: FC<Props> = ({
         defaultValue={defaultValue}
         onFocus={onFocus}
         onChange={onChange}
-        className="block w-full focus:ring-1 focus:ring-primary_BG rounded-md  pl-20 border-none  bg-gray-100 py-3 h-12  text-lg capitalize"
+        className={`block w-full focus:ring-1 focus:ring-primary_BG rounded-md  pl-20 border-none  bg-gray-100 py-3 h-12  text-lg capitalize ${router.locale === 'ar' && arboriaFont}`}
         suppressHydrationWarning={suppressText}
         placeholder={
           placeholder ? placeholder : `${startCase(`${t(`search`)}`)}`

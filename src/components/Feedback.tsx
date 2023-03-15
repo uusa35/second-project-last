@@ -203,7 +203,7 @@ const Feedback: FC<Props> = ({
                 {...register('user_name')}
                 className={`w-full px-4 border-0 focus:ring-transparent outline-none capitalize ${
                   isRTL && 'text-right'
-                }`}
+                } ${router.locale === 'ar' && arboriaFont}`}
                 name="user_name"
                 placeholder={`${t(`name`)}`}
                 onChange={(e: any) => {
@@ -246,7 +246,7 @@ const Feedback: FC<Props> = ({
                 <input
                   className={`w-full px-4 border-0 focus:ring-transparent outline-none capitalize ${
                     isRTL && 'text-right'
-                  }`}
+                  } ${router.locale === 'ar' && arboriaFont}`}
                   {...register('phone')}
                   onChange={(e) => setValue('phone', e.target.value)}
                   aria-invalid={errors.phone ? 'true' : 'false'}
@@ -272,7 +272,7 @@ const Feedback: FC<Props> = ({
                 aria-invalid={errors.note ? 'true' : 'false'}
                 className={`w-full px-4 border-0 focus:ring-transparent outline-none capitalize ${
                   isRTL && 'text-right'
-                }`}
+                } ${router.locale === 'ar' && arboriaFont}`}
                 type="text"
                 placeholder={`${t(`say_something_about_us`)}`}
                 onChange={(e: any) => {

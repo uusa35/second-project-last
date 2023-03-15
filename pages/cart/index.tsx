@@ -11,7 +11,7 @@ import {
 } from '@/redux/slices/appSettingSlice';
 import Promotion from '@/appIcons/promotion.svg';
 import Notes from '@/appIcons/notes.svg';
-import { appLinks, imageSizes, imgUrl, suppressText } from '@/constants/*';
+import { appLinks, arboriaFont, imageSizes, imgUrl, suppressText } from '@/constants/*';
 import CustomImage from '@/components/CustomImage';
 import {
   debounce,
@@ -49,12 +49,14 @@ import { themeColor } from '@/redux/slices/vendorSlice';
 import EmptyCart from '@/appImages/empty-cart.gif';
 import { wrapper } from '@/redux/store';
 import { Done } from '@mui/icons-material';
+import { useRouter } from 'next/router';
 
 type Props = {
   url: string;
 };
 const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
   const { t } = useTranslation();
+  const router = useRouter();
   const {
     branch: { id: branchId },
     area: { id: areaId },
@@ -523,7 +525,7 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
                 </p>
               </div>
 
-              <div className="relative flex items-center justify-between gap-x-2 pt-3">
+              <div className={`relative flex items-center justify-between gap-x-2 pt-3 ${router.locale === 'ar' && arboriaFont}`}>
                 <input
                   type="text"
                   placeholder={`${startCase(t('enter_code_here').toString())}`}
@@ -568,7 +570,7 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
                     (e) => handleSetNotes(e.target.value),
                     400
                   )}
-                  className={`border-0 border-b-2 border-b-gray-200 w-full focus:ring-transparent capitalize`}
+                  className={`border-0 border-b-2 border-b-gray-200 w-full focus:ring-transparent capitalize ${router.locale === 'ar' && arboriaFont}`}
                 />
               </div>
             </div>
