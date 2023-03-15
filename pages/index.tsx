@@ -104,14 +104,14 @@ const HomePage: NextPage<Props> = ({
         branch_id: branch_id.toString(),
         area_id: area_id.toString(),
       },
-      false
+      true
     );
     triggerGetCategories(
       {
         lang: router.locale,
         url,
       },
-      false
+      true
     );
   }, [router.locale, branch_id, area_id]);
 
