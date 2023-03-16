@@ -16,6 +16,7 @@ import {
   imgUrl,
   submitBtnClass,
   suppressText,
+  toEn,
 } from '@/constants/*';
 import { useForm } from 'react-hook-form';
 import { map } from 'lodash';
@@ -66,7 +67,7 @@ const Feedback: FC<Props> = ({
   });
 
   const handleChange = ({ target }: any) => {
-    setValue(target.name, target.value);
+    setValue(target.name, toEn(target.value));
     clearErrors(target.name);
   };
 
@@ -81,7 +82,7 @@ const Feedback: FC<Props> = ({
       if (r.data && r.data.status) {
         dispatch(
           showToastMessage({
-            content: `${t(`thanks_for_your_feedback`)}`,
+            content: 'thanks_for_your_feedback',
             type: `success`,
           })
         );
@@ -201,14 +202,12 @@ const Feedback: FC<Props> = ({
               />
               <input
                 {...register('user_name')}
-                className={`w-full px-4 border-0 focus:ring-transparent outline-none capitalize ${
+                className={`w-full px-4 border-0 focus:ring-transparent outline-none capitalize ${arboriaFont} ${
                   isRTL && 'text-right'
                 }`}
                 name="user_name"
                 placeholder={`${t(`name`)}`}
                 onChange={(e: any) => {
-                  // setValue('user_name', e.target.value);
-                  // clearErrors('user_name')
                   handleChange(e);
                 }}
                 aria-invalid={errors.user_name ? 'true' : 'false'}
@@ -244,11 +243,11 @@ const Feedback: FC<Props> = ({
                   className="w-8 h-8 grayscale pt-1"
                 />
                 <input
-                  className={`w-full px-4 border-0 focus:ring-transparent outline-none capitalize ${
+                  className={`w-full px-4 border-0 focus:ring-transparent outline-none capitalize ${arboriaFont} ${
                     isRTL && 'text-right'
                   }`}
                   {...register('phone')}
-                  onChange={(e) => setValue('phone', e.target.value)}
+                  onChange={(e) => setValue('phone', toEn(e.target.value))}
                   aria-invalid={errors.phone ? 'true' : 'false'}
                   placeholder={`${t(`phone`)}`}
                   suppressHydrationWarning={suppressText}
@@ -270,7 +269,7 @@ const Feedback: FC<Props> = ({
               <input
                 {...register('note')}
                 aria-invalid={errors.note ? 'true' : 'false'}
-                className={`w-full px-4 border-0 focus:ring-transparent outline-none capitalize ${
+                className={`w-full px-4 border-0 focus:ring-transparent outline-none capitalize ${arboriaFont} ${
                   isRTL && 'text-right'
                 }`}
                 type="text"

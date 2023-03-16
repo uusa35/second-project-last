@@ -11,7 +11,7 @@ import {
 } from '@/redux/slices/appSettingSlice';
 import Promotion from '@/appIcons/promotion.svg';
 import Notes from '@/appIcons/notes.svg';
-import { appLinks, imageSizes, imgUrl, suppressText } from '@/constants/*';
+import { appLinks, arboriaFont, imageSizes, imgUrl, suppressText, toEn } from '@/constants/*';
 import CustomImage from '@/components/CustomImage';
 import {
   debounce,
@@ -49,12 +49,14 @@ import { themeColor } from '@/redux/slices/vendorSlice';
 import EmptyCart from '@/appImages/empty-cart.gif';
 import { wrapper } from '@/redux/store';
 import { Done } from '@mui/icons-material';
+import { useRouter } from 'next/router';
 
 type Props = {
   url: string;
 };
 const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
   const { t } = useTranslation();
+  const router = useRouter();
   const {
     branch: { id: branchId },
     area: { id: areaId },
@@ -523,14 +525,14 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
                 </p>
               </div>
 
-              <div className="relative flex items-center justify-between gap-x-2 pt-3">
+              <div className={`relative flex items-center justify-between gap-x-2 pt-3`}>
                 <input
                   type="text"
                   placeholder={`${startCase(t('enter_code_here').toString())}`}
                   defaultValue={couponVal}
-                  onChange={debounce((e) => setCouponVal(e.target.value), 3000)}
+                  onChange={debounce((e) => setCouponVal(toEn(e.target.value)), 3000)}
                   suppressHydrationWarning={suppressText}
-                  className={`border-0 border-b-2 ${
+                  className={`border-0 border-b-2 ${arboriaFont} ${
                     promoEnabled
                       ? 'border-b-lime-500 focus:border-b-lime-500'
                       : 'border-b-gray-200 focus:border-b-gray-200'

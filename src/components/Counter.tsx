@@ -30,7 +30,7 @@ const Counter: FC<Props> = ({
         value={val}
         type="text"
         readOnly
-        className={`${inputClassName} rounded-full outline-none text-sm pt-2`}
+        className={`${inputClassName} rounded-full outline-none text-sm pt-2 ${router.locale === 'ar' && arboriaFont}`}
       />
       <div className="cursor-pointer" onClick={(e)=>{e.stopPropagation(); inc()}}>
         <AddIcon sx={{ color: iconClr, fontSize: iconSize }} />
