@@ -1,6 +1,18 @@
 import { NextPage } from 'next';
 import MainContentLayout from '@/layouts/MainContentLayout';
+<<<<<<< HEAD
 import { appLinks, arboriaFont, imageSizes, suppressText } from '@/constants/*';
+=======
+import {
+  appLinks,
+  arboriaFont,
+  gessFont,
+  imageSizes,
+  suppressText,
+  tajwalFont,
+  toEn,
+} from '@/constants/*';
+>>>>>>> structure
 import { BadgeOutlined, EmailOutlined, Phone } from '@mui/icons-material';
 import GreyLine from '@/components/GreyLine';
 import { useTranslation } from 'react-i18next';
@@ -130,7 +142,7 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
       >
         <div className="flex-col justify-center h-full px-5">
           <div className="flex justify-center py-10 lg:my-5 lg:pb-5">
-          <PersonalDetails className={`my-10 lg:my-0 w-32 h-32`}  />
+            <PersonalDetails className={`my-10 lg:my-0 w-32 h-32`} />
           </div>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className={`lg:mt-10 ${router.locale === 'ar' && arboriaFont}`}>
@@ -138,9 +150,9 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
                 <BadgeOutlined style={{ color }} />
                 <input
                   {...register('name')}
-                  className={`border-0 w-full focus:ring-transparent outline-0`}
+                  className={`border-0 w-full focus:ring-transparent outline-0 ${arboriaFont}`}
                   placeholder={`${startCase(`${t('enter_your_name')}`)}`}
-                  onChange={(e) => setValue('name', e.target.value)}
+                  onChange={(e) => setValue('name', toEn(e.target.value))}
                   aria-invalid={errors.name ? 'true' : 'false'}
                 />
               </div>
@@ -159,8 +171,8 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
                 <input
                   {...register('email')}
                   aria-invalid={errors.email ? 'true' : 'false'}
-                  className={`border-0 w-full focus:ring-transparent outline-0`}
-                  onChange={(e) => setValue('email', e.target.value)}
+                  className={`border-0 w-full focus:ring-transparent outline-0 ${arboriaFont}`}
+                  onChange={(e) => setValue('email', toEn(e.target.value))}
                   placeholder={`${startCase(`${t('enter_your_email')}`)}`}
                 />
               </div>
@@ -180,8 +192,8 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
                   type="number"
                   {...register('phone')}
                   aria-invalid={errors.phone ? 'true' : 'false'}
-                  className={`border-0 w-full focus:ring-transparent outline-0`}
-                  onChange={(e) => setValue('phone', e.target.value)}
+                  className={`border-0 w-full focus:ring-transparent outline-0 ${arboriaFont}`}
+                  onChange={(e) => setValue('phone', toEn(e.target.value))}
                   placeholder={`${startCase(`${t('enter_your_phone')}`)}`}
                 />
                 {/* <Controller

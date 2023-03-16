@@ -75,6 +75,8 @@ export const footerBtnClass = `p-2 px-6 rounded-lg w-fit disabled:bg-stone-600 d
 export const tajwalFont = `font-tajwal-medium`;
 export const arboriaFont = `font-arboria-light`;
 export const gessFont = `font-gess-medium`;
+export const toEn = (s) =>
+  s.replace(/[\u0660-\u0669\u06f0-\u06f9]/g, (a) => a.charCodeAt(0) & 15);
 
 export const suppressText = true;
 
