@@ -1,8 +1,5 @@
 import { NextPage } from 'next';
 import MainContentLayout from '@/layouts/MainContentLayout';
-<<<<<<< HEAD
-import { appLinks, arboriaFont, imageSizes, suppressText } from '@/constants/*';
-=======
 import {
   appLinks,
   arboriaFont,
@@ -12,7 +9,6 @@ import {
   tajwalFont,
   toEn,
 } from '@/constants/*';
->>>>>>> structure
 import { BadgeOutlined, EmailOutlined, Phone } from '@mui/icons-material';
 import GreyLine from '@/components/GreyLine';
 import { useTranslation } from 'react-i18next';
