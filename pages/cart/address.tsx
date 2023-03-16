@@ -28,7 +28,7 @@ import ApartmentAcitveIcon from '@/appIcons/apartment_active.svg';
 import OfficeIcon from '@/appIcons/office.svg';
 import OfficeAcitveIcon from '@/appIcons/office_active.svg';
 import { HomeOutlined } from '@mui/icons-material';
-import { addressInputField, appLinks, arboriaFont, suppressText } from '@/constants/*';
+import { addressInputField, appLinks, arboriaFont, suppressText, toEn } from '@/constants/*';
 import { isEmpty, kebabCase, lowerCase } from 'lodash';
 import {
   useCheckTimeAvilabilityMutation,
@@ -125,12 +125,12 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
   });
 
   const CustomTimeInput = forwardRef(({ value, onClick }, ref) => (
-    <div className={`flex w-full items-center justify-between px-2 ${router.locale === 'ar' && arboriaFont}`}>
+    <div className={`flex w-full items-center justify-between px-2`}>
       <input
-        className="text-lg outline-none border-none"
+        className={`text-lg outline-none border-none ${arboriaFont}`}
         type="text"
         ref={ref}
-        value={`${value}`}
+        value={`${toEn(value)}`}
       ></input>
       <AccessTime onClick={onClick} style={{ color }} />
     </div>
@@ -338,7 +338,7 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
             />
           )}
         </div>
-        <form id="hook-form" className={`${router.locale === 'ar' && arboriaFont}`} onSubmit={handleSubmit(onSubmit)} ref={refForm}>
+        <form id="hook-form" onSubmit={handleSubmit(onSubmit)} ref={refForm}>
           <input type="hidden" {...register('method')} value={method} />
           <input
             type="hidden"
@@ -503,6 +503,7 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                       className={`${addressInputField}`}
                       suppressHydrationWarning={suppressText}
                       {...register('block')}
+                      onChange={(e) => setValue('block', toEn(e.target.value))}
                       aria-invalid={errors.block ? 'true' : 'false'}
                     />
 
@@ -530,6 +531,7 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                       className={`${addressInputField}`}
                       suppressHydrationWarning={suppressText}
                       {...register('street')}
+                      onChange={(e) => setValue('street', toEn(e.target.value))}
                       aria-invalid={errors.street ? 'true' : 'false'}
                     />
 
@@ -570,6 +572,7 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                               className={`${addressInputField}`}
                               suppressHydrationWarning={suppressText}
                               {...register('house_no')}
+                              onChange={(e) => setValue('house_no', toEn(e.target.value))}
                               aria-invalid={errors.house_no ? 'true' : 'false'}
                             />
                           </div>
@@ -606,6 +609,7 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                               className={`${addressInputField}`}
                               suppressHydrationWarning={suppressText}
                               {...register('floor_no')}
+                              onChange={(e) => setValue('floor_no', toEn(e.target.value))}
                               aria-invalid={errors.floor_no ? 'true' : 'false'}
                             />
                           </div>
@@ -646,6 +650,7 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                               className={`${addressInputField}`}
                               suppressHydrationWarning={suppressText}
                               {...register('building_no')}
+                              onChange={(e) => setValue('building_no', toEn(e.target.value))}
                               aria-invalid={
                                 errors.building_no ? 'true' : 'false'
                               }
@@ -684,6 +689,7 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                               className={`${addressInputField}`}
                               suppressHydrationWarning={suppressText}
                               {...register('office_no')}
+                              onChange={(e) => setValue('office_no', toEn(e.target.value))}
                               aria-invalid={errors.office_no ? 'true' : 'false'}
                             />
                           </div>
@@ -714,6 +720,7 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                       className={`${addressInputField}`}
                       suppressHydrationWarning={suppressText}
                       {...register('avenue')}
+                      onChange={(e) => setValue('avenue', toEn(e.target.value))}
                       aria-invalid={errors.avenue ? 'true' : 'false'}
                     />
                     <div>
@@ -741,6 +748,7 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                       className={`${addressInputField}`}
                       suppressHydrationWarning={suppressText}
                       {...register('paci')}
+                      onChange={(e) => setValue('paci', toEn(e.target.value))}
                       aria-invalid={errors.paci ? 'true' : 'false'}
                     />
 
@@ -770,6 +778,7 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                       className={`${addressInputField} p-0`}
                       suppressHydrationWarning={suppressText}
                       {...register('additional')}
+                      onChange={(e) => setValue('additional', toEn(e.target.value))}
                       aria-invalid={errors.additional ? 'true' : 'false'}
                     />
                   </div>
@@ -876,19 +885,19 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                   {show && (
                     <div className={`flex flex-col gap-3`}>
                       {/* date */}
-                      <div className="flex justify-between p-2 border-b-4 border-stone-100 ">
+                      <div className={`flex justify-between p-2 border-b-4 border-stone-100 ${arboriaFont}`}>
                         <input
                           ref={dateRef}
                           type="date"
                           className={`${
                             isRTL ? `text-right` : `text-left`
                           } border-none w-full px-0 focus:border-none focus:ring-transparent`}
-                          min={new Date().toISOString().split('T')[0]}
+                          min={toEn(new Date().toISOString().split('T')[0])}
                           // value={prefrences.date as Date}
                           onChange={(e) => {
                             setPrefrences({
                               ...prefrences,
-                              date: new Date(e.target.value),
+                              date: new Date(toEn(e.target.value)),
                             });
                             dateRef?.current?.blur();
                           }}

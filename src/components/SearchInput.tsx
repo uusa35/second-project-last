@@ -33,7 +33,7 @@ const SearchInput: FC<Props> = ({
         defaultValue={defaultValue}
         onFocus={onFocus}
         onChange={onChange}
-        className={`block w-full focus:ring-1 focus:ring-primary_BG rounded-md  pl-20 border-none  bg-gray-100 py-3 h-12  text-lg capitalize ${router.locale === 'ar' && arboriaFont}`}
+        className={`block w-full focus:ring-1 focus:ring-primary_BG rounded-md  pl-20 border-none  bg-gray-100 py-3 h-12  text-lg capitalize ${arboriaFont}`}
         suppressHydrationWarning={suppressText}
         placeholder={
           placeholder ? placeholder : `${startCase(`${t(`search`)}`)}`

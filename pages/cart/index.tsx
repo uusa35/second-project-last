@@ -11,7 +11,7 @@ import {
 } from '@/redux/slices/appSettingSlice';
 import Promotion from '@/appIcons/promotion.svg';
 import Notes from '@/appIcons/notes.svg';
-import { appLinks, arboriaFont, imageSizes, imgUrl, suppressText } from '@/constants/*';
+import { appLinks, arboriaFont, imageSizes, imgUrl, suppressText, toEn } from '@/constants/*';
 import CustomImage from '@/components/CustomImage';
 import {
   debounce,
@@ -525,14 +525,14 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
                 </p>
               </div>
 
-              <div className={`relative flex items-center justify-between gap-x-2 pt-3 ${router.locale === 'ar' && arboriaFont}`}>
+              <div className={`relative flex items-center justify-between gap-x-2 pt-3`}>
                 <input
                   type="text"
                   placeholder={`${startCase(t('enter_code_here').toString())}`}
                   defaultValue={couponVal}
-                  onChange={debounce((e) => setCouponVal(e.target.value), 3000)}
+                  onChange={debounce((e) => setCouponVal(toEn(e.target.value)), 3000)}
                   suppressHydrationWarning={suppressText}
-                  className={`border-0 border-b-2 ${
+                  className={`border-0 border-b-2 ${arboriaFont} ${
                     promoEnabled
                       ? 'border-b-lime-500 focus:border-b-lime-500'
                       : 'border-b-gray-200 focus:border-b-gray-200'
@@ -570,7 +570,7 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
                     (e) => handleSetNotes(e.target.value),
                     400
                   )}
-                  className={`border-0 border-b-2 border-b-gray-200 w-full focus:ring-transparent capitalize ${router.locale === 'ar' && arboriaFont}`}
+                  className={`border-0 border-b-2 border-b-gray-200 w-full focus:ring-transparent capitalize`}
                 />
               </div>
             </div>

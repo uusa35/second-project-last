@@ -24,6 +24,7 @@ import {
   imageSizes,
   imgUrl,
   suppressText,
+  toEn,
 } from '@/constants/*';
 import CustomImage from '@/components/CustomImage';
 import {
@@ -704,8 +705,8 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
                   placeholder={`${t('enter_extra_notes_for_product')}`}
                   suppressHydrationWarning={suppressText}
                   value={productCart.ExtraNotes}
-                  onChange={(e) => dispatch(setNotes(e.target.value))}
-                  className={`border-0 border-b-2 border-b-gray-200 w-full focus:ring-transparent capitalize ${router.locale === 'ar' && arboriaFont}`}
+                  onChange={(e) => dispatch(setNotes(toEn(e.target.value)))}
+                  className={`border-0 border-b-2 border-b-gray-200 w-full focus:ring-transparent capitalize ${arboriaFont}`}
                 />
               </div>
             </div>
