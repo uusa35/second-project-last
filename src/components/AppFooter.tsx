@@ -1,8 +1,6 @@
 import { FC, Suspense } from 'react';
 import { useAppSelector } from '@/redux/hooks';
-import {
-  useGetCartProductsQuery,
-} from '@/redux/api/cartApi';
+import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 import ProductShowFooter from './footer/ProductShowFooter';
 import CartIndexFooter from './footer/CartIndexFooter';
 import CartAddressFooter from './footer/CartAddressFooter';
@@ -24,7 +22,7 @@ const AppFooter: FC<Props> = ({
 }): JSX.Element => {
   const {
     appSetting: { showFooterElement, method, url },
-    customer: { userAgent},
+    customer: { userAgent },
     locale: { isRTL },
     branch: { id: branchId },
     area,
@@ -41,6 +39,8 @@ const AppFooter: FC<Props> = ({
         : { 'x-area-id': area.id },
     url,
   });
+
+  console.log('showFooterElement', showFooterElement);
 
   return (
     <Suspense>
