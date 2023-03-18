@@ -11,7 +11,14 @@ import {
 } from '@/redux/slices/appSettingSlice';
 import Promotion from '@/appIcons/promotion.svg';
 import Notes from '@/appIcons/notes.svg';
-import { appLinks, imageSizes, imgUrl, suppressText } from '@/constants/*';
+import {
+  appLinks,
+  arboriaFont,
+  imageSizes,
+  imgUrl,
+  suppressText,
+  toEn,
+} from '@/constants/*';
 import CustomImage from '@/components/CustomImage';
 import {
   debounce,
@@ -523,18 +530,23 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
                 </p>
               </div>
 
-              <div className="relative flex items-center justify-between gap-x-2 pt-3">
+              <div
+                className={`relative flex items-center justify-between gap-x-2 pt-3`}
+              >
                 <input
                   type="text"
-                  placeholder={`${startCase(t('enter_code_here').toString())}`}
+                  placeholder={`${startCase(`${t('enter_code_here')}`)}`}
                   defaultValue={couponVal}
-                  onChange={debounce((e) => setCouponVal(e.target.value), 3000)}
+                  onChange={debounce(
+                    (e) => setCouponVal(toEn(e.target.value)),
+                    3000
+                  )}
                   suppressHydrationWarning={suppressText}
                   className={`border-0 border-b-2 ${
                     promoEnabled
                       ? 'border-b-lime-500 focus:border-b-lime-500'
                       : 'border-b-gray-200 focus:border-b-gray-200'
-                  } w-full focus:ring-transparent`}
+                  } w-full focus:ring-transparent ${arboriaFont}`}
                 />
                 {promoEnabled ? (
                   <Done className="!text-lime-500 absolute end-0" />

@@ -1,6 +1,5 @@
 import MainContentLayout from '@/layouts/MainContentLayout';
 import { NextPage } from 'next';
-import Image from 'next/image';
 import Failure from '@/appImages/failed.png';
 import {
   suppressText,
@@ -97,7 +96,8 @@ const OrderFailure: NextPage<Props> = ({ url }): JSX.Element => {
               <p className="pt-1">{t('my_cart')}</p>
             </Link>
           )}
-          <Link href={appLinks.productSearchIndex(branchId, ``, areaId)}>
+          {/*<Link href={appLinks.productSearchIndex(branchId, ``, areaId)}>*/}
+          <Link href={appLinks.orderReview.path}>
             <p
               className={`${submitBtnClass}  text-center`}
               style={{ backgroundColor: color }}
