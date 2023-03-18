@@ -5,11 +5,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import MainContentLayout from '@/layouts/MainContentLayout';
 import MainHead from '@/components/MainHead';
 import { Product, Vendor } from '@/types/index';
-import {
-  useGetVendorQuery,
-  useLazyGetVendorQuery,
-  vendorApi,
-} from '@/redux/api/vendorApi';
+import { useLazyGetVendorQuery, vendorApi } from '@/redux/api/vendorApi';
 import { useLazyGetCategoriesQuery } from '@/redux/api/categoryApi';
 import { isEmpty, map } from 'lodash';
 import CategoryWidget from '@/widgets/category/CategoryWidget';
@@ -145,7 +141,7 @@ const HomePage: NextPage<Props> = ({
             />
           </div>
         )}
-        <div className="bg-white border-t-4 border-stone-100 lg:border-none rounded-none relative lg:top-auto  pt-1 lg:pt-0 ">
+        <div className="bg-white border-t-4 border-stone-100 lg:border-none rounded-none relative lg:top-auto  pt-1 lg:pt-0 min-h-screen">
           {/*  HomePage Header */}
           <div className={`px-6 mt-3 lg:mt-0`}>
             <HomeVendorMainInfo url={url} />
@@ -165,18 +161,21 @@ const HomePage: NextPage<Props> = ({
             </div>
           </div>
           {/* Loading Spinner */}
-          {!categoriesSuccess ||
-            (!elementsSuccess && (
-              <div
-                className={`flex w-full h-[30vh] justify-center items-center w-full`}
-              >
-                <LoadingSpinner fullWidth={true} />
-              </div>
-            ))}
+          {(!categoriesSuccess ||
+            !elementsSuccess ||
+            !vendorSuccess ||
+            !vendorElement ||
+            !vendorElement.Data ||
+            !categories ||
+            !elements) && (
+            <div
+              className={`flex w-full h-[30vh] mb-[100%] justify-center items-center w-full`}
+            >
+              <LoadingSpinner fullWidth={true} />
+            </div>
+          )}
           <div className={`py-4 px-2`} data-cy="productCategoryContainer">
-            {vendorSuccess &&
-            categoriesSuccess &&
-            !isEmpty(categories) &&
+            {!isEmpty(categories) &&
             vendorElement?.Data?.template_type === 'basic_category' ? (
               <div
                 className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-1`}
@@ -186,10 +185,8 @@ const HomePage: NextPage<Props> = ({
                 ))}
               </div>
             ) : (
-              vendorSuccess &&
               elements &&
               !isEmpty(elements.Data) &&
-              elementsSuccess &&
               map(
                 elements.Data,
                 (
