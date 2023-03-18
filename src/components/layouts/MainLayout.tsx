@@ -65,10 +65,10 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
   const router = useRouter();
   const [triggerGetVendor, { data: vendorElement, isSuccess: vendorSuccess }] =
     useLazyGetVendorQuery();
+  const [triggerCreateTempId, { isSuccess: tempIdSuccess }] =
+    useLazyCreateTempIdQuery();
 
   useEffect(() => {
-    dispatch(setCurrentModule('home'));
-    dispatch(setShowFooterElement('home'));
     getVendor();
   }, []);
 
@@ -96,9 +96,6 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
       }
     }
   }, [branch.id, area.id, method]);
-
-  const [triggerCreateTempId, { isSuccess: tempIdSuccess }] =
-    useLazyCreateTempIdQuery();
 
   useEffect(() => {
     setAppDefaults();
