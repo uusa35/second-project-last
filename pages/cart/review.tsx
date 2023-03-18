@@ -10,13 +10,10 @@ import {
   ReceiptOutlined,
   HomeOutlined,
 } from '@mui/icons-material';
-// import Home from '@/appIcons/home.svg';
 import CustomImage from '@/components/CustomImage';
 import Knet from '@/appImages/knet.svg';
 import Cash from '@/appImages/cod.svg';
 import CreditCard from '@/appImages/credit_card.svg';
-import PersonalDetails from '@/appImages/personal_information.svg';
-import GoogleMapReact from 'google-map-react';
 import {
   setCurrentModule,
   setShowFooterElement,
@@ -200,12 +197,14 @@ const CartReview: NextPage<Props> = ({ url }) => {
             router.replace(appLinks.orderFailure.path);
           }
         } else {
-          dispatch(
-            showToastMessage({
-              content: r.error.data.msg,
-              type: `error`,
-            })
-          );
+          if (r.error && r.error.data && r.error.data.msg) {
+            dispatch(
+              showToastMessage({
+                content: r.error.data.msg,
+                type: `error`,
+              })
+            );
+          }
         }
       });
     }
