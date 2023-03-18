@@ -63,7 +63,7 @@ const HomePage: NextPage<Props> = ({
     dispatch(setCurrentModule('home'));
     dispatch(setShowFooterElement('home'));
     getVendor();
-  }, []);
+  }, [element.id]);
 
   useEffect(() => {
     if (vendorSuccess && vendorElement && vendorElement.Data) {

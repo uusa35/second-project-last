@@ -70,7 +70,6 @@ type Props = {
 };
 const ProductShow: NextPage<Props> = ({ product, url }) => {
   const { t } = useTranslation();
-  const router = useRouter();
   const {
     productCart,
     locale: { lang, isRTL },
@@ -127,7 +126,7 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
     return () => {
       dispatch(resetShowFooterElement());
     };
-  }, []);
+  }, [product]);
 
   useEffect(() => {
     if (
