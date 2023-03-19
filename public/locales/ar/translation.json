@@ -525,5 +525,6 @@
   "open" : "مفتوح",
   "closed" : "مغلق",
   "busy" : "غير متاح",
-  "something_went_wrong_in_payment_please_try_again":"حدث خطأ اثناء الدفع من فضلك حاول مرة اخرى"
+  "something_went_wrong_in_payment_please_try_again":"حدث خطأ اثناء الدفع من فضلك حاول مرة اخرى",
+  "place_order": "ضع الطلب"
 }
