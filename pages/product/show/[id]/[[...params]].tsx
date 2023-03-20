@@ -85,6 +85,7 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
     productCart.ProductID === product.id ? productCart.Quantity : 1
   );
   const [tabsOpen, setTabsOpen] = useState<{ id: number }[]>([]);
+  const [isReadMoreShown, setIsReadMoreShown] = useState<boolean>(false);
   const {
     data: element,
     isSuccess,
@@ -443,20 +444,22 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
                     />
                   </p>
                   <p
-                    className={`flex flex-wrap rtl:pl-1 ltr:pr-1 overflow-hidden`}
+                    className={`flex flex-wrap rtl:pl-1 ltr:pr-1 ${isReadMoreShown ? '' : 'line-clamp-2'}`}
                   >
                     <TextTrans
                       ar={element?.Data?.description_ar}
                       en={element?.Data?.description_en}
                       length={999}
-                    />
-                  </p>
+                    /> 
+                    </p>
+                    <button 
+                      onClick={() => isReadMoreShown ? setIsReadMoreShown(false) : setIsReadMoreShown(true)} 
+                      style={{color}}
+                      className="font-semibold"
+                    >
+                      {isReadMoreShown ? t('read_less') : t('read_more')}
+                    </button>
                 </div>
-                {/* <div className={`shrink-0`}>
-              <p className={`text-lg `} style={{ color }}>
-                {element?.Data?.price} <span className={`uppercase`}>{t(`kwd`)}</span>
-              </p>
-            </div> */}
               </div>
               {/*     sections  */}
               {map(element?.Data?.sections, (s: ProductSection, i) => (
