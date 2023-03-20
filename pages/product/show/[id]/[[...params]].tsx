@@ -37,6 +37,7 @@ import {
   map,
   multiply,
   now,
+  startCase,
   sum,
   sumBy,
 } from 'lodash';
@@ -444,21 +445,29 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
                     />
                   </p>
                   <p
-                    className={`flex flex-wrap rtl:pl-1 ltr:pr-1 ${isReadMoreShown ? '' : 'line-clamp-2'}`}
+                    className={`flex flex-wrap rtl:pl-1 ltr:pr-1 ${
+                      isReadMoreShown ? '' : 'line-clamp-2'
+                    }`}
                   >
                     <TextTrans
                       ar={element?.Data?.description_ar}
                       en={element?.Data?.description_en}
-                      length={999}
-                    /> 
-                    </p>
-                    <button 
-                      onClick={() => isReadMoreShown ? setIsReadMoreShown(false) : setIsReadMoreShown(true)} 
-                      style={{color}}
-                      className="font-semibold"
+                      length={isReadMoreShown ? 999 : 99}
+                    />
+                    <button
+                      onClick={() =>
+                        isReadMoreShown
+                          ? setIsReadMoreShown(false)
+                          : setIsReadMoreShown(true)
+                      }
+                      style={{ color }}
+                      className="font-semibold text-right text-sm rtl:mr-2 ltr:ml-2"
                     >
-                      {isReadMoreShown ? t('read_less') : t('read_more')}
+                      {isReadMoreShown
+                        ? startCase(`${t('read_less')}`)
+                        : startCase(`${t('read_more')}`)}
                     </button>
+                  </p>
                 </div>
               </div>
               {/*     sections  */}
