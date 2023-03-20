@@ -8,7 +8,7 @@ import { NextPage } from 'next';
 import MainHead from '@/components/MainHead';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { useEffect, useState, Fragment, Suspense } from 'react';
+import { useEffect, useState, Fragment, Suspense, useRef, useCallback } from 'react';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
 import {
@@ -86,6 +86,14 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
   );
   const [tabsOpen, setTabsOpen] = useState<{ id: number }[]>([]);
   const [isReadMoreShown, setIsReadMoreShown] = useState<boolean>(false);
+  const [windowWidth, setWindowWidth] = useState(null);
+  const isWindow = typeof window !== 'undefined';
+  const getWidth: any = useCallback(
+    () => (isWindow ? window.innerWidth : windowWidth),
+    [windowWidth]
+  );
+  const resize = () => setWindowWidth(getWidth());
+  const descriptionRef = useRef();
   const {
     data: element,
     isSuccess,
@@ -189,6 +197,13 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
     productCart.ExtraNotes,
   ]);
 
+  useEffect(() => {
+    if (isWindow) {
+      setWindowWidth(getWidth());
+      window.addEventListener('resize', resize);
+      return () => window.removeEventListener('resize', resize);
+    }
+  }, [isWindow]);
   const customAnimation = {
     mount: { scale: 1 },
     unmount: { scale: 0.9 },
@@ -445,6 +460,7 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
                   </p>
                   <p
                     className={`flex flex-wrap rtl:pl-1 ltr:pr-1 ${isReadMoreShown ? '' : 'line-clamp-2'}`}
+                    ref={descriptionRef}
                   >
                     <TextTrans
                       ar={element?.Data?.description_ar}
@@ -452,13 +468,15 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
                       length={999}
                     /> 
                     </p>
-                    <button 
-                      onClick={() => isReadMoreShown ? setIsReadMoreShown(false) : setIsReadMoreShown(true)} 
-                      style={{color}}
-                      className="font-semibold"
-                    >
+                    {descriptionRef && descriptionRef?.current?.offsetHeight > 24 && (
+                      <button 
+                        onClick={() => isReadMoreShown ? setIsReadMoreShown(false) : setIsReadMoreShown(true)} 
+                        style={{color}}
+                        className="font-semibold"
+                      >
                       {isReadMoreShown ? t('read_less') : t('read_more')}
-                    </button>
+                      </button>
+                    )}
                 </div>
               </div>
               {/*     sections  */}
