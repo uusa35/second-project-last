@@ -70,7 +70,7 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
 
   useEffect(() => {
     getVendor();
-  }, []);
+  }, [url]);
 
   const getVendor = () => {
     triggerGetVendor(
