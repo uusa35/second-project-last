@@ -66,7 +66,7 @@ const ReviewOrderFooter:FC<Props>=({handleSubmit}) =>{
                 suppressHydrationWarning={suppressText}
                 onClick={() => (handleSubmit ? handleSubmit() : null)}
               >
-                {t('checkout')}
+                {t('place_order')}
               </button>
             </div>
           </div>

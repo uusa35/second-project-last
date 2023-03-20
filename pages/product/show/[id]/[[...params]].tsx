@@ -37,6 +37,7 @@ import {
   map,
   multiply,
   now,
+  startCase,
   sum,
   sumBy,
 } from 'lodash';
@@ -85,6 +86,7 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
     productCart.ProductID === product.id ? productCart.Quantity : 1
   );
   const [tabsOpen, setTabsOpen] = useState<{ id: number }[]>([]);
+  const [isReadMoreShown, setIsReadMoreShown] = useState<boolean>(false);
   const {
     data: element,
     isSuccess,
@@ -443,20 +445,30 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
                     />
                   </p>
                   <p
-                    className={`flex flex-wrap rtl:pl-1 ltr:pr-1 overflow-hidden`}
+                    className={`flex flex-wrap rtl:pl-1 ltr:pr-1 ${
+                      isReadMoreShown ? '' : 'line-clamp-2'
+                    }`}
                   >
                     <TextTrans
                       ar={element?.Data?.description_ar}
                       en={element?.Data?.description_en}
-                      length={999}
+                      length={isReadMoreShown ? 999 : 99}
                     />
+                    <button
+                      onClick={() =>
+                        isReadMoreShown
+                          ? setIsReadMoreShown(false)
+                          : setIsReadMoreShown(true)
+                      }
+                      style={{ color }}
+                      className="font-semibold text-right text-sm rtl:mr-2 ltr:ml-2"
+                    >
+                      {isReadMoreShown
+                        ? startCase(`${t('read_less')}`)
+                        : startCase(`${t('read_more')}`)}
+                    </button>
                   </p>
                 </div>
-                {/* <div className={`shrink-0`}>
-              <p className={`text-lg `} style={{ color }}>
-                {element?.Data?.price} <span className={`uppercase`}>{t(`kwd`)}</span>
-              </p>
-            </div> */}
               </div>
               {/*     sections  */}
               {map(element?.Data?.sections, (s: ProductSection, i) => (
