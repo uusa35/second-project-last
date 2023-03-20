@@ -19,12 +19,7 @@ import {
 import { setLocale } from '@/redux/slices/localeSlice';
 import moment from 'moment';
 import dynamic from 'next/dynamic';
-import {
-  useGetVendorQuery,
-  useLazyGetVendorQuery,
-} from '@/redux/api/vendorApi';
-import { AppQueryResult } from '@/types/queries';
-import { Vendor } from '@/types/index';
+import { useLazyGetVendorQuery } from '@/redux/api/vendorApi';
 import { setVendor } from '@/redux/slices/vendorSlice';
 import { isNull } from 'lodash';
 import { useLazyCreateTempIdQuery } from '@/redux/api/cartApi';
@@ -70,7 +65,7 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
 
   useEffect(() => {
     getVendor();
-  }, []);
+  }, [url]);
 
   const getVendor = () => {
     triggerGetVendor(
@@ -99,7 +94,7 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
 
   useEffect(() => {
     setAppDefaults();
-  }, [vendorSuccess, tempIdSuccess]);
+  }, [vendorSuccess, tempIdSuccess, url]);
 
   const setAppDefaults = () => {
     if (isNull(userAgent)) {
