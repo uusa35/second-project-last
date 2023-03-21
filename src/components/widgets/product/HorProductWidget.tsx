@@ -11,6 +11,7 @@ import { useAppSelector } from '@/redux/hooks';
 import TextTrans from '@/components/TextTrans';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 
 type Props = {
   element: Product;
@@ -42,7 +43,7 @@ const HorProductWidget: FC<Props> = ({
       >
         <div className="relative">
           <div className="h-60 w-full overflow-hidden rounded-lg">
-            <CustomImage
+            <Image
               src={`${element.cover}`}
               alt={element.name}
               width={imageSizes.lg}

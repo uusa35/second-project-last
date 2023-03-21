@@ -16,6 +16,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import {
   setCurrentModule,
   setProductPreview,
+  setShowFooterElement,
   setUrl,
 } from '@/redux/slices/appSettingSlice';
 import { useTranslation } from 'react-i18next';
@@ -23,7 +24,6 @@ import VerProductWidget from '@/components/widgets/product/VerProductWidget';
 import Menu from '@/appIcons/menus.svg';
 import List from '@/appIcons/list.svg';
 import { useRouter } from 'next/router';
-import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import CustomImage from '@/components/CustomImage';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import SearchInput from '@/components/SearchInput';
@@ -83,7 +83,8 @@ const ProductIndex: NextPage<Props> = ({
     } else {
       dispatch(setCurrentModule(`product_index`));
     }
-  }, []);
+    dispatch(setShowFooterElement(`home`));
+  }, [url]);
 
   const handleFire = async () => {
     await triggerGetProducts({
@@ -101,11 +102,7 @@ const ProductIndex: NextPage<Props> = ({
           return;
         }
         setPreviousPage(currentPage);
-        const filteredProducts = uniqBy(
-          [...r.data.Data.products, ...currentProducts],
-          'id'
-        );
-        setCurrentProducts(filteredProducts);
+        setCurrentProducts([...currentProducts, ...r.data.Data.products]);
       } else {
         // setCurrentProducts([]);
       }
