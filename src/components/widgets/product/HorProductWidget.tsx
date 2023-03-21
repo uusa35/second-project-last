@@ -43,7 +43,7 @@ const HorProductWidget: FC<Props> = ({
         <div className="relative">
           <div className="h-60 w-full overflow-hidden rounded-lg">
             <CustomImage
-              src={`${element.cover ?? NoFoundImage.src}`}
+              src={`${element.cover}`}
               alt={element.name}
               width={imageSizes.lg}
               height={imageSizes.lg}
@@ -88,7 +88,7 @@ const HorProductWidget: FC<Props> = ({
                     style={{ color }}
                     suppressHydrationWarning={suppressText}
                   >
-                    {element.price} {t('kwd')}
+                    {element.price}
                   </p>
                   <p
                     className=" uppercase"

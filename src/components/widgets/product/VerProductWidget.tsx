@@ -43,7 +43,7 @@ const VerProductWidget: FC<Props> = ({
           <div className="flex items-center">
             <div className="h-auto w-32 overflow-hidden rounded-lg">
               <CustomImage
-                src={`${element.cover ?? NoFoundImage.src}`}
+                src={`${element.cover}`}
                 alt={element.name}
                 width={imageSizes.lg}
                 height={imageSizes.lg}
@@ -80,7 +80,7 @@ const VerProductWidget: FC<Props> = ({
                         // style={{ color }}
                         suppressHydrationWarning={suppressText}
                       >
-                        {element.new_price} {t('kwd')}
+                        {element.new_price}
                       </p>
                     </div>
                   ) : (

@@ -8,7 +8,7 @@ import { NextPage } from 'next';
 import MainHead from '@/components/MainHead';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { useEffect, useState, Fragment, Suspense } from 'react';
+import { useEffect, useState, Fragment, Suspense, useRef, useCallback } from 'react';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
 import {
@@ -87,6 +87,14 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
   );
   const [tabsOpen, setTabsOpen] = useState<{ id: number }[]>([]);
   const [isReadMoreShown, setIsReadMoreShown] = useState<boolean>(false);
+  const [windowWidth, setWindowWidth] = useState(null);
+  const isWindow = typeof window !== 'undefined';
+  const getWidth: any = useCallback(
+    () => (isWindow ? window.innerWidth : windowWidth),
+    [windowWidth]
+  );
+  const resize = () => setWindowWidth(getWidth());
+  const descriptionRef = useRef<any>();
   const {
     data: element,
     isSuccess,
@@ -190,6 +198,13 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
     productCart.ExtraNotes,
   ]);
 
+  useEffect(() => {
+    if (isWindow) {
+      setWindowWidth(getWidth());
+      window.addEventListener('resize', resize);
+      return () => window.removeEventListener('resize', resize);
+    }
+  }, [isWindow]);
   const customAnimation = {
     mount: { scale: 1 },
     unmount: { scale: 0.9 },
@@ -448,26 +463,30 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
                     className={`flex flex-wrap rtl:pl-1 ltr:pr-1 ${
                       isReadMoreShown ? '' : 'line-clamp-2'
                     }`}
+                    ref={descriptionRef}
                   >
                     <TextTrans
                       ar={element?.Data?.description_ar}
                       en={element?.Data?.description_en}
                       length={isReadMoreShown ? 999 : 99}
-                    />
-                    <button
-                      onClick={() =>
-                        isReadMoreShown
-                          ? setIsReadMoreShown(false)
-                          : setIsReadMoreShown(true)
-                      }
-                      style={{ color }}
-                      className="font-semibold text-right text-sm rtl:mr-2 ltr:ml-2"
-                    >
-                      {isReadMoreShown
-                        ? startCase(`${t('read_less')}`)
+                    /> 
+                    </p>
+                    {descriptionRef && descriptionRef?.current?.offsetHeight > 24 && (
+                      <button 
+                        onClick={() => 
+                          isReadMoreShown 
+                            ? setIsReadMoreShown(false) 
+                            : setIsReadMoreShown(true)
+                        } 
+                        style={{ color }}
+                        className="font-semibold text-right text-sm rtl:mr-2 ltr:ml-2"
+                        length={isReadMoreShown ? 999 : 99}
+                      >
+                      {isReadMoreShown 
+                        ? startCase(`${t('read_less')}`) 
                         : startCase(`${t('read_more')}`)}
-                    </button>
-                  </p>
+                      </button>
+                    )}
                 </div>
               </div>
               {/*     sections  */}
