@@ -184,15 +184,15 @@ const CartReview: NextPage<Props> = ({ url }) => {
               dispatch(setOrder(r.data.data));
               // router.replace(`/order/status/${r.data.data.order_id}/success`);
               router.replace(appLinks.orderSuccess(r.data.data.order_id));
+              dispatch(
+                showToastMessage({
+                  content: `order_created_successfully`,
+                  type: `success`,
+                })
+              );
             } else {
               window.open(r.data.Data, '_self');
             }
-            dispatch(
-              showToastMessage({
-                content: `order_created_successfully`,
-                type: `success`,
-              })
-            );
           } else {
             router.replace(appLinks.orderFailure.path);
           }

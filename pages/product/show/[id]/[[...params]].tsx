@@ -18,9 +18,7 @@ import {
   setUrl,
 } from '@/redux/slices/appSettingSlice';
 import {
-  appLinks,
   arboriaFont,
-  baseUrl,
   imageSizes,
   imgUrl,
   suppressText,
@@ -37,6 +35,7 @@ import {
   map,
   multiply,
   now,
+  startCase,
   sum,
   sumBy,
 } from 'lodash';
@@ -62,7 +61,7 @@ import TextTrans from '@/components/TextTrans';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import NoFoundImage from '@/appImages/not_found.png';
 import LoadingSpinner from '@/components/LoadingSpinner';
-import { useRouter } from 'next/router';
+import Image from 'next/image';
 
 type Props = {
   product: Product;
@@ -70,7 +69,6 @@ type Props = {
 };
 const ProductShow: NextPage<Props> = ({ product, url }) => {
   const { t } = useTranslation();
-  const router = useRouter();
   const {
     productCart,
     locale: { lang, isRTL },
@@ -80,12 +78,12 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
     vendor: { logo },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
-  const { query }: any = useRouter();
   const dispatch = useAppDispatch();
   const [currentQty, setCurrentyQty] = useState<number>(
     productCart.ProductID === product.id ? productCart.Quantity : 1
   );
   const [tabsOpen, setTabsOpen] = useState<{ id: number }[]>([]);
+  const [isReadMoreShown, setIsReadMoreShown] = useState<boolean>(false);
   const {
     data: element,
     isSuccess,
@@ -127,7 +125,7 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
     return () => {
       dispatch(resetShowFooterElement());
     };
-  }, []);
+  }, [product]);
 
   useEffect(() => {
     if (
@@ -376,11 +374,6 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
       />
       <MainContentLayout
         url={url}
-        // backRoute={
-        //   query.category_id !== 'null'
-        //     ? appLinks.productIndex(query.category_id, product.name_en, branch_id, area_id)
-        //     : null
-        // }
         productCurrentQty={currentQty}
         handleIncreaseProductQty={handleIncrease}
         handleDecreaseProductQty={handleDecrease}
@@ -393,7 +386,7 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
                   <Carousel className={`h-96`}>
                     {map(element?.Data?.img, (image: img, i) => (
                       <div key={i}>
-                        <CustomImage
+                        <Image
                           src={`${
                             image && image.original
                               ? imgUrl(image.original)
@@ -444,20 +437,35 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
                     />
                   </p>
                   <p
-                    className={`flex flex-wrap rtl:pl-1 ltr:pr-1 overflow-hidden`}
+                    className={`flex flex-wrap rtl:pl-1 ltr:pr-1 ${
+                      isReadMoreShown ? '' : 'line-clamp-4'
+                    }`}
                   >
                     <TextTrans
                       ar={element?.Data?.description_ar}
                       en={element?.Data?.description_en}
-                      length={999}
+                      length={
+                        isReadMoreShown
+                          ? isRTL
+                            ? element?.Data?.description_ar.length
+                            : element?.Data?.description_ar.length
+                          : 99
+                      }
                     />
+                    {(element?.Data?.description_ar.length >= 99 ||
+                      element?.Data?.description_en.length >= 99) && (
+                      <button
+                        onClick={() => setIsReadMoreShown(!isReadMoreShown)}
+                        style={{ color }}
+                        className="font-semibold text-sm rtl:mr-2 ltr:ml-2"
+                      >
+                        {isReadMoreShown
+                          ? startCase(`${t('read_less')}`)
+                          : startCase(`${t('read_more')}`)}
+                      </button>
+                    )}
                   </p>
                 </div>
-                {/* <div className={`shrink-0`}>
-              <p className={`text-lg `} style={{ color }}>
-                {element?.Data?.price} <span className={`uppercase`}>{t(`kwd`)}</span>
-              </p>
-            </div> */}
               </div>
               {/*     sections  */}
               {map(element?.Data?.sections, (s: ProductSection, i) => (

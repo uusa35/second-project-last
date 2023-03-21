@@ -19,12 +19,7 @@ import {
 import { setLocale } from '@/redux/slices/localeSlice';
 import moment from 'moment';
 import dynamic from 'next/dynamic';
-import {
-  useGetVendorQuery,
-  useLazyGetVendorQuery,
-} from '@/redux/api/vendorApi';
-import { AppQueryResult } from '@/types/queries';
-import { Vendor } from '@/types/index';
+import { useLazyGetVendorQuery } from '@/redux/api/vendorApi';
 import { setVendor } from '@/redux/slices/vendorSlice';
 import { isNull } from 'lodash';
 import { useLazyCreateTempIdQuery } from '@/redux/api/cartApi';
@@ -65,12 +60,12 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
   const router = useRouter();
   const [triggerGetVendor, { data: vendorElement, isSuccess: vendorSuccess }] =
     useLazyGetVendorQuery();
+  const [triggerCreateTempId, { isSuccess: tempIdSuccess }] =
+    useLazyCreateTempIdQuery();
 
   useEffect(() => {
-    dispatch(setCurrentModule('home'));
-    dispatch(setShowFooterElement('home'));
     getVendor();
-  }, []);
+  }, [url]);
 
   const getVendor = () => {
     triggerGetVendor(
@@ -97,12 +92,9 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
     }
   }, [branch.id, area.id, method]);
 
-  const [triggerCreateTempId, { isSuccess: tempIdSuccess }] =
-    useLazyCreateTempIdQuery();
-
   useEffect(() => {
     setAppDefaults();
-  }, [vendorSuccess, tempIdSuccess]);
+  }, [vendorSuccess, tempIdSuccess, url]);
 
   const setAppDefaults = () => {
     if (isNull(userAgent)) {

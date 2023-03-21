@@ -1,13 +1,11 @@
 import { FC, Suspense } from 'react';
 import { useAppSelector } from '@/redux/hooks';
-import {
-  useGetCartProductsQuery,
-} from '@/redux/api/cartApi';
-import ProductShowFooter from './footer/ProductShowFooter';
-import CartIndexFooter from './footer/CartIndexFooter';
-import CartAddressFooter from './footer/CartAddressFooter';
-import CutomerInfoFooter from './footer/CutomerInfoFooter';
-import ReviewOrderFooter from './footer/ReviewOrderFooter';
+import { useGetCartProductsQuery } from '@/redux/api/cartApi';
+import ProductShowFooter from '@/components/footer/ProductShowFooter';
+import CartIndexFooter from '@/components/footer/CartIndexFooter';
+import CartAddressFooter from '@/components/footer/CartAddressFooter';
+import CutomerInfoFooter from '@/components/footer/CutomerInfoFooter';
+import ReviewOrderFooter from '@/components/footer/ReviewOrderFooter';
 
 type Props = {
   handleSubmit?: (element?: any) => void;
@@ -24,7 +22,7 @@ const AppFooter: FC<Props> = ({
 }): JSX.Element => {
   const {
     appSetting: { showFooterElement, method, url },
-    customer: { userAgent},
+    customer: { userAgent },
     locale: { isRTL },
     branch: { id: branchId },
     area,
@@ -41,6 +39,8 @@ const AppFooter: FC<Props> = ({
         : { 'x-area-id': area.id },
     url,
   });
+
+  console.log('showFooterElement', showFooterElement);
 
   return (
     <Suspense>

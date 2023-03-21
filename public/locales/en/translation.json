@@ -492,7 +492,7 @@
   "pickup_time_and_date": "pickup time & date",
   "quantity_of_out_of_stock": "quantity of out of stock",
   "no_results_found" : "no results found",
-  "your_order_has_been_received": "thank you. your order has been received.",
+  "your_order_has_been_received": "your order has been received.",
   "store_name": "store name",
   "let_us_know_more": "let us know more",
   "coupon_value" : "discount",
@@ -512,5 +512,9 @@
   "closed" : "closed",
   "busy" : "busy",
   "next_pagination": "next",
-  "something_went_wrong_in_payment_please_try_again":"something went wrong in payment please try again"
+  "something_went_wrong_in_payment_please_try_again":"something went wrong in payment please try again",
+  "place_order": "place order",
+  "read_more": "read more",
+  "read_less": "read less",
+  "apply" : "apply"
 }

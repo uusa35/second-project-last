@@ -13,7 +13,11 @@ import Link from 'next/link';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import CustomImage from '@/components/CustomImage';
 import { useEffect } from 'react';
-import { setCurrentModule, setUrl } from '@/redux/slices/appSettingSlice';
+import {
+  setCurrentModule,
+  setShowFooterElement,
+  setUrl,
+} from '@/redux/slices/appSettingSlice';
 import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { wrapper } from '@/redux/store';
@@ -41,10 +45,12 @@ const OrderFailure: NextPage<Props> = ({ url }): JSX.Element => {
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(setCurrentModule('order_failure'));
+    dispatch(setShowFooterElement(`home`));
     if (url) {
       dispatch(setUrl(url));
     }
-  }, []);
+  }, [url]);
+
   return (
     <MainContentLayout url={url} backRoute={appLinks.home.path}>
       <div>
