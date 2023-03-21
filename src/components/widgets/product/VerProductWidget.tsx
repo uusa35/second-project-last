@@ -68,20 +68,20 @@ const VerProductWidget: FC<Props> = ({
               <div>
                 <div>
                   {element.new_price && element.new_price !== element.price ? (
-                    <div className="text-end">
+                    <div className="text-start">
                       <p
                         className="uppercase line-through"
                         style={{ color }}
                         suppressHydrationWarning={suppressText}
                       >
-                        {element.price} {t('kwd')}
+                        {element.price}
                       </p>
                       <p
                         className=" uppercase"
                         // style={{ color }}
                         suppressHydrationWarning={suppressText}
                       >
-                        {element.new_price}
+                        {element.new_price} {t('kwd')}
                       </p>
                     </div>
                   ) : (
