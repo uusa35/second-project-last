@@ -444,7 +444,7 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
                     <TextTrans
                       ar={element?.Data?.description_ar}
                       en={element?.Data?.description_en}
-                      length={isReadMoreShown ? 999 : 99}
+                      length={isReadMoreShown ? 999999 : 99}
                     />
                     {(element?.Data?.description_ar.length >= 99 ||
                       element?.Data?.description_en.length >= 99) && (
