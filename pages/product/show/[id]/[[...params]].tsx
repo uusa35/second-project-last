@@ -8,7 +8,7 @@ import { NextPage } from 'next';
 import MainHead from '@/components/MainHead';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { useEffect, useState, Fragment, Suspense, useRef, useCallback } from 'react';
+import { useEffect, useState, Fragment, Suspense } from 'react';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
 import {
@@ -18,9 +18,7 @@ import {
   setUrl,
 } from '@/redux/slices/appSettingSlice';
 import {
-  appLinks,
   arboriaFont,
-  baseUrl,
   imageSizes,
   imgUrl,
   suppressText,
@@ -63,7 +61,6 @@ import TextTrans from '@/components/TextTrans';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import NoFoundImage from '@/appImages/not_found.png';
 import LoadingSpinner from '@/components/LoadingSpinner';
-import { useRouter } from 'next/router';
 
 type Props = {
   product: Product;
@@ -80,21 +77,12 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
     vendor: { logo },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
-  const { query }: any = useRouter();
   const dispatch = useAppDispatch();
   const [currentQty, setCurrentyQty] = useState<number>(
     productCart.ProductID === product.id ? productCart.Quantity : 1
   );
   const [tabsOpen, setTabsOpen] = useState<{ id: number }[]>([]);
   const [isReadMoreShown, setIsReadMoreShown] = useState<boolean>(false);
-  const [windowWidth, setWindowWidth] = useState(null);
-  const isWindow = typeof window !== 'undefined';
-  const getWidth: any = useCallback(
-    () => (isWindow ? window.innerWidth : windowWidth),
-    [windowWidth]
-  );
-  const resize = () => setWindowWidth(getWidth());
-  const descriptionRef = useRef<any>();
   const {
     data: element,
     isSuccess,
@@ -198,13 +186,6 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
     productCart.ExtraNotes,
   ]);
 
-  useEffect(() => {
-    if (isWindow) {
-      setWindowWidth(getWidth());
-      window.addEventListener('resize', resize);
-      return () => window.removeEventListener('resize', resize);
-    }
-  }, [isWindow]);
   const customAnimation = {
     mount: { scale: 1 },
     unmount: { scale: 0.9 },
@@ -392,11 +373,6 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
       />
       <MainContentLayout
         url={url}
-        // backRoute={
-        //   query.category_id !== 'null'
-        //     ? appLinks.productIndex(query.category_id, product.name_en, branch_id, area_id)
-        //     : null
-        // }
         productCurrentQty={currentQty}
         handleIncreaseProductQty={handleIncrease}
         handleDecreaseProductQty={handleDecrease}
@@ -461,32 +437,27 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
                   </p>
                   <p
                     className={`flex flex-wrap rtl:pl-1 ltr:pr-1 ${
-                      isReadMoreShown ? '' : 'line-clamp-2'
+                      isReadMoreShown ? '' : 'line-clamp-4'
                     }`}
-                    ref={descriptionRef}
                   >
                     <TextTrans
                       ar={element?.Data?.description_ar}
                       en={element?.Data?.description_en}
                       length={isReadMoreShown ? 999 : 99}
-                    /> 
-                    </p>
-                    {descriptionRef && descriptionRef?.current?.offsetHeight > 24 && (
-                      <button 
-                        onClick={() => 
-                          isReadMoreShown 
-                            ? setIsReadMoreShown(false) 
-                            : setIsReadMoreShown(true)
-                        } 
+                    />
+                    {(element?.Data?.description_ar.length >= 99 ||
+                      element?.Data?.description_en.length >= 99) && (
+                      <button
+                        onClick={() => setIsReadMoreShown(!isReadMoreShown)}
                         style={{ color }}
-                        className="font-semibold text-right text-sm rtl:mr-2 ltr:ml-2"
-                        length={isReadMoreShown ? 999 : 99}
+                        className="font-semibold text-sm rtl:mr-2 ltr:ml-2"
                       >
-                      {isReadMoreShown 
-                        ? startCase(`${t('read_less')}`) 
-                        : startCase(`${t('read_more')}`)}
+                        {isReadMoreShown
+                          ? startCase(`${t('read_less')}`)
+                          : startCase(`${t('read_more')}`)}
                       </button>
                     )}
+                  </p>
                 </div>
               </div>
               {/*     sections  */}
