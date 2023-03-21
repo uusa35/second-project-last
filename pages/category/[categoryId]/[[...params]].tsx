@@ -23,7 +23,6 @@ import VerProductWidget from '@/components/widgets/product/VerProductWidget';
 import Menu from '@/appIcons/menus.svg';
 import List from '@/appIcons/list.svg';
 import { useRouter } from 'next/router';
-import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import CustomImage from '@/components/CustomImage';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import SearchInput from '@/components/SearchInput';
@@ -97,11 +96,7 @@ const ProductIndex: NextPage<Props> = ({
           return;
         }
         setPreviousPage(currentPage);
-        const filteredProducts = uniqBy(
-          [...r.data.Data.products, ...currentProducts],
-          'id'
-        );
-        setCurrentProducts(filteredProducts);
+        setCurrentProducts([...currentProducts, ...r.data.Data.products]);
       } else {
         // nothing
       }

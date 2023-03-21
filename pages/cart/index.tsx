@@ -2,7 +2,7 @@ import MainContentLayout from '@/layouts/MainContentLayout';
 import { NextPage } from 'next';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useTranslation } from 'react-i18next';
-import { useEffect, Suspense, Fragment, useState } from 'react';
+import { useEffect, Suspense, Fragment, useState, useRef } from 'react';
 import {
   setCurrentModule,
   resetShowFooterElement,
@@ -70,6 +70,7 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
     cart: { promoEnabled },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
+  const couponRef = useRef<HTMLInputElement>();
   const dispatch = useAppDispatch();
   const [couponVal, setCouponVal] = useState<string | undefined>(undefined);
   const [triggerAddToCart] = useAddToCartMutation();
@@ -173,6 +174,9 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
   const resetCoupon = () => {
     dispatch(setCartPromoCode(``));
     setCouponVal(undefined);
+    if (couponRef && couponRef.current) {
+      couponRef.current.value = ``;
+    }
   };
 
   const handleRemove = async (element: ProductCart) => {
@@ -538,6 +542,7 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
                     type="text"
                     placeholder={`${startCase(`${t('enter_code_here')}`)}`}
                     defaultValue={couponVal}
+                    ref={couponRef}
                     onChange={(e) => setCouponVal(toEn(e.target.value))}
                     suppressHydrationWarning={suppressText}
                     className={`border-0 border-b-2 ${

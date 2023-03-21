@@ -10,6 +10,7 @@ import TextTrans from '@/components/TextTrans';
 import { motion } from 'framer-motion';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import NoFoundImage from '@/appImages/not_found.png';
+import Image from 'next/image';
 
 type Props = {
   element: Product;
@@ -42,7 +43,7 @@ const VerProductWidget: FC<Props> = ({
         <div className="relative">
           <div className="flex items-center">
             <div className="h-auto w-32 overflow-hidden rounded-lg">
-              <CustomImage
+              <Image
                 src={`${element.cover}`}
                 alt={element.name}
                 width={imageSizes.lg}

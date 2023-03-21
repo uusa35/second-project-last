@@ -61,6 +61,7 @@ import TextTrans from '@/components/TextTrans';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import NoFoundImage from '@/appImages/not_found.png';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import Image from 'next/image';
 
 type Props = {
   product: Product;
@@ -385,7 +386,7 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
                   <Carousel className={`h-96`}>
                     {map(element?.Data?.img, (image: img, i) => (
                       <div key={i}>
-                        <CustomImage
+                        <Image
                           src={`${
                             image && image.original
                               ? imgUrl(image.original)
