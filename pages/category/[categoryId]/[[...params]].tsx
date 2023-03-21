@@ -199,7 +199,7 @@ const ProductIndex: NextPage<Props> = ({
             ref={listRef}
             onScroll={onScroll}
             className={` ${scrollClass} ${
-              !isNull(searchKey) && currentProducts.length <= 4
+              !isNull(searchKey) && currentProducts.length <= 5
                 ? `h-min`
                 : `h-[100vh]`
             }  overflow-y-scroll
