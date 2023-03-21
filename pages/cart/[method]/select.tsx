@@ -20,7 +20,7 @@ import { CircleOutlined, CheckCircle } from '@mui/icons-material';
 import { submitBtnClass, suppressText } from '@/constants/*';
 import { appSetting } from '@/types/index';
 import { Location } from '@/types/queries';
-import { isEmpty, map } from 'lodash';
+import { debounce, filter, isEmpty, isNull, isUndefined, map } from 'lodash';
 import { setArea } from '@/redux/slices/areaSlice';
 import { useRouter } from 'next/router';
 import { setBranch } from '@/redux/slices/branchSlice';
@@ -56,6 +56,7 @@ const SelectMethod: NextPage<Props> = ({
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
   const [open, setOpen] = useState(0);
+  const [allLocations, setAllLocations] = useState<any>();
   const handleOpen = (value: any) => {
     setOpen(open === value ? 0 : value);
   };
@@ -93,7 +94,9 @@ const SelectMethod: NextPage<Props> = ({
     },
     { refetchOnMountOrArgChange: true }
   );
-
+  useEffect(() => {
+    setAllLocations(locations?.Data);
+  }, [locations])
   useEffect(() => {
     dispatch(setCurrentModule('select_method'));
     dispatch(setShowFooterElement(`select_method`));
@@ -172,6 +175,17 @@ const SelectMethod: NextPage<Props> = ({
     }
   };
 
+  const handleChange = (area: any) => {
+    if(area === '') {
+      setAllLocations(locations.Data)
+    }
+    else {
+      const filteredAreas = locations.Data.filter((item) => 
+        item.Areas.some((a) => a.name.toLowerCase().includes(area)));
+      setAllLocations(filteredAreas);
+      setOpen(filteredAreas[0].id);
+    }
+  }
   if (
     !vendorSuccess ||
     !vendorDetails ||
@@ -195,14 +209,16 @@ const SelectMethod: NextPage<Props> = ({
             delivery_pickup_type={vendorDetails?.Data?.delivery_pickup_type}
           />
           <div className={`w-full mb-4`}>
-            <SearchInput />
+            <SearchInput 
+            onChange={debounce((e) => handleChange(e.target.value), 400)}
+            />
           </div>
           {vendorDetails?.Data?.delivery_pickup_type === 'delivery_pickup' ||
           vendorDetails?.Data?.delivery_pickup_type === 'delivery' ? (
             <>
               {method === 'delivery' && (
                 <div className={`px-4`}>
-                  {map(locations.Data, (item: Location, i) => {
+                  {map(allLocations, (item: Location, i) => {
                     return (
                       <Accordion
                         key={i}
