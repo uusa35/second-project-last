@@ -177,7 +177,7 @@ const SelectMethod: NextPage<Props> = ({
 
   const handleChange = (area: any) => {
     if(area === '') {
-      setAllLocations(locations.Data)
+      setAllLocations(locations.Data);
     }
     else {
       const filteredAreas = locations.Data.filter((item) => 
