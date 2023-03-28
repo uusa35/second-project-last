@@ -219,6 +219,7 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
       }
     }
   };
+  
   const handleResetInitialProductCart = () => {
     if (isSuccess && !isNull(element) && element.Data) {
       dispatch(
@@ -363,7 +364,6 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
   if (!isSuccess || !url) {
     return <LoadingSpinner fullWidth={true} />;
   }
-
   return (
     <Suspense>
       <MainHead
@@ -448,12 +448,12 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
                         isReadMoreShown
                           ? isRTL
                             ? element?.Data?.description_ar.length
-                            : element?.Data?.description_ar.length
+                            : element?.Data?.description_en.length
                           : 99
                       }
                     />
-                    {(element?.Data?.description_ar.length >= 99 ||
-                      element?.Data?.description_en.length >= 99) && (
+                    {((element?.Data?.description_ar.length >= 99 && isRTL) ||
+                      (element?.Data?.description_en.length >= 99 && !isRTL)) && (
                       <button
                         onClick={() => setIsReadMoreShown(!isReadMoreShown)}
                         style={{ color }}
@@ -715,6 +715,7 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
                   value={productCart.ExtraNotes}
                   onChange={(e) => dispatch(setNotes(toEn(e.target.value)))}
                   className={`border-0 border-b-2 border-b-gray-200 w-full focus:ring-transparent capitalize ${arboriaFont}`}
+                  data-cy="notesInput"
                 />
               </div>
             </div>
