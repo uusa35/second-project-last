@@ -35,7 +35,6 @@ export const appLinks = {
     `/category/?key=${query ?? ``}&branch_id=${branchId ?? ''}&area_id=${
       areaId ?? ``
     }`,
-
   productShow: (
     id: string,
     product_id?: number,
