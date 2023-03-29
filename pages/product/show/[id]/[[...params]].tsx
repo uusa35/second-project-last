@@ -66,8 +66,9 @@ import Image from 'next/image';
 type Props = {
   product: Product;
   url: string;
+  currentLocale: string;
 };
-const ProductShow: NextPage<Props> = ({ product, url }) => {
+const ProductShow: NextPage<Props> = ({ product, url, currentLocale }) => {
   const { t } = useTranslation();
   const {
     productCart,
@@ -219,7 +220,7 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
       }
     }
   };
-  
+
   const handleResetInitialProductCart = () => {
     if (isSuccess && !isNull(element) && element.Data) {
       dispatch(
@@ -367,8 +368,12 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
   return (
     <Suspense>
       <MainHead
-        title={`${product.name_ar} - ${product.name_en}`}
-        description={`${product.description_ar} - ${product.description_en}`}
+        title={`${currentLocale === 'ar' ? product.name_ar : product.name_en}`}
+        description={`${
+          currentLocale === 'ar'
+            ? product.description_ar
+            : product.description_en
+        }`}
         mainImage={`${product?.cover.toString()}`}
         icon={`${logo}`}
       />
@@ -453,7 +458,8 @@ const ProductShow: NextPage<Props> = ({ product, url }) => {
                       }
                     />
                     {((element?.Data?.description_ar.length >= 99 && isRTL) ||
-                      (element?.Data?.description_en.length >= 99 && !isRTL)) && (
+                      (element?.Data?.description_en.length >= 99 &&
+                        !isRTL)) && (
                       <button
                         onClick={() => setIsReadMoreShown(!isReadMoreShown)}
                         style={{ color }}
@@ -768,6 +774,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
         props: {
           product: element.Data,
           url: req.headers.host,
+          currentLocale: locale,
         },
       };
     }
