@@ -161,45 +161,49 @@ const HomePage: NextPage<Props> = ({
             </div>
           </div>
           {/* Loading Spinner */}
-          {(!categoriesSuccess ||
-            !elementsSuccess ||
-            !vendorSuccess ||
-            !vendorElement ||
-            !vendorElement.Data ||
-            !categories ||
-            !elements) && (
+          {!categoriesSuccess ||
+          !elementsSuccess ||
+          !vendorSuccess ||
+          !vendorElement ||
+          !vendorElement.Data ||
+          !categories ||
+          !categories.Data ||
+          !elements ||
+          !elements.Data ||
+          !elements ? (
             <div
               className={`flex w-full h-[30vh] mb-[100%] justify-center items-center w-full`}
             >
               <LoadingSpinner fullWidth={true} />
             </div>
+          ) : (
+            <div className={`py-4 px-2`} data-cy="productCategoryContainer">
+              {!isEmpty(categories) &&
+              vendorElement?.Data?.template_type === 'basic_category' ? (
+                <div
+                  className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-1`}
+                >
+                  {map(categories.Data, (c, i) => (
+                    <CategoryWidget element={c} key={i} />
+                  ))}
+                </div>
+              ) : (
+                elements &&
+                !isEmpty(elements.Data) &&
+                map(
+                  elements.Data,
+                  (
+                    list: {
+                      cat_id: number;
+                      items: Product[];
+                      name: string;
+                    },
+                    i
+                  ) => <ProductList i={i} list={list} />
+                )
+              )}
+            </div>
           )}
-          <div className={`py-4 px-2`} data-cy="productCategoryContainer">
-            {!isEmpty(categories) &&
-            vendorElement?.Data?.template_type === 'basic_category' ? (
-              <div
-                className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-1`}
-              >
-                {map(categories.Data, (c, i) => (
-                  <CategoryWidget element={c} key={i} />
-                ))}
-              </div>
-            ) : (
-              elements &&
-              !isEmpty(elements.Data) &&
-              map(
-                elements.Data,
-                (
-                  list: {
-                    cat_id: number;
-                    items: Product[];
-                    name: string;
-                  },
-                  i
-                ) => <ProductList i={i} list={list} />
-              )
-            )}
-          </div>
         </div>
         <div className={`mt-[10%]`}>
           <PoweredByQ />
