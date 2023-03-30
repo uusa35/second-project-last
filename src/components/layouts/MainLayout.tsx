@@ -96,11 +96,13 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
     setAppDefaults();
   }, [vendorSuccess, tempIdSuccess, url]);
 
-  const setAppDefaults = () => {
+  const setAppDefaults = async () => {
     if (isNull(userAgent)) {
-      triggerCreateTempId({ url }).then((r: any) =>
-        dispatch(setUserAgent(r.data.Data?.Id))
-      );
+      await triggerCreateTempId({ url }).then((r: any) => {
+        if (r && r.data && r.data.Data && r.data.Data.Id) {
+          dispatch(setUserAgent(r.data.Data?.Id));
+        }
+      });
     }
     if (vendorSuccess && vendorElement && vendorElement.Data) {
       dispatch(setVendor(vendorElement.Data));
