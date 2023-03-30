@@ -23,7 +23,6 @@ const DeliveryBtns: FC<Props> = ({
     appSetting: { method },
   } = useAppSelector((state) => state);
 
-  console.log('delivery_pickup_type in btn component',delivery_pickup_type)
   return (
     <div className="flex flex-1 space-x-5 mx-auto flex-row justify-between items-center text-lg py-8 rtl:space-x-reverse">
       {(delivery_pickup_type === 'delivery_pickup' ||
