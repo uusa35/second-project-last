@@ -27,11 +27,7 @@ const AppFooter: FC<Props> = ({
     branch: { id: branchId },
     area,
   } = useAppSelector((state) => state);
-  const {
-    data: cartItems,
-    isSuccess,
-    refetch: refetchCart,
-  } = useGetCartProductsQuery({
+  const { data: cartItems, isSuccess } = useGetCartProductsQuery({
     UserAgent: userAgent,
     area_branch:
       method === `pickup`
@@ -39,8 +35,6 @@ const AppFooter: FC<Props> = ({
         : { 'x-area-id': area.id },
     url,
   });
-
-  console.log('showFooterElement', showFooterElement);
 
   return (
     <Suspense>
@@ -58,6 +52,8 @@ const AppFooter: FC<Props> = ({
         )}
         {showFooterElement === 'cart_index' &&
           isSuccess &&
+          cartItems &&
+          cartItems.data &&
           cartItems.data?.Cart?.length > 0 && <CartIndexFooter />}
 
         {showFooterElement === 'cart_address' && (
