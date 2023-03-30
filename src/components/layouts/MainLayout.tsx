@@ -97,7 +97,7 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
   }, [vendorSuccess, tempIdSuccess, url]);
 
   const setAppDefaults = async () => {
-    if (isNull(userAgent)) {
+    if (isNull(userAgent) && url) {
       await triggerCreateTempId({ url }).then((r: any) => {
         if (r && r.data && r.data.Data && r.data.Data.Id) {
           dispatch(setUserAgent(r.data.Data?.Id));
