@@ -57,7 +57,6 @@ const HorProductWidget: FC<Props> = ({
           >
             <TextTrans
               style={{
-                maxWidth: '30ch',
                 textOverflow: 'ellipsis',
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
@@ -66,6 +65,7 @@ const HorProductWidget: FC<Props> = ({
               }}
               ar={element.name_ar}
               en={element.name_en}
+              length={60}
             />
             <TextTrans
               style={{
