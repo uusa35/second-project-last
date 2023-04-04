@@ -40,8 +40,6 @@ const AppFooter: FC<Props> = ({
     url,
   });
 
-  console.log('showFooterElement', showFooterElement);
-
   return (
     <Suspense>
       <footer

@@ -70,7 +70,7 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
 
   useEffect(() => {
     getVendor();
-  }, []);
+  }, [url]);
 
   const getVendor = () => {
     triggerGetVendor(
@@ -101,11 +101,13 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
     setAppDefaults();
   }, [vendorSuccess, tempIdSuccess]);
 
-  const setAppDefaults = () => {
-    if (isNull(userAgent)) {
-      triggerCreateTempId({ url }).then((r: any) =>
-        dispatch(setUserAgent(r.data.Data?.Id))
-      );
+  const setAppDefaults = async () => {
+    if (isNull(userAgent) && url) {
+      await triggerCreateTempId({ url }).then((r: any) => {
+        if (r && r.data && r.data.Data && r.data.Data.Id) {
+          dispatch(setUserAgent(r.data.Data?.Id));
+        }
+      });
     }
     if (vendorSuccess && vendorElement && vendorElement.Data) {
       dispatch(setVendor(vendorElement.Data));

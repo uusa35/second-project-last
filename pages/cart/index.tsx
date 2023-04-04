@@ -2,7 +2,7 @@ import MainContentLayout from '@/layouts/MainContentLayout';
 import { NextPage } from 'next';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useTranslation } from 'react-i18next';
-import { useEffect, Suspense, Fragment, useState } from 'react';
+import { useEffect, Suspense, Fragment, useState, useRef } from 'react';
 import {
   setCurrentModule,
   resetShowFooterElement,
@@ -70,6 +70,7 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
     cart: { promoEnabled },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
+  const couponRef = useRef<HTMLInputElement>();
   const dispatch = useAppDispatch();
   const [couponVal, setCouponVal] = useState<string | undefined>(undefined);
   const [triggerAddToCart] = useAddToCartMutation();
@@ -120,9 +121,15 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
     };
   }, []);
 
-  const handleCoupon = async (coupon: string) => {
-    if (userAgent && isSuccess && !isEmpty(cartItems.data?.Cart)) {
-      dispatch(setCartPromoCode(coupon));
+  const handleCoupon = async () => {
+    if (
+      userAgent &&
+      isSuccess &&
+      !isEmpty(cartItems.data?.Cart) &&
+      couponVal !== undefined &&
+      couponVal.length > 2
+    ) {
+      dispatch(setCartPromoCode(couponVal));
       if (
         userAgent &&
         isSuccess &&
@@ -132,7 +139,7 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
       ) {
         await triggerCheckPromoCode({
           userAgent,
-          PromoCode: coupon,
+          PromoCode: couponVal,
           area_branch:
             method === `pickup` && branchId
               ? { 'x-branch-id': branchId }
@@ -164,15 +171,12 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
     }
   };
 
-  useEffect(() => {
-    if (couponVal !== undefined && couponVal.length > 2) {
-      handleCoupon(couponVal);
-    }
-  }, [couponVal]);
-
   const resetCoupon = () => {
     dispatch(setCartPromoCode(``));
     setCouponVal(undefined);
+    if (couponRef && couponRef.current) {
+      couponRef.current.value = ``;
+    }
   };
 
   const handleRemove = async (element: ProductCart) => {
@@ -530,29 +534,44 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
                 </p>
               </div>
 
-              <div
-                className={`relative flex items-center justify-between gap-x-2 pt-3`}
-              >
-                <input
-                  type="text"
-                  placeholder={`${startCase(`${t('enter_code_here')}`)}`}
-                  defaultValue={couponVal}
-                  onChange={debounce(
-                    (e) => setCouponVal(toEn(e.target.value)),
-                    3000
+              <div className={`flex flex-row justify-center items-end`}>
+                <div
+                  className={`relative flex flex-1 w-full items-center justify-between gap-x-2 pt-3`}
+                >
+                  <input
+                    type="text"
+                    placeholder={`${startCase(`${t('enter_code_here')}`)}`}
+                    defaultValue={couponVal}
+                    ref={couponRef}
+                    onChange={(e) => setCouponVal(toEn(e.target.value))}
+                    suppressHydrationWarning={suppressText}
+                    className={`border-0 border-b-2 ${
+                      promoEnabled
+                        ? 'border-b-lime-500 focus:border-b-lime-500'
+                        : 'border-b-gray-200 focus:border-b-gray-200'
+                    } w-full focus:ring-transparent ${arboriaFont}`}
+                  />
+                  {promoEnabled ? (
+                    <Done className="!text-lime-500 absolute end-0" />
+                  ) : (
+                    <></>
                   )}
-                  suppressHydrationWarning={suppressText}
-                  className={`border-0 border-b-2 ${
-                    promoEnabled
-                      ? 'border-b-lime-500 focus:border-b-lime-500'
-                      : 'border-b-gray-200 focus:border-b-gray-200'
-                  } w-full focus:ring-transparent ${arboriaFont}`}
-                />
-                {promoEnabled ? (
-                  <Done className="!text-lime-500 absolute end-0" />
-                ) : (
-                  <></>
-                )}
+                </div>
+                <button
+                  onClick={() =>
+                    promoEnabled ? resetCoupon() : handleCoupon()
+                  }
+                  disabled={!couponVal || couponVal.length <= 2}
+                  className={`${
+                    !couponVal || couponVal.length <= 2
+                      ? `bg-gray-100 text-gray-400`
+                      : promoEnabled
+                      ? `bg-red-600 text-white`
+                      : `bg-gray-400 text-white`
+                  } flex p-2 ltr:ml-1 rtl:mr-1 rounded-md border border-stone-100 capitalize`}
+                >
+                  {promoEnabled ? t('remove') : t('apply')}
+                </button>
               </div>
             </div>
 
