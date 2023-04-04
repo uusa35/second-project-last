@@ -110,6 +110,14 @@ const ProductShow: NextPage<Props> = ({ product, url, currentLocale }) => {
       if (element?.Data?.sections?.length === 0) {
         dispatch(enableAddToCart());
       }
+      if (
+        element?.Data?.sections?.length !== 0 &&
+        element?.Data?.sections?.filter(
+          (itm) => itm.selection_type === 'mandatory'
+        ).length === 0
+      ) {
+        dispatch(enableAddToCart());
+      }
       if (total > 0) {
         dispatch(resetRadioBtns());
         dispatch(resetCheckBoxes());
@@ -146,6 +154,9 @@ const ProductShow: NextPage<Props> = ({ product, url, currentLocale }) => {
       const radioBtnsSum = sumBy(allRadioBtns, (a) => a.Value * a.price); // qty
       if (
         element?.Data?.sections?.length !== 0 &&
+        element?.Data?.sections?.filter(
+          (itm) => itm.selection_type === 'mandatory'
+        ).length !== 0 &&
         isEmpty(allCheckboxes) &&
         isEmpty(allRadioBtns) &&
         isEmpty(allMeters)
