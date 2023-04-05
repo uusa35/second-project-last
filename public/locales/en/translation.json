@@ -516,5 +516,8 @@
   "place_order": "place order",
   "read_more": "read more",
   "read_less": "read less",
-  "min_cart_should_be_0_25": "Minimum order should be more than 250 fils"
+  "min_cart_should_be_0_25": "Minimum order should be more than 250 fils",
+  "looks_like_something_went_wrong": "looks like something went wrong",
+  "we_are_working_on_it": "we are working on it",
+  "try_again?": "try again?"
 }
