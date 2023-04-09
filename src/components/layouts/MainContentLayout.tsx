@@ -9,7 +9,7 @@ import { themeColor } from '@/redux/slices/vendorSlice';
 import { setUrl } from '@/redux/slices/appSettingSlice';
 import { isUndefined } from 'lodash';
 import { scrollClass, suppressText } from '@/constants/*';
-
+import ScrollToTopButton from '@/components/ScrollToTopButton';
 const AppHeader = dynamic(() => import(`@/components/AppHeader`), {
   ssr: false,
 });
@@ -84,7 +84,7 @@ const MainContentLayout: FC<Props> = ({
         className={`w-full mb-[20%] relative rounded-t-full min-h-screen `}
         style={{ height: '100%' }}
       >
-        {isOnline ? (
+        {isOnline ? ( 
           children
         ) : (
           <OffLineWidget
@@ -93,6 +93,7 @@ const MainContentLayout: FC<Props> = ({
           />
         )}
       </main>
+      <ScrollToTopButton />
       <AppFooter
         handleSubmit={handleSubmit}
         handleIncreaseProductQty={handleIncreaseProductQty}
