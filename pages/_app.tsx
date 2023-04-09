@@ -12,7 +12,7 @@ import MainLayout from '@/components/layouts/MainLayout';
 import { AppProps } from 'next/app';
 import { FC, Suspense } from 'react';
 import ErrorHandler from '@/components/ErrorBoundary';
-import {ErrorBoundary} from 'react-error-boundary';
+import { ErrorBoundary } from 'react-error-boundary';
 
 const App: FC<AppProps> = ({ Component, ...rest }) => {
   const { store, props } = wrapper.useWrappedStore(rest);
