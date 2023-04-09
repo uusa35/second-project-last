@@ -253,7 +253,7 @@ const Feedback: FC<Props> = ({
                   suppressHydrationWarning={suppressText}
                 />
               </div>
-              <p className="text-sm capitalize" style={{ color }}>
+              <p className="text-base capitalize" style={{ color }}>
                 {t('optional')}
               </p>
             </div>
