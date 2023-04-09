@@ -93,7 +93,7 @@ const MainContentLayout: FC<Props> = ({
           />
         )}
       </main>
-      {/* <ScrollToTopButton /> */}
+      <ScrollToTopButton />
       <AppFooter
         handleSubmit={handleSubmit}
         handleIncreaseProductQty={handleIncreaseProductQty}
