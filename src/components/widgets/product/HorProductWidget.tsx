@@ -37,7 +37,7 @@ const HorProductWidget: FC<Props> = ({
         areaId,
         category_id
       )}`}
-      className={`h-full  shadow-7xl block  capitalize mb-2 py-3 border-b-2 border-gray-100  overflow-hidden`}
+      className={`h-full  shadow-7xl block  capitalize mb-2 py-3 pb-8 border-b-2 border-gray-100  overflow-hidden`}
       data-cy="product"
     >
       <div className="h-3/4 w-full overflow-hidden rounded-lg">
