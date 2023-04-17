@@ -9,14 +9,16 @@ export const branchApi = apiSlice.injectEndpoints({
       {
         lang: Locale['lang'] | string | undefined;
         url: string;
+        type: string | undefined;
       }
     >({
-      query: ({ lang, url }) => ({
+      query: ({ lang, url, type }) => ({
         url: `branches`,
         headers: {
           lang,
-          url,
+          url
         },
+        params: { type },
         validateStatus: (response, result) =>
           response.status == 200 && result.status,
       }),
@@ -24,4 +26,4 @@ export const branchApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetBranchesQuery } = branchApi;
+export const { useLazyGetBranchesQuery } = branchApi;
