@@ -2,8 +2,8 @@ import MainContentLayout from '@/layouts/MainContentLayout';
 import { NextPage } from 'next';
 import { wrapper } from '@/redux/store';
 import { apiSlice } from '@/redux/api';
-import { branchApi } from '@/redux/api/branchApi';
-import { Branch } from '@/types/queries';
+import { branchApi, useLazyGetBranchesQuery } from '@/redux/api/branchApi';
+import { AppQueryResult, Branch } from '@/types/queries';
 import { map } from 'lodash';
 import Link from 'next/link';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -15,26 +15,35 @@ import { useEffect } from 'react';
 import { setCurrentModule, setUrl } from '@/redux/slices/appSettingSlice';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { PhoneCallback } from '@mui/icons-material';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 type Props = {
-  elements: Branch[];
   url: string;
 };
-const BranchIndex: NextPage<Props> = ({ elements, url }) => {
+const BranchIndex: NextPage<Props> = ({ url }) => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const color = useAppSelector(themeColor);
+  const {
+    locale: { lang },
+    appSetting: { method }
+  } = useAppSelector((state) => state);
+  const [triggerGetBranches, { data: branches, isLoading: branchesLoading }] = useLazyGetBranchesQuery<{
+    data: AppQueryResult<Branch[]>;
+    isLoading: boolean;
+  }>();
   useEffect(() => {
     dispatch(setCurrentModule('our_branches'));
+    triggerGetBranches({ lang, url, type: method }, false);
     if (url) {
       dispatch(setUrl(url));
     }
   }, []);
-  
+  if (branchesLoading) <LoadingSpinner />;
   return (
     <MainContentLayout url={url}>
       <div className={`px-4`}>
-        {map(elements, (b, i) => (
+        {map(branches?.Data, (b, i) => (
           <div key={i}>
             <button
               onClick={() => dispatch(setBranch(b))}
@@ -88,29 +97,15 @@ export default BranchIndex;
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
-    async ({ locale, req }) => {
+    async ({ req }) => {
       if (!req.headers.host) {
-        return {
-          notFound: true,
-        };
-      }
-      const { data: elements, isError } = await store.dispatch(
-        branchApi.endpoints.getBranches.initiate({
-          lang: locale,
-          url: req.headers.host,
-          type: store.getState().appSetting.method
-        })
-      );
-      await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
-      if (isError || !elements.Data) {
         return {
           notFound: true,
         };
       }
       return {
         props: {
-          elements: elements.Data,
-          url: req.headers.host
+          url: req.headers.host,
         },
       };
     }

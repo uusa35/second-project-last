@@ -26,4 +26,4 @@ export const branchApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetBranchesQuery } = branchApi;
+export const { useLazyGetBranchesQuery } = branchApi;

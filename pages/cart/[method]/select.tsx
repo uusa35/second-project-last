@@ -24,7 +24,7 @@ import { debounce, filter, isEmpty, isNull, isUndefined, map } from 'lodash';
 import { setArea } from '@/redux/slices/areaSlice';
 import { useRouter } from 'next/router';
 import { setBranch } from '@/redux/slices/branchSlice';
-import { useGetBranchesQuery } from '@/redux/api/branchApi';
+import { useLazyGetBranchesQuery } from '@/redux/api/branchApi';
 import DeliveryBtns from '@/components/widgets/cart/DeliveryBtns';
 import TextTrans from '@/components/TextTrans';
 import ChangeLocationModal from '@/components/ChangeLocationModal';
@@ -83,10 +83,10 @@ const SelectMethod: NextPage<Props> = ({
       data: AppQueryResult<Location[]>;
       isLoading: boolean;
     }>({ lang, url });
-  const { data: branches, isLoading: branchesLoading } = useGetBranchesQuery<{
+  const [triggerGetBranches, { data: branches, isLoading: branchesLoading }] = useLazyGetBranchesQuery<{
     data: AppQueryResult<Branch[]>;
     isLoading: boolean;
-  }>({ lang, url, type: method });
+  }>();
   const { data: vendorDetails, isSuccess: vendorSuccess } = useGetVendorQuery(
     {
       lang,
@@ -94,12 +94,14 @@ const SelectMethod: NextPage<Props> = ({
     },
     { refetchOnMountOrArgChange: true }
   );
+  
   useEffect(() => {
     setAllLocations(locations?.Data);
   }, [locations])
   useEffect(() => {
     dispatch(setCurrentModule('select_method'));
     dispatch(setShowFooterElement(`select_method`));
+    triggerGetBranches({ lang, url, type: method }, false);
     if (url) {
       dispatch(setUrl(url));
     }
