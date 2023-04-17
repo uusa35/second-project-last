@@ -30,7 +30,7 @@ const BranchIndex: NextPage<Props> = ({ elements, url }) => {
       dispatch(setUrl(url));
     }
   }, []);
-
+  
   return (
     <MainContentLayout url={url}>
       <div className={`px-4`}>
@@ -98,6 +98,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
         branchApi.endpoints.getBranches.initiate({
           lang: locale,
           url: req.headers.host,
+          type: store.getState().appSetting.method
         })
       );
       await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
@@ -109,7 +110,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
       return {
         props: {
           elements: elements.Data,
-          url: req.headers.host,
+          url: req.headers.host
         },
       };
     }

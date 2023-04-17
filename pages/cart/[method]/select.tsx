@@ -52,7 +52,7 @@ const SelectMethod: NextPage<Props> = ({
     area: selectedArea,
     branch,
     customer: { userAgent },
-    appSetting: { method: method_type },
+    appSetting: { method: method_type }
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
   const [open, setOpen] = useState(0);
@@ -86,7 +86,7 @@ const SelectMethod: NextPage<Props> = ({
   const { data: branches, isLoading: branchesLoading } = useGetBranchesQuery<{
     data: AppQueryResult<Branch[]>;
     isLoading: boolean;
-  }>({ lang, url });
+  }>({ lang, url, type: method });
   const { data: vendorDetails, isSuccess: vendorSuccess } = useGetVendorQuery(
     {
       lang,
