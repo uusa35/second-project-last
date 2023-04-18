@@ -2,6 +2,8 @@ import { Address } from '@/types/queries';
 
 export interface Product {
   id: number;
+  amount: number;
+  never_out_of_stock: number;
   name: string;
   name_ar: string;
   name_en: string;
@@ -64,6 +66,9 @@ export interface Vendor {
   WorkHours: string;
   DeliveryTime: string;
   Preorder_availability: string;
+  twitter: string;
+  facebook: string;
+  instagram: string;
   Payment_Methods: {
     cash_on_delivery: 'yes' | 'no';
     knet: 'yes' | 'no';

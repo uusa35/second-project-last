@@ -127,6 +127,9 @@ const HomePage: NextPage<Props> = ({
         mainImage={`${element.logo}`}
         icon={`${element.logo}`}
         phone={element.phone}
+        twitter={element.twitter}
+        facebook={element.facebook}
+        instagram={element.instagram}
       />
       <MainContentLayout url={url}>
         {/*  ImageBackGround Header */}

@@ -26,7 +26,7 @@ const HomeVendorMainInfo: FC<Props> = ({ url }): JSX.Element => {
   const storeStatus = [
     { id: 1, status: 'open', className: 'bg-lime-400' },
     { id: 2, status: 'busy', className: 'bg-orange-400' },
-    { id: 3, status: 'closed', className: 'bg-red-400' },
+    { id: 3, status: 'close', className: 'bg-red-800' },
   ];
   const currentStoreStatus = filter(
     storeStatus,

@@ -55,7 +55,6 @@ module.exports = {
     require('@tailwindcss/typography'),
     require('flowbite/plugin'),
     require('tailwind-scrollbar-hide'),
-    require('@tailwindcss/line-clamp'),
   ],
   debug: false,
 };
