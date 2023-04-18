@@ -12,6 +12,7 @@ type Props = {
   handleIncreaseProductQty?: () => void;
   handleDecreaseProductQty?: () => void;
   productCurrentQty?: number | undefined;
+  productOutStock?: boolean | undefined;
 };
 
 const AppFooter: FC<Props> = ({
@@ -19,6 +20,7 @@ const AppFooter: FC<Props> = ({
   handleDecreaseProductQty,
   handleIncreaseProductQty,
   productCurrentQty,
+  productOutStock,
 }): JSX.Element => {
   const {
     appSetting: { showFooterElement, method, url },
@@ -52,6 +54,7 @@ const AppFooter: FC<Props> = ({
             productCurrentQty={productCurrentQty}
             handleIncreaseProductQty={handleIncreaseProductQty}
             handleDecreaseProductQty={handleDecreaseProductQty}
+            productOutStock={productOutStock}
           />
         )}
         {showFooterElement === 'cart_index' &&
