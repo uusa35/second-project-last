@@ -66,6 +66,9 @@ export interface Vendor {
   WorkHours: string;
   DeliveryTime: string;
   Preorder_availability: string;
+  twitter: string;
+  facebook: string;
+  instagram: string;
   Payment_Methods: {
     cash_on_delivery: 'yes' | 'no';
     knet: 'yes' | 'no';
