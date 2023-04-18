@@ -25,8 +25,8 @@ const HomeVendorMainInfo: FC<Props> = ({ url }): JSX.Element => {
     useLazyGetVendorQuery();
   const storeStatus = [
     { id: 1, status: 'open', className: 'bg-lime-400' },
-    { id: 2, status: 'busy', className: 'bg-red-400' },
-    { id: 3, status: 'closed', className: 'bg-gray-400' },
+    { id: 2, status: 'busy', className: 'bg-orange-400' },
+    { id: 3, status: 'closed', className: 'bg-red-400' },
   ];
   const currentStoreStatus = filter(
     storeStatus,
@@ -47,6 +47,7 @@ const HomeVendorMainInfo: FC<Props> = ({ url }): JSX.Element => {
   }, [branch_id, area_id]);
 
   if (!isSuccess || !element || !element.Data) return <></>;
+  console.log(element.Data);
   return (
     <>
       <div className="flex gap-x-2 justify-between items-start capitalize">
