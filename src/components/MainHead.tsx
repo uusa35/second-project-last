@@ -12,6 +12,9 @@ type Props = {
   mainImage?: string;
   phone?: string;
   icon?: string;
+  twitter?: string;
+  facebook?: string;
+  instagram?: string;
 };
 const MainHead: FC<Props> = ({
   title = '',
@@ -19,9 +22,13 @@ const MainHead: FC<Props> = ({
   mainImage = ``,
   phone = ``,
   icon = ``,
+  twitter = ``,
+  facebook = ``,
+  instagram = ``,
 }): JSX.Element => {
   const { t } = useTranslation();
   const router = useRouter();
+
   return (
     <>
       <Head>
@@ -45,11 +52,30 @@ const MainHead: FC<Props> = ({
         <meta property="og:image:alt" content={`${title}`} />
         <meta property="og:mobile" content={phone} />
         <meta property="og:whatsapp" content={phone} />
-        <meta itemProp="instagram" content={baseUrl} />
-        <meta property="instagram:url" content={baseUrl} />
+        <meta itemProp="instagram" content={`${title}`} />
+        <meta
+          property="instagram:url"
+          content={`${instagram.length > 1 ? instagram : baseUrl}`}
+        />
         <meta property="instagram:title" content={`${title}`} />
         <meta property="instagram:description" content={`${description}`} />
         <meta property="instagram:image" content={`${mainImage}`} />
+        <meta itemProp="twitter" content={`${title}`} />
+        <meta
+          property="twitter:url"
+          content={`${twitter.length > 1 ? twitter : baseUrl}`}
+        />
+        <meta property="twitter:title" content={`${title}`} />
+        <meta property="twitter:description" content={`${description}`} />
+        <meta property="twitter:image" content={`${mainImage}`} />
+        <meta itemProp="facebook" content={`${title}`} />
+        <meta
+          property="facebook:url"
+          content={`${facebook.length > 1 ? facebook : baseUrl}`}
+        />
+        <meta property="facebook:title" content={`${title}`} />
+        <meta property="facebook:description" content={`${description}`} />
+        <meta property="facebook:image" content={`${mainImage}`} />
       </Head>
       {isLocal && false && (
         <div

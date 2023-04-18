@@ -19,6 +19,7 @@ import {
 } from '@/redux/slices/appSettingSlice';
 import {
   arboriaFont,
+  baseUrl,
   imageSizes,
   imgUrl,
   suppressText,
@@ -67,8 +68,14 @@ type Props = {
   product: Product;
   url: string;
   currentLocale: string;
+  resolvedUrl: string;
 };
-const ProductShow: NextPage<Props> = ({ product, url, currentLocale }) => {
+const ProductShow: NextPage<Props> = ({
+  product,
+  url,
+  currentLocale,
+  resolvedUrl,
+}) => {
   const { t } = useTranslation();
   const {
     productCart,
@@ -387,6 +394,9 @@ const ProductShow: NextPage<Props> = ({ product, url, currentLocale }) => {
         }`}
         mainImage={`${product?.cover.toString()}`}
         icon={`${logo}`}
+        twitter={`${url}${resolvedUrl}`}
+        facebook={`${url}${resolvedUrl}`}
+        instagram={`${url}${resolvedUrl}`}
       />
       <MainContentLayout
         url={url}
@@ -760,7 +770,7 @@ export default ProductShow;
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
-    async ({ query, locale, req }) => {
+    async ({ query, locale, req, resolvedUrl }) => {
       const { id, branchId, areaId }: any = query;
       if (!id || !req.headers.host) {
         return {
@@ -793,6 +803,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
           product: element.Data,
           url: req.headers.host,
           currentLocale: locale,
+          resolvedUrl,
         },
       };
     }
