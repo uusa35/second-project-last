@@ -2,6 +2,8 @@ import { Address } from '@/types/queries';
 
 export interface Product {
   id: number;
+  amount: number;
+  never_out_of_stock: number;
   name: string;
   name_ar: string;
   name_en: string;
