@@ -29,14 +29,18 @@ const HorProductWidget: FC<Props> = ({
   } = useAppSelector((state) => state);
   return (
     <Link
-      href={`${appLinks.productShow(
-        element.id.toString(),
-        element.id,
-        lowerCase(kebabCase(element.name)),
-        branchId,
-        areaId,
-        category_id
-      )}`}
+      href={
+        element.never_out_of_stock === 0 && element.amount < 1
+          ? ''
+          : `${appLinks.productShow(
+              element.id.toString(),
+              element.id,
+              lowerCase(kebabCase(element.name)),
+              branchId,
+              areaId,
+              category_id
+            )}`
+      }
       className={`group relative h-100  shadow-7xl block  capitalize mb-2 pb-3 border-b-2 border-gray-100`}
       data-cy="product"
     >
@@ -113,15 +117,20 @@ const HorProductWidget: FC<Props> = ({
               )}
             </p>
           )}
-          <button
-            className="border-[1px] rounded-md px-4 pt-1 uppercase text-center text-sm"
-            suppressHydrationWarning={suppressText}
-          >
-            <div className={`flex justify-between rtl:flex-row-reverse`}>
-              <p className="pe-2 rtl:ps-2 rtl:pe-0">+</p>
-              <p>{t('add')}</p>
-            </div>
-          </button>
+
+          {element.never_out_of_stock === 0 && element.amount < 1 ? (
+            <p>{t('out stock')}</p>
+          ) : (
+            <button
+              className="border-[1px] rounded-md px-4 pt-1 uppercase text-center text-sm"
+              suppressHydrationWarning={suppressText}
+            >
+              <div className={`flex justify-between rtl:flex-row-reverse`}>
+                <p className="pe-2 rtl:ps-2 rtl:pe-0">+</p>
+                <p>{t('add')}</p>
+              </div>
+            </button>
+          )}
         </div>
       </div>
       {/* <div className="absolute inset-x-0 top-0 flex h-full items-end justify-end overflow-hidden rounded-lg">
