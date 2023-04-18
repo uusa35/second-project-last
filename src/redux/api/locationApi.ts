@@ -6,17 +6,18 @@ export const locationApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getLocations: builder.query<
       AppQueryResult<Location[]>,
-      { lang: Locale['lang'] | string | undefined; url: string }
+      { lang: Locale['lang'] | string | undefined; url: string, type: string }
     >({
-      query: ({ lang, url }) => ({
+      query: ({ lang, url, type }) => ({
         url: `locations`,
         headers: {
           lang,
           url,
         },
+        params: { type }
       }),
     }),
   }),
 });
 
-export const { useGetLocationsQuery } = locationApi;
+export const { useGetLocationsQuery, useLazyGetLocationsQuery } = locationApi;
