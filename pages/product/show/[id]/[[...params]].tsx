@@ -393,6 +393,13 @@ const ProductShow: NextPage<Props> = ({ product, url, currentLocale }) => {
         productCurrentQty={currentQty}
         handleIncreaseProductQty={handleIncrease}
         handleDecreaseProductQty={handleDecrease}
+        productOutStock={
+          isSuccess &&
+          !isNull(element) &&
+          element.Data &&
+          element.Data.never_out_of_stock === 0 &&
+          element.Data.amount <= currentQty
+        }
       >
         {isSuccess && !isNull(element) && element.Data ? (
           <>

@@ -55,7 +55,7 @@ const ProductIndex: NextPage<Props> = ({
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const [icon, setIcon] = useState(true);
-  const listRef = useRef<HTMLDivElement>();
+  const listRef = useRef<HTMLDivElement>(null);
   const [currentPage, setCurrentPage] = useState<number>(1); // storing current page number
   const [previousPage, setPreviousPage] = useState<number>(0); // storing prev page number
   const [latest, setLatest] = useState(false); // setting a flag to know the last list
@@ -73,7 +73,11 @@ const ProductIndex: NextPage<Props> = ({
   };
 
   useEffect(() => {
+    console.log('scrll r', listRef.current);
     listRef.current?.focus();
+  }, []);
+
+  useEffect(() => {
     dispatch(setCurrentModule('product_search_index'));
     if (url) {
       dispatch(setUrl(url));
@@ -204,12 +208,13 @@ const ProductIndex: NextPage<Props> = ({
           )}
           <div
             ref={listRef}
+            tabIndex={-1} // Make the div focusable
             onScroll={onScroll}
             className={` ${scrollClass} ${
               !isNull(searchKey) && currentProducts.length <= 5
                 ? `h-min`
                 : `h-[100vh]`
-            }  overflow-y-scroll
+            }  overflow-y-scroll focus:outline-none
               ${
                 productPreview === 'hor'
                   ? `grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 gap-x-3 py-4`

@@ -31,6 +31,7 @@ type Props = {
   handleIncreaseProductQty?: () => void;
   handleDecreaseProductQty?: () => void;
   productCurrentQty?: number | undefined;
+  productOutStock?: boolean | undefined;
 };
 
 const MainContentLayout: FC<Props> = ({
@@ -43,6 +44,7 @@ const MainContentLayout: FC<Props> = ({
   handleIncreaseProductQty,
   handleDecreaseProductQty,
   productCurrentQty,
+  productOutStock,
   url,
 }): JSX.Element => {
   const {
@@ -101,6 +103,7 @@ const MainContentLayout: FC<Props> = ({
         handleIncreaseProductQty={handleIncreaseProductQty}
         handleDecreaseProductQty={handleDecreaseProductQty}
         productCurrentQty={productCurrentQty}
+        productOutStock={productOutStock}
       />
       <NextNProgress
         color={color}
