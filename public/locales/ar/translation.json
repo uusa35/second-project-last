@@ -532,5 +532,6 @@
   "min_cart_should_be_0_25": "يجب أن يكون الحد الأدنى للطلب أكثر من 250 فلس",
   "looks_like_something_went_wrong": "يبدو أنه حدث خطأ ما",
   "we_are_working_on_it": "نحن نعمل عليه",
-  "try_again?": "حاول مرة أخرى؟"
+  "try_again?": "حاول مرة أخرى؟",
+  "out_stock":"انتهي المخزون"
 }

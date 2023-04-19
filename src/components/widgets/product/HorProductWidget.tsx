@@ -29,18 +29,14 @@ const HorProductWidget: FC<Props> = ({
   } = useAppSelector((state) => state);
   return (
     <Link
-      href={
-        element.never_out_of_stock === 0 && element.amount < 1
-          ? ''
-          : `${appLinks.productShow(
-              element.id.toString(),
-              element.id,
-              lowerCase(kebabCase(element.name)),
-              branchId,
-              areaId,
-              category_id
-            )}`
-      }
+      href={`${appLinks.productShow(
+        element.id.toString(),
+        element.id,
+        lowerCase(kebabCase(element.name)),
+        branchId,
+        areaId,
+        category_id
+      )}`}
       className={`group relative h-100  shadow-7xl block  capitalize mb-2 pb-3 border-b-2 border-gray-100`}
       data-cy="product"
     >
@@ -118,8 +114,8 @@ const HorProductWidget: FC<Props> = ({
             </p>
           )}
 
-          {element.never_out_of_stock === 0 && element.amount < 1 ? (
-            <p>{t('out stock')}</p>
+          {element.never_out_of_stock === 0 && element.amount <= 1 ? (
+            <p>{t('out_stock')}</p>
           ) : (
             <button
               className="border-[1px] rounded-md px-4 pt-1 uppercase text-center text-sm"

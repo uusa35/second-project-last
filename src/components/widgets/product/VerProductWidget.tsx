@@ -30,9 +30,7 @@ const VerProductWidget: FC<Props> = ({
   return (
     <Link
       href={
-        element.never_out_of_stock === 0 && element.amount < 1
-          ? ''
-          : `${appLinks.productShow(
+        `${appLinks.productShow(
               element.id.toString(),
               element.id,
               kebabCase(lowerCase(element.name)),
@@ -103,8 +101,8 @@ const VerProductWidget: FC<Props> = ({
                     )}
                   </p>
                 )}
-                {element.never_out_of_stock === 0 && element.amount < 1 ? (
-                  <p>{t('out stock')}</p>
+                {element.never_out_of_stock === 0 && element.amount <= 1 ? (
+                  <p>{t('out_stock')}</p>
                 ) : (
                   <div className="text-end">
                     <button className="border-[1px] rounded-md  px-7 uppercase text-center text-sm">
