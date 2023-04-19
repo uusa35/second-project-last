@@ -275,7 +275,11 @@ const ProductShowFooter: FC<Props> = ({
           }}
           data-cy="start-order"
         >
-          {!area.id && !branchId ? t(`start_ordering`) : t('add_to_cart')}
+          {!area.id && !branchId
+            ? t(`start_ordering`)
+            : productOutStock
+            ? t('out_stock')
+            : t('add_to_cart')}
         </button>
         <span className={`flex flex-row items-center gap-2`}>
           <p className={`text-xl text-white`}>
