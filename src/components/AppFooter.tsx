@@ -12,6 +12,7 @@ type Props = {
   handleIncreaseProductQty?: () => void;
   handleDecreaseProductQty?: () => void;
   productCurrentQty?: number | undefined;
+  productOutStock?: boolean | undefined;
 };
 
 const AppFooter: FC<Props> = ({
@@ -19,6 +20,7 @@ const AppFooter: FC<Props> = ({
   handleDecreaseProductQty,
   handleIncreaseProductQty,
   productCurrentQty,
+  productOutStock,
 }): JSX.Element => {
   const {
     appSetting: { showFooterElement, method, url },
@@ -27,11 +29,7 @@ const AppFooter: FC<Props> = ({
     branch: { id: branchId },
     area,
   } = useAppSelector((state) => state);
-  const {
-    data: cartItems,
-    isSuccess,
-    refetch: refetchCart,
-  } = useGetCartProductsQuery({
+  const { data: cartItems, isSuccess } = useGetCartProductsQuery({
     UserAgent: userAgent,
     area_branch:
       method === `pickup`
@@ -39,8 +37,6 @@ const AppFooter: FC<Props> = ({
         : { 'x-area-id': area.id },
     url,
   });
-
-  console.log('showFooterElement', showFooterElement);
 
   return (
     <Suspense>
@@ -54,10 +50,13 @@ const AppFooter: FC<Props> = ({
             productCurrentQty={productCurrentQty}
             handleIncreaseProductQty={handleIncreaseProductQty}
             handleDecreaseProductQty={handleDecreaseProductQty}
+            productOutStock={productOutStock}
           />
         )}
         {showFooterElement === 'cart_index' &&
           isSuccess &&
+          cartItems &&
+          cartItems.data &&
           cartItems.data?.Cart?.length > 0 && <CartIndexFooter />}
 
         {showFooterElement === 'cart_address' && (

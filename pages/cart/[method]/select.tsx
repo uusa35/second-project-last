@@ -1,5 +1,5 @@
 import MainContentLayout from '@/layouts/MainContentLayout';
-import { useGetLocationsQuery } from '@/redux/api/locationApi';
+import { useLazyGetLocationsQuery } from '@/redux/api/locationApi';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { NextPage } from 'next';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -24,7 +24,7 @@ import { debounce, filter, isEmpty, isNull, isUndefined, map } from 'lodash';
 import { setArea } from '@/redux/slices/areaSlice';
 import { useRouter } from 'next/router';
 import { setBranch } from '@/redux/slices/branchSlice';
-import { useGetBranchesQuery } from '@/redux/api/branchApi';
+import { useLazyGetBranchesQuery } from '@/redux/api/branchApi';
 import DeliveryBtns from '@/components/widgets/cart/DeliveryBtns';
 import TextTrans from '@/components/TextTrans';
 import ChangeLocationModal from '@/components/ChangeLocationModal';
@@ -52,7 +52,7 @@ const SelectMethod: NextPage<Props> = ({
     area: selectedArea,
     branch,
     customer: { userAgent },
-    appSetting: { method: method_type },
+    appSetting: { method: method_type }
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
   const [open, setOpen] = useState(0);
@@ -78,15 +78,15 @@ const SelectMethod: NextPage<Props> = ({
         : { 'x-area-id': selectedArea.id },
     url,
   });
-  const { data: locations, isLoading: locationsLoading } =
-    useGetLocationsQuery<{
+  const [triggerGetLocations, { data: locations, isLoading: locationsLoading }] =
+    useLazyGetLocationsQuery<{
       data: AppQueryResult<Location[]>;
       isLoading: boolean;
-    }>({ lang, url });
-  const { data: branches, isLoading: branchesLoading } = useGetBranchesQuery<{
+    }>();
+  const [triggerGetBranches, { data: branches, isLoading: branchesLoading }] = useLazyGetBranchesQuery<{
     data: AppQueryResult<Branch[]>;
     isLoading: boolean;
-  }>({ lang, url });
+  }>();
   const { data: vendorDetails, isSuccess: vendorSuccess } = useGetVendorQuery(
     {
       lang,
@@ -94,12 +94,15 @@ const SelectMethod: NextPage<Props> = ({
     },
     { refetchOnMountOrArgChange: true }
   );
+  
   useEffect(() => {
     setAllLocations(locations?.Data);
-  }, [locations])
+  }, [locations]);
   useEffect(() => {
     dispatch(setCurrentModule('select_method'));
     dispatch(setShowFooterElement(`select_method`));
+    triggerGetBranches({ lang, url, type: method }, false);
+    triggerGetLocations({ lang, url, type: method }, false);    
     if (url) {
       dispatch(setUrl(url));
     }
@@ -176,16 +179,16 @@ const SelectMethod: NextPage<Props> = ({
   };
 
   const handleChange = (area: any) => {
-    if(area === '') {
+    if (area === '') {
       setAllLocations(locations.Data);
-    }
-    else {
-      const filteredAreas = locations.Data.filter((item) => 
-        item.Areas.some((a) => a.name.toLowerCase().includes(area)));
+    } else {
+      const filteredAreas = locations.Data.filter((item) =>
+        item.Areas.some((a) => a.name.toLowerCase().includes(area))
+      );
       setAllLocations(filteredAreas);
       setOpen(filteredAreas[0].id);
     }
-  }
+  };
   if (
     !vendorSuccess ||
     !vendorDetails ||
@@ -209,8 +212,8 @@ const SelectMethod: NextPage<Props> = ({
             delivery_pickup_type={vendorDetails?.Data?.delivery_pickup_type}
           />
           <div className={`w-full mb-4`}>
-            <SearchInput 
-            onChange={debounce((e) => handleChange(e.target.value), 400)}
+            <SearchInput
+              onChange={debounce((e) => handleChange(e.target.value), 400)}
             />
           </div>
           {vendorDetails?.Data?.delivery_pickup_type === 'delivery_pickup' ||
@@ -220,7 +223,9 @@ const SelectMethod: NextPage<Props> = ({
                 <div className={`px-4`}>
                   {map(allLocations, (item: Location, i) => {
                     return (
-                      <Accordion
+                      <>
+                      {item.Areas.length > 0 && (
+                        <Accordion
                         key={i}
                         open={open === item.id}
                         icon={<Icon id={item.id} open={open} />}
@@ -260,6 +265,8 @@ const SelectMethod: NextPage<Props> = ({
                           </div>
                         </AccordionBody>
                       </Accordion>
+                      )}
+                      </>
                     );
                   })}
                 </div>

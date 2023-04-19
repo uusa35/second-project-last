@@ -19,6 +19,7 @@ import {
 } from '@/redux/slices/appSettingSlice';
 import {
   arboriaFont,
+  baseUrl,
   imageSizes,
   imgUrl,
   suppressText,
@@ -67,8 +68,14 @@ type Props = {
   product: Product;
   url: string;
   currentLocale: string;
+  resolvedUrl: string;
 };
-const ProductShow: NextPage<Props> = ({ product, url, currentLocale }) => {
+const ProductShow: NextPage<Props> = ({
+  product,
+  url,
+  currentLocale,
+  resolvedUrl,
+}) => {
   const { t } = useTranslation();
   const {
     productCart,
@@ -110,6 +117,14 @@ const ProductShow: NextPage<Props> = ({ product, url, currentLocale }) => {
       if (element?.Data?.sections?.length === 0) {
         dispatch(enableAddToCart());
       }
+      if (
+        element?.Data?.sections?.length !== 0 &&
+        element?.Data?.sections?.filter(
+          (itm) => itm.selection_type === 'mandatory'
+        ).length === 0
+      ) {
+        dispatch(enableAddToCart());
+      }
       if (total > 0) {
         dispatch(resetRadioBtns());
         dispatch(resetCheckBoxes());
@@ -146,6 +161,9 @@ const ProductShow: NextPage<Props> = ({ product, url, currentLocale }) => {
       const radioBtnsSum = sumBy(allRadioBtns, (a) => a.Value * a.price); // qty
       if (
         element?.Data?.sections?.length !== 0 &&
+        element?.Data?.sections?.filter(
+          (itm) => itm.selection_type === 'mandatory'
+        ).length !== 0 &&
         isEmpty(allCheckboxes) &&
         isEmpty(allRadioBtns) &&
         isEmpty(allMeters)
@@ -376,12 +394,22 @@ const ProductShow: NextPage<Props> = ({ product, url, currentLocale }) => {
         }`}
         mainImage={`${product?.cover.toString()}`}
         icon={`${logo}`}
+        twitter={`${url}${resolvedUrl}`}
+        facebook={`${url}${resolvedUrl}`}
+        instagram={`${url}${resolvedUrl}`}
       />
       <MainContentLayout
         url={url}
         productCurrentQty={currentQty}
         handleIncreaseProductQty={handleIncrease}
         handleDecreaseProductQty={handleDecrease}
+        productOutStock={
+          isSuccess &&
+          !isNull(element) &&
+          element.Data &&
+          element.Data.never_out_of_stock === 0 &&
+          element.Data.amount <= currentQty
+        }
       >
         {isSuccess && !isNull(element) && element.Data ? (
           <>
@@ -742,7 +770,7 @@ export default ProductShow;
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
-    async ({ query, locale, req }) => {
+    async ({ query, locale, req, resolvedUrl }) => {
       const { id, branchId, areaId }: any = query;
       if (!id || !req.headers.host) {
         return {
@@ -775,6 +803,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
           product: element.Data,
           url: req.headers.host,
           currentLocale: locale,
+          resolvedUrl,
         },
       };
     }

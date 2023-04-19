@@ -29,14 +29,16 @@ const VerProductWidget: FC<Props> = ({
 
   return (
     <Link
-      href={`${appLinks.productShow(
-        element.id.toString(),
-        element.id,
-        kebabCase(lowerCase(element.name)),
-        branchId,
-        areaId,
-        category_id
-      )}`}
+      href={
+        `${appLinks.productShow(
+              element.id.toString(),
+              element.id,
+              kebabCase(lowerCase(element.name)),
+              branchId,
+              areaId,
+              category_id
+            )}`
+      }
       className={`h-auto shadow-7xl mb-2 block capitalize border-b-2 border-gray-100 py-3`}
     >
       <div className="relative">
@@ -99,11 +101,15 @@ const VerProductWidget: FC<Props> = ({
                     )}
                   </p>
                 )}
-                <div className="text-end">
-                  <button className="border-[1px] rounded-md  px-7 uppercase text-center text-sm">
-                    + {t('add')}
-                  </button>
-                </div>
+                {element.never_out_of_stock === 0 && element.amount <= 1 ? (
+                  <p>{t('out_stock')}</p>
+                ) : (
+                  <div className="text-end">
+                    <button className="border-[1px] rounded-md  px-7 uppercase text-center text-sm">
+                      + {t('add')}
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>

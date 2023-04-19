@@ -24,17 +24,19 @@ import {
   values,
 } from 'lodash';
 import { useRouter } from 'next/router';
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 type Props = {
   handleIncreaseProductQty?: () => void;
   handleDecreaseProductQty?: () => void;
   productCurrentQty?: number | undefined;
+  productOutStock?: boolean | undefined;
 };
 const ProductShowFooter: FC<Props> = ({
   handleIncreaseProductQty,
   handleDecreaseProductQty,
   productCurrentQty,
+  productOutStock,
 }) => {
   const {
     appSetting: { method, url },
@@ -50,6 +52,10 @@ const ProductShowFooter: FC<Props> = ({
 
   const [triggerAddToCart] = useAddToCartMutation();
   const [triggerGetCartProducts] = useLazyGetCartProductsQuery();
+
+  useEffect(() => {
+    console.log(productCurrentQty);
+  }, [productCurrentQty]);
 
   const { data: cartItems } = useGetCartProductsQuery({
     UserAgent: userAgent,
@@ -225,7 +231,7 @@ const ProductShowFooter: FC<Props> = ({
               className="relative -ml-px inline-flex items-center  bg-gray-100 px-4 py-2 text-sm font-medium focus:z-10 w-10"
               style={{ color }}
             >
-               {productCurrentQty === 0 ? 1 : productCurrentQty}
+              {productCurrentQty}
             </button>
             <button
               disabled={productCurrentQty === 0}
@@ -257,8 +263,9 @@ const ProductShowFooter: FC<Props> = ({
       >
         <button
           disabled={
-            parseFloat(productCart.grossTotalPrice).toFixed(3) === '0.000' &&
-            !method
+            (parseFloat(productCart.grossTotalPrice).toFixed(3) === '0.000' &&
+              !method) ||
+            productOutStock
           }
           onClick={debounce(() => handleAddToCart(), 400)}
           className={`${footerBtnClass}`}
@@ -268,7 +275,11 @@ const ProductShowFooter: FC<Props> = ({
           }}
           data-cy="start-order"
         >
-          {!area.id && !branchId ? t(`start_ordering`) : t('add_to_cart')}
+          {!area.id && !branchId
+            ? t(`start_ordering`)
+            : productOutStock
+            ? t('out_stock')
+            : t('add_to_cart')}
         </button>
         <span className={`flex flex-row items-center gap-2`}>
           <p className={`text-xl text-white`}>

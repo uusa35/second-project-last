@@ -37,83 +37,86 @@ const HorProductWidget: FC<Props> = ({
         areaId,
         category_id
       )}`}
-      className={`h-auto shadow-7xl block  capitalize mb-2 border-b-2 border-gray-100 py-5`}
+      className={`group relative h-100  shadow-7xl block  capitalize mb-2 pb-3 border-b-2 border-gray-100`}
       data-cy="product"
     >
-      <div className="relative">
-        <div className="h-60 w-full overflow-hidden rounded-lg">
-          <Image
-            src={`${element.cover}`}
-            alt={element.name}
-            width={imageSizes.lg}
-            height={imageSizes.lg}
-            className="h-60 w-full object-cover object-center"
+      <div className="min-h-80 aspect-h-1 aspect-w-1 w-full overflow-hidden  rounded-lg">
+        <Image
+          src={`${element.cover}`}
+          alt={element.name}
+          width={imageSizes.lg}
+          height={imageSizes.lg}
+          className="h-full w-full object-cover object-center"
+        />
+      </div>
+      <div className=" h-1/4 pt-3 px-2">
+        <p
+          className="text-md font-semibold truncate"
+          suppressHydrationWarning={suppressText}
+        >
+          <TextTrans
+            style={{
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              display: 'block',
+              color: `black`,
+            }}
+            ar={element.name_ar}
+            en={element.name_en}
+            length={60}
           />
-        </div>
-        <div className="pt-3 px-2">
-          <p
-            className="text-md font-semibold truncate"
-            suppressHydrationWarning={suppressText}
-          >
-            <TextTrans
-              style={{
-                maxWidth: '30ch',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                display: 'block',
-                color: `black`,
-              }}
-              ar={element.name_ar}
-              en={element.name_en}
-            />
-            <TextTrans
-              style={{
-                maxWidth: '30ch',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                display: 'block',
-                color: `black`,
-              }}
-              ar={element.description_ar}
-              en={element.description_en}
-            />
-          </p>
-          <div className="flex justify-between items-end">
-            {element.new_price && element.new_price !== element.price ? (
-              <div>
-                <p
-                  className="uppercase line-through"
-                  style={{ color }}
-                  suppressHydrationWarning={suppressText}
-                >
-                  {element.price}
-                </p>
-                <p
-                  className=" uppercase"
-                  // style={{ color }}
-                  suppressHydrationWarning={suppressText}
-                >
-                  {element.new_price} {t('kwd')}
-                </p>
-              </div>
-            ) : (
+          <TextTrans
+            style={{
+              maxWidth: '30ch',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              display: 'block',
+              color: `black`,
+            }}
+            ar={element.description_ar}
+            en={element.description_en}
+          />
+        </p>
+        <div className="flex justify-between items-end">
+          {element.new_price && element.new_price !== element.price ? (
+            <div>
               <p
-                className="text-md uppercase"
+                className="uppercase line-through"
+                style={{ color }}
                 suppressHydrationWarning={suppressText}
-                style={{ color: `black` }}
               >
-                {parseFloat(element.price).toFixed(3) === '0.000' ? (
-                  <span className="text-xs">{t(`price_on_selection`)}</span>
-                ) : (
-                  parseFloat(element.price).toFixed(3)
-                )}
-                {parseFloat(element.price).toFixed(3) !== '0.000' && (
-                  <span className={`uppercase px-1`}>{t('kwd')}</span>
-                )}
+                {element.price}
               </p>
-            )}
+              <p
+                className=" uppercase"
+                // style={{ color }}
+                suppressHydrationWarning={suppressText}
+              >
+                {element.new_price} {t('kwd')}
+              </p>
+            </div>
+          ) : (
+            <p
+              className="text-md uppercase"
+              suppressHydrationWarning={suppressText}
+              style={{ color: `black` }}
+            >
+              {parseFloat(element.price).toFixed(3) === '0.000' ? (
+                <span className="text-xs">{t(`price_on_selection`)}</span>
+              ) : (
+                parseFloat(element.price).toFixed(3)
+              )}
+              {parseFloat(element.price).toFixed(3) !== '0.000' && (
+                <span className={`uppercase px-1`}>{t('kwd')}</span>
+              )}
+            </p>
+          )}
+
+          {element.never_out_of_stock === 0 && element.amount <= 1 ? (
+            <p>{t('out_stock')}</p>
+          ) : (
             <button
               className="border-[1px] rounded-md px-4 pt-1 uppercase text-center text-sm"
               suppressHydrationWarning={suppressText}
@@ -123,16 +126,16 @@ const HorProductWidget: FC<Props> = ({
                 <p>{t('add')}</p>
               </div>
             </button>
-          </div>
+          )}
         </div>
-        {/* <div className="absolute inset-x-0 top-0 flex h-full items-end justify-end overflow-hidden rounded-lg">
+      </div>
+      {/* <div className="absolute inset-x-0 top-0 flex h-full items-end justify-end overflow-hidden rounded-lg">
           <div
             aria-hidden="true"
             className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black opacity-60"
           />
 
         </div> */}
-      </div>
     </Link>
   );
 };

@@ -9,7 +9,7 @@ import { themeColor } from '@/redux/slices/vendorSlice';
 import { setUrl } from '@/redux/slices/appSettingSlice';
 import { isUndefined } from 'lodash';
 import { scrollClass, suppressText } from '@/constants/*';
-
+import ScrollToTopButton from '@/components/ScrollToTopButton';
 const AppHeader = dynamic(() => import(`@/components/AppHeader`), {
   ssr: false,
 });
@@ -31,6 +31,7 @@ type Props = {
   handleIncreaseProductQty?: () => void;
   handleDecreaseProductQty?: () => void;
   productCurrentQty?: number | undefined;
+  productOutStock?: boolean | undefined;
 };
 
 const MainContentLayout: FC<Props> = ({
@@ -43,10 +44,11 @@ const MainContentLayout: FC<Props> = ({
   handleIncreaseProductQty,
   handleDecreaseProductQty,
   productCurrentQty,
+  productOutStock,
   url,
 }): JSX.Element => {
   const {
-    appSetting: { showHeader, url: appUrl },
+    appSetting: { showHeader, url: appUrl, showFooterElement },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
   const [isOnline, setIsOnline] = useState(true);
@@ -81,7 +83,9 @@ const MainContentLayout: FC<Props> = ({
       <SideMenu />
       {showHeader && <AppHeader backHome={backHome} backRoute={backRoute} />}
       <main
-        className={`w-full mb-[20%] relative rounded-t-full min-h-screen `}
+        className={`w-full ${
+          showFooterElement === `home` ? `mb-0` : `mb-[20%]`
+        } relative rounded-t-full min-h-screen `}
         style={{ height: '100%' }}
       >
         {isOnline ? (
@@ -93,11 +97,13 @@ const MainContentLayout: FC<Props> = ({
           />
         )}
       </main>
+      <ScrollToTopButton />
       <AppFooter
         handleSubmit={handleSubmit}
         handleIncreaseProductQty={handleIncreaseProductQty}
         handleDecreaseProductQty={handleDecreaseProductQty}
         productCurrentQty={productCurrentQty}
+        productOutStock={productOutStock}
       />
       <NextNProgress
         color={color}
