@@ -231,7 +231,7 @@ const ProductShowFooter: FC<Props> = ({
               className="relative -ml-px inline-flex items-center  bg-gray-100 px-4 py-2 text-sm font-medium focus:z-10 w-10"
               style={{ color }}
             >
-              {productCurrentQty === 0 ? 1 : productCurrentQty}
+              {productCurrentQty}
             </button>
             <button
               disabled={productCurrentQty === 0}

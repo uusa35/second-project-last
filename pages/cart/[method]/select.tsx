@@ -1,5 +1,5 @@
 import MainContentLayout from '@/layouts/MainContentLayout';
-import { useGetLocationsQuery } from '@/redux/api/locationApi';
+import { useLazyGetLocationsQuery } from '@/redux/api/locationApi';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { NextPage } from 'next';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -78,11 +78,11 @@ const SelectMethod: NextPage<Props> = ({
         : { 'x-area-id': selectedArea.id },
     url,
   });
-  const { data: locations, isLoading: locationsLoading } =
-    useGetLocationsQuery<{
+  const [triggerGetLocations, { data: locations, isLoading: locationsLoading }] =
+    useLazyGetLocationsQuery<{
       data: AppQueryResult<Location[]>;
       isLoading: boolean;
-    }>({ lang, url });
+    }>();
   const [triggerGetBranches, { data: branches, isLoading: branchesLoading }] = useLazyGetBranchesQuery<{
     data: AppQueryResult<Branch[]>;
     isLoading: boolean;
@@ -102,6 +102,7 @@ const SelectMethod: NextPage<Props> = ({
     dispatch(setCurrentModule('select_method'));
     dispatch(setShowFooterElement(`select_method`));
     triggerGetBranches({ lang, url, type: method }, false);
+    triggerGetLocations({ lang, url, type: method }, false);    
     if (url) {
       dispatch(setUrl(url));
     }
@@ -222,7 +223,9 @@ const SelectMethod: NextPage<Props> = ({
                 <div className={`px-4`}>
                   {map(allLocations, (item: Location, i) => {
                     return (
-                      <Accordion
+                      <>
+                      {item.Areas.length > 0 && (
+                        <Accordion
                         key={i}
                         open={open === item.id}
                         icon={<Icon id={item.id} open={open} />}
@@ -262,6 +265,8 @@ const SelectMethod: NextPage<Props> = ({
                           </div>
                         </AccordionBody>
                       </Accordion>
+                      )}
+                      </>
                     );
                   })}
                 </div>
