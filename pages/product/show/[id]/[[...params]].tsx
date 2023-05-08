@@ -429,6 +429,7 @@ const ProductShow: NextPage<Props> = ({
                           width={imageSizes.xxl}
                           height={imageSizes.xxl}
                           className={`object-cover w-full h-96`}
+                          loading="lazy"
                         />
                       </div>
                     ))}

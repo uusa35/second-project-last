@@ -54,6 +54,7 @@ const GeneralCarousel: FC<Props> = ({
               width={imageSizes.xs}
               height={imageSizes.xs}
               suppressHydrationWarning={suppressText}
+              loading="lazy"
             />
           </div>
         ) : (
@@ -68,6 +69,7 @@ const GeneralCarousel: FC<Props> = ({
                 alt={`${t('slides')}`}
                 fill={true}
                 suppressHydrationWarning={suppressText}
+                loading="lazy"
               />
             ))}
           </div>

@@ -47,6 +47,7 @@ const HorProductWidget: FC<Props> = ({
           width={imageSizes.lg}
           height={imageSizes.lg}
           className="h-full w-full object-cover object-center"
+          loading="lazy"
         />
       </div>
       <div className=" h-1/4 pt-3 px-2">

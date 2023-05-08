@@ -79,6 +79,7 @@ const OrderInvoice: NextPage<Props> = ({ url }): JSX.Element => {
                 alt="logo"
                 width={60}
                 height={60}
+                loading="lazy"
               />
               <h4 className="px-2 font-semibold capitalize">{vendor.name}</h4>
             </div>
