@@ -50,6 +50,7 @@ const VerProductWidget: FC<Props> = ({
               width={imageSizes.lg}
               height={imageSizes.lg}
               className="h-36 w-full object-cover object-center"
+              loading="lazy"
             />
           </div>
           <div className="ps-5 w-[100%] pe-5">

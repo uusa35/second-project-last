@@ -105,6 +105,7 @@ const MainHead: FC<Props> = ({
               className={`w-10 h-auto`}
               width={imageSizes.xs}
               height={imageSizes.xs}
+              loading="lazy"
             />
           </span>
         </div>

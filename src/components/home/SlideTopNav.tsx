@@ -98,6 +98,7 @@ const SlideTopNav: FC<Props> = ({ offset, isHome = false }): JSX.Element => {
               alt={`logo`}
               width={imageSizes.xs}
               height={imageSizes.xs}
+              loading="lazy"
             />
           </div>
         </Link>
