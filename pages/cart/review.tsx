@@ -46,6 +46,7 @@ import { setOrder, setPaymentMethod } from '@/redux/slices/orderSlice';
 import { CheckCircle } from '@mui/icons-material';
 import { wrapper } from '@/redux/store';
 import { BadgeOutlined } from '@mui/icons-material';
+import { v4 as uuidv4 } from 'uuid';
 
 type Props = {
   url: string;
@@ -415,8 +416,8 @@ const CartReview: NextPage<Props> = ({ url }) => {
             cartItems.data &&
             cartItems.data.Cart &&
             cartItems.data?.subTotal > 0 &&
-            map(cartItems.data?.Cart, (item: ProductCart, i) => (
-              <div key={i}>
+            map(cartItems.data?.Cart, (item: ProductCart) => (
+              <div key={uuidv4}>
                 <div className="px-4">
                   <div className="mb-10 ">
                     <div className="flex px-2 rtl:mr-1 ltr:ml-1 items-center">
