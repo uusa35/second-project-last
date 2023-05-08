@@ -444,10 +444,6 @@ const ProductShow: NextPage<Props> = ({
                 )}
               </div>
               <div className="absolute inset-x-0 top-0 flex h-full items-end justify-end overflow-hidden">
-                <div
-                  aria-hidden="true"
-                  className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black opacity-60"
-                />
                 <div className="flex flex-row w-full px-2 justify-between items-center py-4"></div>
               </div>
             </div>
@@ -772,6 +768,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ query, locale, req, resolvedUrl }) => {
       const { id, branchId, areaId }: any = query;
+      console.log({ id })
       if (!id || !req.headers.host) {
         return {
           notFound: true,

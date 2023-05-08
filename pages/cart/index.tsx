@@ -56,7 +56,7 @@ import { themeColor } from '@/redux/slices/vendorSlice';
 import EmptyCart from '@/appImages/empty-cart.gif';
 import { wrapper } from '@/redux/store';
 import { Done } from '@mui/icons-material';
-
+import { v4 as uuidv4 } from 'uuid';
 type Props = {
   url: string;
 };
@@ -219,7 +219,6 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
       }
     });
   };
-
   const handleIncrease = (element: ProductCart) => {
     resetCoupon();
     triggerAddToCart({
@@ -332,8 +331,8 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
             </p>
             {isSuccess &&
               cartItems.data?.subTotal > 0 &&
-              map(cartItems.data?.Cart, (item: ProductCart, i) => (
-                <div key={i}>
+              map(cartItems.data?.Cart, (item: ProductCart) => (
+                <div key={uuidv4()}>
                   <div className="px-4">
                     <div className="mb-10 ">
                       <div className="flex  items-center">
