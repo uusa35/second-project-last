@@ -46,7 +46,7 @@ import { setOrder, setPaymentMethod } from '@/redux/slices/orderSlice';
 import { CheckCircle } from '@mui/icons-material';
 import { wrapper } from '@/redux/store';
 import { BadgeOutlined } from '@mui/icons-material';
-import { v4 as uuidv4 } from 'uuid';
+import { createHash } from 'crypto';
 
 type Props = {
   url: string;
@@ -416,8 +416,12 @@ const CartReview: NextPage<Props> = ({ url }) => {
             cartItems.data &&
             cartItems.data.Cart &&
             cartItems.data?.subTotal > 0 &&
-            map(cartItems.data?.Cart, (item: ProductCart) => (
-              <div key={uuidv4}>
+            map(cartItems.data?.Cart, (item: ProductCart) => {
+              const hash = createHash('md5')
+              .update(JSON.stringify(item))
+              .digest('hex');
+              return (
+                <div key={hash}>
                 <div className="px-4">
                   <div className="mb-10 ">
                     <div className="flex px-2 rtl:mr-1 ltr:ml-1 items-center">
@@ -556,7 +560,8 @@ const CartReview: NextPage<Props> = ({ url }) => {
                   </div>
                 </div>
               </div>
-            ))}
+              )
+            })}
           <div className="bg-gray-200 w-full mt-5 p-0 h-2"></div>
           <div className="px-4 py-4">
             <div className="flex items-center py-3">
