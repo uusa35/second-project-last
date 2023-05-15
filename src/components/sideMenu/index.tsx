@@ -26,7 +26,7 @@ import {
 } from '@mui/icons-material';
 import { setLocale } from '@/redux/slices/localeSlice';
 import CustomImage from '@/components/CustomImage';
-import { isEmpty } from 'lodash';
+import { isEmpty, isNull } from 'lodash';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import {
   BuildingStorefrontIcon,
@@ -45,7 +45,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
     branch: { id: branchId },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
-
+  console.log({ vendor })
   return (
     <Suspense fallback={<LoadingSpinner fullWidth={false} />}>
       <Menu
@@ -56,7 +56,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
         customBurgerIcon={false}
         customCrossIcon={false}
       >
-        {!isEmpty(vendor) && (
+        {(!isEmpty(vendor) && !isNull(vendor.id)) && (
           <div
             style={{ display: 'flex' }}
             className="flex-col justify-between  bg-white h-full outline-none px-6 capitalize"
