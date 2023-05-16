@@ -49,6 +49,7 @@ const MainHead: FC<Props> = ({
           rel="shortcut icon"
           type="image/png"
         />
+        <link rel="icon" href={`${icon ?? mainImage}`} />
         <meta property="og:image:alt" content={`${title}`} />
         <meta property="og:mobile" content={phone} />
         <meta property="og:whatsapp" content={phone} />
