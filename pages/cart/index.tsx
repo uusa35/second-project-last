@@ -56,7 +56,7 @@ import { themeColor } from '@/redux/slices/vendorSlice';
 import EmptyCart from '@/appImages/empty-cart.gif';
 import { wrapper } from '@/redux/store';
 import { Done } from '@mui/icons-material';
-
+import { createHash } from 'crypto';
 type Props = {
   url: string;
 };
@@ -74,6 +74,7 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
   const dispatch = useAppDispatch();
   const [couponVal, setCouponVal] = useState<string | undefined>(undefined);
   const [triggerAddToCart] = useAddToCartMutation();
+
   const {
     data: cartItems,
     isSuccess,
@@ -219,7 +220,6 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
       }
     });
   };
-
   const handleIncrease = (element: ProductCart) => {
     resetCoupon();
     triggerAddToCart({
@@ -332,8 +332,12 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
             </p>
             {isSuccess &&
               cartItems.data?.subTotal > 0 &&
-              map(cartItems.data?.Cart, (item: ProductCart, i) => (
-                <div key={i}>
+              map(cartItems.data?.Cart, (item: ProductCart, index: number) => {
+                const hash = createHash('md5')
+                .update(JSON.stringify(item))
+                .digest('hex');
+                return (
+                  <div key={hash}>
                   <div className="px-4">
                     <div className="mb-10 ">
                       <div className="flex  items-center">
@@ -522,7 +526,8 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
                   </div>
                   <div className="mt-10 px-0 py-1 bg-gray-100"></div>
                 </div>
-              ))}
+                )
+              })}
             <div className="px-4">
               <div className="flex items-center">
                 <Promotion className="grayscale" />

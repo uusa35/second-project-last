@@ -36,6 +36,7 @@ const CustomImage: FC<Props> = ({
       }}
       className={className}
       suppressHydrationWarning={suppressText}
+      loading="lazy"
     />
   );
 };
