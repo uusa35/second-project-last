@@ -36,6 +36,7 @@ import Twitter from '@/appIcons/twitter.svg';
 import Instagram from '@/appIcons/instagram.svg';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import PoweredByQ from '@/components/PoweredByQ';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 type Props = {
   element: Vendor;
@@ -108,6 +109,10 @@ const VendorShow: NextPage<Props> = ({ element, url }) => {
       </div>
     );
   };
+
+  if (!element) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <Suspense>
