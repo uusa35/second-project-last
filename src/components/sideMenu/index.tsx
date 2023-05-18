@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { ReactBurgerMenu, slide as Menu } from 'react-burger-menu';
 import { useTranslation } from 'react-i18next';
 import { FC } from 'react';
@@ -45,6 +45,8 @@ const SideMenu: FC<Props> = (): JSX.Element => {
     branch: { id: branchId },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
+
+  useEffect(() => {}, [vendor]);
 
   return (
     <Suspense fallback={<LoadingSpinner fullWidth={false} />}>
