@@ -4,7 +4,7 @@ import { NextPage } from 'next';
 import { Vendor } from '@/types/index';
 import { wrapper } from '@/redux/store';
 import { apiSlice } from '@/redux/api';
-import { vendorApi } from '@/redux/api/vendorApi';
+import { useLazyGetVendorQuery, vendorApi } from '@/redux/api/vendorApi';
 import MainHead from '@/components/MainHead';
 import Clock from '@/appIcons/clock.svg';
 import DeliveryIcon from '@/appIcons/delivery.svg';
@@ -48,14 +48,28 @@ type DetailsItem = {
 };
 const VendorShow: NextPage<Props> = ({ element, url }) => {
   const {
-    locale: { isRTL },
+    locale: { isRTL, lang },
+    branch: { id: branch_id },
+    area: { id: area_id },
+    appSetting: { method },
   } = useAppSelector((state) => state);
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const color = useAppSelector(themeColor);
+  const [triggerGetVendor, { data: vendorElement, isSuccess: vendorSuccess }] =
+    useLazyGetVendorQuery();
 
   useEffect(() => {
     dispatch(setCurrentModule(element.name));
+    triggerGetVendor(
+      {
+        lang,
+        url,
+        branch_id: method !== `pickup` ? branch_id : ``,
+        area_id: method === `pickup` ? area_id : ``,
+      },
+      false
+    );
   }, [element]);
 
   useEffect(() => {
@@ -94,6 +108,7 @@ const VendorShow: NextPage<Props> = ({ element, url }) => {
       </div>
     );
   };
+
   return (
     <Suspense>
       <MainHead
@@ -199,24 +214,24 @@ const VendorShow: NextPage<Props> = ({ element, url }) => {
             </button>
           </div>
           <div className="flex justify-evenly items-center w-[90%] m-auto">
-            {element.facebook && (
-              <a href={element.facebook} target={'_blank'}>
+            {vendorElement?.Data?.facebook && (
+              <a href={vendorElement?.Data?.facebook} target={'_blank'}>
                 <Facebook
                   className={`w-8 h-8  ${iconColor} pt-1`}
                   alt={t('facebook')}
                 />
               </a>
             )}
-            {element.instagram && (
-              <a href={element.instagram} target={'_blank'}>
+            {vendorElement?.Data?.instagram && (
+              <a href={vendorElement?.Data?.instagram} target={'_blank'}>
                 <Instagram
                   className={`w-8 h-8  ${iconColor} pt-1`}
                   alt={t('instagram')}
                 />
               </a>
             )}
-            {element.twitter && (
-              <a href={element.twitter} target={'_blank'}>
+            {vendorElement?.Data?.twitter && (
+              <a href={vendorElement?.Data?.twitter} target={'_blank'}>
                 <Twitter
                   className={`w-8 h-8  ${iconColor} pt-1`}
                   alt={t('twitter')}
