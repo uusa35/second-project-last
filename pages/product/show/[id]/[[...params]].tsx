@@ -769,7 +769,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ query, locale, req, resolvedUrl }) => {
       const { id, branchId, areaId }: any = query;
-      console.log({ id })
       if (!id || !req.headers.host) {
         return {
           notFound: true,
