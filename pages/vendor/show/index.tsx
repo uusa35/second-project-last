@@ -101,6 +101,10 @@ const VendorShow: NextPage<Props> = ({ element, url }) => {
         description={element.desc}
         mainImage={`${element.logo}`}
         icon={`${element.logo}`}
+        phone={element.phone}
+        twitter={element.twitter}
+        facebook={element.facebook}
+        instagram={element.instagram}
       />
       <MainContentLayout url={url}>
         <VendorDetailsItem

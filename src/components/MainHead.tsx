@@ -29,6 +29,9 @@ const MainHead: FC<Props> = ({
   const { t } = useTranslation();
   const router = useRouter();
 
+  console.log('icon', icon);
+  console.log('mainImage', mainImage);
+
   return (
     <>
       <Head>
