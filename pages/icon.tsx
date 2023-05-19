@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/server';
 
 // Route segment config
-export const runtime = 'edge';
+export const runtime = 'nodejs';
 
 // Image metadata
 export const size = {
@@ -10,7 +10,6 @@ export const size = {
 };
 export const contentType = 'image/png';
 
-// Image generation
 export default function Icon() {
   return new ImageResponse(
     (
@@ -18,7 +17,7 @@ export default function Icon() {
       <div
         style={{
           fontSize: 24,
-          background: 'black',
+          //   background: 'black',
           width: '100%',
           height: '100%',
           display: 'flex',

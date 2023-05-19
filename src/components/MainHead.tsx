@@ -44,6 +44,18 @@ const MainHead: FC<Props> = ({
         <meta property="og:description" content={`${description}`} />
         <meta property="og:image" content={`${mainImage}`} />
         <meta name="logo" content={`${mainImage}`} />
+        <link
+          rel="icon"
+          href={`${icon ?? mainImage}`}
+          type="image/png"
+          sizes="any"
+        />
+        <link
+          rel="apple-touch-icon"
+          href={`${icon ?? mainImage}`}
+          type="image/png"
+          sizes="any"
+        />
         {/* <link
           href={`${icon ?? mainImage}`}
           rel="shortcut icon"
