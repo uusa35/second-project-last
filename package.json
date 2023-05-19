@@ -46,6 +46,7 @@
     "date-fns": "^2.29.3",
     "flowbite": "^1.5.5",
     "flowbite-react": "^0.3.7",
+    "fs": "^0.0.1-security",
     "google-map-react": "^2.2.0",
     "i18next": "^22.4.6",
     "i18next-browser-languagedetector": "^7.0.1",
