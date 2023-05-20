@@ -85,7 +85,7 @@ const HomePage: NextPage<Props> = ({
         branch_id: method !== `pickup` ? branch_id : ``,
         area_id: method === `pickup` ? area_id : ``,
       },
-      true
+      false
     );
   };
 
