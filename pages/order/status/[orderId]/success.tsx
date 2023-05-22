@@ -50,7 +50,7 @@ const OrderSuccess: NextPage<Props> = ({ orderId, url }) => {
       dispatch(setUrl(url));
     }
 
-    console.log({ orderId });
+    // console.log({ orderId });
     triggerGetOrderStatus(
       { status: 'success', order_id: orderId, url, userAgent },
       false
@@ -65,7 +65,7 @@ const OrderSuccess: NextPage<Props> = ({ orderId, url }) => {
     });
   }, []);
 
-  console.log({ element });
+  // console.log({ element });
 
   if (!element) {
     return <LoadingSpinner />;
