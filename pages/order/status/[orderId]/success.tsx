@@ -7,7 +7,7 @@ import { suppressText, appLinks, imageSizes } from '@/constants/*';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { wrapper } from '@/redux/store';
 import { AppQueryResult } from '@/types/queries';
-import { orderApi } from '@/redux/api/orderApi';
+import { orderApi, useLazyCheckOrderStatusQuery } from '@/redux/api/orderApi';
 import { Order } from '@/types/index';
 import { apiSlice } from '@/redux/api';
 import TextTrans from '@/components/TextTrans';
@@ -20,12 +20,13 @@ import {
 } from '@/redux/slices/appSettingSlice';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { useLazyGetCartProductsQuery } from '@/redux/api/cartApi';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 type Props = {
-  element: Order;
+  orderId: any;
   url: string;
 };
-const OrderSuccess: NextPage<Props> = ({ element, url }) => {
+const OrderSuccess: NextPage<Props> = ({ orderId, url }) => {
   const { t } = useTranslation();
   const {
     customer: { userAgent },
@@ -36,6 +37,11 @@ const OrderSuccess: NextPage<Props> = ({ element, url }) => {
   const color = useAppSelector(themeColor);
   const dispatch = useAppDispatch();
   const [triggerGetCartProducts] = useLazyGetCartProductsQuery();
+  const [triggerGetOrderStatus, { data: element, isLoading }] =
+    useLazyCheckOrderStatusQuery<{
+      data: AppQueryResult<Order>;
+      isLoading: boolean;
+    }>();
 
   useEffect(() => {
     dispatch(setCurrentModule('order_success'));
@@ -43,6 +49,12 @@ const OrderSuccess: NextPage<Props> = ({ element, url }) => {
     if (url) {
       dispatch(setUrl(url));
     }
+
+    console.log({ orderId });
+    triggerGetOrderStatus(
+      { status: 'success', order_id: orderId, url, userAgent },
+      false
+    );
     triggerGetCartProducts({
       UserAgent: userAgent,
       area_branch:
@@ -52,6 +64,12 @@ const OrderSuccess: NextPage<Props> = ({ element, url }) => {
       url,
     });
   }, []);
+
+  console.log({ element });
+
+  if (!element) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <Suspense>
@@ -89,7 +107,7 @@ const OrderSuccess: NextPage<Props> = ({ element, url }) => {
               <p>
                 {' '}
                 {'#'}
-                {element.orderCode}
+                {element.data.orderCode}
               </p>
             </div>
             <div className="flex justify-between pt-4 text-lg">
@@ -101,8 +119,8 @@ const OrderSuccess: NextPage<Props> = ({ element, url }) => {
                 {t('store_name')}
               </h4>
               <TextTrans
-                ar={element.vendor_name_ar}
-                en={element.vendor_name_en}
+                ar={element.data.vendor_name_ar}
+                en={element.data.vendor_name_en}
               />
             </div>
           </div>
@@ -116,7 +134,7 @@ const OrderSuccess: NextPage<Props> = ({ element, url }) => {
             </p>
             <Link
               href={appLinks.orderInvoice(
-                `${element.order_id}`,
+                `${element.data.order_id}`,
                 `${method}`,
                 `${method === 'delivery' ? area.id : branch.id}`
               )}
@@ -130,7 +148,7 @@ const OrderSuccess: NextPage<Props> = ({ element, url }) => {
             <Link
               href={{
                 pathname: appLinks.trackOrder.path,
-                query: { order_code: element.orderCode },
+                query: { order_code: element.data.orderCode },
               }}
               scroll={true}
               className={`flex grow justify-center items-center p-4 rounded-lg text-white mb-3 shadow-lg`}
@@ -165,26 +183,26 @@ export const getServerSideProps = wrapper.getServerSideProps(
           notFound: true,
         };
       }
-      const {
-        data: element,
-        isError,
-      }: { data: AppQueryResult<Order>; isError: boolean } =
-        await store.dispatch(
-          orderApi.endpoints.checkOrderStatus.initiate({
-            status: 'success',
-            order_id: orderId,
-            url,
-          })
-        );
-      await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
-      if (isError || !element.status || !element.data) {
-        return {
-          notFound: true,
-        };
-      }
+      // const {
+      //   data: element,
+      //   isError,
+      // }: { data: AppQueryResult<Order>; isError: boolean } =
+      //   await store.dispatch(
+      //     orderApi.endpoints.checkOrderStatus.initiate({
+      //       status: 'success',
+      //       order_id: orderId,
+      //       url,
+      //     })
+      //   );
+      // await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
+      // if (isError || !element.status || !element.data) {
+      //   return {
+      //     notFound: true,
+      //   };
+      // }
       return {
         props: {
-          element: element.data,
+          orderId,
           url,
         },
       };
