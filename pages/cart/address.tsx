@@ -28,7 +28,13 @@ import ApartmentAcitveIcon from '@/appIcons/apartment_active.svg';
 import OfficeIcon from '@/appIcons/office.svg';
 import OfficeAcitveIcon from '@/appIcons/office_active.svg';
 import { HomeOutlined } from '@mui/icons-material';
-import { addressInputField, appLinks, arboriaFont, suppressText, toEn } from '@/constants/*';
+import {
+  addressInputField,
+  appLinks,
+  arboriaFont,
+  suppressText,
+  toEn,
+} from '@/constants/*';
 import { isEmpty, kebabCase, lowerCase } from 'lodash';
 import {
   useCheckTimeAvilabilityMutation,
@@ -572,7 +578,9 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                               className={`${addressInputField}`}
                               suppressHydrationWarning={suppressText}
                               {...register('house_no')}
-                              onChange={(e) => setValue('house_no', toEn(e.target.value))}
+                              onChange={(e) =>
+                                setValue('house_no', toEn(e.target.value))
+                              }
                               aria-invalid={errors.house_no ? 'true' : 'false'}
                             />
                           </div>
@@ -609,7 +617,9 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                               className={`${addressInputField}`}
                               suppressHydrationWarning={suppressText}
                               {...register('floor_no')}
-                              onChange={(e) => setValue('floor_no', toEn(e.target.value))}
+                              onChange={(e) =>
+                                setValue('floor_no', toEn(e.target.value))
+                              }
                               aria-invalid={errors.floor_no ? 'true' : 'false'}
                             />
                           </div>
@@ -650,7 +660,9 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                               className={`${addressInputField}`}
                               suppressHydrationWarning={suppressText}
                               {...register('building_no')}
-                              onChange={(e) => setValue('building_no', toEn(e.target.value))}
+                              onChange={(e) =>
+                                setValue('building_no', toEn(e.target.value))
+                              }
                               aria-invalid={
                                 errors.building_no ? 'true' : 'false'
                               }
@@ -689,7 +701,9 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                               className={`${addressInputField}`}
                               suppressHydrationWarning={suppressText}
                               {...register('office_no')}
-                              onChange={(e) => setValue('office_no', toEn(e.target.value))}
+                              onChange={(e) =>
+                                setValue('office_no', toEn(e.target.value))
+                              }
                               aria-invalid={errors.office_no ? 'true' : 'false'}
                             />
                           </div>
@@ -742,7 +756,6 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                         </p>
                       )}
                     </div>
-
                     <input
                       placeholder={`${t(`paci`)}`}
                       className={`${addressInputField}`}
@@ -778,7 +791,9 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                       className={`${addressInputField} p-0`}
                       suppressHydrationWarning={suppressText}
                       {...register('additional')}
-                      onChange={(e) => setValue('additional', toEn(e.target.value))}
+                      onChange={(e) =>
+                        setValue('additional', toEn(e.target.value))
+                      }
                       aria-invalid={errors.additional ? 'true' : 'false'}
                     />
                   </div>
@@ -885,7 +900,9 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                   {show && (
                     <div className={`flex flex-col gap-3`}>
                       {/* date */}
-                      <div className={`flex justify-between p-2 border-b-4 border-stone-100 ${arboriaFont}`}>
+                      <div
+                        className={`flex justify-between p-2 border-b-4 border-stone-100 ${arboriaFont}`}
+                      >
                         <input
                           ref={dateRef}
                           type="date"
