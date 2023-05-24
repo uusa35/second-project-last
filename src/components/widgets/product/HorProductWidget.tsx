@@ -115,7 +115,7 @@ const HorProductWidget: FC<Props> = ({
             </p>
           )}
 
-          {element.never_out_of_stock === 0 && element.amount <= 1 ? (
+          {element.never_out_of_stock === 0 && element.amount < 1 ? (
             <p>{t('out_stock')}</p>
           ) : (
             <button
