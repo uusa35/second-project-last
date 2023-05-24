@@ -408,7 +408,7 @@ const ProductShow: NextPage<Props> = ({
           !isNull(element) &&
           element.Data &&
           element.Data.never_out_of_stock === 0 &&
-          element.Data.amount <= currentQty
+          element.Data.amount < currentQty
         }
       >
         {isSuccess && !isNull(element) && element.Data ? (
@@ -769,7 +769,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ query, locale, req, resolvedUrl }) => {
       const { id, branchId, areaId }: any = query;
-      console.log({ id })
       if (!id || !req.headers.host) {
         return {
           notFound: true,

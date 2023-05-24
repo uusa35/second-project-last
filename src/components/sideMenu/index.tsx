@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { ReactBurgerMenu, slide as Menu } from 'react-burger-menu';
 import { useTranslation } from 'react-i18next';
 import { FC } from 'react';
@@ -45,7 +45,9 @@ const SideMenu: FC<Props> = (): JSX.Element => {
     branch: { id: branchId },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
-  console.log({ vendor })
+
+  useEffect(() => {}, [vendor]);
+
   return (
     <Suspense fallback={<LoadingSpinner fullWidth={false} />}>
       <Menu
@@ -56,7 +58,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
         customBurgerIcon={false}
         customCrossIcon={false}
       >
-        {(!isEmpty(vendor) && !isNull(vendor.id)) && (
+        {!isEmpty(vendor) && !isNull(vendor.id) && (
           <div
             style={{ display: 'flex' }}
             className="flex-col justify-between  bg-white h-full outline-none px-6 capitalize"

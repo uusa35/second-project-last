@@ -70,12 +70,13 @@ export const orderApi = apiSlice.injectEndpoints({
           status: string;
           order_id: string;
           url: string;
+          userAgent: string;
         }
       >({
-        query: ({ status, order_id, url }) => ({
+        query: ({ status, order_id, url, userAgent }) => ({
           url: `order/payment/status`,
           headers: { url },
-          params: { status, order_id },
+          params: { status, order_id, userAgent },
         }),
       }),
       getInvoice: builder.query<
