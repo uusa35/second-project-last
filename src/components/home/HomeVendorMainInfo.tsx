@@ -62,7 +62,8 @@ const HomeVendorMainInfo: FC<Props> = ({ url }): JSX.Element => {
               height={imageSizes.xs}
               className="rounded-md w-full h-fit aspect-square"
               alt={element.Data.name}
-              src={`${imgUrl(vendor.logo)}`}
+              // src={`${imgUrl(vendor.logo)}`}
+              src={`${element.Data.logo}`}
             />
           </Link>
           <div className={`flex flex-col w-full p-1`}>
