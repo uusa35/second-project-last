@@ -21,6 +21,7 @@ const HomeVendorMainInfo: FC<Props> = ({ url }): JSX.Element => {
     locale: { lang },
     branch: { id: branch_id },
     area: { id: area_id },
+    vendor,
   } = useAppSelector((state) => state);
   const [triggerGetVendor, { data: element, isSuccess }] =
     useLazyGetVendorQuery();
@@ -47,6 +48,8 @@ const HomeVendorMainInfo: FC<Props> = ({ url }): JSX.Element => {
     }
   }, [branch_id, area_id]);
 
+  useEffect(() => {}, [vendor]);
+
   if (!isSuccess || !element || !element.Data) return <></>;
 
   return (
@@ -54,20 +57,13 @@ const HomeVendorMainInfo: FC<Props> = ({ url }): JSX.Element => {
       <div className="flex gap-x-2 justify-between items-start capitalize">
         <div className="flex grow gap-x-2">
           <Link href={appLinks.home.path} scroll={true} className={`w-1/4`}>
-            <Image
+            <CustomImage
               width={imageSizes.xs}
               height={imageSizes.xs}
               className="rounded-md w-full h-fit aspect-square"
               alt={element.Data.name}
-              src={imgUrl(element.Data.logo)}
+              src={`${imgUrl(vendor.logo)}`}
             />
-            {/* <CustomImage
-              width={imageSizes.xs}
-              height={imageSizes.xs}
-              className="rounded-md w-full h-fit aspect-square"
-              alt={element.Data.name}
-              src={imgUrl(element.Data.logo)}
-            /> */}
           </Link>
           <div className={`flex flex-col w-full p-1`}>
             <div className={`flex flex-row justify-start items-center`}>
