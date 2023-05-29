@@ -67,7 +67,7 @@ const HorProductWidget: FC<Props> = ({
             en={element.name_en}
             length={60}
           />
-          <TextTrans
+          {/* <TextTrans
             style={{
               maxWidth: '30ch',
               textOverflow: 'ellipsis',
@@ -78,7 +78,7 @@ const HorProductWidget: FC<Props> = ({
             }}
             ar={element.description_ar}
             en={element.description_en}
-          />
+          /> */}
         </p>
         <div className="flex justify-between items-end">
           {element.new_price && element.new_price !== element.price ? (
