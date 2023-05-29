@@ -97,7 +97,7 @@ const SelectMethod: NextPage<Props> = ({
   
   useEffect(() => {
     setAllLocations(locations?.Data);
-  }, [locations])
+  }, [locations]);
   useEffect(() => {
     dispatch(setCurrentModule('select_method'));
     dispatch(setShowFooterElement(`select_method`));
@@ -179,16 +179,16 @@ const SelectMethod: NextPage<Props> = ({
   };
 
   const handleChange = (area: any) => {
-    if(area === '') {
+    if (area === '') {
       setAllLocations(locations.Data);
-    }
-    else {
-      const filteredAreas = locations.Data.filter((item) => 
-        item.Areas.some((a) => a.name.toLowerCase().includes(area)));
+    } else {
+      const filteredAreas = locations.Data.filter((item) =>
+        item.Areas.some((a) => a.name.toLowerCase().includes(area))
+      );
       setAllLocations(filteredAreas);
       setOpen(filteredAreas[0].id);
     }
-  }
+  };
   if (
     !vendorSuccess ||
     !vendorDetails ||
@@ -212,8 +212,8 @@ const SelectMethod: NextPage<Props> = ({
             delivery_pickup_type={vendorDetails?.Data?.delivery_pickup_type}
           />
           <div className={`w-full mb-4`}>
-            <SearchInput 
-            onChange={debounce((e) => handleChange(e.target.value), 400)}
+            <SearchInput
+              onChange={debounce((e) => handleChange(e.target.value), 400)}
             />
           </div>
           {vendorDetails?.Data?.delivery_pickup_type === 'delivery_pickup' ||
