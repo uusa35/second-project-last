@@ -159,14 +159,18 @@ const ProductShow: NextPage<Props> = ({
       const metersSum = sumBy(allMeters, (a) => multiply(a.price, a.Value)); // qty
       const checkboxesSum = sumBy(allCheckboxes, (a) => a.Value * a.price); // qty
       const radioBtnsSum = sumBy(allRadioBtns, (a) => a.Value * a.price); // qty
+      const requiredMeters = filter(element?.Data?.sections, (c) => c.must_select === 'q_meter' && c.selection_type === 'mandatory');
+      const requiredRadioBtns = filter(element?.Data?.sections, (c) => c.must_select === 'single' && c.selection_type === 'mandatory');
       if (
         element?.Data?.sections?.length !== 0 &&
         element?.Data?.sections?.filter(
           (itm) => itm.selection_type === 'mandatory'
         ).length !== 0 &&
-        isEmpty(allCheckboxes) &&
-        isEmpty(allRadioBtns) &&
-        isEmpty(allMeters)
+        // isEmpty(allCheckboxes) &&
+        // isEmpty(allRadioBtns) &&
+        // isEmpty(allMeters)
+        (requiredRadioBtns.length > 0 && isEmpty(allRadioBtns)) ||
+        (requiredMeters.length > 0 && isEmpty(allMeters))  
       ) {
         dispatch(disableAddToCart());
       } else {
@@ -511,8 +515,8 @@ const ProductShow: NextPage<Props> = ({
                     <div className={`flex flex-col gap-x-2 gap-y-1  mt-2`}>
                       <div className={`flex flex-row`}>
                         <input
-                          id={s.title}
-                          name={s.title}
+                          id={`${s.id}${s.selection_type}`} 
+                          name={`${s.id}${s.selection_type}`} 
                           type="radio"
                           checked={
                             !isEmpty(filter(tabsOpen, (t) => t.id === s.id))
@@ -523,7 +527,7 @@ const ProductShow: NextPage<Props> = ({
                           className="h-4 w-4"
                         />
                         <label
-                          htmlFor={s.title}
+                          htmlFor={`${s.id}${s.selection_type}`} 
                           className="mx-3 block text-sm font-medium text-gray-700"
                         >
                           {t('yes')}
@@ -531,8 +535,8 @@ const ProductShow: NextPage<Props> = ({
                       </div>
                       <div className={`flex flex-row`}>
                         <input
-                          id={s.title}
-                          name={s.title}
+                          id={`${s.id}${s.selection_type}`} 
+                          name={`${s.id}${s.selection_type}`} 
                           type="radio"
                           checked={isEmpty(
                             filter(tabsOpen, (t) => t.id === s.id)
@@ -551,7 +555,7 @@ const ProductShow: NextPage<Props> = ({
                           className="h-4 w-4"
                         />
                         <label
-                          htmlFor={s.title}
+                          htmlFor={`${s.id}${s.selection_type}`} 
                           className="mx-3 block text-sm font-medium text-gray-700"
                         >
                           {t('no')}
@@ -678,8 +682,8 @@ const ProductShow: NextPage<Props> = ({
                           ) : (
                             <Fragment key={i}>
                               <input
-                                id={c.name}
-                                name={c.name}
+                                id={`${c.id}${s.selection_type}`}
+                                name={`${c.id}${s.selection_type}`}
                                 required={s.selection_type !== 'optional'}
                                 type={
                                   s.must_select === 'multi'
@@ -714,7 +718,7 @@ const ProductShow: NextPage<Props> = ({
                               >
                                 <div>
                                   <label
-                                    htmlFor={c.name}
+                                    htmlFor={`${c.id}${s.selection_type}`}
                                     className="ltr:ml-3 rtl:mr-3 block text-sm font-medium text-gray-700"
                                   >
                                     <TextTrans ar={c.name_ar} en={c.name_en} />
