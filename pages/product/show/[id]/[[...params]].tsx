@@ -161,6 +161,7 @@ const ProductShow: NextPage<Props> = ({
       const radioBtnsSum = sumBy(allRadioBtns, (a) => a.Value * a.price); // qty
       const requiredMeters = filter(element?.Data?.sections, (c) => c.must_select === 'q_meter' && c.selection_type === 'mandatory');
       const requiredRadioBtns = filter(element?.Data?.sections, (c) => c.must_select === 'single' && c.selection_type === 'mandatory');
+      const requiredCheckboxes = filter(element?.Data?.sections, (c) => c.must_select === 'multi' && c.selection_type === 'mandatory');
       if (
         element?.Data?.sections?.length !== 0 &&
         element?.Data?.sections?.filter(
@@ -170,7 +171,8 @@ const ProductShow: NextPage<Props> = ({
         // isEmpty(allRadioBtns) &&
         // isEmpty(allMeters)
         (requiredRadioBtns.length > 0 && isEmpty(allRadioBtns)) ||
-        (requiredMeters.length > 0 && isEmpty(allMeters))  
+        (requiredMeters.length > 0 && isEmpty(allMeters)) || 
+        (requiredCheckboxes.length > 0 && isEmpty(allCheckboxes))  
       ) {
         dispatch(disableAddToCart());
       } else {
