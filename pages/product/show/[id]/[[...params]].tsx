@@ -159,20 +159,30 @@ const ProductShow: NextPage<Props> = ({
       const metersSum = sumBy(allMeters, (a) => multiply(a.price, a.Value)); // qty
       const checkboxesSum = sumBy(allCheckboxes, (a) => a.Value * a.price); // qty
       const radioBtnsSum = sumBy(allRadioBtns, (a) => a.Value * a.price); // qty
-      const requiredMeters = filter(element?.Data?.sections, (c) => c.must_select === 'q_meter' && c.selection_type === 'mandatory');
-      const requiredRadioBtns = filter(element?.Data?.sections, (c) => c.must_select === 'single' && c.selection_type === 'mandatory');
-      const requiredCheckboxes = filter(element?.Data?.sections, (c) => c.must_select === 'multi' && c.selection_type === 'mandatory');
+      const requiredMeters = filter(
+        element?.Data?.sections,
+        (c) => c.must_select === 'q_meter' && c.selection_type === 'mandatory'
+      );
+      const requiredRadioBtns = filter(
+        element?.Data?.sections,
+        (c) => c.must_select === 'single' && c.selection_type === 'mandatory'
+      );
+      const requiredCheckboxes = filter(
+        element?.Data?.sections,
+        (c) => c.must_select === 'multi' && c.selection_type === 'mandatory'
+      );
       if (
-        element?.Data?.sections?.length !== 0 &&
-        element?.Data?.sections?.filter(
-          (itm) => itm.selection_type === 'mandatory'
-        ).length !== 0 &&
-        // isEmpty(allCheckboxes) &&
-        // isEmpty(allRadioBtns) &&
-        // isEmpty(allMeters)
-        (requiredRadioBtns.length > 0 && isEmpty(allRadioBtns)) ||
-        (requiredMeters.length > 0 && isEmpty(allMeters)) || 
-        (requiredCheckboxes.length > 0 && isEmpty(allCheckboxes))  
+        (element?.Data?.sections?.length !== 0 &&
+          element?.Data?.sections?.filter(
+            (itm) => itm.selection_type === 'mandatory'
+          ).length !== 0 &&
+          // isEmpty(allCheckboxes) &&
+          // isEmpty(allRadioBtns) &&
+          // isEmpty(allMeters)
+          requiredRadioBtns.length > 0 &&
+          isEmpty(allRadioBtns)) ||
+        (requiredMeters.length > 0 && isEmpty(allMeters)) ||
+        (requiredCheckboxes.length > 0 && isEmpty(allCheckboxes))
       ) {
         dispatch(disableAddToCart());
       } else {
@@ -292,7 +302,7 @@ const ProductShow: NextPage<Props> = ({
         dispatch(
           addToCheckBox({
             addonID: selection.id,
-            uId: `${selection.id}${choice.id}`,
+            uId: `${selection.id}${choice.id}${choice.name_en}`,
             addons: [
               {
                 attributeID: choice.id,
@@ -306,13 +316,15 @@ const ProductShow: NextPage<Props> = ({
           })
         );
       } else {
-        dispatch(removeFromCheckBox(`${selection.id}${choice.id}`));
+        dispatch(
+          removeFromCheckBox(`${selection.id}${choice.id}${choice.name_en}`)
+        );
       }
     } else if (type === 'radio') {
       dispatch(
         addRadioBtn({
           addonID: selection.id,
-          uId: `${selection.id}${choice.id}`,
+          uId: `${selection.id}${choice.id}${choice.name_en}`,
           addons: {
             attributeID: choice.id,
             name: choice.name,
@@ -389,6 +401,7 @@ const ProductShow: NextPage<Props> = ({
   if (!isSuccess || !url) {
     return <LoadingSpinner fullWidth={true} />;
   }
+  console.log('productCart', productCart.RadioBtnsAddons);
   return (
     <Suspense>
       <MainHead
@@ -517,8 +530,8 @@ const ProductShow: NextPage<Props> = ({
                     <div className={`flex flex-col gap-x-2 gap-y-1  mt-2`}>
                       <div className={`flex flex-row`}>
                         <input
-                          id={`${s.id}${s.selection_type}`} 
-                          name={`${s.id}${s.selection_type}`} 
+                          id={`${s.id}${s.selection_type}`}
+                          name={`${s.id}${s.selection_type}`}
                           type="radio"
                           checked={
                             !isEmpty(filter(tabsOpen, (t) => t.id === s.id))
@@ -529,7 +542,7 @@ const ProductShow: NextPage<Props> = ({
                           className="h-4 w-4"
                         />
                         <label
-                          htmlFor={`${s.id}${s.selection_type}`} 
+                          htmlFor={`${s.id}${s.selection_type}`}
                           className="mx-3 block text-sm font-medium text-gray-700"
                         >
                           {t('yes')}
@@ -537,8 +550,8 @@ const ProductShow: NextPage<Props> = ({
                       </div>
                       <div className={`flex flex-row`}>
                         <input
-                          id={`${s.id}${s.selection_type}`} 
-                          name={`${s.id}${s.selection_type}`} 
+                          id={`${s.id}${s.selection_type}`}
+                          name={`${s.id}${s.selection_type}`}
                           type="radio"
                           checked={isEmpty(
                             filter(tabsOpen, (t) => t.id === s.id)
@@ -557,7 +570,7 @@ const ProductShow: NextPage<Props> = ({
                           className="h-4 w-4"
                         />
                         <label
-                          htmlFor={`${s.id}${s.selection_type}`} 
+                          htmlFor={`${s.id}${s.selection_type}`}
                           className="mx-3 block text-sm font-medium text-gray-700"
                         >
                           {t('no')}
@@ -684,8 +697,8 @@ const ProductShow: NextPage<Props> = ({
                           ) : (
                             <Fragment key={i}>
                               <input
-                                id={`${c.id}${s.selection_type}`}
-                                name={`${c.id}${s.selection_type}`}
+                                id={`${c.id}${s.selection_type}${s.title_en}`}
+                                name={`${c.id}${s.selection_type}${s.title_en}`}
                                 required={s.selection_type !== 'optional'}
                                 type={
                                   s.must_select === 'multi'
@@ -696,12 +709,14 @@ const ProductShow: NextPage<Props> = ({
                                   s.must_select !== 'multi'
                                     ? filter(
                                         productCart.RadioBtnsAddons,
-                                        (q) => q.uId === `${s.id}${c.id}`
-                                      )[0]?.uId === `${s.id}${c.id}`
+                                        (q) =>
+                                          q.uId === `${s.id}${c.id}${c.name_en}`
+                                      )[0]?.uId === `${s.id}${c.id}${c.name_en}`
                                     : filter(
                                         productCart.CheckBoxes,
-                                        (q) => q.uId === `${s.id}${c.id}`
-                                      )[0]?.uId === `${s.id}${c.id}`
+                                        (q) =>
+                                          q.uId === `${s.id}${c.id}${c.name_en}`
+                                      )[0]?.uId === `${s.id}${c.id}${c.name_en}`
                                 }
                                 onChange={(e) =>
                                   handleSelectAddOn(
