@@ -47,6 +47,7 @@ import { CheckCircle } from '@mui/icons-material';
 import { wrapper } from '@/redux/store';
 import { BadgeOutlined } from '@mui/icons-material';
 import { createHash } from 'crypto';
+import { useLazyGetVendorQuery } from '@/redux/api/vendorApi';
 
 type Props = {
   url: string;
@@ -59,6 +60,7 @@ const CartReview: NextPage<Props> = ({ url }) => {
     OrderUser['PaymentMethod'] | null
   >(null);
   const {
+    locale: { lang },
     customer,
     branch: { id: branchId, name_ar: branchAR, name_en: branchEN },
     area: { id: areaId, name_ar: areaAR, name_en: areaEN },
@@ -81,6 +83,9 @@ const CartReview: NextPage<Props> = ({ url }) => {
   });
   const [triggerCreateOrder, { isLoading }] = useLazyCreateOrderQuery();
   const [triggerAddToCart] = useAddToCartMutation();
+  const [triggerGetVendor, { data: vendorElement, isSuccess: vendorSuccess }] =
+    useLazyGetVendorQuery();
+
   const paymentMethods: { id: OrderUser['PaymentMethod']; src: any }[] = [
     { id: 'visa', src: <CreditCard /> },
     { id: 'knet', src: <Knet /> },
@@ -109,6 +114,15 @@ const CartReview: NextPage<Props> = ({ url }) => {
         // }
       }
     }
+    triggerGetVendor(
+      {
+        lang,
+        url,
+        branch_id: process_type !== `pickup` ? branchId : ``,
+        area_id: process_type === `pickup` ? areaId : ``,
+      },
+      false
+    );
   }, []);
 
   const handelDisplayAddress = () => {
@@ -241,6 +255,8 @@ const CartReview: NextPage<Props> = ({ url }) => {
       }
     });
   };
+
+  if (!vendorSuccess) return <LoadingSpinner />;
 
   return (
     <Suspense>
@@ -418,52 +434,35 @@ const CartReview: NextPage<Props> = ({ url }) => {
             cartItems.data?.subTotal > 0 &&
             map(cartItems.data?.Cart, (item: ProductCart) => {
               const hash = createHash('md5')
-              .update(JSON.stringify(item))
-              .digest('hex');
+                .update(JSON.stringify(item))
+                .digest('hex');
               return (
                 <div key={hash}>
-                <div className="px-4">
-                  <div className="mb-10 ">
-                    <div className="flex px-2 rtl:mr-1 ltr:ml-1 items-center">
-                      <Link
-                        href={`${appLinks.productShow(
-                          item.ProductID.toString(),
-                          branchId,
-                          item.ProductID.toString(),
-                          lowerCase(kebabCase(item.ProductName)),
-                          areaId
-                        )}`}
-                        className="ltr:pr-3 rtl:pl-3 w-2/6"
-                      >
-                        <CustomImage
-                          className="w-24 h-24 rounded-lg border-[1px] border-gray-200 shadow-md object-cover"
-                          alt={`${t('item')}`}
-                          src={imgUrl(item.ProductImage)}
-                          width={imageSizes.xs}
-                          height={imageSizes.xs}
-                        />
-                      </Link>
-                      <div className="w-full">
-                        <div className={`flex justify-between items-center`}>
-                          <Link
-                            className={`flex grow`}
-                            href={`${appLinks.productShow(
-                              item.ProductID.toString(),
-                              branchId,
-                              item.ProductID.toString(),
-                              lowerCase(kebabCase(item.ProductName)),
-                              areaId
-                            )}`}
-                          >
-                            <p className="font-semibold capitalize">
-                              <TextTrans
-                                ar={item.ProductNameAr}
-                                en={item.ProductNameEn}
-                              />
-                            </p>
-                          </Link>
-                          <div className="flex">
+                  <div className="px-4">
+                    <div className="mb-10 ">
+                      <div className="flex px-2 rtl:mr-1 ltr:ml-1 items-center">
+                        <Link
+                          href={`${appLinks.productShow(
+                            item.ProductID.toString(),
+                            branchId,
+                            item.ProductID.toString(),
+                            lowerCase(kebabCase(item.ProductName)),
+                            areaId
+                          )}`}
+                          className="ltr:pr-3 rtl:pl-3 w-2/6"
+                        >
+                          <CustomImage
+                            className="w-24 h-24 rounded-lg border-[1px] border-gray-200 shadow-md object-cover"
+                            alt={`${t('item')}`}
+                            src={imgUrl(item.ProductImage)}
+                            width={imageSizes.xs}
+                            height={imageSizes.xs}
+                          />
+                        </Link>
+                        <div className="w-full">
+                          <div className={`flex justify-between items-center`}>
                             <Link
+                              className={`flex grow`}
                               href={`${appLinks.productShow(
                                 item.ProductID.toString(),
                                 branchId,
@@ -472,95 +471,112 @@ const CartReview: NextPage<Props> = ({ url }) => {
                                 areaId
                               )}`}
                             >
-                              {item.SalePrice !== item.Price ? (
-                                <div>
-                                  <div
-                                    className="uppercase flex grow line-through"
-                                    suppressHydrationWarning={suppressText}
-                                    style={{ color }}
-                                  >
-                                    {item.Price} {t('kwd')}
+                              <p className="font-semibold capitalize">
+                                <TextTrans
+                                  ar={item.ProductNameAr}
+                                  en={item.ProductNameEn}
+                                />
+                              </p>
+                            </Link>
+                            <div className="flex">
+                              <Link
+                                href={`${appLinks.productShow(
+                                  item.ProductID.toString(),
+                                  branchId,
+                                  item.ProductID.toString(),
+                                  lowerCase(kebabCase(item.ProductName)),
+                                  areaId
+                                )}`}
+                              >
+                                {item.SalePrice !== item.Price ? (
+                                  <div>
+                                    <div
+                                      className="uppercase flex grow line-through"
+                                      suppressHydrationWarning={suppressText}
+                                      style={{ color }}
+                                    >
+                                      {item.Price} {t('kwd')}
+                                    </div>
+                                    <div
+                                      className="uppercase flex grow"
+                                      suppressHydrationWarning={suppressText}
+                                      style={{ color }}
+                                    >
+                                      {item.SalePrice} {t('kwd')}
+                                    </div>
                                   </div>
+                                ) : (
                                   <div
                                     className="uppercase flex grow"
                                     suppressHydrationWarning={suppressText}
                                     style={{ color }}
                                   >
-                                    {item.SalePrice} {t('kwd')}
+                                    {item.Price} {t('kwd')}
                                   </div>
-                                </div>
-                              ) : (
-                                <div
-                                  className="uppercase flex grow"
-                                  suppressHydrationWarning={suppressText}
-                                  style={{ color }}
-                                >
-                                  {item.Price} {t('kwd')}
-                                </div>
-                              )}
-                            </Link>
-                          </div>
-                        </div>
-                        {/* qty */}
-                        <div className="flex">
-                          <div className="w-fit pb-2">
-                            <div
-                              className={`flex text-gray-400 w-auto flex-wrap justify-between items-center`}
-                            >
-                              {!isEmpty(item.QuantityMeters) &&
-                                map(item.QuantityMeters, (q, i) => (
-                                  <Fragment key={i}>
-                                    {map(q.addons, (addon, i) => (
-                                      <>
-                                        <TextTrans
-                                          key={i}
-                                          className={`ltr:border-r-2 ltr:last:border-r-0 ltr:first:pr-1 rtl:border-l-2 rtl:last:border-l-0 rtl:first:pl-1  text-xs capitalize`}
-                                          ar={addon.name}
-                                          en={addon.name}
-                                        />
-                                        {addon.price ?? ``}
-                                      </>
-                                    ))}
-                                  </Fragment>
-                                ))}
+                                )}
+                              </Link>
                             </div>
                           </div>
-                        </div>
-                        {item.ExtraNotes && (
-                          <div
-                            className={`w-full border-t border-gray-200 py-1 mb-1`}
-                          >
-                            <p className={`text-xs`}>
-                              {t('notes')} : {item.ExtraNotes}
-                            </p>
-                          </div>
-                        )}
-                        <div className="flex justify-between items-end">
-                          <div>
-                            <div
-                              className="relative -ml-px inline-flex items-center  bg-gray-100 px-4 py-2 text-sm font-medium focus:z-10  capitalize rounded-md"
-                              style={{ color }}
-                            >
-                              {`${t(`qty`)} : `}
-                              <span className={`ltr:pl-2 rtl:pr-2`}>
-                                {item.Quantity}
-                              </span>
+                          {/* qty */}
+                          <div className="flex">
+                            <div className="w-fit pb-2">
+                              <div
+                                className={`flex text-gray-400 w-auto flex-wrap justify-between items-center`}
+                              >
+                                {!isEmpty(item.QuantityMeters) &&
+                                  map(item.QuantityMeters, (q, i) => (
+                                    <Fragment key={i}>
+                                      {map(q.addons, (addon, i) => (
+                                        <>
+                                          <TextTrans
+                                            key={i}
+                                            className={`ltr:border-r-2 ltr:last:border-r-0 ltr:first:pr-1 rtl:border-l-2 rtl:last:border-l-0 rtl:first:pl-1  text-xs capitalize`}
+                                            ar={addon.name}
+                                            en={addon.name}
+                                          />
+                                          {addon.price ?? ``}
+                                        </>
+                                      ))}
+                                    </Fragment>
+                                  ))}
+                              </div>
                             </div>
                           </div>
-                          <button
-                            className="text-red-700 capitalize"
-                            suppressHydrationWarning={suppressText}
-                            onClick={() => handleRemove(item)}
-                          >
-                            {t('remove')}
-                          </button>
+                          {item.ExtraNotes && (
+                            <div
+                              className={`w-full border-t border-gray-200 py-1 mb-1`}
+                            >
+                              <p className={`text-xs`}>
+                                {t('notes')} : {item.ExtraNotes}
+                              </p>
+                            </div>
+                          )}
+                          <div className="flex justify-between items-end">
+                            <div>
+                              <div
+                                className="relative -ml-px inline-flex items-center  bg-gray-100 px-4 py-2 text-sm font-medium focus:z-10  capitalize rounded-md"
+                                style={{ color }}
+                              >
+                                {`${t(`qty`)} : `}
+                                <span className={`ltr:pl-2 rtl:pr-2`}>
+                                  {item.Quantity}
+                                </span>
+                              </div>
+                            </div>
+                            <button
+                              className="text-red-700 capitalize"
+                              suppressHydrationWarning={suppressText}
+                              onClick={() => handleRemove(item)}
+                            >
+                              {t('remove')}
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              )
+              );
             })}
           <div className="bg-gray-200 w-full mt-5 p-0 h-2"></div>
           <div className="px-4 py-4">
@@ -575,30 +591,41 @@ const CartReview: NextPage<Props> = ({ url }) => {
                 </h4>
               </div>
             </div>
-            <div className="flex justify-between">
-              {map(paymentMethods, (m, i) => (
-                <div key={i}>
-                  <button
-                    onClick={() => setSelectedPaymentMethod(m.id)}
-                    className={`${
-                      selectedPaymentMethod == m.id &&
-                      `ring-2 ring-lime-500 ring-offset-1`
-                    } flex justify-center items-center w-24 h-24 rounded-md`}
-                  >
-                    <div>
-                      <div className={`w-16 h-16`}>{m.src}</div>
+            <div className="flex w-full justify-between items-center">
+              {vendorElement &&
+                vendorElement.Data &&
+                map(
+                  filter(
+                    paymentMethods,
+                    (p) => vendorElement.Data?.Payment_Methods[p.id] === 'yes'
+                  ),
+                  (m, i) => (
+                    <div
+                      key={i}
+                      className="flex flex-1 flex-col justify-center items-center "
+                    >
+                      <button
+                        onClick={() => setSelectedPaymentMethod(m.id)}
+                        className={`${
+                          selectedPaymentMethod == m.id &&
+                          `ring-2 ring-lime-500 ring-offset-1`
+                        } flex justify-center items-center w-24 h-24 rounded-md`}
+                      >
+                        <div>
+                          <div className={`w-16 h-16`}>{m.src}</div>
+                        </div>
+                      </button>
+                      <div
+                        className={`pt-5 flex justify-center items-center space-x-1 text-lime-500 ${
+                          selectedPaymentMethod == m.id ? 'block' : 'hidden'
+                        }`}
+                      >
+                        <CheckCircle className="checkCircle" />
+                        <p>{t('selected')}</p>
+                      </div>
                     </div>
-                  </button>
-                  <div
-                    className={`pt-5 flex justify-center items-center space-x-1 text-lime-500 ${
-                      selectedPaymentMethod == m.id ? 'block' : 'hidden'
-                    }`}
-                  >
-                    <CheckCircle className="checkCircle" />
-                    <p>{t('selected')}</p>
-                  </div>
-                </div>
-              ))}
+                  )
+                )}
             </div>
           </div>
 
