@@ -73,7 +73,6 @@ const ProductIndex: NextPage<Props> = ({
   };
 
   useEffect(() => {
-    console.log('scrll r', listRef.current);
     listRef.current?.focus();
   }, []);
 
