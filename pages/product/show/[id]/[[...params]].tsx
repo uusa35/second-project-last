@@ -22,6 +22,7 @@ import {
   baseUrl,
   imageSizes,
   imgUrl,
+  isLocal,
   suppressText,
   toEn,
 } from '@/constants/*';
@@ -90,6 +91,7 @@ const ProductShow: NextPage<Props> = ({
   const [currentQty, setCurrentyQty] = useState<number>(
     productCart.ProductID === product.id ? productCart.Quantity : 1
   );
+  const [outOfStock, setOutOfStock] = useState<boolean>(false);
   const [tabsOpen, setTabsOpen] = useState<{ id: number }[]>([]);
   const [isReadMoreShown, setIsReadMoreShown] = useState<boolean>(false);
   const {
@@ -130,6 +132,14 @@ const ProductShow: NextPage<Props> = ({
         dispatch(resetCheckBoxes());
         dispatch(resetMeters());
       }
+      if (
+        element?.Data?.amount === 0 &&
+        element?.Data?.never_out_of_stock === 0
+      ) {
+        setOutOfStock(true);
+      } else if (element?.Data?.never_out_of_stock === 1) {
+        setOutOfStock(false);
+      }
     }
   }, [isSuccess, element?.Data?.id, isRTL]);
 
@@ -149,9 +159,8 @@ const ProductShow: NextPage<Props> = ({
       !isNull(element) &&
       !isNull(element.Data) &&
       !isEmpty(productCart) &&
-      currentQty >= 1 &&
-      element?.Data?.amount &&
-      element?.Data?.amount >= currentQty
+      (currentQty > 0 ||
+        (element?.Data?.amount >= 0 && element?.Data?.never_out_of_stock === 1))
     ) {
       const allCheckboxes = map(productCart.CheckBoxes, (q) => q.addons[0]);
       const allRadioBtns = map(productCart.RadioBtnsAddons, (q) => q.addons);
@@ -171,48 +180,64 @@ const ProductShow: NextPage<Props> = ({
         element?.Data?.sections,
         (c) => c.must_select === 'multi' && c.selection_type === 'mandatory'
       );
+      // console.log('requiredMeters', requiredMeters.length);
+      // console.log('allmeters', allMeters.length);
+      // console.log('original', requiredRadioBtns.length);
+      // console.log('state', allRadioBtns.length);
+      // console.log('all meters state', allMeters.length);
+      // console.log('required meters', requiredMeters.length);
+      // console.log(
+      //   'current case',
+      // (requiredRadioBtns.length > 0 && allRadioBtns.length === 0) ||
+      //   (requiredRadioBtns.length > 0 &&
+      //     requiredRadioBtns.length !== allRadioBtns.length) ||
+      //   (requiredMeters.length > 0 && allMeters.length === 0) ||
+      // (requiredMeters.length > 0 &&
+      //   requiredMeters.length !== allMeters.length) ||
+      //     (requiredCheckboxes.length > 0 && allCheckboxes.length === 0) ||
+      //     (requiredCheckboxes.length > 0 &&
+      //       requiredCheckboxes.length !== allCheckboxes.length)
+      // );
       if (
-        (element?.Data?.sections?.length !== 0 &&
-          element?.Data?.sections?.filter(
-            (itm) => itm.selection_type === 'mandatory'
-          ).length !== 0 &&
-          // isEmpty(allCheckboxes) &&
-          // isEmpty(allRadioBtns) &&
-          // isEmpty(allMeters)
-          requiredRadioBtns.length > 0 &&
-          isEmpty(allRadioBtns)) ||
-        (requiredMeters.length > 0 && isEmpty(allMeters)) ||
-        (requiredCheckboxes.length > 0 && isEmpty(allCheckboxes))
+        (requiredRadioBtns.length > 0 && allRadioBtns.length === 0) ||
+        (requiredRadioBtns.length > 0 &&
+          requiredRadioBtns.length !== allRadioBtns.length) ||
+        (requiredMeters.length > 0 && allMeters.length === 0) ||
+        (requiredMeters.length > 0 &&
+          allMeters.length < requiredMeters.length) ||
+        (requiredCheckboxes.length > 0 && allCheckboxes.length === 0) ||
+        (requiredCheckboxes.length > 0 &&
+          requiredCheckboxes.length !== allCheckboxes.length)
       ) {
         dispatch(disableAddToCart());
       } else {
         dispatch(enableAddToCart());
+        dispatch(
+          updatePrice({
+            totalPrice: sum([
+              parseFloat(
+                element?.Data?.new_price && !isEmpty(element?.Data?.new_price)
+                  ? element?.Data?.new_price
+                  : element?.Data?.price
+              ),
+              metersSum,
+              checkboxesSum,
+              radioBtnsSum,
+            ]),
+            totalQty: currentQty,
+          })
+        );
+        const uIds = concat(
+          productCart.QuantityMeters &&
+            map(productCart.QuantityMeters, (q) => `_${q.uId2}`),
+          productCart.CheckBoxes &&
+            map(productCart.CheckBoxes, (c) => `_${c.uId}`),
+          productCart.RadioBtnsAddons &&
+            map(productCart.RadioBtnsAddons, (r) => `_${r.uId}`),
+          ` _${productCart.ExtraNotes.replace(/[^A-Z0-9]/gi, '')}`
+        );
+        dispatch(updateId(`${productCart.ProductID}${join(uIds, '')}`));
       }
-      dispatch(
-        updatePrice({
-          totalPrice: sum([
-            parseFloat(
-              element?.Data?.new_price && !isEmpty(element?.Data?.new_price)
-                ? element?.Data?.new_price
-                : element?.Data?.price
-            ),
-            metersSum,
-            checkboxesSum,
-            radioBtnsSum,
-          ]),
-          totalQty: currentQty,
-        })
-      );
-      const uIds = concat(
-        productCart.QuantityMeters &&
-          map(productCart.QuantityMeters, (q) => `_${q.uId2}`),
-        productCart.CheckBoxes &&
-          map(productCart.CheckBoxes, (c) => `_${c.uId}`),
-        productCart.RadioBtnsAddons &&
-          map(productCart.RadioBtnsAddons, (r) => `_${r.uId}`),
-        ` _${productCart.ExtraNotes.replace(/[^A-Z0-9]/gi, '')}`
-      );
-      dispatch(updateId(`${productCart.ProductID}${join(uIds, '')}`));
     }
   }, [
     productCart.QuantityMeters,
@@ -228,12 +253,7 @@ const ProductShow: NextPage<Props> = ({
   };
 
   const handleIncrease = () => {
-    if (
-      element &&
-      element?.Data?.amount &&
-      element?.Data?.amount &&
-      element?.Data?.amount >= currentQty + 1
-    ) {
+    if (element && !outOfStock) {
       setCurrentyQty(currentQty + 1);
       dispatch(setCartProductQty(currentQty + 1));
     }
@@ -241,11 +261,7 @@ const ProductShow: NextPage<Props> = ({
 
   const handleDecrease = () => {
     if (isSuccess && !isNull(element)) {
-      if (
-        currentQty - 1 > 0 &&
-        element?.Data?.amount &&
-        currentQty <= element?.Data?.amount
-      ) {
+      if (currentQty - 1 > 0) {
         setCurrentyQty(currentQty - 1);
         dispatch(setCartProductQty(currentQty - 1));
       } else {
@@ -262,8 +278,8 @@ const ProductShow: NextPage<Props> = ({
           ProductID: element?.Data?.id,
           ProductName: element?.Data?.name,
           ProductImage: element?.Data?.cover ?? ``,
-          ProductNameAr: element?.Data?.ProductNameAr,
-          ProductNameEn: element?.Data?.ProductNameEn,
+          ProductNameAr: element?.Data?.name_ar,
+          ProductNameEn: element?.Data?.name_en,
           ProductDesc: element?.Data?.desc,
           Quantity: currentQty,
           ExtraNotes: ``,
@@ -283,7 +299,13 @@ const ProductShow: NextPage<Props> = ({
               ? element?.Data?.new_price
               : element?.Data?.price
           ),
-          enabled: false,
+          enabled:
+            filter(
+              element?.Data.sections,
+              (s) => s.selection_type === 'mandatory'
+            ).length === 0 &&
+            element?.Data?.amount >= 0 &&
+            element?.Data?.never_out_of_stock === 1,
           image: imgUrl(element?.Data.img[0]?.toString()),
           id: now().toString(),
         })
@@ -401,7 +423,8 @@ const ProductShow: NextPage<Props> = ({
   if (!isSuccess || !url) {
     return <LoadingSpinner fullWidth={true} />;
   }
-  console.log('productCart', productCart.RadioBtnsAddons);
+
+  console.log('out of stock', outOfStock);
   return (
     <Suspense>
       <MainHead
@@ -422,13 +445,7 @@ const ProductShow: NextPage<Props> = ({
         productCurrentQty={currentQty}
         handleIncreaseProductQty={handleIncrease}
         handleDecreaseProductQty={handleDecrease}
-        productOutStock={
-          isSuccess &&
-          !isNull(element) &&
-          element.Data &&
-          element.Data.never_out_of_stock === 0 &&
-          element.Data.amount < currentQty
-        }
+        productOutStock={isSuccess && !isNull(element) && outOfStock}
       >
         {isSuccess && !isNull(element) && element.Data ? (
           <>
@@ -523,8 +540,13 @@ const ProductShow: NextPage<Props> = ({
                   className={`border-b-8 border-stone-100 px-8 py-4`}
                   key={i}
                 >
-                  <div>
-                    <TextTrans ar={s.title_ar} en={s.title_en} />
+                  <div className="flex flex-row justify-between items-start">
+                    <TextTrans ar={s.title_ar} en={s.title_en} />{' '}
+                    {isLocal && s.must_select && (
+                      <div className="w-auto rounded-lg bg-gray-200 text-black text-xs px-2">
+                        {t('required')}
+                      </div>
+                    )}
                   </div>
                   {s.hidden ? (
                     <div className={`flex flex-col gap-x-2 gap-y-1  mt-2`}>
