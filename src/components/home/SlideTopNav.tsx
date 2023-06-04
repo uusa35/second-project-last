@@ -30,14 +30,17 @@ const SlideTopNav: FC<Props> = ({ offset, isHome = false }): JSX.Element => {
     customer: { userAgent },
     locale: { lang, otherLang },
   } = useAppSelector((state) => state);
-  const { data: cartItems, isSuccess } = useGetCartProductsQuery({
-    UserAgent: userAgent,
-    area_branch:
-      method === `pickup`
-        ? { 'x-branch-id': branch.id }
-        : { 'x-area-id': area.id },
-    url,
-  });
+  const { data: cartItems, isSuccess } = useGetCartProductsQuery(
+    {
+      UserAgent: userAgent,
+      area_branch:
+        method === `pickup`
+          ? { 'x-branch-id': branch.id }
+          : { 'x-area-id': area.id },
+      url,
+    },
+    { refetchOnMountOrArgChange: true }
+  );
   const dispatch = useAppDispatch();
   const router = useRouter();
 
@@ -60,6 +63,7 @@ const SlideTopNav: FC<Props> = ({ offset, isHome = false }): JSX.Element => {
     }
   };
 
+  console.log(cartItems.data?.Cart?.length, cartItems.data?.subTotal);
   return (
     <div
       className={`${

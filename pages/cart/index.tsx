@@ -84,16 +84,19 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
     isSuccess: boolean;
     isLoading: boolean;
     refetch: () => void;
-  }>({
-    UserAgent: userAgent,
-    area_branch:
-      method === `pickup` && branchId
-        ? { 'x-branch-id': branchId }
-        : method === `delivery` && areaId
-        ? { 'x-area-id': areaId }
-        : {},
-    url,
-  });
+  }>(
+    {
+      UserAgent: userAgent,
+      area_branch:
+        method === `pickup` && branchId
+          ? { 'x-branch-id': branchId }
+          : method === `delivery` && areaId
+          ? { 'x-area-id': areaId }
+          : {},
+      url,
+    },
+    { refetchOnMountOrArgChange: true }
+  );
   const [triggerCheckPromoCode] = useLazyCheckPromoCodeQuery();
 
   useEffect(() => {
