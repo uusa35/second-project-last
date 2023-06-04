@@ -165,7 +165,8 @@ const BackBtn: FC<Props> = ({
             />
             {isSuccess &&
               cartItems.data &&
-              cartItems.data.subTotal > 0 &&
+              cartItems.data.subTotal &&
+              parseFloat(cartItems.data.subTotal.toString()) > 0 &&
               cartItems.data?.Cart?.length > 0 && (
                 <div className="absolute -left-2 -top-2 opacity-90  rounded-full bg-red-600 w-5 h-5 top-0 shadow-xl flex items-center justify-center text-white">
                   <span className={`pt-[2.5px] shadow-md`}>
