@@ -331,6 +331,7 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
               {t('items')}
             </p>
             {isSuccess &&
+              cartItems.data?.subTotal &&
               parseFloat(cartItems.data?.subTotal.toString()) > 0 &&
               map(cartItems.data?.Cart, (item: ProductCart, index: number) => {
                 const hash = createHash('md5')
