@@ -153,6 +153,65 @@ const ProductShow: NextPage<Props> = ({
     };
   }, [product]);
 
+  const handleValidateMendatory = () => {
+    const requiredSections = filter(
+      element?.Data?.sections,
+      (c) => c.selection_type === 'mandatory'
+    );
+
+    console.log('pro cart', productCart);
+    console.log('required sec', requiredSections);
+
+    for (const i in requiredSections) {
+      // radio btns
+      if (requiredSections[i].must_select === 'single') {
+        // rb is short for checkbox
+        let rbExist =
+          productCart.RadioBtnsAddons.filter(
+            (rb) => rb.addonID === requiredSections[i].id && rb.addons.Value
+          ).length > 0;
+
+        console.log('rbExist', rbExist);
+        if (!rbExist) {
+          return false;
+        }
+      }
+
+      // checkboxes
+      if (requiredSections[i].must_select === 'multi') {
+        // cb is short for checkbox
+        let cbExist =
+          productCart.CheckBoxes.filter(
+            (cb) => cb.addonID === requiredSections[i].id && cb.addons[0].Value
+          ).length > 0;
+
+        console.log('cbExist', cbExist);
+        if (!cbExist) {
+          return false;
+        }
+      }
+
+      // qmeter
+      if (requiredSections[i].must_select === 'q_meter') {
+        let sumValue = 0;
+        let qmExist =
+          productCart.QuantityMeters.filter((qm) => {
+            if (qm.addonID === requiredSections[i].id && qm.addons[0].Value) {
+              sumValue += qm.addons[0].Value;
+              return qm;
+            }
+          }).length > 0;
+
+        console.log('qmExist', qmExist, sumValue, requiredSections[i].min_q);
+        if (!qmExist || sumValue < requiredSections[i].min_q) {
+          return false;
+        }
+      }
+    }
+
+    return true;
+  };
+
   useEffect(() => {
     if (
       isSuccess &&
@@ -180,34 +239,23 @@ const ProductShow: NextPage<Props> = ({
         element?.Data?.sections,
         (c) => c.must_select === 'multi' && c.selection_type === 'mandatory'
       );
-      // console.log('requiredMeters', requiredMeters.length);
-      // console.log('allmeters', allMeters.length);
-      // console.log('original', requiredRadioBtns.length);
-      // console.log('state', allRadioBtns.length);
-      // console.log('all meters state', allMeters.length);
-      // console.log('required meters', requiredMeters.length);
-      // console.log(
-      //   'current case',
-      // (requiredRadioBtns.length > 0 && allRadioBtns.length === 0) ||
-      //   (requiredRadioBtns.length > 0 &&
-      //     requiredRadioBtns.length !== allRadioBtns.length) ||
-      //   (requiredMeters.length > 0 && allMeters.length === 0) ||
-      // (requiredMeters.length > 0 &&
-      //   requiredMeters.length !== allMeters.length) ||
-      //     (requiredCheckboxes.length > 0 && allCheckboxes.length === 0) ||
-      //     (requiredCheckboxes.length > 0 &&
-      //       requiredCheckboxes.length !== allCheckboxes.length)
-      // );
+      const allValid = handleValidateMendatory();
+      console.log({ allValid });
+
       if (
         (requiredRadioBtns.length > 0 && allRadioBtns.length === 0) ||
         (requiredRadioBtns.length > 0 &&
-          requiredRadioBtns.length !== allRadioBtns.length) ||
+          allRadioBtns.length < requiredRadioBtns.length) ||
+
         (requiredMeters.length > 0 && allMeters.length === 0) ||
         (requiredMeters.length > 0 &&
           allMeters.length < requiredMeters.length) ||
+
         (requiredCheckboxes.length > 0 && allCheckboxes.length === 0) ||
         (requiredCheckboxes.length > 0 &&
-          requiredCheckboxes.length !== allCheckboxes.length)
+          allCheckboxes.length < requiredCheckboxes.length) ||
+
+        allValid === false
       ) {
         dispatch(disableAddToCart());
       } else {
@@ -542,7 +590,7 @@ const ProductShow: NextPage<Props> = ({
                 >
                   <div className="flex flex-row justify-between items-start">
                     <TextTrans ar={s.title_ar} en={s.title_en} />{' '}
-                    {isLocal && s.must_select && (
+                    {isLocal && s.selection_type === 'mandatory' && (
                       <div className="w-auto rounded-lg bg-gray-200 text-black text-xs px-2">
                         {t('required')}
                       </div>

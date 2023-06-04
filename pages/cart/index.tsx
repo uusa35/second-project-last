@@ -331,202 +331,205 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
               {t('items')}
             </p>
             {isSuccess &&
-              cartItems.data?.subTotal > 0 &&
+              parseFloat(cartItems.data?.subTotal.toString()) > 0 &&
               map(cartItems.data?.Cart, (item: ProductCart, index: number) => {
                 const hash = createHash('md5')
-                .update(JSON.stringify(item))
-                .digest('hex');
+                  .update(JSON.stringify(item))
+                  .digest('hex');
                 return (
                   <div key={hash}>
-                  <div className="px-4">
-                    <div className="mb-10 ">
-                      <div className="flex  items-center">
-                        <Link
-                          href={`${appLinks.productShow(
-                            item.ProductID.toString(),
-                            branchId,
-                            item.ProductID.toString(),
-                            lowerCase(kebabCase(item.ProductName)),
-                            areaId
-                          )}`}
-                          className="ltr:pr-3 rtl:pl-3 w-1/5"
-                        >
-                          <CustomImage
-                            className="w-full rounded-lg border-[1px] aspect-1 border-gray-200 shadow-md"
-                            alt={`${t('item')}`}
-                            src={imgUrl(item.ProductImage)}
-                            width={imageSizes.xs}
-                            height={imageSizes.xs}
-                          />
-                        </Link>
-                        <div className="w-full">
-                          <div className="flex flex-1 justify-between items-center">
-                            <div className={`flex grow`}>
-                              <Link
-                                href={`${appLinks.productShow(
-                                  item.ProductID.toString(),
-                                  branchId,
-                                  item.ProductID.toString(),
-                                  lowerCase(kebabCase(item.ProductName)),
-                                  areaId
-                                )}`}
-                                className={`flex grow mb-2`}
-                              >
-                                <TextTrans
-                                  className={`font-semibold capitalize`}
-                                  ar={item.ProductNameAr}
-                                  en={item.ProductNameEn}
-                                  length={15}
-                                />
-                              </Link>
-                            </div>
-                            <div>
-                              <button
-                                className="text-red-700 capitalize"
-                                suppressHydrationWarning={suppressText}
-                                onClick={() => handleRemove(item)}
-                              >
-                                {t('remove')}
-                              </button>
-                            </div>
-                          </div>
-                          {/* addons items */}
-                          <div className="flex">
-                            <div className="w-fit pb-2">
-                              <div
-                                className={`flex text-gray-400 w-auto flex-wrap`}
-                              >
-                                {!isEmpty(item.QuantityMeters) &&
-                                  map(
-                                    item.QuantityMeters,
-                                    (q: QuantityMeters, i) => (
-                                      <Fragment key={i}>
-                                        {map(q.addons, (addon, i) => (
-                                          <>
-                                            <TextTrans
-                                              key={i}
-                                              className={`ltr:border-r-2 ltr:last:border-r-0 ltr:first:pr-1 rtl:border-l-2 rtl:last:border-l-0 rtl:first:pl-1 px-1 text-xxs capitalize`}
-                                              ar={`${addon.name_ar} ${addon.Value} X`}
-                                              en={`${addon.name_en} ${addon.Value} X`}
-                                            />
-                                          </>
-                                        ))}
-                                      </Fragment>
-                                    )
-                                  )}
-                                {!isEmpty(item.RadioBtnsAddons) &&
-                                  map(item.RadioBtnsAddons, (r: RadioBtns) => (
-                                    <Fragment key={r.addons.attributeID}>
-                                      <TextTrans
-                                        key={r.addons.attributeID}
-                                        className={`ltr:border-r-2 ltr:last:border-r-0 ltr:first:pr-1 rtl:border-l-2 rtl:last:border-l-0 rtl:first:pl-1 px-1 text-xxs capitalize text-gray-400`}
-                                        ar={r.addons.name_ar}
-                                        en={r.addons.name_en}
-                                      />
-                                    </Fragment>
-                                  ))}
-                                {!isEmpty(item.CheckBoxes) &&
-                                  map(item.CheckBoxes, (c: CheckBoxes, i) => (
-                                    <Fragment key={i}>
-                                      {map(c.addons, (addon, i) => (
-                                        <TextTrans
-                                          key={i}
-                                          className={`ltr:border-r-2 ltr:last:border-r-0 ltr:first:pr-1 rtl:border-l-2 rtl:last:border-l-0 rtl:first:pl-1 px-1 text-xxs capitalize`}
-                                          ar={addon.name_ar}
-                                          en={addon.name_en}
-                                        />
-                                      ))}
-                                    </Fragment>
-                                  ))}
+                    <div className="px-4">
+                      <div className="mb-10 ">
+                        <div className="flex  items-center">
+                          <Link
+                            href={`${appLinks.productShow(
+                              item.ProductID.toString(),
+                              branchId,
+                              item.ProductID.toString(),
+                              lowerCase(kebabCase(item.ProductName)),
+                              areaId
+                            )}`}
+                            className="ltr:pr-3 rtl:pl-3 w-1/5"
+                          >
+                            <CustomImage
+                              className="w-full rounded-lg border-[1px] aspect-1 border-gray-200 shadow-md"
+                              alt={`${t('item')}`}
+                              src={imgUrl(item.ProductImage)}
+                              width={imageSizes.xs}
+                              height={imageSizes.xs}
+                            />
+                          </Link>
+                          <div className="w-full">
+                            <div className="flex flex-1 justify-between items-center">
+                              <div className={`flex grow`}>
+                                <Link
+                                  href={`${appLinks.productShow(
+                                    item.ProductID.toString(),
+                                    branchId,
+                                    item.ProductID.toString(),
+                                    lowerCase(kebabCase(item.ProductName)),
+                                    areaId
+                                  )}`}
+                                  className={`flex grow mb-2`}
+                                >
+                                  <TextTrans
+                                    className={`font-semibold capitalize`}
+                                    ar={item.ProductNameAr}
+                                    en={item.ProductNameEn}
+                                    length={15}
+                                  />
+                                </Link>
+                              </div>
+                              <div>
+                                <button
+                                  className="text-red-700 capitalize"
+                                  suppressHydrationWarning={suppressText}
+                                  onClick={() => handleRemove(item)}
+                                >
+                                  {t('remove')}
+                                </button>
                               </div>
                             </div>
-                          </div>
-                          {item.ExtraNotes && (
-                            <div
-                              className={`w-full border-t border-gray-200 pt-2`}
-                            >
-                              <p className={`text-xs`}>
-                                {t('notes')} : {item.ExtraNotes}
-                              </p>
+                            {/* addons items */}
+                            <div className="flex">
+                              <div className="w-fit pb-2">
+                                <div
+                                  className={`flex text-gray-400 w-auto flex-wrap`}
+                                >
+                                  {!isEmpty(item.QuantityMeters) &&
+                                    map(
+                                      item.QuantityMeters,
+                                      (q: QuantityMeters, i) => (
+                                        <Fragment key={i}>
+                                          {map(q.addons, (addon, i) => (
+                                            <>
+                                              <TextTrans
+                                                key={i}
+                                                className={`ltr:border-r-2 ltr:last:border-r-0 ltr:first:pr-1 rtl:border-l-2 rtl:last:border-l-0 rtl:first:pl-1 px-1 text-xxs capitalize`}
+                                                ar={`${addon.name_ar} ${addon.Value} X`}
+                                                en={`${addon.name_en} ${addon.Value} X`}
+                                              />
+                                            </>
+                                          ))}
+                                        </Fragment>
+                                      )
+                                    )}
+                                  {!isEmpty(item.RadioBtnsAddons) &&
+                                    map(
+                                      item.RadioBtnsAddons,
+                                      (r: RadioBtns) => (
+                                        <Fragment key={r.addons.attributeID}>
+                                          <TextTrans
+                                            key={r.addons.attributeID}
+                                            className={`ltr:border-r-2 ltr:last:border-r-0 ltr:first:pr-1 rtl:border-l-2 rtl:last:border-l-0 rtl:first:pl-1 px-1 text-xxs capitalize text-gray-400`}
+                                            ar={r.addons.name_ar}
+                                            en={r.addons.name_en}
+                                          />
+                                        </Fragment>
+                                      )
+                                    )}
+                                  {!isEmpty(item.CheckBoxes) &&
+                                    map(item.CheckBoxes, (c: CheckBoxes, i) => (
+                                      <Fragment key={i}>
+                                        {map(c.addons, (addon, i) => (
+                                          <TextTrans
+                                            key={i}
+                                            className={`ltr:border-r-2 ltr:last:border-r-0 ltr:first:pr-1 rtl:border-l-2 rtl:last:border-l-0 rtl:first:pl-1 px-1 text-xxs capitalize`}
+                                            ar={addon.name_ar}
+                                            en={addon.name_en}
+                                          />
+                                        ))}
+                                      </Fragment>
+                                    ))}
+                                </div>
+                              </div>
                             </div>
-                          )}
-                        </div>
-                      </div>
-                      {/* meters + / - */}
-                      <div className="flex justify-between items-center mt-3">
-                        <span className="flex rounded-xl shadow-sm">
-                          <button
-                            type="button"
-                            className="relative -ml-px inline-flex items-center ltr:rounded-l-sm rtl:rounded-r-sm  bg-gray-100 px-1 py-1 text-sm font-medium text-black  focus:z-10 w-10"
-                            style={{ color }}
-                            onClick={() => {
-                              handleIncrease(item);
-                            }}
-                            data-cy="increase-addon"
-                          >
-                            <span
-                              className={`border border-gray-300 p-1 px-3 bg-white rounded-md text-md font-extrabold  w-8 h-8 flex justify-center items-center`}
-                            >
-                              +
-                            </span>
-                          </button>
-                          <button
-                            type="button"
-                            className="text-md relative -ml-px inline-flex items-center  bg-gray-100 px-4 py-2 text-sm font-medium focus:z-10  capitalize font-extrabold w-10"
-                            style={{ color }}
-                          >
-                            {item.Quantity}
-                          </button>
-                          <button
-                            type="button"
-                            className="relative inline-flex items-center ltr:rounded-r-sm rtl:rounded-l-sm bg-gray-100 px-1 py-1 text-sm font-medium text-black  focus:z-10"
-                            style={{ color }}
-                            onClick={() => {
-                              handleDecrease(item);
-                            }}
-                            data-cy="decrease-addon"
-                          >
-                            <span
-                              className={`border border-gray-300 p-1 px-3 bg-white rounded-md text-md font-extrabold  w-8 h-8 flex justify-center items-center`}
-                            >
-                              -
-                            </span>
-                          </button>
-                        </span>
-                        <div>
-                          {item.SalePrice !== item.Price ? (
-                            <div>
-                              <p
-                                className="uppercase line-through"
-                                style={{ color }}
-                                suppressHydrationWarning={suppressText}
+                            {item.ExtraNotes && (
+                              <div
+                                className={`w-full border-t border-gray-200 pt-2`}
                               >
-                                {item.Price} {t('kwd')}
-                              </p>
+                                <p className={`text-xs`}>
+                                  {t('notes')} : {item.ExtraNotes}
+                                </p>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                        {/* meters + / - */}
+                        <div className="flex justify-between items-center mt-3">
+                          <span className="flex rounded-xl shadow-sm">
+                            <button
+                              type="button"
+                              className="relative -ml-px inline-flex items-center ltr:rounded-l-sm rtl:rounded-r-sm  bg-gray-100 px-1 py-1 text-sm font-medium text-black  focus:z-10 w-10"
+                              style={{ color }}
+                              onClick={() => {
+                                handleIncrease(item);
+                              }}
+                              data-cy="increase-addon"
+                            >
+                              <span
+                                className={`border border-gray-300 p-1 px-3 bg-white rounded-md text-md font-extrabold  w-8 h-8 flex justify-center items-center`}
+                              >
+                                +
+                              </span>
+                            </button>
+                            <button
+                              type="button"
+                              className="text-md relative -ml-px inline-flex items-center  bg-gray-100 px-4 py-2 text-sm font-medium focus:z-10  capitalize font-extrabold w-10"
+                              style={{ color }}
+                            >
+                              {item.Quantity}
+                            </button>
+                            <button
+                              type="button"
+                              className="relative inline-flex items-center ltr:rounded-r-sm rtl:rounded-l-sm bg-gray-100 px-1 py-1 text-sm font-medium text-black  focus:z-10"
+                              style={{ color }}
+                              onClick={() => {
+                                handleDecrease(item);
+                              }}
+                              data-cy="decrease-addon"
+                            >
+                              <span
+                                className={`border border-gray-300 p-1 px-3 bg-white rounded-md text-md font-extrabold  w-8 h-8 flex justify-center items-center`}
+                              >
+                                -
+                              </span>
+                            </button>
+                          </span>
+                          <div>
+                            {item.SalePrice !== item.Price ? (
+                              <div>
+                                <p
+                                  className="uppercase line-through"
+                                  style={{ color }}
+                                  suppressHydrationWarning={suppressText}
+                                >
+                                  {item.Price} {t('kwd')}
+                                </p>
+                                <p
+                                  className=" uppercase"
+                                  style={{ color }}
+                                  suppressHydrationWarning={suppressText}
+                                >
+                                  {item.SalePrice} {t('kwd')}
+                                </p>
+                              </div>
+                            ) : (
                               <p
                                 className=" uppercase"
                                 style={{ color }}
                                 suppressHydrationWarning={suppressText}
                               >
-                                {item.SalePrice} {t('kwd')}
+                                {item.Price} {t('kwd')}
                               </p>
-                            </div>
-                          ) : (
-                            <p
-                              className=" uppercase"
-                              style={{ color }}
-                              suppressHydrationWarning={suppressText}
-                            >
-                              {item.Price} {t('kwd')}
-                            </p>
-                          )}
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>
+                    <div className="mt-10 px-0 py-1 bg-gray-100"></div>
                   </div>
-                  <div className="mt-10 px-0 py-1 bg-gray-100"></div>
-                </div>
-                )
+                );
               })}
             <div className="px-4">
               <div className="flex items-center">
