@@ -239,52 +239,53 @@ const ProductShow: NextPage<Props> = ({
         element?.Data?.sections,
         (c) => c.must_select === 'multi' && c.selection_type === 'mandatory'
       );
-      const allValid = handleValidateMendatory();
-      console.log({ allValid });
 
       if (
         (requiredRadioBtns.length > 0 && allRadioBtns.length === 0) ||
         (requiredRadioBtns.length > 0 &&
           allRadioBtns.length < requiredRadioBtns.length) ||
-
         (requiredMeters.length > 0 && allMeters.length === 0) ||
         (requiredMeters.length > 0 &&
           allMeters.length < requiredMeters.length) ||
-
         (requiredCheckboxes.length > 0 && allCheckboxes.length === 0) ||
         (requiredCheckboxes.length > 0 &&
-          allCheckboxes.length < requiredCheckboxes.length) ||
-
-        allValid === false
+          allCheckboxes.length < requiredCheckboxes.length)
       ) {
         dispatch(disableAddToCart());
       } else {
-        dispatch(enableAddToCart());
-        dispatch(
-          updatePrice({
-            totalPrice: sum([
-              parseFloat(
-                element?.Data?.new_price && !isEmpty(element?.Data?.new_price)
-                  ? element?.Data?.new_price
-                  : element?.Data?.price
-              ),
-              metersSum,
-              checkboxesSum,
-              radioBtnsSum,
-            ]),
-            totalQty: currentQty,
-          })
-        );
-        const uIds = concat(
-          productCart.QuantityMeters &&
-            map(productCart.QuantityMeters, (q) => `_${q.uId2}`),
-          productCart.CheckBoxes &&
-            map(productCart.CheckBoxes, (c) => `_${c.uId}`),
-          productCart.RadioBtnsAddons &&
-            map(productCart.RadioBtnsAddons, (r) => `_${r.uId}`),
-          ` _${productCart.ExtraNotes.replace(/[^A-Z0-9]/gi, '')}`
-        );
-        dispatch(updateId(`${productCart.ProductID}${join(uIds, '')}`));
+        // to execute the for looop only when all those if conditions is failed
+        const allValid = handleValidateMendatory();
+        console.log({ allValid });
+        if (!allValid) {
+          dispatch(disableAddToCart());
+        } else {
+          dispatch(enableAddToCart());
+          dispatch(
+            updatePrice({
+              totalPrice: sum([
+                parseFloat(
+                  element?.Data?.new_price && !isEmpty(element?.Data?.new_price)
+                    ? element?.Data?.new_price
+                    : element?.Data?.price
+                ),
+                metersSum,
+                checkboxesSum,
+                radioBtnsSum,
+              ]),
+              totalQty: currentQty,
+            })
+          );
+          const uIds = concat(
+            productCart.QuantityMeters &&
+              map(productCart.QuantityMeters, (q) => `_${q.uId2}`),
+            productCart.CheckBoxes &&
+              map(productCart.CheckBoxes, (c) => `_${c.uId}`),
+            productCart.RadioBtnsAddons &&
+              map(productCart.RadioBtnsAddons, (r) => `_${r.uId}`),
+            ` _${productCart.ExtraNotes.replace(/[^A-Z0-9]/gi, '')}`
+          );
+          dispatch(updateId(`${productCart.ProductID}${join(uIds, '')}`));
+        }
       }
     }
   }, [
