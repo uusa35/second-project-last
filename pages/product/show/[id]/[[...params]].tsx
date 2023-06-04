@@ -542,7 +542,7 @@ const ProductShow: NextPage<Props> = ({
                 >
                   <div className="flex flex-row justify-between items-start">
                     <TextTrans ar={s.title_ar} en={s.title_en} />{' '}
-                    {isLocal && s.must_select && (
+                    {isLocal && s.selection_type === 'mandatory' && (
                       <div className="w-auto rounded-lg bg-gray-200 text-black text-xs px-2">
                         {t('required')}
                       </div>
