@@ -597,7 +597,7 @@ const CartReview: NextPage<Props> = ({ url }) => {
                 map(
                   filter(
                     paymentMethods,
-                    (p) => vendorElement.Data?.Payment_Methods[p.id] === '1'
+                    (p) => vendorElement.Data?.Payment_Methods[p.id] == '1'
                   ),
                   (m, i) => (
                     <div
