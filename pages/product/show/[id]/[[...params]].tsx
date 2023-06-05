@@ -260,33 +260,34 @@ const ProductShow: NextPage<Props> = ({
           dispatch(disableAddToCart());
         } else {
           dispatch(enableAddToCart());
-          dispatch(
-            updatePrice({
-              totalPrice: sum([
-                parseFloat(
-                  element?.Data?.new_price && !isEmpty(element?.Data?.new_price)
-                    ? element?.Data?.new_price
-                    : element?.Data?.price
-                ),
-                metersSum,
-                checkboxesSum,
-                radioBtnsSum,
-              ]),
-              totalQty: currentQty,
-            })
-          );
-          const uIds = concat(
-            productCart.QuantityMeters &&
-              map(productCart.QuantityMeters, (q) => `_${q.uId2}`),
-            productCart.CheckBoxes &&
-              map(productCart.CheckBoxes, (c) => `_${c.uId}`),
-            productCart.RadioBtnsAddons &&
-              map(productCart.RadioBtnsAddons, (r) => `_${r.uId}`),
-            ` _${productCart.ExtraNotes.replace(/[^A-Z0-9]/gi, '')}`
-          );
-          dispatch(updateId(`${productCart.ProductID}${join(uIds, '')}`));
         }
       }
+
+      dispatch(
+        updatePrice({
+          totalPrice: sum([
+            parseFloat(
+              element?.Data?.new_price && !isEmpty(element?.Data?.new_price)
+                ? element?.Data?.new_price
+                : element?.Data?.price
+            ),
+            metersSum,
+            checkboxesSum,
+            radioBtnsSum,
+          ]),
+          totalQty: currentQty,
+        })
+      );
+      const uIds = concat(
+        productCart.QuantityMeters &&
+          map(productCart.QuantityMeters, (q) => `_${q.uId2}`),
+        productCart.CheckBoxes &&
+          map(productCart.CheckBoxes, (c) => `_${c.uId}`),
+        productCart.RadioBtnsAddons &&
+          map(productCart.RadioBtnsAddons, (r) => `_${r.uId}`),
+        ` _${productCart.ExtraNotes.replace(/[^A-Z0-9]/gi, '')}`
+      );
+      dispatch(updateId(`${productCart.ProductID}${join(uIds, '')}`));
     }
   }, [
     productCart.QuantityMeters,
