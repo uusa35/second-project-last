@@ -521,5 +521,7 @@
   "looks_like_something_went_wrong": "looks like something went wrong",
   "we_are_working_on_it": "we are working on it",
   "try_again?": "try again?",
-  "out_stock":"out stock"
+  "out_stock":"out stock",
+  "phone_must_be_at_least_5_digits":"phone must be at least 5 digits",
+  "phone_must_be_at_most_15_digits":"phone must be at most 15 digits"
 }
