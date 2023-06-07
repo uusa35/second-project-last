@@ -23,7 +23,7 @@ const ProductList: FC<Props> = ({ list, i }) => {
   } = useAppSelector((state) => state);
   return (
     <StickyContainer key={i}>
-      <div key={i} className={`flex flex-col mt-2`}>
+      <div key={i} className={`flex flex-col mt-2 gap-y-4`}>
         {!isEmpty(list.items) && (
           <Sticky>
             {({ style, isSticky }) => (
