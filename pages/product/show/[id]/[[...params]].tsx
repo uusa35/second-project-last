@@ -432,23 +432,39 @@ const ProductShow: NextPage<Props> = ({
         (q: QuantityMeters) =>
           q.uId === `${selection.id}${choice.id}` && q.addons[0]
       );
-      // const sumSelectedMeterValues = sumBy(
-      //   currentMeter.addons,
-      //   (addon) => addon.Value
-      // );
 
-      // console.log(
-      //   { sumSelectedMeterValues },
-      //   selection.max_q,
-      //   currentMeter,
-      // );
       if (checked) {
-        // increase
-        const Value = isEmpty(currentMeter)
-          ? 1
-          : parseFloat(currentMeter[0]?.addons[0].Value) + 1 <= selection.max_q
-          ? parseFloat(currentMeter[0]?.addons[0].Value) + 1
-          : parseFloat(currentMeter[0]?.addons[0].Value);
+        // to disable on max qty
+        const currentSelectionAddonsValues = filter(
+          productCart.QuantityMeters,
+          (q: QuantityMeters) => {
+            if (q.addonID === selection.id && q.addons[0])
+              return q.addons[0].Value;
+          }
+        );
+        const sumSelectedMeterValues = sumBy(
+          currentSelectionAddonsValues,
+          (qm) => qm.addons[0].Value
+        );
+
+        // console.log(
+        //   currentSelectionAddonsValues,
+        //   { currentMeter },
+        //   { sumSelectedMeterValues },
+        //   selection.max_q
+        // );
+
+        // update value and check max qty
+        const Value =
+          sumSelectedMeterValues + 1 <= selection.max_q
+            ? isEmpty(currentMeter)
+              ? 1
+              : parseFloat(currentMeter[0]?.addons[0].Value) + 1
+            : isEmpty(currentMeter)
+            ? 0
+            : parseFloat(currentMeter[0]?.addons[0].Value);
+
+
         dispatch(
           addMeter({
             addonID: selection.id,
