@@ -70,9 +70,9 @@ export interface Vendor {
   facebook: string;
   instagram: string;
   Payment_Methods: {
-    cash_on_delivery: 'yes' | 'no';
-    knet: 'yes' | 'no';
-    visa: 'yes' | 'no';
+    cash_on_delivery: 1 | 0;
+    knet: 1 | 0;
+    visa: 1 | 0;
   };
 }
 

@@ -180,17 +180,17 @@ const VendorShow: NextPage<Props> = ({ element, url }) => {
               </p>
             </div>
             <div className="flex items-center">
-              {element.Payment_Methods.visa && (
+              {element.Payment_Methods.visa === 1 && (
                 <div className="px-5">
                   <Visa className={`h-8 w-12`} />
                 </div>
               )}
-              {element.Payment_Methods.cash_on_delivery && (
+              {element.Payment_Methods.cash_on_delivery === 1 && (
                 <div className="px-5">
                   <CashOnDelivery className={`h-8 w-12`} />
                 </div>
               )}
-              {element.Payment_Methods.knet && (
+              {element.Payment_Methods.knet === 1 && (
                 <div className="px-5 ">
                   <Knet className={`h-8 w-12`} />
                 </div>
