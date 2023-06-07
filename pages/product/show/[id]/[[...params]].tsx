@@ -2,7 +2,13 @@ import MainContentLayout from '@/layouts/MainContentLayout';
 import { wrapper } from '@/redux/store';
 import { AppQueryResult } from '@/types/queries';
 import { apiSlice } from '@/redux/api';
-import { Product, ProductSection, QuantityMeters, img } from '@/types/index';
+import {
+  CheckBoxes,
+  Product,
+  ProductSection,
+  QuantityMeters,
+  img,
+} from '@/types/index';
 import { productApi, useGetProductQuery } from '@/redux/api/productApi';
 import { NextPage } from 'next';
 import MainHead from '@/components/MainHead';
@@ -31,6 +37,7 @@ import {
   concat,
   filter,
   first,
+  groupBy,
   isEmpty,
   isNull,
   join,
@@ -159,8 +166,8 @@ const ProductShow: NextPage<Props> = ({
       (c) => c.selection_type === 'mandatory'
     );
 
-    console.log('pro cart', productCart);
-    console.log('required sec', requiredSections);
+    // console.log('pro cart', productCart);
+    // console.log('required sec', requiredSections);
 
     for (const i in requiredSections) {
       // radio btns
@@ -212,6 +219,37 @@ const ProductShow: NextPage<Props> = ({
     return true;
   };
 
+  const handleValidateMinQty = () => {
+    const groupByCheckboxes = groupBy(productCart.CheckBoxes, 'addonID');
+
+    // checkboxes review min quantities
+    for (const item in groupByCheckboxes) {
+      const sumOfSelectedChoices = sumBy(
+        groupByCheckboxes[item],
+        (itm) => itm.addons[0].Value
+      );
+
+      const minQty = filter(
+        element?.Data?.sections,
+        (addon) => addon.id === parseInt(item)
+      )[0].min_q;
+
+      if (sumOfSelectedChoices < minQty) {
+        return false;
+      }
+
+      // console.log(
+      //   { item },
+      //   groupByCheckboxes[item],
+      //   { sumOfSelectedChoices },
+      //   { minQty }
+      // );
+    }
+
+    // console.log({ groupByCheckboxes });
+    return true;
+  };
+
   useEffect(() => {
     if (
       isSuccess &&
@@ -240,6 +278,8 @@ const ProductShow: NextPage<Props> = ({
         (c) => c.must_select === 'multi' && c.selection_type === 'mandatory'
       );
 
+      handleValidateMinQty();
+
       if (
         (requiredRadioBtns.length > 0 && allRadioBtns.length === 0) ||
         (requiredRadioBtns.length > 0 &&
@@ -254,9 +294,10 @@ const ProductShow: NextPage<Props> = ({
         dispatch(disableAddToCart());
       } else {
         // to execute the for looop only when all those if conditions is failed
-        const allValid = handleValidateMendatory();
-        console.log({ allValid });
-        if (!allValid) {
+        const MendatoryValidation = handleValidateMendatory();
+        const minValueValidation = handleValidateMinQty();
+        console.log({ MendatoryValidation }, { minValueValidation });
+        if (!MendatoryValidation || !minValueValidation) {
           dispatch(disableAddToCart());
         } else {
           dispatch(enableAddToCart());
@@ -371,22 +412,35 @@ const ProductShow: NextPage<Props> = ({
   ) => {
     if (type === 'checkbox') {
       if (checked) {
-        dispatch(
-          addToCheckBox({
-            addonID: selection.id,
-            uId: `${selection.id}${choice.id}${choice.name_en}`,
-            addons: [
-              {
-                attributeID: choice.id,
-                name: choice.name,
-                name_ar: choice.name_ar,
-                name_en: choice.name_en,
-                Value: 1,
-                price: parseFloat(choice.price),
-              },
-            ],
-          })
-        );
+        const checkboxMaxQty = filter(
+          element?.Data?.sections,
+          (c) => c.id === selection.id
+        )[0].max_q;
+
+        const checkboxSelectedQty = filter(
+          productCart.CheckBoxes,
+          (c) => c.addonID === selection.id
+        ).length;
+
+        // if max val disable checkbox
+        if (checkboxSelectedQty + 1 <= checkboxMaxQty) {
+          dispatch(
+            addToCheckBox({
+              addonID: selection.id,
+              uId: `${selection.id}${choice.id}${choice.name_en}`,
+              addons: [
+                {
+                  attributeID: choice.id,
+                  name: choice.name,
+                  name_ar: choice.name_ar,
+                  name_en: choice.name_en,
+                  Value: 1,
+                  price: parseFloat(choice.price),
+                },
+              ],
+            })
+          );
+        }
       } else {
         dispatch(
           removeFromCheckBox(`${selection.id}${choice.id}${choice.name_en}`)
@@ -413,13 +467,38 @@ const ProductShow: NextPage<Props> = ({
         (q: QuantityMeters) =>
           q.uId === `${selection.id}${choice.id}` && q.addons[0]
       );
+
       if (checked) {
-        // increase
-        const Value = isEmpty(currentMeter)
-          ? 1
-          : parseFloat(currentMeter[0]?.addons[0].Value) + 1 <= selection.max_q
-          ? parseFloat(currentMeter[0]?.addons[0].Value) + 1
-          : parseFloat(currentMeter[0]?.addons[0].Value);
+        // to disable on max qty
+        const currentSelectionAddonsValues = filter(
+          productCart.QuantityMeters,
+          (q: QuantityMeters) => {
+            if (q.addonID === selection.id && q.addons[0])
+              return q.addons[0].Value;
+          }
+        );
+        const sumSelectedMeterValues = sumBy(
+          currentSelectionAddonsValues,
+          (qm) => qm.addons[0].Value
+        );
+
+        // console.log(
+        //   currentSelectionAddonsValues,
+        //   { currentMeter },
+        //   { sumSelectedMeterValues },
+        //   selection.max_q
+        // );
+
+        // update value and check max qty
+        const Value =
+          sumSelectedMeterValues + 1 <= selection.max_q
+            ? isEmpty(currentMeter)
+              ? 1
+              : parseFloat(currentMeter[0]?.addons[0].Value) + 1
+            : isEmpty(currentMeter)
+            ? 0
+            : parseFloat(currentMeter[0]?.addons[0].Value);
+
         dispatch(
           addMeter({
             addonID: selection.id,
@@ -666,7 +745,8 @@ const ProductShow: NextPage<Props> = ({
                         paddingRight: 0,
                       }}
                     >
-                      {s.must_select === 'q_meter' &&
+                      {(s.must_select === 'q_meter' ||
+                        s.must_select === 'multi') &&
                       s.selection_type === 'mandatory' ? (
                         <p className={`flex -w-full text-red-800 pb-3`}>
                           {t(`must_select_min_and_max`, {
