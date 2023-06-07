@@ -745,7 +745,8 @@ const ProductShow: NextPage<Props> = ({
                         paddingRight: 0,
                       }}
                     >
-                      {s.must_select === 'q_meter' &&
+                      {(s.must_select === 'q_meter' ||
+                        s.must_select === 'multi') &&
                       s.selection_type === 'mandatory' ? (
                         <p className={`flex -w-full text-red-800 pb-3`}>
                           {t(`must_select_min_and_max`, {
