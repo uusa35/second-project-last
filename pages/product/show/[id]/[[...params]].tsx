@@ -219,8 +219,10 @@ const ProductShow: NextPage<Props> = ({
     return true;
   };
 
+  // min for checkbox and meter ===> optional and required
   const handleValidateMinQty = () => {
     const groupByCheckboxes = groupBy(productCart.CheckBoxes, 'addonID');
+    const groupByMeters = groupBy(productCart.QuantityMeters, 'addonID');
 
     // checkboxes review min quantities
     for (const item in groupByCheckboxes) {
@@ -244,6 +246,23 @@ const ProductShow: NextPage<Props> = ({
       //   { sumOfSelectedChoices },
       //   { minQty }
       // );
+    }
+
+    // meter review min quantities
+    for (const item in groupByMeters) {
+      const sumOfSelectedChoices = sumBy(
+        groupByMeters[item],
+        (itm) => itm.addons[0].Value
+      );
+
+      const minQty = filter(
+        element?.Data?.sections,
+        (addon) => addon.id === parseInt(item)
+      )[0].min_q;
+
+      if (sumOfSelectedChoices < minQty) {
+        return false;
+      }
     }
 
     // console.log({ groupByCheckboxes });
