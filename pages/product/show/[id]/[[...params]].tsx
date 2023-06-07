@@ -37,6 +37,7 @@ import {
   concat,
   filter,
   first,
+  groupBy,
   isEmpty,
   isNull,
   join,
@@ -165,8 +166,8 @@ const ProductShow: NextPage<Props> = ({
       (c) => c.selection_type === 'mandatory'
     );
 
-    console.log('pro cart', productCart);
-    console.log('required sec', requiredSections);
+    // console.log('pro cart', productCart);
+    // console.log('required sec', requiredSections);
 
     for (const i in requiredSections) {
       // radio btns
@@ -218,6 +219,37 @@ const ProductShow: NextPage<Props> = ({
     return true;
   };
 
+  const handleValidateMinQty = () => {
+    const groupByCheckboxes = groupBy(productCart.CheckBoxes, 'addonID');
+
+    // checkboxes review min quantities
+    for (const item in groupByCheckboxes) {
+      const sumOfSelectedChoices = sumBy(
+        groupByCheckboxes[item],
+        (itm) => itm.addons[0].Value
+      );
+
+      const minQty = filter(
+        element?.Data?.sections,
+        (addon) => addon.id === parseInt(item)
+      )[0].min_q;
+
+      if (sumOfSelectedChoices < minQty) {
+        return false;
+      }
+
+      // console.log(
+      //   { item },
+      //   groupByCheckboxes[item],
+      //   { sumOfSelectedChoices },
+      //   { minQty }
+      // );
+    }
+
+    // console.log({ groupByCheckboxes });
+    return true;
+  };
+
   useEffect(() => {
     if (
       isSuccess &&
@@ -246,6 +278,8 @@ const ProductShow: NextPage<Props> = ({
         (c) => c.must_select === 'multi' && c.selection_type === 'mandatory'
       );
 
+      handleValidateMinQty();
+
       if (
         (requiredRadioBtns.length > 0 && allRadioBtns.length === 0) ||
         (requiredRadioBtns.length > 0 &&
@@ -260,9 +294,10 @@ const ProductShow: NextPage<Props> = ({
         dispatch(disableAddToCart());
       } else {
         // to execute the for looop only when all those if conditions is failed
-        const allValid = handleValidateMendatory();
-        console.log({ allValid });
-        if (!allValid) {
+        const MendatoryValidation = handleValidateMendatory();
+        const minValueValidation = handleValidateMinQty();
+        console.log({ MendatoryValidation }, { minValueValidation });
+        if (!MendatoryValidation || !minValueValidation) {
           dispatch(disableAddToCart());
         } else {
           dispatch(enableAddToCart());
@@ -463,7 +498,6 @@ const ProductShow: NextPage<Props> = ({
             : isEmpty(currentMeter)
             ? 0
             : parseFloat(currentMeter[0]?.addons[0].Value);
-
 
         dispatch(
           addMeter({

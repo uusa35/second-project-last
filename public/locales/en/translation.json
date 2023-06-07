@@ -401,7 +401,7 @@
   "deliver_later": "deliver later",
   "checkout": "checkout",
   "delivery_prefrences": "delivery prefrences",
-  "please_review_sections_some_r_required": "required fields",
+  "please_review_sections_some_r_required": "review required fields and minimum quantities",
   "cart_is_not_ready_error_occurred": "your cart is not ready. unknown error occurred !!",
   "item_added_to_cart_success": "your shopping cart updated successfully.",
   "no_branch_found_pleas_add_branch_or_area": "please select one of our branches in case of delivery selection. thank you",
