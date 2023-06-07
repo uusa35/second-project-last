@@ -2,7 +2,13 @@ import MainContentLayout from '@/layouts/MainContentLayout';
 import { wrapper } from '@/redux/store';
 import { AppQueryResult } from '@/types/queries';
 import { apiSlice } from '@/redux/api';
-import { Product, ProductSection, QuantityMeters, img } from '@/types/index';
+import {
+  CheckBoxes,
+  Product,
+  ProductSection,
+  QuantityMeters,
+  img,
+} from '@/types/index';
 import { productApi, useGetProductQuery } from '@/redux/api/productApi';
 import { NextPage } from 'next';
 import MainHead from '@/components/MainHead';
@@ -371,22 +377,35 @@ const ProductShow: NextPage<Props> = ({
   ) => {
     if (type === 'checkbox') {
       if (checked) {
-        dispatch(
-          addToCheckBox({
-            addonID: selection.id,
-            uId: `${selection.id}${choice.id}${choice.name_en}`,
-            addons: [
-              {
-                attributeID: choice.id,
-                name: choice.name,
-                name_ar: choice.name_ar,
-                name_en: choice.name_en,
-                Value: 1,
-                price: parseFloat(choice.price),
-              },
-            ],
-          })
-        );
+        const checkboxMaxQty = filter(
+          element?.Data?.sections,
+          (c) => c.id === selection.id
+        )[0].max_q;
+
+        const checkboxSelectedQty = filter(
+          productCart.CheckBoxes,
+          (c) => c.addonID === selection.id
+        ).length;
+
+        // if max val disable checkbox
+        if (checkboxSelectedQty + 1 <= checkboxMaxQty) {
+          dispatch(
+            addToCheckBox({
+              addonID: selection.id,
+              uId: `${selection.id}${choice.id}${choice.name_en}`,
+              addons: [
+                {
+                  attributeID: choice.id,
+                  name: choice.name,
+                  name_ar: choice.name_ar,
+                  name_en: choice.name_en,
+                  Value: 1,
+                  price: parseFloat(choice.price),
+                },
+              ],
+            })
+          );
+        }
       } else {
         dispatch(
           removeFromCheckBox(`${selection.id}${choice.id}${choice.name_en}`)
@@ -413,6 +432,16 @@ const ProductShow: NextPage<Props> = ({
         (q: QuantityMeters) =>
           q.uId === `${selection.id}${choice.id}` && q.addons[0]
       );
+      // const sumSelectedMeterValues = sumBy(
+      //   currentMeter.addons,
+      //   (addon) => addon.Value
+      // );
+
+      // console.log(
+      //   { sumSelectedMeterValues },
+      //   selection.max_q,
+      //   currentMeter,
+      // );
       if (checked) {
         // increase
         const Value = isEmpty(currentMeter)
