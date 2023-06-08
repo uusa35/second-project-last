@@ -160,6 +160,7 @@ export interface ProductCart {
   id?: string;
   enabled: boolean;
   image: string;
+  MinQtyValidationID: string[];
 }
 
 export interface RadioBtns {

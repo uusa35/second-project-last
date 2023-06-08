@@ -1,6 +1,6 @@
-.PhoneInputInput{
-  border: none;
-}
-.PhoneInputInput :focus{
-  box-shadow: none;
+.addonError{
+  border: 1px solid #9B1C1C;
+  padding: 10px;
+  border-radius: 10px;
+  margin-top: 10px;
 }

@@ -4,6 +4,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import 'react-loading-skeleton/dist/skeleton.css';
 import '@/styles/TabOrderHistory.css';
+import '@/styles/CustomeStyle.css'
 import 'src/i18n/config';
 import type { NextWebVitalsMetric } from 'next/app';
 import { Provider } from 'react-redux';
