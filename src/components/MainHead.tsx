@@ -39,7 +39,7 @@ const MainHead: FC<Props> = ({
         <meta property="description" content={`${description}`} />
         <meta property="og:locale" content={`${router.locale}`} />
         <meta property="og:site_name" content={`${title}`} />
-        <meta property="og:url" content={`${baseUrl}`} />
+        {/* <meta property="og:url" content={`${baseUrl}`} /> */}
         <meta property="og:title" content={`${title}`} />
         <meta property="og:description" content={`${description}`} />
         <meta property="og:image" content={`${mainImage}`} />
