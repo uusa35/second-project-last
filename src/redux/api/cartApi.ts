@@ -71,7 +71,7 @@ export const cartApi = apiSlice.injectEndpoints({
       query: ({ userAgent, PromoCode, url, area_branch }) => ({
         url: `checkPromoCode`,
         headers: { url, ...area_branch },
-        params: { userAgent, PromoCode },
+        params: { UserAgent: userAgent, PromoCode },
         validateStatus: (response, result) =>
           response.status == 200 && result.status,
       }),
