@@ -367,7 +367,7 @@
   "delivery": "delivery",
   "earliest_delivery": "earliest delivery",
   "done": "done",
-  "must_select_min_and_max": "must choose min {{min}} qty or {{max}} qty.",
+  "must_select_min_and_max": "must choose at least {{min}} and at most {{max}}.",
   "select_method": "select method",
   "product_search_index": "searching products",
   "name_and_phone_are_required": "name and phone are required",
