@@ -415,7 +415,7 @@
   "deliver_later": "التوصيل لاحقًا",
   "checkout": "الدفع",
   "delivery_prefrences": "أولوية التسليم",
-  "please_review_sections_some_r_required" : "اختيارات مطلوبة",
+  "please_review_sections_some_r_required" : "راجع الاختيارات المطلوبة و الحد الادني للكميه",
   "cart_is_not_ready_error_occurred" : "عربة التسوق الخاصه بك لم يتم تسجيل بياناتها. حدث خطأ غير معلوم يرجى المحاولة مرة اخرى..",
   "item_added_to_cart_success" : "تم تحديث عربة التسوق الخاص بك.",
   "no_branch_found_pleas_add_branch_or_area" : "يجب اختيار احد الفروع في حالة التوصيل",
@@ -534,5 +534,7 @@
   "looks_like_something_went_wrong": "يبدو أنه حدث خطأ ما",
   "we_are_working_on_it": "نحن نعمل عليه",
   "try_again?": "حاول مرة أخرى؟",
-  "out_stock":"نفذت الكمية"
+  "out_stock":"نفذت الكمية",
+  "phone_must_be_at_least_5_digits":"الرقم يجب ان يكون 5 اعداد علي الاقل",
+  "phone_must_be_at_most_15_digits":"الرقم يجب ان يكون 15 عدد على الاكثر"
 }

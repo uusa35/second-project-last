@@ -47,6 +47,7 @@ const HorProductWidget: FC<Props> = ({
           width={imageSizes.lg}
           height={imageSizes.lg}
           className="h-full w-full object-cover object-center"
+          loading="lazy"
         />
       </div>
       <div className=" h-1/4 pt-3 px-2">
@@ -66,7 +67,7 @@ const HorProductWidget: FC<Props> = ({
             en={element.name_en}
             length={60}
           />
-          <TextTrans
+          {/* <TextTrans
             style={{
               maxWidth: '30ch',
               textOverflow: 'ellipsis',
@@ -77,7 +78,7 @@ const HorProductWidget: FC<Props> = ({
             }}
             ar={element.description_ar}
             en={element.description_en}
-          />
+          /> */}
         </p>
         <div className="flex justify-between items-end">
           {element.new_price && element.new_price !== element.price ? (
@@ -114,7 +115,7 @@ const HorProductWidget: FC<Props> = ({
             </p>
           )}
 
-          {element.never_out_of_stock === 0 && element.amount <= 1 ? (
+          {element.never_out_of_stock === 0 && element.amount < 1 ? (
             <p>{t('out_stock')}</p>
           ) : (
             <button

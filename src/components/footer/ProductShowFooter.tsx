@@ -49,13 +49,8 @@ const ProductShowFooter: FC<Props> = ({
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const router = useRouter();
-
   const [triggerAddToCart] = useAddToCartMutation();
   const [triggerGetCartProducts] = useLazyGetCartProductsQuery();
-
-  useEffect(() => {
-    console.log(productCurrentQty);
-  }, [productCurrentQty]);
 
   const { data: cartItems } = useGetCartProductsQuery({
     UserAgent: userAgent,
@@ -113,6 +108,7 @@ const ProductShowFooter: FC<Props> = ({
         scroll: false,
       });
     }
+
     if (!productCart.enabled) {
       dispatch(
         showToastMessage({
@@ -275,10 +271,11 @@ const ProductShowFooter: FC<Props> = ({
           }}
           data-cy="start-order"
         >
-          {!area.id && !branchId
-            ? t(`start_ordering`)
-            : productOutStock
+
+          {productOutStock
             ? t('out_stock')
+            : !area.id && !branchId
+            ? t(`start_ordering`)
             : t('add_to_cart')}
         </button>
         <span className={`flex flex-row items-center gap-2`}>

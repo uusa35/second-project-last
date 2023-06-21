@@ -2,7 +2,13 @@ import MainContentLayout from '@/layouts/MainContentLayout';
 import { wrapper } from '@/redux/store';
 import { AppQueryResult } from '@/types/queries';
 import { apiSlice } from '@/redux/api';
-import { Product, ProductSection, QuantityMeters, img } from '@/types/index';
+import {
+  CheckBoxes,
+  Product,
+  ProductSection,
+  QuantityMeters,
+  img,
+} from '@/types/index';
 import { productApi, useGetProductQuery } from '@/redux/api/productApi';
 import { NextPage } from 'next';
 import MainHead from '@/components/MainHead';
@@ -22,6 +28,7 @@ import {
   baseUrl,
   imageSizes,
   imgUrl,
+  isLocal,
   suppressText,
   toEn,
 } from '@/constants/*';
@@ -30,6 +37,7 @@ import {
   concat,
   filter,
   first,
+  groupBy,
   isEmpty,
   isNull,
   join,
@@ -48,11 +56,14 @@ import {
   enableAddToCart,
   removeFromCheckBox,
   removeMeter,
+  removeMinQtyValidationID,
   resetCheckBoxes,
   resetMeters,
+  resetMinQtyValidationID,
   resetRadioBtns,
   setCartProductQty,
   setInitialProductCart,
+  setMinQtyValidationID,
   setNotes,
   updateId,
   updatePrice,
@@ -90,6 +101,7 @@ const ProductShow: NextPage<Props> = ({
   const [currentQty, setCurrentyQty] = useState<number>(
     productCart.ProductID === product.id ? productCart.Quantity : 1
   );
+  const [outOfStock, setOutOfStock] = useState<boolean>(false);
   const [tabsOpen, setTabsOpen] = useState<{ id: number }[]>([]);
   const [isReadMoreShown, setIsReadMoreShown] = useState<boolean>(false);
   const {
@@ -130,6 +142,14 @@ const ProductShow: NextPage<Props> = ({
         dispatch(resetCheckBoxes());
         dispatch(resetMeters());
       }
+      if (
+        element?.Data?.amount === 0 &&
+        element?.Data?.never_out_of_stock === 0
+      ) {
+        setOutOfStock(true);
+      } else if (element?.Data?.never_out_of_stock === 1) {
+        setOutOfStock(false);
+      }
     }
   }, [isSuccess, element?.Data?.id, isRTL]);
 
@@ -143,15 +163,138 @@ const ProductShow: NextPage<Props> = ({
     };
   }, [product]);
 
+  const handleValidateMendatory = () => {
+    const requiredSections = filter(
+      element?.Data?.sections,
+      (c) => c.selection_type === 'mandatory'
+    );
+
+    // console.log('pro cart', productCart);
+    // console.log('required sec', requiredSections);
+
+    for (const i in requiredSections) {
+      // radio btns
+      if (requiredSections[i].must_select === 'single') {
+        // rb is short for checkbox
+        let rbExist =
+          productCart.RadioBtnsAddons.filter(
+            (rb) => rb.addonID === requiredSections[i].id && rb.addons.Value
+          ).length > 0;
+
+        console.log('rbExist', rbExist);
+        if (!rbExist) {
+          return false;
+        }
+      }
+
+      // checkboxes
+      if (requiredSections[i].must_select === 'multi') {
+        // cb is short for checkbox
+        let cbExist =
+          productCart.CheckBoxes.filter(
+            (cb) => cb.addonID === requiredSections[i].id && cb.addons[0].Value
+          ).length > 0;
+
+        console.log('cbExist', cbExist);
+        if (!cbExist) {
+          return false;
+        }
+      }
+
+      // qmeter
+      if (requiredSections[i].must_select === 'q_meter') {
+        let sumValue = 0;
+        let qmExist =
+          productCart.QuantityMeters.filter((qm) => {
+            if (qm.addonID === requiredSections[i].id && qm.addons[0].Value) {
+              sumValue += qm.addons[0].Value;
+              return qm;
+            }
+          }).length > 0;
+
+        console.log('qmExist', qmExist, sumValue, requiredSections[i].min_q);
+        if (!qmExist || sumValue < requiredSections[i].min_q) {
+          return false;
+        }
+      }
+    }
+
+    return true;
+  };
+
+  // min for checkbox and meter ===> optional and required
+  const handleValidateMinQty = () => {
+    dispatch(resetMinQtyValidationID());
+    const groupByCheckboxes = groupBy(productCart.CheckBoxes, 'addonID');
+    const groupByMeters = groupBy(productCart.QuantityMeters, 'addonID');
+
+    let allCheckboxesValid = true;
+    let allMetersValid = true;
+
+    // checkboxes review min quantities
+    for (const item in groupByCheckboxes) {
+      const sumOfSelectedChoices = sumBy(
+        groupByCheckboxes[item],
+        (itm) => itm.addons[0].Value
+      );
+
+      const checkboxSection = filter(
+        element?.Data?.sections,
+        (addon) => addon.id === parseInt(item)
+      )[0];
+
+      // in caase of optional check error put id of section in state
+      if (checkboxSection.selection_type === 'optional') {
+        if (sumOfSelectedChoices < checkboxSection.min_q) {
+          dispatch(setMinQtyValidationID(checkboxSection.id.toString()));
+        } else {
+          dispatch(removeMinQtyValidationID(checkboxSection.id.toString()));
+        }
+      }
+
+      if (sumOfSelectedChoices < checkboxSection.min_q) {
+        allCheckboxesValid = false;
+      }
+    }
+
+    // meter review min quantities
+    for (const item in groupByMeters) {
+      const sumOfSelectedChoices = sumBy(
+        groupByMeters[item],
+        (itm) => itm.addons[0].Value
+      );
+
+      const MeterSection = filter(
+        element?.Data?.sections,
+        (addon) => addon.id === parseInt(item)
+      )[0];
+
+      // in caase of optional check error put id of section in state
+      if (MeterSection.selection_type === 'optional') {
+        if (sumOfSelectedChoices < MeterSection.min_q) {
+          dispatch(setMinQtyValidationID(MeterSection.id.toString()));
+        } else {
+          dispatch(removeMinQtyValidationID(MeterSection.id.toString()));
+        }
+      }
+
+      if (sumOfSelectedChoices < MeterSection.min_q) {
+        allMetersValid = false;
+      }
+    }
+
+    // console.log({ groupByCheckboxes });
+    return allMetersValid && allCheckboxesValid;
+  };
+
   useEffect(() => {
     if (
       isSuccess &&
       !isNull(element) &&
       !isNull(element.Data) &&
       !isEmpty(productCart) &&
-      currentQty >= 1 &&
-      element?.Data?.amount &&
-      element?.Data?.amount >= currentQty
+      (currentQty > 0 ||
+        (element?.Data?.amount >= 0 && element?.Data?.never_out_of_stock === 1))
     ) {
       const allCheckboxes = map(productCart.CheckBoxes, (q) => q.addons[0]);
       const allRadioBtns = map(productCart.RadioBtnsAddons, (q) => q.addons);
@@ -159,19 +302,45 @@ const ProductShow: NextPage<Props> = ({
       const metersSum = sumBy(allMeters, (a) => multiply(a.price, a.Value)); // qty
       const checkboxesSum = sumBy(allCheckboxes, (a) => a.Value * a.price); // qty
       const radioBtnsSum = sumBy(allRadioBtns, (a) => a.Value * a.price); // qty
+      const requiredMeters = filter(
+        element?.Data?.sections,
+        (c) => c.must_select === 'q_meter' && c.selection_type === 'mandatory'
+      );
+      const requiredRadioBtns = filter(
+        element?.Data?.sections,
+        (c) => c.must_select === 'single' && c.selection_type === 'mandatory'
+      );
+      const requiredCheckboxes = filter(
+        element?.Data?.sections,
+        (c) => c.must_select === 'multi' && c.selection_type === 'mandatory'
+      );
+      const MendatoryValidation = handleValidateMendatory();
+      const minValueValidation = handleValidateMinQty();
+
       if (
-        element?.Data?.sections?.length !== 0 &&
-        element?.Data?.sections?.filter(
-          (itm) => itm.selection_type === 'mandatory'
-        ).length !== 0 &&
-        isEmpty(allCheckboxes) &&
-        isEmpty(allRadioBtns) &&
-        isEmpty(allMeters)
+        (requiredRadioBtns.length > 0 && allRadioBtns.length === 0) ||
+        (requiredRadioBtns.length > 0 &&
+          allRadioBtns.length < requiredRadioBtns.length) ||
+        (requiredMeters.length > 0 && allMeters.length === 0) ||
+        (requiredMeters.length > 0 &&
+          allMeters.length < requiredMeters.length) ||
+        (requiredCheckboxes.length > 0 && allCheckboxes.length === 0) ||
+        (requiredCheckboxes.length > 0 &&
+          allCheckboxes.length < requiredCheckboxes.length)
       ) {
         dispatch(disableAddToCart());
       } else {
-        dispatch(enableAddToCart());
+        // to execute the for looop only when all those if conditions is failed
+        // const MendatoryValidation = handleValidateMendatory();
+        // const minValueValidation = handleValidateMinQty();
+        console.log({ MendatoryValidation }, { minValueValidation });
+        if (!MendatoryValidation || !minValueValidation) {
+          dispatch(disableAddToCart());
+        } else {
+          dispatch(enableAddToCart());
+        }
       }
+
       dispatch(
         updatePrice({
           totalPrice: sum([
@@ -212,12 +381,7 @@ const ProductShow: NextPage<Props> = ({
   };
 
   const handleIncrease = () => {
-    if (
-      element &&
-      element?.Data?.amount &&
-      element?.Data?.amount &&
-      element?.Data?.amount >= currentQty + 1
-    ) {
+    if (element && !outOfStock) {
       setCurrentyQty(currentQty + 1);
       dispatch(setCartProductQty(currentQty + 1));
     }
@@ -225,11 +389,7 @@ const ProductShow: NextPage<Props> = ({
 
   const handleDecrease = () => {
     if (isSuccess && !isNull(element)) {
-      if (
-        currentQty - 1 > 0 &&
-        element?.Data?.amount &&
-        currentQty <= element?.Data?.amount
-      ) {
+      if (currentQty - 1 > 0) {
         setCurrentyQty(currentQty - 1);
         dispatch(setCartProductQty(currentQty - 1));
       } else {
@@ -246,8 +406,8 @@ const ProductShow: NextPage<Props> = ({
           ProductID: element?.Data?.id,
           ProductName: element?.Data?.name,
           ProductImage: element?.Data?.cover ?? ``,
-          ProductNameAr: element?.Data?.ProductNameAr,
-          ProductNameEn: element?.Data?.ProductNameEn,
+          ProductNameAr: element?.Data?.name_ar,
+          ProductNameEn: element?.Data?.name_en,
           ProductDesc: element?.Data?.desc,
           Quantity: currentQty,
           ExtraNotes: ``,
@@ -267,9 +427,16 @@ const ProductShow: NextPage<Props> = ({
               ? element?.Data?.new_price
               : element?.Data?.price
           ),
-          enabled: false,
+          enabled:
+            filter(
+              element?.Data.sections,
+              (s) => s.selection_type === 'mandatory'
+            ).length === 0 &&
+            element?.Data?.amount >= 0 &&
+            element?.Data?.never_out_of_stock === 1,
           image: imgUrl(element?.Data.img[0]?.toString()),
           id: now().toString(),
+          MinQtyValidationID: '',
         })
       );
     }
@@ -283,30 +450,45 @@ const ProductShow: NextPage<Props> = ({
   ) => {
     if (type === 'checkbox') {
       if (checked) {
-        dispatch(
-          addToCheckBox({
-            addonID: selection.id,
-            uId: `${selection.id}${choice.id}`,
-            addons: [
-              {
-                attributeID: choice.id,
-                name: choice.name,
-                name_ar: choice.name_ar,
-                name_en: choice.name_en,
-                Value: 1,
-                price: parseFloat(choice.price),
-              },
-            ],
-          })
-        );
+        const checkboxMaxQty = filter(
+          element?.Data?.sections,
+          (c) => c.id === selection.id
+        )[0].max_q;
+
+        const checkboxSelectedQty = filter(
+          productCart.CheckBoxes,
+          (c) => c.addonID === selection.id
+        ).length;
+
+        // if max val disable checkbox
+        if (checkboxSelectedQty + 1 <= checkboxMaxQty) {
+          dispatch(
+            addToCheckBox({
+              addonID: selection.id,
+              uId: `${selection.id}${choice.id}${choice.name_en}`,
+              addons: [
+                {
+                  attributeID: choice.id,
+                  name: choice.name,
+                  name_ar: choice.name_ar,
+                  name_en: choice.name_en,
+                  Value: 1,
+                  price: parseFloat(choice.price),
+                },
+              ],
+            })
+          );
+        }
       } else {
-        dispatch(removeFromCheckBox(`${selection.id}${choice.id}`));
+        dispatch(
+          removeFromCheckBox(`${selection.id}${choice.id}${choice.name_en}`)
+        );
       }
     } else if (type === 'radio') {
       dispatch(
         addRadioBtn({
           addonID: selection.id,
-          uId: `${selection.id}${choice.id}`,
+          uId: `${selection.id}${choice.id}${choice.name_en}`,
           addons: {
             attributeID: choice.id,
             name: choice.name,
@@ -323,13 +505,38 @@ const ProductShow: NextPage<Props> = ({
         (q: QuantityMeters) =>
           q.uId === `${selection.id}${choice.id}` && q.addons[0]
       );
+
       if (checked) {
-        // increase
-        const Value = isEmpty(currentMeter)
-          ? 1
-          : parseFloat(currentMeter[0]?.addons[0].Value) + 1 <= selection.max_q
-          ? parseFloat(currentMeter[0]?.addons[0].Value) + 1
-          : parseFloat(currentMeter[0]?.addons[0].Value);
+        // to disable on max qty
+        const currentSelectionAddonsValues = filter(
+          productCart.QuantityMeters,
+          (q: QuantityMeters) => {
+            if (q.addonID === selection.id && q.addons[0])
+              return q.addons[0].Value;
+          }
+        );
+        const sumSelectedMeterValues = sumBy(
+          currentSelectionAddonsValues,
+          (qm) => qm.addons[0].Value
+        );
+
+        // console.log(
+        //   currentSelectionAddonsValues,
+        //   { currentMeter },
+        //   { sumSelectedMeterValues },
+        //   selection.max_q
+        // );
+
+        // update value and check max qty
+        const Value =
+          sumSelectedMeterValues + 1 <= selection.max_q
+            ? isEmpty(currentMeter)
+              ? 1
+              : parseFloat(currentMeter[0]?.addons[0].Value) + 1
+            : isEmpty(currentMeter)
+            ? 0
+            : parseFloat(currentMeter[0]?.addons[0].Value);
+
         dispatch(
           addMeter({
             addonID: selection.id,
@@ -383,6 +590,8 @@ const ProductShow: NextPage<Props> = ({
   if (!isSuccess || !url) {
     return <LoadingSpinner fullWidth={true} />;
   }
+
+  // console.log('out of stock', outOfStock);
   return (
     <Suspense>
       <MainHead
@@ -403,13 +612,7 @@ const ProductShow: NextPage<Props> = ({
         productCurrentQty={currentQty}
         handleIncreaseProductQty={handleIncrease}
         handleDecreaseProductQty={handleDecrease}
-        productOutStock={
-          isSuccess &&
-          !isNull(element) &&
-          element.Data &&
-          element.Data.never_out_of_stock === 0 &&
-          element.Data.amount <= currentQty
-        }
+        productOutStock={isSuccess && !isNull(element) && outOfStock}
       >
         {isSuccess && !isNull(element) && element.Data ? (
           <>
@@ -429,6 +632,7 @@ const ProductShow: NextPage<Props> = ({
                           width={imageSizes.xxl}
                           height={imageSizes.xxl}
                           className={`object-cover w-full h-96`}
+                          loading="lazy"
                         />
                       </div>
                     ))}
@@ -444,10 +648,6 @@ const ProductShow: NextPage<Props> = ({
                 )}
               </div>
               <div className="absolute inset-x-0 top-0 flex h-full items-end justify-end overflow-hidden">
-                <div
-                  aria-hidden="true"
-                  className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black opacity-60"
-                />
                 <div className="flex flex-row w-full px-2 justify-between items-center py-4"></div>
               </div>
             </div>
@@ -507,15 +707,20 @@ const ProductShow: NextPage<Props> = ({
                   className={`border-b-8 border-stone-100 px-8 py-4`}
                   key={i}
                 >
-                  <div>
-                    <TextTrans ar={s.title_ar} en={s.title_en} />
+                  <div className="flex flex-row justify-between items-start">
+                    <TextTrans ar={s.title_ar} en={s.title_en} />{' '}
+                    {isLocal && s.selection_type === 'mandatory' && (
+                      <div className="w-auto rounded-lg bg-gray-200 text-black text-xs px-2">
+                        {t('required')}
+                      </div>
+                    )}
                   </div>
                   {s.hidden ? (
                     <div className={`flex flex-col gap-x-2 gap-y-1  mt-2`}>
                       <div className={`flex flex-row`}>
                         <input
-                          id={s.title}
-                          name={s.title}
+                          id={`${s.id}${s.selection_type}`}
+                          name={`${s.id}${s.selection_type}`}
                           type="radio"
                           checked={
                             !isEmpty(filter(tabsOpen, (t) => t.id === s.id))
@@ -526,7 +731,7 @@ const ProductShow: NextPage<Props> = ({
                           className="h-4 w-4"
                         />
                         <label
-                          htmlFor={s.title}
+                          htmlFor={`${s.id}${s.selection_type}`}
                           className="mx-3 block text-sm font-medium text-gray-700"
                         >
                           {t('yes')}
@@ -534,8 +739,8 @@ const ProductShow: NextPage<Props> = ({
                       </div>
                       <div className={`flex flex-row`}>
                         <input
-                          id={s.title}
-                          name={s.title}
+                          id={`${s.id}${s.selection_type}`}
+                          name={`${s.id}${s.selection_type}`}
                           type="radio"
                           checked={isEmpty(
                             filter(tabsOpen, (t) => t.id === s.id)
@@ -554,7 +759,7 @@ const ProductShow: NextPage<Props> = ({
                           className="h-4 w-4"
                         />
                         <label
-                          htmlFor={s.title}
+                          htmlFor={`${s.id}${s.selection_type}`}
                           className="mx-3 block text-sm font-medium text-gray-700"
                         >
                           {t('no')}
@@ -578,7 +783,37 @@ const ProductShow: NextPage<Props> = ({
                         paddingRight: 0,
                       }}
                     >
-                      {s.must_select === 'q_meter' &&
+                      {s.selection_type === 'mandatory' ? (
+                        s.must_select === 'q_meter' ||
+                        s.must_select === 'multi' ? (
+                          <p className={`flex -w-full text-red-800 pb-3`}>
+                            {t(`must_select_min_and_max`, {
+                              min: s.min_q,
+                              max: s.max_q,
+                            })}
+                          </p>
+                        ) : (
+                          // radio btn msg
+                          <p className={`flex -w-full text-red-800 pb-3`}>
+                            {t(`field_must_select_at_least_one`)}
+                          </p>
+                        )
+                      ) : (
+                        // optional addons min qty msg
+                        productCart.MinQtyValidationID.includes(
+                          s.id.toString()
+                        ) && (
+                          <p className={`flex -w-full text-red-800 pb-3`}>
+                            {t(`must_select_min_and_max`, {
+                              min: s.min_q,
+                              max: s.max_q,
+                            })}
+                          </p>
+                        )
+                      )}
+
+                      {/* {(s.must_select === 'q_meter' ||
+                        s.must_select === 'multi') &&
                       s.selection_type === 'mandatory' ? (
                         <p className={`flex -w-full text-red-800 pb-3`}>
                           {t(`must_select_min_and_max`, {
@@ -592,148 +827,170 @@ const ProductShow: NextPage<Props> = ({
                             {t(`field_must_select_at_least_one`)}
                           </p>
                         )
-                      )}
-                      {map(s.choices, (c, i) => (
-                        <div className="flex items-center w-full" key={i}>
-                          {s.must_select === 'q_meter' ? (
-                            <div
-                              className={`flex flex-row w-full justify-between items-center`}
-                            >
-                              <div className={`space-y-1`}>
-                                <div>
-                                  <p style={{ color }}>
-                                    <TextTrans ar={c.name_ar} en={c.name_en} />
-                                  </p>
+                      )} */}
+                      <div
+                        className={` ${
+                          productCart.MinQtyValidationID.includes(
+                            s.id.toString()
+                          )
+                            ? 'addonError'
+                            : ''
+                        }`}
+                      >
+                        {map(s.choices, (c, i) => (
+                          <div className="flex items-center w-full" key={i}>
+                            {s.must_select === 'q_meter' ? (
+                              <div
+                                className={`flex flex-row w-full justify-between items-center`}
+                              >
+                                <div className={`space-y-1`}>
+                                  <div>
+                                    <p style={{ color }}>
+                                      <TextTrans
+                                        ar={c.name_ar}
+                                        en={c.name_en}
+                                      />
+                                    </p>
+                                  </div>
+                                  <div>
+                                    +{c.price}{' '}
+                                    <span className={`uppercase`}>
+                                      {t(`kwd`)}
+                                    </span>
+                                  </div>
                                 </div>
                                 <div>
-                                  +{c.price}{' '}
-                                  <span className={`uppercase`}>
-                                    {t(`kwd`)}
+                                  <span className="isolate inline-flex rounded-xl shadow-sm flex-row-reverse">
+                                    <button
+                                      disabled={currentQty < 1}
+                                      onClick={() =>
+                                        handleSelectAddOn(
+                                          s,
+                                          c,
+                                          s.must_select,
+                                          true
+                                        )
+                                      }
+                                      type="button"
+                                      className="relative -ml-px inline-flex items-center ltr:rounded-l-sm rtl:rounded-r-sm  bg-gray-100 px-1 py-1 text-sm font-medium text-black  focus:z-10 w-10"
+                                      style={{ color }}
+                                      data-cy="increase-addon"
+                                    >
+                                      <span
+                                        className={`border border-gray-300 p-1 px-3 bg-white rounded-md text-md font-extrabold  w-8 h-8 flex justify-center items-center`}
+                                      >
+                                        +
+                                      </span>
+                                    </button>
+                                    <button
+                                      disabled={currentQty === 0}
+                                      type="button"
+                                      className="relative -ml-px inline-flex items-center  bg-gray-100 px-4 py-2 text-sm font-medium focus:z-10 w-10"
+                                      style={{ color }}
+                                    >
+                                      {filter(
+                                        productCart.QuantityMeters,
+                                        (q) => q.uId === `${s.id}${c.id}`
+                                      )[0]?.addons[0]?.Value ?? 0}
+                                    </button>
+                                    <button
+                                      disabled={
+                                        currentQty === 0 ||
+                                        first(
+                                          filter(
+                                            productCart.QuantityMeters,
+                                            (q) => q.uId === `${s.id}${c.id}`
+                                          )
+                                        )?.addons.Value === 0
+                                      }
+                                      onClick={() =>
+                                        handleSelectAddOn(
+                                          s,
+                                          c,
+                                          s.must_select,
+                                          false
+                                        )
+                                      }
+                                      type="button"
+                                      className="relative inline-flex items-center ltr:rounded-r-sm rtl:rounded-l-sm bg-gray-100 px-1 py-1 text-sm font-medium text-black  focus:z-10 w-10"
+                                      style={{ color }}
+                                      data-cy="decrease-addon"
+                                    >
+                                      <span
+                                        className={`border border-gray-300 p-1 px-3 bg-white rounded-md text-md font-extrabold  w-8 h-8 flex justify-center items-center`}
+                                      >
+                                        -
+                                      </span>
+                                    </button>
                                   </span>
                                 </div>
                               </div>
-                              <div>
-                                <span className="isolate inline-flex rounded-xl shadow-sm flex-row-reverse">
-                                  <button
-                                    disabled={currentQty < 1}
-                                    onClick={() =>
-                                      handleSelectAddOn(
-                                        s,
-                                        c,
-                                        s.must_select,
-                                        true
-                                      )
-                                    }
-                                    type="button"
-                                    className="relative -ml-px inline-flex items-center ltr:rounded-l-sm rtl:rounded-r-sm  bg-gray-100 px-1 py-1 text-sm font-medium text-black  focus:z-10 w-10"
-                                    style={{ color }}
-                                    data-cy="increase-addon"
-                                  >
-                                    <span
-                                      className={`border border-gray-300 p-1 px-3 bg-white rounded-md text-md font-extrabold  w-8 h-8 flex justify-center items-center`}
-                                    >
-                                      +
-                                    </span>
-                                  </button>
-                                  <button
-                                    disabled={currentQty === 0}
-                                    type="button"
-                                    className="relative -ml-px inline-flex items-center  bg-gray-100 px-4 py-2 text-sm font-medium focus:z-10 w-10"
-                                    style={{ color }}
-                                  >
-                                    {filter(
-                                      productCart.QuantityMeters,
-                                      (q) => q.uId === `${s.id}${c.id}`
-                                    )[0]?.addons[0]?.Value ?? 0}
-                                  </button>
-                                  <button
-                                    disabled={
-                                      currentQty === 0 ||
-                                      first(
-                                        filter(
-                                          productCart.QuantityMeters,
-                                          (q) => q.uId === `${s.id}${c.id}`
-                                        )
-                                      )?.addons.Value === 0
-                                    }
-                                    onClick={() =>
-                                      handleSelectAddOn(
-                                        s,
-                                        c,
-                                        s.must_select,
-                                        false
-                                      )
-                                    }
-                                    type="button"
-                                    className="relative inline-flex items-center ltr:rounded-r-sm rtl:rounded-l-sm bg-gray-100 px-1 py-1 text-sm font-medium text-black  focus:z-10 w-10"
-                                    style={{ color }}
-                                    data-cy="decrease-addon"
-                                  >
-                                    <span
-                                      className={`border border-gray-300 p-1 px-3 bg-white rounded-md text-md font-extrabold  w-8 h-8 flex justify-center items-center`}
-                                    >
-                                      -
-                                    </span>
-                                  </button>
-                                </span>
-                              </div>
-                            </div>
-                          ) : (
-                            <Fragment key={i}>
-                              <input
-                                id={c.name}
-                                name={c.name}
-                                required={s.selection_type !== 'optional'}
-                                type={
-                                  s.must_select === 'multi'
-                                    ? `checkbox`
-                                    : 'radio'
-                                }
-                                checked={
-                                  s.must_select !== 'multi'
-                                    ? filter(
-                                        productCart.RadioBtnsAddons,
-                                        (q) => q.uId === `${s.id}${c.id}`
-                                      )[0]?.uId === `${s.id}${c.id}`
-                                    : filter(
-                                        productCart.CheckBoxes,
-                                        (q) => q.uId === `${s.id}${c.id}`
-                                      )[0]?.uId === `${s.id}${c.id}`
-                                }
-                                onChange={(e) =>
-                                  handleSelectAddOn(
-                                    s,
-                                    c,
+                            ) : (
+                              <Fragment key={i}>
+                                <input
+                                  id={`${c.id}${s.selection_type}${s.title_en}`}
+                                  name={`${c.id}${s.selection_type}${s.title_en}`}
+                                  required={s.selection_type !== 'optional'}
+                                  type={
                                     s.must_select === 'multi'
                                       ? `checkbox`
-                                      : 'radio',
-                                    e.target.checked
-                                  )
-                                }
-                                className="h-4 w-4 border-gray-300   checked:ring-0 focus:ring-0"
-                              />
-                              <div
-                                className={`flex w-full flex-1 justify-between items-center`}
-                              >
-                                <div>
-                                  <label
-                                    htmlFor={c.name}
-                                    className="ltr:ml-3 rtl:mr-3 block text-sm font-medium text-gray-700"
-                                  >
-                                    <TextTrans ar={c.name_ar} en={c.name_en} />
-                                  </label>
+                                      : 'radio'
+                                  }
+                                  checked={
+                                    s.must_select !== 'multi'
+                                      ? filter(
+                                          productCart.RadioBtnsAddons,
+                                          (q) =>
+                                            q.uId ===
+                                            `${s.id}${c.id}${c.name_en}`
+                                        )[0]?.uId ===
+                                        `${s.id}${c.id}${c.name_en}`
+                                      : filter(
+                                          productCart.CheckBoxes,
+                                          (q) =>
+                                            q.uId ===
+                                            `${s.id}${c.id}${c.name_en}`
+                                        )[0]?.uId ===
+                                        `${s.id}${c.id}${c.name_en}`
+                                  }
+                                  onChange={(e) =>
+                                    handleSelectAddOn(
+                                      s,
+                                      c,
+                                      s.must_select === 'multi'
+                                        ? `checkbox`
+                                        : 'radio',
+                                      e.target.checked
+                                    )
+                                  }
+                                  className="h-4 w-4 border-gray-300   checked:ring-0 focus:ring-0"
+                                />
+                                <div
+                                  className={`flex w-full flex-1 justify-between items-center`}
+                                >
+                                  <div>
+                                    <label
+                                      htmlFor={`${c.id}${s.selection_type}`}
+                                      className="ltr:ml-3 rtl:mr-3 block text-sm font-medium text-gray-700"
+                                    >
+                                      <TextTrans
+                                        ar={c.name_ar}
+                                        en={c.name_en}
+                                      />
+                                    </label>
+                                  </div>
+                                  <div>
+                                    {parseFloat(c.price).toFixed(3)}
+                                    <span className={`mx-1 uppercase`}>
+                                      {t(`kwd`)}
+                                    </span>
+                                  </div>
                                 </div>
-                                <div>
-                                  {parseFloat(c.price).toFixed(3)}
-                                  <span className={`mx-1 uppercase`}>
-                                    {t(`kwd`)}
-                                  </span>
-                                </div>
-                              </div>
-                            </Fragment>
-                          )}
-                        </div>
-                      ))}
+                              </Fragment>
+                            )}
+                          </div>
+                        ))}
+                      </div>
                     </AccordionBody>
                   </Accordion>
                 </div>

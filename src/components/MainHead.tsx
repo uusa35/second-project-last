@@ -39,16 +39,29 @@ const MainHead: FC<Props> = ({
         <meta property="description" content={`${description}`} />
         <meta property="og:locale" content={`${router.locale}`} />
         <meta property="og:site_name" content={`${title}`} />
-        <meta property="og:url" content={`${baseUrl}`} />
+        {/* <meta property="og:url" content={`${baseUrl}`} /> */}
         <meta property="og:title" content={`${title}`} />
         <meta property="og:description" content={`${description}`} />
         <meta property="og:image" content={`${mainImage}`} />
         <meta name="logo" content={`${mainImage}`} />
         <link
+          rel="icon"
+          href={`${icon ?? mainImage}`}
+          type="image/png"
+          sizes="any"
+        />
+        <link
+          rel="apple-touch-icon"
+          href={`${icon ?? mainImage}`}
+          type="image/png"
+          sizes="any"
+        />
+        {/* <link
           href={`${icon ?? mainImage}`}
           rel="shortcut icon"
           type="image/png"
         />
+        <link rel="icon" href={`${icon ?? mainImage}`} /> */}
         <meta property="og:image:alt" content={`${title}`} />
         <meta property="og:mobile" content={phone} />
         <meta property="og:whatsapp" content={phone} />
@@ -105,6 +118,7 @@ const MainHead: FC<Props> = ({
               className={`w-10 h-auto`}
               width={imageSizes.xs}
               height={imageSizes.xs}
+              loading="lazy"
             />
           </span>
         </div>

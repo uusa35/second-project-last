@@ -11,8 +11,8 @@ const initialState: ProductCart = {
   ProductID: 0,
   ProductName: ``,
   ProductImage: ``,
-  name_ar: ``,
-  name_en: ``,
+  ProductNameAr: ``,
+  ProductNameEn: ``,
   ProductDesc: ``,
   ExtraNotes: '',
   Quantity: 0,
@@ -26,6 +26,7 @@ const initialState: ProductCart = {
   enabled: false,
   image: ``,
   id: random(1111111, 999999999).toString(),
+  MinQtyValidationID: [],
 };
 
 export const productCartSlice = createSlice({
@@ -51,9 +52,8 @@ export const productCartSlice = createSlice({
         ...state,
         QuantityMeters:
           action.payload.addons[0].Value === 0
-            ?
-            // donot add qm if it's value == 0 
-            [
+            ? // donot add qm if it's value == 0
+              [
                 ...filter(
                   state.QuantityMeters,
                   (m) => m.uId !== action.payload.uId
@@ -120,9 +120,16 @@ export const productCartSlice = createSlice({
       state: typeof initialState,
       action: PayloadAction<RadioBtns>
     ) => {
+      const RadioBtnsAddons = [
+        ...filter(
+          state.RadioBtnsAddons,
+          (r) => r.addonID !== action.payload.addonID
+        ),
+        action.payload,
+      ];
       return {
         ...state,
-        RadioBtnsAddons: [action.payload],
+        RadioBtnsAddons,
       };
     },
     resetRadioBtns: (
@@ -198,6 +205,42 @@ export const productCartSlice = createSlice({
         ...initialState,
       };
     },
+
+    setMinQtyValidationID: (
+      state: typeof initialState,
+      action: PayloadAction<string>
+    ) => {
+      return {
+        ...state,
+        MinQtyValidationID: [
+          ...filter(state.MinQtyValidationID, (a) => a !== action.payload),
+          action.payload,
+        ],
+      };
+    },
+
+    removeMinQtyValidationID: (
+      state: typeof initialState,
+      action: PayloadAction<string>
+    ) => {
+      return {
+        ...state,
+        MinQtyValidationID: filter(
+          state.MinQtyValidationID,
+          (a) => a !== action.payload
+        ),
+      };
+    },
+
+    resetMinQtyValidationID: (
+      state: typeof initialState,
+      action: PayloadAction<void>
+    ) => {
+      return {
+        ...state,
+        MinQtyValidationID: initialState.MinQtyValidationID,
+      };
+    },
   },
 });
 
@@ -218,4 +261,7 @@ export const {
   disableAddToCart,
   updateId,
   setNotes,
+  setMinQtyValidationID,
+  removeMinQtyValidationID,
+  resetMinQtyValidationID,
 } = productCartSlice.actions;
