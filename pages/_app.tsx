@@ -21,9 +21,9 @@ const App: FC<AppProps> = ({ Component, ...rest }) => {
     <Suspense>
       <Provider store={store}>
         <ErrorBoundary FallbackComponent={ErrorHandler}>
-          <MainLayout>
-            <Component {...pageProps} />
-          </MainLayout>
+        <MainLayout>
+          <Component {...pageProps} />
+        </MainLayout>
         </ErrorBoundary>
       </Provider>
     </Suspense>

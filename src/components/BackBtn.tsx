@@ -148,7 +148,7 @@ const BackBtn: FC<Props> = ({
           <span
             className={`text-md capitalize truncate overflow-hidden max-w-md`}
             suppressHydrationWarning={suppressText}
-            style={{ color, maxWidth: '20ch', textOverflow: 'truncate' }}
+            style={{ color, maxWidth: '30ch', textOverflow: 'truncate' }}
           >
             {t(currentModule)}
           </span>
