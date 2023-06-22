@@ -600,7 +600,7 @@ const ProductShow: NextPage<Props> = ({
             <div className="relative w-full capitalize">
               <div className="relative w-full h-auto overflow-hidden">
                 {!isEmpty(element?.Data?.img) ? (
-                  <Carousel className={`h-96`}>
+                  <Carousel className={`h-96 d-initial`}>
                     {map(element?.Data?.img, (image: img, i) => (
                       <div key={i}>
                         <Image
@@ -640,14 +640,16 @@ const ProductShow: NextPage<Props> = ({
                     <TextTrans
                       ar={element?.Data?.name_ar}
                       en={element?.Data?.name_en}
-                      style={{
-                        maxWidth: '30ch',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap',
-                        overflow: 'hidden',
-                        display: 'block',
-                        color: `black`,
-                      }}
+                      length={60}
+                      className={`block overflow-hidden`}
+                      // style={{
+                      //   maxWidth: '30ch',
+                      //   textOverflow: 'ellipsis',
+                      //   whiteSpace: 'nowrap',
+                      //   overflow: 'hidden',
+                      //   display: 'block',
+                      //   color: `black`,
+                      // }}
                     />
                   </p>
                   <p
