@@ -4,7 +4,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import 'react-loading-skeleton/dist/skeleton.css';
 import '@/styles/TabOrderHistory.css';
-import '@/styles/CustomeStyle.css'
+import '@/styles/CustomeStyle.css';
 import 'src/i18n/config';
 import type { NextWebVitalsMetric } from 'next/app';
 import { Provider } from 'react-redux';
@@ -14,6 +14,7 @@ import { AppProps } from 'next/app';
 import { FC, Suspense } from 'react';
 import ErrorHandler from '@/components/ErrorBoundary';
 import { ErrorBoundary } from 'react-error-boundary';
+import { isLocal } from '@/constants/*';
 
 const App: FC<AppProps> = ({ Component, ...rest }) => {
   const { store, props } = wrapper.useWrappedStore(rest);
@@ -21,11 +22,17 @@ const App: FC<AppProps> = ({ Component, ...rest }) => {
   return (
     <Suspense>
       <Provider store={store}>
-        <ErrorBoundary FallbackComponent={ErrorHandler}>
+        {isLocal ? (
+          <ErrorBoundary FallbackComponent={ErrorHandler}>
+            <MainLayout>
+              <Component {...pageProps} />
+            </MainLayout>
+          </ErrorBoundary>
+        ) : (
           <MainLayout>
             <Component {...pageProps} />
           </MainLayout>
-        </ErrorBoundary>
+        )}
       </Provider>
     </Suspense>
   );
