@@ -17,14 +17,16 @@ export const addressApi = apiSlice.injectEndpoints({
         url: string;
       }
     >({
-      query: ({ body, url }) => ({
-        url: `user/address/create`,
-        method: `POST`,
-        headers: { url },
-        body,
-        validateStatus: (response, result) =>
-          response.status === 200 && result.status,
-      }),
+      query: ({ body, url }) => {
+        return {
+          url: `add-address`,
+          method: `POST`,
+          headers: { url },
+          body,
+          validateStatus: (response, result) =>
+            response.status === 200 && result.status,
+        }
+      },
     }),
 
     checkTimeAvilability: builder.mutation<

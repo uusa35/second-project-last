@@ -55,6 +55,7 @@ const nextConfig = {
       'testbedbynd.com',
       'pages-dash.testbedbynd.com',
       'queue-spaces.nyc3.digitaloceanspaces.com',
+      '*.digitaloceanspaces.com',
     ],
     // minimumCacheTTL: 60 * 60 * 24,
     minimumCacheTTL: 0,
