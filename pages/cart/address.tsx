@@ -210,6 +210,7 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
   useMemo(() => setValue('address_type', addressTabType), [addressTabType]);
 
   const handelSaveAddress = async (body: any) => {
+    console.log({ body });
     await triggerAddAddress({
       body: {
         address_type: body.address_type,
