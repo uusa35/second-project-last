@@ -612,7 +612,7 @@ const CartReview: NextPage<Props> = ({ url }) => {
                         } flex justify-center items-center w-24 h-24 rounded-md`}
                       >
                         <div>
-                          <div className={`w-16 h-16`}>{m.src}</div>
+                          <div className={`w-16 h-16 d-ltr`}>{m.src}</div>
                         </div>
                       </button>
                       <div

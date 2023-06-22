@@ -390,7 +390,7 @@ const CartIndex: NextPage<Props> = ({ url }): JSX.Element => {
                                             className={`font-semibold capitalize`}
                                             ar={item.ProductNameAr}
                                             en={item.ProductNameEn}
-                                            length={15}
+                                            length={25}
                                           />
                                         </Link>
                                       </div>
