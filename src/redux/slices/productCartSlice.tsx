@@ -51,9 +51,8 @@ export const productCartSlice = createSlice({
         ...state,
         QuantityMeters:
           action.payload.addons[0].Value === 0
-            ?
-            // donot add qm if it's value == 0 
-            [
+            ? // donot add qm if it's value == 0
+              [
                 ...filter(
                   state.QuantityMeters,
                   (m) => m.uId !== action.payload.uId
@@ -120,9 +119,16 @@ export const productCartSlice = createSlice({
       state: typeof initialState,
       action: PayloadAction<RadioBtns>
     ) => {
+      const RadioBtnsAddons = [
+        ...filter(
+          state.RadioBtnsAddons,
+          (r) => r.addonID !== action.payload.addonID
+        ),
+        action.payload,
+      ];
       return {
         ...state,
-        RadioBtnsAddons: [action.payload],
+        RadioBtnsAddons,
       };
     },
     resetRadioBtns: (

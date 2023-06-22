@@ -129,6 +129,7 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
     });
   };
 
+  console.log({ errors });
   return (
     <Suspense>
       <MainContentLayout
@@ -141,7 +142,9 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
             <PersonalDetails className={`my-10 lg:my-0 w-32 h-32`} />
           </div>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className={`lg:mt-10 ${router.locale === 'ar' && arboriaFont}`}>
+            <div
+              className={`lg:mt-10 ${router.locale === 'ar' && arboriaFont}`}
+            >
               <div className="flex gap-x-2 px-2 border-b-4 border-b-gray-200 w-full focus:ring-transparent py-4">
                 <BadgeOutlined style={{ color }} />
                 <input
@@ -225,7 +228,7 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
                     className={`text-base text-red-800 font-semibold py-2 capitalize`}
                     suppressHydrationWarning={suppressText}
                   >
-                    {t('phone_is_required')}
+                    {t(`${errors?.phone?.message}`)}
                   </p>
                 )}
               </div>

@@ -5,7 +5,11 @@ export const customerInfoSchema = yup
     id: yup.number(),
     name: yup.string().required().min(2).max(50),
     email: yup.string().email(),
-    phone: yup.number().min(100000).max(999999999999).required(),
+    phone: yup
+      .string()
+      .required()
+      .min(8,  'phone_must_be_at_least_5_digits' )
+      .max(15,  'phone_must_be_at_most_15_digits' ),
   })
   .required();
 

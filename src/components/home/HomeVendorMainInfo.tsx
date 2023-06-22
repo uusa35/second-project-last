@@ -9,6 +9,7 @@ import { useAppSelector } from '@/redux/hooks';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { useLazyGetVendorQuery } from '@/redux/api/vendorApi';
 import { filter, isEmpty } from 'lodash';
+import Image from 'next/image';
 
 type Props = {
   url: string;
@@ -20,6 +21,7 @@ const HomeVendorMainInfo: FC<Props> = ({ url }): JSX.Element => {
     locale: { lang },
     branch: { id: branch_id },
     area: { id: area_id },
+    vendor,
   } = useAppSelector((state) => state);
   const [triggerGetVendor, { data: element, isSuccess }] =
     useLazyGetVendorQuery();
@@ -46,8 +48,10 @@ const HomeVendorMainInfo: FC<Props> = ({ url }): JSX.Element => {
     }
   }, [branch_id, area_id]);
 
+  useEffect(() => {}, [vendor]);
+
   if (!isSuccess || !element || !element.Data) return <></>;
-  console.log(element.Data);
+
   return (
     <>
       <div className="flex gap-x-2 justify-between items-start capitalize">
@@ -58,7 +62,8 @@ const HomeVendorMainInfo: FC<Props> = ({ url }): JSX.Element => {
               height={imageSizes.xs}
               className="rounded-md w-full h-fit aspect-square"
               alt={element.Data.name}
-              src={imgUrl(element.Data.logo)}
+              // src={`${imgUrl(vendor.logo)}`}
+              src={`${element.Data.logo}`}
             />
           </Link>
           <div className={`flex flex-col w-full p-1`}>
