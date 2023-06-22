@@ -23,8 +23,8 @@ export const addressApi = apiSlice.injectEndpoints({
           method: `POST`,
           headers: { url },
           body,
-          validateStatus: (response, result) =>
-            response.status === 200 && result.status,
+          // validateStatus: (response, result) =>
+          //   response.status === 200 && result.status,
         }
       },
     }),
