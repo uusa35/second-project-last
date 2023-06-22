@@ -162,3 +162,11 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 html::-webkit-scrollbar, body::-webkit-scrollbar {
     display: none;
 }
+
+.d-initial {
+    direction: initial;
+}
+
+.d-ltr {
+    direction: ltr !important;
+}
