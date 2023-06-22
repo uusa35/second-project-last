@@ -18,7 +18,7 @@ export const addressApi = apiSlice.injectEndpoints({
       }
     >({
       query: ({ body, url }) => ({
-        url: `add-address`,
+        url: `user/address/create`,
         method: `POST`,
         headers: { url },
         body,
