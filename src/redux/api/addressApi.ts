@@ -12,7 +12,7 @@ export const addressApi = apiSlice.injectEndpoints({
           longitude: number | string;
           latitude: number | string;
           customer_id: number | string;
-          address: [key: string];
+          address: { [key: string]: any };
         };
         url: string;
       }
