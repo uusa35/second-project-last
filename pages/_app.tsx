@@ -22,11 +22,17 @@ const App: FC<AppProps> = ({ Component, ...rest }) => {
   return (
     <Suspense>
       <Provider store={store}>
-        <ErrorBoundary FallbackComponent={ErrorHandler}>
+        {isLocal ? (
+          <ErrorBoundary FallbackComponent={ErrorHandler}>
+            <MainLayout>
+              <Component {...pageProps} />
+            </MainLayout>
+          </ErrorBoundary>
+        ) : (
           <MainLayout>
             <Component {...pageProps} />
           </MainLayout>
-        </ErrorBoundary>
+        )}
       </Provider>
     </Suspense>
   );
