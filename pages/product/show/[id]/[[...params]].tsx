@@ -595,6 +595,7 @@ const ProductShow: NextPage<Props> = ({
     <Suspense>
       <MainHead
         title={`${currentLocale === 'ar' ? product.name_ar : product.name_en}`}
+        url={url}
         description={`${
           currentLocale === 'ar'
             ? product.description_ar

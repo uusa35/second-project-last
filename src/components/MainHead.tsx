@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { baseUrl, imageSizes, isLocal, suppressText } from '@/constants/*';
+import { imageSizes, isLocal, suppressText } from '@/constants/*';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
@@ -8,6 +8,7 @@ import { useAppSelector } from '@/redux/hooks';
 
 type Props = {
   title: string;
+  url: string;
   description?: string;
   mainImage?: string;
   phone?: string;
@@ -18,6 +19,7 @@ type Props = {
 };
 const MainHead: FC<Props> = ({
   title = '',
+  url = '',
   description = ``,
   mainImage = ``,
   phone = ``,
@@ -39,7 +41,7 @@ const MainHead: FC<Props> = ({
         <meta property="description" content={`${description}`} />
         <meta property="og:locale" content={`${router.locale}`} />
         <meta property="og:site_name" content={`${title}`} />
-        {/* <meta property="og:url" content={`${baseUrl}`} /> */}
+        <meta property="og:url" content={`${url}`} />
         <meta property="og:title" content={`${title}`} />
         <meta property="og:description" content={`${description}`} />
         <meta property="og:image" content={`${mainImage}`} />
@@ -68,7 +70,7 @@ const MainHead: FC<Props> = ({
         <meta itemProp="instagram" content={`${title}`} />
         <meta
           property="instagram:url"
-          content={`${instagram.length > 1 ? instagram : baseUrl}`}
+          content={`${instagram.length > 1 ? instagram : url}`}
         />
         <meta property="instagram:title" content={`${title}`} />
         <meta property="instagram:description" content={`${description}`} />
@@ -76,7 +78,7 @@ const MainHead: FC<Props> = ({
         <meta itemProp="twitter" content={`${title}`} />
         <meta
           property="twitter:url"
-          content={`${twitter.length > 1 ? twitter : baseUrl}`}
+          content={`${twitter.length > 1 ? twitter : url}`}
         />
         <meta property="twitter:title" content={`${title}`} />
         <meta property="twitter:description" content={`${description}`} />
@@ -84,7 +86,7 @@ const MainHead: FC<Props> = ({
         <meta itemProp="facebook" content={`${title}`} />
         <meta
           property="facebook:url"
-          content={`${facebook.length > 1 ? facebook : baseUrl}`}
+          content={`${facebook.length > 1 ? facebook : url}`}
         />
         <meta property="facebook:title" content={`${title}`} />
         <meta property="facebook:description" content={`${description}`} />
@@ -108,7 +110,7 @@ const MainHead: FC<Props> = ({
             {t('description')} : {description}
           </span>
           <span suppressHydrationWarning={suppressText}>
-            {t('url')} : {baseUrl}
+            {t('url')} : {url}
           </span>
           <span suppressHydrationWarning={suppressText}>
             {t('image')}

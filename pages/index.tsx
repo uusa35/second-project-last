@@ -123,6 +123,7 @@ const HomePage: NextPage<Props> = ({
       {/* SEO Head DEV*/}
       <MainHead
         title={currentLocale === 'ar' ? element.name_ar : element.name_en}
+        url={url}
         description={element.desc}
         mainImage={`${element.logo}`}
         icon={`${element.logo}`}

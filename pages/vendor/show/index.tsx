@@ -118,6 +118,7 @@ const VendorShow: NextPage<Props> = ({ element, url }) => {
     <Suspense>
       <MainHead
         title={element.name}
+        url={url}
         description={element.desc}
         mainImage={`${element.logo}`}
         icon={`${element.logo}`}
