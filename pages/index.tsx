@@ -220,26 +220,39 @@ const HomePage: NextPage<Props> = ({
 export default HomePage;
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
-    async ({ req, locale }) => {
+    async ({ req, locale, res }) => {
       const url = req.headers.host;
       if (store.getState().locale.lang !== locale) {
         store.dispatch(setLocale(locale));
       }
-      const {
-        data: element,
-        isError,
-      }: { data: AppQueryResult<Vendor>; isError: boolean } =
-        await store.dispatch(
-          vendorApi.endpoints.getVendor.initiate({
-            lang: locale,
-            url,
-          })
-        );
-      await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
-      if (isError || !element.status || !element.Data || !element) {
-        return {
-          notFound: true,
-        };
+      const result = await fetch(
+        `https://next-q.testbedbynd.com/vendorDetails`,
+        {
+          method: 'GET',
+          headers: { url, lang: locale },
+          cache: 'no-store',
+        }
+      );
+      const element = await result.json();
+
+      // const {
+      //   data: element,
+      //   isError,
+      // }: { data: AppQueryResult<Vendor>; isError: boolean } =
+      //   await store.dispatch(
+      //     vendorApi.endpoints.getVendor.initiate({
+      //       lang: locale,
+      //       url,
+      //     })
+      //   );
+      // await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
+      // if (isError || !element.status || !element.Data || !element) {
+      //   return {
+      //     notFound: true,
+      //   };
+      // }
+      if (!element || !element.Data) {
+        return { notFound: true };
       }
       return {
         props: {
