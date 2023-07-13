@@ -46,9 +46,7 @@ const HomeVendorMainInfo: FC<Props> = ({ url }): JSX.Element => {
         false
       );
     }
-  }, [branch_id, area_id]);
-
-  useEffect(() => {}, [vendor]);
+  }, [branch_id, area_id, url]);
 
   if (!isSuccess || !element || !element.Data) return <></>;
 
