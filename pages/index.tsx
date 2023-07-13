@@ -118,6 +118,8 @@ const HomePage: NextPage<Props> = ({
   if (!element) {
     return <LoadingSpinner />;
   }
+  console.log('element', element);
+  console.log('url', url);
 
   return (
     <Suspense fallback={<LoadingSpinner fullWidth={true} />}>
