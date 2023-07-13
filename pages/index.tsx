@@ -41,6 +41,7 @@ const HomePage: NextPage<Props> = ({
   element,
   currentLocale,
 }): JSX.Element => {
+  console.log('element ====>', element);
   const { t } = useTranslation();
   const {
     locale: { lang },
@@ -218,35 +219,69 @@ const HomePage: NextPage<Props> = ({
 };
 
 export default HomePage;
-export const getServerSideProps = wrapper.getServerSideProps(
-  (store) =>
-    async ({ req, locale }) => {
-      const url = req.headers.host;
-      if (store.getState().locale.lang !== locale) {
-        store.dispatch(setLocale(locale));
-      }
-      const {
-        data: element,
-        isError,
-      }: { data: AppQueryResult<Vendor>; isError: boolean } =
-        await store.dispatch(
-          vendorApi.endpoints.getVendor.initiate({
+export const getServerSideProps = wrapper.getServerSideProps((store) =>
+  // async ({ req, locale }) => {
+  //   const url = req.headers.host;
+  //   if (store.getState().locale.lang !== locale) {
+  //     store.dispatch(setLocale(locale));
+  //   }
+  //   const {
+  //     data: element,
+  //     isError,
+  //   }: { data: AppQueryResult<Vendor>; isError: boolean } =
+  //     await store.dispatch(
+  //       vendorApi.endpoints.getVendor.initiate({
+  //         lang: locale,
+  //         url,
+  //       })
+  //     );
+  //   await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
+  //   if (isError || !element.status || !element.Data || !element) {
+  //     return {
+  //       notFound: true,
+  //     };
+  //   }
+  //   return {
+  //     props: {
+  //       element: element.Data,
+  //       currentLocale: locale,
+  //       url,
+  //     },
+  //   };
+  // }
+  async ({ req, locale, res }) => {
+    const url = req.headers.host;
+    if (store.getState().locale.lang !== locale) {
+      store.dispatch(setLocale(locale));
+    }
+    const {
+      data: element,
+      isError,
+    }: { data: AppQueryResult<Vendor>; isError: boolean } =
+      await store.dispatch(
+        vendorApi.endpoints.getVendor.initiate(
+          {
             lang: locale,
             url,
-          })
-        );
-      await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
-      if (isError || !element.status || !element.Data || !element) {
-        return {
-          notFound: true,
-        };
-      }
+          },
+          {
+            forceRefetch: true,
+          }
+        )
+      );
+    await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
+    if (isError || !element.status || !element.Data || !element) {
       return {
-        props: {
-          element: element.Data,
-          currentLocale: locale,
-          url,
-        },
+        notFound: true,
       };
     }
+
+    return {
+      props: {
+        element: element.Data,
+        currentLocale: locale,
+        url,
+      },
+    };
+  }
 );

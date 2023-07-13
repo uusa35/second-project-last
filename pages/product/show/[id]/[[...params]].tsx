@@ -1043,13 +1043,18 @@ export const getServerSideProps = wrapper.getServerSideProps(
         data: AppQueryResult<Product>;
         isError: boolean;
       } = await store.dispatch(
-        productApi.endpoints.getProduct.initiate({
-          id,
-          lang: locale,
-          ...(branchId ? { branch_id: branchId } : {}),
-          ...(areaId ? { area_id: areaId } : {}),
-          url: req.headers.host,
-        })
+        productApi.endpoints.getProduct.initiate(
+          {
+            id,
+            lang: locale,
+            ...(branchId ? { branch_id: branchId } : {}),
+            ...(areaId ? { area_id: areaId } : {}),
+            url: req.headers.host,
+          },
+          {
+            forceRefetch: true,
+          }
+        )
       );
       await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
       if (isError || !element.Data) {
