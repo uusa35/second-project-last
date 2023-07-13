@@ -1,3 +1,4 @@
+'use server';
 import { FC } from 'react';
 import { imageSizes, isLocal, suppressText } from '@/constants/*';
 import Head from 'next/head';
