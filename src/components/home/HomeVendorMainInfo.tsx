@@ -55,14 +55,21 @@ const HomeVendorMainInfo: FC<Props> = ({ url }): JSX.Element => {
       <div className="flex gap-x-2 justify-between items-start capitalize">
         <div className="flex grow gap-x-2">
           <Link href={appLinks.home.path} scroll={true} className={`w-1/4`}>
-            <CustomImage
+            <Image
+              width={imageSizes.xs}
+              height={imageSizes.xs}
+              src={`${element.Data.logo}`}
+              className="rounded-md w-full h-fit aspect-square"
+              alt={element.Data.name}
+            />
+            {/* <CustomImage
               width={imageSizes.xs}
               height={imageSizes.xs}
               className="rounded-md w-full h-fit aspect-square"
-              alt={element.Data.name}
-              // src={`${imgUrl(vendor.logo)}`}
-              src={`${element.Data.logo}`}
-            />
+              alt={element.Data.name} 
+            src={`${imgUrl(vendor.logo)}`} 
+            src={`${element.Data.logo}`}
+            /> */}
           </Link>
           <div className={`flex flex-col w-full p-1`}>
             <div className={`flex flex-row justify-start items-center`}>
