@@ -41,6 +41,7 @@ const HomePage: NextPage<Props> = ({
   element,
   currentLocale,
 }): JSX.Element => {
+  console.log('element ====>', element);
   const { t } = useTranslation();
   const {
     locale: { lang },
@@ -218,6 +219,7 @@ const HomePage: NextPage<Props> = ({
 };
 
 export default HomePage;
+
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ req, locale, res }) => {
@@ -225,34 +227,26 @@ export const getServerSideProps = wrapper.getServerSideProps(
       if (store.getState().locale.lang !== locale) {
         store.dispatch(setLocale(locale));
       }
-      const result = await fetch(
-        `https://next-q.testbedbynd.com/vendorDetails`,
-        {
-          method: 'GET',
-          headers: { url, lang: locale },
-          cache: 'no-store',
-        }
-      );
-      const element = await result.json();
-
-      // const {
-      //   data: element,
-      //   isError,
-      // }: { data: AppQueryResult<Vendor>; isError: boolean } =
-      //   await store.dispatch(
-      //     vendorApi.endpoints.getVendor.initiate({
-      //       lang: locale,
-      //       url,
-      //     })
-      //   );
-      // await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
-      // if (isError || !element.status || !element.Data || !element) {
-      //   return {
-      //     notFound: true,
-      //   };
-      // }
-      if (!element || !element.Data) {
-        return { notFound: true };
+      const {
+        data: element,
+        isError,
+      }: { data: AppQueryResult<Vendor>; isError: boolean } =
+        await store.dispatch(
+          vendorApi.endpoints.getVendor.initiate(
+            {
+              lang: locale,
+              url,
+            },
+            {
+              forceRefetch: true,
+            }
+          )
+        );
+      await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
+      if (isError || !element.status || !element.Data || !element) {
+        return {
+          notFound: true,
+        };
       }
       return {
         props: {

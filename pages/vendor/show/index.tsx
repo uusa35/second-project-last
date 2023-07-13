@@ -266,7 +266,12 @@ export const getServerSideProps = wrapper.getServerSideProps(
     async ({ req, locale }) => {
       const url = req.headers.host;
       const { data: element, isError } = await store.dispatch(
-        vendorApi.endpoints.getVendor.initiate({ lang: locale, url })
+        vendorApi.endpoints.getVendor.initiate(
+          { lang: locale, url },
+          {
+            forceRefetch: true,
+          }
+        )
       );
       await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
       if (isError || !element.Data || !url) {
