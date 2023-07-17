@@ -536,5 +536,6 @@
   "try_again?": "حاول مرة أخرى؟",
   "out_stock":"نفذت الكمية",
   "phone_must_be_at_least_5_digits":"الرقم يجب ان يكون 5 اعداد علي الاقل",
-  "phone_must_be_at_most_15_digits":"الرقم يجب ان يكون 15 عدد على الاكثر"
+  "phone_must_be_at_most_15_digits":"الرقم يجب ان يكون 15 عدد على الاكثر",
+  "the_date_must_be_a_date_after_yesterday.":"اختر تاريخًا بعد تاريخ امس"
 }

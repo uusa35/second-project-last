@@ -212,10 +212,11 @@ const CartReview: NextPage<Props> = ({ url }) => {
             router.replace(appLinks.orderFailure.path);
           }
         } else {
-          if (r.error && r.error.data && r.error.data.msg) {
+          console.log({ r });
+          if (r.error && r.error.msg) {
             dispatch(
               showToastMessage({
-                content: r.error.data.msg,
+                content: r.error.msg,
                 type: `error`,
               })
             );
