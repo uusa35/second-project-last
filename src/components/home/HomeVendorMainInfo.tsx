@@ -49,7 +49,8 @@ const HomeVendorMainInfo: FC<Props> = ({ url }): JSX.Element => {
   }, [branch_id, area_id, url]);
 
   if (!isSuccess || !element || !element.Data) return <></>;
-
+  //  /_next/image?url=https%3A%2F%2Fqueue-spaces.nyc3.digitaloceanspaces.com%2Fvendor_1%2Flogo%2F178%2FWhatsApp-Image-2023-06-30-at-10.19.18-PM.jpeg&w=256&q=75
+  // https://logmaline.getq.me/_next/image?url=https%3A%2F%2Fmybusiness.getq.me%2Fdefault%2FnotFound.png&w=256&q=75
   return (
     <>
       <div className="flex gap-x-2 justify-between items-start capitalize">

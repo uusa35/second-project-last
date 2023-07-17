@@ -26,10 +26,22 @@ export const orderApi = apiSlice.injectEndpoints({
           headers: {
             ...area_branch,
             url,
+            lang: 'en',
           },
           validateStatus: (response, result) =>
             response.status == 200 && result.status,
         }),
+        transformErrorResponse(res) {
+          if (res.data && !res.data?.status && res.data.msg) {
+            if (res.data.msg.Date && res.data.msg.Date[0]) {
+              return { ...res.data, msg: res.data.msg.Date[0] };
+            } else if (res.data.msg.Time && res.data.msg.Time[0]) {
+              return { ...res.data, msg: res.data.msg.Time[0] };
+            } else {
+              return { ...res.data, msg: res.data.msg };
+            }
+          }
+        },
       }),
       addAddress: builder.query<
         AppQueryResult<OrderAddress>,

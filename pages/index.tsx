@@ -223,7 +223,10 @@ const HomePage: NextPage<Props> = ({
 };
 
 export default HomePage;
+<<<<<<< HEAD
 
+=======
+>>>>>>> structure
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ req, locale, res }) => {
@@ -252,6 +255,10 @@ export const getServerSideProps = wrapper.getServerSideProps(
           notFound: true,
         };
       }
+<<<<<<< HEAD
+=======
+
+>>>>>>> structure
       return {
         props: {
           element: element.Data,
