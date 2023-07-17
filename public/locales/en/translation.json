@@ -523,5 +523,6 @@
   "try_again?": "try again?",
   "out_stock":"out stock",
   "phone_must_be_at_least_5_digits":"phone must be at least 5 digits",
-  "phone_must_be_at_most_15_digits":"phone must be at most 15 digits"
+  "phone_must_be_at_most_15_digits":"phone must be at most 15 digits",
+  "the_date_must_be_a_date_after_yesterday.":"the date must be a date after yesterday."
 }
