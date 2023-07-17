@@ -6,7 +6,13 @@ import {
 } from '@/redux/api/productApi';
 import { NextPage } from 'next';
 import { debounce, isEmpty, map, isNull } from 'lodash';
-import { appLinks, arboriaFont, imageSizes, suppressText, toEn } from '@/constants/*';
+import {
+  appLinks,
+  arboriaFont,
+  imageSizes,
+  suppressText,
+  toEn,
+} from '@/constants/*';
 import MainHead from '@/components/MainHead';
 import NoResultFound from '@/appImages/no-result-found.gif';
 import { useTranslation } from 'react-i18next';
@@ -91,6 +97,7 @@ const ProductSearchIndex: NextPage<Props> = ({ url }): JSX.Element => {
         title={`search products`}
         description={`searching products`}
         mainImage={`${logo}`}
+        url={url}
       />
       <MainContentLayout url={url} backHome={true}>
         <div className={`px-4`}>

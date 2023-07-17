@@ -35,7 +35,7 @@ import {
   suppressText,
   toEn,
 } from '@/constants/*';
-import { isEmpty, kebabCase, lowerCase } from 'lodash';
+import { isEmpty, kebabCase, lowerCase, upperCase } from 'lodash';
 import {
   useCheckTimeAvilabilityMutation,
   useCreateAddressMutation,
@@ -210,6 +210,7 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
   useMemo(() => setValue('address_type', addressTabType), [addressTabType]);
 
   const handelSaveAddress = async (body: any) => {
+    console.log({ body });
     await triggerAddAddress({
       body: {
         address_type: body.address_type,
@@ -240,10 +241,10 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
         dispatch(setCustomerAddress(r.data.Data));
         checkTimeAvailability();
       } else {
-        if (r.error) {
+        if (r.error && r.error.data && r.error.data.msg) {
           dispatch(
             showToastMessage({
-              content: lowerCase(kebabCase(r.error.data.msg[`address`][0])),
+              content: lowerCase(kebabCase(r.error.data?.msg[`address`][0])),
               type: `error`,
             })
           );

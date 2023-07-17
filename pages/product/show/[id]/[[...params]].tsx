@@ -591,11 +591,11 @@ const ProductShow: NextPage<Props> = ({
     return <LoadingSpinner fullWidth={true} />;
   }
 
-  // console.log('out of stock', outOfStock);
   return (
     <Suspense>
       <MainHead
         title={`${currentLocale === 'ar' ? product.name_ar : product.name_en}`}
+        url={url}
         description={`${
           currentLocale === 'ar'
             ? product.description_ar
@@ -619,13 +619,13 @@ const ProductShow: NextPage<Props> = ({
             <div className="relative w-full capitalize">
               <div className="relative w-full h-auto overflow-hidden">
                 {!isEmpty(element?.Data?.img) ? (
-                  <Carousel className={`h-96`}>
+                  <Carousel className={`h-96 d-initial`}>
                     {map(element?.Data?.img, (image: img, i) => (
                       <div key={i}>
                         <Image
                           src={`${
                             image && image.original
-                              ? imgUrl(image.original)
+                              ? image.original
                               : NoFoundImage.src
                           }`}
                           alt={element?.Data?.name ?? ``}
@@ -659,14 +659,16 @@ const ProductShow: NextPage<Props> = ({
                     <TextTrans
                       ar={element?.Data?.name_ar}
                       en={element?.Data?.name_en}
-                      style={{
-                        maxWidth: '30ch',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap',
-                        overflow: 'hidden',
-                        display: 'block',
-                        color: `black`,
-                      }}
+                      length={40}
+                      className={`block overflow-hidden`}
+                      // style={{
+                      //   maxWidth: '30ch',
+                      //   textOverflow: 'ellipsis',
+                      //   whiteSpace: 'nowrap',
+                      //   overflow: 'hidden',
+                      //   display: 'block',
+                      //   color: `black`,
+                      // }}
                     />
                   </p>
                   <p
@@ -1041,13 +1043,18 @@ export const getServerSideProps = wrapper.getServerSideProps(
         data: AppQueryResult<Product>;
         isError: boolean;
       } = await store.dispatch(
-        productApi.endpoints.getProduct.initiate({
-          id,
-          lang: locale,
-          ...(branchId ? { branch_id: branchId } : {}),
-          ...(areaId ? { area_id: areaId } : {}),
-          url: req.headers.host,
-        })
+        productApi.endpoints.getProduct.initiate(
+          {
+            id,
+            lang: locale,
+            ...(branchId ? { branch_id: branchId } : {}),
+            ...(areaId ? { area_id: areaId } : {}),
+            url: req.headers.host,
+          },
+          {
+            forceRefetch: true,
+          }
+        )
       );
       await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
       if (isError || !element.Data) {
