@@ -255,10 +255,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
           notFound: true,
         };
       }
-<<<<<<< HEAD
-=======
-
->>>>>>> structure
       return {
         props: {
           element: element.Data,
