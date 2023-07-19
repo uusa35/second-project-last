@@ -223,10 +223,7 @@ const HomePage: NextPage<Props> = ({
 };
 
 export default HomePage;
-<<<<<<< HEAD
 
-=======
->>>>>>> structure
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ req, locale, res }) => {
