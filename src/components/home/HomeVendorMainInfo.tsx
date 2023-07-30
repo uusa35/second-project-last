@@ -50,8 +50,6 @@ const HomeVendorMainInfo: FC<Props> = ({ url }): JSX.Element => {
 
   if (!isSuccess || !element || !element.Data) return <></>;
 
-  console.log('element', element.Data);
-
   return (
     <>
       <div className="flex gap-x-2 justify-between items-start capitalize">
