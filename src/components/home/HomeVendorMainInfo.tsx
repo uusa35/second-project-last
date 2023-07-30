@@ -92,14 +92,19 @@ const HomeVendorMainInfo: FC<Props> = ({ url }): JSX.Element => {
             </div>
             {/* payment info */}
             <div className="text-sm text-neutral-400 space-y-1">
-              <p suppressHydrationWarning={suppressText}>
-                <Check className="text-lime-400 text-base checkCircle" />
-                {t('payment_by_cards')}
-              </p>
-              <p suppressHydrationWarning={suppressText}>
-                <Check className="text-lime-400 text-base checkCircle" />
-                {t('cash_on_delivery')}
-              </p>
+              {element.Data.Payment_Methods.knet ||
+              element.Data.Payment_Methods.visa ? (
+                <p suppressHydrationWarning={suppressText}>
+                  <Check className="text-lime-400 text-base checkCircle" />
+                  {t('payment_by_cards')}
+                </p>
+              ) : null}
+              {element.Data.Payment_Methods.cash_on_delivery && (
+                <p suppressHydrationWarning={suppressText}>
+                  <Check className="text-lime-400 text-base checkCircle" />
+                  {t('cash_on_delivery')}
+                </p>
+              )}
             </div>
           </div>
         </div>
