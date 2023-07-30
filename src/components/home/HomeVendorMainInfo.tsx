@@ -50,8 +50,6 @@ const HomeVendorMainInfo: FC<Props> = ({ url }): JSX.Element => {
 
   if (!isSuccess || !element || !element.Data) return <></>;
 
-  console.log('element', element.Data);
-
   return (
     <>
       <div className="flex gap-x-2 justify-between items-start capitalize">
@@ -107,12 +105,12 @@ const HomeVendorMainInfo: FC<Props> = ({ url }): JSX.Element => {
                   {t('payment_by_cards')}
                 </p>
               ) : null}
-              {element.Data.Payment_Methods.cash_on_delivery && (
+              {element.Data.Payment_Methods.cash_on_delivery ? (
                 <p suppressHydrationWarning={suppressText}>
                   <Check className="text-lime-400 text-base checkCircle" />
                   {t('cash_on_delivery')}
                 </p>
-              )}
+              ) : null}
             </div>
           </div>
         </div>
