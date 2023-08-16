@@ -53,11 +53,11 @@ export interface Location {
 }
 
 export interface Address {
-  id: number | string;
+  // id: number | string;
   type: number | string;
   longitude: number | string;
   latitude: number | string;
-  customer_id: number | string;
+  // customer_id: number | string;
   [key: string]: any;
 }
 

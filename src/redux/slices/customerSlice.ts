@@ -8,8 +8,8 @@ const initialState: CustomerInfo = {
   email: ``,
   phone: ``,
   address: {
-    id: 0,
-    customer_id: 0,
+    // id: 0,
+    // customer_id: 0,
     type: 0,
     address: {},
     longitude: ``,
@@ -68,11 +68,13 @@ export const customerSlice = createSlice({
       return {
         ...state,
         address: {
-          id: action.payload?.id,
+          // id: action.payload?.id,
           type: action.payload?.type,
+          latitude: action.payload?.latitude,
+          longitude: action.payload?.longitude,
           ...action.payload?.address,
         },
-        customer_id: action.payload?.customer_id,
+        // customer_id: action.payload?.customer_id,
       };
     },
     resetCustomerAddress: (

@@ -24,7 +24,7 @@ import {
   showToastMessage,
 } from '@/redux/slices/appSettingSlice';
 import { useDispatch } from 'react-redux';
-import { useSaveCustomerInfoMutation } from '@/redux/api/CustomerApi';
+// import { useSaveCustomerInfoMutation } from '@/redux/api/CustomerApi';
 import { useRouter } from 'next/router';
 import { setCustomer } from '@/redux/slices/customerSlice';
 import { useAppSelector } from '@/redux/hooks';
@@ -71,7 +71,7 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
         : { 'x-area-id': areaId },
     url,
   });
-  const [triggerSaveCustomerInfo] = useSaveCustomerInfoMutation();
+  // const [triggerSaveCustomerInfo] = useSaveCustomerInfoMutation();
   const {
     register,
     handleSubmit,
@@ -110,26 +110,31 @@ const CustomerInformation: NextPage<Props> = ({ url }): JSX.Element => {
   }, []);
 
   const onSubmit = async (body: any) => {
-    await triggerSaveCustomerInfo({
-      body,
-      url,
-    }).then((r: any) => {
-      if (r.data && r.data.Data && r.data.status) {
-        dispatch(setCustomer(r.data.Data));
-        router.push(appLinks.address.path);
-        // .then(() => dispatch(setCustomer(r.data.Data)));
-      } else {
-        dispatch(
-          showToastMessage({
-            content: `all_fields_r_required`,
-            type: 'error',
-          })
-        );
-      }
-    });
+    // console.log({ body });
+    dispatch(setCustomer({ ...body }));
+    router.push(appLinks.address.path);
+
+    // await triggerSaveCustomerInfo({
+    //   body,
+    //   url,
+    // }).then((r: any) => {
+    //   if (r.data && r.data.Data && r.data.status) {
+    //     dispatch(setCustomer(r.data.Data));
+    //     router.push(appLinks.address.path);
+    //     // .then(() => dispatch(setCustomer(r.data.Data)));
+    //   } else {
+    //     dispatch(
+    //       showToastMessage({
+    //         content: `all_fields_r_required`,
+    //         type: 'error',
+    //       })
+    //     );
+    //   }
+    // });
   };
 
-  console.log({ errors });
+  // console.log({ errors });
+
   return (
     <Suspense>
       <MainContentLayout
