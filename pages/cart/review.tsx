@@ -64,7 +64,7 @@ const CartReview: NextPage<Props> = ({ url }) => {
     customer,
     branch: { id: branchId, name_ar: branchAR, name_en: branchEN },
     area: { id: areaId, name_ar: areaAR, name_en: areaEN },
-    customer: { userAgent },
+    customer: { userAgent, address },
     appSetting: { method: process_type },
     cart: { promoEnabled, PromoCode },
   } = useAppSelector((state) => state);
@@ -131,7 +131,13 @@ const CartReview: NextPage<Props> = ({ url }) => {
         map(
           customer.address,
           (value, key) =>
-            value !== null && key !== `id` && `${key} : ${value}  `
+            value &&
+            value !== null &&
+            key !== `id` &&
+            key !== `latitude` &&
+            key !== `Longitude` &&
+            key !== `type` &&
+            `${key} : ${value}  `
         ),
         (a) => a
       );
@@ -145,9 +151,9 @@ const CartReview: NextPage<Props> = ({ url }) => {
   }
 
   const handleCreateOrder = async () => {
-    if (isNull(customer.id)) {
+    if (!customer.name || !customer.phone) {
       router.push(appLinks.customerInfo.path);
-    } else if (!customer.address.id && process_type === `delivery`) {
+    } else if (!address.type && process_type === `delivery`) {
       router.push(appLinks.address.path);
     }
     if (isNull(selectedPaymentMethod)) {
@@ -159,16 +165,55 @@ const CartReview: NextPage<Props> = ({ url }) => {
       );
     }
     if (
-      !isNull(customer.id) &&
+      customer.phone &&
+      customer.name &&
       !isEmpty(selectedPaymentMethod) &&
       selectedPaymentMethod &&
       !isNull(userAgent)
     ) {
-      await triggerCreateOrder({
+      console.log({
         params: {
-          user_id: customer.id,
+          name: customer.name,
+          phone: customer.phone,
+          email: customer.email,
+
+          // user_id: customer.id,
           ...(process_type === `delivery`
-            ? { address_id: customer.address.id }
+            ? {
+                address_type: address.type,
+                address: JSON.parse(JSON.stringify(address)),
+              }
+            : {}),
+          order_type: customer.prefrences.type,
+          UserAgent: userAgent,
+          Messg: customer.notes,
+          PaymentMethod: selectedPaymentMethod,
+          ...(promoEnabled && PromoCode ? { PromoCode: PromoCode } : {}),
+          Date: `${new Date(customer.prefrences.date as Date).getFullYear()}-${
+            new Date(customer.prefrences.date as Date).getMonth() + 1
+          }-${new Date(customer.prefrences.date as Date).getDate()}`,
+          Time: `${(
+            '0' + new Date(customer.prefrences.time as Date).getHours()
+          ).slice(-2)}:${(
+            '0' + new Date(customer.prefrences.time as Date).getMinutes()
+          ).slice(-2)}:${(
+            '0' + new Date(customer.prefrences.time as Date).getSeconds()
+          ).slice(-2)}`,
+        },
+      });
+
+      await triggerCreateOrder({
+        body: {
+          name: customer.name,
+          phone: customer.phone,
+          email: customer.email,
+
+          // user_id: customer.id,
+          ...(process_type === `delivery`
+            ? {
+                address_type: address.type,
+                address,
+              }
             : {}),
           order_type: customer.prefrences.type,
           UserAgent: userAgent,

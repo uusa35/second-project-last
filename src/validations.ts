@@ -8,8 +8,8 @@ export const customerInfoSchema = yup
     phone: yup
       .string()
       .required()
-      .min(8,  'phone_must_be_at_least_5_digits' )
-      .max(15,  'phone_must_be_at_most_15_digits' ),
+      .min(8, 'phone_must_be_at_least_5_digits')
+      .max(15, 'phone_must_be_at_most_15_digits'),
   })
   .required();
 
@@ -59,23 +59,29 @@ export const addressSchema = (method: string, t: any) =>
         .string()
         .max(100)
         .when('address_type', (address_type, schema) => {
-          if (address_type === 2 && method === `delivery`) {
+          if (
+            (address_type === 2 || address_type === 3) &&
+            method === `delivery`
+          ) {
             return schema.required(t(`validation.required`));
           }
           return schema.nullable(true);
         }),
-      office_no: yup.mixed().when('address_type', (address_type, schema) => {
-        if (address_type === 3 && method === `delivery`) {
-          return schema.required(t(`validation.required`));
-        }
-        return schema.nullable(true);
-      }),
+      office_no: yup
+        .string()
+        .max(100)
+        .when('address_type', (address_type, schema) => {
+          if (address_type === 3 && method === `delivery`) {
+            return schema.required(t(`validation.required`));
+          }
+          return schema.nullable(true);
+        }),
       avenue: yup.string().max(50).nullable(true),
       paci: yup.string().max(50).nullable(true),
       additional: yup.string().nullable(true),
       longitude: yup.string(),
       latitude: yup.string(),
-      customer_id: yup.string().required(),
+      // customer_id: yup.string().required(),
     })
     .required();
 
