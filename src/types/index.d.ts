@@ -287,13 +287,20 @@ export interface OrderTrack {
 }
 
 export interface OrderUser {
-  user_id: number;
+  name: string;
+  phone: string;
+  email: string;
+  address_type?: int;
+  address?: {
+    [key: string]: any;
+  };
+  // user_id: number;
   order_type: string;
   UserAgent: string;
   Date?: string;
   Time?: string;
   Messg: string;
-  address_id?: number;
+  // address_id?: number;
   PaymentMethod: `cash_on_delivery` | `knet` | `visa`;
 }
 
