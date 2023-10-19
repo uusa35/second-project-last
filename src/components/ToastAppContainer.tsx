@@ -1,3 +1,4 @@
+'use client';
 import React, { Suspense } from 'react';
 import { ToastContainer, Slide, Zoom, Flip, Bounce } from 'react-toastify';
 import { useAppSelector } from '@/redux/hooks';
