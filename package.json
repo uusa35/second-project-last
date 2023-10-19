@@ -5,9 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start -p 3001",
-    "lint": "next lint",
-    "cypress-ui": "cypress open"
+    "start": "next start -p 8080",
+    "lint": "next lint"
   },
   "dependencies": {
     "@emotion/memoize": "^0.8.0",
