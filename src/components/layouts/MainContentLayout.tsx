@@ -1,6 +1,5 @@
 import { FC, ReactNode, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import dynamic from 'next/dynamic';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import OffLineWidget from '@/widgets/OffLineWidget';
 import NoInternet from '@/appImages/no_internet.png';
@@ -10,15 +9,10 @@ import { setUrl } from '@/redux/slices/appSettingSlice';
 import { isUndefined } from 'lodash';
 import { scrollClass, suppressText } from '@/constants/*';
 import ScrollToTopButton from '@/components/ScrollToTopButton';
-const AppHeader = dynamic(() => import(`@/components/AppHeader`), {
-  ssr: false,
-});
-const AppFooter = dynamic(() => import(`@/components/AppFooter`), {
-  ssr: false,
-});
-const SideMenu = dynamic(() => import(`@/components/sideMenu`), {
-  ssr: false,
-});
+import AppHeader from '@/components/AppHeader';
+import AppFooter from '@/components/AppFooter';
+import SideMenu from '@/components/sideMenu';
+
 
 type Props = {
   children: ReactNode | undefined;

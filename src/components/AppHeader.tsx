@@ -1,3 +1,4 @@
+'use client';
 import { FC, Suspense, useEffect, useState } from 'react';
 import BackBtn from '@/components/BackBtn';
 import { useRouter } from 'next/router';

@@ -1,3 +1,4 @@
+'use client';
 import React, { FC, Suspense } from 'react';
 import { appLinks, imageSizes, imgUrl, suppressText } from '@/constants/*';
 import Link from 'next/link';

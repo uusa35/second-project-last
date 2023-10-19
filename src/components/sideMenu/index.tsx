@@ -1,3 +1,4 @@
+'use client';
 import React, { Suspense, useEffect } from 'react';
 import { ReactBurgerMenu, slide as Menu } from 'react-burger-menu';
 import { useTranslation } from 'react-i18next';
