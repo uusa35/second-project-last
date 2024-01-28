@@ -48,7 +48,10 @@ const TrackOrder: NextPage<Props> = ({ url }): JSX.Element => {
 
   useEffect(() => {
     if (router.isReady && router.query.order_code) {
-      handleChange(`${router.query.order_code}`);
+      triggerGetTrackOrder({
+        order_code: router.query.order_code.toString(),
+        url,
+      });
     }
   }, [router.isReady, router.query.order_code]);
 
@@ -67,7 +70,7 @@ const TrackOrder: NextPage<Props> = ({ url }): JSX.Element => {
     if (isSuccess && data && data.status) {
       const address = filter(
         map(
-          data.data.address.address,
+          data?.data?.address?.address,
           (value, key) => value !== null && `${key} : ${value}  `
         ),
         (a) => a
@@ -89,7 +92,7 @@ const TrackOrder: NextPage<Props> = ({ url }): JSX.Element => {
                 router.isReady &&
                 router.query.order_code &&
                 router.query?.order_code
-                  ? router.query.order_code as string
+                  ? (router.query.order_code as string)
                   : ``
               }
               onChange={debounce((e) => handleChange(e.target.value), 400)}
