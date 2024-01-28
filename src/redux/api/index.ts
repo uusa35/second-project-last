@@ -6,7 +6,7 @@ import { RootState } from '@/redux/store';
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
-    baseUrl: `${apiUrl}`,
+    baseUrl: isLocal ? 'https://pages-dash.testbedbynd.com/api/' : `${apiUrl}`,
     prepareHeaders: async (
       headers,
       { getState, type, endpoint, extra }: RootState
