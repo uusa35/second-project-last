@@ -118,7 +118,9 @@ const HomePage: NextPage<Props> = ({
   if (!element) {
     return <LoadingSpinner />;
   }
+
   console.log('elemnt', element);
+
   console.log('url', url);
 
   return (
@@ -221,6 +223,7 @@ const HomePage: NextPage<Props> = ({
 };
 
 export default HomePage;
+
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ req, locale, res }) => {
@@ -249,7 +252,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
           notFound: true,
         };
       }
-
       return {
         props: {
           element: element.Data,
