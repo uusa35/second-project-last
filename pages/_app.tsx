@@ -17,29 +17,29 @@ import { ErrorBoundary } from 'react-error-boundary';
 import { isLocal } from '@/constants/*';
 
 const App: FC<AppProps> = ({ Component, ...rest }) => {
-  const { store, props } = wrapper.useWrappedStore(rest);
-  const { pageProps } = props;
-  return (
-    <Suspense>
-      <Provider store={store}>
-        {isLocal ? (
-          <ErrorBoundary FallbackComponent={ErrorHandler}>
-            <MainLayout>
-              <Component {...pageProps} />
-            </MainLayout>
-          </ErrorBoundary>
-        ) : (
-          <MainLayout>
-            <Component {...pageProps} />
-          </MainLayout>
-        )}
-      </Provider>
-    </Suspense>
-  );
+    const { store, props } = wrapper.useWrappedStore(rest);
+    const { pageProps } = props;
+    return (
+        <Suspense>
+            <Provider store={store}>
+                {isLocal ? (
+                    <ErrorBoundary FallbackComponent={ErrorHandler}>
+                        <MainLayout>
+                            <Component {...pageProps} />
+                        </MainLayout>
+                    </ErrorBoundary>
+                ) : (
+                    <MainLayout>
+                        <Component {...pageProps} />
+                    </MainLayout>
+                )}
+            </Provider>
+        </Suspense>
+    );
 };
 
 export function reportWebVitals(metric: NextWebVitalsMetric) {
-  // isLocal ? console.log('metric', metric) : null;
+    // isLocal ? console.log('metric', metric) : null;
 }
 
 export default App;
