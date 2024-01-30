@@ -119,10 +119,6 @@ const HomePage: NextPage<Props> = ({
     return <LoadingSpinner />;
   }
 
-  console.log('elemnt', element);
-
-  console.log('url', url);
-
   return (
     <Suspense fallback={<LoadingSpinner fullWidth={true} />}>
       {/* SEO Head DEV*/}
