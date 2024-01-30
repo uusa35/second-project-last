@@ -8,13 +8,15 @@ import { lowerCase, snakeCase } from 'lodash';
 import { persistor } from '@/redux/store';
 
 export function* startResetEnireAppSceanrio() {
-  yield delay(1000)
-  persistor.purge()
-  yield delay(5000)
-  // yield put({
-  //   type: `${appSettingSlice.actions.setVersionApp}`,
-  //   payload: process.env.NEXT_PUBLIC_APP_VERSION
-  // });
+  // persistor.purge()
+  yield delay(1000);
+  persistor.pause()
+  persistor.flush().then(() => { return persistor.purge() })
+  yield delay(8000)
+  yield put({
+    type: `${appSettingSlice.actions.setVersionApp}`,
+    payload: process.env.NEXT_PUBLIC_APP_VERSION
+  });
 }
 
 export function* startEnableLoadingScenario(action: PayloadAction) {

@@ -93,10 +93,11 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
       process.env.NEXT_PUBLIC_APP_VERSION &&
       version !== process.env.NEXT_PUBLIC_APP_VERSION
     ) {
+      console.log('inside ====>');
       dispatch(resetEnterApp());
-      dispatch(setVersionApp(process.env.NEXT_PUBLIC_APP_VERSION));
+      // dispatch(setVersionApp(process.env.NEXT_PUBLIC_APP_VERSION));
     }
-  }, [version]);
+  }, []);
 
   const setAppDefaults = async () => {
     if (isNull(userAgent) && url) {

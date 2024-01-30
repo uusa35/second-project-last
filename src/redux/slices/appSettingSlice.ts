@@ -234,7 +234,7 @@ export const appSettingSlice = createSlice({
     resetEnterApp: (
       state: typeof initialState,
       action: PayloadAction<void>
-    ) => state,
+    ) => initialState,
     setVersionApp: (
       state: typeof initialState,
       action: PayloadAction<string>
