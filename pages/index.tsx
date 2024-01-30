@@ -41,7 +41,6 @@ const HomePage: NextPage<Props> = ({
   element,
   currentLocale,
 }): JSX.Element => {
-  console.log('element ====>', element);
   const { t } = useTranslation();
   const {
     locale: { lang },

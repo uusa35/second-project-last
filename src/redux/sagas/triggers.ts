@@ -20,7 +20,7 @@ import { localeSlice } from '@/redux/slices/localeSlice';
 import { productCartSlice } from '@/redux/slices/productCartSlice';
 
 export function* triggerResetEntireApp() {
-  yield takeLatest(`resetEntireApp`, startResetEnireAppSceanrio);
+  yield takeLatest(`${appSettingSlice.actions.resetEnterApp}`, startResetEnireAppSceanrio);
 }
 
 export function* triggerUpdateCartProductPrice() {

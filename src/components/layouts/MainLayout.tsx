@@ -4,9 +4,12 @@ import i18n from 'i18next';
 import { useRouter } from 'next/router';
 import {
   hideSideMenu,
+  resetAppSetting,
+  resetEnterApp,
   setCartMethod,
   setCurrentModule,
   setShowFooterElement,
+  setVersionApp,
 } from '@/redux/slices/appSettingSlice';
 import { setUserAgent } from '@/redux/slices/customerSlice';
 import {
@@ -37,7 +40,7 @@ type Handler = (...evts: any[]) => void;
 
 const MainLayout: FC<Props> = ({ children }): JSX.Element => {
   const {
-    appSetting: { sideMenuOpen, url, previousUrl, method },
+    appSetting: { sideMenuOpen, url, previousUrl, method, version },
     customer: { userAgent },
     locale,
     branch,
@@ -84,6 +87,16 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
   useEffect(() => {
     setAppDefaults();
   }, [vendorSuccess, tempIdSuccess, url]);
+
+  useEffect(() => {
+    if (
+      process.env.NEXT_PUBLIC_APP_VERSION &&
+      version !== process.env.NEXT_PUBLIC_APP_VERSION
+    ) {
+      dispatch(resetEnterApp());
+      dispatch(setVersionApp(process.env.NEXT_PUBLIC_APP_VERSION));
+    }
+  }, [version]);
 
   const setAppDefaults = async () => {
     if (isNull(userAgent) && url) {
