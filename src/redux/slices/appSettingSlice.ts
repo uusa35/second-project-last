@@ -27,6 +27,7 @@ const initialState: appSetting = {
     type: `default`,
   },
   currentModule: `home`,
+  version: `0.0.40`
 };
 
 export const appSettingSlice = createSlice({
@@ -230,6 +231,19 @@ export const appSettingSlice = createSlice({
         previousUrl: { ...state.previousUrl, prevRouterLocale: action.payload },
       };
     },
+    resetEnterApp: (
+      state: typeof initialState,
+      action: PayloadAction<void>
+    ) => initialState,
+    setVersionApp: (
+      state: typeof initialState,
+      action: PayloadAction<string>
+    ) => {
+      return {
+        ...state,
+        version: action.payload
+      }
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(branchSlice.actions.setBranch, (state, action) => {
@@ -267,4 +281,7 @@ export const {
   resetShowFooterElement,
   setPreviousUrl,
   changePreviousUrlLocale,
+  resetEnterApp,
+  setVersionApp
+
 } = appSettingSlice.actions;
