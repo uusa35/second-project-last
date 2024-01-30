@@ -50,56 +50,37 @@ const appLogger = createLogger({
   duration: isLocal,
   diff: isLocal,
 });
+const middlewares = [
+  apiSlice.middleware,
+  categoryApi.middleware,
+  productApi.middleware,
+  vendorApi.middleware,
+  locationApi.middleware,
+  branchApi.middleware,
+  sagaMiddleware,
+];
+if (process.env.NODE_ENV === `development`) {
+  /* @ts-ignore */
+  middlewares.push(appLogger);
+}
 let store: any = configureStore({
   reducer: persistedReducer,
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.
-  middleware: isLocal
-    ? (gDM) =>
-      gDM({
-        serializableCheck: {
-          ignoredActions: [
-            FLUSH,
-            HYDRATE,
-            REHYDRATE,
-            PAUSE,
-            PERSIST,
-            PURGE,
-            REGISTER,
-          ],
-        },
-      }).concat([
-        apiSlice.middleware,
-        categoryApi.middleware,
-        productApi.middleware,
-        vendorApi.middleware,
-        locationApi.middleware,
-        branchApi.middleware,
-        sagaMiddleware,
-        appLogger,
-      ])
-    : (gDM) =>
-      gDM({
-        serializableCheck: {
-          ignoredActions: [
-            FLUSH,
-            HYDRATE,
-            REHYDRATE,
-            PAUSE,
-            PERSIST,
-            PURGE,
-            REGISTER,
-          ],
-        },
-      }).concat([
-        apiSlice.middleware,
-        categoryApi.middleware,
-        productApi.middleware,
-        vendorApi.middleware,
-        locationApi.middleware,
-        branchApi.middleware,
-        sagaMiddleware,
-      ]),
+  middleware: (gDM) =>
+    gDM({
+      serializableCheck: {
+        ignoredActions: [
+          FLUSH,
+          HYDRATE,
+          REHYDRATE,
+          PAUSE,
+          PERSIST,
+          PURGE,
+          REGISTER,
+        ],
+      },
+    }).concat(middlewares),
 });
 sagaMiddleware.run(rootSaga);
 export const initializeStore = (preloadedState: RootState) => {
