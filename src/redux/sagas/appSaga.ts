@@ -4,7 +4,6 @@ import i18n from 'i18next';
 import { toast, TypeOptions } from 'react-toastify';
 import { appSettingSlice } from '@/redux/slices/appSettingSlice';
 import { lowerCase, snakeCase } from 'lodash';
-
 import { persistor } from '@/redux/store';
 
 export function* startResetEnireAppSceanrio() {
