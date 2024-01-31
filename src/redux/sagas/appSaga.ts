@@ -4,21 +4,17 @@ import i18n from 'i18next';
 import { toast, TypeOptions } from 'react-toastify';
 import { appSettingSlice } from '@/redux/slices/appSettingSlice';
 import { lowerCase, snakeCase } from 'lodash';
-import { persistor } from '@/redux/store';
 
+import { persistor } from '@/redux/store';
 
 export function* startResetEnireAppSceanrio() {
   const version: any = localStorage.getItem('version');
-  if (process.env.NEXT_PUBLIC_APP_VERSION) {
-    if (version && process.env.NEXT_PUBLIC_APP_VERSION && version !== process.env.NEXT_PUBLIC_APP_VERSION) {
-      localStorage.setItem('version', process.env.NEXT_PUBLIC_APP_VERSION);
-      yield delay(5000)
-      persistor.purge()
-      yield delay(5000)
-      window.location.reload();
-    } else {
-      localStorage.setItem('version', process.env.NEXT_PUBLIC_APP_VERSION);
-    }
+  if (process.env.NEXT_PUBLIC_APP_VERSION && version !== process.env.NEXT_PUBLIC_APP_VERSION) {
+    localStorage.setItem('version', process.env.NEXT_PUBLIC_APP_VERSION);
+    yield delay(5000)
+    persistor.purge()
+    yield delay(5000)
+    window.location.reload();
   }
 }
 
