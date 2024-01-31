@@ -114,7 +114,6 @@ export type appSetting = {
     title?: string;
     showToast: boolean;
   };
-
 };
 
 export interface ServerCart {
