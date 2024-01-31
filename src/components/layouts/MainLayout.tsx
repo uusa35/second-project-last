@@ -5,11 +5,9 @@ import { useRouter } from 'next/router';
 import {
   hideSideMenu,
   resetAppSetting,
-  resetEnterApp,
   setCartMethod,
   setCurrentModule,
   setShowFooterElement,
-  setVersionApp,
 } from '@/redux/slices/appSettingSlice';
 import { setUserAgent } from '@/redux/slices/customerSlice';
 import {

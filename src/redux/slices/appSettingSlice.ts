@@ -267,6 +267,4 @@ export const {
   resetShowFooterElement,
   setPreviousUrl,
   changePreviousUrlLocale,
-
-
 } = appSettingSlice.actions;
