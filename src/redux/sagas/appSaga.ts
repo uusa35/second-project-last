@@ -4,19 +4,22 @@ import i18n from 'i18next';
 import { toast, TypeOptions } from 'react-toastify';
 import { appSettingSlice } from '@/redux/slices/appSettingSlice';
 import { lowerCase, snakeCase } from 'lodash';
-
 import { persistor } from '@/redux/store';
 
+
 export function* startResetEnireAppSceanrio() {
-  // persistor.purge()
-  yield delay(1000);
-  persistor.pause()
-  persistor.flush().then(() => { return persistor.purge() })
-  yield delay(8000)
-  yield put({
-    type: `${appSettingSlice.actions.setVersionApp}`,
-    payload: process.env.NEXT_PUBLIC_APP_VERSION
-  });
+  const version: any = localStorage.getItem('version');
+  if (process.env.NEXT_PUBLIC_APP_VERSION) {
+    if (version && process.env.NEXT_PUBLIC_APP_VERSION && version !== process.env.NEXT_PUBLIC_APP_VERSION) {
+      localStorage.setItem('version', process.env.NEXT_PUBLIC_APP_VERSION);
+      yield delay(5000)
+      persistor.purge()
+      yield delay(5000)
+      window.location.reload();
+    } else {
+      localStorage.setItem('version', process.env.NEXT_PUBLIC_APP_VERSION);
+    }
+  }
 }
 
 export function* startEnableLoadingScenario(action: PayloadAction) {
