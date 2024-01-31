@@ -45,7 +45,7 @@ const persistConfig = {
 };
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 const sagaMiddleware = createSagaMiddleware();
-const appLogger = createLogger({
+const appLogger: any = createLogger({
   collapsed: isLocal,
   duration: isLocal,
   diff: isLocal,
@@ -59,8 +59,7 @@ const middlewares = [
   branchApi.middleware,
   sagaMiddleware,
 ];
-if (process.env.NODE_ENV === `development`) {
-  /* @ts-ignore */
+if (isLocal) {
   middlewares.push(appLogger);
 }
 let store: any = configureStore({
@@ -110,5 +109,4 @@ export const useStore = (initialState: RootState) =>
 export type RootState = ReturnType<typeof store.getState>;
 export type AppStore = ReturnType<typeof store>;
 export type AppDispatch = typeof store.dispatch;
-
 export { store, persistor };
