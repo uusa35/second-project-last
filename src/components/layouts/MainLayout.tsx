@@ -5,11 +5,9 @@ import { useRouter } from 'next/router';
 import {
   hideSideMenu,
   resetAppSetting,
-  resetEnterApp,
   setCartMethod,
   setCurrentModule,
   setShowFooterElement,
-  setVersionApp,
 } from '@/redux/slices/appSettingSlice';
 import { setUserAgent } from '@/redux/slices/customerSlice';
 import {
@@ -40,13 +38,14 @@ type Handler = (...evts: any[]) => void;
 
 const MainLayout: FC<Props> = ({ children }): JSX.Element => {
   const {
-    appSetting: { sideMenuOpen, url, previousUrl, method, version },
+    appSetting: { sideMenuOpen, url, previousUrl, method },
     customer: { userAgent },
     locale,
     branch,
     area,
     branch: { id: branch_id },
     area: { id: area_id },
+    version,
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -87,15 +86,6 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
   useEffect(() => {
     setAppDefaults();
   }, [vendorSuccess, tempIdSuccess, url]);
-
-  useEffect(() => {
-    if (
-      process.env.NEXT_PUBLIC_APP_VERSION &&
-      version !== process.env.NEXT_PUBLIC_APP_VERSION
-    ) {
-      dispatch(resetEnterApp());
-    }
-  }, []);
 
   const setAppDefaults = async () => {
     if (isNull(userAgent) && url) {

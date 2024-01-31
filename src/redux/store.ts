@@ -32,6 +32,7 @@ const persistConfig = {
   whitelist: [
     'appLoading',
     'appSetting',
+    'version',
     'area',
     'branch',
     'cart',
