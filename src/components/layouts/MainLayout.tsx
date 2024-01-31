@@ -88,15 +88,6 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
     setAppDefaults();
   }, [vendorSuccess, tempIdSuccess, url]);
 
-  useEffect(() => {
-    if (
-      process.env.NEXT_PUBLIC_APP_VERSION &&
-      version !== process.env.NEXT_PUBLIC_APP_VERSION
-    ) {
-      dispatch(resetEnterApp());
-    }
-  }, []);
-
   const setAppDefaults = async () => {
     if (isNull(userAgent) && url) {
       await triggerCreateTempId({ url }).then((r: any) => {
