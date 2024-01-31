@@ -38,13 +38,14 @@ type Handler = (...evts: any[]) => void;
 
 const MainLayout: FC<Props> = ({ children }): JSX.Element => {
   const {
-    appSetting: { sideMenuOpen, url, previousUrl, method, version },
+    appSetting: { sideMenuOpen, url, previousUrl, method },
     customer: { userAgent },
     locale,
     branch,
     area,
     branch: { id: branch_id },
     area: { id: area_id },
+    version,
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const router = useRouter();

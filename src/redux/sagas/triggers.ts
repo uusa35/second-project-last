@@ -18,6 +18,7 @@ import { appSettingSlice } from '@/redux/slices/appSettingSlice';
 import { appLoadingSlice } from '@/redux/slices/appLoadingSlice';
 import { localeSlice } from '@/redux/slices/localeSlice';
 import { productCartSlice } from '@/redux/slices/productCartSlice';
+import { REHYDRATE } from 'redux-persist';
 
 export function* triggerResetEntireApp() {
   yield takeLatest(['REHYDRATE',
