@@ -4,6 +4,7 @@ import i18n from 'i18next';
 import { useRouter } from 'next/router';
 import {
   hideSideMenu,
+  resetAppSetting,
   setCartMethod,
   setCurrentModule,
   setShowFooterElement,
@@ -18,7 +19,6 @@ import {
 } from '@/constants/*';
 import { setLocale } from '@/redux/slices/localeSlice';
 import moment from 'moment';
-import dynamic from 'next/dynamic';
 import { useLazyGetVendorQuery } from '@/redux/api/vendorApi';
 import { setVendor } from '@/redux/slices/vendorSlice';
 import { isNull } from 'lodash';
@@ -26,18 +26,8 @@ import { useLazyCreateTempIdQuery } from '@/redux/api/cartApi';
 import * as yup from 'yup';
 import { removeBranch } from '@/redux/slices/branchSlice';
 import { removeArea } from '@/redux/slices/areaSlice';
-const MainAsideLayout = dynamic(
-  async () => await import(`@/components/home/MainAsideLayout`),
-  {
-    ssr: false,
-  }
-);
-const ToastAppContainer = dynamic(
-  async () => await import(`@/components/ToastAppContainer`),
-  {
-    ssr: false,
-  }
-);
+import MainAsideLayout from '@/components/home/MainAsideLayout';
+import ToastAppContainer from '@/components/ToastAppContainer';
 
 type Props = {
   children: ReactNode | undefined;
@@ -55,6 +45,7 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
     area,
     branch: { id: branch_id },
     area: { id: area_id },
+    version,
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const router = useRouter();

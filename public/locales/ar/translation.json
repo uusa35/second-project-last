@@ -531,10 +531,12 @@
   "read_less":"اقرأ أقل",
   "apply" : "تطبيق",
   "min_cart_should_be_0_25": "يجب أن يكون الحد الأدنى للطلب أكثر من 250 فلس",
+  "min_cart_should_be_4": "يجب أن يكون الحد الأدنى للطلب أكثر من ٤ د.ك",
   "looks_like_something_went_wrong": "يبدو أنه حدث خطأ ما",
   "we_are_working_on_it": "نحن نعمل عليه",
   "try_again?": "حاول مرة أخرى؟",
   "out_stock":"نفذت الكمية",
   "phone_must_be_at_least_5_digits":"الرقم يجب ان يكون 5 اعداد علي الاقل",
-  "phone_must_be_at_most_15_digits":"الرقم يجب ان يكون 15 عدد على الاكثر"
+  "phone_must_be_at_most_15_digits":"الرقم يجب ان يكون 15 عدد على الاكثر",
+  "the_date_must_be_a_date_after_yesterday.":"اختر تاريخًا بعد تاريخ امس"
 }

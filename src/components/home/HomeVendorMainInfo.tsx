@@ -46,9 +46,7 @@ const HomeVendorMainInfo: FC<Props> = ({ url }): JSX.Element => {
         false
       );
     }
-  }, [branch_id, area_id]);
-
-  useEffect(() => {}, [vendor]);
+  }, [branch_id, area_id, url]);
 
   if (!isSuccess || !element || !element.Data) return <></>;
 
@@ -57,14 +55,22 @@ const HomeVendorMainInfo: FC<Props> = ({ url }): JSX.Element => {
       <div className="flex gap-x-2 justify-between items-start capitalize">
         <div className="flex grow gap-x-2">
           <Link href={appLinks.home.path} scroll={true} className={`w-1/4`}>
-            <CustomImage
+            <Image
+              width={imageSizes.xs}
+              height={imageSizes.xs}
+              // src={`${element.Data.logo}`}
+              src={`${imgUrl(vendor.logo)}`}
+              className="rounded-md w-full h-fit aspect-square"
+              alt={element.Data.name}
+            />
+            {/* <CustomImage
               width={imageSizes.xs}
               height={imageSizes.xs}
               className="rounded-md w-full h-fit aspect-square"
-              alt={element.Data.name}
-              // src={`${imgUrl(vendor.logo)}`}
-              src={`${element.Data.logo}`}
-            />
+              alt={element.Data.name} 
+            src={`${imgUrl(vendor.logo)}`} 
+            src={`${element.Data.logo}`}
+            /> */}
           </Link>
           <div className={`flex flex-col w-full p-1`}>
             <div className={`flex flex-row justify-start items-center`}>
@@ -84,6 +90,7 @@ const HomeVendorMainInfo: FC<Props> = ({ url }): JSX.Element => {
                   <div
                     className={`w-4 h-4 rounded-full ${currentStoreStatus[0].className} rtl:ml-2 ltr:mr-2`}
                   ></div>
+
                   <p suppressHydrationWarning={suppressText}>
                     ({t(currentStoreStatus[0].status)})
                   </p>
@@ -92,14 +99,19 @@ const HomeVendorMainInfo: FC<Props> = ({ url }): JSX.Element => {
             </div>
             {/* payment info */}
             <div className="text-sm text-neutral-400 space-y-1">
-              <p suppressHydrationWarning={suppressText}>
-                <Check className="text-lime-400 text-base checkCircle" />
-                {t('payment_by_cards')}
-              </p>
-              <p suppressHydrationWarning={suppressText}>
-                <Check className="text-lime-400 text-base checkCircle" />
-                {t('cash_on_delivery')}
-              </p>
+              {element.Data.Payment_Methods.knet ||
+              element.Data.Payment_Methods.visa ? (
+                <p suppressHydrationWarning={suppressText}>
+                  <Check className="text-lime-400 text-base checkCircle" />
+                  {t('payment_by_cards')}
+                </p>
+              ) : null}
+              {element.Data.Payment_Methods.cash_on_delivery ? (
+                <p suppressHydrationWarning={suppressText}>
+                  <Check className="text-lime-400 text-base checkCircle" />
+                  {t('cash_on_delivery')}
+                </p>
+              ) : null}
             </div>
           </div>
         </div>

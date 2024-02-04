@@ -11,20 +11,15 @@ export const appLoadingSlice = createSlice({
     disableAppLoading: (
       state: typeof initialState,
       action: PayloadAction<void>
-    ) => {
-      return {
-        loading: false,
-      };
-    },
+    ) => { loading: false },
     enableAppLoading: (
       state: typeof initialState,
       action: PayloadAction<void>
-    ) => {
-      return {
-        loading: true,
-      };
-    },
+    ) => { loading: true },
   },
 });
 
-export const { enableAppLoading, disableAppLoading } = appLoadingSlice.actions;
+export const {
+  enableAppLoading,
+  disableAppLoading
+} = appLoadingSlice.actions;

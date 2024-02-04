@@ -123,6 +123,7 @@ const HomePage: NextPage<Props> = ({
       {/* SEO Head DEV*/}
       <MainHead
         title={currentLocale === 'ar' ? element.name_ar : element.name_en}
+        url={url}
         description={element.desc}
         mainImage={`${element.logo}`}
         icon={`${element.logo}`}
@@ -217,9 +218,10 @@ const HomePage: NextPage<Props> = ({
 };
 
 export default HomePage;
+
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
-    async ({ req, locale }) => {
+    async ({ req, locale, res }) => {
       const url = req.headers.host;
       if (store.getState().locale.lang !== locale) {
         store.dispatch(setLocale(locale));
@@ -229,10 +231,15 @@ export const getServerSideProps = wrapper.getServerSideProps(
         isError,
       }: { data: AppQueryResult<Vendor>; isError: boolean } =
         await store.dispatch(
-          vendorApi.endpoints.getVendor.initiate({
-            lang: locale,
-            url,
-          })
+          vendorApi.endpoints.getVendor.initiate(
+            {
+              lang: locale,
+              url,
+            },
+            {
+              forceRefetch: true,
+            }
+          )
         );
       await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
       if (isError || !element.status || !element.Data || !element) {

@@ -111,7 +111,7 @@ input[type=number] {
 input[type="date"]::-webkit-calendar-picker-indicator {
     /*opacity: 1;*/
     /*display: flex;*/
-     /*background: url('../public/assets/icons/calender.svg') no-repeat;*/
+    /*background: url('../public/assets/icons/calender.svg') no-repeat;*/
     /*width: 3vh;*/
     /*height: 3vh;*/
     /*position: relative;*/
@@ -161,4 +161,13 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 html::-webkit-scrollbar, body::-webkit-scrollbar {
     display: none;
+}
+
+
+.d-initial {
+    direction: initial;
+}
+
+.d-ltr {
+    direction : ltr !important;
 }

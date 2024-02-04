@@ -1,3 +1,4 @@
+'use client';
 import { FC, Suspense } from 'react';
 import { useAppSelector } from '@/redux/hooks';
 import { useGetCartProductsQuery } from '@/redux/api/cartApi';

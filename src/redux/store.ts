@@ -32,6 +32,7 @@ const persistConfig = {
   whitelist: [
     'appLoading',
     'appSetting',
+    'version',
     'area',
     'branch',
     'cart',
@@ -45,61 +46,41 @@ const persistConfig = {
 };
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 const sagaMiddleware = createSagaMiddleware();
-const appLogger = createLogger({
+const appLogger: any = createLogger({
   collapsed: isLocal,
   duration: isLocal,
   diff: isLocal,
 });
+const middlewares = [
+  apiSlice.middleware,
+  categoryApi.middleware,
+  productApi.middleware,
+  vendorApi.middleware,
+  locationApi.middleware,
+  branchApi.middleware,
+  sagaMiddleware,
+];
+if (isLocal) {
+  middlewares.push(appLogger);
+}
 let store: any = configureStore({
   reducer: persistedReducer,
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.
-  middleware: isLocal
-    ? (gDM) =>
-        gDM({
-          serializableCheck: {
-            ignoredActions: [
-              FLUSH,
-              HYDRATE,
-              REHYDRATE,
-              PAUSE,
-              PERSIST,
-              PURGE,
-              REGISTER,
-            ],
-          },
-        }).concat([
-          apiSlice.middleware,
-          categoryApi.middleware,
-          productApi.middleware,
-          vendorApi.middleware,
-          locationApi.middleware,
-          branchApi.middleware,
-          sagaMiddleware,
-          appLogger,
-        ])
-    : (gDM) =>
-        gDM({
-          serializableCheck: {
-            ignoredActions: [
-              FLUSH,
-              HYDRATE,
-              REHYDRATE,
-              PAUSE,
-              PERSIST,
-              PURGE,
-              REGISTER,
-            ],
-          },
-        }).concat([
-          apiSlice.middleware,
-          categoryApi.middleware,
-          productApi.middleware,
-          vendorApi.middleware,
-          locationApi.middleware,
-          branchApi.middleware,
-          sagaMiddleware,
-        ]),
+  middleware: (gDM) =>
+    gDM({
+      serializableCheck: {
+        ignoredActions: [
+          FLUSH,
+          HYDRATE,
+          REHYDRATE,
+          PAUSE,
+          PERSIST,
+          PURGE,
+          REGISTER,
+        ],
+      },
+    }).concat(middlewares),
 });
 sagaMiddleware.run(rootSaga);
 export const initializeStore = (preloadedState: RootState) => {
@@ -129,5 +110,4 @@ export const useStore = (initialState: RootState) =>
 export type RootState = ReturnType<typeof store.getState>;
 export type AppStore = ReturnType<typeof store>;
 export type AppDispatch = typeof store.dispatch;
-
 export { store, persistor };

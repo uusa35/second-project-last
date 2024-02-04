@@ -20,7 +20,9 @@ import { localeSlice } from '@/redux/slices/localeSlice';
 import { productCartSlice } from '@/redux/slices/productCartSlice';
 
 export function* triggerResetEntireApp() {
-  yield takeLatest(`resetEntireApp`, startResetEnireAppSceanrio);
+  yield takeLatest(['REHYDRATE',
+    '__NEXT_REDUX_WRAPPER_HYDRATE__'
+  ], startResetEnireAppSceanrio);
 }
 
 export function* triggerUpdateCartProductPrice() {

@@ -22,7 +22,7 @@
     "@mui/x-date-pickers": "^5.0.12",
     "@next/font": "13.1.1",
     "@reduxjs/toolkit": "^1.9.1",
-    "@sentry/nextjs": "^7.36.0",
+    "@sentry/nextjs": "^7.60.0",
     "@sentry/react": "^7.28.1",
     "@svgr/webpack": "^6.5.1",
     "@types/js-cookie": "^3.0.2",

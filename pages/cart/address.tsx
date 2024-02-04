@@ -35,7 +35,7 @@ import {
   suppressText,
   toEn,
 } from '@/constants/*';
-import { isEmpty, kebabCase, lowerCase } from 'lodash';
+import { isEmpty, kebabCase, lowerCase, upperCase } from 'lodash';
 import {
   useCheckTimeAvilabilityMutation,
   useCreateAddressMutation,
@@ -69,7 +69,13 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
     branch,
     appSetting: { method },
     locale: { isRTL },
-    customer: { userAgent, address, id: customer_id },
+    customer: {
+      userAgent,
+      address,
+      id: customer_id,
+      name: customer_name,
+      phone: customer_phone,
+    },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
   const [addressTabType, setAddressTabType] = useState(
@@ -117,7 +123,7 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
       address_type: addressTabType ?? 1,
       longitude: ``,
       latitude: ``,
-      customer_id: customer_id?.toString(),
+      // customer_id: customer_id?.toString(),
       block: address.block ?? ``,
       street: address.street ?? ``,
       house_no: address.house_no ?? ``,
@@ -207,55 +213,82 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
     });
   };
 
-  useMemo(() => setValue('address_type', addressTabType), [addressTabType]);
+  useMemo(() => {
+    setValue('address_type', addressTabType);
+  }, [addressTabType]);
 
   const handelSaveAddress = async (body: any) => {
-    await triggerAddAddress({
-      body: {
-        address_type: body.address_type,
-        longitude: body.longitude,
+    console.log({ body });
+    let address_fields = { ...body };
+    delete address_fields?.address_type;
+    delete address_fields?.latitude;
+    delete address_fields?.longitude;
+    delete address_fields?.method;
+
+    dispatch(
+      setCustomerAddress({
+        type: body.address_type,
         latitude: body.latitude,
-        customer_id: body.customer_id,
-        address: {
-          block: body.block,
-          street: body.street,
-          house_no: body.house_no,
-          avenue: body.avenue,
-          paci: body.paci,
-          floor_no: body.floor_no,
-          building_no: body.building_no,
-          office_no: body.office_no,
-          additional: body.additional,
-        },
-      },
-      url,
-    }).then((r: any) => {
-      if (r.data && r.data.status) {
-        dispatch(
-          showToastMessage({
-            content: `address_saved_successfully`,
-            type: `success`,
-          })
-        );
-        dispatch(setCustomerAddress(r.data.Data));
-        checkTimeAvailability();
-      } else {
-        if (r.error) {
-          dispatch(
-            showToastMessage({
-              content: lowerCase(kebabCase(r.error.data.msg[`address`][0])),
-              type: `error`,
-            })
-          );
-        }
-      }
-    });
+        longitude: body.longitude,
+        address: { ...address_fields },
+      })
+    );
+    dispatch(
+      showToastMessage({
+        content: `address_saved_successfully`,
+        type: `success`,
+      })
+    );
+
+    checkTimeAvailability();
+
+    // await triggerAddAddress({
+    //   body: {
+    //     address_type: body.address_type,
+    //     longitude: body.longitude,
+    //     latitude: body.latitude,
+    //     customer_id: body.customer_id,
+    //     address: {
+    //       block: body.block,
+    //       street: body.street,
+    //       house_no: body.house_no,
+    //       avenue: body.avenue,
+    //       paci: body.paci,
+    //       floor_no: body.floor_no,
+    //       building_no: body.building_no,
+    //       office_no: body.office_no,
+    //       additional: body.additional,
+    //     },
+    //   },
+    //   url,
+    // }).then((r: any) => {
+    //   if (r.data && r.data.status) {
+    //     dispatch(
+    //       showToastMessage({
+    //         content: `address_saved_successfully`,
+    //         type: `success`,
+    //       })
+    //     );
+    //     dispatch(setCustomerAddress(r.data.Data));
+    //     checkTimeAvailability();
+    //   } else {
+    //     if (r.error && r.error.data && r.error.data.msg) {
+    //       dispatch(
+    //         showToastMessage({
+    //           content: lowerCase(kebabCase(r.error.data?.msg[`address`][0])),
+    //           type: `error`,
+    //         })
+    //       );
+    //     }
+    //   }
+    // });
   };
 
   const onSubmit = async (body: any) => {
     if (method === 'pickup') {
       await checkTimeAvailability();
     } else {
+      console.log({ errors });
       await handelSaveAddress(body);
     }
   };
@@ -292,7 +325,7 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
     }
 
     // if customer id is not found
-    if (!customer_id) {
+    if (!customer_name || !customer_phone) {
       router.replace(appLinks.customerInfo.path).then(() =>
         dispatch(
           showToastMessage({
@@ -569,22 +602,23 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                             className={
                               addressTabType === 1 ? 'block' : 'hidden'
                             }
-                            id="home"
                           >
-                            <input
-                              placeholder={`${t(`house_no`)}${
-                                addressTabType === 1 ? `*` : ``
-                              }`}
-                              className={`${addressInputField}`}
-                              suppressHydrationWarning={suppressText}
-                              {...register('house_no')}
-                              onChange={(e) =>
-                                setValue('house_no', toEn(e.target.value))
-                              }
-                              aria-invalid={errors.house_no ? 'true' : 'false'}
-                            />
-                          </div>
-                          <div>
+                            <div id="home">
+                              <input
+                                placeholder={`${t(`house_no`)}${
+                                  addressTabType === 1 ? `*` : ``
+                                }`}
+                                className={`${addressInputField}`}
+                                suppressHydrationWarning={suppressText}
+                                {...register('house_no')}
+                                onChange={(e) =>
+                                  setValue('house_no', toEn(e.target.value))
+                                }
+                                aria-invalid={
+                                  errors.house_no ? 'true' : 'false'
+                                }
+                              />
+                            </div>
                             {errors.house_no?.message.key ? (
                               <p
                                 className={`text-sm text-red-800`}
@@ -603,27 +637,29 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                               </p>
                             )}
                           </div>
+
                           {/* floor no */}
                           <div
                             className={
                               addressTabType === 2 ? 'block' : 'hidden'
                             }
-                            id="apartment"
                           >
-                            <input
-                              placeholder={`${t(`floor_no`)}${
-                                addressTabType === 2 ? `*` : ``
-                              }`}
-                              className={`${addressInputField}`}
-                              suppressHydrationWarning={suppressText}
-                              {...register('floor_no')}
-                              onChange={(e) =>
-                                setValue('floor_no', toEn(e.target.value))
-                              }
-                              aria-invalid={errors.floor_no ? 'true' : 'false'}
-                            />
-                          </div>
-                          <div>
+                            <div id="apartment">
+                              <input
+                                placeholder={`${t(`floor_no`)}${
+                                  addressTabType === 2 ? `*` : ``
+                                }`}
+                                className={`${addressInputField}`}
+                                suppressHydrationWarning={suppressText}
+                                {...register('floor_no')}
+                                onChange={(e) =>
+                                  setValue('floor_no', toEn(e.target.value))
+                                }
+                                aria-invalid={
+                                  errors.floor_no ? 'true' : 'false'
+                                }
+                              />
+                            </div>
                             {errors.floor_no?.message.key ? (
                               <p
                                 className={`text-sm text-red-800`}
@@ -642,6 +678,7 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                               </p>
                             )}
                           </div>
+
                           {/* building_no */}
                           <div
                             className={
@@ -649,26 +686,25 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                                 ? 'block'
                                 : 'hidden'
                             }
-                            id="apartment"
                           >
-                            <input
-                              placeholder={`${t(`building_no`)}${
-                                addressTabType === 2 || addressTabType === 3
-                                  ? `*`
-                                  : ``
-                              }`}
-                              className={`${addressInputField}`}
-                              suppressHydrationWarning={suppressText}
-                              {...register('building_no')}
-                              onChange={(e) =>
-                                setValue('building_no', toEn(e.target.value))
-                              }
-                              aria-invalid={
-                                errors.building_no ? 'true' : 'false'
-                              }
-                            />
-                          </div>
-                          <div>
+                            <div id="apartment">
+                              <input
+                                placeholder={`${t(`building_no`)}${
+                                  addressTabType === 2 || addressTabType === 3
+                                    ? `*`
+                                    : ``
+                                }`}
+                                className={`${addressInputField}`}
+                                suppressHydrationWarning={suppressText}
+                                {...register('building_no')}
+                                onChange={(e) =>
+                                  setValue('building_no', toEn(e.target.value))
+                                }
+                                aria-invalid={
+                                  errors.building_no ? 'true' : 'false'
+                                }
+                              />
+                            </div>
                             {errors.building_no?.message.key ? (
                               <p
                                 className={`text-sm text-red-800`}
@@ -687,27 +723,29 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                               </p>
                             )}
                           </div>
+
                           {/* office_no */}
                           <div
                             className={
                               addressTabType === 3 ? 'block' : 'hidden'
                             }
-                            id="office"
                           >
-                            <input
-                              placeholder={`${t(`office_no`)}${
-                                addressTabType === 3 ? `*` : ``
-                              }`}
-                              className={`${addressInputField}`}
-                              suppressHydrationWarning={suppressText}
-                              {...register('office_no')}
-                              onChange={(e) =>
-                                setValue('office_no', toEn(e.target.value))
-                              }
-                              aria-invalid={errors.office_no ? 'true' : 'false'}
-                            />
-                          </div>
-                          <div>
+                            <div id="office">
+                              <input
+                                placeholder={`${t(`office_no`)}${
+                                  addressTabType === 3 ? `*` : ``
+                                }`}
+                                className={`${addressInputField}`}
+                                suppressHydrationWarning={suppressText}
+                                {...register('office_no')}
+                                onChange={(e) =>
+                                  setValue('office_no', toEn(e.target.value))
+                                }
+                                aria-invalid={
+                                  errors.office_no ? 'true' : 'false'
+                                }
+                              />
+                            </div>
                             {errors.office_no?.message.key ? (
                               <p
                                 className={`text-sm text-red-800`}
@@ -821,7 +859,7 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
 
                 {/* delivery prefrences */}
                 <div className="mx-4">
-                  <div>
+                  {/* <div>
                     {errors.customer_id?.message.key ? (
                       <p
                         className={`text-sm text-red-800`}
@@ -839,7 +877,7 @@ const CartAddress: NextPage<Props> = ({ url }): JSX.Element => {
                         {t(errors.customer_id?.message)}
                       </p>
                     )}
-                  </div>
+                  </div> */}
                   <p
                     className="my-5 font-semibold text-base"
                     suppressHydrationWarning={suppressText}
